@@ -15,7 +15,7 @@
 void myInit(){
 	int nbZero;
 
-	// FRUIT_ADD_RADIUS
+	// FRUIT_ADD_RADIUSa
 	//Générer courbe des "ventres"
 	for( int i = 0; i < NB_FRUITS + NB_BONUSES; i++ ){
 		for( int j = 0; j < SIZE_PRE_RADIUS / 2; j++ ){
