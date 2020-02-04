@@ -1,0 +1,70 @@
+// - Pas de spawn trop près des murs (surtout des coins)
+// - Hitbox avec mur et queue
+/- Ajout bonus
+	//- PLUME
+	// -chest
+	// -bomb
+	// -rainbow
+	//-potions :
+		//-hitbox //afficher snake differement  / create texture
+		//-v (poison) (do texture for it)
+		//-j (points)
+// - différents fruits(avec différents apports énergétiques)
+// - Les fruits font légèrement accélérer
+// - Score
+// - fruit chance dépend de nb_fruit_eaten
+// - first fruits has less chance to come later
+// - Chance de "fruit géant" (*10 ptns, +grow *2 speed)
+// - Multiple fruits on board possible
+// - hud
+/ - resizable -> only optimized for left-barre medium-sized ubuntu :/
+// - anim death
+ - menu final death
+ - texture score et affichage (rework)
+ - fullscreen
+
+dans hud :
+ - affichage jauge café
+ - affichage poison
+ - affichage score
+ - affichage jauge progression
+ - affichage jauge drunk
+
+
+// - pause
+ - pause menu :
+ 	- restart
+ 	- change difficulty
+
+
+ ?- progressive speedup ?
+
+ ?- fruit that forces accelerate for points ?
+
+// - cd/anim to spawn ?
+// - time to live fruits ?
+
+
+ ?- different TTL for each fruit ?
+ ?- texture for dead body?
+
+
+// - Fix digérer decale all fruits (stop when body is normal)
+// - Fix head become small on digestion (cuz never reached case t==SIZE_PRE_RADIUS/2)
+// - Fix pastBody too small ((*body)[*size + i].x=(*body)[*size + i-1].x + (*body)[*size + i-1].x - (*body)[*size + i-2].x; (*body)[*size + i].y=(*body)[*size + i-1].y + (*body)[*size + i-1].y - (*body)[*size + i-2].y;)
+ - Fix bomb -> digestion makes spawn at old place
+
+
+
+
+modes de jeu :
+1easy (bomb cant kill)
+2hard ( + grow, + speed)
+3extreme (reduced vision)
+4survie (lot of spawns that kills (except if bombed) / enemy attacks)
+
+
+achievement :
+grosse tête
+poisoned too much
+die from poison/bomb
