@@ -23,7 +23,7 @@ void myInit(){
 	if( Mix_OpenAudio( MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 1, 1024 ) == -1 )
 		printf("Erreur init SDL_Mixer\n" );
 
-	//rand
+	// rand
 	srand(time(NULL));
 }
 

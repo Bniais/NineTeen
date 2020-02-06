@@ -25,9 +25,6 @@ const SDL_Color bleu_foncer = {66,100,196};
 #define WIN_LARGUEUR 1440
 #define WIN_HAUTEUR 960
 
-int LARGUEUR = 0;
-int HAUTEUR = 0;
-
 #define SIZE_SESSION 256
 #define URL_REGISTRATION "https://nineteen.recognizer.fr/"
 
@@ -145,16 +142,16 @@ void connexion(SDL_Renderer *renderer, char **token)
 	char motDePasse[24]="";
 
 
-	SDL_Rect targetId = { LARGUEUR/5.5 , HAUTEUR/3, LARGUEUR/1.7 , HAUTEUR/14};
-	SDL_Rect targetIdLabel = { LARGUEUR/6.5 , HAUTEUR/4 , LARGUEUR/1.7 , HAUTEUR/14};
+	SDL_Rect targetId = { WIN_LARGUEUR/5.5 , WIN_HAUTEUR/3, WIN_LARGUEUR/1.7 , WIN_HAUTEUR/14};
+	SDL_Rect targetIdLabel = { WIN_LARGUEUR/6.5 , WIN_HAUTEUR/4 , WIN_LARGUEUR/1.7 , WIN_HAUTEUR/14};
 
-	SDL_Rect targetPwd = { LARGUEUR/5.5 , HAUTEUR/1.9 , LARGUEUR/1.7 , HAUTEUR/14 };
-	SDL_Rect targetPwdLabel = { LARGUEUR/6.3 , HAUTEUR/2.3 , LARGUEUR/1.7 , HAUTEUR/14 };
+	SDL_Rect targetPwd = { WIN_LARGUEUR/5.5 , WIN_HAUTEUR/1.9 , WIN_LARGUEUR/1.7 , WIN_HAUTEUR/14 };
+	SDL_Rect targetPwdLabel = { WIN_LARGUEUR/6.3 , WIN_HAUTEUR/2.3 , WIN_LARGUEUR/1.7 , WIN_HAUTEUR/14 };
 
-	SDL_Rect targetConnect = { LARGUEUR/1.87, HAUTEUR/1.5 , LARGUEUR/4  , HAUTEUR/14};
-	SDL_Rect targetInscription = {LARGUEUR/5, HAUTEUR/1.5, LARGUEUR/3.3 , HAUTEUR/14};
+	SDL_Rect targetConnect = { WIN_LARGUEUR/1.87, WIN_HAUTEUR/1.5 , 30* (strlen("Connexion")+2)  , 60};
+	SDL_Rect targetInscription = {WIN_LARGUEUR/4, WIN_HAUTEUR/1.5, 30* (strlen("Inscription")+2), 60};
 
-	SDL_Rect targetUIView = {LARGUEUR/6.5,HAUTEUR/4.8, HAUTEUR,HAUTEUR/2};
+	SDL_Rect targetUIView = {WIN_LARGUEUR/6.5,WIN_HAUTEUR/4.8, WIN_HAUTEUR,WIN_HAUTEUR/2};
 
 
 	SDL_RenderCopy(renderer, background, NULL, NULL);
@@ -223,6 +220,7 @@ void connexion(SDL_Renderer *renderer, char **token)
 			}
 			else if ( TF_ClickIn( targetInscription , mouse) )
 			{
+				pressConnexion = SDL_TRUE;
 				system("open "URL_REGISTRATION);
 				mouse.x = 0;
 				mouse.y = 0;
@@ -233,9 +231,6 @@ void connexion(SDL_Renderer *renderer, char **token)
 				mouse.y = 0;
 			}
 		}
-
-
-
 
 		SDL_RenderCopy(renderer, background, NULL, NULL);
 		SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
@@ -299,15 +294,13 @@ int main()
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	// size of screen
-	SDL_DisplayMode DM;
+/*	SDL_DisplayMode DM;
 	SDL_GetCurrentDisplayMode(0, &DM);
-	LARGUEUR = DM.w/1.78;
-	HAUTEUR = LARGUEUR*0.66667;
+	int largueur = DM.h;
+	int hauteur = largueur*0.66667; */
 	char *token = malloc(sizeof(char) * SIZE_SESSION + 1);
 
-
-
-	SDL_Window *window = SDL_CreateWindow("Nineteen | Launcher", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,LARGUEUR,HAUTEUR,SDL_WINDOW_SHOWN );
+	SDL_Window *window = SDL_CreateWindow("Nineteen | Launcher", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,WIN_LARGUEUR,WIN_HAUTEUR,SDL_WINDOW_SHOWN );
 	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
 	TTF_Init();
 
