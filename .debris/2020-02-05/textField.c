@@ -1,8 +1,8 @@
 #include <stdio.h>
 
 // SDL
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
+#include <SDL.h>
+#include <SDL_ttf.h>
 
 ///////////////////////////////////////////////////////////////
 /// \file textField.c
@@ -12,7 +12,7 @@
 /// \date 19 Janvier 2020
 ///////////////////////////////////////////////////////////////
 
-#define MAX_SIZE 22
+#define MAX_SIZE 32
 
 #define TF_MOUSE_OUT_CLICK 10
 #define TF_RETURN 11
@@ -105,7 +105,6 @@ void renduTextField(SDL_Renderer *renderer,char *chaine ,TTF_Font *font , SDL_Co
 	SDL_Texture *message = SDL_CreateTextureFromSurface(renderer,textZone);
 	if( !message )
 		printf("Error Texture : %s\n",SDL_GetError());
-	cible.x += cible.h*0.5;
 	cible.w = cible.h*0.5 * strlen(chaine);
 	SDL_RenderCopy(renderer, message, NULL, &cible);
 
@@ -127,32 +126,30 @@ void renduTextField(SDL_Renderer *renderer,char *chaine ,TTF_Font *font , SDL_Co
 /// \param SDL_Rect cible indiquer la cible ou afficher le resultat.
 /// \return retourne la raison de sorti (TF_MAX_SIZE, TF_TEXT_TYPED..).
 ///////////////////////////////////////////////////////////////
-int textField(SDL_Renderer* renderer, TTF_Font *police, SDL_Color color, char *chaine, int startWhere, SDL_Rect *cible, SDL_Point *mouse,int *pressMaj)
+int textField(SDL_Renderer* renderer, TTF_Font *police, SDL_Color color, char *chaine, int startWhere, SDL_Rect cible)
 {
 	int currentSize = startWhere;
 	int pressReturn = SDL_FALSE;
+	int pressMaj = SDL_FALSE;
 	int clickOut = SDL_FALSE;
 	int touchPressed = SDL_FALSE;
-
-	int retour = 0;
 
 	do
 	{
 		SDL_Event evenement;
 		while ( SDL_PollEvent(&evenement) )
 		{
-
 			// keyboard
 			if(evenement.type == SDL_KEYDOWN)
 			{
 				if(evenement.key.keysym.sym == SDLK_RETURN) // Fin de la saisi
 				{
-					retour = TF_RETURN;
-					//return pressReturn;
+					pressReturn = TF_RETURN;
+					return pressReturn;
 				}
 				else if(evenement.key.keysym.sym == SDLK_LSHIFT || evenement.key.keysym.sym == SDLK_RSHIFT)
 				{
-					*pressMaj = SDL_TRUE;
+					pressMaj = SDL_TRUE;
 				}
 				else if (evenement.key.keysym.sym == SDLK_BACKSPACE)
 				{
@@ -160,19 +157,19 @@ int textField(SDL_Renderer* renderer, TTF_Font *police, SDL_Color color, char *c
 					{
 						currentSize--;
 						*(chaine + currentSize) = '\0';
-						//renduTextField(renderer, chaine, police, color, *cible);
-						retour = TF_TEXT_TYPED;
-						//return touchPressed;
+						renduTextField(renderer, chaine, police, color, cible);
+						touchPressed = TF_TEXT_TYPED;
+						return touchPressed;
 					}
 
 				}
 				else if (currentSize < MAX_SIZE) {
-					chaine[currentSize] = SDL_Event_Charcode(evenement.key.keysym.sym, *pressMaj);
+					chaine[currentSize] = SDL_Event_Charcode(evenement.key.keysym.sym, pressMaj);
 					currentSize++;
 					chaine[currentSize] = '\0';
-					//renduTextField(renderer, chaine, police, color, *cible);
-					retour = TF_TEXT_TYPED;
-					//return touchPressed;
+					renduTextField(renderer, chaine, police, color, cible);
+					touchPressed = TF_TEXT_TYPED;
+					return touchPressed;
 				}
 
 			}
@@ -180,33 +177,30 @@ int textField(SDL_Renderer* renderer, TTF_Font *police, SDL_Color color, char *c
 			{
 				if(evenement.key.keysym.sym == SDLK_LSHIFT || evenement.key.keysym.sym == SDLK_RSHIFT)
 				{
-						*pressMaj = SDL_FALSE;
+						pressMaj = SDL_FALSE;
 				}
 
 			}
 
 			// mouse
-			if (SDL_GetMouseState(&mouse->x, &mouse->y) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
-				if( ! ( mouse->x >= cible->x && mouse->x <= ( cible->x + cible->w ) && mouse->y >= cible->y && mouse->y <= (cible->y + cible->h)) )
+			int x,y;
+			if (SDL_GetMouseState(&x, &y) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+				if(x < cible.x || x > ( cible.x + cible.h ) || y < cible.y || y > (cible.y + cible.w) )
 				{
-
-					retour = TF_MOUSE_OUT_CLICK;
-					//return TF_MOUSE_OUT_CLICK;
+					clickOut = TF_MOUSE_OUT_CLICK;
+					return TF_MOUSE_OUT_CLICK;
 				}
 
 			}
 
 		}
 
-	} while (!retour);
+	} while (!touchPressed && !clickOut && !pressReturn);
 
-	return retour;
+	return 0;
 }
 
-int TF_ClickIn(SDL_Rect rect, SDL_Point mouse)
-{
-	return ( ( mouse.x >= rect.x && mouse.x <= ( rect.x + rect.w ) && mouse.y >= rect.y && mouse.y <= (rect.y + rect.h)) );
-}
+
 
 /*
 int main(int argc, char *argv[]) {
@@ -235,5 +229,4 @@ int main(int argc, char *argv[]) {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
-}
-*/
+} */

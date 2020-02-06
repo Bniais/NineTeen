@@ -15,6 +15,7 @@
 #define ERR_SQL_FAILED -2
 #define ERR_INCORRECT_ID_PW -3
 
+
 /////////////////////////////////////////////////////
 /// \fn int envoyez_requet(char **response, char *url, char *request)
 /// \brief Envoi une requet et ecrit la reponse dans **response
@@ -28,30 +29,14 @@ int envoyez_requet(char **response, char *url, char *request);
 
 
 
-/////////////////////////////////////////////////////
-/// \fn int construire_requete(char *dest, char *email, char *password, char *key)
-/// \brief Permet de crée une requet dans *dest
-///
-/// \param char *dest Ecriture de la requet
-/// \param char *email Email de connexion (Optionnal)
-/// \param char *password Mot de passe de connexion (Optionnal)
-/// \param char *key Key de connexion (Optionnal)
-/// \param char *gameID id du jeux (Optional)
-/// \param char *score score (Optional)
-///
-/// \return EXIT_SUCCESS / EXIT_FAILURE
-/////////////////////////////////////////////////////
-int construire_requete(char **dest, char *email, char *password, char *key, char *gameID, char *score);
-
-
 
 /////////////////////////////////////////////////////
-/// \fn int connectWithUsername(char **key, char *email, char *password)
-/// \brief connexion avec nom utilisateur
+/// \fn int connexion_avec_email(char **key, char *email, char *password)
+/// \brief connexion avec adresse email
 ///
 /// \param char **key Ecriture de la clé dans key
-/// \param char *email Email de connexion 
-/// \param char *password Mot de passe de connexion 
+/// \param char *email Email de connexion
+/// \param char *password Mot de passe de connexion
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -60,7 +45,7 @@ int connectWithUsername(char **key, char *email, char *password);
 
 
 /////////////////////////////////////////////////////
-/// \fn int connectWithKey(char *key)
+/// \fn int connexion_with_key(char *key)
 /// \brief connexion avec key
 ///
 /// \param char *key Ecriture de la clé dans key
@@ -72,7 +57,7 @@ int connectWithKey(char *key);
 
 
 /////////////////////////////////////////////////////
-/// \fn int updateScore(char *key, char *gameID, char *score)
+/// \fn int update_score(char *key, char *gameID, char *score)
 /// \brief update le score
 ///
 /// \param char *gameID id du jeux
@@ -81,12 +66,4 @@ int connectWithKey(char *key);
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int updateScore(char *gameID, char *score, char *key);
-
-/////////////////////////////////////////////////////
-/// \fn int ping()
-/// \brief permet de calculer de delai de reponse du serveur
-///
-/// \return DELAY MS
-/////////////////////////////////////////////////////
-int ping();
+int update_score(char *gameID, char *score, char *key);

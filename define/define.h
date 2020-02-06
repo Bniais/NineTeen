@@ -26,6 +26,7 @@
 #define HUD_H 54
 const SDL_Point ESPACE_DISPLAY_WINDOW = {67, 57};
 
+
 //font
 #define OPEN_FONT_SIZE 100
 

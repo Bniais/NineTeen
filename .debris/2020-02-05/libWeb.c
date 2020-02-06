@@ -6,6 +6,7 @@
 // secure protocol //
 #include <time.h>
 #include "openssl/md5.h"
+#define REFRESH 4 // 4 fois en 1 minute
 
 /////////////////////////////////////////////////
 ///	\file libWeb.c
@@ -15,17 +16,16 @@
 ///	\brief Regroupe les fonctions de connexion au serveur
 /////////////////////////////////////////////////
 
+#define LENGH_PARAMS 12
+
 #define URL_CONNECT_EMAIL "https://nineteen.recognizer.fr/connect.php"
 #define URL_CONNECT_KEY "https://nineteen.recognizer.fr/connect.php"
-#define URL_UPDATE_SCORE "https://nineteen.recognizer.fr/updateYourScore.php"
-#define URL_PING "https://nineteen.recognizer.fr/ping.php"
+#define URL_UPDATE_SCORE "https://nineteen.recognizer.fr"
 
 #define ERR_REQUIERED_FIELD -1
 #define ERR_SQL_FAILED -2
 #define ERR_INCORRECT_ID_PW -3
 #define ERR_INVALIDE_SECUR -17
-
-#define CLOCKS_PER_MS 1000
 
 #define MD5_SIZE 32
 
@@ -305,7 +305,7 @@ int connectWithKey(char *key)
 }
 
 /////////////////////////////////////////////////////
-/// \fn int updateScore(char *key, char *gameID, char *score)
+/// \fn int update_score(char *key, char *gameID, char *score)
 /// \brief update le score
 ///
 /// \param char *gameID id du jeux
@@ -316,55 +316,25 @@ int connectWithKey(char *key)
 /////////////////////////////////////////////////////
 int updateScore(char *gameID, char *score, char *key)
 {
+
 	char *request;
 	char *response;
 	if ( !construire_requete(&request, NULL, NULL, key, gameID, score) )
 	{
+
 		if ( !envoyez_requet(&response,URL_UPDATE_SCORE,request) )
 		{
-			if ( !strcmp(response, "SUCCESS") )
+			if ( !strcmp(response, "ERR_REQUIERED_FIELD") || !strcmp(response, "ERR_SQL_FAILED") || !strcmp(response, "ERR_INCORRECT_ID_PW") )
 			{
-				printf("%s\n",response);
 				free(request);
-				request = NULL;
 				free(response);
-				response = NULL;
 				return EXIT_SUCCESS;
 			}
-			printf("%s\n",response );
-			free(response);
-			response = NULL;
 
 		}
 	}
+
 	free(request);
-	request = NULL;
+	free(response);
 	return EXIT_FAILURE;
-}
-
-/////////////////////////////////////////////////////
-/// \fn int ping()
-/// \brief permet de calculer de delai de reponse du serveur
-///
-/// \return DELAY MS
-/////////////////////////////////////////////////////
-int ping()
-{
-	clock_t start, finish;
-	char *response;
-	start = clock();
-	if ( !envoyez_requet(&response,URL_PING,"ping=test") )
-	{
-		finish = clock();
-		if ( !strcmp(response, "PONG") )
-		{
-			free(response);
-			response = NULL;
-			return (double)(finish - start)/ CLOCKS_PER_MS;
-		}
-		free(response);
-		response = NULL;
-	}
-	finish = clock();
-	return (int)(finish - start)/ CLOCKS_PER_MS;
 }

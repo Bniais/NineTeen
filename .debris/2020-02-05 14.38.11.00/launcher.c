@@ -205,10 +205,6 @@ void connexion(SDL_Renderer *renderer, char **token)
 			}
 			else if ( TF_ClickIn( targetConnect , mouse) )
 			{
-				time_t t = time(NULL);
-				struct tm tm = *localtime(&t);
-				printf("IL EST : %d-%02d-%02d %02d:%02d:%d\n",tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour , tm.tm_min, tm.tm_sec );
-
 				if ( !connectWithUsername(token,identifiant,motDePasse) )
 				{
 					pressConnexion = SDL_TRUE;
@@ -220,7 +216,6 @@ void connexion(SDL_Renderer *renderer, char **token)
 			}
 			else if ( TF_ClickIn( targetInscription , mouse) )
 			{
-				pressConnexion = SDL_TRUE;
 				system("open "URL_REGISTRATION);
 				mouse.x = 0;
 				mouse.y = 0;
@@ -268,7 +263,7 @@ int chargementFichier()
 int launcher(SDL_Renderer* renderer, char **token)
 {
 
-	printf("TON PING %d\n",ping() );
+
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
