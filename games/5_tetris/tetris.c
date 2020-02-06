@@ -66,13 +66,14 @@ void afficherPauseMenu(SDL_Renderer *renderer, SDL_Point mouseCoor, SDL_Texture 
 void initMatrix(int matrix[GRILLE_W][GRILLE_H]){
 	for(int i=0; i<GRILLE_W; i++)
 		for(int j=0; j<GRILLE_H; j++)
-		 matrix[i][j] = 0;
+			matrix[i][j] = EMPTY;
+
+	matrix[5][12] = 1;
 }
 
 void initPiece(Piece *piece){
 	piece->rota = 0;
 	piece->id = rand() % NB_PIECES;
-	printf("%d\n", piece->id);
 	piece->x = UNDEFINED.x;
 	piece->y = UNDEFINED.y;
 	piece->giant = SDL_FALSE;
@@ -124,8 +125,22 @@ int getLastRow(Piece piece){
 	return 0;
 }
 
-void getNewPiece(Piece *piece, int giant){
+void updateGrille(Piece *piece){
+	for(int i = 0; i < piece->size; i++)
+		for(int j = 0; j < piece->size; j++)
+			(piece->grille)[i * piece->size + j] = PIECES[piece->giant][piece->id][(piece->rota) % NB_ROTA][i][j];
+}
 
+
+void getColRawInfos(Piece *piece){
+	piece->firstCol = getFirstColumn(*piece);
+	piece->lastCol = getLastColumn(*piece);
+	piece->firstRow = getFirstRow(*piece);
+	piece->lastRow = getLastRow(*piece);
+}
+
+void getNewPiece(Piece *piece, int giant){
+	piece->rota = 0;
 	piece->size = PIECE_SIZE * (giant ? RATIO_GIANT : 1);
 	if(piece->giant != giant)
 		piece->grille = realloc( piece->grille, piece->size * piece->size * sizeof(int));
@@ -133,23 +148,23 @@ void getNewPiece(Piece *piece, int giant){
 	piece->giant = giant;
 	piece->id = rand() % NB_PIECES;
 
-	for(int i = 0; i < piece->size; i++)
-		for(int j = 0; j < piece->size; j++)
-			(piece->grille)[i * piece->size + j] = PIECES[piece->giant][piece->id][piece->rota][i][j];
+	updateGrille(piece);
 
-	piece->firstCol = getFirstColumn(*piece);
-	piece->lastCol = getLastColumn(*piece);
-	piece->firstRow = getFirstRow(*piece);
-	piece->lastRow = getLastRow(*piece);
-
-	printf("col : %d %d , row : %d %d\n",piece->firstCol, piece->lastCol, piece->firstRow, piece->lastRow );
+	getColRawInfos(piece);
 
 }
 
+int almostRound( float f ){
+	return fabs(f - roundf(f)) < ROUNDABLE;
+}
+
 void putAtTop(Piece *piece){
-	piece->x = (GRILLE_W - piece->size) / 2;
+	piece->x = roundf((GRILLE_W - piece->size) / 2);
 	piece->y = 1;
 	piece->frameToGo = FRAME_TO_GO_SPAWN;
+	piece->frameDir = 0;
+	piece->dir = NO_MOVE;
+	piece->frameStop = 0;
 }
 
 void drawPiece(SDL_Renderer *renderer, Piece piece){
@@ -159,44 +174,62 @@ void drawPiece(SDL_Renderer *renderer, Piece piece){
 	for(int i = 0; i < piece.size; i++)
 		for(int j = 0; j < piece.size; j++)
 			if((piece.grille)[i * piece.size + j]){
+
 				pieceRect.x = (j + piece.x) * CASE_SIZE + 100;
 				pieceRect.y = (i + piece.y) * CASE_SIZE + 100;
-				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+				if((piece.grille)[i * piece.size + j] == 2)
+					SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
+				else
+					SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
 				SDL_RenderFillRect(renderer, &pieceRect);
 				SDL_SetRenderDrawColor(renderer, 255, 5, 255, 255);
 				SDL_RenderDrawRect(renderer, &pieceRect);
+
 			}
+
+	SDL_Rect pieceRect2 = {piece.x* CASE_SIZE + 100, piece.y* CASE_SIZE + 100,piece.size*CASE_SIZE , piece.size*CASE_SIZE};
+	SDL_RenderDrawRect(renderer, &pieceRect2);
+
 }
 
 int tooCloseFromWall(Piece piece){
-	return (piece.x + piece.firstCol < 0 || piece.x + piece.lastCol > GRILLE_W - 1 || piece.y + piece.firstRow < 0 || piece.y + piece.lastRow > GRILLE_H - 1);
+	printf("%.5f\n", piece.x + piece.firstCol);
+	return (piece.x + piece.firstCol < -ROUNDABLE || piece.x + piece.lastCol > GRILLE_W - 1 || piece.y + piece.firstRow < -ROUNDABLE || piece.y + piece.lastRow > GRILLE_H - 1);
 }
 
 int tooCloseFromMatrix(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 	//Pas besoin de verifier si i + (int)piece.x < GRILLE_W car on le vérifie dans tooCloseFromWall
+	int i;
+	int j;
 
-	for(int i = piece.firstCol; i < piece.lastCol; i++)
-		for(int j = piece.firstRow; j < piece.lastRow; j++)
-			if( piece.grille[i * piece.size + j] && ( matrix[i + (int)piece.x][j + (int)piece.y] ) )
+	for(i = piece.firstCol; i <= piece.lastCol; i++)
+		for(j = piece.firstRow; j <= piece.lastRow; j++)
+			if( piece.grille[j * piece.size + i] && ( matrix[i + (int)piece.x][j + (int)piece.y] != EMPTY ) )
 				return 1;
 
-	if( piece.x != (int)piece.x && piece.y != (int)piece.y )
-		for(int i = piece.firstRow; i < piece.lastRow; i++)
-			for(int j = piece.firstCol; j < piece.lastCol; j++)
-				if( piece.grille[i * piece.size + j] && ( matrix[i + (int)piece.x + 1][j + (int)piece.y + 1] ) ) //Pas besoin de verifier si (int)piece.y + 1 n'est pas en dehors de la matrice car tooCloseFromWall est appelé avant
+	if( piece.x != roundf(piece.x) && piece.y != roundf(piece.y) ){
+		for(i = piece.firstCol; i <= piece.lastCol; i++)
+			for(j = piece.firstRow; j <= piece.lastRow; j++)
+				if( piece.grille[j * piece.size + i] && ( matrix[i + (int)piece.x + 1][j + (int)piece.y + 1] != EMPTY ) ) //Pas besoin de verifier si (int)piece.y + 1 n'est pas en dehors de la matrice car tooCloseFromWall est appelé avant
 					return 1;
+	}
 
-	if( piece.x != (int)piece.x )
-		for(int i = piece.firstRow; i < piece.lastRow; i++)
-			for(int j = piece.firstCol; j < piece.lastCol; j++)
-				if( piece.grille[i * piece.size + j] && ( matrix[i + (int)piece.x + 1][j + (int)piece.y] ) )
-					return 1;
 
-	if( piece.y != (int)piece.y )
-		for(int i = piece.firstRow; i < piece.lastRow; i++)
-			for(int j = piece.firstCol; j < piece.lastCol; j++)
-				if( piece.grille[i * piece.size + j] && ( matrix[i + (int)piece.x][j + (int)piece.y + 1] ) )
+	if( piece.x != roundf(piece.x) ){
+		for(i = piece.firstCol; i <= piece.lastCol; i++)
+			for(j = piece.firstRow; j <= piece.lastRow; j++)
+				if( piece.grille[j * piece.size + i] && ( matrix[i + (int)piece.x + 1][j + (int)piece.y] != EMPTY ) )
 					return 1;
+	}
+
+	if( piece.y != roundf(piece.y) ){
+		for(i = piece.firstCol; i <= piece.lastCol; i++)
+			for(j = piece.firstRow; j <= piece.lastRow; j++)
+				if( piece.grille[j * piece.size + i] && ( matrix[i + (int)piece.x][j + (int)piece.y + 1] != EMPTY ) )
+					return 1;
+	}
 
 	return 0;
 }
@@ -204,26 +237,13 @@ int tooCloseFromMatrix(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H]){
 	if( rotateSens ){
 		piece->rota += rotateSens;
-		for(int i = 0; i < piece->size; i++)
-			for(int j = 0; j < piece->size; j++)
-				(piece->grille)[i * piece->size + j] = PIECES[piece->giant][piece->id][(piece->rota) % NB_ROTA][i][j];
-
-		piece->firstCol = getFirstColumn(*piece);
-		piece->lastCol = getLastColumn(*piece);
-		piece->firstRow = getFirstRow(*piece);
-		piece->lastRow = getLastRow(*piece);
+		updateGrille(piece);
+		getColRawInfos(piece);
 
 		if( tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix)){
-			printf("unrotate\n");
 			piece->rota -= rotateSens;
-			for(int i = 0; i < piece->size; i++)
-				for(int j = 0; j < piece->size; j++)
-					(piece->grille)[i * piece->size + j] = PIECES[piece->giant][piece->id][(piece->rota) % NB_ROTA][i][j];
-
-			piece->firstCol = getFirstColumn(*piece);
-			piece->lastCol = getLastColumn(*piece);
-			piece->firstRow = getFirstRow(*piece);
-			piece->lastRow = getLastRow(*piece);
+			updateGrille(piece);
+			getColRawInfos(piece);
 		}
 	}
 }
@@ -235,20 +255,36 @@ void moveSide(Piece *piece, int matrix[GRILLE_W][GRILLE_H]){
 		piece->x += piece->dir * MOVE_LATERAL;
 		(piece->frameDir)--;
 
-		if(piece->frameDir%FRAME_LATERAL == 0)
+		if(almostRound(piece->x))
 			piece->x = roundf(piece->x);
 
 		if(piece->frameDir == 0)
 			piece->dir = NO_MOVE;
 
 		if( tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix)){
-			printf("too close\n");
 			piece->x -= piece->dir * MOVE_LATERAL;
 			piece->dir = NO_MOVE;
 			piece->frameDir = 0;
 		}
-
 	}
+}
+
+int moveDown(Piece *piece, int accelerate, int matrix[GRILLE_W][GRILLE_H]){
+	piece->y += MOVE_DOWN;
+
+	if(almostRound(piece->y))
+		piece->y = roundf(piece->y);
+
+	if( tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix)){
+		piece->y -= MOVE_DOWN;
+		piece->frameStop ++;
+		if(piece->frameStop == MAX_STOP)
+			return STOPPED;
+	}
+	else
+		piece->frameStop = 0; //abusable ?
+
+	return 0;
 }
 
 void changeDir(Piece *piece, int lateralMove){
@@ -262,18 +298,64 @@ void changeDir(Piece *piece, int lateralMove){
 	}
 }
 
-void drawGrille(SDL_Renderer *renderer, int matrix[GRILLE_W][GRILLE_H]){
+void drawMatrix(SDL_Renderer *renderer, int matrix[GRILLE_W][GRILLE_H]){
 	SDL_Rect pieceRect = {0, 0, CASE_SIZE, CASE_SIZE};
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(renderer,255,255,255,255);
 
-	for(int i = 0; i < GRILLE_W; i++)
+	for(int i = 0; i < GRILLE_W; i++){
 		for(int j = 0; j < GRILLE_H; j++){
 			pieceRect.x = i * CASE_SIZE + 100;
 			pieceRect.y = j * CASE_SIZE + 100;
-			SDL_RenderDrawRect(renderer, &pieceRect);
+
+			if(matrix[i][j] != EMPTY){ //piece
+				SDL_SetRenderDrawColor(renderer, colors[matrix[i][j]].r, colors[matrix[i][j]].g, colors[matrix[i][j]].b, colors[matrix[i][j]].a);
+				SDL_RenderFillRect(renderer, &pieceRect);
+				SDL_SetRenderDrawColor(renderer,255,255,255,255);
+			}
+			else //grille
+				SDL_RenderDrawRect(renderer, &pieceRect);
+
 		}
+	}
 }
 
+void savePiece(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
+	piece.x = roundf(piece.x);
+	piece.y = roundf(piece.y);
+	for(int i = 0; i < piece.size; i++)
+		for(int j = 0; j < piece.size; j++)
+			if(piece.grille[j * piece.size + i])
+				matrix[i + (int)piece.x][j + (int)piece.y] = piece.id;
+
+}
+
+void completeLine(int matrix[GRILLE_W][GRILLE_H], int line){
+	for(int i = line; i >0; i-- )
+		for(int j=0; j<GRILLE_W; j++)
+			matrix[j][i] = matrix[j][i-1];
+
+	for(int j=0; j<GRILLE_W; j++)
+		matrix[j][0] = EMPTY;
+}
+
+void checkLines(int matrix[GRILLE_W][GRILLE_H]){
+	for(int i=0; i<GRILLE_H; i++){
+		int j;
+		for(j=0; j<GRILLE_W && matrix[j][i] != EMPTY; j++);//[j][i]?
+		if(j == GRILLE_W)
+			completeLine(matrix, i);
+	}
+}
+
+void transfertNextPiece(Piece *currentPiece, Piece nextPiece){
+	currentPiece->id = nextPiece.id;
+	currentPiece->rota = 0;
+	currentPiece->firstCol = nextPiece.firstCol;
+	currentPiece->lastCol = nextPiece.lastCol;
+	currentPiece->firstRow = nextPiece.firstRow;
+	currentPiece->lastRow = nextPiece.lastRow;
+	updateGrille(currentPiece);
+}
 
 // int launchSnake(SDL_Window *myWindow, SDL_Renderer* renderer, char *identifiant, char *token){
 int main(){
@@ -457,19 +539,26 @@ int main(){
 		rotatePiece(&currentPiece, rotate, matrix);
 
 		moveSide(&currentPiece, matrix);
-
-		//moveDown(&currentPiece, accelerate, matrix);
-
-
+		printf("%d\n", currentPiece.frameStop);
+		if(!currentPiece.frameToGo){
+			if( moveDown(&currentPiece, accelerate, matrix) == STOPPED ){
+				savePiece(currentPiece, matrix);
+				transfertNextPiece(&currentPiece,nextPiece);
+				getNewPiece(&nextPiece, 0);
+				putAtTop(&currentPiece);
+				checkLines(matrix);
+			}
+		}
+		else
+			currentPiece.frameToGo--;
 	///////////////////
 	// Check hitboxs //`
 	///////////////////
-		//checkLines(matrix);
 
 	//////////
 	// Draw //`
 	//////////
-		drawGrille(renderer, matrix);
+		drawMatrix(renderer, matrix);
 		drawPiece(renderer, currentPiece);
 		//drawNextPiece(nextPiece);
 
