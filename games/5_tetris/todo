@@ -1,2 +1,21 @@
 bugs :
-	roundf when stopped
+	Piece se stoppe instant en atterissant alors que pas accé
+
+
+ - bonus :
+ 	fill trous
+	more ptns (flat or multiplier)
+	laser : supprime lignes du bas
+	slow
+
+ - malus :
+ 	geant
+	fast
+
+ - anims :
+ 	completion ligne
+	new bloc
+
+ - affichage :
+ 	next piece
+	Texture

@@ -1,0 +1,50 @@
+\hypertarget{private__image_8h}{}\doxysection{Référence du fichier private\+\_\+image.\+h}
+\label{private__image_8h}\index{private\_image.h@{private\_image.h}}
+
+
+Fonction globale liee a S\+D\+L\+\_\+\+Image.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+S\+D\+L\+\_\+\+Texture $\ast$ \mbox{\hyperlink{private__image_8h_a215d0b080c0286bf53edfcd8cbc9696b}{Load\+Image\+With\+Error\+Code}} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, char directory\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em permet de charger une image au format P\+NG \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Fonction globale liee a S\+D\+L\+\_\+\+Image. 
+
+\begin{DoxyAuthor}{Auteur}
+Mahi S. 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+19 Janvier 2020 
+\end{DoxyDate}
+
+
+\doxysubsection{Documentation des fonctions}
+\mbox{\Hypertarget{private__image_8h_a215d0b080c0286bf53edfcd8cbc9696b}\label{private__image_8h_a215d0b080c0286bf53edfcd8cbc9696b}} 
+\index{private\_image.h@{private\_image.h}!LoadImageWithErrorCode@{LoadImageWithErrorCode}}
+\index{LoadImageWithErrorCode@{LoadImageWithErrorCode}!private\_image.h@{private\_image.h}}
+\doxysubsubsection{\texorpdfstring{LoadImageWithErrorCode()}{LoadImageWithErrorCode()}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Texture$\ast$ Load\+Image\+With\+Error\+Code (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{char}]{directory\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+permet de charger une image au format P\+NG 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em S\+D\+L\+\_\+\+Renderer} & $\ast$renderer Cible pour la texture \\
+\hline
+{\em char} & directory\mbox{[}\mbox{]} lien du fichier a charger\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+retourne la texture charger N\+U\+LL si erreur 
+\end{DoxyReturn}

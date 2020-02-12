@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.17"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Nineteen Include:  Fichier source de libWeb.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Nineteen Include
+   </div>
+   <div id="projectbrief">manprivatelibrary</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.8.17 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">libWeb.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="lib_web_8h.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;string.h&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;curl/curl.h&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#define ERR_REQUIERED_FIELD -1</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#define ERR_SQL_FAILED -2</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#define ERR_INCORRECT_ID_PW -3</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">int</span> <a class="code" href="lib_web_8h.html#a27e26af48346ad4ffbedb792ea9928ec">envoyez_requet</a>(<span class="keywordtype">char</span> **response, <span class="keywordtype">char</span> *url, <span class="keywordtype">char</span> *request);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keywordtype">int</span> <a class="code" href="lib_web_8h.html#a6bf39b100d20b2e3f52e85278c6c0ae6">construire_requete</a>(<span class="keywordtype">char</span> **dest, <span class="keywordtype">char</span> *email, <span class="keywordtype">char</span> *password, <span class="keywordtype">char</span> *key, <span class="keywordtype">char</span> *gameID, <span class="keywordtype">char</span> *score);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keywordtype">int</span> <a class="code" href="lib_web_8h.html#a94c735a80d90706352cb7eca01eeff88">connexion_avec_email</a>(<span class="keywordtype">char</span> **key, <span class="keywordtype">char</span> *email, <span class="keywordtype">char</span> *password);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keywordtype">int</span> <a class="code" href="lib_web_8h.html#a9c04101799ed9e99dfff96c7b586c6e3">connexion_with_key</a>(<span class="keywordtype">char</span> *key);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keywordtype">int</span> <a class="code" href="lib_web_8h.html#a291631590509a3630f6953ffd07e7216">update_score</a>(<span class="keywordtype">char</span> *gameID, <span class="keywordtype">char</span> *score, <span class="keywordtype">char</span> *key);</div>
+</div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="alib_web_8h_html_a9c04101799ed9e99dfff96c7b586c6e3"><div class="ttname"><a href="lib_web_8h.html#a9c04101799ed9e99dfff96c7b586c6e3">connexion_with_key</a></div><div class="ttdeci">int connexion_with_key(char *key)</div><div class="ttdoc">connexion avec key</div></div>
+<div class="ttc" id="alib_web_8h_html_a27e26af48346ad4ffbedb792ea9928ec"><div class="ttname"><a href="lib_web_8h.html#a27e26af48346ad4ffbedb792ea9928ec">envoyez_requet</a></div><div class="ttdeci">int envoyez_requet(char **response, char *url, char *request)</div><div class="ttdoc">Envoi une requet et ecrit la reponse dans **response.</div><div class="ttdef"><b>Definition:</b> libWeb.c:65</div></div>
+<div class="ttc" id="alib_web_8h_html_a6bf39b100d20b2e3f52e85278c6c0ae6"><div class="ttname"><a href="lib_web_8h.html#a6bf39b100d20b2e3f52e85278c6c0ae6">construire_requete</a></div><div class="ttdeci">int construire_requete(char **dest, char *email, char *password, char *key, char *gameID, char *score)</div><div class="ttdoc">Permet de crée une requet dans *dest.</div><div class="ttdef"><b>Definition:</b> libWeb.c:119</div></div>
+<div class="ttc" id="alib_web_8h_html_a94c735a80d90706352cb7eca01eeff88"><div class="ttname"><a href="lib_web_8h.html#a94c735a80d90706352cb7eca01eeff88">connexion_avec_email</a></div><div class="ttdeci">int connexion_avec_email(char **key, char *email, char *password)</div><div class="ttdoc">connexion avec adresse email</div></div>
+<div class="ttc" id="alib_web_8h_html_a291631590509a3630f6953ffd07e7216"><div class="ttname"><a href="lib_web_8h.html#a291631590509a3630f6953ffd07e7216">update_score</a></div><div class="ttdeci">int update_score(char *gameID, char *score, char *key)</div><div class="ttdoc">update le score</div></div>
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.17
+</small></address>
+</body>
+</html>

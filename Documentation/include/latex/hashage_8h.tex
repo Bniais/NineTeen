@@ -1,0 +1,111 @@
+\hypertarget{hashage_8h}{}\doxysection{Référence du fichier hashage.\+h}
+\label{hashage_8h}\index{hashage.h@{hashage.h}}
+
+
+Fonction de hashage de int.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+long long int \mbox{\hyperlink{hashage_8h_abc9050de8426af0764be448966d12df9}{hashage}} (int value, long const\+\_\+1, long const\+\_\+2, long const\+\_\+3, long const\+\_\+4)
+\begin{DoxyCompactList}\small\item\em retourne une valeur hasher de la valeur d\textquotesingle{}entrer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{hashage_8h_a842e7dee0f8535d9db7e3dfc230d0a77}{initialisation\+Constant\+Hashage}} (long $\ast$const\+\_\+1, long $\ast$const\+\_\+2, long $\ast$const\+\_\+3, long $\ast$const\+\_\+4)
+\begin{DoxyCompactList}\small\item\em initialise des valeurs aleatoire pour le hashage \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{hashage_8h_a348bf133902b3a7cbe3b652309cc5f49}{change\+Protected\+Var}} (long long int $\ast$score\+\_\+hash, int $\ast$var, int updated\+Var, long $\ast$const\+\_\+1, long $\ast$const\+\_\+2, long $\ast$const\+\_\+3, long $\ast$const\+\_\+4)
+\begin{DoxyCompactList}\small\item\em Verifie que la valeur correspond a une valeur et re met a jours les constants pour un prochain hasahage. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Fonction de hashage de int. 
+
+\begin{DoxyAuthor}{Auteur}
+Mahi S. 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+19 Janvier 2020 
+\end{DoxyDate}
+
+
+\doxysubsection{Documentation des fonctions}
+\mbox{\Hypertarget{hashage_8h_a348bf133902b3a7cbe3b652309cc5f49}\label{hashage_8h_a348bf133902b3a7cbe3b652309cc5f49}} 
+\index{hashage.h@{hashage.h}!changeProtectedVar@{changeProtectedVar}}
+\index{changeProtectedVar@{changeProtectedVar}!hashage.h@{hashage.h}}
+\doxysubsubsection{\texorpdfstring{changeProtectedVar()}{changeProtectedVar()}}
+{\footnotesize\ttfamily int change\+Protected\+Var (\begin{DoxyParamCaption}\item[{long long int $\ast$}]{score\+\_\+hash,  }\item[{int $\ast$}]{var,  }\item[{int}]{updated\+Var,  }\item[{long $\ast$}]{const\+\_\+1,  }\item[{long $\ast$}]{const\+\_\+2,  }\item[{long $\ast$}]{const\+\_\+3,  }\item[{long $\ast$}]{const\+\_\+4 }\end{DoxyParamCaption})}
+
+
+
+Verifie que la valeur correspond a une valeur et re met a jours les constants pour un prochain hasahage. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em long} & long long int $\ast$score\+\_\+hash valeur hasher \\
+\hline
+{\em int} & $\ast$var valeur a verifier \\
+\hline
+{\em int} & pdated\+Var nouvelle valeur a hasher a la sortie. \\
+\hline
+{\em long} & $\ast$const\+\_\+1 constante 1 pour réalisez ce hashage \\
+\hline
+{\em long} & $\ast$const\+\_\+2 constante 2 pour réalisez ce hashage \\
+\hline
+{\em long} & $\ast$const\+\_\+3 constante 3 pour réalisez ce hashage \\
+\hline
+{\em long} & $\ast$const\+\_\+4 constante 4 pour réalisez ce hashage\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+valeur $<$=$>$ valeur\+\_\+hasher retorune 1, sinon retourne 0. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{hashage_8h_abc9050de8426af0764be448966d12df9}\label{hashage_8h_abc9050de8426af0764be448966d12df9}} 
+\index{hashage.h@{hashage.h}!hashage@{hashage}}
+\index{hashage@{hashage}!hashage.h@{hashage.h}}
+\doxysubsubsection{\texorpdfstring{hashage()}{hashage()}}
+{\footnotesize\ttfamily long long int hashage (\begin{DoxyParamCaption}\item[{int}]{value,  }\item[{long}]{const\+\_\+1,  }\item[{long}]{const\+\_\+2,  }\item[{long}]{const\+\_\+3,  }\item[{long}]{const\+\_\+4 }\end{DoxyParamCaption})}
+
+
+
+retourne une valeur hasher de la valeur d\textquotesingle{}entrer. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em int} & value Valeur a hasher \\
+\hline
+{\em long} & const\+\_\+1 constante 1 pour réalisez ce hashage \\
+\hline
+{\em long} & const\+\_\+2 constante 2 pour réalisez ce hashage \\
+\hline
+{\em long} & const\+\_\+3 constante 3 pour réalisez ce hashage \\
+\hline
+{\em long} & const\+\_\+4 constante 4 pour réalisez ce hashage\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+long long retourne la valeur hasher de value. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{hashage_8h_a842e7dee0f8535d9db7e3dfc230d0a77}\label{hashage_8h_a842e7dee0f8535d9db7e3dfc230d0a77}} 
+\index{hashage.h@{hashage.h}!initialisationConstantHashage@{initialisationConstantHashage}}
+\index{initialisationConstantHashage@{initialisationConstantHashage}!hashage.h@{hashage.h}}
+\doxysubsubsection{\texorpdfstring{initialisationConstantHashage()}{initialisationConstantHashage()}}
+{\footnotesize\ttfamily void initialisation\+Constant\+Hashage (\begin{DoxyParamCaption}\item[{long $\ast$}]{const\+\_\+1,  }\item[{long $\ast$}]{const\+\_\+2,  }\item[{long $\ast$}]{const\+\_\+3,  }\item[{long $\ast$}]{const\+\_\+4 }\end{DoxyParamCaption})}
+
+
+
+initialise des valeurs aleatoire pour le hashage 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em long} & $\ast$const\+\_\+1 init constante 1 pour réalisez ce hashage \\
+\hline
+{\em long} & $\ast$const\+\_\+2 init constante 2 pour réalisez ce hashage \\
+\hline
+{\em long} & $\ast$const\+\_\+3 init constante 3 pour réalisez ce hashage \\
+\hline
+{\em long} & $\ast$const\+\_\+4 init constante 4 pour réalisez ce hashage \\
+\hline
+\end{DoxyParams}

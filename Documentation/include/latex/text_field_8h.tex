@@ -1,0 +1,59 @@
+\hypertarget{text_field_8h}{}\doxysection{Référence du fichier text\+Field.\+h}
+\label{text_field_8h}\index{textField.h@{textField.h}}
+
+
+Permet l\textquotesingle{}interaction avec une zone de saisi.  
+
+
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{text_field_8h_a3aae721783daa211781b25e6f5d10a4d}{text\+Field}} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, T\+T\+F\+\_\+\+Font $\ast$police, S\+D\+L\+\_\+\+Color color, char $\ast$chaine, int start\+Where, S\+D\+L\+\_\+\+Rect cible)
+\begin{DoxyCompactList}\small\item\em Recuperer une chaine de caractere saisi au clavier. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Permet l\textquotesingle{}interaction avec une zone de saisi. 
+
+\begin{DoxyAuthor}{Auteur}
+Mahi S. 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+19 Janvier 2020 
+\end{DoxyDate}
+
+
+\doxysubsection{Documentation des fonctions}
+\mbox{\Hypertarget{text_field_8h_a3aae721783daa211781b25e6f5d10a4d}\label{text_field_8h_a3aae721783daa211781b25e6f5d10a4d}} 
+\index{textField.h@{textField.h}!textField@{textField}}
+\index{textField@{textField}!textField.h@{textField.h}}
+\doxysubsubsection{\texorpdfstring{textField()}{textField()}}
+{\footnotesize\ttfamily int text\+Field (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{police,  }\item[{S\+D\+L\+\_\+\+Color}]{color,  }\item[{char $\ast$}]{chaine,  }\item[{int}]{start\+Where,  }\item[{S\+D\+L\+\_\+\+Rect}]{cible }\end{DoxyParamCaption})}
+
+
+
+Recuperer une chaine de caractere saisi au clavier. 
+
+Copier la nouvelle texture dans S\+D\+L\+\_\+\+Renderer, il est necessaire de realiser un Render\+Present().
+
+
+\begin{DoxyParams}{Paramètres}
+{\em S\+D\+L\+\_\+\+Renderer} & $\ast$renderer Pointeur sur le rendu S\+DL. \\
+\hline
+{\em T\+T\+F\+\_\+\+Font} & $\ast$police Pointeur sur la police S\+DL. \\
+\hline
+{\em S\+D\+L\+\_\+\+Color} & color Couleur du texte a affichager. \\
+\hline
+{\em char} & $\ast$chaine ecrit la chaine de caracatere dans la variable en entre. \\
+\hline
+{\em int} & start\+Where mettre strlen(chaine) pour reprendre a la fin de la chaine la saisi. \\
+\hline
+{\em S\+D\+L\+\_\+\+Rect} & cible indiquer la cible ou afficher le resultat. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+retourne la raison de sorti (T\+F\+\_\+\+M\+A\+X\+\_\+\+S\+I\+ZE, T\+F\+\_\+\+T\+E\+X\+T\+\_\+\+T\+Y\+P\+ED..). 
+\end{DoxyReturn}

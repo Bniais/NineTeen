@@ -1,0 +1,168 @@
+\hypertarget{lib_web_8c}{}\doxysection{Référence du fichier lib\+Web.\+c}
+\label{lib_web_8c}\index{libWeb.c@{libWeb.c}}
+
+
+Regroupe les fonctions de connexion au serveur.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$curl/curl.\+h$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structstring}{string}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{lib_web_8c_ad5b76dbd48ca24bcb73c42f9616e1d00}\label{lib_web_8c_ad5b76dbd48ca24bcb73c42f9616e1d00}} 
+\#define {\bfseries L\+E\+N\+G\+H\+\_\+\+P\+A\+R\+A\+MS}~12
+\item 
+\mbox{\Hypertarget{lib_web_8c_a5d158dacfa908e971b99a2f491afdf0d}\label{lib_web_8c_a5d158dacfa908e971b99a2f491afdf0d}} 
+\#define {\bfseries U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+E\+M\+A\+IL}~\char`\"{}https\+://nineteen.\+recognizer.\+fr/connect.\+php\char`\"{}
+\item 
+\mbox{\Hypertarget{lib_web_8c_af5e91dd969495cedbec6b89bd93b0f87}\label{lib_web_8c_af5e91dd969495cedbec6b89bd93b0f87}} 
+\#define {\bfseries U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+K\+EY}~\char`\"{}https\+://nineteen.\+recognizer.\+fr/connect.\+php\char`\"{}
+\item 
+\mbox{\Hypertarget{lib_web_8c_ab8e71a6a6170671ea1a85501c81db973}\label{lib_web_8c_ab8e71a6a6170671ea1a85501c81db973}} 
+\#define {\bfseries U\+R\+L\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+S\+C\+O\+RE}~\char`\"{}https\+://nineteen.\+recognizer.\+fr\char`\"{}
+\item 
+\mbox{\Hypertarget{lib_web_8c_abb35a5421a9b8611bbb46841bfd3a9f4}\label{lib_web_8c_abb35a5421a9b8611bbb46841bfd3a9f4}} 
+\#define {\bfseries E\+R\+R\+\_\+\+R\+E\+Q\+U\+I\+E\+R\+E\+D\+\_\+\+F\+I\+E\+LD}~-\/1
+\item 
+\mbox{\Hypertarget{lib_web_8c_a722fdc4bc3ab276503c67cefe8b710dc}\label{lib_web_8c_a722fdc4bc3ab276503c67cefe8b710dc}} 
+\#define {\bfseries E\+R\+R\+\_\+\+S\+Q\+L\+\_\+\+F\+A\+I\+L\+ED}~-\/2
+\item 
+\mbox{\Hypertarget{lib_web_8c_a5f4ae9f5121c5f586cfd1ef50896e031}\label{lib_web_8c_a5f4ae9f5121c5f586cfd1ef50896e031}} 
+\#define {\bfseries E\+R\+R\+\_\+\+I\+N\+C\+O\+R\+R\+E\+C\+T\+\_\+\+I\+D\+\_\+\+PW}~-\/3
+\end{DoxyCompactItemize}
+\doxysubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{lib_web_8c_a10b2e06c39458e351d7e94527bafd9a9}\label{lib_web_8c_a10b2e06c39458e351d7e94527bafd9a9}} 
+void {\bfseries init\+\_\+string} (struct \mbox{\hyperlink{structstring}{string}} $\ast$s)
+\item 
+\mbox{\Hypertarget{lib_web_8c_a7d790f417b07791af6dd6e9e4717d36a}\label{lib_web_8c_a7d790f417b07791af6dd6e9e4717d36a}} 
+size\+\_\+t {\bfseries writefunc} (void $\ast$ptr, size\+\_\+t size, size\+\_\+t nmemb, struct \mbox{\hyperlink{structstring}{string}} $\ast$s)
+\item 
+int \mbox{\hyperlink{lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec}{envoyez\+\_\+requet}} (char $\ast$$\ast$response, char $\ast$url, char $\ast$request)
+\begin{DoxyCompactList}\small\item\em Envoi une requet et ecrit la reponse dans $\ast$$\ast$response. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{lib_web_8c_a2066fd9ff3ec73354bf898f5ff6f1fd9}{construire\+\_\+requete}} (char $\ast$$\ast$dest, char $\ast$username, char $\ast$password, char $\ast$key, char $\ast$game\+ID, char $\ast$score)
+\begin{DoxyCompactList}\small\item\em Permet de crée une requet dans $\ast$dest. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{lib_web_8c_a7397eba634872cc741550537883b88a3}{connect\+With\+Username}} (char $\ast$$\ast$key, char $\ast$email, char $\ast$password)
+\begin{DoxyCompactList}\small\item\em connexion avec nom d\textquotesingle{}utilisateur \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394}{connect\+With\+Key}} (char $\ast$key)
+\begin{DoxyCompactList}\small\item\em connexion avec key \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{lib_web_8c_af782ff726f03f72f5b79e26647bc0bb8}\label{lib_web_8c_af782ff726f03f72f5b79e26647bc0bb8}} 
+int {\bfseries update\+Score} (char $\ast$game\+ID, char $\ast$score, char $\ast$key)
+\item 
+\mbox{\Hypertarget{lib_web_8c_a840291bc02cba5474a4cb46a9b9566fe}\label{lib_web_8c_a840291bc02cba5474a4cb46a9b9566fe}} 
+int {\bfseries main} (void)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Description détaillée}
+Regroupe les fonctions de connexion au serveur. 
+
+\begin{DoxyAuthor}{Auteur}
+Samy M. 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+31 janvier 2020 
+\end{DoxyDate}
+
+
+\doxysubsection{Documentation des fonctions}
+\mbox{\Hypertarget{lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394}\label{lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394}} 
+\index{libWeb.c@{libWeb.c}!connectWithKey@{connectWithKey}}
+\index{connectWithKey@{connectWithKey}!libWeb.c@{libWeb.c}}
+\doxysubsubsection{\texorpdfstring{connectWithKey()}{connectWithKey()}}
+{\footnotesize\ttfamily int connect\+With\+Key (\begin{DoxyParamCaption}\item[{char $\ast$}]{key }\end{DoxyParamCaption})}
+
+
+
+connexion avec key 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em char} & $\ast$key Ecriture de la clé dans key\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+\mbox{\Hypertarget{lib_web_8c_a7397eba634872cc741550537883b88a3}\label{lib_web_8c_a7397eba634872cc741550537883b88a3}} 
+\index{libWeb.c@{libWeb.c}!connectWithUsername@{connectWithUsername}}
+\index{connectWithUsername@{connectWithUsername}!libWeb.c@{libWeb.c}}
+\doxysubsubsection{\texorpdfstring{connectWithUsername()}{connectWithUsername()}}
+{\footnotesize\ttfamily int connect\+With\+Username (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{key,  }\item[{char $\ast$}]{email,  }\item[{char $\ast$}]{password }\end{DoxyParamCaption})}
+
+
+
+connexion avec nom d\textquotesingle{}utilisateur 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em char} & $\ast$$\ast$key Ecriture de la clé dans key \\
+\hline
+{\em char} & $\ast$email Email de connexion \\
+\hline
+{\em char} & $\ast$password Mot de passe de connexion\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+\mbox{\Hypertarget{lib_web_8c_a2066fd9ff3ec73354bf898f5ff6f1fd9}\label{lib_web_8c_a2066fd9ff3ec73354bf898f5ff6f1fd9}} 
+\index{libWeb.c@{libWeb.c}!construire\_requete@{construire\_requete}}
+\index{construire\_requete@{construire\_requete}!libWeb.c@{libWeb.c}}
+\doxysubsubsection{\texorpdfstring{construire\_requete()}{construire\_requete()}}
+{\footnotesize\ttfamily int construire\+\_\+requete (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{dest,  }\item[{char $\ast$}]{username,  }\item[{char $\ast$}]{password,  }\item[{char $\ast$}]{key,  }\item[{char $\ast$}]{game\+ID,  }\item[{char $\ast$}]{score }\end{DoxyParamCaption})}
+
+
+
+Permet de crée une requet dans $\ast$dest. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em char} & $\ast$dest Ecriture de la requet \\
+\hline
+{\em char} & $\ast$username Username de connexion (Optionnal) \\
+\hline
+{\em char} & $\ast$password Mot de passe de connexion (Optionnal) \\
+\hline
+{\em char} & $\ast$key Key de connexion (Optionnal) \\
+\hline
+{\em char} & $\ast$game\+ID id du jeux (Optional) \\
+\hline
+{\em char} & $\ast$score score (Optional)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+\mbox{\Hypertarget{lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec}\label{lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec}} 
+\index{libWeb.c@{libWeb.c}!envoyez\_requet@{envoyez\_requet}}
+\index{envoyez\_requet@{envoyez\_requet}!libWeb.c@{libWeb.c}}
+\doxysubsubsection{\texorpdfstring{envoyez\_requet()}{envoyez\_requet()}}
+{\footnotesize\ttfamily int envoyez\+\_\+requet (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{response,  }\item[{char $\ast$}]{url,  }\item[{char $\ast$}]{request }\end{DoxyParamCaption})}
+
+
+
+Envoi une requet et ecrit la reponse dans $\ast$$\ast$response. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em char} & $\ast$url url de destination \\
+\hline
+{\em char} & $\ast$request requete a envoyez\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}

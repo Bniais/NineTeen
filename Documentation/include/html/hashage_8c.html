@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.17"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Nineteen Include: Référence du fichier hashage.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Nineteen Include
+   </div>
+   <div id="projectbrief">manprivatelibrary</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.8.17 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Fonctions</a>  </div>
+  <div class="headertitle">
+<div class="title">Référence du fichier hashage.c</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Fonction de hashage de int.  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:abc9050de8426af0764be448966d12df9"><td class="memItemLeft" align="right" valign="top">long long int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hashage_8c.html#abc9050de8426af0764be448966d12df9">hashage</a> (int value, long const_1, long const_2, long const_3, long const_4)</td></tr>
+<tr class="memdesc:abc9050de8426af0764be448966d12df9"><td class="mdescLeft">&#160;</td><td class="mdescRight">retourne une valeur hasher de la valeur d'entrer.  <a href="hashage_8c.html#abc9050de8426af0764be448966d12df9">Plus de détails...</a><br /></td></tr>
+<tr class="separator:abc9050de8426af0764be448966d12df9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a842e7dee0f8535d9db7e3dfc230d0a77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hashage_8c.html#a842e7dee0f8535d9db7e3dfc230d0a77">initialisationConstantHashage</a> (long *const_1, long *const_2, long *const_3, long *const_4)</td></tr>
+<tr class="memdesc:a842e7dee0f8535d9db7e3dfc230d0a77"><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise des valeurs aleatoire pour le hashage  <a href="hashage_8c.html#a842e7dee0f8535d9db7e3dfc230d0a77">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a842e7dee0f8535d9db7e3dfc230d0a77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a348bf133902b3a7cbe3b652309cc5f49"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hashage_8c.html#a348bf133902b3a7cbe3b652309cc5f49">changeProtectedVar</a> (long long int *score_hash, int *var, int updatedVar, long *const_1, long *const_2, long *const_3, long *const_4)</td></tr>
+<tr class="memdesc:a348bf133902b3a7cbe3b652309cc5f49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Verifie que la valeur correspond a une valeur et re met a jours les constants pour un prochain hasahage.  <a href="hashage_8c.html#a348bf133902b3a7cbe3b652309cc5f49">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a348bf133902b3a7cbe3b652309cc5f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Fonction de hashage de int. </p>
+<dl class="section author"><dt>Auteur</dt><dd>Mahi S. </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>19 Janvier 2020 </dd></dl>
+</div><h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a348bf133902b3a7cbe3b652309cc5f49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a348bf133902b3a7cbe3b652309cc5f49">&#9670;&nbsp;</a></span>changeProtectedVar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int changeProtectedVar </td>
+          <td>(</td>
+          <td class="paramtype">long long int *&#160;</td>
+          <td class="paramname"><em>score_hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>var</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>updatedVar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long *&#160;</td>
+          <td class="paramname"><em>const_1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long *&#160;</td>
+          <td class="paramname"><em>const_2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long *&#160;</td>
+          <td class="paramname"><em>const_3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long *&#160;</td>
+          <td class="paramname"><em>const_4</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Verifie que la valeur correspond a une valeur et re met a jours les constants pour un prochain hasahage. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">long</td><td>long long int *score_hash valeur hasher </td></tr>
+    <tr><td class="paramname">int</td><td>*var valeur a verifier </td></tr>
+    <tr><td class="paramname">int</td><td>pdatedVar nouvelle valeur a hasher a la sortie. </td></tr>
+    <tr><td class="paramname">long</td><td>*const_1 constante 1 pour réalisez ce hashage </td></tr>
+    <tr><td class="paramname">long</td><td>*const_2 constante 2 pour réalisez ce hashage </td></tr>
+    <tr><td class="paramname">long</td><td>*const_3 constante 3 pour réalisez ce hashage </td></tr>
+    <tr><td class="paramname">long</td><td>*const_4 constante 4 pour réalisez ce hashage</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>valeur &lt;=&gt; valeur_hasher retorune 1, sinon retourne 0. </dd></dl>
+
+</div>
+</div>
+<a id="abc9050de8426af0764be448966d12df9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc9050de8426af0764be448966d12df9">&#9670;&nbsp;</a></span>hashage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long long int hashage </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>const_1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>const_2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>const_3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>const_4</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>retourne une valeur hasher de la valeur d'entrer. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">int</td><td>value Valeur a hasher </td></tr>
+    <tr><td class="paramname">long</td><td>const_1 constante 1 pour réalisez ce hashage </td></tr>
+    <tr><td class="paramname">long</td><td>const_2 constante 2 pour réalisez ce hashage </td></tr>
+    <tr><td class="paramname">long</td><td>const_3 constante 3 pour réalisez ce hashage </td></tr>
+    <tr><td class="paramname">long</td><td>const_4 constante 4 pour réalisez ce hashage</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>long long retourne la valeur hasher de value. </dd></dl>
+
+</div>
+</div>
+<a id="a842e7dee0f8535d9db7e3dfc230d0a77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a842e7dee0f8535d9db7e3dfc230d0a77">&#9670;&nbsp;</a></span>initialisationConstantHashage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void initialisationConstantHashage </td>
+          <td>(</td>
+          <td class="paramtype">long *&#160;</td>
+          <td class="paramname"><em>const_1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long *&#160;</td>
+          <td class="paramname"><em>const_2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long *&#160;</td>
+          <td class="paramname"><em>const_3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long *&#160;</td>
+          <td class="paramname"><em>const_4</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>initialise des valeurs aleatoire pour le hashage </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">long</td><td>*const_1 init constante 1 pour réalisez ce hashage </td></tr>
+    <tr><td class="paramname">long</td><td>*const_2 init constante 2 pour réalisez ce hashage </td></tr>
+    <tr><td class="paramname">long</td><td>*const_3 init constante 3 pour réalisez ce hashage </td></tr>
+    <tr><td class="paramname">long</td><td>*const_4 init constante 4 pour réalisez ce hashage </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.17
+</small></address>
+</body>
+</html>
