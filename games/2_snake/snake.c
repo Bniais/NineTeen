@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <math.h>hjh
+#include <math.h>
 
 void myInit(){
 	int nbZero;

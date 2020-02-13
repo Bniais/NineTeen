@@ -16,8 +16,8 @@ enum {ALREADY_ROUNDED, RELY_ON_BOTH, RELY_ON_LEFT, RELY_ON_RIGHT};
 //frames and distances
 #define NB_FRAMES 4
 #define NB_DISTANCES 2
-const float GROW_RATE = 0.99985;
-const float GROW_RATE_LATERAL = 0.9999;
+const float GROW_RATE = 0.99993;
+const float GROW_RATE_LATERAL = 0.99995;
 const int NB_GROW = FRAMES_PER_SECOND / 30.;
 
 enum{LATERAL, DOWN, TO_GO, STOP};
@@ -36,10 +36,15 @@ enum{LATERAL, DOWN, TO_GO, STOP};
 //Grille
 #define GRILLE_W 10
 #define GRILLE_H 20
-SDL_Color colors[NB_PIECES] = {{150,100,100,100},{100,150,100,100},{100,100,150,100},{000,100,100,100},{100,000,100,100},{100,100,000,100},{100,255,100,100}};
+SDL_Color colors[NB_PIECES] = {{0,0,0,0}, {150,100,100,100},{100,150,100,100},{100,100,150,100},{000,100,100,100},{100,000,100,100},{100,100,000,100},{100,255,100,100}};
+
+
+//Bonus
+enum{NO_BONUS, FILL, POINTS, LASER, SLOW};
+
 
 //pieces
-typedef struct {unsigned int rota; int id; float x; float y; int* grille; int size; int giant; int frameToGo; int dir; int frameDir; int frameStop; int firstCol; int lastCol; int firstRow; int lastRow;} Piece;
+typedef struct {unsigned int rota; int id; float x; float y; int* grille; int size; int giant; int frameToGo; int dir; int frameDir; int frameStop; int firstCol; int lastCol; int firstRow; int lastRow; int bonus;} Piece;
 const SDL_Point UNDEFINED = {-500, -500};
 
 

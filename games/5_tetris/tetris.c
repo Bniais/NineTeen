@@ -73,7 +73,7 @@ void initMatrix(int matrix[GRILLE_W][GRILLE_H]){
 
 void initPiece(Piece *piece){
 	piece->rota = 0;
-	piece->id = rand() % NB_PIECES;
+	piece->id = rand() % NB_PIECES + 1;
 	piece->x = UNDEFINED.x;
 	piece->y = UNDEFINED.y;
 	piece->giant = SDL_FALSE;
@@ -87,6 +87,7 @@ void initPiece(Piece *piece){
 	piece->lastCol = 0;
 	piece->firstRow = 0;
 	piece->lastRow = 0;
+	piece->bonus = NO_BONUS;
 }
 
 void updateDistances(float frame[NB_FRAMES], float distances[NB_DISTANCES], int *framePassed){
@@ -197,7 +198,10 @@ void getNewPiece(Piece *piece, int giant){
 		piece->grille = realloc( piece->grille, piece->size * piece->size * sizeof(int));
 
 	piece->giant = giant;
-	piece->id = rand() % NB_PIECES;
+	piece->id = rand() % NB_PIECES + 1;
+
+	//handle bonus
+	piece->bonus = SLOW;
 
 	updateGrille(piece);
 
@@ -330,6 +334,14 @@ void changeDir(Piece *piece, int lateralMove, int frameLateral){
 	}
 }
 
+int reduceToTen(int n){
+	int r = n;
+	while (r > 10)
+		r /= 10;
+
+	return r;
+}
+
 void drawMatrix(SDL_Renderer *renderer, int matrix[GRILLE_W][GRILLE_H]){
 	SDL_Rect pieceRect = {0, 0, CASE_SIZE, CASE_SIZE};
 	SDL_SetRenderDrawColor(renderer,255,255,255,255);
@@ -340,7 +352,8 @@ void drawMatrix(SDL_Renderer *renderer, int matrix[GRILLE_W][GRILLE_H]){
 			pieceRect.y = j * CASE_SIZE + 100;
 
 			if(matrix[i][j] != EMPTY){ //piece
-				SDL_SetRenderDrawColor(renderer, colors[matrix[i][j]].r, colors[matrix[i][j]].g, colors[matrix[i][j]].b, colors[matrix[i][j]].a);
+				int id_color = reduceToTen(matrix[i][j]);
+				SDL_SetRenderDrawColor(renderer, colors[id_color].r, colors[id_color].g, colors[id_color].b, colors[id_color].a);
 				SDL_RenderFillRect(renderer, &pieceRect);
 				SDL_SetRenderDrawColor(renderer,255,255,255,255);
 			}
@@ -355,14 +368,26 @@ void savePiece(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 	piece.y = roundf(piece.y);
 	piece.x = roundf(piece.x);
 
-	for(int i = 0; i < piece.size; i++)
-		for(int j = 0; j < piece.size; j++)
-			if(piece.grille[j * piece.size + i])
-				matrix[i + (int)piece.x][j + (int)piece.y] = piece.id;
+	for(int i = 0; i < piece.size; i++){
+		for(int j = 0; j < piece.size; j++){
+			if(piece.grille[j * piece.size + i] == 2)
+				matrix[i + (int)piece.x][j + (int)piece.y] = pow(10, piece.bonus)  * piece.id ;
+			else if(piece.grille[j * piece.size + i])
+				matrix[i + (int)piece.x][j + (int)piece.y] = piece.id ;
+		}
+	}
+}
+
+void useBonus(bonusId){
 
 }
 
+
 void completeLine(int matrix[GRILLE_W][GRILLE_H], int line){
+	for(int i = 0; i < GRILLE_W; i++)
+		if(matrix[i][line] >= 10 )
+			useBonus(getBonusId(matrix[i][line]));
+
 	for(int i = line; i >0; i-- )
 		for(int j=0; j<GRILLE_W; j++)
 			matrix[j][i] = matrix[j][i-1];
