@@ -336,7 +336,7 @@ void changeDir(Piece *piece, int lateralMove, int frameLateral){
 
 int reduceToTen(int n){
 	int r = n;
-	while (r > 10)
+	while (r >= 10)
 		r /= 10;
 
 	return r;
@@ -352,7 +352,7 @@ void drawMatrix(SDL_Renderer *renderer, int matrix[GRILLE_W][GRILLE_H]){
 			pieceRect.y = j * CASE_SIZE + 100;
 
 			if(matrix[i][j] != EMPTY){ //piece
-				int id_color = reduceToTen(matrix[i][j]);
+				int id_color = reduceToTen(matrix[i][j]) - 1;
 				SDL_SetRenderDrawColor(renderer, colors[id_color].r, colors[id_color].g, colors[id_color].b, colors[id_color].a);
 				SDL_RenderFillRect(renderer, &pieceRect);
 				SDL_SetRenderDrawColor(renderer,255,255,255,255);
@@ -378,8 +378,17 @@ void savePiece(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 	}
 }
 
-void useBonus(bonusId){
+void useBonus(int bonusId){
 
+}
+
+int getBonusId(int rectId){
+	int bonusId = 0;
+	while(rectId >= 10){
+		rectId /= 10;
+		bonusId++;
+	}
+	return bonusId;
 }
 
 
