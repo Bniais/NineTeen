@@ -206,7 +206,8 @@ void connexion(SDL_Renderer *renderer, char **token)
 		// SI CLIC SOURIS //
 		if (etatIdentifant == TF_TAB)
 		{
-			printf("tab clic on main\n");
+			etatIdentifant = RESPONDER_FALSE;
+			etatMotDePasse = RESPONDER_TRUE;
 		}
 		else if (etatIdentifant == TF_QUIT || etatMotDePasse  == TF_QUIT)
 		{
@@ -266,6 +267,7 @@ void connexion(SDL_Renderer *renderer, char **token)
 		if( strlen(identifiant) >= 1)
 			renduTextField(renderer,identifiant,police,noir,targetId);
 		SDL_RenderPresent(renderer);
+		SDL_RenderClear(renderer);
 
 		} while( !pressConnexion ) ;
 }
