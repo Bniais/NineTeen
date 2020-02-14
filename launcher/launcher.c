@@ -162,7 +162,6 @@ void printAll(SDL_Renderer *renderer,SDL_Texture* background, TTF_Font *police,S
 	SDL_RenderFillRect(renderer,&targetInscription);
 	renduTextField(renderer,"Inscription",police,noir,targetInscription);
 
-	SDL_RenderPresent(renderer);
 }
 
 void connexion(SDL_Renderer *renderer, char **token)
