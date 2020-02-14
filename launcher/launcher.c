@@ -184,7 +184,7 @@ void connexion(SDL_Renderer *renderer, char **token)
 	SDL_Rect targetInscription = {LARGUEUR/5, HAUTEUR/1.5, LARGUEUR/3.3 , HAUTEUR/14};
 
 	printAll(renderer,background,police, targetId, targetPwd, targetConnect, targetInscription);
-
+	SDL_RenderPresent(renderer);
 	int etatIdentifant = RESPONDER_TRUE;
 	int etatMotDePasse = RESPONDER_FALSE;
 	int pressConnexion = SDL_FALSE;
