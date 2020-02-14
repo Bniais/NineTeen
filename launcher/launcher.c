@@ -206,8 +206,7 @@ void connexion(SDL_Renderer *renderer, char **token)
 		// SI CLIC SOURIS //
 		if (etatIdentifant == TF_TAB)
 		{
-			etatIdentifant = RESPONDER_FALSE;
-			etatMotDePasse = RESPONDER_TRUE;
+			printf("tab clic on main\n");
 		}
 		else if (etatIdentifant == TF_QUIT || etatMotDePasse  == TF_QUIT)
 		{
