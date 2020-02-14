@@ -201,46 +201,59 @@ void connexion(SDL_Renderer *renderer, char **token)
 
 		printf("Etat ID = %d\nEtat MDP = %d\n",etatIdentifant,etatMotDePasse );
 		// SI CLIC SOURIS //
-		if(mouse.x && mouse.y)
+		if (etatIdentifant == TF_TAB)
 		{
-			// si on match avec les coordonner d'une des deux textfield on le met en RESPONDER_TRUE et l'autre en RESPONDER_FALSE
-			if ( TF_ClickIn( targetId , mouse) )
+			etatIdentifant = RESPONDER_FALSE;
+			etatMotDePasse = RESPONDER_TRUE;
+		}
+		else if (etatIdentifant == TF_QUIT || etatMotDePasse  == TF_QUIT)
+		{
+			exit(0);
+		}
+		else if(etatIdentifant == TF_MOUSE_OUT_CLICK || etatMotDePasse  == TF_MOUSE_OUT_CLICK)
+		{
+			if(mouse.x && mouse.y)
 			{
-				etatIdentifant = RESPONDER_TRUE;
-				etatMotDePasse = RESPONDER_FALSE;
-			}
-			else if ( TF_ClickIn( targetPwd , mouse) )
-			{
-				etatMotDePasse = RESPONDER_TRUE;
-				etatIdentifant = RESPONDER_FALSE;
-			}
-			else if ( TF_ClickIn( targetConnect , mouse) )
-			{
-				time_t t = time(NULL);
-				struct tm tm = *localtime(&t);
-				printf("IL EST : %d-%02d-%02d %02d:%02d:%d\n",tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour , tm.tm_min, tm.tm_sec );
-
-				if ( !connectWithUsername(token,identifiant,motDePasse) )
+				// si on match avec les coordonner d'une des deux textfield on le met en RESPONDER_TRUE et l'autre en RESPONDER_FALSE
+				if ( TF_ClickIn( targetId , mouse) )
 				{
-					pressConnexion = SDL_TRUE;
+					etatIdentifant = RESPONDER_TRUE;
 					etatMotDePasse = RESPONDER_FALSE;
+				}
+				else if ( TF_ClickIn( targetPwd , mouse) )
+				{
+					etatMotDePasse = RESPONDER_TRUE;
 					etatIdentifant = RESPONDER_FALSE;
 				}
-				mouse.x = 0;
-				mouse.y = 0;
-			}
-			else if ( TF_ClickIn( targetInscription , mouse) )
-			{
-				system("open "URL_REGISTRATION);
-				mouse.x = 0;
-				mouse.y = 0;
-			}
-			else
-			{
-				mouse.x = 0;
-				mouse.y = 0;
+				else if ( TF_ClickIn( targetConnect , mouse) )
+				{
+					time_t t = time(NULL);
+					struct tm tm = *localtime(&t);
+					printf("IL EST : %d-%02d-%02d %02d:%02d:%d\n",tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour , tm.tm_min, tm.tm_sec );
+
+					if ( !connectWithUsername(token,identifiant,motDePasse) )
+					{
+						pressConnexion = SDL_TRUE;
+						etatMotDePasse = RESPONDER_FALSE;
+						etatIdentifant = RESPONDER_FALSE;
+					}
+					mouse.x = 0;
+					mouse.y = 0;
+				}
+				else if ( TF_ClickIn( targetInscription , mouse) )
+				{
+					system("open "URL_REGISTRATION);
+					mouse.x = 0;
+					mouse.y = 0;
+				}
+				else
+				{
+					mouse.x = 0;
+					mouse.y = 0;
+				}
 			}
 		}
+
 
 
   	printAll(renderer,background,police);

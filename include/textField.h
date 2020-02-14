@@ -11,6 +11,7 @@
 #define TF_MAX_SIZE 12
 #define TF_TEXT_TYPED 13
 #define TF_TAB 14
+#define TF_QUIT 15
 
 #define RESPONDER_TRUE 1
 #define RESPONDER_FALSE 2
