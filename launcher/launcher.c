@@ -208,6 +208,11 @@ void connexion(SDL_Renderer *renderer, char **token)
 			etatIdentifant = RESPONDER_FALSE;
 			etatMotDePasse = RESPONDER_TRUE;
 		}
+		else if (etatMotDePasse == TF_TAB)
+		{
+			etatIdentifant = RESPONDER_TRUE;
+			etatMotDePasse = RESPONDER_FALSE;
+		}
 		else if (etatIdentifant == TF_QUIT || etatMotDePasse  == TF_QUIT)
 		{
 			exit(0);
