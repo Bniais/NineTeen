@@ -371,7 +371,7 @@ void savePiece(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 	for(int i = 0; i < piece.size; i++){
 		for(int j = 0; j < piece.size; j++){
 			if(piece.grille[j * piece.size + i] == 2)
-				matrix[i + (int)piece.x][j + (int)piece.y] = pow(10, piece.bonus)  * piece.id ;
+				matrix[i + (int)piece.x][j + (int)piece.y] = piece.id + 10*piece.bonus;
 			else if(piece.grille[j * piece.size + i])
 				matrix[i + (int)piece.x][j + (int)piece.y] = piece.id ;
 		}
