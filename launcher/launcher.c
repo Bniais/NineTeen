@@ -132,21 +132,8 @@ void attendreEvenementAppuyer(int event)
     } while (attendre);
 }
 
-void connexion(SDL_Renderer *renderer, char **token)
+void printAll(SDL_renderer *renderer,SDL_Texture* background, TTF_Font *police )
 {
-	SDL_Texture* background = IMG_LoadTexture(renderer,"../assets/image/launcher_no_font.png");
-
-	TTF_Font *police = NULL;
-	TTF_Font *ttf_pwd = NULL;
-	police = TTF_OpenFont("../assets/font/police.ttf",100);
-
-	ttf_pwd = TTF_OpenFont("../assets/font/password.ttf",100);
-
-
-	char identifiant[24]="";
-	char motDePasse[24]="";
-
-
 	SDL_Rect targetId = { LARGUEUR/5.5 , HAUTEUR/3, LARGUEUR/1.7 , HAUTEUR/14};
 	SDL_Rect targetIdLabel = { LARGUEUR/6.5 , HAUTEUR/4 , LARGUEUR/1.7 , HAUTEUR/14};
 
@@ -176,8 +163,26 @@ void connexion(SDL_Renderer *renderer, char **token)
 	SDL_RenderFillRect(renderer,&targetInscription);
 	renduTextField(renderer,"Inscription",police,noir,targetInscription);
 
-
 	SDL_RenderPresent(renderer);
+}
+
+void connexion(SDL_Renderer *renderer, char **token)
+{
+	SDL_Texture* background = IMG_LoadTexture(renderer,"../assets/image/launcher_no_font.png");
+
+	TTF_Font *police = NULL;
+	TTF_Font *ttf_pwd = NULL;
+	police = TTF_OpenFont("../assets/font/police.ttf",100);
+
+	ttf_pwd = TTF_OpenFont("../assets/font/password.ttf",100);
+
+
+	char identifiant[24]="";
+	char motDePasse[24]="";
+
+
+	printAll(renderer,background,police);
+
 	int etatIdentifant = RESPONDER_TRUE;
 	int etatMotDePasse = RESPONDER_FALSE;
 	int pressConnexion = SDL_FALSE;
@@ -194,14 +199,8 @@ void connexion(SDL_Renderer *renderer, char **token)
 		else if(etatMotDePasse != RESPONDER_FALSE)
 			etatMotDePasse = textField(renderer, ttf_pwd, blanc_foncer ,motDePasse, strlen(motDePasse) ,&targetPwd , &mouse,&pressMaj);
 
-		if(etatIdentifant == TF_TAB)
-		{
-			etatIdentifant = RESPONDER_FALSE;
-			etatMotDePasse = RESPONDER_TRUE;
-		}
-
-
-
+		printf("Etat ID = %d\nEtat MDP = %d\n",etatIdentifant,etatMotDePasse );
+		// SI CLIC SOURIS //
 		if(mouse.x && mouse.y)
 		{
 			// si on match avec les coordonner d'une des deux textfield on le met en RESPONDER_TRUE et l'autre en RESPONDER_FALSE
@@ -244,32 +243,14 @@ void connexion(SDL_Renderer *renderer, char **token)
 		}
 
 
+  	printAll(renderer,background,police);
 
-
-		SDL_RenderCopy(renderer, background, NULL, NULL);
-		SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
-		SDL_RenderFillRect(renderer,&targetUIView);
-		SDL_SetRenderDrawColor(renderer, blanc_foncer.r , blanc_foncer.g, blanc_foncer.b,255);
-		SDL_RenderFillRect(renderer,&targetId);
-		SDL_RenderFillRect(renderer,&targetPwd);
-		renduTextField(renderer,"Identifiant",police,blanc_foncer,targetIdLabel);
-		renduTextField(renderer,"Mot de passe",police,blanc_foncer,targetPwdLabel);
-
-		SDL_SetRenderDrawColor(renderer, vert.r , vert.g, vert.b,255);
-		SDL_RenderFillRect(renderer,&targetConnect);
-		renduTextField(renderer,"Connexion",police,noir,targetConnect);
-
-		SDL_SetRenderDrawColor(renderer, bleu_foncer.r , bleu_foncer.g, bleu_foncer.b,255);
-		SDL_RenderFillRect(renderer,&targetInscription);
-		renduTextField(renderer,"Inscription",police,noir,targetInscription);
-
+		// permet de ne pas afficher une zone de text vide
 		if( strlen(motDePasse) >= 1)
 			renduTextField(renderer,motDePasse,ttf_pwd,noir,targetPwd);
 		if( strlen(identifiant) >= 1)
 			renduTextField(renderer,identifiant,police,noir,targetId);
 
-		SDL_RenderPresent(renderer);
-		SDL_RenderClear(renderer);
 
 		} while( !pressConnexion ) ;
 }
