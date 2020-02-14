@@ -31,7 +31,7 @@ int LARGUEUR = 0;
 int HAUTEUR = 0;
 
 #define SIZE_SESSION 256
-#define URL_REGISTRATION "https://nineteen.recognizer.fr/"
+#define URL_REGISTRATION "https://nineteen.recognizer.fr/connect.php"
 
 
 int apply_renderer_texture(SDL_Renderer* renderer , SDL_Texture * texture){
@@ -252,7 +252,7 @@ void connexion(SDL_Renderer *renderer, char **token)
 				}
 				else if ( TF_ClickIn( targetInscription , mouse) )
 				{
-					system("open "URL_REGISTRATION);
+					system("xdg-open "URL_REGISTRATION);
 					mouse.x = 0;
 					mouse.y = 0;
 				}
