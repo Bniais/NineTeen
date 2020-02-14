@@ -217,7 +217,6 @@ void connexion(SDL_Renderer *renderer, char **token)
 			if ( !connectWithUsername(token,identifiant,motDePasse) )
 			{
 				pressConnexion = SDL_TRUE;
-				//test
 			}
 		}
 		else if(etatIdentifant == TF_MOUSE_OUT_CLICK || etatMotDePasse  == TF_MOUSE_OUT_CLICK)
