@@ -10,6 +10,7 @@
 #define TF_RETURN 11
 #define TF_MAX_SIZE 12
 #define TF_TEXT_TYPED 13
+#define TF_TAB 14
 
 #define RESPONDER_TRUE 1
 #define RESPONDER_FALSE 2

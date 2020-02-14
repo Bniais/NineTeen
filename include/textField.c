@@ -18,6 +18,7 @@
 #define TF_RETURN 11
 #define TF_MAX_SIZE 12
 #define TF_TEXT_TYPED 13
+#define TF_TAB 14
 
 
 ///////////////////////////////////////////////////////////////
@@ -149,6 +150,11 @@ int textField(SDL_Renderer* renderer, TTF_Font *police, SDL_Color color, char *c
 				{
 					retour = TF_RETURN;
 					//return pressReturn;
+				}
+				else if(evenement.key.keysym.sym == SDLK_TAB )
+				{
+					printf("Tab clic\n");
+					retour = TF_TAB;
 				}
 				else if(evenement.key.keysym.sym == SDLK_LSHIFT || evenement.key.keysym.sym == SDLK_RSHIFT)
 				{

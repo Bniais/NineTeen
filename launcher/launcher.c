@@ -194,6 +194,13 @@ void connexion(SDL_Renderer *renderer, char **token)
 		else if(etatMotDePasse != RESPONDER_FALSE)
 			etatMotDePasse = textField(renderer, ttf_pwd, blanc_foncer ,motDePasse, strlen(motDePasse) ,&targetPwd , &mouse,&pressMaj);
 
+		if(etatIdentifant == TF_TAB)
+		{
+			etatIdentifant = RESPONDER_FALSE;
+			etatMotDePasse = RESPONDER_TRUE;
+		}
+
+
 
 		if(mouse.x && mouse.y)
 		{
