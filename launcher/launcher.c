@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//HELLO
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
