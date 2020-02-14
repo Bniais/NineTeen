@@ -265,7 +265,7 @@ void connexion(SDL_Renderer *renderer, char **token)
 			renduTextField(renderer,motDePasse,ttf_pwd,noir,targetPwd);
 		if( strlen(identifiant) >= 1)
 			renduTextField(renderer,identifiant,police,noir,targetId);
-
+		SDL_RenderPresent(renderer);
 
 		} while( !pressConnexion ) ;
 }
