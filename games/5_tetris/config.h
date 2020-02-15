@@ -41,7 +41,7 @@ SDL_Color colors[NB_PIECES] = {{150,100,100,100},{100,150,100,100},{100,100,150,
 
 //Bonus
 enum{NO_BONUS, FILL, POINTS, LASER, SLOW};
-
+#define BONUS_TRI 10
 
 //pieces
 typedef struct {unsigned int rota; int id; float x; float y; int* grille; int size; int giant; int frameToGo; int dir; int frameDir; int frameStop; int firstCol; int lastCol; int firstRow; int lastRow; int bonus;} Piece;

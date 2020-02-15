@@ -73,7 +73,7 @@ void initMatrix(int matrix[GRILLE_W][GRILLE_H]){
 
 void initPiece(Piece *piece){
 	piece->rota = 0;
-	piece->id = rand() % NB_PIECES + 1;
+	piece->id = rand() % NB_PIECES;
 	piece->x = UNDEFINED.x;
 	piece->y = UNDEFINED.y;
 	piece->giant = SDL_FALSE;
@@ -198,7 +198,7 @@ void getNewPiece(Piece *piece, int giant){
 		piece->grille = realloc( piece->grille, piece->size * piece->size * sizeof(int));
 
 	piece->giant = giant;
-	piece->id = rand() % NB_PIECES + 1;
+	piece->id = rand() % NB_PIECES;
 
 	//handle bonus
 	piece->bonus = SLOW;
@@ -335,11 +335,7 @@ void changeDir(Piece *piece, int lateralMove, int frameLateral){
 }
 
 int reduceToTen(int n){
-	int r = n;
-	while (r >= 10)
-		r /= 10;
-
-	return r;
+	return n%10;
 }
 
 void drawMatrix(SDL_Renderer *renderer, int matrix[GRILLE_W][GRILLE_H]){
@@ -352,7 +348,7 @@ void drawMatrix(SDL_Renderer *renderer, int matrix[GRILLE_W][GRILLE_H]){
 			pieceRect.y = j * CASE_SIZE + 100;
 
 			if(matrix[i][j] != EMPTY){ //piece
-				int id_color = reduceToTen(matrix[i][j]) - 1;
+				int id_color = reduceToTen(matrix[i][j]);
 				SDL_SetRenderDrawColor(renderer, colors[id_color].r, colors[id_color].g, colors[id_color].b, colors[id_color].a);
 				SDL_RenderFillRect(renderer, &pieceRect);
 				SDL_SetRenderDrawColor(renderer,255,255,255,255);
@@ -371,7 +367,7 @@ void savePiece(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 	for(int i = 0; i < piece.size; i++){
 		for(int j = 0; j < piece.size; j++){
 			if(piece.grille[j * piece.size + i] == 2)
-				matrix[i + (int)piece.x][j + (int)piece.y] = piece.id + 10*piece.bonus;
+				matrix[i + (int)piece.x][j + (int)piece.y] = piece.id + BONUS_TRI*piece.bonus;
 			else if(piece.grille[j * piece.size + i])
 				matrix[i + (int)piece.x][j + (int)piece.y] = piece.id ;
 		}
@@ -379,13 +375,13 @@ void savePiece(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 }
 
 void useBonus(int bonusId){
-
+	printf("bonus used %d\n", bonusId);
 }
 
 int getBonusId(int rectId){
 	int bonusId = 0;
 	while(rectId >= 10){
-		rectId /= 10;
+		rectId-=10;
 		bonusId++;
 	}
 	return bonusId;
@@ -394,7 +390,7 @@ int getBonusId(int rectId){
 
 void completeLine(int matrix[GRILLE_W][GRILLE_H], int line){
 	for(int i = 0; i < GRILLE_W; i++)
-		if(matrix[i][line] >= 10 )
+		if(matrix[i][line] >= BONUS_TRI )
 			useBonus(getBonusId(matrix[i][line]));
 
 	for(int i = line; i >0; i-- )
