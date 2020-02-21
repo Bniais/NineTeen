@@ -31,17 +31,28 @@ enum{LATERAL, DOWN, TO_GO, STOP};
 
 //accelerate
 #define NO_ACCELERATE 1
-#define ACCELERATE 2
+#define ACCELERATE 30
 
 //Grille
 #define GRILLE_W 10
 #define GRILLE_H 20
 SDL_Color colors[NB_PIECES] = {{150,100,100,100},{100,150,100,100},{100,100,150,100},{000,100,100,100},{100,000,100,100},{100,100,000,100},{100,255,100,100}};
+#define MATRIX_X 100
+#define MATRIX_Y 100
 
+typedef struct{ int lineDown; float shift;} ShiftDown;
 
 //Bonus
+#define NB_BONUSES 4
 enum{NO_BONUS, FILL, POINTS, LASER, SLOW};
 #define BONUS_TRI 10
+SDL_Color colors_b[NB_BONUSES] = {{120,000,150,100},{100,070,180,100},{170,170,000,170},{000,255,120,100}};
+#define NB_LINES_LASER 3
+#define SLOW_AMMOUNT (FRAMES_PER_SECOND * 45)
+
+#define LASER_FRAME (0.7 * FRAMES_PER_SECOND)
+#define FRAME_COMPLETE_LINE (0.5 * FRAMES_PER_SECOND)
+const int LASER_START_COMPLETE=(0.35 * FRAMES_PER_SECOND);
 
 //pieces
 typedef struct {unsigned int rota; int id; float x; float y; int* grille; int size; int giant; int frameToGo; int dir; int frameDir; int frameStop; int firstCol; int lastCol; int firstRow; int lastRow; int bonus;} Piece;
@@ -55,4 +66,5 @@ const SDL_Point UNDEFINED = {-500, -500};
 #define ROUNDABLE 0.0001
 
 #define CASE_SIZE 40
+#define BONUS_SIZE 20
 const SDL_Point matrixSize = {500, 1000};
