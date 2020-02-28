@@ -620,16 +620,13 @@ void eat_fruit(SnakePart **snake, size_t *size, Fruit** fruitTab, size_t* nbFrui
 	*score += (fruit.giant == 0 ? 1 : GIANT_SCORE) * FRUIT_PROPRIETES[fruit.id][SCORE];
 
 	if( FRUIT_PROPRIETES[fruit.id][SCORE] ){
-		char* str = malloc(sizeof(char) * NB_CHAR_AFFICHAGE_SCORE);
-		sprintf(str, "%d", (int)FRUIT_PROPRIETES[fruit.id][SCORE]);
-
 		(*nbScoreAffichage)++;
 		*scoreAffichage = realloc(*scoreAffichage, *nbScoreAffichage * sizeof(Score) );
 		int sizeAffichage = scoreSize(fruit);
 		(*scoreAffichage)[*nbScoreAffichage - 1] = (Score){
 			fruit.x,
 			fruit.y,
-			str,
+			(int)FRUIT_PROPRIETES[fruit.id][SCORE],
 			0,
 			sizeAffichage
 		};
@@ -708,11 +705,12 @@ void eat_fruit(SnakePart **snake, size_t *size, Fruit** fruitTab, size_t* nbFrui
 	}
 }
 
-void afficherScore(SDL_Renderer *renderer, Score scoreAffichage, TTF_Font *font ){
+/*void afficherScore(SDL_Renderer *renderer, SDL_Texture *scoreTexture, Score scoreAffichage, TTF_Font *font ){
 	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, scoreAffichage.msg, (SDL_Color){255, 255, 255});
 	SDL_SetSurfaceAlphaMod(surfaceMessage, ALPHA_SCORE[scoreAffichage.frame]);
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-	SDL_Rect rect;
+	SDL_Rect src = SCORE_SRC;
+	SDL_Rect dest = {SCORE_DEST.w * OPEN_FONT_SIZE/scoreAffichage.size, SCORE_DEST.h * OPEN_FONT_SIZE/scoreAffichage.size};
 
 	SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(rect.w), &(rect.h) );
 	rect.w /= (OPEN_FONT_SIZE / scoreAffichage.size);
@@ -721,13 +719,48 @@ void afficherScore(SDL_Renderer *renderer, Score scoreAffichage, TTF_Font *font 
 	rect.x = scoreAffichage.x - rect.w / 2;
 	rect.y = scoreAffichage.y - rect.h / 2;
 
-	SDL_RenderCopy(renderer, Message, NULL, &rect);
+	SDL_RenderCopy(renderer, scoreTexture, NULL, &rect);
 
 	SDL_FreeSurface(surfaceMessage);
 	SDL_DestroyTexture(Message);
 
+}*/
 
+int strlen_num(int score)
+{
+	int count=0;
+
+	if (score)
+	{
+		while(score > 0)
+		{
+			score /=10;
+			count++;
+		}
+	}
+	else
+		count++;
+
+	return count;
 }
+
+void afficherScore(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score scoreAffichage)
+{
+	int taille = strlen_num(scoreAffichage.score);
+
+
+	SDL_Rect src = SCORE_SRC;
+	SDL_Rect dest = {scoreAffichage.x + (scoreAffichage.size*taille)/2 , scoreAffichage.y - (FONT_HEIGHT_RATIO*scoreAffichage.size) / 2 , scoreAffichage.size, FONT_HEIGHT_RATIO*scoreAffichage.size };
+
+	for(int i=0 ; i < taille; i++)
+	{
+		src.x = SCORE_SRC.w * (scoreAffichage.score%10);
+		SDL_RenderCopy(renderer,scoreTexture,&src,&dest);
+		scoreAffichage.score /=10;
+		dest.x -= scoreAffichage.size;
+	}
+}
+
 
 SDL_Point maximizeWindow(SDL_Rect displayBounds, float* ratioWindowSize){
 	SDL_Point maxW = {(PLAYGROUND_SIZE_W + 2 * HUD_W), (PLAYGROUND_SIZE_H + 2 * HUD_H)};
@@ -867,6 +900,7 @@ int main(){
 	SDL_Texture *fruitTexture = IMG_LoadTexture(renderer, "Textures/fruits.png");
 	SDL_Texture *spawnTexture = IMG_LoadTexture(renderer, "Textures/anim.png");
 	SDL_Texture *hudTexture = IMG_LoadTexture(renderer, DIR_HUD);
+	SDL_Texture *scoreTexture = IMG_LoadTexture(renderer, "Textures/chiffre.png");
 
 	if( snakeTexture == NULL  ||  fruitTexture == NULL || spawnTexture == NULL || hudTexture == NULL ){// || voileTexture == NULL || pauseMenuTexture == NULL ){
 		printf("Erreur lors de la creation de texture");
@@ -1071,7 +1105,7 @@ int main(){
 
 		//score
 		for( int i = 0; i< nbScoreAffichage; i++ )
-			afficherScore(renderer, scoreAffichage[i], scoreFont);
+			afficherScore(renderer, scoreTexture, scoreAffichage[i]);
 
 		//bonus
 		if(bonus.frame < FRUIT_TTL + NB_FRAME_DEATH_FRUIT)
