@@ -164,6 +164,19 @@ void printAll(SDL_Renderer *renderer,SDL_Texture* background, TTF_Font *police,S
 
 }
 
+void ouvrirUrlRegistration()
+{
+
+	#ifdef _WIN64
+		system("start "URL_REGISTRATION);
+	#elif __APPLE__
+		system("open "URL_REGISTRATION);
+	#elif __linux__
+		system("xdg-open "URL_REGISTRATION);
+	#endif
+
+}
+
 void connexion(SDL_Renderer *renderer, char **token)
 {
 	SDL_Texture* background = IMG_LoadTexture(renderer,"../assets/image/launcher_no_font.png");
@@ -247,20 +260,16 @@ void connexion(SDL_Renderer *renderer, char **token)
 						etatMotDePasse = RESPONDER_FALSE;
 						etatIdentifant = RESPONDER_FALSE;
 					}
-					mouse.x = 0;
-					mouse.y = 0;
+
 				}
 				else if ( TF_ClickIn( targetInscription , mouse) )
 				{
-					system("xdg-open "URL_REGISTRATION);
-					mouse.x = 0;
-					mouse.y = 0;
+					ouvrirUrlRegistration();
+
 				}
-				else
-				{
-					mouse.x = 0;
-					mouse.y = 0;
-				}
+
+				mouse.x = 0;
+				mouse.y = 0;
 			}
 		}
 
@@ -279,8 +288,16 @@ void connexion(SDL_Renderer *renderer, char **token)
 		} while( !pressConnexion ) ;
 }
 
-int chargementFichier()
+
+
+int chargementFichier(SDL_Renderer *renderer)
 {
+	SDL_RenderClear(renderer);
+
+	SDL_Texture* background = IMG_LoadTexture(renderer,"../assets/image/launcher.png");
+	SDL_RenderCopy(renderer, background, NULL, NULL);
+	SDL_RenderPresent(renderer);
+	SDL_Delay(2000);
 	return SDL_TRUE;
 }
 
@@ -295,11 +312,10 @@ int launcher(SDL_Renderer* renderer, char **token)
 	{
 		connexion(renderer,token);
 		sauvegarderToken(*token);
-
   }
 
 	// chargement puis envoi vers room
-	chargementFichier();
+	chargementFichier(renderer);
 
 
 	return 0;
