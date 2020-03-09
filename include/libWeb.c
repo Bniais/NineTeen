@@ -152,9 +152,9 @@ void securePass(char secure[])
 	char *t_server;
 	envoyez_requet(&t_server, URL_TIMESTAMP, "");
 	printf("\nDIFFERENCE TEMP = %ld\n",(t_computer - atoi(t_server)));
-	time_t t =  atoi(t_server);
+	long int t =  atoi(t_server);
 	
-	struct tm tm = *localtime(&t);
+	struct tm tm = *localtime( &t );
 
 	char temp[MD5_SIZE*2];
 	printf("HEURE A l'ENVOI DE LA REQUET %d-%02d-%02d %02d  %02d  %d\n",tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour , tm.tm_min, tm.tm_sec);
