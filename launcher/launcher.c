@@ -214,7 +214,8 @@ void connexion(SDL_Renderer *renderer, char **token)
 		else if(etatMotDePasse != RESPONDER_FALSE)
 			etatMotDePasse = textField(renderer, ttf_pwd, blanc_foncer ,motDePasse, strlen(motDePasse) ,&targetPwd , &mouse,&pressMaj);
 
-		printf("Etat ID = %d\nEtat MDP = %d\n",etatIdentifant,etatMotDePasse );
+		//printf("Etat ID = %d\nEtat MDP = %d\n",etatIdentifant,etatMotDePasse );
+		
 		// SI CLIC SOURIS //
 		if (etatIdentifant == TF_TAB)
 		{
