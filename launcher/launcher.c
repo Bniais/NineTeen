@@ -255,11 +255,26 @@ void connexion(SDL_Renderer *renderer, char **token)
 				}
 				else if ( TF_ClickIn( targetConnect , mouse) )
 				{
-					if ( !connectWithUsername(token,identifiant,motDePasse) )
+					int retour = connectWithUsername(token,identifiant,motDePasse);
+					if ( !retour )
 					{
 						pressConnexion = SDL_TRUE;
 						etatMotDePasse = RESPONDER_FALSE;
 						etatIdentifant = RESPONDER_FALSE;
+					}
+					else if ( retour == -5 )
+					{
+						for (int i=0;i < 8 && retour == -5 ;i++) {
+							printf("ECHEC : Nouvelle tentative de connexion dans 200MS\n");
+							SDL_Delay(200);
+							retour = connectWithUsername(token,identifiant,motDePasse);
+						}
+						if (!retour)
+						{
+							pressConnexion = SDL_TRUE;
+							etatMotDePasse = RESPONDER_FALSE;
+							etatIdentifant = RESPONDER_FALSE;
+						}
 					}
 
 				}
