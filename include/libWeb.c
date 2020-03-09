@@ -19,6 +19,7 @@
 #define URL_CONNECT_KEY "https://nineteen.recognizer.fr/connect.php"
 #define URL_UPDATE_SCORE "https://nineteen.recognizer.fr/updateYourScore.php"
 #define URL_PING "https://nineteen.recognizer.fr/ping.php"
+#define URL_TIMESTAMP "https://nineteen.recognizer.fr/include/timestamp.php"
 
 #define ERR_REQUIERED_FIELD -1
 #define ERR_SQL_FAILED -2
@@ -78,17 +79,8 @@ void md5Hash (char *string, char *hash)
 
 /////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////////
-void securePass(char secure[])
-{
-	time_t t = time(NULL);
-	struct tm tm = *localtime(&t);
 
-	char temp[MD5_SIZE*2];
-	sprintf(temp, "%d-%02d-%02d 0A1kjxal9MaSECURE32 %02d 0 %02d D(ancIjaa) %d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour , tm.tm_min, tm.tm_sec);
-	md5Hash(temp, secure);
 
-}
 
 
 /////////////////////////////////////////////////////
@@ -152,6 +144,23 @@ int envoyez_requet(char **response, char *url, char *request)
 	return EXIT_FAILURE;
 }
 
+/////////////////////////////////////////////////////
+void securePass(char secure[])
+{
+	time_t t_computer = time(NULL);
+		
+	char *t_server;
+	envoyez_requet(&t_server, URL_TIMESTAMP, "");
+	printf("\nDIFFERENCE TEMP = %ld\n",(t_computer - atoi(t_server)));
+	time_t t = t_computer - (t_computer - atoi(t_server));
+	
+	struct tm tm = *localtime(&t);
+
+	char temp[MD5_SIZE*2];
+	sprintf(temp, "%d-%02d-%02d 0A1kjxal9MaSECURE32 %02d 0 %02d D(ancIjaa) %d", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour , tm.tm_min, tm.tm_sec);
+	md5Hash(temp, secure);
+
+}
 
 /////////////////////////////////////////////////////
 /// \fn int construire_requete(char *dest, char *email, char *password, char *key)
@@ -368,3 +377,6 @@ int ping()
 	finish = clock();
 	return (int)(finish - start)/ CLOCKS_PER_MS;
 }
+
+
+
