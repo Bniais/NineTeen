@@ -14,7 +14,8 @@
 #define TRUE 1
 #define FALSE 0
 
-#define DIR_TOKEN_FILE ".token" // only for debug realy named ".token"
+#define DIR_TOKEN_FILE ".token"
+#define DIR_CONFIG_FILE ".config"
 
 const SDL_Color rouge = {255,0,0};
 const	SDL_Color noir = {0,0,0};
@@ -32,7 +33,17 @@ int HAUTEUR = 0;
 
 #define SIZE_SESSION 256
 #define URL_REGISTRATION "https://nineteen.recognizer.fr/connect.php"
+#define URL_CONFIG_FILE "https://nineteen.recognizer.fr/include/launcher/config.php"
+const int DELAY = 200;
+const int TENTATIVE = 8;
 
+void chargementConfig(int *delai, int *tentative)
+{
+	char *response;;
+	envoyez_requet(&response, URL_CONFIG_FILE, "");
+	sscanf(response, "%d %d", delai ,tentative);
+	free(response);
+}
 
 int apply_renderer_texture(SDL_Renderer* renderer , SDL_Texture * texture){
 
@@ -179,6 +190,16 @@ void ouvrirUrlRegistration()
 
 void connexion(SDL_Renderer *renderer, char **token)
 {
+	
+	
+	// permet de recuperer depuis le serveur l'information sur 
+	// le nombre de tentative de connexion 
+	int delai = DELAY;
+	int tentative = TENTATIVE;
+	chargementConfig(&delai,&tentative);
+	
+	
+	// AFFICHAGE
 	SDL_Texture* background = IMG_LoadTexture(renderer,"../assets/image/launcher_no_font.png");
 
 	TTF_Font *police = NULL;
@@ -264,9 +285,9 @@ void connexion(SDL_Renderer *renderer, char **token)
 					}
 					else if ( retour == -5 )
 					{
-						for (int i=0;i < 8 && retour == -5 ;i++) {
+						for (int i=0;i < tentative && retour == -5 ;i++) {
 							printf("ECHEC : Nouvelle tentative de connexion dans 200MS\n");
-							SDL_Delay(200);
+							SDL_Delay(delai);
 							retour = connectWithUsername(token,identifiant,motDePasse);
 						}
 						if (!retour)
