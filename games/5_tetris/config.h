@@ -13,6 +13,12 @@ enum{COULDNT_PUT, COULD_PUT};
 //Rely
 enum {ALREADY_ROUNDED, RELY_ON_BOTH, RELY_ON_LEFT, RELY_ON_RIGHT};
 
+//Textures
+SDL_Rect LASER_SRC = {0,0,1500,120};
+SDL_Rect LASER_DEST = {0,0,40*13,40};
+SDL_Rect BRICK_SRC = {0,0,32,32};
+SDL_Rect BRICK_DEST = {0,0, 40,40};
+
 //frames and distances
 #define NB_FRAMES 4
 #define NB_DISTANCES 2
@@ -31,17 +37,43 @@ enum{LATERAL, DOWN, TO_GO, STOP};
 
 //accelerate
 #define NO_ACCELERATE 1
-#define ACCELERATE 2
+#define ACCELERATE 30
 
 //Grille
+#define CASE_SIZE 40
+#define BONUS_SIZE 20
 #define GRILLE_W 10
 #define GRILLE_H 20
-SDL_Color colors[NB_PIECES] = {{0,0,0,0}, {150,100,100,100},{100,150,100,100},{100,100,150,100},{000,100,100,100},{100,000,100,100},{100,100,000,100},{100,255,100,100}};
+#define MATRIX_X 600
+SDL_Rect MATRIX = {MATRIX_X,100,GRILLE_W*CASE_SIZE,GRILLE_H*CASE_SIZE };
 
+SDL_Color colors[NB_PIECES] = {{150,100,100,100},{100,150,100,100},{100,100,150,100},{000,100,100,100},{100,000,100,100},{100,100,000,100},{100,255,100,100}};
+
+#define HUD_X (MATRIX_X - 200)
+
+
+typedef struct{ int lineDown; float shift;} ShiftDown;
 
 //Bonus
-enum{NO_BONUS, FILL, POINTS, LASER, SLOW};
+#define NB_BONUSES 4
+enum{NO_BONUS, FILL, POINTS, LASER, SLOW, SPEED, GIANT};
+#define BONUS_TRI 10
+SDL_Color colors_b[NB_BONUSES] = {{120,000,150,100},{100,070,180,100},{170,170,000,170},{000,255,120,100}};
+#define NB_LINES_LASER 3
+#define SLOW_AMMOUNT (FRAMES_PER_SECOND * 45)
 
+#define LASER_FRAME 35
+#define FRAME_COMPLETE_LINE 10
+#define LASER_START_COMPLETE 22
+#define LASER_START_SHOOT 15
+#define DIST_PER_FRAME_LASER ((MATRIX_X - HUD_X - CASE_SIZE) / LASER_START_SHOOT)
+#define DIST_PER_FRAME_LASER_DISAPEAR ((MATRIX_X - HUD_X - CASE_SIZE) / (LASER_FRAME-LASER_START_SHOOT-15))
+#define LASER_RECOIL 5
+#define LASER_RECOIL_DURATION 3
+#define LASER_END_POS (MATRIX_X - CASE_SIZE)
+
+
+int LASER_RECOIL_DIST[LASER_RECOIL_DURATION] = {8,4,2};
 
 //pieces
 typedef struct {unsigned int rota; int id; float x; float y; int* grille; int size; int giant; int frameToGo; int dir; int frameDir; int frameStop; int firstCol; int lastCol; int firstRow; int lastRow; int bonus;} Piece;
@@ -54,5 +86,4 @@ const SDL_Point UNDEFINED = {-500, -500};
 
 #define ROUNDABLE 0.0001
 
-#define CASE_SIZE 40
 const SDL_Point matrixSize = {500, 1000};

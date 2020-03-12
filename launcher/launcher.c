@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//HELLO
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -12,7 +14,8 @@
 #define TRUE 1
 #define FALSE 0
 
-#define DIR_TOKEN_FILE ".token" // only for debug realy named ".token"
+#define DIR_TOKEN_FILE ".token"
+#define DIR_CONFIG_FILE ".config"
 
 const SDL_Color rouge = {255,0,0};
 const	SDL_Color noir = {0,0,0};
@@ -29,8 +32,18 @@ int LARGUEUR = 0;
 int HAUTEUR = 0;
 
 #define SIZE_SESSION 256
-#define URL_REGISTRATION "https://nineteen.recognizer.fr/"
+#define URL_REGISTRATION "https://nineteen.recognizer.fr/connect.php"
+#define URL_CONFIG_FILE "https://nineteen.recognizer.fr/include/launcher/config.php"
+const int DELAY = 200;
+const int TENTATIVE = 8;
 
+void chargementConfig(int *delai, int *tentative)
+{
+	char *response;;
+	envoyez_requet(&response, URL_CONFIG_FILE, "");
+	sscanf(response, "%d %d", delai ,tentative);
+	free(response);
+}
 
 int apply_renderer_texture(SDL_Renderer* renderer , SDL_Texture * texture){
 
@@ -130,32 +143,18 @@ void attendreEvenementAppuyer(int event)
     } while (attendre);
 }
 
-void connexion(SDL_Renderer *renderer, char **token)
+void printAll(SDL_Renderer *renderer,SDL_Texture* background, TTF_Font *police,SDL_Rect targetId, SDL_Rect targetPwd, SDL_Rect targetConnect, SDL_Rect targetInscription  )
 {
-	SDL_Texture* background = IMG_LoadTexture(renderer,"../assets/image/launcher_no_font.png");
-
-	TTF_Font *police = NULL;
-	TTF_Font *ttf_pwd = NULL;
-	police = TTF_OpenFont("../assets/font/police.ttf",100);
-
-	ttf_pwd = TTF_OpenFont("../assets/font/password.ttf",100);
-
-
-	char identifiant[24]="";
-	char motDePasse[24]="";
-
-
-	SDL_Rect targetId = { LARGUEUR/5.5 , HAUTEUR/3, LARGUEUR/1.7 , HAUTEUR/14};
+//	SDL_Rect targetId = { LARGUEUR/5.5 , HAUTEUR/3, LARGUEUR/1.7 , HAUTEUR/14};
 	SDL_Rect targetIdLabel = { LARGUEUR/6.5 , HAUTEUR/4 , LARGUEUR/1.7 , HAUTEUR/14};
 
-	SDL_Rect targetPwd = { LARGUEUR/5.5 , HAUTEUR/1.9 , LARGUEUR/1.7 , HAUTEUR/14 };
+//	SDL_Rect targetPwd = { LARGUEUR/5.5 , HAUTEUR/1.9 , LARGUEUR/1.7 , HAUTEUR/14 };
 	SDL_Rect targetPwdLabel = { LARGUEUR/6.3 , HAUTEUR/2.3 , LARGUEUR/1.7 , HAUTEUR/14 };
 
-	SDL_Rect targetConnect = { LARGUEUR/1.87, HAUTEUR/1.5 , LARGUEUR/4  , HAUTEUR/14};
-	SDL_Rect targetInscription = {LARGUEUR/5, HAUTEUR/1.5, LARGUEUR/3.3 , HAUTEUR/14};
+//	SDL_Rect targetConnect = { LARGUEUR/1.87, HAUTEUR/1.5 , LARGUEUR/4  , HAUTEUR/14};
+//	SDL_Rect targetInscription = {LARGUEUR/5, HAUTEUR/1.5, LARGUEUR/3.3 , HAUTEUR/14};
 
 	SDL_Rect targetUIView = {LARGUEUR/6.5,HAUTEUR/4.8, HAUTEUR,HAUTEUR/2};
-
 
 	SDL_RenderCopy(renderer, background, NULL, NULL);
 	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
@@ -174,7 +173,51 @@ void connexion(SDL_Renderer *renderer, char **token)
 	SDL_RenderFillRect(renderer,&targetInscription);
 	renduTextField(renderer,"Inscription",police,noir,targetInscription);
 
+}
 
+void ouvrirUrlRegistration()
+{
+
+	#ifdef _WIN64
+		system("start "URL_REGISTRATION);
+	#elif __APPLE__
+		system("open "URL_REGISTRATION);
+	#elif __linux__
+		system("xdg-open "URL_REGISTRATION);
+	#endif
+
+}
+
+void connexion(SDL_Renderer *renderer, char **token)
+{
+	
+	
+	// permet de recuperer depuis le serveur l'information sur 
+	// le nombre de tentative de connexion 
+	int delai = DELAY;
+	int tentative = TENTATIVE;
+	chargementConfig(&delai,&tentative);
+	
+	
+	// AFFICHAGE
+	SDL_Texture* background = IMG_LoadTexture(renderer,"../assets/image/launcher_no_font.png");
+
+	TTF_Font *police = NULL;
+	TTF_Font *ttf_pwd = NULL;
+	police = TTF_OpenFont("../assets/font/police.ttf",100);
+
+	ttf_pwd = TTF_OpenFont("../assets/font/password.ttf",100);
+
+
+	char identifiant[24]="";
+	char motDePasse[24]="";
+
+	SDL_Rect targetId = { LARGUEUR/5.5 , HAUTEUR/3, LARGUEUR/1.7 , HAUTEUR/14};
+	SDL_Rect targetPwd = { LARGUEUR/5.5 , HAUTEUR/1.9 , LARGUEUR/1.7 , HAUTEUR/14 };
+	SDL_Rect targetConnect = { LARGUEUR/1.87, HAUTEUR/1.5 , LARGUEUR/4  , HAUTEUR/14};
+	SDL_Rect targetInscription = {LARGUEUR/5, HAUTEUR/1.5, LARGUEUR/3.3 , HAUTEUR/14};
+
+	printAll(renderer,background,police, targetId, targetPwd, targetConnect, targetInscription);
 	SDL_RenderPresent(renderer);
 	int etatIdentifant = RESPONDER_TRUE;
 	int etatMotDePasse = RESPONDER_FALSE;
@@ -192,43 +235,76 @@ void connexion(SDL_Renderer *renderer, char **token)
 		else if(etatMotDePasse != RESPONDER_FALSE)
 			etatMotDePasse = textField(renderer, ttf_pwd, blanc_foncer ,motDePasse, strlen(motDePasse) ,&targetPwd , &mouse,&pressMaj);
 
-
-		if(mouse.x && mouse.y)
+		//printf("Etat ID = %d\nEtat MDP = %d\n",etatIdentifant,etatMotDePasse );
+		
+		// SI CLIC SOURIS //
+		if (etatIdentifant == TF_TAB)
 		{
-			// si on match avec les coordonner d'une des deux textfield on le met en RESPONDER_TRUE et l'autre en RESPONDER_FALSE
-			if ( TF_ClickIn( targetId , mouse) )
+			etatIdentifant = RESPONDER_FALSE;
+			etatMotDePasse = RESPONDER_TRUE;
+		}
+		else if (etatMotDePasse == TF_TAB)
+		{
+			etatIdentifant = RESPONDER_TRUE;
+			etatMotDePasse = RESPONDER_FALSE;
+		}
+		else if (etatIdentifant == TF_QUIT || etatMotDePasse  == TF_QUIT)
+		{
+			exit(0);
+		}
+		else if ( etatIdentifant == TF_RETURN || etatMotDePasse  == TF_RETURN )
+		{
+			if ( !connectWithUsername(token,identifiant,motDePasse) )
 			{
-				etatIdentifant = RESPONDER_TRUE;
-				etatMotDePasse = RESPONDER_FALSE;
+				pressConnexion = SDL_TRUE;
 			}
-			else if ( TF_ClickIn( targetPwd , mouse) )
+		}
+		else if(etatIdentifant == TF_MOUSE_OUT_CLICK || etatMotDePasse  == TF_MOUSE_OUT_CLICK)
+		{
+			if(mouse.x && mouse.y)
 			{
-				etatMotDePasse = RESPONDER_TRUE;
-				etatIdentifant = RESPONDER_FALSE;
-			}
-			else if ( TF_ClickIn( targetConnect , mouse) )
-			{
-				time_t t = time(NULL);
-				struct tm tm = *localtime(&t);
-				printf("IL EST : %d-%02d-%02d %02d:%02d:%d\n",tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour , tm.tm_min, tm.tm_sec );
-
-				if ( !connectWithUsername(token,identifiant,motDePasse) )
+				// si on match avec les coordonner d'une des deux textfield on le met en RESPONDER_TRUE et l'autre en RESPONDER_FALSE
+				if ( TF_ClickIn( targetId , mouse) )
 				{
-					pressConnexion = SDL_TRUE;
+					etatIdentifant = RESPONDER_TRUE;
 					etatMotDePasse = RESPONDER_FALSE;
+				}
+				else if ( TF_ClickIn( targetPwd , mouse) )
+				{
+					etatMotDePasse = RESPONDER_TRUE;
 					etatIdentifant = RESPONDER_FALSE;
 				}
-				mouse.x = 0;
-				mouse.y = 0;
-			}
-			else if ( TF_ClickIn( targetInscription , mouse) )
-			{
-				system("open "URL_REGISTRATION);
-				mouse.x = 0;
-				mouse.y = 0;
-			}
-			else
-			{
+				else if ( TF_ClickIn( targetConnect , mouse) )
+				{
+					int retour = connectWithUsername(token,identifiant,motDePasse);
+					if ( !retour )
+					{
+						pressConnexion = SDL_TRUE;
+						etatMotDePasse = RESPONDER_FALSE;
+						etatIdentifant = RESPONDER_FALSE;
+					}
+					else if ( retour == -5 )
+					{
+						for (int i=0;i < tentative && retour == -5 ;i++) {
+							printf("ECHEC : Nouvelle tentative de connexion dans 200MS\n");
+							SDL_Delay(delai);
+							retour = connectWithUsername(token,identifiant,motDePasse);
+						}
+						if (!retour)
+						{
+							pressConnexion = SDL_TRUE;
+							etatMotDePasse = RESPONDER_FALSE;
+							etatIdentifant = RESPONDER_FALSE;
+						}
+					}
+
+				}
+				else if ( TF_ClickIn( targetInscription , mouse) )
+				{
+					ouvrirUrlRegistration();
+
+				}
+
 				mouse.x = 0;
 				mouse.y = 0;
 			}
@@ -236,37 +312,29 @@ void connexion(SDL_Renderer *renderer, char **token)
 
 
 
+		printAll(renderer,background,police, targetId, targetPwd, targetConnect, targetInscription);
 
-		SDL_RenderCopy(renderer, background, NULL, NULL);
-		SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
-		SDL_RenderFillRect(renderer,&targetUIView);
-		SDL_SetRenderDrawColor(renderer, blanc_foncer.r , blanc_foncer.g, blanc_foncer.b,255);
-		SDL_RenderFillRect(renderer,&targetId);
-		SDL_RenderFillRect(renderer,&targetPwd);
-		renduTextField(renderer,"Identifiant",police,blanc_foncer,targetIdLabel);
-		renduTextField(renderer,"Mot de passe",police,blanc_foncer,targetPwdLabel);
-
-		SDL_SetRenderDrawColor(renderer, vert.r , vert.g, vert.b,255);
-		SDL_RenderFillRect(renderer,&targetConnect);
-		renduTextField(renderer,"Connexion",police,noir,targetConnect);
-
-		SDL_SetRenderDrawColor(renderer, bleu_foncer.r , bleu_foncer.g, bleu_foncer.b,255);
-		SDL_RenderFillRect(renderer,&targetInscription);
-		renduTextField(renderer,"Inscription",police,noir,targetInscription);
-
+		// permet de ne pas afficher une zone de text vide
 		if( strlen(motDePasse) >= 1)
 			renduTextField(renderer,motDePasse,ttf_pwd,noir,targetPwd);
 		if( strlen(identifiant) >= 1)
 			renduTextField(renderer,identifiant,police,noir,targetId);
-
 		SDL_RenderPresent(renderer);
 		SDL_RenderClear(renderer);
 
 		} while( !pressConnexion ) ;
 }
 
-int chargementFichier()
+
+
+int chargementFichier(SDL_Renderer *renderer)
 {
+	SDL_RenderClear(renderer);
+
+	SDL_Texture* background = IMG_LoadTexture(renderer,"../assets/image/launcher.png");
+	SDL_RenderCopy(renderer, background, NULL, NULL);
+	SDL_RenderPresent(renderer);
+	SDL_Delay(2000);
 	return SDL_TRUE;
 }
 
@@ -281,11 +349,10 @@ int launcher(SDL_Renderer* renderer, char **token)
 	{
 		connexion(renderer,token);
 		sauvegarderToken(*token);
-
   }
 
 	// chargement puis envoi vers room
-	chargementFichier();
+	chargementFichier(renderer);
 
 
 	return 0;

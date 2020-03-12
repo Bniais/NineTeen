@@ -18,6 +18,8 @@
 #define TF_RETURN 11
 #define TF_MAX_SIZE 12
 #define TF_TEXT_TYPED 13
+#define TF_TAB 14
+#define TF_QUIT 15
 
 
 ///////////////////////////////////////////////////////////////
@@ -150,6 +152,11 @@ int textField(SDL_Renderer* renderer, TTF_Font *police, SDL_Color color, char *c
 					retour = TF_RETURN;
 					//return pressReturn;
 				}
+				else if(evenement.key.keysym.sym == SDLK_TAB )
+				{
+					printf("Tab clic\n");
+					retour = TF_TAB;
+				}
 				else if(evenement.key.keysym.sym == SDLK_LSHIFT || evenement.key.keysym.sym == SDLK_RSHIFT)
 				{
 					*pressMaj = SDL_TRUE;
@@ -183,6 +190,10 @@ int textField(SDL_Renderer* renderer, TTF_Font *police, SDL_Color color, char *c
 						*pressMaj = SDL_FALSE;
 				}
 
+			}
+			else if ( evenement.type == SDL_QUIT)
+			{
+				retour = TF_QUIT;
 			}
 
 			// mouse

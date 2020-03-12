@@ -109,12 +109,14 @@ typedef enum {FRAISE, ORANGE, CITROUILLE, PIMENT, CERISE, POMME, PASTEQUE, CAROT
 
 //Score
 #define NB_CHAR_AFFICHAGE_SCORE 21
-typedef struct {float x; float y; char* msg; int frame; int size;} Score;
+typedef struct {float x; float y; int score; int frame; int size;} Score;
 #define RATIO_SCORE_SIZE
 #define MIN_SIZE_SCORE 22
 #define MAX_SIZE_SCORE 45
 #define SCORE_TTL 20
 const int ALPHA_SCORE[SCORE_TTL] = { 40, 80, 160, 255, 255,   255, 255, 255, 255, 255,   255, 255, 255, 255, 255,   255, 195, 150, 80, 40 };
+SDL_Rect SCORE_SRC = {0,0, 12,18};
+#define FONT_HEIGHT_RATIO 1.5
 
 #define NB_BLINK 15
 //Sur une base 8
