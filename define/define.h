@@ -22,6 +22,7 @@
 #define WINDOW_FLAG 0
 #define PLAYGROUND_SIZE_W 1728
 #define PLAYGROUND_SIZE_H 972
+
 #define HUD_W 96
 #define HUD_H 54
 const SDL_Point ESPACE_DISPLAY_WINDOW = {67, 57};
