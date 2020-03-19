@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 
 #include "../include/textField.h"
 
@@ -16,6 +17,7 @@
 
 #define DIR_TOKEN_FILE ".token"
 #define DIR_CONFIG_FILE ".config"
+#define DIR_MUSIC_FILE "../assets/background.wav"
 
 const SDL_Color rouge = {255,0,0};
 const	SDL_Color noir = {0,0,0};
@@ -173,6 +175,7 @@ void printAll(SDL_Renderer *renderer,SDL_Texture* background, TTF_Font *police,S
 	SDL_RenderFillRect(renderer,&targetInscription);
 	renduTextField(renderer,"Inscription",police,noir,targetInscription);
 
+
 }
 
 void ouvrirUrlRegistration()
@@ -190,15 +193,15 @@ void ouvrirUrlRegistration()
 
 void connexion(SDL_Renderer *renderer, char **token)
 {
-	
-	
-	// permet de recuperer depuis le serveur l'information sur 
-	// le nombre de tentative de connexion 
+
+
+	// permet de recuperer depuis le serveur l'information sur
+	// le nombre de tentative de connexion
 	int delai = DELAY;
 	int tentative = TENTATIVE;
 	chargementConfig(&delai,&tentative);
-	
-	
+
+
 	// AFFICHAGE
 	SDL_Texture* background = IMG_LoadTexture(renderer,"../assets/image/launcher_no_font.png");
 
@@ -236,7 +239,7 @@ void connexion(SDL_Renderer *renderer, char **token)
 			etatMotDePasse = textField(renderer, ttf_pwd, blanc_foncer ,motDePasse, strlen(motDePasse) ,&targetPwd , &mouse,&pressMaj);
 
 		//printf("Etat ID = %d\nEtat MDP = %d\n",etatIdentifant,etatMotDePasse );
-		
+
 		// SI CLIC SOURIS //
 		if (etatIdentifant == TF_TAB)
 		{
@@ -338,10 +341,29 @@ int chargementFichier(SDL_Renderer *renderer)
 	return SDL_TRUE;
 }
 
+
+
+
+
+
+
+
+
 int launcher(SDL_Renderer* renderer, char **token)
 {
 
 	printf("TON PING %d\n",ping() );
+
+	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) //Initialisation de l'API Mixer
+	{
+   printf("%s", Mix_GetError());
+	}
+	Mix_VolumeMusic(MIX_MAX_VOLUME); //Mettre le volume à la moitié
+	Mix_Music *musique;
+	musique = Mix_LoadMUS(DIR_MUSIC_FILE);
+	if (musique == NULL)
+		printf("Impossible de charger musique dans %s\n", DIR_MUSIC_FILE );
+	Mix_PlayMusic(musique, -1);
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
@@ -351,10 +373,13 @@ int launcher(SDL_Renderer* renderer, char **token)
 		sauvegarderToken(*token);
   }
 
+
 	// chargement puis envoi vers room
 	chargementFichier(renderer);
 
-
+	Mix_HaltMusic();
+	Mix_FreeMusic(musique);
+	Mix_CloseAudio(); //Fermeture de l'API
 	return 0;
 }
 

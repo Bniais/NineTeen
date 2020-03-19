@@ -158,6 +158,8 @@ void securePass(char secure[])
 	printf("HEURE A l'ENVOI DE LA REQUET %d-%02d-%02d %02d  %02d  %d\n",year , mon, day, hour , min, sec);
 	sprintf(temp, "%d-%02d-%02d 0A1kjxal9MaSECURE32 %02d 0 %02d D(ancIjaa) %d", year  , mon , day, hour , min, sec);
 	md5Hash(temp, secure);
+	
+	free(t_server);
 
 }
 
@@ -265,6 +267,12 @@ int connectWithUsername(char **key, char *email, char *password)
 				free(response);
 				response = NULL;
 				return EXIT_SUCCESS;
+			}
+			else if ( !strcmp(response,"-5") )
+			{
+				free(response);
+				response = NULL;
+				return -5;
 			}
 			printf("%s\n",response );
 			free(response);
