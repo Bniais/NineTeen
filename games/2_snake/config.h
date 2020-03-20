@@ -15,8 +15,6 @@ const Vector2f UNDEFINED = {-500, -500};
 //Window
 #define FRAMES_PER_SECOND 30
 const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
-//const SDL_Point SNAKE_PLAYGROUND_SIZE = {1500, 700};
-
 
 //Snake
 typedef struct {float x; float y; int frame; float radius;} SnakePart;

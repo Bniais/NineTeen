@@ -6,15 +6,11 @@ bugs :
  	fill trous
 	more ptns (flat or multiplier)
 	//laser : supprime lignes du bas
-	slow
+	/slow
 
 - malus :
-	giant
-	speed
-
- - malus :
- 	geant
-	fast
+	/giant
+	/speed (handle next Piece)
 
  - anims :
  	giant
@@ -31,4 +27,3 @@ bugs :
 	Texture
 	speed
 	ptns
-	
