@@ -1,2 +1,2 @@
-exemple : exemple_anim.c
-	gcc exemple_anim.c `sdl2-config --cflags --libs` -lSDL2_image
+all : room.c
+	gcc room.c `sdl2-config --cflags --libs` -lSDL2_image -lSDL2_ttf
