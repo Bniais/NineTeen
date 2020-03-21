@@ -4,9 +4,15 @@
 
 
 #include <stdio.h>
-#define GL_SILENCE_DEPRECATION
-#include <OpenGL/gl.h>
-#include <GLUT/glut.h>
+#ifdef __APPLE__
+	#define GL_SILENCE_DEPRECATION
+	#include <OpenGL/gl.h>
+	#include <GLUT/glut.h>
+#endif
+#ifdef __linux
+	#include <GL/gl.h>
+	#include <GL/glu.h>
+#endif
 
 #include <math.h>
 

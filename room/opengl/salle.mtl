@@ -1,5 +1,5 @@
 # Blender MTL File: 'None'
-# Material Count: 96
+# Material Count: 97
 
 newmtl 0137_Bla
 Ns 225.000000
@@ -22,16 +22,6 @@ d 1.000000
 illum 2
 
 newmtl 03_-_Default
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-
-newmtl 04_-_Default
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -231,6 +221,16 @@ Ni 1.450000
 d 1.000000
 illum 2
 
+newmtl Marron
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.098506 0.029174 0.006882
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
 newmtl Material.001
 Ns 96.078443
 Ka 1.000000 1.000000 1.000000
@@ -301,29 +301,6 @@ illum 2
 map_Bump -bm 0.100000 /folder/WoodFineDark004_NRM_3K.jpg
 map_Kd /folder/WoodFineDark004_REFL_3K.jpg
 
-newmtl Material.008
-Ns 96.078443
-Ka 1.000000 1.000000 1.000000
-Kd 0.686743 0.710006 0.624902
-Ks 0.245763 0.245763 0.245763
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 2
-map_Bump -bm 0.200000 /Folder/Image/Plaster36_NRM_1K@2x.jpg
-map_Kd /Folder/Image/Plaster36_COL_VAR1_1K@2x.jpg
-
-newmtl Material.009
-Ns 96.078443
-Ka 1.000000 1.000000 1.000000
-Kd 0.021090 0.021090 0.021090
-Ks 0.364407 0.364407 0.364407
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 2
-map_Kd /(2)/textures/ofoff8.jpg
-
 newmtl Material.010
 Ns 96.078443
 Ka 1.000000 1.000000 1.000000
@@ -334,7 +311,6 @@ Ni 1.000000
 d 1.000000
 illum 2
 map_Bump -bm 0.100000 /folder/WoodFineDark004_NRM_3K.jpg
-map_Kd /folder/WoodFineDark004_REFL_3K.jpg
 
 newmtl Material.011
 Ns 96.078443
@@ -991,6 +967,17 @@ Ni 1.450000
 d 1.000000
 illum 2
 
+newmtl bar_noir
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.021090 0.021090 0.021090
+Ks 0.364407 0.364407 0.364407
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd /(2)/textures/ofoff8.jpg
+
 newmtl black
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
@@ -1020,3 +1007,26 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+
+newmtl vert
+Ns 96.078443
+Ka 1.000000 1.000000 1.000000
+Kd 0.686743 0.710006 0.624902
+Ks 0.245763 0.245763 0.245763
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump -bm 0.200000 /Folder/Image/Plaster36_NRM_1K@2x.jpg
+map_Kd /Folder/Image/Plaster36_COL_VAR1_1K@2x.jpg
+
+newmtl vert_billard
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.025776 0.800000 0.243634
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump -bm 0.200000 /Folder/Image/Plaster36_NRM_1K@2x.jpg
