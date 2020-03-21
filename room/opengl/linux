@@ -1,0 +1,2 @@
+all:main.c
+	gcc main.c -o main -std=c99  -lm -lSDL2 -lassimp -lGL -lGLU -lglut

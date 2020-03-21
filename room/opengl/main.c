@@ -12,7 +12,10 @@
 #ifdef __linux
 	#include <GL/gl.h>
 	#include <GL/glu.h>
-#endif
+	#include <GL/glut.h>
+    	#define M_PI 3.1415
+#endif 
+
 
 #include <math.h>
 
@@ -249,7 +252,7 @@ void boucleVue()
 	glutSwapBuffers();
 	
 
-//	framerate();
+	framerate();
 }
 
 
@@ -257,9 +260,7 @@ void boucleVue()
 void InitGL(){
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);    /* Uses default lighting parameters */
-	
 	glEnable(GL_DEPTH_TEST);
-
 }
 
 
@@ -346,7 +347,7 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 	glutSpecialFunc(special);
 	glutDisplayFunc(boucleVue);
 	
-	chargementModel("salle.obj");
+	chargementModel("arcade.obj");
 	
 	InitGL();
 	
