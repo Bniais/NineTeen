@@ -1,0 +1,49 @@
+# Blender MTL File: 'gardrell 001.blend'
+# Material Count: 4
+
+newmtl Material
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.614615 0.083603 0.004648
+Ks 0.330508 0.330508 0.330508
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd G:\DJI\1 My New Folder\Image\New folder\WoodFineDark004_COL_3K.jpg
+map_Bump -bm 0.100000 G:\\DJI\\1 My New Folder\\Image\\New folder\\WoodFineDark004_NRM_3K.jpg
+refl G:\\DJI\\1 My New Folder\\Image\\New folder\\WoodFineDark004_REFL_3K.jpg
+
+newmtl Material.001
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.021090 0.021090 0.021090
+Ks 0.364407 0.364407 0.364407
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd G:\DJI\1 My New Folder\New folder (2)\textures\ofoff8.jpg
+refl G:\\DJI\\1 My New Folder\\New folder (2)\\textures\\ofoff8.jpg
+
+newmtl Material.002
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.686743 0.710006 0.624902
+Ks 0.245763 0.245763 0.245763
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd G:\DJI\1 My New Folder\Image\Plaster36_COL_VAR1_1K@2x.jpg
+map_Bump -bm 0.200000 G:\\DJI\\1 My New Folder\\Image\\Plaster36_NRM_1K@2x.jpg
+
+newmtl Material.003
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.029973 0.074112 0.175824
+Ks 0.059322 0.059322 0.059322
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
