@@ -63,10 +63,10 @@ void afficherPauseMenu(SDL_Renderer *renderer, SDL_Point mouseCoor, SDL_Texture 
 	}
 }
 
-void initMatrix(int matrix[GRILLE_W][GRILLE_H]){
+void initMatrix(int matrix[GRILLE_W][GRILLE_H], int init){
 	for(int i=0; i<GRILLE_W; i++)
 		for(int j=0; j<GRILLE_H; j++)
-			matrix[i][j] = EMPTY;
+			matrix[i][j] = init;
 }
 
 void initPiece(Piece *piece){
@@ -89,7 +89,6 @@ void initPiece(Piece *piece){
 }
 
 void updateDistances(float frame[NB_FRAMES], float distances[NB_DISTANCES], int *framePassed){
-	printf("fp : %d\n",*framePassed );
 	for(int i=0; i<NB_FRAMES; i++){
 		frame[i] *= pow(i==LATERAL ? GROW_RATE_LATERAL : GROW_RATE, *framePassed);
 		if(NB_GROW == 1) //30fps
@@ -107,15 +106,18 @@ int tooCloseFromMatrix(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 	int i;
 	int j;
 
+	int floorY = floor(piece.y);
+	int floorX = floor(piece.x);
+
 	for(i = piece.firstCol; i <= piece.lastCol; i++)
 		for(j = piece.firstRow; j <= piece.lastRow; j++)
-			if( piece.grille[j * piece.size + i] && ( i + (int)floor(piece.x) < 0 || matrix[i + (int)floor(piece.x)][j + (int)piece.y] != EMPTY ) )
+			if( piece.grille[j * piece.size + i] && ( i + floorX < 0 || matrix[i + floorX][j + floorY] != EMPTY ) )
 				return 1;
 
 	if( piece.x != roundf(piece.x) && piece.y != roundf(piece.y) ){
 		for(i = piece.firstCol; i <= piece.lastCol; i++)
 			for(j = piece.firstRow; j <= piece.lastRow; j++)
-				if( piece.grille[j * piece.size + i] && ( i + (int)floor(piece.x) + 1 < 0 || matrix[i + (int)floor(piece.x) + 1][j + (int)piece.y + 1] != EMPTY ) ) //Pas besoin de verifier si (int)piece.y + 1 n'est pas en dehors de la matrice car tooCloseFromWall est appelé avant
+				if( piece.grille[j * piece.size + i] && ( i + floorX + 1 < 0 || matrix[i + floorX + 1][j + floorY + 1] != EMPTY ) ) //Pas besoin de verifier si (int)piece.y + 1 n'est pas en dehors de la matrice car tooCloseFromWall est appelé avant
 					return 1;
 	}
 
@@ -123,16 +125,17 @@ int tooCloseFromMatrix(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 	if( piece.x != roundf(piece.x) ){
 		for(i = piece.firstCol; i <= piece.lastCol; i++)
 			for(j = piece.firstRow; j <= piece.lastRow; j++)
-				if( piece.grille[j * piece.size + i] && ( i + (int)floor(piece.x) + 1 < 0 || matrix[i + (int)floor(piece.x) + 1][j + (int)piece.y] != EMPTY ) )
+				if( piece.grille[j * piece.size + i] && ( i +floorX + 1 < 0 || matrix[i + floorX + 1][j + floorY] != EMPTY ) )
 					return 1;
 	}
 
 	if( piece.y != roundf(piece.y) ){
-
 		for(i = piece.firstCol; i <= piece.lastCol; i++)
-			for(j = piece.firstRow; j <= piece.lastRow; j++)
-				if( piece.grille[j * piece.size + i] && ( i + (int)floor(piece.x) < 0 || matrix[i + (int)floor(piece.x)][j + (int)piece.y + 1] != EMPTY ) )
+			for(j = piece.firstRow; j <= piece.lastRow; j++){
+				if( piece.grille[j * piece.size + i] && ( i + floorX < 0 || matrix[i + floorX][j + floorY + 1] != EMPTY ) )
 					return 1;
+			}
+
 	}
 
 	return 0;
@@ -198,7 +201,7 @@ void getNewPiece(Piece *piece, int giant){
 	piece->id = rand() % NB_PIECES;
 
 	//handle bonus
-	piece->bonus = LASER;//rand() % (NB_BONUSES+1);
+	piece->bonus = FILL;//rand() % (NB_BONUSES+1);
 
 	updateGrille(piece);
 
@@ -232,15 +235,33 @@ void putAtNextPiece(Piece *piece){
 	piece->y = 0;
 }
 
-void drawPiece(SDL_Renderer *renderer,SDL_Texture* brickTexture, SDL_Texture *bonusTexture, Piece piece){
+void drawPiece(SDL_Renderer *renderer,SDL_Texture* brickTexture, SDL_Texture *bonusTexture, Piece piece, int isNextPiece){
+	int caseSize = CASE_SIZE;
+	SDL_Point shiftCenterNext={0,0};
+	if(isNextPiece && piece.giant)
+		caseSize = CASE_SIZE / 2;
+
+	if(isNextPiece){
+		if((piece.lastCol-piece.firstCol)%2 == 0 || (piece.giant && ((piece.lastCol-piece.firstCol)/2)%2 == 0 ))
+			shiftCenterNext.x -= CASE_SIZE / 2;
+
+		if((piece.lastRow-piece.firstRow)%2 == 0)
+			shiftCenterNext.y -= CASE_SIZE / 2;
+
+		if(piece.giant)
+			shiftCenterNext.x+=(piece.x) * caseSize;
+	}
+
 	SDL_Rect src = BRICK_SRC;
 	SDL_Rect dest = BRICK_DEST;
+	dest.w = caseSize;
+	dest.h = caseSize;
 	for(int i = 0; i < piece.size; i++)
 		for(int j = 0; j < piece.size; j++)
 			if((piece.grille)[i * piece.size + j]){
 				src.x = piece.id * BRICK_SRC.w;
-				dest.x = (j + piece.x) * CASE_SIZE + MATRIX.x;
-				dest.y = (i + piece.y) * CASE_SIZE + MATRIX.y;
+				dest.x = (j + piece.x) * caseSize + MATRIX.x + shiftCenterNext.x;
+				dest.y = (i + piece.y) * caseSize + MATRIX.y + shiftCenterNext.y;
 				SDL_RenderCopy(renderer, brickTexture, &src, &dest);
 				if( (piece.grille)[i * piece.size + j] == 2 && piece.bonus  != NO_BONUS){
 					src.x = (piece.bonus - 1) * BRICK_SRC.h;
@@ -250,21 +271,32 @@ void drawPiece(SDL_Renderer *renderer,SDL_Texture* brickTexture, SDL_Texture *bo
 }
 
 int tooCloseFromWall(Piece piece){
-	return (piece.x + piece.firstCol < -ROUNDABLE || piece.x + piece.lastCol > GRILLE_W - 1 || piece.y + piece.firstRow < -ROUNDABLE || piece.y + piece.lastRow > GRILLE_H - 1);
+	if(piece.y + piece.firstRow < -ROUNDABLE)
+		return TOO_CLOSE_FROM_TOP;
+	return (piece.x + piece.firstCol < -ROUNDABLE || piece.x + piece.lastCol > GRILLE_W - 1 || piece.y + piece.lastRow > GRILLE_H - 1);
 }
 
-void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H]){
+void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H],int *remindRotate, int rotatePressed){
 	if( rotateSens ){
 		piece->rota += rotateSens;
 		updateGrille(piece);
 		getColRawInfos(piece);
+		int closeWall = tooCloseFromWall(*piece);
+		if( closeWall || tooCloseFromMatrix(*piece, matrix)){
 
-		if( tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix)){
 			piece->rota -= rotateSens;
 			updateGrille(piece);
 			getColRawInfos(piece);
+			printf("close : %d %d\n",closeWall, rotateSens);
+			if(closeWall == TOO_CLOSE_FROM_TOP && rotatePressed)
+				*remindRotate = rotateSens * FRAME_REMIND_ROTATE;
+
+		}
+		else{
+			*remindRotate = 0;
 		}
 	}
+
 }
 
 void moveSide(Piece *piece, int matrix[GRILLE_W][GRILLE_H], float distanceLateral){
@@ -302,7 +334,6 @@ int moveDown(Piece *piece, int accelerate, int matrix[GRILLE_W][GRILLE_H], float
 		piece->y = floor(piece->y);
 		if( tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix)){
 			piece->y -= floor(distanceMoveDown);
-			printf("%f\n",distanceMoveDown );
 		}
 		if(accelerate == ACCELERATE)
 			piece->frameStop = frameStop;
@@ -334,11 +365,102 @@ int getPieceId(int n){
 	return n%10;
 }
 
+int isOnArray(int n, int array[], int size){
+	for(int i = 0; i < size; i++)
+		if(array[i] == n)
+			return 1;
+	return 0;
+}
+
+int compareInt_i(const int * a,const int * b){
+	return(*a - *b);
+}
+
+int compareInt(const void *a,const void* b){
+	return compareInt_i(a, b);
+}
+
+void getFillPlaces(int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int nbFill){
+	int nbEmpty = 0;
+	int firstRow = GRILLE_H-1;
+	int isEmpty = SDL_FALSE;
+	int nbEmptyLastLine = 0;
+	int nbEmptyLine = 0;
+
+	for(int row = GRILLE_H-1; row>=0 && !isEmpty; row--){
+		isEmpty = SDL_TRUE;
+		nbEmptyLastLine=nbEmptyLine;
+		nbEmptyLine = 0;
+		for(int col = 0; col < GRILLE_W; col++){
+			if(matrix[col][row] != EMPTY)
+				isEmpty = SDL_FALSE;
+			else{
+				nbEmpty++;
+				nbEmptyLine++;
+			}
+		}
+		if(!isEmpty)
+			firstRow = row+1;
+	}
+
+	nbEmpty -= nbEmptyLastLine;
+	if(firstRow != 0)
+		nbEmpty -= GRILLE_W; //car la dernière ligne scannée aura GRILLE_W cases vides
+
+	printf(" empty %d\n",nbEmpty);
+
+	int toFill[nbFill];
+	for(int i=0; i<nbFill; i++)
+		toFill[i] = 0;
+
+	int n;
+	if(nbFill<nbEmpty){
+		for(int i=0; i<nbFill; i++){
+			do{
+				n = rand()%nbEmpty;
+			}while(isOnArray(n, toFill, i));
+			toFill[i] = n;
+		}
+		qsort(toFill, nbFill, sizeof(int), compareInt);
+
+	}
+	else {
+		for(int i=0; i<nbEmpty; i++)
+			toFill[i] = i;
+
+		for(int i=nbEmpty; i<nbFill; i++)
+			toFill[i] = -1;
+
+		nbFill=nbEmpty;
+	}
+
+
+	n=0;
+	int iToFill = 0;
+	isEmpty = SDL_FALSE;
+	for(int row = GRILLE_H-1; row>=firstRow && !isEmpty && iToFill<nbFill; row--){
+		isEmpty = SDL_TRUE;
+		for(int col = 0; col < GRILLE_W && iToFill<nbFill; col++){
+			if(matrix[col][row] == EMPTY){
+				if(n == toFill[iToFill]){
+					matrixFill[col][row] = FRAME_FILL + iToFill * ESPACEMENT_FRAME_FILL;
+					iToFill++;
+				}
+				n++;
+			}
+			else{
+				isEmpty = SDL_FALSE;
+			}
+		}
+	}
+}
+
 void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int bonusActivate[NB_BONUSES], int getBonuses);
 
-void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse){
+void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse, int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H]){
 	switch (bonusId) {
 		case FILL:
+			getFillPlaces(matrix, matrixFill, nbUse*NB_FILL);
 			break;
 
 		case POINTS:
@@ -354,13 +476,18 @@ void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse
 			printf("slow\n");
 			*framePassed -= nbUse * SLOW_AMMOUNT;
 			break;
+
+		case SPEED:
+			printf("speed\n");
+			*framePassed += nbUse * SPEED_AMMOUNT;
+			break;
 	}
 }
 
-void activateBonuses( int bonusActivate[NB_BONUSES],int frameLaser[GRILLE_H], int *framePassed ){
+void activateBonuses( int bonusActivate[NB_BONUSES],int frameLaser[GRILLE_H], int *framePassed, int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H] ){
 	for(int i=0; i<NB_BONUSES; i++)
 		if(bonusActivate[i])
-			useBonus(i+1, frameLaser, framePassed, bonusActivate[i]);
+			useBonus(i+1, frameLaser, framePassed, bonusActivate[i], matrix, matrixFill);
 }
 
 int getBonusId(int rectId){
@@ -374,12 +501,7 @@ int getBonusId(int rectId){
 	return bonusId;
 }
 
-float getShift(int line, ShiftDown* shifts){
-	return 0;
-}
-
-
-void drawMatrix(SDL_Renderer *renderer, SDL_Texture *brickTexture, SDL_Texture *bonusTexture, int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], ShiftDown* shifts){
+void drawMatrix(SDL_Renderer *renderer, SDL_Texture *brickTexture, SDL_Texture *bonusTexture, int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H]){
 	SDL_Rect src = BRICK_SRC;
 	SDL_Rect dest = BRICK_DEST;
 
@@ -389,20 +511,17 @@ void drawMatrix(SDL_Renderer *renderer, SDL_Texture *brickTexture, SDL_Texture *
 	for(int i = 0; i < GRILLE_W; i++){
 		for(int j = 0; j < GRILLE_H; j++){
 			dest.x = i * CASE_SIZE + MATRIX.x;
-			dest.y = j * CASE_SIZE + MATRIX.y + getShift(j, shifts);
+			dest.y = j * CASE_SIZE + MATRIX.y;
 
 			if(matrix[i][j] != EMPTY){ //piece
 				src.x = getPieceId(matrix[i][j]) * BRICK_SRC.w;
 
 				if(frameCompleteLine[j] >= 0){
-					printf("%d\n", frameCompleteLine[j] );
 					SDL_SetTextureColorMod(brickTexture, 255 / (FRAME_COMPLETE_LINE - frameCompleteLine[j] + 1), 255 / (FRAME_COMPLETE_LINE - frameCompleteLine[j] + 1), 255 / (FRAME_COMPLETE_LINE - frameCompleteLine[j] + 1));
 				}
 				else{
 					SDL_SetTextureColorMod(brickTexture, 255, 255, 255);
 				}
-				printf("dezda %d\n", getBonusId(matrix[i][j]));
-
 
 				SDL_RenderCopy(renderer, brickTexture, &src, &dest);
 
@@ -423,7 +542,7 @@ void drawMatrix(SDL_Renderer *renderer, SDL_Texture *brickTexture, SDL_Texture *
 	SDL_SetTextureColorMod(brickTexture, 255, 255, 255);
 }
 
-void drawAnims(SDL_Renderer *renderer, SDL_Texture *laserTexture, int frameLaser[GRILLE_H]){
+void drawLaser(SDL_Renderer *renderer, SDL_Texture *laserTexture, int frameLaser[GRILLE_H]){
 	//laser
 	SDL_Rect anim = LASER_SRC;
 	SDL_Rect dest = LASER_DEST;
@@ -431,16 +550,12 @@ void drawAnims(SDL_Renderer *renderer, SDL_Texture *laserTexture, int frameLaser
 		if(frameLaser[i] >= 0){
 			int frame = (LASER_FRAME - frameLaser[i] - LASER_START_SHOOT < 0 ? 0 : LASER_FRAME - frameLaser[i] - LASER_START_SHOOT);
 
-			printf("f : %d\n", frame);
-
-
 			if (frame>=15){
 				dest.x = LASER_END_POS - (frame - 14) * DIST_PER_FRAME_LASER_DISAPEAR;
 				frame=0;
 			}
 			else if(frame >= LASER_RECOIL &&  frame < LASER_RECOIL + LASER_RECOIL_DURATION){
 				dest.x = LASER_END_POS - LASER_RECOIL_DIST[frame-LASER_RECOIL];
-				printf("recoil\n");
 			}
 			else if(LASER_FRAME - frameLaser[i] < LASER_START_SHOOT)
 				dest.x = HUD_X +( LASER_FRAME - frameLaser[i]) * DIST_PER_FRAME_LASER; // add selon frameLaser[i]
@@ -454,6 +569,45 @@ void drawAnims(SDL_Renderer *renderer, SDL_Texture *laserTexture, int frameLaser
 		}
 	}
 	SDL_SetRenderDrawColor(renderer,255,255,255,255);
+}
+
+void drawFill(SDL_Renderer* renderer, SDL_Texture *brickTexture, int matrixFill[GRILLE_W][GRILLE_H]){
+	SDL_Rect src = BRICK_SRC;
+	SDL_Rect dest = BRICK_DEST;
+
+
+	src.x = NB_PIECES * BRICK_SRC.w;
+
+	for(int row = 0; row<GRILLE_H; row++){
+		for(int col = 0; col < GRILLE_W; col++){
+			if(matrixFill[col][row] > 0 ){
+
+				if( matrixFill[col][row] <= FRAME_FILL-FRAME_DEPLACEMENT_FILL){//cas apparition
+					//src.y=0;
+					dest.x = col * CASE_SIZE + MATRIX.x;
+					dest.y = row * CASE_SIZE + MATRIX.y;
+					float ratioColor = (FRAME_FILL - matrixFill[col][row] -FRAME_DEPLACEMENT_FILL)/(float)(FRAME_FILL-FRAME_DEPLACEMENT_FILL);
+					SDL_SetTextureColorMod(brickTexture, 255 *ratioColor, 255 * ratioColor, 255  * ratioColor);
+					SDL_RenderCopy(renderer, brickTexture, &src, &dest);
+					SDL_SetTextureColorMod(brickTexture, 255, 255, 255);
+
+				}
+				else if(matrixFill[col][row] <= FRAME_FILL){ //cas deplacement
+					//src.y=BRICK_SRC.h;
+					dest.x = SPAWN_FILL.x + ((col * CASE_SIZE + MATRIX.x) - SPAWN_FILL.x ) * (FRAME_FILL - matrixFill[col][row] + 1) / (float)(FRAME_DEPLACEMENT_FILL );
+					dest.y = SPAWN_FILL.y + ((row * CASE_SIZE + MATRIX.y) - SPAWN_FILL.y ) * (FRAME_FILL - matrixFill[col][row] + 1) / (float)(FRAME_DEPLACEMENT_FILL );
+
+					//SDL_SetTextureColorMod(brickTexture, 255 / ((FRAME_FILL-FRAME_DEPLACEMENT_FILL) - matrixFill[col][row] + 1), 255 / ((FRAME_FILL-FRAME_DEPLACEMENT_FILL) - matrixFill[col][row] + 1), 255 / ((FRAME_FILL-FRAME_DEPLACEMENT_FILL) - matrixFill[col][row] + 1));
+					SDL_RenderCopy(renderer, brickTexture, &src, &dest);
+					SDL_SetTextureColorMod(brickTexture, 255, 255, 255);
+
+				}
+			}
+		}
+	}
+
+
+
 }
 
 void savePiece(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
@@ -472,7 +626,8 @@ void savePiece(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 
 void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int bonusActivate[NB_BONUSES], int getBonuses){
 
-	frameCompleteLine[line] = FRAME_COMPLETE_LINE;
+	if( frameCompleteLine[line] == -1 )
+		frameCompleteLine[line] = FRAME_COMPLETE_LINE;
 
 	if(getBonuses)
 		for(int i = 0; i < GRILLE_W; i++)
@@ -480,28 +635,34 @@ void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H
 				bonusActivate[getBonusId(matrix[i][line])-1]++;
 }
 
-void eraseLine(int matrix[GRILLE_W][GRILLE_H], int line, int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H]){
-	for(int i = line; i > 0; i-- )
+void eraseLine(int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int line, int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H]){
+	for(int i = line; i > 0; i-- ){
+		frameCompleteLine[i] = frameCompleteLine [i-1];
 		for(int j=0; j<GRILLE_W; j++){
 			matrix[j][i] = matrix[j][i-1];
+			matrixFill[j][i] = matrixFill[j][i-1];
 			//frameLaser[i] = frameLaser[i-1];
-			//frameCompleteLine[i] = frameCompleteLine [i-1];
 		}
+	}
 
 
-	for(int j=0; j<GRILLE_W; j++)
+
+	for(int j=0; j<GRILLE_W; j++){
 		matrix[j][0] = EMPTY;
+		matrixFill[j][0] = 0;
+	}
 
-	frameLaser[0] = -1;
+
+	//frameLaser[0] = -1;
 	frameCompleteLine[0] = -1;
 }
 
-void checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES]){
+void checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus){
 	for(int i=0; i<GRILLE_H; i++){
 		int j;
 		for(j=0; j<GRILLE_W && matrix[j][i] != EMPTY; j++);
 		if(j == GRILLE_W)
-			completeLine(matrix, frameCompleteLine, i, bonusActivate, SDL_TRUE);
+			completeLine(matrix, frameCompleteLine, i, bonusActivate, getBonus);
 	}
 }
 
@@ -511,7 +672,11 @@ void clearIntTab( int *tab, int size){
 }
 
 void transfertNextPiece(Piece *currentPiece, Piece nextPiece){
- 	//handle giant (giant, size)
+	currentPiece->size = PIECE_SIZE * (nextPiece.giant ? RATIO_GIANT : 1);
+	if(currentPiece->giant != nextPiece.giant)
+		currentPiece->grille = realloc( currentPiece->grille, currentPiece->size * currentPiece->size * sizeof(int));
+
+	currentPiece->giant = nextPiece.giant;
 	currentPiece->id = nextPiece.id;
 	currentPiece->bonus = nextPiece.bonus;
 	currentPiece->rota = 0;
@@ -522,8 +687,14 @@ void transfertNextPiece(Piece *currentPiece, Piece nextPiece){
 	updateGrille(currentPiece);
 }
 
-void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H]){
+void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], int *remindRotate){
 	(*framePassed)++;
+
+	if(*remindRotate<0)
+		(*remindRotate)++;
+	else if(*remindRotate>0)
+		(*remindRotate)--;
+
 	for(int i=0; i<GRILLE_H; i++){
 		if(frameLaser[i] == LASER_FRAME - LASER_START_COMPLETE)
 			frameCompleteLine[i] = FRAME_COMPLETE_LINE + 1;
@@ -531,17 +702,26 @@ void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteL
 		if(frameLaser[i] >= 0)
 			frameLaser[i]--;
 
-		if(frameCompleteLine[i] == 0)
-			eraseLine(matrix, i, frameLaser, frameCompleteLine);
+		if(frameCompleteLine[i] == 0){
+			eraseLine(matrix, matrixFill, i, frameLaser, frameCompleteLine);
+			i--;
+		}
+
 
 		if(frameCompleteLine[i] >= 0)
 			frameCompleteLine[i]--;
 
+		for(int j=0; j<GRILLE_W; j++)
+			if(matrixFill[j][i]){
+				//printf("mf %d\n",matrixFill[j][i] );
+				matrixFill[j][i]--;
+				if(matrixFill[j][i] == 0){
+					matrix[j][i] = NB_PIECES;
+					checkLines(matrix, frameCompleteLine, bonusActivate, SDL_FALSE);
+				}
+			}
+
 	}
-}
-
-void shiftMatrixDown(int matrix[GRILLE_W][GRILLE_H], ShiftDown * shift){
-
 }
 
 // int launchSnake(SDL_Window *myWindow, SDL_Renderer* renderer, char *identifiant, char *token){
@@ -561,6 +741,8 @@ int main(){
 	int rotate = SDL_FALSE;
 	int rdyToRotate[2] = {SDL_TRUE, SDL_TRUE};
 	int cantMoveSide = SDL_FALSE;
+	int remindRotate = 0;
+	int rotatePressed;
 
 
 	//frames and distances
@@ -587,12 +769,10 @@ int main(){
 
 	//matrice
 	int matrix[GRILLE_W][GRILLE_H];
+	int matrixFill[GRILLE_W][GRILLE_H];
 	int frameCompleteLine[GRILLE_H];
 	for(int i=0; i < GRILLE_H; i++)
 		frameCompleteLine[i] = -1;
-	ShiftDown* shifts = malloc(sizeof(ShiftDown));
-	shifts[0].lineDown = -1;
-	shifts[0].shift = 0;
 
 	//Keyboard
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
@@ -657,11 +837,12 @@ int main(){
 	///////////////////////
 	/// Initialize vars ///`
 	///////////////////////
-	initMatrix(matrix);
+	initMatrix(matrix, EMPTY);
+	initMatrix(matrixFill, 0);
 	initPiece(&currentPiece);
 	initPiece(&nextPiece);
-	getNewPiece(&currentPiece, 0);
-	getNewPiece(&nextPiece, 0);
+	getNewPiece(&currentPiece, SDL_FALSE);
+	getNewPiece(&nextPiece, SDL_FALSE);
 	putAtTop(&currentPiece, matrix, (int)frame[TO_GO]);
 	putAtNextPiece(&nextPiece);
 
@@ -676,6 +857,7 @@ int main(){
 		accelerate = NO_ACCELERATE;
 		lateralMove = NO_MOVE;
 		rotate = SDL_FALSE;
+		rotatePressed = SDL_FALSE;
 
 	////////////
 	// Events //`
@@ -723,15 +905,27 @@ int main(){
 			lateralMove = MOVE_LEFT;
 
 
+		if( (keystate[SDL_SCANCODE_Q] && rdyToRotate[0]) || remindRotate>0 ){
+			if(keystate[SDL_SCANCODE_Q] && rdyToRotate[0]){
+				rotatePressed = SDL_TRUE;
+				rdyToRotate[0] = SDL_FALSE;
+			}
 
-		if( keystate[SDL_SCANCODE_Q] && rdyToRotate[0] ){
 			rotate = 1;
-			rdyToRotate[0] = SDL_FALSE;
+
+
 		}
-		else if( keystate[SDL_SCANCODE_E] && rdyToRotate[1] ){
+		else if( (keystate[SDL_SCANCODE_E] && rdyToRotate[1]) || remindRotate<0 ){
+			if(keystate[SDL_SCANCODE_E] && rdyToRotate[1]){
+				rotatePressed = SDL_TRUE;
+				rdyToRotate[1] = SDL_FALSE;
+			}
+
 			rotate = -1;
-			rdyToRotate[1] = SDL_FALSE;
+
+
 		}
+		//printf("Q %d E %d rdyQ %d rdyE %d\n", keystate[SDL_SCANCODE_Q],keystate[SDL_SCANCODE_E], rdyToRotate[0], rdyToRotate[1]);
 
 
 		//gérer utilisation bonus ?
@@ -740,8 +934,8 @@ int main(){
 	// Gameplay //`
 	//////////////
 
+		rotatePiece(&currentPiece, rotate, matrix, &remindRotate, rotatePressed);
 
-		rotatePiece(&currentPiece, rotate, matrix);
 
 		if(!cantMoveSide)
 			changeDir(&currentPiece, lateralMove, (int)frame[LATERAL]);
@@ -757,11 +951,11 @@ int main(){
 					//Piece is saved and remplaced
 					savePiece(currentPiece, matrix);
 					clearIntTab(bonusActivate, NB_BONUSES);
-					checkLines(matrix, frameCompleteLine, bonusActivate);
-					activateBonuses(bonusActivate, frameLaser, &framePassed);
+					checkLines(matrix, frameCompleteLine, bonusActivate, SDL_TRUE);
+					activateBonuses(bonusActivate, frameLaser, &framePassed, matrix, matrixFill);
 					updateDistances(frame, distances, &framePassed);
 					transfertNextPiece(&currentPiece,nextPiece);
-					getNewPiece(&nextPiece, 0);
+					getNewPiece(&nextPiece, SDL_FALSE);
 					if( putAtTop(&currentPiece, matrix, (int)frame[TO_GO]) == COULDNT_PUT )
 						break;
 				}
@@ -778,10 +972,11 @@ int main(){
 	//////////
 	// Draw //`
 	//////////
-		drawMatrix(renderer, brickTexture, bonusTexture, matrix, frameCompleteLine, shifts);
-		drawPiece(renderer, brickTexture, bonusTexture, currentPiece);
-		drawPiece(renderer, brickTexture, bonusTexture, nextPiece);
-		drawAnims(renderer, laserTexture, frameLaser);
+		drawMatrix(renderer, brickTexture, bonusTexture, matrix, frameCompleteLine);
+		drawPiece(renderer, brickTexture, bonusTexture, currentPiece, SDL_FALSE);
+		drawPiece(renderer, brickTexture, bonusTexture, nextPiece, SDL_TRUE);
+		drawLaser(renderer, laserTexture, frameLaser);
+		drawFill(renderer,brickTexture, matrixFill);
 		//drawNextPiece(nextPiece);
 
 		//hud
@@ -811,7 +1006,7 @@ int main(){
 		lastTime = currentTime;
 
 		//Actualise frames
-		updateFrames(&framePassed, frameLaser, frameCompleteLine, matrix);
+		updateFrames(&framePassed, frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, &remindRotate);
 
 
 		// On efface
