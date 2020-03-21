@@ -5,11 +5,9 @@
 
 #include <stdio.h>
 #define GL_SILENCE_DEPRECATION
-//#include "glm/glm.h"
 #include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
 #include <GLUT/glut.h>
-#include <OpenGL/glext.h>
+
 #include <math.h>
 
 /* assimp include files. These three are usually needed. */
