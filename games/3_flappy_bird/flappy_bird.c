@@ -2,9 +2,9 @@
 #include "define.h"
 #include <time.h>
 
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 
 //native resolution
 #define WINDOW_L 1820.
@@ -15,8 +15,8 @@ const int FRAME_TIME = 1000/FPS;
 
 // FOR DEBUG ONLY
 // definition envoyer depuis la room pour le rescale
-#define WINDOW_SEND_L 1920.
-#define WINDOW_SEND_H 1080.
+#define WINDOW_SEND_L 720.
+#define WINDOW_SEND_H 480.
 
 // scale ratio for native resolution
 #define SCALE_TO_FIT 4 // WIINDOW_H/BACKGROUND.h *4
@@ -34,7 +34,7 @@ const SDL_Rect HIGH_SCORE = {0,0,512,512};
 #define PRELOAD_POS_OBSTACLE 8
 
 // PARAMETRES POUR GESTION DES OBSTACLES
-#define DISTANCE_BETWEEN_OBSTACLE 50 
+#define DISTANCE_BETWEEN_OBSTACLE 50
 #define DISTANCE_UNDER_OBSTACLE 80 // difficulte max en distance d'obstacle
 #define NB_POS_OBSTACLE 5
 #define TRANCHE_POS_OBSTACLE 550 // largeur sur Y des positions possible des portes de passages des pilonnes
@@ -50,7 +50,7 @@ typedef struct {
 // il est deconseiller de toucher au autre stat
 const int UPPER_STEP = 4 * (FPS/30);
 #define UPPER_BY_STEP 30 // VALEUR A AJOUTER A LAXE DES X DU AfficherPersonnage
-const int GRAVITY_SPEED = 2 * (FPS/30);// VALEUR DE LA GRAVITER 
+const int GRAVITY_SPEED = 2 * (FPS/30);// VALEUR DE LA GRAVITER
 const int VITESSE_DEPLACEMENT_DECOR = 8 / (FPS/30); // vitesse de deplacement des decors
 #define ANGLE_UP -30
 #define ANGLE_DOWN 90
@@ -59,20 +59,20 @@ const int VITESSE_DEPLACEMENT_DECOR = 8 / (FPS/30); // vitesse de deplacement de
 #define BAN_CODE -666
 
 // ADRESS TEXTURE
-#define DIR_TILSET "Textures/tilset.png"
-#define DIR_BIRDS "Textures/birds.png"
-#define DIR_MEDALS "Textures/medals.png"
-#define DIR_PIPES "Textures/pipes.png"
-#define DIR_SCOREBOARD "Textures/scoreBoard.png"
-#define DIR_BACKGROUND "Textures/backgrounds.png"
-#define DIR_NUM "Textures/chiffre.png"
-#define DIR_SOL "Textures/sol.png"
-#define DIR_HIGHSCORE "Textures/high_score.png"
+#define DIR_TILSET "../../games/3_flappy_bird/Textures/tilset.png"
+#define DIR_BIRDS "../../games/3_flappy_bird/Textures/birds.png"
+#define DIR_MEDALS "../../games/3_flappy_bird/Textures/medals.png"
+#define DIR_PIPES "../../games/3_flappy_bird/Textures/pipes.png"
+#define DIR_SCOREBOARD "../../games/3_flappy_bird/Textures/scoreBoard.png"
+#define DIR_BACKGROUND "../../games/3_flappy_bird/Textures/backgrounds.png"
+#define DIR_NUM "../../games/3_flappy_bird/Textures/chiffre.png"
+#define DIR_SOL "../../games/3_flappy_bird/Textures/sol.png"
+#define DIR_HIGHSCORE "../../games/3_flappy_bird/Textures/high_score.png"
 
 // ADRESS SOUND
-#define DIR_FLAP_WAV "Sounds/flap.wav"
-#define DIR_HURT_WAV "Sounds/hurt.wav"
-#define DIR_SCORE_WAV "Sounds/score.wav"
+#define DIR_FLAP_WAV "../../games/3_flappy_bird/Sounds/flap.wav"
+#define DIR_HURT_WAV "../../games/3_flappy_bird/Sounds/hurt.wav"
+#define DIR_SCORE_WAV "../../games/3_flappy_bird/Sounds/score.wav"
 
 //LOCAL ERROR CODE
 #define IMAGE_ERROR_LOAD -101
@@ -149,7 +149,7 @@ SDL_Texture * LoadTextureWithErrorCode(SDL_Renderer *renderer ,char directory[])
 	SDL_Texture* texture = IMG_LoadTexture(renderer,directory);
 
 	if(!texture)
-		printf("TEXTURE FAILURE : Erreur lors de la creation de %s SDL_ERROR : %s",directory,SDL_GetError());
+		printf("\nTEXTURE FAILURE : Erreur lors de la creation de %s SDL_ERROR : %s",directory,SDL_GetError());
 
 	return texture;
 }
@@ -214,7 +214,7 @@ int AfficherPersonnage(SDL_Renderer *renderer,SDL_Texture *texture_birds, SDL_Po
 
 	pos_print.x += (varAnimationPersonnage-1) * pos_print.w;
 
-	
+
 
 
 	//SDL_Rect personnage = {pos_print.x,pos_print.y,DIM_PERSO.x,DIM_PERSO.y};
@@ -263,7 +263,7 @@ int afficherScore(SDL_Renderer *renderer , SDL_Texture *texture_chiffre,int scor
 		error_code = SDL_RenderCopy(renderer,texture_chiffre,&chiffre,&target);
 		if (error_code)
 			return error_code;
-		
+
 		score /=10;
 	}
 	return error_code;
@@ -284,7 +284,7 @@ int afficherMeilleurScore(SDL_Renderer* renderer,SDL_Texture *texture_highscore,
 // regroupe toute les fonctions d'affichage
 int afficherTout(SDL_Renderer * renderer, SDL_Point emplacementPersonnage, pilonne *pilonne ,int score,int varAnimationPersonnage,int varAnimationSol, int cible, double angle ,SDL_Texture *texture_background, SDL_Texture *texture_pipes, SDL_Texture *texture_birds, SDL_Texture *texture_medals, SDL_Texture *texture_scoreBoard, SDL_Texture *texture_sol, SDL_Texture *texture_chiffre, SDL_Texture* texture_highscore)
 {
-	
+
 
 	SDL_RenderClear(renderer);
 
@@ -296,7 +296,7 @@ int afficherTout(SDL_Renderer * renderer, SDL_Point emplacementPersonnage, pilon
 	for (int i = 0; i < PRELOAD_POS_OBSTACLE; i++) {
 		if ( afficherPilonne(renderer,texture_pipes,pilonne[i].hauteur,pilonne[i].position) )
 			return SDL_RENDER_ERROR_OBSTACLE;
-		
+
 	}
 
 
@@ -377,14 +377,14 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 				ban commands*/
 		}
 
-	} 
+	}
 	else if (traitement == 3 ){
-		
+
 		if(  !(pilonne[3].position + OBSTACLE_VERT.w*SCALE_TO_FIT + PERSO.w*SCALE_TO_FIT < WINDOW_L/2)  )
 		{
 			traitement = 2;
 		}
-			
+
 
 
 	}
@@ -447,7 +447,7 @@ void traitementVariableAnimation(int *varAnimationPersonnage,int *varAnimationSo
 
 	if( ( *varAnimationSol * -1) >= ( SOL.w*SCALE_TO_FIT)*3  )
 		*varAnimationSol = 0;
-	else 
+	else
 		*varAnimationSol -= VITESSE_DEPLACEMENT_DECOR;
 }
 
@@ -455,7 +455,7 @@ void attendreAvantDepart(Mix_Chunk *flap_wav)
 {
 	// attendre le toucher de la barre espace pour demarrer
 	int attente = SDL_TRUE;
-	
+
 	while ( attente )
 	{
 		SDL_Event spacebar;
@@ -466,7 +466,7 @@ void attendreAvantDepart(Mix_Chunk *flap_wav)
 					attente = SDL_FALSE;
 		}
 	}
-	
+
 	// jouer le son de saut //
 	Mix_PlayChannel( -1, flap_wav,0);
 
@@ -515,18 +515,26 @@ void maj_var_environement(SDL_Point *emplacementPersonnage, int *upper, double *
 		}
 		*nb_boucle += 1;
 }
-				
+
 
 
 // primary func
-int flappy_bird(SDL_Window *window, SDL_Renderer *renderer, int highscore)
+int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h)
 {
+	//SDL_Renderer *renderer = SDL_GetRenderer(window);
+	if (renderer == NULL){
+		printf("\nCREATION RENDU ECHEC %s",SDL_GetError());
+		return -1;
+	}
+
+
+	printf("\nLe jeu commence");
 	int exit_code = 0;
 	srand(time(NULL));
 	// rescale afficherTout
 	SDL_RenderSetScale(renderer,
-                       WINDOW_SEND_L/WINDOW_L,
-                       WINDOW_SEND_H/WINDOW_H);
+                       send_l/WINDOW_L,
+                       send_h/WINDOW_H);
 
 	// init texture
 	SDL_Texture *texture_background = LoadTextureWithErrorCode(renderer,DIR_BACKGROUND);
@@ -540,16 +548,30 @@ int flappy_bird(SDL_Window *window, SDL_Renderer *renderer, int highscore)
 
 	if( !texture_background || !texture_pipes || !texture_birds || !texture_medals || !texture_scoreBoard || !texture_sol || !texture_chiffre || !texture_highscore)
 		exit_code = IMAGE_ERROR_LOAD;
-	
+
 
 	// init sound effect //
+	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 1, 1024 ) == -1 )
+		{
+			printf("Erreur init SDL_Mixer\n" );
+		}
+
+
 	Mix_Chunk *flap_wav = Mix_LoadWAV( DIR_FLAP_WAV);
+	if(!flap_wav)
+		printf("\nError load %s CODE : %s", DIR_FLAP_WAV,SDL_GetError() );
+
 	Mix_Chunk *hurt_wav = Mix_LoadWAV( DIR_HURT_WAV);
+	if(!hurt_wav)
+		printf("\nError load %s CODE : %s", DIR_HURT_WAV,SDL_GetError() );
+
 	Mix_Chunk *score_wav = Mix_LoadWAV( DIR_SCORE_WAV);
+	if(!score_wav)
+		printf("\nError load %s CODE : %s", DIR_SCORE_WAV,SDL_GetError() );
 
 
-	if( !flap_wav || !hurt_wav || !score_wav)
-		exit_code = SOUND_ERROR_LOAD;
+	//if( !flap_wav || !hurt_wav || !score_wav)
+		//exit_code = SOUND_ERROR_LOAD;
 	// end sound effect //
 
 	if (!exit_code)
@@ -599,14 +621,14 @@ int flappy_bird(SDL_Window *window, SDL_Renderer *renderer, int highscore)
 					evenement(&upper,&vitesseGraviter,&nb_boucle,flap_wav);
 
 					maj_var_environement(&emplacementPersonnage, &upper, &angle, &nb_boucle,&vitesseGraviter);
-		
+
 
 
 					exit_code = afficherTout(renderer, emplacementPersonnage , pilonne, score ,varAnimationPersonnage , varAnimationSol, cible, angle ,
 																																						texture_background,  texture_pipes, texture_birds, texture_medals,  texture_scoreBoard,  texture_sol, texture_chiffre, texture_highscore);
 
 					// traitement de mon pilonne
-					traitement = traitement_pilonne(pilonne,traitement,&score,  &score_hash, 
+					traitement = traitement_pilonne(pilonne,traitement,&score,  &score_hash,
 																							 &const_1,   &const_2,   &const_3,    &const_4, score_wav);
 
 					traitementVariableAnimation(&varAnimationPersonnage,&varAnimationSol);
@@ -620,7 +642,7 @@ int flappy_bird(SDL_Window *window, SDL_Renderer *renderer, int highscore)
 				if (angle < ANGLE_DOWN)
 							angle += ANGLE_VITESSE*2 / (FPS/30);
 				emplacementPersonnage.y += (vitesseGraviter++) / (FPS/30);
-				exit_code = afficherTout(renderer, emplacementPersonnage , pilonne, score ,1 , 0 , cible , angle, 
+				exit_code = afficherTout(renderer, emplacementPersonnage , pilonne, score ,1 , 0 , cible , angle,
 																												texture_background,  texture_pipes,  texture_birds,   texture_medals,  texture_scoreBoard,  texture_sol,   texture_chiffre, texture_highscore );
 
 				if(emplacementPersonnage.y >= WINDOW_H - SOL.h*SCALE_TO_FIT)
@@ -654,33 +676,4 @@ int flappy_bird(SDL_Window *window, SDL_Renderer *renderer, int highscore)
 
 
 	return exit_code;
-}
-
-
-
-
-// launch debug
-int main() {
-	SDL_Init(SDL_INIT_EVERYTHING );
-	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 1, 1024 ) == -1 )
-	{
-		printf("Erreur init SDL_Mixer\n" );
-	}
-
-	// main du jeu
-	SDL_Window* window = SDL_CreateWindow("Nineteen | Flappy Bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_SEND_L, WINDOW_SEND_H, SDL_WINDOW_SHOWN  );
-	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
-	SDL_ShowCursor(SDL_DISABLE);
-
-	printf("Code d'erreur de sorti : %d", flappy_bird(window, renderer, 5) );
-
-	SDL_ShowCursor(SDL_ENABLE);
-
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-
-	
-
-	return EXIT_SUCCESS;
 }
