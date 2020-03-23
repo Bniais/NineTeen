@@ -1,5 +1,5 @@
-// CODERUNNER COMPILEFLAG 
-// -std=c99 glm/glm_util.c glm/glmimg.c -framework OpenGL -framework GLUT -lm
+// CODERUNNER COMPILEFLAG
+// -std=c99 -framework OpenGL -framework GLUT -lassimp -lm -F/Library/Frameworks -framework SDL2
 
 
 
@@ -7,22 +7,40 @@
 #ifdef __APPLE__
 	#define GL_SILENCE_DEPRECATION
 	#include <OpenGL/gl.h>
+	#include <OpenGL/OpenGL.h>
 	#include <GLUT/glut.h>
 #endif
+
+
 #ifdef __linux
 	#include <GL/gl.h>
 	#include <GL/glu.h>
 	#include <GL/glut.h>
-    	#define M_PI 3.1415
-#endif 
+
+  #define M_PI 3.1415
+#endif
 
 
+#include <SDL2/SDL.h>
+static SDL_Window *Window = NULL;
+static SDL_GLContext Context;
+#define WinWidth 1920
+#define WinHeight 1080
+typedef int32_t i32;
+typedef uint32_t u32;
+typedef int32_t b32;
+u32 WindowFlags = SDL_WINDOW_OPENGL;
+
+#include <assert.h>
 #include <math.h>
 
 /* assimp include files. These three are usually needed. */
 #include <assimp/cimport.h>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+
+#include "../../games/3_flappy_bird/flappy_bird.h"
+
 
 const C_STRUCT aiScene* scene = NULL; // MODEL/SCENE
 GLuint scene_list = 0; // NB SCENE
@@ -31,50 +49,58 @@ GLuint scene_list = 0; // NB SCENE
 // STATIC VAR FOR CAMERA
 struct Camera_s
 {
-	float px,py,pz,angle,ouverture;
+	float px,py,pz,cible_py,angle,ouverture;
 };
-static struct Camera_s camera;
-// END VAR CAMERA
-
-#define VITESSE_DEPLACEMENT 0.5F
 
 
-void framerate (void)
-{
-	static GLint prev_time = 0;
-	static GLint prev_fps_time = 0;
-	static int frames = 0;
-
-	int time = glutGet(GLUT_ELAPSED_TIME);
-	prev_time = time;
-
-	frames += 1;
-	if ((time - prev_fps_time) > 1000) /* update every seconds */
-    {
-        int current_fps = frames * 1000 / (time - prev_fps_time);
-        printf("%d fps\n", current_fps);
-        frames = 0;
-        prev_fps_time = time;
-    }
+#define VITESSE_DEPLACEMENT 0.18F
+#define SENSIBILITE_CAMERA 0.08F
+#define HAUTEUR_CAMERA_DEBOUT 3.5F
+#define MAX_Y_AXE_CIBLE 2.8F
 
 
-	glutPostRedisplay ();
-}
-
+static GLuint * _vaos = NULL, * _buffers = NULL, * _counts = NULL, * _textures = NULL, _nbMeshes = 0, _nbTextures = 0;
 
 // ASSIMP RENDU AND LOAD //
+char * pathOf(const char * path) {
+	int spos = -1;
+	char * tmp, * ptr;
+	tmp = malloc((strlen(path) + 1) * sizeof * tmp); assert(tmp); strcpy(tmp, path); //strdup(path);
+	ptr = tmp;
+	while(*ptr) {
+		if(*ptr == '/' || *ptr == '\\')
+			spos = ptr - tmp;
+		++ptr;
+	}
+	tmp[spos >= 0 ? spos : 0] = 0;
+	return tmp;
+}
+
 
 int chargementModel (const char* path)
 {
 	/* we are taking one of the postprocessing presets to avoid
 	   spelling out 20+ single postprocessing flags here. */
-	scene = aiImportFile(path,aiProcessPreset_TargetRealtime_MaxQuality);
+	scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality |
+						 aiProcess_CalcTangentSpace       |
+			       		 aiProcess_Triangulate            |
+			       	     aiProcess_JoinIdenticalVertices  |
+			             aiProcess_SortByPType);
 
 	if (scene) {
 		return 0;
 	}
 	return 1;
 }
+
+static int sceneNbMeshes(const struct aiScene *sc, const struct aiNode* nd, int subtotal) {
+	int n = 0;
+	subtotal += nd->mNumMeshes;
+	for(n = 0; n < nd->mNumChildren; ++n)
+		subtotal += sceneNbMeshes(sc, nd->mChildren[n], 0);
+	return subtotal;
+}
+
 
 /* ---------------------------------------------------------------------------- */
 void color4_to_float4(const C_STRUCT aiColor4D *c, float f[4])
@@ -95,7 +121,7 @@ void set_float4(float f[4], float a, float b, float c, float d)
 }
 
 /* ---------------------------------------------------------------------------- */
-void appliquerTexture(const C_STRUCT aiMaterial *mtl)
+void TextureOpenGL(const C_STRUCT aiMaterial *mtl)
 {
 	float c[4];
 
@@ -130,6 +156,7 @@ void appliquerTexture(const C_STRUCT aiMaterial *mtl)
 		color4_to_float4(&emission, c);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, c);
 
+
 	max = 1;
 	ret1 = aiGetMaterialFloatArray(mtl, AI_MATKEY_SHININESS, &shininess, &max);
 	if(ret1 == AI_SUCCESS) {
@@ -158,34 +185,36 @@ void appliquerTexture(const C_STRUCT aiMaterial *mtl)
 		glDisable(GL_CULL_FACE);
 	else
 		glEnable(GL_CULL_FACE);
+
 }
 
-void rendu_Model (const C_STRUCT aiScene *sc, const C_STRUCT aiNode* nd)
+void RenduOpenGL (const C_STRUCT aiScene *sc, const C_STRUCT aiNode* nd)
 {
 	unsigned int i;
 	unsigned int n = 0, t;
 	C_STRUCT aiMatrix4x4 m = nd->mTransformation;
 
 	/* update transform */
-	//aiTransposeMatrix4(&m);
-	//glPushMatrix();
-	//glMultMatrixf((float*)&m);
+	aiTransposeMatrix4(&m);
+	glPushMatrix();
+	glMultMatrixf((float*)&m);
 
 	/* draw all meshes assigned to this node */
 	for (; n < nd->mNumMeshes; ++n) {
 		const C_STRUCT aiMesh* mesh = scene->mMeshes[nd->mMeshes[n]];
 
-		appliquerTexture(sc->mMaterials[mesh->mMaterialIndex]); // COLOR TEXTURE
+		TextureOpenGL(sc->mMaterials[mesh->mMaterialIndex]); // COLOR TEXTURE
 
 			for (t = 0; t < mesh->mNumFaces; ++t) {
-			const C_STRUCT aiFace* face = &mesh->mFaces[t];
-			GLenum face_mode;
+				const C_STRUCT aiFace* face = &mesh->mFaces[t];
+				GLenum face_mode;
 
-			switch(face->mNumIndices) {
-				case 1: face_mode = GL_POINTS; break;
-				case 2: face_mode = GL_LINES; break;
-				case 3: face_mode = GL_TRIANGLES; break;
-				default: face_mode = GL_POLYGON; break;
+				switch(face->mNumIndices) {
+					case 1: face_mode = GL_POINTS; break;
+					case 2: face_mode = GL_LINES; break;
+					case 3: face_mode = GL_TRIANGLES; break;
+
+					default: face_mode = GL_POLYGON; break;
 			}
 
 			glBegin(face_mode);
@@ -204,157 +233,296 @@ void rendu_Model (const C_STRUCT aiScene *sc, const C_STRUCT aiNode* nd)
 
 	}
 
-	/* draw all children */
+
 	for (n = 0; n < nd->mNumChildren; ++n) {
-		rendu_Model(sc, nd->mChildren[n]);
+		RenduOpenGL(sc, nd->mChildren[n]);
 	}
 
 	glPopMatrix();
 }
 
 
-void Reshape(int width, int height)
-{	 
- 	glViewport(0,0,width,height);
- 	glMatrixMode(GL_PROJECTION);
- 	glLoadIdentity();
- 	gluPerspective(45,(float)(width)/(float)(height),0.1,100);	//Pour les explications, lire le tutorial sur OGL et win
- 	glMatrixMode(GL_MODELVIEW);	//Optionnel
-	glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
-}
 
-void boucleVue()
-{	
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	
-	
-	
-	 gluLookAt(camera.px                   ,camera.py    ,camera.pz                  ,
-			  camera.px+sin(camera.angle) ,camera.py    , camera.pz+cos(camera.angle),
-			  0.0                          ,1.0         ,0.0)                        ;
-
-
-	if(scene_list == 0) {
-		scene_list = glGenLists(1);
-		glNewList(scene_list, GL_COMPILE);
-			/* now begin at the root node of the imported data and traverse
-			the scenegraph by multiplying subsequent local transforms
-			together on GL's matrix stack. */
-		rendu_Model(scene, scene->mRootNode);
-		glEndList();
-	}
-	
-	
-	glCallList(scene_list);
-	glutSwapBuffers();
-	
-
-	framerate();
-}
-
-
-
-void InitGL(){
+void InitGL(int width, int height, struct Camera_s camera){
 	glEnable(GL_LIGHTING);
+
+	//
 	glEnable(GL_LIGHT0);    /* Uses default lighting parameters */
+
+	//
 	glEnable(GL_DEPTH_TEST);
+
+
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+
+	gluPerspective(camera.ouverture,(float)(width)/(float)(height),0.1,100);	//Pour les explications, lire le tutorial sur OGL et win
+	glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+
+	//Initialize Modelview Matrix
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+
+
+	//Initialize clear color
+	glClearColor( 0.f, 0.f, 0.f, 1.f );
+
 }
 
+void lancerMachine(int *Running, struct Camera_s camera)
+{
+	SDL_Event Event;
+	while (SDL_PollEvent(&Event))
+	{
+		if (Event.type == SDL_KEYDOWN)
+		{
+			switch (Event.key.keysym.sym)
+			{
+				case SDLK_ESCAPE:
+					*Running = 0;
+					break;
+				case SDLK_SPACE:
+					{
+						// verifier si on est proche d'une machine //
+								// si oui renvoi le code de la machine
+
+						// centrer sur la machine //
 
 
+						// zoomer sur la machine //
 
-/// EVENT
 
-/* Fonction executee lors de la frappe          */
-/* d'une touche alphanumerique du clavier       */
+						// lancer la machine
+						SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
+						printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, 50,WinWidth,WinHeight));
+						SDL_DestroyRenderer(pRenderer);
+						SDL_DestroyWindow(Window);
 
-void keyboard(unsigned char key,int x,int y) {
-	printf("\n%f",camera.angle);
-	switch ( key ) {
-		
-		case 'w'      : camera.px += VITESSE_DEPLACEMENT *sin(camera.angle);
-						camera.pz += VITESSE_DEPLACEMENT *cos(camera.angle);
-						glutPostRedisplay();
-						break;
-		case 's'    :   camera.px -= VITESSE_DEPLACEMENT *sin(camera.angle);
-						camera.pz -= VITESSE_DEPLACEMENT *cos(camera.angle);
-						glutPostRedisplay();
-						break;
-		case 'a'      : camera.px += VITESSE_DEPLACEMENT *sin(camera.angle + M_PI/2);
-						camera.pz += VITESSE_DEPLACEMENT *cos(camera.angle + M_PI/2);
-						glutPostRedisplay();
-						break;
-		case 'd'    : 	camera.px -= VITESSE_DEPLACEMENT *sin(camera.angle + M_PI/2);
-						camera.pz -= VITESSE_DEPLACEMENT *cos(camera.angle + M_PI/2);
-						glutPostRedisplay();
-						break;
-						
-						
-		case 'c'	:  	printf("\nA croupie")	;break;
+						// retour sur la Window 3D.
 
+						Window = SDL_CreateWindow("OpenGL Test", 0, 0, WinWidth, WinHeight, WindowFlags );
+						Context = SDL_GL_CreateContext(Window);
+
+						InitGL(WinWidth,WinHeight,camera);
+						scene_list = 0;
+
+					}
+				default:
+					break;
+			}
 		}
+		else if (Event.type == SDL_QUIT)
+		{
+			*Running = 0;
+		}
+	}
+
+}
+
+void mouvementCamera(struct Camera_s *camera)
+{
+	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+
+
+	if( keystate[SDL_SCANCODE_LEFT] )
+				camera->angle += SENSIBILITE_CAMERA;
+	if( keystate[SDL_SCANCODE_RIGHT] )
+				camera->angle -= SENSIBILITE_CAMERA;
+	if( keystate[SDL_SCANCODE_UP] )
+				if(camera->cible_py + SENSIBILITE_CAMERA < MAX_Y_AXE_CIBLE )
+					camera->cible_py += SENSIBILITE_CAMERA;
+	if( keystate[SDL_SCANCODE_DOWN] )
+				if(camera->cible_py - SENSIBILITE_CAMERA > -MAX_Y_AXE_CIBLE )
+					camera->cible_py -= SENSIBILITE_CAMERA;
+
+	if( keystate[SDL_SCANCODE_W] )
+	{
+		camera->px += VITESSE_DEPLACEMENT *sin(camera->angle);
+		camera->pz += VITESSE_DEPLACEMENT *cos(camera->angle);
+	}
+
+	if( keystate[SDL_SCANCODE_S] )
+	{
+		camera->px -= VITESSE_DEPLACEMENT *sin(camera->angle);
+		camera->pz -= VITESSE_DEPLACEMENT *cos(camera->angle);
+	}
+	if( keystate[SDL_SCANCODE_A] )
+	{
+		camera->px += VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2);
+		camera->pz += VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2);
+
+	}
+	if( keystate[SDL_SCANCODE_D] )
+	{
+		camera->px -= VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2);
+		camera->pz -= VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2);
+	}
+
+
+	if (camera->px <= 4.5 && camera->px >= -4.5 && camera->pz <= 4.5 && camera->pz >= -4.5)
+		camera->py = 4.5F;
+	else
+		camera->py = HAUTEUR_CAMERA_DEBOUT;
+
+
+	// MISE A JOURS DE LA POSITION DE LA CAMERA
+	gluLookAt(camera->px                   ,camera->py    ,camera->pz                  ,
+			  camera->px+sin(camera->angle) ,camera->py + camera->cible_py    , camera->pz+cos(camera->angle),
+			  0.0
+			               ,1.0         ,0.0)                        ;
 }
 
 
-
-/* Fonction executee lors de la frappe          */
-/* d'une touche non alphanumerique du clavier   */
-
-void special(int key,int x,int y) {
-	printf("\n%f",camera.angle);
-  switch ( key ) {
-	case GLUT_KEY_UP      : camera.px += 0.1F*sin(camera.angle);
-							camera.pz += 0.1F*cos(camera.angle);
-							glutPostRedisplay();
-							break;
-	case GLUT_KEY_DOWN    : camera.px -= 0.1F*sin(camera.angle);
-							camera.pz -= 0.1F*cos(camera.angle);
-							glutPostRedisplay();
-							break;
-	case GLUT_KEY_RIGHT   : camera.angle -= 0.03F;
-							glutPostRedisplay();
-							break;
-	case GLUT_KEY_LEFT    : camera.angle += 0.03F;
-							glutPostRedisplay();
-							break; }
-}
 
 int main( int argc, char *argv[ ], char *envp[ ] )
-{	 
+{
+	static struct Camera_s camera;
 	// PRESET VALUE CAMERA //
-	
-		camera.px = 0.0F;
-		camera.py = 3.0F;
-		camera.pz = 0.0F;
-		
-		camera.angle = 0.0F;
-		camera.ouverture = 60.0F;
-		
-	
-	// END PRESET VALUE //
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-	glutInitWindowSize(640,480);	//Optionnel
-	glutInitWindowPosition(300,300);
-	int WindowName = glutCreateWindow("Ma première fenêtre OpenGL !");
-	
-	
-	glutReshapeFunc(Reshape);
-	glutKeyboardFunc(keyboard);
-	glutSpecialFunc(special);
-	glutDisplayFunc(boucleVue);
-	
-	chargementModel("arcade.obj");
-	
-	InitGL();
-	
-	glutMainLoop();
-	
+	camera.px = 0.0F;
+	camera.py = HAUTEUR_CAMERA_DEBOUT;
+	camera.pz = 0.0F;
+	camera.cible_py = 0.0F;
+
+	camera.angle = 0.0F;
+	camera.ouverture = 70.0F;
+
+
+
+	SDL_Init(SDL_INIT_EVERYTHING);
+	Window = SDL_CreateWindow("OpenGL Test", 0, 0, WinWidth, WinHeight, WindowFlags);
+	assert(Window);
+	Context = SDL_GL_CreateContext(Window);
+
+	printf("\n%d",*(Window)->w);
+
+	chargementModel("salle.obj");
+	InitGL(WinWidth,WinHeight,camera);
+
+
+	b32 Running = 1;
+
+	while (Running)
+	{
+
+		lancerMachine(&Running,camera);
+
+		glClearColor(0.f, 0.f, 0.f, 0.f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+
+		mouvementCamera(&camera);
+
+		float LightPos[4]={0,10,0,1};
+		glLightfv(GL_LIGHT0,GL_POSITION,LightPos);
+		glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,40);	//définit la taille de la tache spéculaire
+
+		if(scene_list == 0) {
+			scene_list = glGenLists(1);
+			glNewList(scene_list, GL_COMPILE);
+			RenduOpenGL(scene, scene->mRootNode);
+			glEndList();
+		}
+
+		glCallList(scene_list);
+
+		SDL_GL_SwapWindow(Window);
+	}
+
 	aiReleaseImport(scene);
- 
+	SDL_GL_DeleteContext(Context);
+	SDL_DestroyWindow(Window);
+	SDL_Quit();
 	return 0;
- 
-}	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+	void assimpInit(const char *filename) {
+		int i;
+		GLuint ivao = 0;
+
+		// chargement du fichier //
+		if ( chargementModel(filename) != 0){
+			fprintf(stderr, "Erreur lors du chargement du fichier %s\n", filename);
+		}
+
+		if(getenv("MODEL_IS_BROKEN"))
+			glFrontFace(GL_CW);
+
+		_textures = malloc((_nbTextures = scene->mNumMaterials) * sizeof *_textures);
+		assert(_textures);
+
+		glGenTextures(_nbTextures, _textures);
+
+			for (i = 0; i < scene->mNumMaterials ; i++) {
+				const struct aiMaterial* pMaterial = scene->mMaterials[i];
+				if (aiGetMaterialTextureCount(pMaterial, aiTextureType_DIFFUSE) > 0) {
+					struct aiString tfname;
+					char * dir = pathOf(filename), buf[BUFSIZ];
+					if (aiGetMaterialTexture(pMaterial, aiTextureType_DIFFUSE, 0, &tfname, NULL, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
+						SDL_Surface * t;
+						snprintf(buf, sizeof buf, "%s/%s", dir, tfname.data);
+						printf("Chargement de %s\n",tfname.data);
+						if(!(t = IMG_Load(buf))) {
+			 				fprintf(stderr, "Probleme de chargement de textures %s\n", buf);
+			  				fprintf(stderr, "\tNouvel essai avec %s\n", tfname.data);
+			  				if(!(t = IMG_Load(tfname.data)))
+							{
+								fprintf(stderr, "Probleme de chargement de textures %s\n", tfname.data); continue;
+							}
+						}
+
+						glBindTexture(GL_TEXTURE_2D, _textures[i]);
+						glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+						glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+						glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+						glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+						#ifdef __APPLE__
+							glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_BGR : GL_BGRA, GL_UNSIGNED_BYTE, t->pixels);
+						#else
+							glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, t->pixels);
+						#endif
+							SDL_FreeSurface(t);
+					}
+				}
+			}
+
+			_nbMeshes= sceneNbMeshes(scene, scene->mRootNode, 0);
+			_vaos = malloc(_nbMeshes * sizeof *_vaos);
+			assert(_vaos);
+		//	glGenVertexArrays(_nbMeshes, _vaos);
+			_buffers = malloc(2 * _nbMeshes * sizeof *_buffers);
+			assert(_buffers);
+			glGenBuffers(2 * _nbMeshes, _buffers);
+			_counts = calloc(_nbMeshes, sizeof *_counts);
+			assert(_counts);
+		//	sceneMkVAOs(scene, scene->mRootNode, &ivao);
+			rendu_Model(scene, scene->mRootNode);
+	}
+*/
