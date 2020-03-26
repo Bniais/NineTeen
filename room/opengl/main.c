@@ -22,11 +22,14 @@
 
 #include <SDL2/SDL.h>
 
+#define FPS 30
+static const float FRAME_TIME = 1000/FPS;
+
 
 static SDL_Window *Window = NULL;
 static SDL_GLContext Context;
-#define WinWidth 1920
-#define WinHeight 1080
+#define WinWidth 1600
+#define WinHeight 900
 typedef int32_t i32;
 typedef uint32_t u32;
 typedef int32_t b32;
@@ -51,6 +54,11 @@ GLuint scene_list = 0; // NB SCENE
 struct Camera_s
 {
 	float px,py,pz,cible_py,angle,ouverture;
+};
+
+struct cibleEcranMachine_s
+{
+	float x,y,angle;
 };
 
 
@@ -270,7 +278,112 @@ void InitGL(int width, int height, struct Camera_s camera){
 
 }
 
-void lancerMachine(int *Running, struct Camera_s camera)
+int detecterMachine(float x,float y)
+{
+	//ranger 6 machine a gauche
+	if(x > -8.0 && x < -1.0 && y > 7.0 && y < 15.0)
+	{
+		// machine face/dos
+		printf("\n%f\n",y);
+		if( y > 11.0) // vrai = face
+		{
+			if( x < -5.7 ) 
+				return 1;
+			else if ( x < -3.7)
+				return 2;
+			else 
+				return 3;
+		}	
+		else 
+		{
+			if( x < -5.7 ) 
+				return 4;
+			else if ( x < -3.7)
+				return 5;
+			else 
+				return 6;
+		}
+	}
+
+
+	// ranger de 6 machine a droite
+	if(x < 8.0 && x > 1.0 && y > 7.0 && y < 15.0)
+	{
+		// machine face/dos
+		printf("\n%f\n",y);
+		if( y > 11.0) // vrai = face
+		{
+			if( x < 3.4 ) 
+				return 7;
+			else if ( x < 5.8)
+				return 8;
+			else 
+				return 9;
+		}	
+		else 
+		{
+			if( x < 3.4 ) 
+				return 10;
+			else if ( x < 5.8)
+				return 11;
+			else 
+				return 12;
+		}
+	}
+
+	// 2 machine sur la gauche
+	if( x < -11 && y > 9.0 && y < 13.5)
+	{
+		if(y < 11.25)
+			return 13;
+		else
+			return 14;
+	}
+
+	// machine centrale
+	if( x > -1.0 && x < 1.0 && y > 1.0 && y < 3.0)
+		return 15;
+		
+		
+
+	return 0;
+}
+
+int comparerCamera_Cible( struct Camera_s camera, struct cibleEcranMachine_s cible )
+{
+	return 1;
+}
+
+void animationLancerMachine(struct Camera_s camera, struct cibleEcranMachine_s cible)
+{
+	
+	glClearColor(0.f, 0.f, 0.f, 0.f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+		gluLookAt(cible.x                   ,camera.py    ,cible.y                  ,
+			  cible.x+sin(cible.angle) ,camera.py + camera.cible_py    , cible.y+cos(cible.angle),
+			  0.0
+			               ,1.0         ,0.0)                        ;
+
+			float LightPos[4]={0,10,0,1};
+		glLightfv(GL_LIGHT0,GL_POSITION,LightPos);
+		glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,40);	//définit la taille de la tache spéculaire
+
+		if(scene_list == 0) {
+			scene_list = glGenLists(1);
+			glNewList(scene_list, GL_COMPILE);
+			RenduOpenGL(scene, scene->mRootNode);
+			glEndList();
+		}
+
+		glCallList(scene_list);
+
+		SDL_GL_SwapWindow(Window);
+}
+
+void lancerMachine(int *Running, struct Camera_s camera, struct cibleEcranMachine_s cible[])
 {
 	SDL_Event Event;
 	while (SDL_PollEvent(&Event))
@@ -286,13 +399,18 @@ void lancerMachine(int *Running, struct Camera_s camera)
 					{
 						// verifier si on est proche d'une machine //
 								// si oui renvoi le code de la machine
+								printf("SPACE_BAR \n");
+
+								int machine = detecterMachine(camera.px, camera.pz);
+								if ( machine )
+									animationLancerMachine(camera,cible[machine]);
 
 						// centrer sur la machine //
-
-
+						
+						
 						// zoomer sur la machine //
 
-
+/*						
 						// lancer la machine
 						SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
 						printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, 50,WinWidth,WinHeight));
@@ -306,7 +424,7 @@ void lancerMachine(int *Running, struct Camera_s camera)
 
 						InitGL(WinWidth,WinHeight,camera);
 						scene_list = 0;
-
+*/
 					}
 				default:
 					break;
@@ -324,17 +442,62 @@ int detectionEnvironnement(float x,float y)
 {
 	printf("X = %f Z = %f\n",x,y);
 	
-	if( x < 5.0 && x > -5.0 && y > 20.0)
+	
+	// HITBOX
+	
+	// accueil nineteen
+	if( x <= 5.0 && x >= -5.0 && y >= 20.0)
 		return 0;
-	if( y > 8.5 && y < 13.5 && (  (x < 8.0 && x > 1.5) || (x > -8.0 && x < -1.5)   )   )
+		
+	// lot de 12 machine au milieu de la salle
+	if( y >= 8.5 && y <= 13.5 && (  (x <= 8.0 && x >= 1.5) || (x > -8.0 && x <= -1.5)   )   )
+		return 0;	
+		
+	// double machine a gauche de la salle
+	if( x <= -12.5 && y <= 13.5 && y >= 9.0)
 		return 0;
+		
+	// machine central
+	if( x >= -1.0 && x <= 1.0 && y >= -1.0 && y <= 1.0)
+		return 0;
+		
+	// coter non droit au abord de l'accueil de la room
+	if(  y >= 14.0 &&  (    ( x >= -0.4736842105*y + 19.36842105  ) || (  x <= -(-0.4736842105*y + 19.36842105))    )   )
+		return 0;
+	
+	// ouverture entre toilette et salle
+	if( (y >= 7.0 || y <= 2.0) && x >= 14.5 && x <= 15.5)	
+		return 0;
+		
+	// mur toilette // salle
+	if( x >= 18.0 && x <= 19.0 && y >= -0.5 && y <= 10.0 )
+		return 0;
+		
+	// machine voiture
+	if ( x >= 4.0 && x <= 10.0 && y <= 3.6 && y >= - 3.6)
+		return 0;
+		
+	// billard
+	if( x <= -7.5 && x >= -12.0 && y <= 5.0 && y >= -1.5)
+		return 0;
+	// BASE DE LA SALLE	
+	
+	// dimension toilette
+	if(x > 15.0 && (  y < -3.0 || y > 12.5  )  )
+		return 0;
+		
+	
+	// HAUT DE LA SALLE
 	if( y < -5.0 )
 		return 0;
+	// BAS DE LA SALLE
 	if( y > 24.0 )
 		return 0;
+	// GAUCHE DE LA SALLE
 	if( x < -14.5 )
 		return 0;
-	if ( x > 14.5 )
+	// DROIT DE LA SALLE
+	if ( x > 24.0 )
 		return 0;
 	return 1;
 }
@@ -412,6 +575,7 @@ void mouvementCamera(struct Camera_s *camera)
 	}
 
 
+	// gestion des hauteur dans l'espace
 	if (camera->px <= 4 && camera->px >= -4 && camera->pz <= 4 && camera->pz >= -4)
 		camera->py = 4.5F;
 	else
@@ -429,22 +593,26 @@ void mouvementCamera(struct Camera_s *camera)
 
 
 
+
 int main( int argc, char *argv[ ], char *envp[ ] )
 {
 	// PRESET VALUE CAMERA //
 	static struct Camera_s camera;
 	camera.px = 0.0F;
 	camera.py = HAUTEUR_CAMERA_DEBOUT;
-	camera.pz = 0.0F;
+	camera.pz = 19.0F;
 	camera.cible_py = 0.0F;
 
-	camera.angle = 0.0F;
+	camera.angle = 0.0F + M_PI;
 	camera.ouverture = 70.0F;
 
-
+	struct cibleEcranMachine_s cible[15];
+	cible[0].x = -6.65;
+	cible[0].y = 13.5;
+	cible[0].angle = M_PI;
 
 	SDL_Init(SDL_INIT_EVERYTHING);
-	Window = SDL_CreateWindow("OpenGL Test", 0, 0, WinWidth, WinHeight, WindowFlags);
+	Window = SDL_CreateWindow("Nineteen", 0, 0, WinWidth, WinHeight, WindowFlags);
 	
 	Context = SDL_GL_CreateContext(Window);
 
@@ -457,8 +625,9 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 
 	while (Running)
 	{
+		int times_at_start_frame = SDL_GetTicks();
 
-		lancerMachine(&Running,camera);
+		lancerMachine(&Running,camera,cible);
 
 		glClearColor(0.f, 0.f, 0.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -481,6 +650,12 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 		glCallList(scene_list);
 
 		SDL_GL_SwapWindow(Window);
+
+
+		// attente FPS
+		int frame_delay = SDL_GetTicks() - times_at_start_frame;
+			if(frame_delay < FRAME_TIME)
+				SDL_Delay(FRAME_TIME - frame_delay );
 	}
 
 	aiReleaseImport(scene);
