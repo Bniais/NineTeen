@@ -20,8 +20,9 @@
   #define M_PI 3.1415
 #endif
 
-
 #include <SDL2/SDL.h>
+
+
 static SDL_Window *Window = NULL;
 static SDL_GLContext Context;
 #define WinWidth 1920
@@ -319,10 +320,26 @@ void lancerMachine(int *Running, struct Camera_s camera)
 
 }
 
+int detectionEnvironnement(float x,float y)
+{
+	printf("X = %f Z = %f\n",x,y);
+	
+	if( x < 5.0 && x > -5.0 && y > 20.0)
+		return 0;
+	if( y < -5.0 )
+		return 0;
+	if( y > 24.0 )
+		return 0;
+	if( x < -14.5 )
+		return 0;
+	if ( x > 14.5 )
+		return 0;
+	return 1;
+}
+
 void mouvementCamera(struct Camera_s *camera)
 {
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
-
 
 	if( keystate[SDL_SCANCODE_LEFT] )
 				camera->angle += SENSIBILITE_CAMERA;
@@ -335,27 +352,61 @@ void mouvementCamera(struct Camera_s *camera)
 				if(camera->cible_py - SENSIBILITE_CAMERA > -MAX_Y_AXE_CIBLE )
 					camera->cible_py -= SENSIBILITE_CAMERA;
 
+
+
+
+
 	if( keystate[SDL_SCANCODE_W] )
 	{
-		camera->px += VITESSE_DEPLACEMENT *sin(camera->angle);
-		camera->pz += VITESSE_DEPLACEMENT *cos(camera->angle);
+		
+		if( detectionEnvironnement( (camera->px + VITESSE_DEPLACEMENT *sin(camera->angle) ), 
+									( camera->pz +  VITESSE_DEPLACEMENT *cos(camera->angle) ) )   )
+									{
+										camera->px += VITESSE_DEPLACEMENT *sin(camera->angle);
+										camera->pz += VITESSE_DEPLACEMENT *cos(camera->angle);
+									}									
+		
 	}
 
 	if( keystate[SDL_SCANCODE_S] )
 	{
-		camera->px -= VITESSE_DEPLACEMENT *sin(camera->angle);
-		camera->pz -= VITESSE_DEPLACEMENT *cos(camera->angle);
+		if( 	
+			detectionEnvironnement(  camera->px - VITESSE_DEPLACEMENT *sin(camera->angle), 
+									 camera->pz - VITESSE_DEPLACEMENT *cos(camera->angle)  
+								  ) 
+		)
+		{
+				camera->px -= VITESSE_DEPLACEMENT *sin(camera->angle);
+				camera->pz -= VITESSE_DEPLACEMENT *cos(camera->angle);
+		}
+		
 	}
 	if( keystate[SDL_SCANCODE_A] )
 	{
-		camera->px += VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2);
-		camera->pz += VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2);
+		if( 	
+			detectionEnvironnement(  camera->px + VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2), 
+									 camera->pz + VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2)  
+								  ) 
+		)
+		{
+				camera->px += VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2);
+				camera->pz += VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2);
+		}
+
 
 	}
 	if( keystate[SDL_SCANCODE_D] )
 	{
-		camera->px -= VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2);
-		camera->pz -= VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2);
+		if( 	
+			detectionEnvironnement(  camera->px - VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2), 
+									 camera->pz - VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2)  
+								  ) 
+		)
+		{
+			camera->px -= VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2);
+			camera->pz -= VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2);
+		}
+
 	}
 
 
@@ -363,6 +414,8 @@ void mouvementCamera(struct Camera_s *camera)
 		camera->py = 4.5F;
 	else
 		camera->py = HAUTEUR_CAMERA_DEBOUT;
+
+
 
 
 	// MISE A JOURS DE LA POSITION DE LA CAMERA
@@ -376,8 +429,8 @@ void mouvementCamera(struct Camera_s *camera)
 
 int main( int argc, char *argv[ ], char *envp[ ] )
 {
-	static struct Camera_s camera;
 	// PRESET VALUE CAMERA //
+	static struct Camera_s camera;
 	camera.px = 0.0F;
 	camera.py = HAUTEUR_CAMERA_DEBOUT;
 	camera.pz = 0.0F;
@@ -390,10 +443,9 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 	Window = SDL_CreateWindow("OpenGL Test", 0, 0, WinWidth, WinHeight, WindowFlags);
-	assert(Window);
+	
 	Context = SDL_GL_CreateContext(Window);
 
-	printf("\n%d",*(Window)->w);
 
 	chargementModel("salle.obj");
 	InitGL(WinWidth,WinHeight,camera);
@@ -435,6 +487,9 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 	SDL_Quit();
 	return 0;
 }
+
+
+
 
 
 
