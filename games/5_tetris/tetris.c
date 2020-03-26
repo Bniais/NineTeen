@@ -2,6 +2,7 @@
 #include "config.h"
 #include <time.h>
 
+
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
@@ -213,14 +214,14 @@ int almostRound( float f ){
 	return fabs(f - roundf(f)) < ROUNDABLE;
 }
 
-int putAtTop(Piece *piece,  int matrix[GRILLE_W][GRILLE_H], int frameToGo){
+int putAtTop(Piece *piece,  int matrix[GRILLE_W][GRILLE_H], int frameToGo, int *remindRotate){
 	piece->x = roundf((GRILLE_W - piece->size) / 2);
 	piece->y = 0 - piece->firstRow;
 	piece->frameToGo = frameToGo;
 	piece->frameDir = 0;
 	piece->dir = NO_MOVE;
 	piece->frameStop = 0;
-
+	*remindRotate = 0;
 	if(tooCloseFromMatrix(*piece, matrix)){
 		piece->y = UNDEFINED.y;
 		piece->frameToGo = 9999;
@@ -242,11 +243,14 @@ void drawPiece(SDL_Renderer *renderer,SDL_Texture* brickTexture, SDL_Texture *bo
 		caseSize = CASE_SIZE / 2;
 
 	if(isNextPiece){
+		shiftCenterNext.x+=SHIFT_RIGHT_NEXT;
 		if((piece.lastCol-piece.firstCol)%2 == 0 || (piece.giant && ((piece.lastCol-piece.firstCol)/2)%2 == 0 ))
 			shiftCenterNext.x -= CASE_SIZE / 2;
 
 		if((piece.lastRow-piece.firstRow)%2 == 0)
 			shiftCenterNext.y -= CASE_SIZE / 2;
+		if((piece.lastRow-piece.firstRow) == 0)
+			shiftCenterNext.y += CASE_SIZE;
 
 		if(piece.giant)
 			shiftCenterNext.x+=(piece.x) * caseSize;
@@ -271,9 +275,7 @@ void drawPiece(SDL_Renderer *renderer,SDL_Texture* brickTexture, SDL_Texture *bo
 }
 
 int tooCloseFromWall(Piece piece){
-	if(piece.y + piece.firstRow < -ROUNDABLE)
-		return TOO_CLOSE_FROM_TOP;
-	return (piece.x + piece.firstCol < -ROUNDABLE || piece.x + piece.lastCol > GRILLE_W - 1 || piece.y + piece.lastRow > GRILLE_H - 1);
+	return (piece.y + piece.firstRow < -ROUNDABLE || piece.x + piece.firstCol < -ROUNDABLE || piece.x + piece.lastCol > GRILLE_W - 1 || piece.y + piece.lastRow > GRILLE_H - 1);
 }
 
 void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H],int *remindRotate, int rotatePressed){
@@ -287,8 +289,8 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H],in
 			piece->rota -= rotateSens;
 			updateGrille(piece);
 			getColRawInfos(piece);
-			printf("close : %d %d\n",closeWall, rotateSens);
-			if(closeWall == TOO_CLOSE_FROM_TOP && rotatePressed)
+			//printf("close : %d %d\n",closeWall, rotateSens);
+			if(closeWall && rotatePressed)
 				*remindRotate = rotateSens * FRAME_REMIND_ROTATE;
 
 		}
@@ -407,7 +409,7 @@ void getFillPlaces(int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRIL
 	if(firstRow != 0)
 		nbEmpty -= GRILLE_W; //car la dernière ligne scannée aura GRILLE_W cases vides
 
-	printf(" empty %d\n",nbEmpty);
+	//printf(" empty %d\n",nbEmpty);
 
 	int toFill[nbFill];
 	for(int i=0; i<nbFill; i++)
@@ -468,7 +470,7 @@ void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse
 
 		case LASER:
 			printf("laser\n");
-			for(int i=GRILLE_H-1; i > GRILLE_H - (NB_LINES_LASER * nbUse) - 1 && i > 0; i--)
+			for(int i=GRILLE_H-1; i > GRILLE_H - (NB_LINES_LASER * nbUse) - 1 && i > 0 && i > GRILLE_H - MAX_HEIGHT_LASER -1; i--)
 				frameLaser[i] = LASER_FRAME;
 			break;
 
@@ -501,12 +503,17 @@ int getBonusId(int rectId){
 	return bonusId;
 }
 
-void drawMatrix(SDL_Renderer *renderer, SDL_Texture *brickTexture, SDL_Texture *bonusTexture, int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H]){
+void drawMatrix(SDL_Renderer *renderer, SDL_Texture *brickTexture, SDL_Texture *bonusTexture, int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], Piece currentPiece){
 	SDL_Rect src = BRICK_SRC;
 	SDL_Rect dest = BRICK_DEST;
 
-	SDL_SetRenderDrawColor(renderer, 180,180,180,255);
+	SDL_Rect col_piece = {(roundf(currentPiece.x) + currentPiece.firstCol) * CASE_SIZE + MATRIX.x, MATRIX.y, (currentPiece.lastCol-currentPiece.firstCol+1) * CASE_SIZE ,GRILLE_H * CASE_SIZE};
+
+	SDL_SetRenderDrawColor(renderer, CORPS_GRILLE.r, CORPS_GRILLE.g, CORPS_GRILLE.b, CORPS_GRILLE.a);
 	SDL_RenderFillRect(renderer, &MATRIX);
+	SDL_SetRenderDrawColor(renderer, COL_PIECE.r, COL_PIECE.g, COL_PIECE.b, COL_PIECE.a);
+	SDL_RenderFillRect(renderer, &col_piece);
+
 
 	for(int i = 0; i < GRILLE_W; i++){
 		for(int j = 0; j < GRILLE_H; j++){
@@ -532,7 +539,7 @@ void drawMatrix(SDL_Renderer *renderer, SDL_Texture *brickTexture, SDL_Texture *
 
 			}
 			else{
-				SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+				SDL_SetRenderDrawColor(renderer, CONTOUR_GRILLE.r, CONTOUR_GRILLE.g, CONTOUR_GRILLE.b, CONTOUR_GRILLE.a);
 				SDL_RenderDrawRect(renderer, &dest);
 			} //grille
 
@@ -544,28 +551,49 @@ void drawMatrix(SDL_Renderer *renderer, SDL_Texture *brickTexture, SDL_Texture *
 
 void drawLaser(SDL_Renderer *renderer, SDL_Texture *laserTexture, int frameLaser[GRILLE_H]){
 	//laser
-	SDL_Rect anim = LASER_SRC;
-	SDL_Rect dest = LASER_DEST;
+	SDL_Rect anim = LASER_DIM;
+	SDL_Rect dest = LASER_DIM;
 	for(int i=0; i<GRILLE_H; i++){
-		if(frameLaser[i] >= 0){
-			int frame = (LASER_FRAME - frameLaser[i] - LASER_START_SHOOT < 0 ? 0 : LASER_FRAME - frameLaser[i] - LASER_START_SHOOT);
 
-			if (frame>=15){
-				dest.x = LASER_END_POS - (frame - 14) * DIST_PER_FRAME_LASER_DISAPEAR;
-				frame=0;
+		if(frameLaser[i] >= 0){
+			int frameDraw = LASER_START_SHOOT - frameLaser[i] ;
+			if(frameDraw < 0 || frameDraw>DURATION_SHOOT)
+				frameDraw = 0;
+			if (frameLaser[i]>=LASER_ARRIVED){ // deplacement
+				dest.x = SPAWN_LASER + (LASER_FRAME - frameLaser[i]) * (LASER_END_POS-SPAWN_LASER)/(LASER_FRAME-LASER_ARRIVED);
+				frameDraw=0;
 			}
-			else if(frame >= LASER_RECOIL &&  frame < LASER_RECOIL + LASER_RECOIL_DURATION){
-				dest.x = LASER_END_POS - LASER_RECOIL_DIST[frame-LASER_RECOIL];
+			else if(frameLaser[i] >= LASER_RECOIL &&  frameLaser[i] < LASER_RECOIL + LASER_RECOIL_DURATION){ //recoil
+				dest.x = LASER_END_POS - LASER_RECOIL_DIST[frameLaser[i]-LASER_RECOIL];
 			}
-			else if(LASER_FRAME - frameLaser[i] < LASER_START_SHOOT)
-				dest.x = HUD_X +( LASER_FRAME - frameLaser[i]) * DIST_PER_FRAME_LASER; // add selon frameLaser[i]
+			else if(frameLaser[i] < LASER_RETREAT){
+				dest.x = LASER_END_POS + (LASER_RETREAT - frameLaser[i]) * (UNSPAWN_LASER - LASER_END_POS)/(LASER_RETREAT);
+			}
 			else
 				dest.x = LASER_END_POS;
 
 			dest.y = i * CASE_SIZE + MATRIX.y;
 
-			anim.y = frame * LASER_SRC.h;
-			SDL_RenderCopy(renderer, laserTexture, &anim, &dest);
+			anim.y = frameDraw * LASER_DIM.h;
+
+			if(dest.x + LASER_WIDTH > INNER_LEFT){
+				if(dest.x < INNER_LEFT){
+					anim.w = dest.x -INNER_LEFT +LASER_WIDTH;
+					anim.x = INNER_LEFT - dest.x;
+
+					dest.w = dest.x + LASER_WIDTH-INNER_LEFT;
+					dest.x = INNER_LEFT;
+
+
+					if(i==GRILLE_H-1)
+						printf("inner : %d, %d\n",anim.x, anim.w );
+
+				}
+				SDL_RenderCopy(renderer, laserTexture, &anim, &dest);
+			}
+			if(i==GRILLE_H-1)
+				printf(" dest %d\n", dest.x );
+
 		}
 	}
 	SDL_SetRenderDrawColor(renderer,255,255,255,255);
@@ -597,10 +625,14 @@ void drawFill(SDL_Renderer* renderer, SDL_Texture *brickTexture, int matrixFill[
 					dest.x = SPAWN_FILL.x + ((col * CASE_SIZE + MATRIX.x) - SPAWN_FILL.x ) * (FRAME_FILL - matrixFill[col][row] + 1) / (float)(FRAME_DEPLACEMENT_FILL );
 					dest.y = SPAWN_FILL.y + ((row * CASE_SIZE + MATRIX.y) - SPAWN_FILL.y ) * (FRAME_FILL - matrixFill[col][row] + 1) / (float)(FRAME_DEPLACEMENT_FILL );
 
-					//SDL_SetTextureColorMod(brickTexture, 255 / ((FRAME_FILL-FRAME_DEPLACEMENT_FILL) - matrixFill[col][row] + 1), 255 / ((FRAME_FILL-FRAME_DEPLACEMENT_FILL) - matrixFill[col][row] + 1), 255 / ((FRAME_FILL-FRAME_DEPLACEMENT_FILL) - matrixFill[col][row] + 1));
-					SDL_RenderCopy(renderer, brickTexture, &src, &dest);
-					SDL_SetTextureColorMod(brickTexture, 255, 255, 255);
-
+					if(dest.x < INNER_RIGHT){
+						if(INNER_RIGHT-dest.x<CASE_SIZE)
+							dest.w=INNER_RIGHT-dest.x;
+						else
+							dest.w=BRICK_DEST.w;
+						SDL_RenderCopy(renderer, brickTexture, &src, &dest);
+						SDL_SetTextureColorMod(brickTexture, 255, 255, 255);
+					}
 				}
 			}
 		}
@@ -702,10 +734,7 @@ void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteL
 		if(frameLaser[i] >= 0)
 			frameLaser[i]--;
 
-		if(frameCompleteLine[i] == 0){
-			eraseLine(matrix, matrixFill, i, frameLaser, frameCompleteLine);
-			i--;
-		}
+
 
 
 		if(frameCompleteLine[i] >= 0)
@@ -720,6 +749,11 @@ void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteL
 					checkLines(matrix, frameCompleteLine, bonusActivate, SDL_FALSE);
 				}
 			}
+
+		if(frameCompleteLine[i] == 0){
+			eraseLine(matrix, matrixFill, i, frameLaser, frameCompleteLine);
+			//i--;
+		}
 
 	}
 }
@@ -746,6 +780,7 @@ int main(){
 
 
 	//frames and distances
+	int totalFrame = 0;
 	int framePassed = 0;
 	float frame[NB_FRAMES];
 	frame[LATERAL] = FRAME_LATERAL;
@@ -816,6 +851,8 @@ int main(){
 	SDL_Rect hudView = {0, 0, (PLAYGROUND_SIZE_W + 2 * HUD_W), (PLAYGROUND_SIZE_H + 2 * HUD_H)};
 	SDL_Rect hudDraw = {0, 0, (PLAYGROUND_SIZE_W + 2 * HUD_W)/ratioWindowSize, (PLAYGROUND_SIZE_H + 2 * HUD_H)/ratioWindowSize};
 
+	SDL_Rect background_src = BACKGROUND_SRC;
+
 	//hud and menus
 	int paused = SDL_FALSE;
 	int rdyToPause = SDL_TRUE;
@@ -829,8 +866,10 @@ int main(){
 	SDL_Texture *laserTexture = IMG_LoadTexture(renderer, "./Textures/laserAnim.png");
 	SDL_Texture *brickTexture = IMG_LoadTexture(renderer, "./Textures/bricks.png");
 	SDL_Texture *bonusTexture = IMG_LoadTexture(renderer, "./Textures/bonus.png");
-	if( hudTexture == NULL ){
-		printf("Erreur lors de la creation de texture");
+	SDL_Texture *grilleHudTexture = IMG_LoadTexture(renderer, "./Textures/hud_grille.png");
+	SDL_Texture *backgroundTexture = IMG_LoadTexture(renderer, "./Textures/background.png");
+	if( backgroundTexture == NULL ){
+		printf("Erreur lors de la creation de texture%s", SDL_GetError());
 		return EXIT_FAILURE;
 	}
 
@@ -843,7 +882,7 @@ int main(){
 	initPiece(&nextPiece);
 	getNewPiece(&currentPiece, SDL_FALSE);
 	getNewPiece(&nextPiece, SDL_FALSE);
-	putAtTop(&currentPiece, matrix, (int)frame[TO_GO]);
+	putAtTop(&currentPiece, matrix, (int)frame[TO_GO], &remindRotate);
 	putAtNextPiece(&nextPiece);
 
 /////////////////////
@@ -956,7 +995,7 @@ int main(){
 					updateDistances(frame, distances, &framePassed);
 					transfertNextPiece(&currentPiece,nextPiece);
 					getNewPiece(&nextPiece, SDL_FALSE);
-					if( putAtTop(&currentPiece, matrix, (int)frame[TO_GO]) == COULDNT_PUT )
+					if( putAtTop(&currentPiece, matrix, (int)frame[TO_GO], &remindRotate) == COULDNT_PUT )
 						break;
 				}
 
@@ -972,7 +1011,12 @@ int main(){
 	//////////
 	// Draw //`
 	//////////
-		drawMatrix(renderer, brickTexture, bonusTexture, matrix, frameCompleteLine);
+
+
+		SDL_RenderCopy(renderer, backgroundTexture, &background_src, &hudView);
+
+		SDL_RenderCopy(renderer, grilleHudTexture, NULL, &HUD_GRILLE_DIM);
+		drawMatrix(renderer, brickTexture, bonusTexture, matrix, frameCompleteLine, currentPiece);
 		drawPiece(renderer, brickTexture, bonusTexture, currentPiece, SDL_FALSE);
 		drawPiece(renderer, brickTexture, bonusTexture, nextPiece, SDL_TRUE);
 		drawLaser(renderer, laserTexture, frameLaser);
@@ -1007,7 +1051,9 @@ int main(){
 
 		//Actualise frames
 		updateFrames(&framePassed, frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, &remindRotate);
-
+		totalFrame++;
+		background_src.x = BACKGROUND_SRC.w * ((totalFrame/3)%BACKGROUND_COL);
+		background_src.y = BACKGROUND_SRC.h * ((totalFrame/(3*BACKGROUND_COL))%BACKGROUND_ROW);
 
 		// On efface
 		SDL_SetRenderDrawColor(renderer, 0, 40, 200, 255);

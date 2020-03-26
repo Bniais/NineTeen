@@ -3,27 +3,27 @@ bugs :
 
 
  - bonus :
- 	fill trous
+ 	//fill trous
 	more ptns (flat or multiplier)
 	//laser : supprime lignes du bas
 	/slow
 
 - malus :
 	/giant
-	/speed (handle next Piece)
+	//speed
 
  - anims :
- 	giant
- 	laser
-	fill
- 	completion ligne
-	falling when completion ligne
-	new bloc
+ 	//giant
+ 	//laser
+	//fill
+ 	//completion ligne
+	\\falling when completion ligne
+	/new bloc
 	SLOW
 	ptns
 
  - affichage :
- 	/next piece
-	Texture
+ 	//next piece
+	//Texture
 	speed
 	ptns
