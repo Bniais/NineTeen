@@ -326,6 +326,8 @@ int detectionEnvironnement(float x,float y)
 	
 	if( x < 5.0 && x > -5.0 && y > 20.0)
 		return 0;
+	if( y > 8.5 && y < 13.5 && (  (x < 8.0 && x > 1.5) || (x > -8.0 && x < -1.5)   )   )
+		return 0;
 	if( y < -5.0 )
 		return 0;
 	if( y > 24.0 )
@@ -410,7 +412,7 @@ void mouvementCamera(struct Camera_s *camera)
 	}
 
 
-	if (camera->px <= 4.5 && camera->px >= -4.5 && camera->pz <= 4.5 && camera->pz >= -4.5)
+	if (camera->px <= 4 && camera->px >= -4 && camera->pz <= 4 && camera->pz >= -4)
 		camera->py = 4.5F;
 	else
 		camera->py = HAUTEUR_CAMERA_DEBOUT;
