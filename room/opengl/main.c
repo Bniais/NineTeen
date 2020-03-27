@@ -16,6 +16,7 @@
   #define M_PI 3.1415
 #endif
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include <math.h>
 
 // LOCAL LIBRARY
@@ -27,13 +28,14 @@
 
 
 GLuint scene_list = 0; // NB SCENE
-
+float VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
+float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 
 
 #define WinWidth 1600
 #define WinHeight 900
 
-#define FPS 60
+#define FPS 30
 static const float FRAME_TIME = 1000/FPS;
 
 
@@ -64,33 +66,97 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 
 
+float distancePoint(float xa, float ya, float xb, float yb)
+{
+	float resultat = sqrt( pow( (xb - xa) , 2 ) + pow( (yb - ya) , 2 ) ) ;
+	if (resultat < 0)
+		return resultat * -1;
+	else
+	 	return resultat;
+}
+
+
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter)
+{
+	float volume = MIX_MAX_VOLUME;
+	float distance = distancePoint(xa,ya,xb,yb);
+
+	if(distance > porter)
+		volume = 0;
+	else
+	{
+		float _distance = porter - distance;
+		volume = ( volume /porter) * _distance;
+	}
+
+	Mix_Volume(channel, (int)volume);
+}
+
+void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music)
+{
+	if ( distancePoint(dernierePosition->px,dernierePosition->pz, camera.px, camera.pz) > 1.6F )
+	{
+		*dernierePosition = camera;
+		Mix_PlayChannel(channel,music,0);
+	}
+}
+
 
 int main( int argc, char *argv[ ], char *envp[ ] )
 {
-	const C_STRUCT aiScene* scene = NULL; // MODEL/SCENE
-
-	// PRESET VALUE CAMERA //
-	static struct Camera_s camera,cible[15];
-	initalisation(&camera,cible);
-
 	//SDL INIT
 	SDL_Init(SDL_INIT_EVERYTHING);
 	Window = SDL_CreateWindow("Nineteen", 0, 0, WinWidth, WinHeight, WindowFlags);
 	Context = SDL_GL_CreateContext(Window);
 
+	//MIXER Init
+	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 1, 1024 ) == -1 )
+			printf("Erreur init SDL_Mixer : %s\n",Mix_GetError() );
+
+
+	// PRESET VALUE CAMERA //
+	static struct Camera_s camera,cible[15],jouerSon;
+	initalisation(&camera,cible);
+
+	jouerSon = camera;
+
+	Mix_Chunk **musicEnvironnement = malloc(sizeof(Mix_Chunk));
+	*(musicEnvironnement + 0)	= Mix_LoadWAV("01.wav");
+	*(musicEnvironnement + 1)	= Mix_LoadWAV("02.wav");
+	*(musicEnvironnement + 2)	= Mix_LoadWAV("03.wav");
+	*(musicEnvironnement + 3)	= Mix_LoadWAV("walk.wav");
+
+
+	Mix_Volume(3,SON_PAS);
+
+
+	Mix_PlayChannel(0 , *(musicEnvironnement + 0), -1);
+	Mix_PlayChannel(1 , *(musicEnvironnement + 1), -1);
+	Mix_PlayChannel(2 , *(musicEnvironnement + 2) , -1);
+
+
+
+	const C_STRUCT aiScene* scene = NULL;
 	aiImportModel("salle.obj",&scene);
 	GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
+
 	int Running = 1;
+
 
 	while (Running)
 	{
 		int times_at_start_frame = SDL_GetTicks();
 
+		reglageVolume(0,-4.0,10.5,camera.px,camera.pz,10.0);
+		reglageVolume(1,4.0,10.5,camera.px,camera.pz,10.0);
+		reglageVolume(2,0.0,0.0,camera.px,camera.pz,10.0);
+		bruitagePas(&jouerSon,camera,3,*(musicEnvironnement + 3));
+
+
 		lancerMachine(scene,&Running,camera,cible);
 
 		SDL_GL_AppliquerScene(scene,&camera);
-
 
 		// attente FPS
 		int frame_delay = SDL_GetTicks() - times_at_start_frame;
@@ -98,8 +164,9 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 				SDL_Delay(FRAME_TIME - frame_delay );
 	}
 
-
-
+	Mix_FreeChunk(*(musicEnvironnement + 0) );
+	Mix_FreeChunk(*(musicEnvironnement + 1) );
+	Mix_FreeChunk(*(musicEnvironnement + 2) );
 	aiReleaseImport(scene);
 	SDL_GL_DeleteContext(Context);
 	SDL_DestroyWindow(Window);
@@ -301,9 +368,9 @@ void mouvementCamera(struct Camera_s *camera)
 
 	// gestion des hauteur dans l'espace
 	if (camera->px <= 4 && camera->px >= -4 && camera->pz <= 4 && camera->pz >= -4)
-		camera->py = 4.5F;
+		camera->py = 1.0F + HAUTEUR_CAMERA;
 	else
-		camera->py = HAUTEUR_CAMERA_DEBOUT;
+		camera->py = HAUTEUR_CAMERA;
 
 
 
@@ -317,7 +384,7 @@ void mouvementCamera(struct Camera_s *camera)
 
 int detectionEnvironnement(float x,float y)
 {
-	printf("X = %f Z = %f\n",x,y);
+	//printf("X = %f Z = %f\n",x,y);
 
 
 	// HITBOX
@@ -537,6 +604,21 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 
 					}
+				case SDLK_c:
+				{
+
+					if(VITESSE_DEPLACEMENT == VITESSE_DEPLACEMENT_DEBOUT )
+					{
+						HAUTEUR_CAMERA = HAUTEUR_CAMERA_ACCROUPI;
+						VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_ACCROUPI;
+					}
+					else
+					{
+						HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
+						VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
+					}
+
+				}
 				default:
 					break;
 			}
