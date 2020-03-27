@@ -17,6 +17,7 @@
 #endif
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 #include <math.h>
 
 // LOCAL LIBRARY
@@ -31,19 +32,17 @@ GLuint scene_list = 0; // NB SCENE
 float VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
 float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 
-
 #define WinWidth 1920
 #define WinHeight 1080
 
 #define FPS 30
 static const float FRAME_TIME = 1000/FPS;
 
-
 static SDL_Window *Window = NULL;
 static SDL_GLContext Context;
 
 
-uint32_t WindowFlags = SDL_WINDOW_OPENGL;
+uint32_t WindowFlags = SDL_WINDOW_OPENGL | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC ;
 
 
 
@@ -63,43 +62,67 @@ int detecterMachine(float x,float y);
 void animationLancerMachine(struct Camera_s camera, struct Camera_s cible);
 void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[]);
 
+float distancePoint(float xa, float ya, float xb, float yb);
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter);
+void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music);
 
 
 
-float distancePoint(float xa, float ya, float xb, float yb)
-{
-	float resultat = sqrt( pow( (xb - xa) , 2 ) + pow( (yb - ya) , 2 ) ) ;
-	if (resultat < 0)
-		return resultat * -1;
-	else
-	 	return resultat;
+
+
+
+
+
+
+
+
+
+
+void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y) {
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+
+
+
+  gluOrtho2D(0, WinWidth, 0, WinHeight); // m_Width and m_Height is the resolution of window
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+
+  glDisable(GL_DEPTH_TEST);
+  glEnable(GL_TEXTURE_2D);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  GLuint texture;
+  glGenTextures(1, &texture);
+  glBindTexture(GL_TEXTURE_2D, texture);
+
+  SDL_Surface * sFont = TTF_RenderText_Blended(font, message, color);
+
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sFont->w, sFont->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
+
+
+  glBegin(GL_QUADS);
+  {
+    glTexCoord2f(0,0); glVertex2f(x, y);
+    glTexCoord2f(1,0); glVertex2f(x + sFont->w, y);
+    glTexCoord2f(1,1); glVertex2f(x + sFont->w, y + sFont->h);
+    glTexCoord2f(0,1); glVertex2f(x, y + sFont->h);
+  }
+  glEnd();
+
+  glDeleteTextures(1, &texture);
+  SDL_FreeSurface(sFont);
 }
 
 
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter)
-{
-	float volume = MIX_MAX_VOLUME;
-	float distance = distancePoint(xa,ya,xb,yb);
 
-	if(distance > porter)
-		volume = 0;
-	else
-	{
-		float _distance = porter - distance;
-		volume = ( volume /porter) * _distance;
-	}
-
-	Mix_Volume(channel, (int)volume);
-}
-
-void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music)
-{
-	if ( distancePoint(dernierePosition->px,dernierePosition->pz, camera.px, camera.pz) > 1.6F )
-	{
-		*dernierePosition = camera;
-		Mix_PlayChannel(channel,music,0);
-	}
-}
 
 
 int main( int argc, char *argv[ ], char *envp[ ] )
@@ -117,7 +140,6 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 	// PRESET VALUE CAMERA //
 	static struct Camera_s camera,cible[15],jouerSon;
 	initalisation(&camera,cible);
-
 	jouerSon = camera;
 
 	Mix_Chunk **musicEnvironnement = malloc(sizeof(Mix_Chunk));
@@ -140,8 +162,10 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 	Mix_PlayChannel(2 , *(musicEnvironnement + 2) , -1);
 
 
-
-
+	TTF_Init();
+	TTF_Font * font = TTF_OpenFont("police.ttf", 30);
+	SDL_Color color = {255,255,255};
+	char *msg = "salut samy";
 
 	const C_STRUCT aiScene* scene = NULL;
 	aiImportModel("salle.obj",&scene);
@@ -149,6 +173,8 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 
 
 	int Running = 1;
+	int count_IPS = SDL_GetTicks();
+	float ips=0.0;
 
 
 	while (Running)
@@ -161,16 +187,34 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 		bruitagePas(&jouerSon,camera,3,*(musicEnvironnement + 3));
 
 
+
+		GL_InitialiserParametre(WinWidth,WinHeight,camera);
+
+
 		lancerMachine(scene,&Running,camera,cible);
 
 		SDL_GL_AppliquerScene(scene,&camera);
+
+		RenderText(font,msg,color,150,50);
+		SDL_GL_SwapWindow(Window);
 
 		// attente FPS
 		int frame_delay = SDL_GetTicks() - times_at_start_frame;
 			if(frame_delay < FRAME_TIME)
 				SDL_Delay(FRAME_TIME - frame_delay );
+
+
+
+		ips++;
+		if(SDL_GetTicks() - count_IPS > 1000){
+			printf("IPS %f\n",ips );
+			count_IPS = SDL_GetTicks();
+			ips = 0;
+		}
+
 	}
 
+	TTF_CloseFont(font);
 	Mix_FreeChunk(*(musicEnvironnement + 0) );
 	Mix_FreeChunk(*(musicEnvironnement + 1) );
 	Mix_FreeChunk(*(musicEnvironnement + 2) );
@@ -212,7 +256,40 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 
 
 
+float distancePoint(float xa, float ya, float xb, float yb)
+{
+	float resultat = sqrt( pow( (xb - xa) , 2 ) + pow( (yb - ya) , 2 ) ) ;
+	if (resultat < 0)
+		return resultat * -1;
+	else
+	 	return resultat;
+}
 
+
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter)
+{
+	float volume = MIX_MAX_VOLUME;
+	float distance = distancePoint(xa,ya,xb,yb);
+
+	if(distance > porter)
+		volume = 0;
+	else
+	{
+		float _distance = porter - distance;
+		volume = ( volume /porter) * _distance;
+	}
+
+	Mix_Volume(channel, (int)volume);
+}
+
+void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music)
+{
+	if ( distancePoint(dernierePosition->px,dernierePosition->pz, camera.px, camera.pz) > 1.6F )
+	{
+		*dernierePosition = camera;
+		Mix_PlayChannel(channel,music,0);
+	}
+}
 
 
 void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera)
@@ -221,6 +298,13 @@ void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+
+	SDL_Color color = {0,0,0};
+
+	TTF_Font * font = TTF_OpenFont("police.ttf", 100);
+	char *msg = "MON MESSAGE";
+  SDL_Surface * sFont = TTF_RenderText_Blended(font, msg, color);
 
 	mouvementCamera(camera);
 
@@ -237,7 +321,7 @@ void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera
 
 	glCallList(scene_list);
 
-	SDL_GL_SwapWindow(Window);
+//	SDL_GL_SwapWindow(Window);
 }
 
 
@@ -613,7 +697,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					}break;
 				case SDLK_c:
 				{
-					printf("Je suis la\n\n" );
 					if(VITESSE_DEPLACEMENT == VITESSE_DEPLACEMENT_DEBOUT )
 					{
 						HAUTEUR_CAMERA = HAUTEUR_CAMERA_ACCROUPI;
@@ -711,4 +794,14 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 		//	sceneMkVAOs(scene, scene->mRootNode, &ivao);
 			rendu_Model(scene, scene->mRootNode);
 	}
+*/
+
+
+/*
+#ifdef __APPLE__
+	GLint                       sync = 0;
+	CGLContextObj               ctx = CGLGetCurrentContext();
+
+	CGLSetParameter(ctx, kCGLCPSwapInterval, &sync);
+#endif
 */
