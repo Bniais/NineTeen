@@ -32,8 +32,8 @@ float VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
 float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 
 
-#define WinWidth 1600
-#define WinHeight 900
+#define WinWidth 1920
+#define WinHeight 1080
 
 #define FPS 30
 static const float FRAME_TIME = 1000/FPS;
@@ -126,13 +126,20 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 	*(musicEnvironnement + 2)	= Mix_LoadWAV("03.wav");
 	*(musicEnvironnement + 3)	= Mix_LoadWAV("walk.wav");
 
-
+	Mix_Volume(0,0);
+	Mix_Volume(1,0);
+	Mix_Volume(2,0);
 	Mix_Volume(3,SON_PAS);
+	Mix_Volume(4,MIX_MAX_VOLUME/5);
+	Mix_Volume(5,MIX_MAX_VOLUME/5);
+	Mix_Volume(6,MIX_MAX_VOLUME/5);
 
 
 	Mix_PlayChannel(0 , *(musicEnvironnement + 0), -1);
 	Mix_PlayChannel(1 , *(musicEnvironnement + 1), -1);
 	Mix_PlayChannel(2 , *(musicEnvironnement + 2) , -1);
+
+
 
 
 
@@ -603,10 +610,10 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 
 
-					}
+					}break;
 				case SDLK_c:
 				{
-
+					printf("Je suis la\n\n" );
 					if(VITESSE_DEPLACEMENT == VITESSE_DEPLACEMENT_DEBOUT )
 					{
 						HAUTEUR_CAMERA = HAUTEUR_CAMERA_ACCROUPI;
@@ -618,7 +625,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
 					}
 
-				}
+				}break;
 				default:
 					break;
 			}

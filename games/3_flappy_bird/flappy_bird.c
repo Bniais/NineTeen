@@ -343,7 +343,7 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 			traitement = 0;
 
 			if(changeProtectedVar(score_hash, score, (*score)+1, const_1, const_2, const_3, const_4))
-				Mix_PlayChannel( -1, score_wav,0);
+				Mix_PlayChannel( 5, score_wav,0);
 			/*else
 				ban commands*/
 		}
@@ -354,7 +354,7 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 
 
 			if(changeProtectedVar(score_hash, score, (*score)+1, const_1, const_2, const_3, const_4))
-				Mix_PlayChannel( -1, score_wav,0);
+				Mix_PlayChannel( 5, score_wav,0);
 			/*else
 				ban commands*/
 
@@ -363,7 +363,7 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 		if(pilonne[2].position + OBSTACLE_VERT.w*SCALE_TO_FIT + PERSO.w*SCALE_TO_FIT < WINDOW_L/2 ){
 			traitement = 2;
 			if(changeProtectedVar(score_hash, score, (*score)+1, const_1, const_2, const_3, const_4))
-				Mix_PlayChannel( -1, score_wav,0);
+				Mix_PlayChannel( 5, score_wav,0);
 			/*else
 				ban commands*/
 		}
@@ -372,7 +372,7 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 		if(pilonne[3].position + OBSTACLE_VERT.w*SCALE_TO_FIT + PERSO.w*SCALE_TO_FIT < WINDOW_L/2 ){
 			traitement = 3;
 			if(changeProtectedVar(score_hash, score, (*score)+1, const_1, const_2, const_3, const_4))
-				Mix_PlayChannel( -1, score_wav,0);
+				Mix_PlayChannel( 5, score_wav,0);
 			/*else
 				ban commands*/
 		}
@@ -434,7 +434,7 @@ int collision(pilonne *pilonne, SDL_Point emplacementPersonnage, Mix_Chunk *hurt
 
 	// jouer un son
 	if (collision_detecter)
-		Mix_PlayChannel( -1, hurt_wav,0);
+		Mix_PlayChannel( 6, hurt_wav,0);
 
 	return collision_detecter;
 }
@@ -468,7 +468,7 @@ void attendreAvantDepart(Mix_Chunk *flap_wav)
 	}
 
 	// jouer le son de saut //
-	Mix_PlayChannel( -1, flap_wav,0);
+	Mix_PlayChannel( 4, flap_wav,0);
 
 }
 
@@ -481,7 +481,7 @@ void evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_w
 
 			if(ev.key.keysym.sym == SDLK_SPACE)
 			{
-				Mix_PlayChannel( -1, flap_wav,0);
+				Mix_PlayChannel( 4, flap_wav,0);
 				*upper = UPPER_STEP;
 				*vitesseGraviter = 0;
 				*nb_boucle = 0;
@@ -551,10 +551,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h)
 
 
 	// init sound effect //
-	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 1, 1024 ) == -1 )
-		{
-			printf("Erreur init SDL_Mixer\n" );
-		}
+
 
 
 	Mix_Chunk *flap_wav = Mix_LoadWAV( DIR_FLAP_WAV);
