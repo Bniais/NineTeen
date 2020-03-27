@@ -728,18 +728,12 @@ void eat_fruit(SnakePart **snake, size_t *size, Fruit** fruitTab, size_t* nbFrui
 
 int strlen_num(int score)
 {
-	int count=0;
+	int count=1;
 
-	if (score)
-	{
-		while(score > 0)
-		{
-			score /=10;
-			count++;
-		}
-	}
-	else
+	while(score >= 10){
+		score /=10;
 		count++;
+	}
 
 	return count;
 }
@@ -752,9 +746,12 @@ void afficherScore(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score sco
 	SDL_Rect src = SCORE_SRC;
 	SDL_Rect dest = {scoreAffichage.x + (scoreAffichage.size*taille)/2 , scoreAffichage.y - (FONT_HEIGHT_RATIO*scoreAffichage.size) / 2 , scoreAffichage.size, FONT_HEIGHT_RATIO*scoreAffichage.size };
 
+	dest.x -= dest.w;
+	//dest.y -= dest.h/2;
 	for(int i=0 ; i < taille; i++)
 	{
 		src.x = SCORE_SRC.w * (scoreAffichage.score%10);
+		SDL_SetTextureAlphaMod(scoreTexture, ALPHA_SCORE[scoreAffichage.frame]);
 		SDL_RenderCopy(renderer,scoreTexture,&src,&dest);
 		scoreAffichage.score /=10;
 		dest.x -= scoreAffichage.size;
