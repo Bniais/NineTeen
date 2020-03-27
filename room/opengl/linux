@@ -1,2 +1,2 @@
 all:main.c
-	gcc main.c ../../games/3_flappy_bird/flappy_bird.c -o main -std=c99  -lm -lSDL2 -lassimp -lGL -lGLU -lglut -lSDL2_image -lSDL2_mixer
+	gcc main.c  import.c ../../games/3_flappy_bird/flappy_bird.c `sdl2-config --cflags --libs` -o main -std=c99  -lm -lSDL2 -lassimp -lGL -lGLU -lglut -lSDL2_image -lSDL2_mixer -lSDL2_ttf
