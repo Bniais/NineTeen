@@ -35,7 +35,7 @@ float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 #define WinWidth 1920
 #define WinHeight 1080
 
-#define FPS 30
+#define FPS 120
 static const float FRAME_TIME = 1000/FPS;
 
 static SDL_Window *Window = NULL;
@@ -127,6 +127,7 @@ void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y) {
 
 int main( int argc, char *argv[ ], char *envp[ ] )
 {
+	double countFrame = 0;
 	//SDL INIT
 	SDL_Init(SDL_INIT_EVERYTHING);
 	Window = SDL_CreateWindow("Nineteen", 0, 0, WinWidth, WinHeight, WindowFlags);
@@ -135,6 +136,15 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 	//MIXER Init
 	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 1, 1024 ) == -1 )
 			printf("Erreur init SDL_Mixer : %s\n",Mix_GetError() );
+
+
+
+			#ifdef __APPLE__
+				GLint                       sync = 0;
+				CGLContextObj               ctx = CGLGetCurrentContext();
+
+				CGLSetParameter(ctx, kCGLCPSwapInterval, &sync);
+			#endif
 
 
 	// PRESET VALUE CAMERA //
@@ -198,12 +208,17 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 		RenderText(font,msg,color,150,50);
 		SDL_GL_SwapWindow(Window);
 
+
+
+
 		// attente FPS
 		int frame_delay = SDL_GetTicks() - times_at_start_frame;
 			if(frame_delay < FRAME_TIME)
 				SDL_Delay(FRAME_TIME - frame_delay );
 
 
+		countFrame++;
+		printf("FRAME = %f\n",countFrame );
 
 		ips++;
 		if(SDL_GetTicks() - count_IPS > 1000){
@@ -213,6 +228,8 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 		}
 
 	}
+
+
 
 	TTF_CloseFont(font);
 	Mix_FreeChunk(*(musicEnvironnement + 0) );
@@ -301,10 +318,6 @@ void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera
 
 
 	SDL_Color color = {0,0,0};
-
-	TTF_Font * font = TTF_OpenFont("police.ttf", 100);
-	char *msg = "MON MESSAGE";
-  SDL_Surface * sFont = TTF_RenderText_Blended(font, msg, color);
 
 	mouvementCamera(camera);
 
@@ -794,14 +807,4 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 		//	sceneMkVAOs(scene, scene->mRootNode, &ivao);
 			rendu_Model(scene, scene->mRootNode);
 	}
-*/
-
-
-/*
-#ifdef __APPLE__
-	GLint                       sync = 0;
-	CGLContextObj               ctx = CGLGetCurrentContext();
-
-	CGLSetParameter(ctx, kCGLCPSwapInterval, &sync);
-#endif
 */
