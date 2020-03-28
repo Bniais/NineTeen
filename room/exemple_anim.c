@@ -1,5 +1,8 @@
-#include "room.h"
+//#include "room.h"
 #include "../define/define.h"
+#include <SDL.h>
+
+#include <SDL_image.h>
 
 #define NO_TURN -1
 #define TURN_LEFT 0
@@ -12,7 +15,7 @@ const SDL_Point CHAR_DIM = {64,96};
 
 #define NB_ANIM_CHAR 8.0
 #define TIME_TOTAL_ANIM 1000
-#define FPS 60
+#define FPS 10
 //On a 8 anim pour chaque dir, et ces 8 anims prennent 1sec et en 1sec il y a 60 frames donc 8 anim prendront 60 frames donc 1 anim prendra 7.5 frames
 
 //(en réalité le sprite à plus que 5 anim mais on se limite à 5 ici)
@@ -21,7 +24,7 @@ SDL_Rect select_anim(int turn, long frame)
 {
 	SDL_Rect r;
 	r.x=CHAR_DIM.x*(int)((frame%FPS)/(((TIME_TOTAL_ANIM/1000.0)*FPS)/NB_ANIM_CHAR));
-	printf("%ld / %f = %d\n",(frame%FPS),(((TIME_TOTAL_ANIM/1000.0)*FPS)/NB_ANIM_CHAR), (int)((frame%FPS)/(((TIME_TOTAL_ANIM/1000.0)*FPS)/NB_ANIM_CHAR)));
+	//printf("%ld / %f = %d\n",(frame%FPS),(((TIME_TOTAL_ANIM/1000.0)*FPS)/NB_ANIM_CHAR), (int)((frame%FPS)/(((TIME_TOTAL_ANIM/1000.0)*FPS)/NB_ANIM_CHAR)));
 	//on retrouve nos 7.5frames, et ça retourne un nombre entre 0/7.5 et 59/7.5 càd entre 0 et 7
 	//les 7.5 premieres frames (0-6) seront pour l'anim 1 puis 7-14 pour 2, ...
 	//et on multiplie ce résultat par charDim.x pour décaler le rectangle pour obtenir que l'animation ciblée
@@ -36,13 +39,19 @@ SDL_Rect select_anim(int turn, long frame)
 	return r;
 }
 
+SDL_Rect vaisseau_srcr = {0,0,72,55};
+SDL_Rect vaisseau_srcl = {0,55,72,55};
+SDL_Rect vaisseau_dest = {200,200,150,150};
+SDL_Rect gem_src = {0,0,72,55};
 
+int signl = -1;
+int signr = -1;
 int main(){
 	//initialize SDL
 	SDL_Init(SDL_INIT_EVERYTHING );
 
 	//Creation fenêtre
-	SDL_Window* myWindow=SDL_CreateWindow("Snake", WINDOW_X, WINDOW_Y,	WINDOW_W, WINDOW_H, WINDOW_FLAG);
+	SDL_Window* myWindow=SDL_CreateWindow("Snake", 0, 0,	500, 500, WINDOW_FLAG);
 
 	//Creation renderer
 	SDL_Renderer* renderer = SDL_CreateRenderer(myWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC); // Création du renderer
@@ -62,6 +71,8 @@ int main(){
 
 	//Creation texture
 	SDL_Texture* texture = IMG_LoadTexture(renderer, "link.jpg");
+	SDL_Texture* vaisseau = IMG_LoadTexture(renderer, "vaisseau.png");
+	SDL_Texture* gem = IMG_LoadTexture(renderer, "gem.png");
 	if(!texture)
 	{
 		printf("Erreur lors de la creation d'une texture : %s",SDL_GetError());
@@ -78,8 +89,8 @@ int main(){
 	int lastTurn=TURN_DOWN; //La dernière direction prise (pour avoir une direction à l'arrêt)
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL); //dans le main
 
-
-
+	int angle = 0;
+	int angleChange[5] = { 1, 2, 5 , 8, 12};
 	int quit=0;
 	while(!quit){
 		SDL_Event event;
@@ -105,28 +116,85 @@ int main(){
 		//Keyboard inputs
     SDL_PumpEvents();
 		//Ici, la priorité est à l'élément le plus en haut (si on appuie sur droite+gauche, ça bouge à gauche)
-    if(keystate[SDL_SCANCODE_LEFT])
-      turn=TURN_LEFT;
-    else if(keystate[SDL_SCANCODE_RIGHT])
-      turn=TURN_RIGHT;
-    else if(keystate[SDL_SCANCODE_UP])
-      turn=TURN_UP;
-		else if(keystate[SDL_SCANCODE_DOWN])
-      turn=TURN_DOWN;
+    if(keystate[SDL_SCANCODE_LEFT]){
+		signl = 1;
+	}
+	else{
+		signl = -1;
+		if(vaisseau_srcl.x>5*vaisseau_srcl.w)
+			vaisseau_srcl.x=5*vaisseau_srcl.w;
+	}
+
+    if(keystate[SDL_SCANCODE_RIGHT]){
+
+		signr = 1;
+	}
+    else {
+
+		signr = -1;
+		if(vaisseau_srcr.x>5*vaisseau_srcr.w)
+			vaisseau_srcr.x=5*vaisseau_srcr.w;
+	}
 
 		//Drawing
 
 		//On met à jour quel rectangle de notre sprite on va dessiner, si on ne bouge plus on le met à la frame 0 (premiere animation de la ligne)
-		if(turn!=NO_TURN)
-			char_rect=select_anim(turn, frame_move);
-		else
-			char_rect=select_anim(lastTurn, 0);
+	if(turn!=NO_TURN)
+		char_rect=select_anim(turn, frame_move);
+	else
+		char_rect=select_anim(lastTurn, 0);
 
-		//On le dessine
-		SDL_RenderCopy(renderer, texture,&char_rect, &target);
 
-		//On affiche
-		SDL_RenderPresent(renderer);
+	printf("%d\n", vaisseau_srcr.x/vaisseau_srcr.w);
+	printf("%d\n", vaisseau_srcl.x/vaisseau_srcl.w);
+
+	vaisseau_srcl.x = vaisseau_srcl.x + signl * vaisseau_srcl.w;
+	vaisseau_srcr.x = vaisseau_srcr.x + signr * vaisseau_srcr.w;
+
+
+	if(vaisseau_srcl.x > 8*vaisseau_srcl.w)
+		vaisseau_srcl.x = 6*vaisseau_srcl.w;
+
+	if(vaisseau_srcl.x < 0)
+		vaisseau_srcl.x = 0;
+
+	if(vaisseau_srcl.x/vaisseau_srcl.w<6 && vaisseau_srcl.x/vaisseau_srcl.w>0)
+		angle-=angleChange[vaisseau_srcl.x/vaisseau_srcl.w - 1];
+	else if(vaisseau_srcl.x/vaisseau_srcl.w>=5)
+		angle-=15;
+
+	if(vaisseau_srcr.x > 8*vaisseau_srcr.w)
+		vaisseau_srcr.x = 6*vaisseau_srcr.w;
+
+	if(vaisseau_srcr.x < 0)
+		vaisseau_srcr.x = 0;
+
+	if(vaisseau_srcr.x/vaisseau_srcr.w<5 && vaisseau_srcr.x/vaisseau_srcr.w>0)
+		angle+=7;
+	else if(vaisseau_srcr.x/vaisseau_srcr.w>=5)
+		angle+=15;
+
+
+	/*SDL_RenderCopy(renderer, vaisseau, &vaisseau_src, &vaisseau_dest0);
+	SDL_RenderCopy(renderer, vaisseau, &vaisseau_src, &vaisseau_dest);
+	SDL_RenderCopy(renderer, vaisseau, &vaisseau_src, &vaisseau_dest2);
+	//SDL_SetTextureColorMod(gem, rand()%256,rand()%256,rand()%256);*/
+	SDL_RenderCopyEx(renderer, vaisseau, &vaisseau_srcl, &vaisseau_dest,angle,NULL,SDL_FLIP_NONE);
+	SDL_RenderCopyEx(renderer, vaisseau, &vaisseau_srcr, &vaisseau_dest,angle,NULL,SDL_FLIP_NONE);
+	SDL_SetTextureColorMod(gem, 255,0,0);
+	/*SDL_RenderCopy(renderer, gem, &vaisseau_src, &vaisseau_dest0);
+	SDL_RenderCopy(renderer, gem, &vaisseau_src, &vaisseau_dest);
+	SDL_RenderCopy(renderer, gem, &vaisseau_src, &vaisseau_dest2);*/
+	SDL_RenderCopyEx(renderer, gem, &gem_src, &vaisseau_dest,angle,NULL,SDL_FLIP_NONE);
+
+
+
+
+	//On le dessine
+	//SDL_RenderCopy(renderer, texture,&char_rect, &target);
+
+	//On affiche
+	SDL_RenderPresent(renderer);
 
 
     //Next frame (pour limiter à 60fps)
@@ -136,8 +204,8 @@ int main(){
     }
     lastTime = currentTime;
 
-		//On efface
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	//On efface
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 	}
 }
