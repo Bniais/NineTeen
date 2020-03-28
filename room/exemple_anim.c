@@ -39,11 +39,17 @@ SDL_Rect select_anim(int turn, long frame)
 	return r;
 }
 
-SDL_Rect vaisseau_srcr = {0,0,72,55};
-SDL_Rect vaisseau_srcl = {0,55,72,55};
-SDL_Rect vaisseau_dest = {200,200,150,150};
-SDL_Rect gem_src = {0,0,72,55};
+typedef struct {float x; float y;}v2f;
+v2f vaisseau_dest_f = {200,200};
 
+v2f acce_dest = {0,0};
+SDL_Rect thrust_src ={0,0,72,70};
+SDL_Rect vaisseau_srcr = {0,0,72,70};
+SDL_Rect vaisseau_srcl = {0,70,72,70};
+SDL_Rect vaisseau_dest = {200,200,72,70};
+SDL_Rect gem_src = {0,0,72,52};
+//SDL_Point center = {72/2, 70/2};
+int signt = -1;
 int signl = -1;
 int signr = -1;
 int main(){
@@ -73,6 +79,7 @@ int main(){
 	SDL_Texture* texture = IMG_LoadTexture(renderer, "link.jpg");
 	SDL_Texture* vaisseau = IMG_LoadTexture(renderer, "vaisseau.png");
 	SDL_Texture* gem = IMG_LoadTexture(renderer, "gem.png");
+	SDL_Texture* thrust = IMG_LoadTexture(renderer, "thrust.png");
 	if(!texture)
 	{
 		printf("Erreur lors de la creation d'une texture : %s",SDL_GetError());
@@ -90,7 +97,7 @@ int main(){
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL); //dans le main
 
 	int angle = 0;
-	int angleChange[5] = { 1, 2, 5 , 8, 12};
+	int angleChange[5] = { 1, 2, 5 , 8, 13};
 	int quit=0;
 	while(!quit){
 		SDL_Event event;
@@ -136,6 +143,17 @@ int main(){
 			vaisseau_srcr.x=5*vaisseau_srcr.w;
 	}
 
+	if(keystate[SDL_SCANCODE_UP]){
+
+		signt = 1;
+	}
+    else {
+
+		signt = -1;
+		if(thrust_src.x>1*thrust_src.w)
+			thrust_src.x=1*thrust_src.w;
+	}
+
 		//Drawing
 
 		//On met à jour quel rectangle de notre sprite on va dessiner, si on ne bouge plus on le met à la frame 0 (premiere animation de la ligne)
@@ -150,37 +168,80 @@ int main(){
 
 	vaisseau_srcl.x = vaisseau_srcl.x + signl * vaisseau_srcl.w;
 	vaisseau_srcr.x = vaisseau_srcr.x + signr * vaisseau_srcr.w;
+	thrust_src.x = thrust_src.x + signt * thrust_src.w;
 
 
+	acce_dest.x/=1.05;
+	acce_dest.y/=1.05;
+	if(thrust_src.x>0){
+
+		acce_dest.x += 3* sin(3.1415*angle/180);
+		acce_dest.y -=  3*cos(3.1415*angle/180);
+	}
+
+	vaisseau_dest_f.x += acce_dest.x;
+	vaisseau_dest_f.y += acce_dest.y;
+
+	//left
 	if(vaisseau_srcl.x > 8*vaisseau_srcl.w)
 		vaisseau_srcl.x = 6*vaisseau_srcl.w;
 
 	if(vaisseau_srcl.x < 0)
 		vaisseau_srcl.x = 0;
 
-	if(vaisseau_srcl.x/vaisseau_srcl.w<6 && vaisseau_srcl.x/vaisseau_srcl.w>0)
+	if(vaisseau_srcl.x/vaisseau_srcl.w<6 && vaisseau_srcl.x/vaisseau_srcl.w>0){
+		acce_dest.x += (angleChange[vaisseau_srcl.x/vaisseau_srcl.w - 1])/20. * sin(3.1415*(angle-45)/180);
+		acce_dest.y -= (angleChange[vaisseau_srcl.x/vaisseau_srcl.w - 1])/20. * cos(3.1415*(angle-45)/180);
 		angle-=angleChange[vaisseau_srcl.x/vaisseau_srcl.w - 1];
-	else if(vaisseau_srcl.x/vaisseau_srcl.w>=5)
-		angle-=15;
+	}
 
+	else if(vaisseau_srcl.x/vaisseau_srcl.w>=5){
+		acce_dest.x +=  sin(3.1415*(angle+45)/180);
+		acce_dest.y -=  cos(3.1415*(angle+45)/180);
+		angle-=20;
+	}
+
+
+	//right
 	if(vaisseau_srcr.x > 8*vaisseau_srcr.w)
 		vaisseau_srcr.x = 6*vaisseau_srcr.w;
 
 	if(vaisseau_srcr.x < 0)
 		vaisseau_srcr.x = 0;
 
-	if(vaisseau_srcr.x/vaisseau_srcr.w<5 && vaisseau_srcr.x/vaisseau_srcr.w>0)
-		angle+=7;
-	else if(vaisseau_srcr.x/vaisseau_srcr.w>=5)
-		angle+=15;
+	if(vaisseau_srcr.x/vaisseau_srcr.w<5 && vaisseau_srcr.x/vaisseau_srcr.w>0){
+		acce_dest.x += (angleChange[vaisseau_srcr.x/vaisseau_srcr.w - 1])/20. * sin(3.1415*(angle+45)/180);
+		acce_dest.y -= (angleChange[vaisseau_srcr.x/vaisseau_srcr.w - 1])/20. * cos(3.1415*(angle+45)/180);
+		angle+=angleChange[vaisseau_srcr.x/vaisseau_srcr.w - 1];
+	}
+	else if(vaisseau_srcr.x/vaisseau_srcr.w>=5){
+		acce_dest.x +=  sin(3.1415*(angle-45)/180);
+		acce_dest.y -=  cos(3.1415*(angle-45)/180);
+		angle+=20;
+	}
+
+
+	//thrust
+	if(thrust_src.x > 4*thrust_src.w)
+		thrust_src.x = 2*thrust_src.w;
+
+
 
 
 	/*SDL_RenderCopy(renderer, vaisseau, &vaisseau_src, &vaisseau_dest0);
 	SDL_RenderCopy(renderer, vaisseau, &vaisseau_src, &vaisseau_dest);
 	SDL_RenderCopy(renderer, vaisseau, &vaisseau_src, &vaisseau_dest2);
 	//SDL_SetTextureColorMod(gem, rand()%256,rand()%256,rand()%256);*/
+	vaisseau_dest.x = vaisseau_dest_f.x;
+	vaisseau_dest.y = vaisseau_dest_f.y;
+
 	SDL_RenderCopyEx(renderer, vaisseau, &vaisseau_srcl, &vaisseau_dest,angle,NULL,SDL_FLIP_NONE);
 	SDL_RenderCopyEx(renderer, vaisseau, &vaisseau_srcr, &vaisseau_dest,angle,NULL,SDL_FLIP_NONE);
+	if(thrust_src.x < 0)
+		thrust_src.x = 0;
+	else{
+		SDL_RenderCopyEx(renderer, thrust, &thrust_src, &vaisseau_dest,angle,NULL,SDL_FLIP_NONE);
+	}
 	SDL_SetTextureColorMod(gem, 255,0,0);
 	/*SDL_RenderCopy(renderer, gem, &vaisseau_src, &vaisseau_dest0);
 	SDL_RenderCopy(renderer, gem, &vaisseau_src, &vaisseau_dest);
