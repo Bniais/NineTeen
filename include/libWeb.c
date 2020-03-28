@@ -5,7 +5,7 @@
 
 // secure protocol //
 #include <time.h>
-#include "openssl/md5.h"
+#include <openssl/md5.h>
 
 /////////////////////////////////////////////////
 ///	\file libWeb.c
@@ -20,6 +20,8 @@
 #define URL_UPDATE_SCORE "https://nineteen.recognizer.fr/updateYourScore.php"
 #define URL_PING "https://nineteen.recognizer.fr/ping.php"
 #define URL_TIMESTAMP "https://nineteen.recognizer.fr/include/timestamp.php"
+#define URL_GET_COINS "https://nineteen.recognizer.fr/coins.php"
+#define URL_BUY_GAMEPASS "https://nineteen.recognizer.fr/buygamepass.php"
 
 #define ERR_REQUIERED_FIELD -1
 #define ERR_SQL_FAILED -2
@@ -147,18 +149,18 @@ int envoyez_requet(char **response, char *url, char *request)
 /////////////////////////////////////////////////////
 void securePass(char secure[])
 {
-		
+
 	char *t_server;
 	envoyez_requet(&t_server, URL_TIMESTAMP, "");
-	
+
 	int year,mon,day,hour,min,sec;
 	sscanf(t_server, " %d %d %d %d %d %d",&year , &mon , &day, &hour , &min, &sec);
-	
+
 	char temp[MD5_SIZE*2];
 	printf("HEURE A l'ENVOI DE LA REQUET %d-%02d-%02d %02d  %02d  %d\n",year , mon, day, hour , min, sec);
 	sprintf(temp, "%d-%02d-%02d 0A1kjxal9MaSECURE32 %02d 0 %02d D(ancIjaa) %d", year  , mon , day, hour , min, sec);
 	md5Hash(temp, secure);
-	
+
 	free(t_server);
 
 }
@@ -225,6 +227,20 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 		strcpy(*dest,"");
 		sprintf(*dest,"gameID=%s&score=%s&key=%s&secure=%s",gameID,score,key,secure);
 			return EXIT_SUCCESS;
+	}
+	else if ( key && !username && !password && gameID && !score )
+	{
+		// requet bug game passe
+		lenght = strlen(gameID) + 1 + strlen(key) + 1 + 24 + 32; // 24 = "gameID= &key= &secure"
+		*dest = malloc( sizeof(char) * lenght );
+
+		if(*dest == NULL) { printf("Failed malloc"); return EXIT_FAILURE; }
+
+		// concatenation dans dest;
+		strcpy(*dest,"");
+		sprintf(*dest,"gameID=%s&key=%s&secure=%s",gameID,key,secure);
+			return EXIT_SUCCESS;
+
 	}
 	else
 	{
@@ -320,6 +336,76 @@ int connectWithKey(char *key)
 	return EXIT_FAILURE;
 }
 
+
+/////////////////////////////////////////////////////
+/// \fn getCoinsValues(char *key,int *coins)
+/// \brief recuperer notre somme d'argent
+///
+/// \param char *key Ecriture de la clé dans key
+/// \param int *coins Valeur de retour de notre somme d'argent
+///
+/// \return EXIT_SUCCESS / EXIT_FAILURE
+/////////////////////////////////////////////////////
+int getCoinsValues(char *key,char *coins)
+{
+	char *request;
+	char *response;
+	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL) )
+	{
+		if ( !envoyez_requet(&response,URL_GET_COINS,request) )
+		{
+			printf("%s\n",response );
+			strcpy(coins,response);
+
+			free(request);
+			request = NULL;
+			free(response);
+			response = NULL;
+			return EXIT_SUCCESS;
+		}
+	}
+	free(request);
+	request = NULL;
+	return EXIT_FAILURE;
+}
+
+
+
+/////////////////////////////////////////////////////
+/// \fn buyGamePass(char *key, char *gameID)
+/// \brief acheter un pass pour un jeu
+///
+/// \param char *key Ecriture de la clé dans key
+/// \param char *gameID numero du jeux
+///
+/// \return EXIT_SUCCESS / EXIT_FAILURE
+/////////////////////////////////////////////////////
+int buyGamePass(char *key, char *gameID)
+{
+	char *request;
+	char *response;
+	if ( !construire_requete(&request, NULL, NULL, key, gameID, NULL) )
+	{
+		if ( !envoyez_requet(&response,URL_BUY_GAMEPASS,request) )
+		{
+			if ( !strcmp(response,"SUCCESS")  )
+			{
+				free(request);
+				request = NULL;
+				free(response);
+				response = NULL;
+				return EXIT_SUCCESS;
+			}
+			printf("%s\n",response );
+			free(response);
+			response = NULL;
+		}
+	}
+	free(request);
+	request = NULL;
+	return EXIT_FAILURE;
+}
+
 /////////////////////////////////////////////////////
 /// \fn int updateScore(char *key, char *gameID, char *score)
 /// \brief update le score
@@ -384,6 +470,3 @@ int ping()
 	finish = clock();
 	return (int)(finish - start)/ CLOCKS_PER_MS;
 }
-
-
-

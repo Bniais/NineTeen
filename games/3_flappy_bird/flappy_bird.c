@@ -6,6 +6,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 
+#include "../../include/libWeb.h"
+
 //native resolution
 #define WINDOW_L 1820.
 #define WINDOW_H 1024.
@@ -371,7 +373,7 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 	} else if ( traitement == 2){
 		if(pilonne[3].position + OBSTACLE_VERT.w*SCALE_TO_FIT + PERSO.w*SCALE_TO_FIT < WINDOW_L/2 ){
 			traitement = 3;
-			if(changeProtectedVar(score_hash, score, (*score)+1, const_1, const_2, const_3, const_4))
+			if( changeProtectedVar(score_hash, score, (*score)+1, const_1, const_2, const_3, const_4) )
 				Mix_PlayChannel( 5, score_wav,0);
 			/*else
 				ban commands*/
@@ -519,7 +521,7 @@ void maj_var_environement(SDL_Point *emplacementPersonnage, int *upper, double *
 
 
 // primary func
-int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h)
+int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h, char *token)
 {
 	//SDL_Renderer *renderer = SDL_GetRenderer(window);
 	if (renderer == NULL){
@@ -654,8 +656,17 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h)
 
 		}
 
+		if (  score_hash == hashage(score, const_1, const_2, const_3, const_4) )
+		{
+			char buffer[10];
+			sprintf(buffer,"%d",score);
+			updateScore("1",buffer,token);
+		}
+
+
 	}
-	SDL_Delay(1000);
+
+
 
 	// liberer la memoire
 	Mix_FreeChunk(flap_wav);

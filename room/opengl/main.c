@@ -23,6 +23,7 @@
 // LOCAL LIBRARY
 #include "import.h" // YOU NEED ASSIMP LIB FOR import.h (README.dm)
 #include "main.h"
+#include "../../include/libWeb.h"
 #include "../../games/3_flappy_bird/flappy_bird.h"
 // END INCLUDE
 
@@ -35,7 +36,7 @@ float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 #define WinWidth 1920
 #define WinHeight 1080
 
-#define FPS 120
+#define FPS 30
 static const float FRAME_TIME = 1000/FPS;
 
 static SDL_Window *Window = NULL;
@@ -60,12 +61,13 @@ void mouvementCamera(struct Camera_s *camera);
 int detectionEnvironnement(float x,float y);
 int detecterMachine(float x,float y);
 void animationLancerMachine(struct Camera_s camera, struct Camera_s cible);
-void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[]);
+void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, char *chaine);
 
 float distancePoint(float xa, float ya, float xb, float yb);
 void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter);
 void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music);
 
+void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y, float ouverture);
 
 
 
@@ -78,48 +80,38 @@ void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int 
 
 
 
-void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y) {
-  glMatrixMode(GL_MODELVIEW);
-  glPushMatrix();
-  glLoadIdentity();
 
 
 
-  gluOrtho2D(0, WinWidth, 0, WinHeight); // m_Width and m_Height is the resolution of window
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity();
-
-  glDisable(GL_DEPTH_TEST);
-  glEnable(GL_TEXTURE_2D);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-  GLuint texture;
-  glGenTextures(1, &texture);
-  glBindTexture(GL_TEXTURE_2D, texture);
-
-  SDL_Surface * sFont = TTF_RenderText_Blended(font, message, color);
 
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sFont->w, sFont->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
 
 
-  glBegin(GL_QUADS);
-  {
-    glTexCoord2f(0,0); glVertex2f(x, y);
-    glTexCoord2f(1,0); glVertex2f(x + sFont->w, y);
-    glTexCoord2f(1,1); glVertex2f(x + sFont->w, y + sFont->h);
-    glTexCoord2f(0,1); glVertex2f(x, y + sFont->h);
-  }
-  glEnd();
 
-  glDeleteTextures(1, &texture);
-  SDL_FreeSurface(sFont);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -127,7 +119,6 @@ void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y) {
 
 int main( int argc, char *argv[ ], char *envp[ ] )
 {
-	double countFrame = 0;
 	//SDL INIT
 	SDL_Init(SDL_INIT_EVERYTHING);
 	Window = SDL_CreateWindow("Nineteen", 0, 0, WinWidth, WinHeight, WindowFlags);
@@ -139,12 +130,7 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 
 
 
-			#ifdef __APPLE__
-				GLint                       sync = 0;
-				CGLContextObj               ctx = CGLGetCurrentContext();
 
-				CGLSetParameter(ctx, kCGLCPSwapInterval, &sync);
-			#endif
 
 
 	// PRESET VALUE CAMERA //
@@ -172,10 +158,14 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 	Mix_PlayChannel(2 , *(musicEnvironnement + 2) , -1);
 
 
+
+
 	TTF_Init();
-	TTF_Font * font = TTF_OpenFont("police.ttf", 30);
-	SDL_Color color = {255,255,255};
-	char *msg = "salut samy";
+	TTF_Font * font = TTF_OpenFont("police.ttf", WinWidth/50);
+	SDL_Color color = {255,255,0};
+
+
+
 
 	const C_STRUCT aiScene* scene = NULL;
 	aiImportModel("salle.obj",&scene);
@@ -185,6 +175,23 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 	int Running = 1;
 	int count_IPS = SDL_GetTicks();
 	float ips=0.0;
+
+
+
+
+	// temp a mettre dans le load du launcher;
+	char *token = "l8Ysl)8LFn1N^kzzMQY^cV@rlr9*5rrng*LN#_oN3VaxBWsNm(XKhe1OCrKDe1q!#)TAN7O(Yo9ZGh28tF-Hk0Vmnv5)scEkZXlmb*yzznV6QDu!Z9NFpy7IqsVOAZ*qxgYUrD_W6kIT4_ZJ82OtgB)S9Sh!scwlEA5vTA)GlWZlV^uZwEOYVbrKtEQhw#-0$_rMAoi1GDSr)IMtca-x1pDr9UElMThViEiy8(fLA$2NR*7tl5mjqqWf!qMSFtoo";
+	char chaine[10];
+	getCoinsValues(token,chaine);
+
+	int tscore,tclassement,ttotal;
+	sscanf(chaine,"%d %d / %d",&tscore,&tclassement,&ttotal);
+
+	char score[30];
+	sprintf(score,"SCORE : %d",tscore);
+	char classement[30];
+	sprintf(classement,"CLASSEMENT : %d/%d",tclassement,ttotal);
+
 
 
 	while (Running)
@@ -198,14 +205,22 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 
 
 
-		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
+		lancerMachine(scene,&Running,camera,cible,token,chaine);
 
-		lancerMachine(scene,&Running,camera,cible);
+		sscanf(chaine,"%d %d / %d",&tscore,&tclassement,&ttotal);
+		sprintf(score,"SCORE : %d",tscore);
+		sprintf(classement,"CLASSEMENT : %d/%d",tclassement,ttotal);
 
 		SDL_GL_AppliquerScene(scene,&camera);
 
-		RenderText(font,msg,color,150,50);
+		RenderText(font,score,color,WinWidth/30,WinHeight - WinWidth/30, camera.ouverture);
+		RenderText(font,classement,color,WinWidth/30,WinHeight - WinWidth/15, camera.ouverture);
+
+		gluPerspective(camera.ouverture,(float)(WinWidth)/(float)(WinHeight),0.1,100);	//Pour les explications, lire le tutorial sur OGL et win
+		glMatrixMode( GL_MODELVIEW );
+		glLoadIdentity();
+
 		SDL_GL_SwapWindow(Window);
 
 
@@ -217,13 +232,13 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 				SDL_Delay(FRAME_TIME - frame_delay );
 
 
-		countFrame++;
-		printf("FRAME = %f\n",countFrame );
+
 
 		ips++;
 		if(SDL_GetTicks() - count_IPS > 1000){
 			printf("IPS %f\n",ips );
 			count_IPS = SDL_GetTicks();
+			//sprintf(fpsString,"IPS : %.0f",ips);
 			ips = 0;
 		}
 
@@ -241,6 +256,34 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 	SDL_Quit();
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -338,13 +381,24 @@ void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera
 }
 
 
-void GL_InitialiserParametre(int width, int height, struct Camera_s camera){
+void GL_InitialiserParametre(int width, int height, struct Camera_s camera)
+{
 	glEnable(GL_LIGHTING);
 
-	//
-	glEnable(GL_LIGHT0);    /* Uses default lighting parameters */
 
-	//
+	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+
+
+	float LightPos0[4]={3,0,4,1};
+	float LightPos1[4]={-3,0,4,1};
+
+	glLightfv(GL_LIGHT0,GL_POSITION,LightPos0);
+	glLightf(GL_LIGHT0,GL_QUADRATIC_ATTENUATION,0.01f);
+
+	glLightfv(GL_LIGHT1,GL_POSITION,LightPos1);
+	glLightf(GL_LIGHT1,GL_QUADRATIC_ATTENUATION,0.01f);
+
 	glEnable(GL_DEPTH_TEST);
 
 
@@ -352,16 +406,10 @@ void GL_InitialiserParametre(int width, int height, struct Camera_s camera){
 	glLoadIdentity();
 
 	gluPerspective(camera.ouverture,(float)(width)/(float)(height),0.1,100);	//Pour les explications, lire le tutorial sur OGL et win
-	glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
 
 	//Initialize Modelview Matrix
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
-
-
-	//Initialize clear color
-	glClearColor( 0.f, 0.f, 0.f, 1.f );
-
 }
 
 
@@ -647,6 +695,8 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 
+		glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,40);	//définit la taille de la tache spéculaire
+
 		gluLookAt(camera.px                   ,camera.py    ,camera.pz                  ,
 				  camera.px+sin(camera.angle) ,camera.py + camera.cible_py    , camera.pz+cos(camera.angle),
 				  0.0
@@ -659,7 +709,7 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible)
 	}
 }
 
-void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[])
+void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, char *chaine)
 {
 
 	SDL_Event Event;
@@ -687,12 +737,13 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 									// lancer la machine
 									SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
-									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, 50,WinWidth,WinHeight));
+									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, 50,WinWidth,WinHeight,token));
 									SDL_DestroyRenderer(pRenderer);
 									SDL_DestroyWindow(Window);
 									// retour sur la Window 3D.
 
 
+									getCoinsValues(token,chaine);
 
 
 									// recration du context jeu + fenetre afin de revenir ou nous en etions
@@ -701,7 +752,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									scene_list = 0;
 									GL_InitialiserParametre( WinWidth,WinHeight,cible[machine] );
 									SDL_GL_AppliquerScene(scene,&camera);
-									lancerMachine(scene,Running,camera,cible);
+									lancerMachine(scene,Running,camera,cible,token,chaine);
 									animationLancerMachine(cible[machine],camera);
 								}
 
@@ -735,7 +786,51 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 }
 
 
+void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y, float ouverture)
+{
+	glDisable(GL_LIGHTING);
+  glPushMatrix();
+  glLoadIdentity();
 
+
+  gluOrtho2D(0, WinWidth, 0, WinHeight); // m_Width and m_Height is the resolution of window
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+
+
+  glEnable(GL_TEXTURE_2D);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  GLuint texture;
+  glGenTextures(1, &texture);
+  glBindTexture(GL_TEXTURE_2D, texture);
+
+  SDL_Surface * sFont = TTF_RenderText_Blended(font, message, color);
+
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sFont->w, sFont->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
+
+  glBegin(GL_QUADS);
+  {
+    glTexCoord2f(0,0); glVertex2f(x, y);
+    glTexCoord2f(1,0); glVertex2f(x + sFont->w, y);
+    glTexCoord2f(1,-1); glVertex2f(x + sFont->w, y + sFont->h);
+    glTexCoord2f(0,-1); glVertex2f(x, y + sFont->h);
+  }
+  glEnd();
+
+
+
+  glDeleteTextures(1, &texture);
+  SDL_FreeSurface(sFont);
+
+	glEnable(GL_LIGHTING);
+
+}
 
 
 

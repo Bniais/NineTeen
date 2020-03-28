@@ -50,12 +50,36 @@ int construire_requete(char **dest, char *email, char *password, char *key, char
 /// \brief connexion avec nom utilisateur
 ///
 /// \param char **key Ecriture de la clé dans key
-/// \param char *email Email de connexion 
-/// \param char *password Mot de passe de connexion 
+/// \param char *email Email de connexion
+/// \param char *password Mot de passe de connexion
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
 int connectWithUsername(char **key, char *email, char *password);
+
+/////////////////////////////////////////////////////
+/// \fn getCoinsValues(char *key,int *coins)
+/// \brief recuperer notre somme d'argent
+///
+/// \param char *key Ecriture de la clé dans key
+/// \param int *coins Valeur de retour de notre somme d'argent
+///
+/// \return EXIT_SUCCESS / EXIT_FAILURE
+/////////////////////////////////////////////////////
+int getCoinsValues(char *key,char *coins);
+
+/////////////////////////////////////////////////////
+/// \fn buyGamePass(char *key, char *gameID)
+/// \brief acheter un pass pour un jeu
+///
+/// \param char *key Ecriture de la clé dans key
+/// \param char *gameID numero du jeux
+///
+/// \return EXIT_SUCCESS / EXIT_FAILURE
+/////////////////////////////////////////////////////
+int buyGamePass(char *key, char *gameID);
+
+
 
 
 
