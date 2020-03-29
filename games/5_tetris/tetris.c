@@ -230,7 +230,7 @@ void getNewPiece(Piece *piece, int giant){
 	piece->id = rand() % NB_PIECES;
 
 	//handle bonus
-	piece->bonus = FILL;//rand() % (NB_BONUSES+1);
+	piece->bonus = MULTI_POINT;//rand() % (NB_BONUSES+1);
 
 	updateGrille(piece);
 
@@ -960,9 +960,9 @@ void afficherScores(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score sc
 
 }
 
-void drawComboText(SDL_Renderer *renderer, char * msgCombo, TTF_Font * font, Score scoreAffichage, SDL_Rect * dest){
+void drawComboText(SDL_Renderer *renderer, char * msgCombo, TTF_Font * font, Score scoreAffichage, SDL_Rect * dest, SDL_Color comboColor){
 
-	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, msgCombo, (SDL_Color){255, 255, 255});
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, msgCombo, comboColor);
 	SDL_SetSurfaceAlphaMod(surfaceMessage, ALPHA_SCORE[SCORE_TTL -scoreAffichage.frameCombo]);
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
 
@@ -978,26 +978,48 @@ void drawComboText(SDL_Renderer *renderer, char * msgCombo, TTF_Font * font, Sco
 	SDL_DestroyTexture(Message);
 }
 
+int intlog(double x, double base) {
+    return (int)(log(x) / log(base));
+}
+
 void afficherCombo(SDL_Renderer *renderer, Score scoreAffichage, int line, TTF_Font *font ){
 
 	if(scoreAffichage.frameCombo && scoreAffichage.frameCombo<=SCORE_TTL){
 		char msgCombo[MAX_APPEND_LENGHT]= "";
 		char msgFlat[MAX_APPEND_LENGHT]= "";
 		char msgMulti[MAX_APPEND_LENGHT]= "";
+		SDL_Color comboColor;
 
 		SDL_Rect dest = {COMBO_DRAW_X,MATRIX_Y + line * CASE_SIZE ,0,0};
 
+		/*if(scoreAffichage.sameColor ){
+			comboColor = colors[scoreAffichage.sameColor];
+			sprintf(msgCombo, "Color! x%d ", MULTI_SAME_COLOR);
+			drawComboText(renderer, msgCombo, font, scoreAffichage, &dest, comboColor);
+		}
+		if(scoreAffichage.rainbow ){
+
+			for(int i=0; i<NB_RAINBOW; i++){
+				sprintf(msgCombo, "%c", RAINBOW_TEXT[i]);
+				comboColor = RAINBOW_COLOR[i];
+				drawComboText(renderer, msgCombo, font, scoreAffichage, &dest, comboColor);
+			}
+		}*/
+
 		if(scoreAffichage.combo>1){
-			sprintf(msgCombo, "Combo! x%d",scoreAffichage.combo);
-			drawComboText(renderer, msgCombo, font, scoreAffichage, &dest);
+			comboColor = COMBO_COLOR[ intlog(scoreAffichage.combo, RATIO_COMBO_LINE) - 1 ];
+			sprintf(msgCombo, "Combo! x%d  ",scoreAffichage.combo);
+			drawComboText(renderer, msgCombo, font, scoreAffichage, &dest, comboColor);
 		}
 		if(scoreAffichage.flat){
-			sprintf(msgFlat, "+%d",scoreAffichage.flat);
-			drawComboText(renderer, msgFlat, font, scoreAffichage, &dest);
+			comboColor = FLAT_COLOR[scoreAffichage.flat-1];
+			sprintf(msgFlat, "+ %d  ",scoreAffichage.flat * NB_FLAT_POINT);
+			drawComboText(renderer, msgFlat, font, scoreAffichage, &dest, comboColor);
 		}
 		if(scoreAffichage.multi > 1){
+			comboColor = MULTI_COLOR[ intlog(scoreAffichage.multi, RATIO_MULTI_POINT) - 1 ];
 			sprintf(msgMulti, "x%d !",scoreAffichage.multi);
-			drawComboText(renderer, msgMulti, font, scoreAffichage, &dest);
+			drawComboText(renderer, msgMulti, font, scoreAffichage, &dest, comboColor);
 		}
 
 		/*if(strlen(msgCombo))
