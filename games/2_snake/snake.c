@@ -741,7 +741,8 @@ int strlen_num(int score)
 void afficherScore(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score scoreAffichage)
 {
 	int taille = strlen_num(scoreAffichage.score);
-
+printf(" f %d\n",scoreAffichage.frame );
+printf("s %d\n",scoreAffichage.score );
 
 	SDL_Rect src = SCORE_SRC;
 	SDL_Rect dest = {scoreAffichage.x + (scoreAffichage.size*taille)/2 , scoreAffichage.y - (FONT_HEIGHT_RATIO*scoreAffichage.size) / 2 , scoreAffichage.size, FONT_HEIGHT_RATIO*scoreAffichage.size };
@@ -752,6 +753,7 @@ void afficherScore(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score sco
 	{
 		src.x = SCORE_SRC.w * (scoreAffichage.score%10);
 		SDL_SetTextureAlphaMod(scoreTexture, ALPHA_SCORE[scoreAffichage.frame]);
+		printf("%d\n",scoreAffichage.frame );
 		SDL_RenderCopy(renderer,scoreTexture,&src,&dest);
 		scoreAffichage.score /=10;
 		dest.x -= scoreAffichage.size;

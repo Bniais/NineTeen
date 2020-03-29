@@ -89,15 +89,31 @@ void initPiece(Piece *piece){
 	piece->bonus = NO_BONUS;
 }
 
+void clearCombo(Score * scoreToClear){
+	scoreToClear->flat = 0;
+	scoreToClear->flatDest = 0;
+	scoreToClear->combo = 1;
+	scoreToClear->multi = 1;
+	scoreToClear->frameCombo = 0;
+}
+
+void clearScore(Score * scoreToClear){
+	scoreToClear->score = 0;
+	scoreToClear->scoreDest = 0;
+	scoreToClear->frame = 0;
+}
 
 void initScore(Score * score){
 	for(int i=0; i<GRILLE_H; i++){
 		score[i].score = 0;
-		score[i].frame = 0;
 		score[i].scoreDest = 0;
-		score[i].combo = 0;
+		score[i].frame = 0;
+
 		score[i].flat = 0;
-		score[i].multi = 0;
+		score[i].flatDest = 0;
+		score[i].combo = 1;
+		score[i].multi = 1;
+		score[i].frameCombo = 0;
 	}
 }
 
@@ -350,9 +366,6 @@ int moveDown(Piece *piece, int accelerate, int matrix[GRILLE_W][GRILLE_H], float
 	if(distanceMoveDown >= 2)
 		distanceMoveDown = 5/3;
 
-	printf("\ndistance down : %f\n", distanceDown );
-	printf("distanceMoveDownn : %f\n", distanceMoveDown );
-
 	piece->y += distanceMoveDown;
 	if(almostRound(piece->x))
 		piece->x = roundf(piece->x);
@@ -487,7 +500,7 @@ void getFillPlaces(int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRIL
 	}
 }
 
-void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine);
+void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine);
 
 void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse, int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H]){
 	switch (bonusId) {
@@ -675,42 +688,44 @@ void savePiece(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 	}
 }
 
-void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine){
+void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine){
 	int bonusGet = -1;
 	if( frameCompleteLine[line] == -1 ){
+		printf("complete line %d\n", line);
 		frameCompleteLine[line] = FRAME_COMPLETE_LINE;
 		if(comboLine){
 
-			scoreAdd[line].score += scoreAdd[line-1].score  * RATIO_COMBO_LINE;
+			scoreAdd[line].score += scoreAdd[lastLine].score  * RATIO_COMBO_LINE;
 			printf("score after combo ! %d\n",scoreAdd[line].score );
-			scoreAdd[line].combo ++;
+			scoreAdd[line].combo = pow(2, comboLine);
 		}
 		else{
 
 			scoreAdd[line].score += SCORE_BASE;
-			printf("score after base ! %d\n",scoreAdd[line].score );
+			//printf("score after base ! %d\n",scoreAdd[line].score );
 		}
 
 
 		if(getBonuses){
 			for(int i = 0; i < GRILLE_W; i++){
 				if(matrix[i][line] >= BONUS_TRI ){
-					printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+
 					bonusGet = getBonusId(matrix[i][line]);
-					if(bonusGet == FLAT_POINT ){
-						scoreAdd[line].score += NB_FLAT_POINT;
-						printf("score after flat bonus ! %d\n",scoreAdd[line].score );
+
+					if(bonusGet == FLAT_POINT )
 						scoreAdd[line].flat ++;
-					}
-					else if(bonusGet == MULTI_POINT){
-						scoreAdd[line].score *= RATIO_MULTI_POINT;
-						printf("score after MULTI_POINT bonus ! %d\n",scoreAdd[line].score );
-						scoreAdd[line].multi ++;
-					}
+					else if(bonusGet == MULTI_POINT)
+						scoreAdd[line].multi *= RATIO_MULTI_POINT;
 					else
 						bonusActivate[bonusGet-1]++;
+
 				}
 			}
+
+			scoreAdd[line].score += scoreAdd[line].flat * NB_FLAT_POINT;
+			//printf("score after flat bonus ! %d\n",scoreAdd[line].score );
+			scoreAdd[line].score *= scoreAdd[line].multi;
+			//printf("score after MULTI_POINT bonus ! %d\n",scoreAdd[line].score );
 		}
 	}
 
@@ -743,19 +758,23 @@ void eraseLine(int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H
 
 void checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H]){
 
-	int comboLine = SDL_FALSE;
+	int comboLine = 0;
 	int j;
+	int lastLine = -1;
 
 	for(int i=0; i<GRILLE_H; i++){
 		for(j=0; j<GRILLE_W && matrix[j][i] != EMPTY; j++);
 		if(j == GRILLE_W){
-			printf("combo : %d\n", comboLine );
-			completeLine(matrix, frameCompleteLine, i, bonusActivate, getBonus, scoreAdd, comboLine);
-			if(getBonus)
+			printf("%dcombo : %d\n",i, comboLine );
+			completeLine(matrix, frameCompleteLine, i, lastLine, bonusActivate, getBonus, scoreAdd, comboLine);
+			if(getBonus){
+				lastLine = i;
 				comboLine++;
+			}
+
+
 		}
-		else
-			comboLine = 0;
+
 	}
 
 }
@@ -784,35 +803,44 @@ void transfertNextPiece(Piece *currentPiece, Piece nextPiece){
 void updateScore(Score * scoreAffichage, Score scoreAdd[GRILLE_H]){
 	for(int i=0; i<GRILLE_H; i++){
 		if(scoreAdd[i].score){
-			printf("\n score to add : %d\n", scoreAdd[i].score);
-			printf("score dest before update : %d \n",scoreAffichage[i].scoreDest);
+
 			scoreAffichage[i].scoreDest += scoreAdd[i].score;
-			printf("score dest after update : %d \n",scoreAffichage[i].scoreDest);
-			scoreAffichage[i].combo += scoreAdd[i].combo;
-			scoreAffichage[i].flat += scoreAdd[i].flat;
-			scoreAffichage[i].multi += scoreAdd[i].multi;
-			printf("score before update : %d\n",scoreAffichage[i].score);
+			scoreAffichage[i].flatDest += scoreAdd[i].flat;
+
+
+			if(scoreAdd[i].combo>1)
+				scoreAffichage[i].combo = scoreAdd[i].combo;
+
+			if(scoreAdd[i].multi>1)
+				scoreAffichage[i].multi = scoreAdd[i].multi;
+
+
+
 			if(scoreAffichage[i].frame == 0){
 				scoreAffichage[i].score += scoreAdd[i].score;
 				scoreAffichage[i].frame = SCORE_TTL;
 			}
 			else if(scoreAffichage[i].frame < RESET_ANIM){
-				printf("reset\n");
 				scoreAffichage[i].frame = RESET_ANIM;
 			}
-			printf("score after update :  %d\n\n",scoreAffichage[i].score);
+
+			if((scoreAdd[i].combo > 1  ||  scoreAdd[i].multi>1 || scoreAdd[i].flat )){
+				if(scoreAffichage[i].frameCombo == 0){
+					printf("combo ttl\n");
+					scoreAffichage[i].flat += scoreAdd[i].flat;
+					scoreAffichage[i].frameCombo = SCORE_TTL;
+				}
+				else if( scoreAffichage[i].frameCombo < RESET_ANIM){
+					printf("combo reset\n");
+					scoreAffichage[i].frameCombo = RESET_ANIM;
+				}
+			}
 		}
 	}
 	initScore(scoreAdd);
 }
 
-void clearScore(Score * scoreToClear){
-	scoreToClear->score = 0;
-	scoreToClear->scoreDest = 0;
-	scoreToClear->combo = 0;
-	scoreToClear->flat = 0;
-	scoreToClear->multi = 0;
-}
+
 
 int lineEmpty(int matrix[GRILLE_W][GRILLE_H], int line ){
 	for(int i=0;i<GRILLE_W; i++)
@@ -868,6 +896,16 @@ void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteL
 			}
 		}
 
+		if(scoreAffichage[i].frameCombo){
+			scoreAffichage[i].frameCombo--;
+			if(!scoreAffichage[i].frameCombo){
+				clearCombo(&(scoreAffichage[i]));
+			}
+			else if(scoreAffichage[i].frameCombo > REACH_TARGET_SCORE){
+				scoreAffichage[i].flat += (scoreAffichage[i].flatDest-scoreAffichage[i].flat)/ (scoreAffichage[i].frameCombo - REACH_TARGET_SCORE);
+			}
+		}
+
 		if(frameCompleteLine[i] == 0){
 			eraseLine(matrix, matrixFill, i, frameLaser, frameCompleteLine, scoreAffichage);
 		}
@@ -875,17 +913,6 @@ void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteL
 }
 
 //score
-
-int scoreSize(float score){
-	int size = 0.15 + 3.65 * log(score);
-
-	if( size < MIN_SIZE_SCORE )
-		size = MIN_SIZE_SCORE;
-	else if( size > MAX_SIZE_SCORE )
-		size = MAX_SIZE_SCORE;
-
-	return size;
-}
 
 int len_num(int score)
 {
@@ -908,7 +935,7 @@ void afficherScores(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score sc
 
 		len = len_num(scoreAffichage.score);
 		src = SCORE_SRC;
-		size = scoreSize(scoreAffichage.score);
+		size = SIZE_SCORE;
 		dest = (SDL_Rect){SCORE_DEST + (size*len)/2 , MATRIX_Y+iScore*CASE_SIZE + (FONT_HEIGHT_RATIO*size) / 2, size, FONT_HEIGHT_RATIO*size};
 
 		dest.x -= dest.w/2;
@@ -933,6 +960,58 @@ void afficherScores(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score sc
 
 }
 
+void drawComboText(SDL_Renderer *renderer, char * msgCombo, TTF_Font * font, Score scoreAffichage, SDL_Rect * dest){
+
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, msgCombo, (SDL_Color){255, 255, 255});
+	SDL_SetSurfaceAlphaMod(surfaceMessage, ALPHA_SCORE[SCORE_TTL -scoreAffichage.frameCombo]);
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
+	SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest->w), &(dest->h) );
+	dest->w /= (OPEN_FONT_SIZE / SIZE_SCORE);
+	dest->h /= (OPEN_FONT_SIZE / SIZE_SCORE);
+
+	SDL_RenderCopy(renderer, Message, NULL, dest);
+
+	dest->x += dest->w;
+
+	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(Message);
+}
+
+void afficherCombo(SDL_Renderer *renderer, Score scoreAffichage, int line, TTF_Font *font ){
+
+	if(scoreAffichage.frameCombo && scoreAffichage.frameCombo<=SCORE_TTL){
+		char msgCombo[MAX_APPEND_LENGHT]= "";
+		char msgFlat[MAX_APPEND_LENGHT]= "";
+		char msgMulti[MAX_APPEND_LENGHT]= "";
+
+		SDL_Rect dest = {COMBO_DRAW_X,MATRIX_Y + line * CASE_SIZE ,0,0};
+
+		if(scoreAffichage.combo>1){
+			sprintf(msgCombo, "Combo! x%d",scoreAffichage.combo);
+			drawComboText(renderer, msgCombo, font, scoreAffichage, &dest);
+		}
+		if(scoreAffichage.flat){
+			sprintf(msgFlat, "+%d",scoreAffichage.flat);
+			drawComboText(renderer, msgFlat, font, scoreAffichage, &dest);
+		}
+		if(scoreAffichage.multi > 1){
+			sprintf(msgMulti, "x%d !",scoreAffichage.multi);
+			drawComboText(renderer, msgMulti, font, scoreAffichage, &dest);
+		}
+
+		/*if(strlen(msgCombo))
+			printf("\n\ncombo phrase : %s\n", msgCombo);
+		if(strlen(msgFlat))
+			printf("combo phrase : %s\n", msgFlat);
+		if(strlen(msgMulti))
+			printf("combo phrase : %s\n", msgMulti);*/
+
+	}
+
+
+
+}
 
 // int launchSnake(SDL_Window *myWindow, SDL_Renderer* renderer, char *identifiant, char *token){
 int main(){
@@ -996,11 +1075,11 @@ int main(){
 	unsigned int lastTime = 0, currentTime;
 
 	//Fonts
-	/*TTF_Font* scoreFont = TTF_OpenFont("./fonts/flappy.ttf", OPEN_FONT_SIZE);
-	if( scoreFont == NULL ){
+	TTF_Font* comboFont = TTF_OpenFont("./Fonts/zorque.ttf", OPEN_FONT_SIZE);
+	if( comboFont == NULL ){
 		printf("TTF_OpenFont() Failed: %s\n", TTF_GetError());
 		return EXIT_FAILURE;
-	}*/
+	}
 
 	//audio
 	/*Mix_Chunk *flap_wav = Mix_LoadWAV( "../3_flappy_bird/Sounds/flap.wav" );
@@ -1059,6 +1138,7 @@ int main(){
 	///////////////////////
 	initScore(scoreAffichage);
 	initScore(scoreAdd);
+	printf("s init : %d\n", scoreAffichage[0].frame );
 	initMatrix(matrix, EMPTY);
 	initMatrix(matrixFill, 0);
 	initPiece(&currentPiece);
@@ -1212,8 +1292,11 @@ int main(){
 		drawFill(renderer,brickTexture, matrixFill);
 		//drawNextPiece(nextPiece);
 
-		for(int i=0; i<GRILLE_H; i++)
+		for(int i=0; i<GRILLE_H; i++){
 			afficherScores(renderer, scoreTexture, scoreAffichage[i], i);
+			afficherCombo(renderer,  scoreAffichage[i], i, comboFont);
+		}
+
 
 		//hud
 		SDL_RenderSetScale(renderer, 1, 1);

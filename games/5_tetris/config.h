@@ -29,11 +29,12 @@ SDL_Rect MATRIX = {MATRIX_X,MATRIX_Y,GRILLE_W*CASE_SIZE,GRILLE_H*CASE_SIZE };
 
 //Score
 #define NB_CHAR_AFFICHAGE_SCORE 21
-typedef struct {int score; int frame; int scoreDest; int combo; int flat; float multi;}Score;
-#define MIN_SIZE_SCORE 25
-#define MAX_SIZE_SCORE 25
+typedef struct {int score; int frame; int frameCombo; int scoreDest; int combo; int flat;int flatDest; int multi;}Score;
+#define SIZE_SCORE 25
+
+
 #define SCORE_TTL 40
-#define RESET_ANIM 33
+#define RESET_ANIM 34
 #define REACH_TARGET_SCORE 17
 #define WAIT_SCORE_ANIM 2
 const int ALPHA_SCORE[SCORE_TTL] = { 20, 40, 65, 90, 120, 135, 160, 175, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195,195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 175, 145, 110, 90, 70, 40, 20 };
@@ -41,10 +42,15 @@ SDL_Rect SCORE_SRC = {0,0, 12,18};
 const int SCORE_DEST = (MATRIX_X + (GRILLE_W-0.5)/2 * CASE_SIZE);
 #define FONT_HEIGHT_RATIO 1.5
 
+#define MAX_COMBO_LENGHT 100
+#define MAX_APPEND_LENGHT 50
+
 #define SCORE_BASE 10
 #define RATIO_COMBO_LINE 2
 #define NB_FLAT_POINT 100
 #define RATIO_MULTI_POINT 3
+
+#define COMBO_DRAW_X (MATRIX_X + GRILLE_W * CASE_SIZE + 80)
 
 //Textures
 SDL_Rect LASER_DIM = {0,0,500,40};
@@ -123,8 +129,8 @@ int LASER_RECOIL_DIST[LASER_RECOIL_DURATION] = {8,4,2};
 #define LASER_END_POS (MATRIX_X - 1.2*CASE_SIZE)
 
 #define NB_FILL 8
-#define FRAME_FILL 16
-#define ESPACEMENT_FRAME_FILL 2
+#define FRAME_FILL 13
+#define ESPACEMENT_FRAME_FILL 1.5
 #define FRAME_DEPLACEMENT_FILL 13
 
 SDL_Point SPAWN_FILL={(MATRIX_X + (GRILLE_W+3)* CASE_SIZE),(MATRIX_Y+(3*GRILLE_H/4)*CASE_SIZE)};
