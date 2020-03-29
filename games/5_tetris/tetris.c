@@ -313,9 +313,21 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H],in
 
 }
 
-void moveSide(Piece *piece, int matrix[GRILLE_W][GRILLE_H], float distanceLateral){
-	//Attention si on ajoute des cases dans la matrice en même temps qu'on bouge, on pourrait avoir des pièces qui s'arrêtent entre deux collones
-	if( piece->dir ){
+void moveSide(Piece *piece, int matrix[GRILLE_W][GRILLE_H], float distanceLateral, int maxDown){
+	if(maxDown && piece->frameToGo == 0){
+		piece->x += piece->dir;
+		if(piece->dir > 0)
+			piece->x = floor(piece->x);
+		else if(piece-> dir < 0)
+			piece->x = ceil(piece->x);
+
+		if( tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix)){
+			piece->x -= piece->dir;
+		}
+		piece->dir = NO_MOVE;
+		piece->frameDir = 0;
+	}
+	else if( piece->dir ){
 		piece->x += piece->dir * distanceLateral;
 		piece->frameDir--;
 
@@ -333,7 +345,7 @@ void moveSide(Piece *piece, int matrix[GRILLE_W][GRILLE_H], float distanceLatera
 	}
 }
 
-int moveDown(Piece *piece, int accelerate, int matrix[GRILLE_W][GRILLE_H], float distanceDown, int frameStop){
+int moveDown(Piece *piece, int accelerate, int matrix[GRILLE_W][GRILLE_H], float distanceDown, int frameStop, int maxDown){
 	float distanceMoveDown = distanceDown * accelerate;
 	if(distanceMoveDown >= 2)
 		distanceMoveDown = 5/3;
@@ -363,6 +375,9 @@ int moveDown(Piece *piece, int accelerate, int matrix[GRILLE_W][GRILLE_H], float
 	else
 		piece->frameStop = 0; //abusable ?
 
+	if(maxDown){
+		return moveDown(piece,  accelerate, matrix,  distanceDown,  frameStop, maxDown);
+	}
 	return 0;
 
 }
@@ -932,6 +947,7 @@ int main(){
 
 	//move
 	int accelerate = NO_ACCELERATE;
+	int maxDown = SDL_FALSE;
 	int lateralMove = NO_MOVE;
 	int rotate = SDL_FALSE;
 	int rdyToRotate[2] = {SDL_TRUE, SDL_TRUE};
@@ -1064,6 +1080,7 @@ int main(){
 		lateralMove = NO_MOVE;
 		rotate = SDL_FALSE;
 		rotatePressed = SDL_FALSE;
+		maxDown = SDL_FALSE;
 
 	////////////
 	// Events //`
@@ -1102,6 +1119,9 @@ int main(){
 
 		if( keystate[SDL_SCANCODE_DOWN] )
 			accelerate = ACCELERATE;
+
+		if( keystate[SDL_SCANCODE_SPACE] )
+			maxDown = SDL_TRUE;
 
 
 		if( keystate[SDL_SCANCODE_RIGHT] )
@@ -1146,12 +1166,12 @@ int main(){
 		if(!cantMoveSide)
 			changeDir(&currentPiece, lateralMove, (int)frame[LATERAL]);
 
-		moveSide(&currentPiece, matrix, distances[LATERAL]);
+		moveSide(&currentPiece, matrix, distances[LATERAL], maxDown);
 
 
 		cantMoveSide = SDL_FALSE;
 		if(!currentPiece.frameToGo){
-			if( moveDown(&currentPiece, accelerate, matrix, distances[DOWN], (int)frame[STOP]) == STOPPED ){
+			if( moveDown(&currentPiece, accelerate, matrix, distances[DOWN], (int)frame[STOP], maxDown) == STOPPED){
 				cantMoveSide = SDL_TRUE;
 				if(currentPiece.frameDir == 0){
 					//Piece is saved and remplaced

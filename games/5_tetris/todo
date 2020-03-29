@@ -4,13 +4,17 @@ bugs :
 
  - bonus :
  	//fill trous
-	more ptns (flat or multiplier)
+	/more ptns (flat or multiplier)
 	//laser : supprime lignes du bas
 	/slow
 
 - malus :
 	/giant
 	//speed
+
+
+combo line color
+
 
  - anims :
  	//giant
@@ -20,10 +24,10 @@ bugs :
 	\\falling when completion ligne
 	/new bloc
 	SLOW
-	ptns
+	/ptns
 
  - affichage :
  	//next piece
 	//Texture
 	speed
-	ptns
+	/ptns
