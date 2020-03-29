@@ -336,10 +336,7 @@ void moveSide(Piece *piece, int matrix[GRILLE_W][GRILLE_H], float distanceLatera
 int moveDown(Piece *piece, int accelerate, int matrix[GRILLE_W][GRILLE_H], float distanceDown, int frameStop){
 	float distanceMoveDown = distanceDown * accelerate;
 	if(distanceMoveDown >= 2)
-		distanceMoveDown = 5/3;
-
-	printf("\ndistance down : %f\n", distanceDown );
-	printf("distanceMoveDownn : %f\n", distanceMoveDown );
+		distanceMoveDown = 1.99;
 
 	piece->y += distanceMoveDown;
 	if(almostRound(piece->x))
@@ -505,10 +502,10 @@ void activateBonuses( int bonusActivate[NB_BONUSES],int frameLaser[GRILLE_H], in
 }
 
 int getBonusId(int rectId){
-	int bonusId = 0;
+	int bonusId = -1;
 
-	while(rectId >= BONUS_TRI){
-		rectId -= BONUS_TRI;
+	while(rectId >= 10){
+		rectId-=10;
 		bonusId++;
 	}
 
@@ -545,7 +542,7 @@ void drawMatrix(SDL_Renderer *renderer, SDL_Texture *brickTexture, SDL_Texture *
 				SDL_RenderCopy(renderer, brickTexture, &src, &dest);
 
 				if(matrix[i][j] >= 10){
-					src.x = (getBonusId(matrix[i][j]) -1) * BRICK_SRC.w;
+					src.x = (getBonusId(matrix[i][j])) * BRICK_SRC.h;
 					SDL_RenderCopy(renderer, bonusTexture, &src, &dest);
 				}
 
@@ -680,7 +677,6 @@ void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H
 		if(getBonuses){
 			for(int i = 0; i < GRILLE_W; i++){
 				if(matrix[i][line] >= BONUS_TRI ){
-					printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 					bonusGet = getBonusId(matrix[i][line]);
 					if(bonusGet == FLAT_POINT ){
 						scoreAdd[line].score += NB_FLAT_POINT;
@@ -693,7 +689,7 @@ void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H
 						scoreAdd[line].multi ++;
 					}
 					else
-						bonusActivate[bonusGet-1]++;
+						bonusActivate[bonusGet]++;
 				}
 			}
 		}
@@ -782,7 +778,6 @@ void updateScore(Score * scoreAffichage, Score scoreAdd[GRILLE_H]){
 				scoreAffichage[i].frame = SCORE_TTL;
 			}
 			else if(scoreAffichage[i].frame < RESET_ANIM){
-				printf("reset\n");
 				scoreAffichage[i].frame = RESET_ANIM;
 			}
 			printf("score after update :  %d\n\n",scoreAffichage[i].score);
@@ -799,13 +794,6 @@ void clearScore(Score * scoreToClear){
 	scoreToClear->multi = 0;
 }
 
-int lineEmpty(int matrix[GRILLE_W][GRILLE_H], int line ){
-	for(int i=0;i<GRILLE_W; i++)
-		if(matrix[i][line] != EMPTY)
-			return 0;
-	return 1;
-}
-
 void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], int *remindRotate, Score * scoreAffichage, Score * scoreAdd){
 	(*framePassed)++;
 
@@ -815,14 +803,8 @@ void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteL
 		(*remindRotate)--;
 
 	for(int i=0; i<GRILLE_H; i++){
-		if(frameLaser[i] == LASER_FRAME - LASER_START_COMPLETE){
-			if(frameCompleteLine[i] == -1){
-				frameCompleteLine[i] = FRAME_COMPLETE_LINE + 1;
-				if(!lineEmpty(matrix, i)){}
-					scoreAdd[i].score += SCORE_BASE;
-			}
-		}
-
+		if(frameLaser[i] == LASER_FRAME - LASER_START_COMPLETE)
+			frameCompleteLine[i] = FRAME_COMPLETE_LINE + 1;
 
 		if(frameLaser[i] >= 0)
 			frameLaser[i]--;

@@ -27,6 +27,25 @@ SDL_Rect MATRIX = {MATRIX_X,MATRIX_Y,GRILLE_W*CASE_SIZE,GRILLE_H*CASE_SIZE };
 #define SHIFT_RIGHT_NEXT 26
 
 
+//Score
+#define NB_CHAR_AFFICHAGE_SCORE 21
+typedef struct {int score; int frame; int scoreDest; int combo; int flat; float multi;}Score;
+#define MIN_SIZE_SCORE 25
+#define MAX_SIZE_SCORE 25
+#define SCORE_TTL 40
+#define RESET_ANIM 33
+#define REACH_TARGET_SCORE 17
+#define WAIT_SCORE_ANIM 2
+const int ALPHA_SCORE[SCORE_TTL] = { 20, 40, 65, 90, 120, 135, 160, 175, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195,195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 195, 175, 145, 110, 90, 70, 40, 20 };
+SDL_Rect SCORE_SRC = {0,0, 12,18};
+const int SCORE_DEST = (MATRIX_X + (GRILLE_W-0.5)/2 * CASE_SIZE);
+#define FONT_HEIGHT_RATIO 1.5
+
+#define SCORE_BASE 10
+#define RATIO_COMBO_LINE 2
+#define NB_FLAT_POINT 100
+#define RATIO_MULTI_POINT 3
+
 //Textures
 SDL_Rect LASER_DIM = {0,0,500,40};
 #define LASER_WIDTH 30
@@ -55,13 +74,13 @@ enum{LATERAL, DOWN, TO_GO, STOP};
 
 #define FRAME_LATERAL (0.33 * FRAMES_PER_SECOND)
 
-#define FRAME_DOWN (0.5 * FRAMES_PER_SECOND)
+#define FRAME_DOWN (0.2 * FRAMES_PER_SECOND)
 
 #define FRAME_STOP (0.8 * FRAMES_PER_SECOND)
 
 //accelerate
 #define NO_ACCELERATE 1
-#define ACCELERATE 30
+#define ACCELERATE 10
 
 //colors
 const SDL_Color CONTOUR_GRILLE = {0, 51, 94, 255};
@@ -76,8 +95,8 @@ SDL_Color colors[NB_PIECES] = {{150,100,100,100},{100,150,100,100},{100,100,150,
 typedef struct{ int lineDown; float shift;} ShiftDown;
 
 //Bonus
-#define NB_BONUSES 6
-enum{NO_BONUS, FILL, POINTS, LASER, SLOW, SPEED, GIANT};
+#define NB_BONUSES 7
+enum{NO_BONUS, FILL, MULTI_POINT, LASER, SLOW, SPEED, GIANT, FLAT_POINT};
 #define BONUS_TRI 10
 SDL_Color colors_b[NB_BONUSES] = {{120,000,150,100},{100,070,180,100},{170,170,000,170},{000,255,120,100}};
 #define NB_LINES_LASER 3
@@ -86,7 +105,7 @@ SDL_Color colors_b[NB_BONUSES] = {{120,000,150,100},{100,070,180,100},{170,170,0
 #define SPEED_AMMOUNT (FRAMES_PER_SECOND * 30)
 
 
-#define FRAME_COMPLETE_LINE 10
+#define FRAME_COMPLETE_LINE 11
 
 
 #define LASER_FRAME 40
@@ -104,7 +123,7 @@ int LASER_RECOIL_DIST[LASER_RECOIL_DURATION] = {8,4,2};
 #define LASER_END_POS (MATRIX_X - 1.2*CASE_SIZE)
 
 #define NB_FILL 8
-#define FRAME_FILL 15
+#define FRAME_FILL 16
 #define ESPACEMENT_FRAME_FILL 2
 #define FRAME_DEPLACEMENT_FILL 13
 
