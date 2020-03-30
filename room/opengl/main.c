@@ -33,8 +33,8 @@ GLuint scene_list = 0; // NB SCENE
 float VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
 float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 
-#define WinWidth 1920
-#define WinHeight 1080
+#define WinWidth 1280
+#define WinHeight 720
 
 #define FPS 120
 static const float FRAME_TIME = 1000/FPS;
@@ -906,9 +906,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 										default:break;
 									}
 
-									SDL_Renderer *ptr_renderer = pRenderer;
-									SDL_Window *ptr_Window = Window;
-									// retour sur la Window 3D.
+									SDL_DestroyRenderer(pRenderer);
+									SDL_DestroyWindow(Window);
 
 
 									getCoinsValues(token,chaine);
@@ -922,9 +921,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 
 									SDL_GL_AppliquerScene(scene,&camera);
+									while(SDL_PollEvent(&Event) );
 									animationLancerMachine(cible[machine-1],camera);
-									SDL_DestroyRenderer(ptr_renderer);
-									SDL_DestroyWindow(ptr_Window);
 								}
 
 
