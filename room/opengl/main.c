@@ -340,7 +340,6 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, int port
     else if(volume >MAX_VOLUME_ARCADE)
         volume = MAX_VOLUME_ARCADE;
 
-    printf("%d : %f %f\n",channel, distance, volume );
     Mix_Volume(channel, (int)volume);
 }
 /*
