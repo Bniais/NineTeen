@@ -36,7 +36,7 @@ float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 #define WinWidth 1920
 #define WinHeight 1080
 
-#define FPS 60
+#define FPS 120
 static const float FRAME_TIME = 1000/FPS;
 
 static SDL_Window *Window = NULL;
@@ -235,7 +235,7 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 
 		ips++;
 		if(SDL_GetTicks() - count_IPS > 1000){
-		//	printf("IPS %f\n",ips );
+			printf("IPS %f\n",ips );
 			count_IPS = SDL_GetTicks();
 			//sprintf(fpsString,"IPS : %.0f",ips);
 			ips = 0;
