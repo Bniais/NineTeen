@@ -36,7 +36,7 @@ float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 #define WinWidth 1920
 #define WinHeight 1080
 
-#define FPS 30
+#define FPS 60
 static const float FRAME_TIME = 1000/FPS;
 
 static SDL_Window *Window = NULL;
@@ -204,9 +204,8 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 		bruitagePas(&jouerSon,camera,3,*(musicEnvironnement + 3));
 
 
-
-
 		lancerMachine(scene,&Running,camera,cible,token,chaine);
+		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
 		sscanf(chaine,"%d %d / %d",&tscore,&tclassement,&ttotal);
 		sprintf(score,"SCORE : %d",tscore);
@@ -217,9 +216,10 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 		RenderText(font,score,color,WinWidth/30,WinHeight - WinWidth/30, camera.ouverture);
 		RenderText(font,classement,color,WinWidth/30,WinHeight - WinWidth/15, camera.ouverture);
 
-		gluPerspective(camera.ouverture,(float)(WinWidth)/(float)(WinHeight),0.1,100);	//Pour les explications, lire le tutorial sur OGL et win
-		glMatrixMode( GL_MODELVIEW );
-		glLoadIdentity();
+
+
+
+
 
 		SDL_GL_SwapWindow(Window);
 
@@ -356,15 +356,13 @@ void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera
 {
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 
 	SDL_Color color = {0,0,0};
 
 	mouvementCamera(camera);
-
-	glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,40);	//définit la taille de la tache spéculaire
 
 
 	if(scene_list == 0) {
@@ -374,31 +372,26 @@ void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera
 		glEndList();
 	}
 
-
 	glCallList(scene_list);
-
-//	SDL_GL_SwapWindow(Window);
 }
 
 
 void GL_InitialiserParametre(int width, int height, struct Camera_s camera)
 {
+	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat mat_shininess[] = { 50.0 };
+
+
+	GLfloat light_position0[] = { camera.px, camera.pz, 0.0, 1.0 };
+	glClearColor (0.0, 0.0, 0.0, 0.0);
+	glShadeModel (GL_SMOOTH);
+
+	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position0);
+
+
 	glEnable(GL_LIGHTING);
-
-
 	glEnable(GL_LIGHT0);
-	glEnable(GL_LIGHT1);
-
-
-	float LightPos0[4]={3,0,4,1};
-	float LightPos1[4]={-3,0,4,1};
-
-	glLightfv(GL_LIGHT0,GL_POSITION,LightPos0);
-	glLightf(GL_LIGHT0,GL_QUADRATIC_ATTENUATION,0.01f);
-
-	glLightfv(GL_LIGHT1,GL_POSITION,LightPos1);
-	glLightf(GL_LIGHT1,GL_QUADRATIC_ATTENUATION,0.01f);
-
 	glEnable(GL_DEPTH_TEST);
 
 
@@ -409,6 +402,10 @@ void GL_InitialiserParametre(int width, int height, struct Camera_s camera)
 
 	//Initialize Modelview Matrix
 	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+
+	glEnable(GL_TEXTURE_2D);
+  glEnable(GL_BLEND);
 	glLoadIdentity();
 }
 
@@ -429,7 +426,14 @@ void initalisation(struct Camera_s *camera, struct Camera_s *cible)
 	cible[1].py = 3.45;
 	cible[1].cible_py = -.34;
 	cible[1].angle = M_PI;
-	cible[1].ouverture =60;
+	cible[1].ouverture =70;
+
+	cible[2].px = -4.64;
+	cible[2].pz = 12.9;
+	cible[2].py = 3.45;
+	cible[2].cible_py = -.34;
+	cible[2].angle = M_PI;
+	cible[2].ouverture =70;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -536,7 +540,7 @@ void mouvementCamera(struct Camera_s *camera)
 
 int detectionEnvironnement(float x,float y)
 {
-	//printf("X = %f Z = %f\n",x,y);
+	printf("X = %f Z = %f\n",x,y);
 
 
 	// HITBOX
@@ -681,7 +685,6 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible)
 	float cib = (cible.cible_py - camera.cible_py) / DUREE_ANIM;
 	float y = (cible.py - camera.py)/DUREE_ANIM;
 
-
 	while( i++ < 60)
 	{
 		camera.px += x;
@@ -690,12 +693,15 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible)
 		camera.cible_py += cib;
 		camera.py += y;
 
+		glDisable(GL_LIGHTING);
+	  glLoadIdentity();
+	  gluOrtho2D(0, WinWidth, 0, WinHeight); // m_Width and m_Height is the resolution of window
+		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
 		glClearColor(0.f, 0.f, 0.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 
-		glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,40);	//définit la taille de la tache spéculaire
 
 		gluLookAt(camera.px                   ,camera.py    ,camera.pz                  ,
 				  camera.px+sin(camera.angle) ,camera.py + camera.cible_py    , camera.pz+cos(camera.angle),
@@ -707,6 +713,7 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible)
 		SDL_GL_SwapWindow(Window);
 
 	}
+
 }
 
 void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, char *chaine)
@@ -729,15 +736,22 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								printf("SPACE_BAR \n");
 
 								int machine = detecterMachine(camera.px, camera.pz);
-								if ( machine == 1 )
+								if ( machine)
 								{
 									animationLancerMachine(camera,cible[machine]);
 									// centrer sur la machine //
 									// zoomer sur la machine //
 
+
+
 									// lancer la machine
 									SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
-									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, 50,WinWidth,WinHeight,token));
+
+									switch (machine) {
+										case 1: printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, 50,WinWidth,WinHeight,token));break;
+										default:break;
+									}
+
 									SDL_DestroyRenderer(pRenderer);
 									SDL_DestroyWindow(Window);
 									// retour sur la Window 3D.
@@ -750,10 +764,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									Window = SDL_CreateWindow("Nineteen", 0, 0, WinWidth, WinHeight, WindowFlags );
 									Context = SDL_GL_CreateContext(Window);
 									scene_list = 0;
-									GL_InitialiserParametre( WinWidth,WinHeight,cible[machine] );
+
+									while(SDL_PollEvent(&Event) );
 									SDL_GL_AppliquerScene(scene,&camera);
-									lancerMachine(scene,Running,camera,cible,token,chaine);
 									animationLancerMachine(cible[machine],camera);
+									printf("FLASH\n" );
 								}
 
 
@@ -788,21 +803,21 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y, float ouverture)
 {
+	glPushMatrix();
+
+
 	glDisable(GL_LIGHTING);
-  glPushMatrix();
   glLoadIdentity();
 
 
   gluOrtho2D(0, WinWidth, 0, WinHeight); // m_Width and m_Height is the resolution of window
   glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
   glLoadIdentity();
 
 
-  glEnable(GL_TEXTURE_2D);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   GLuint texture;
   glGenTextures(1, &texture);
   glBindTexture(GL_TEXTURE_2D, texture);
@@ -828,8 +843,8 @@ void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y, fl
   glDeleteTextures(1, &texture);
   SDL_FreeSurface(sFont);
 
-	glEnable(GL_LIGHTING);
-
+	glPopMatrix();
+	glLoadIdentity();
 }
 
 
