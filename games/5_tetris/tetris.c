@@ -10,7 +10,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <string.h>
 #include <math.h>
 
 void myInit(){
@@ -125,6 +125,18 @@ void updateDistances(float frame[NB_FRAMES], float distances[NB_DISTANCES], int 
 		if(NB_GROW == 1) //30fps
 			frame[i] *= pow(i==LATERAL ? GROW_RATE_LATERAL : GROW_RATE, *framePassed);
 	}
+	if(frame[DOWN] < FRAME_DOWN_MIN){
+		frame[DOWN] = FRAME_DOWN_MIN;
+	}
+	if(frame[TO_GO] < FRAME_TO_GO_MIN){
+		frame[TO_GO] = FRAME_TO_GO_MIN;
+	}
+	if(frame[LATERAL] < FRAME_LATERAL_MIN){
+		frame[LATERAL] = FRAME_LATERAL_MIN;
+	}
+	if(frame[STOP] < FRAME_STOP_MIN){
+		frame[STOP] = FRAME_STOP_MIN;
+	}
 
 	distances[DOWN] = 1. / (int)frame[DOWN];
 	distances[LATERAL] = 1. / (int)frame[LATERAL];
@@ -225,14 +237,18 @@ void getColRawInfos(Piece *piece){
 void getNewPiece(Piece *piece, int giant){
 	piece->rota = 0;
 	piece->size = PIECE_SIZE * (giant ? RATIO_GIANT : 1);
-	if(piece->giant != giant)
-		piece->grille = realloc( piece->grille, piece->size * piece->size * sizeof(int));
 
-	piece->giant = giant;
-	piece->id = 0;// rand() % NB_PIECES;
+	piece->grille = realloc( piece->grille, piece->size * piece->size * sizeof(int));
+
+	if(giant)
+		piece->giant = SDL_TRUE;
+	else
+		piece->giant = SDL_FALSE;
+
+	piece->id =1;// rand() % NB_PIECES;
 
 	//handle bonus
-	piece->bonus = MULTI_POINT;//rand() % (NB_BONUSES+1);
+	piece->bonus = SPEED;//rand() % (NB_BONUSES+1);
 
 	updateGrille(piece);
 
@@ -505,7 +521,7 @@ void getFillPlaces(int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRIL
 
 void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine);
 
-void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse, int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H]){
+void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse, int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int* nextIsGiant){
 	switch (bonusId) {
 		case FILL:
 			getFillPlaces(matrix, matrixFill, nbUse*NB_FILL);
@@ -526,13 +542,17 @@ void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse
 			printf("speed\n");
 			*framePassed += nbUse * SPEED_AMMOUNT;
 			break;
+
+		case GIANT:
+			*nextIsGiant += nbUse;
+			break;
 	}
 }
 
-void activateBonuses( int bonusActivate[NB_BONUSES],int frameLaser[GRILLE_H], int *framePassed, int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H] ){
+void activateBonuses( int bonusActivate[NB_BONUSES],int frameLaser[GRILLE_H], int *framePassed, int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int* nextIsGiant ){
 	for(int i=0; i<NB_BONUSES; i++)
 		if(bonusActivate[i])
-			useBonus(i+1, frameLaser, framePassed, bonusActivate[i], matrix, matrixFill);
+			useBonus(i+1, frameLaser, framePassed, bonusActivate[i], matrix, matrixFill, nextIsGiant);
 }
 
 int getBonusId(int rectId){
@@ -730,14 +750,11 @@ void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H
 			//int rainbow = isLineRainbow(matrix, line);
 			int idPiece;
 			for(int i = 0; i < GRILLE_W; i++){
+				idPiece = getPieceId(matrix[i][line]);
+				if(idPiece == NB_PIECES || (i > 0 && idPiece != getPieceId(matrix[i-1][line])) )
+					sameColor = -1;
+
 				if(matrix[i][line] >= BONUS_TRI ){
-
-					//gestion color/rainbow
-					idPiece = getPieceId(matrix[i][line]);
-					if(idPiece == NB_PIECES || (i > 0 && idPiece != getPieceId(matrix[i-1][line])) )
-						sameColor = -1;
-
-
 					//gestion bonus
 					bonusGet = getBonusId(matrix[i][line]);
 
@@ -752,7 +769,7 @@ void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H
 			}
 
 			if(sameColor != -1){
-				printf("same c olor :))\n" );
+				printf("same color\n");
 				scoreAdd[line].sameColor = sameColor;
 				scoreAdd[line].score *= RATIO_SAME_COLOR;
 			}
@@ -841,9 +858,11 @@ void transfertNextPiece(Piece *currentPiece, Piece nextPiece){
 	updateGrille(currentPiece);
 }
 
-void updateScore(Score * scoreAffichage, Score scoreAdd[GRILLE_H]){
+void updateScore(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal){
 	for(int i=0; i<GRILLE_H; i++){
 		if(scoreAdd[i].score){
+			scoreTotal->score += scoreAdd[i].score;
+			scoreTotal->frameToDest = FRAME_DEST_SCORE_TOTAL;
 
 			scoreAffichage[i].scoreDest += scoreAdd[i].score;
 			scoreAffichage[i].flatDest += scoreAdd[i].flat;
@@ -855,8 +874,11 @@ void updateScore(Score * scoreAffichage, Score scoreAdd[GRILLE_H]){
 			if(scoreAdd[i].multi>1)
 				scoreAffichage[i].multi = scoreAdd[i].multi;
 
-			if(scoreAdd[i].sameColor != -1)
+			if(scoreAdd[i].sameColor != -1){
+				printf(" update color : %d\n", scoreAdd[i].sameColor);
 				scoreAffichage[i].sameColor = scoreAdd[i].sameColor;
+			}
+
 
 
 
@@ -868,7 +890,7 @@ void updateScore(Score * scoreAffichage, Score scoreAdd[GRILLE_H]){
 				scoreAffichage[i].frame = RESET_ANIM;
 			}
 
-			if((scoreAdd[i].combo > 1  ||  scoreAdd[i].multi>1 || scoreAdd[i].flat )){
+			if((scoreAdd[i].combo > 1  ||  scoreAdd[i].multi>1 || scoreAdd[i].flat || scoreAdd[i].sameColor )){
 				if(scoreAffichage[i].frameCombo == 0){
 					printf("combo ttl\n");
 					scoreAffichage[i].flat += scoreAdd[i].flat;
@@ -893,13 +915,20 @@ int lineEmpty(int matrix[GRILLE_W][GRILLE_H], int line ){
 	return 1;
 }
 
-void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], int *remindRotate, Score * scoreAffichage, Score * scoreAdd){
+void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], int *remindRotate, Score * scoreAffichage, Score * scoreAdd, ScoreTotal* scoreTotal){
 	(*framePassed)++;
 
 	if(*remindRotate<0)
 		(*remindRotate)++;
 	else if(*remindRotate>0)
 		(*remindRotate)--;
+
+	if(scoreTotal->frameToDest){
+		scoreTotal->frameToDest--;
+		if(scoreTotal->score != scoreTotal->scoreShow){
+			scoreTotal->scoreShow += (scoreTotal->score-scoreTotal->scoreShow)/ (scoreTotal->frameToDest);
+		}
+	}
 
 	for(int i=0; i<GRILLE_H; i++){
 		if(frameLaser[i] == LASER_FRAME - LASER_START_COMPLETE){
@@ -1036,7 +1065,6 @@ float getDrawSize(SDL_Renderer *renderer, char * msgTotal, TTF_Font * font){
 		dest.w /= (OPEN_FONT_SIZE / size_score);
 	}while(dest.w > SIZE_DRAW_COMBO);
 
-
 	SDL_FreeSurface(surfaceMessage);
 	SDL_DestroyTexture(Message);
 
@@ -1045,6 +1073,31 @@ float getDrawSize(SDL_Renderer *renderer, char * msgTotal, TTF_Font * font){
 
 int intlog(double x, double base) {
     return (int)(log(x) / log(base));
+}
+
+void afficherScoreTotal(SDL_Renderer * renderer, TTF_Font *font, ScoreTotal score){
+	char msgScore[MAX_APPEND_LENGHT];
+	sprintf(msgScore, "%d", (int)score.scoreShow);
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, msgScore, SCORE_TOTAL_COLOR);
+	SDL_Rect dest = SCORE_TOTAL_DEST;
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
+	float size_score = SIZE_SCORE_TOTAL+1;
+	do{
+		size_score--;
+		SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+		dest.w /= (OPEN_FONT_SIZE / size_score);
+	}while(dest.w > SIZE_DRAW_SCORE_TOTAL);
+
+
+	dest.h /= (OPEN_FONT_SIZE / size_score);
+	dest.y += (SIZE_SCORE_TOTAL - dest.h)/2;
+	dest.x += (SIZE_DRAW_SCORE_TOTAL - dest.w)/2;
+
+	SDL_RenderCopy(renderer, Message, NULL, &dest);
+
+	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(Message);
 }
 
 void afficherCombo(SDL_Renderer *renderer, Score scoreAffichage, int line, TTF_Font *font ){
@@ -1070,6 +1123,7 @@ void afficherCombo(SDL_Renderer *renderer, Score scoreAffichage, int line, TTF_F
 		}*/
 
 		//creations messages
+		printf("combo : color %d\n",  scoreAffichage.sameColor);
 		if(scoreAffichage.sameColor != -1 )
 			sprintf(msgColor, "Color!  x%d  ", RATIO_SAME_COLOR);
 
@@ -1094,7 +1148,9 @@ void afficherCombo(SDL_Renderer *renderer, Score scoreAffichage, int line, TTF_F
 
 		//affichage messages
 		if(scoreAffichage.sameColor != -1 ){
+
 			comboColor = BRICK_COLORS[scoreAffichage.sameColor];
+			printf("draw combo color : %d %d\n",scoreAffichage.sameColor, comboColor.r );
 			drawComboText(renderer, msgColor, font, scoreAffichage, &dest, comboColor, size_score);
 		}
 		if(scoreAffichage.combo>1){
@@ -1144,6 +1200,7 @@ int main(){
 	int cantMoveSide = SDL_FALSE;
 	int remindRotate = 0;
 	int rotatePressed;
+	int nextIsGiant = 0;
 
 
 	//frames and distances
@@ -1171,6 +1228,7 @@ int main(){
 	//score
 	Score scoreAffichage[GRILLE_H];
 	Score scoreAdd[GRILLE_H];
+	ScoreTotal score = {0,0,0};
 
 	//matrice
 	int matrix[GRILLE_W][GRILLE_H];
@@ -1369,10 +1427,14 @@ int main(){
 					savePiece(currentPiece, matrix);
 					clearIntTab(bonusActivate, NB_BONUSES);
 					checkLines(matrix, frameCompleteLine, bonusActivate, SDL_TRUE, scoreAdd);
-					activateBonuses(bonusActivate, frameLaser, &framePassed, matrix, matrixFill);
+					activateBonuses(bonusActivate, frameLaser, &framePassed, matrix, matrixFill, &nextIsGiant);
 					updateDistances(frame, distances, &framePassed);
 					transfertNextPiece(&currentPiece,nextPiece);
-					getNewPiece(&nextPiece, SDL_FALSE);
+
+					getNewPiece(&nextPiece, nextIsGiant);
+					if(nextIsGiant)
+						nextIsGiant--;
+
 					if( putAtTop(&currentPiece, matrix, (int)frame[TO_GO], &remindRotate) == COULDNT_PUT )
 						break;
 				}
@@ -1383,7 +1445,7 @@ int main(){
 		else
 			currentPiece.frameToGo--;
 
-		updateScore(scoreAffichage, scoreAdd);
+		updateScore(scoreAffichage, scoreAdd, &score);
 	///////////////////
 	// Check hitboxs //`
 	///////////////////
@@ -1401,6 +1463,9 @@ int main(){
 		drawPiece(renderer, brickTexture, bonusTexture, nextPiece, SDL_TRUE);
 		drawLaser(renderer, laserTexture, frameLaser);
 		drawFill(renderer,brickTexture, matrixFill);
+
+		//SDL_RenderFillRect(renderer, &SCORE_TOTAL_DEST);
+		afficherScoreTotal(renderer,comboFont, score);
 		//drawNextPiece(nextPiece);
 
 		for(int i=0; i<GRILLE_H; i++){
@@ -1436,7 +1501,7 @@ int main(){
 		lastTime = currentTime;
 
 		//Actualise frames
-		updateFrames(&framePassed, frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, &remindRotate, scoreAffichage, scoreAdd);
+		updateFrames(&framePassed, frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, &remindRotate, scoreAffichage, scoreAdd, &score);
 		totalFrame++;
 		background_src.x = BACKGROUND_SRC.w * ((totalFrame/3)%BACKGROUND_COL);
 		background_src.y = BACKGROUND_SRC.h * ((totalFrame/(3*BACKGROUND_COL))%BACKGROUND_ROW);

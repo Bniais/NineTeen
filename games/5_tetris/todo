@@ -1,5 +1,11 @@
+//  done
+\\  canceled
+/   in progress
+?   still needed??
+
+
 bugs :
-	Piece se stoppe instant en atterissant alors que pas accé
+	?Piece se stoppe instant en atterissant alors que pas accé
 
 
  - bonus :
@@ -14,12 +20,14 @@ bugs :
 
 
 //combo line color
-same color
-rainbow
+//same color
+\\rainbow
 
-when cant rotate, try decaler piece (g d b)
-handle combo text too big
+when dying, check if no laser, fill or complete line, if there are, WAIT
+when cant rotate, try decaler piece (g d b +h?)
+death anim
 
+//handle combo text too big
 
  - anims :
  	//giant
@@ -27,12 +35,12 @@ handle combo text too big
 	//fill
  	//completion ligne
 	\\falling when completion ligne
-	/new bloc
-	SLOW
-	/ptns
+	//new bloc
+	?SLOW
+	//ptns
 
  - affichage :
  	//next piece
 	//Texture
 	speed
-	/ptns
+	//ptns

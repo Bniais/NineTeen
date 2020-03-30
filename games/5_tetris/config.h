@@ -31,9 +31,12 @@ SDL_Rect MATRIX = {MATRIX_X,MATRIX_Y,GRILLE_W*CASE_SIZE,GRILLE_H*CASE_SIZE };
 //Score
 #define NB_CHAR_AFFICHAGE_SCORE 21
 typedef struct {int score; int frame; int frameCombo; int scoreDest; int combo; int flat;int flatDest; int multi; int sameColor; }Score; //int rainbow;
+typedef struct {long int score; float scoreShow; int frameToDest;}ScoreTotal;
 #define SIZE_COMBO (7.*CASE_SIZE/8)
 #define SIZE_SCORE 25
-
+#define SIZE_SCORE_TOTAL 40
+#define SIZE_DRAW_SCORE_TOTAL 150
+SDL_Rect SCORE_TOTAL_DEST = {489, 272,SIZE_DRAW_SCORE_TOTAL,SIZE_SCORE_TOTAL};
 
 #define SCORE_TTL 40
 #define RESET_ANIM 34
@@ -51,14 +54,17 @@ const int SCORE_DEST = (MATRIX_X + (GRILLE_W-0.5)/2 * CASE_SIZE);
 #define RATIO_COMBO_LINE 2
 #define NB_FLAT_POINT 100
 #define RATIO_MULTI_POINT 3
-#define RATIO_SAME_COLOR 5
+#define RATIO_SAME_COLOR 30
 
 #define SIZE_DRAW_COMBO 600
-
+#define FRAME_DEST_SCORE_TOTAL 15
 #define COMBO_DRAW_X (MATRIX_X + GRILLE_W * CASE_SIZE + 80)
 
-#define NB_COMBO 8
 
+
+SDL_Color SCORE_TOTAL_COLOR = {0x7D,0xF9,0xFF};
+
+#define NB_COMBO 8
 SDL_Color COMBO_COLOR[NB_COMBO] = { // rouges
 	{0xfe, 0xdf, 0x15},
 	{0xfe, 0x88, 0x28},
@@ -133,12 +139,16 @@ const int NB_GROW = FRAMES_PER_SECOND / 30.;
 
 enum{LATERAL, DOWN, TO_GO, STOP};
 #define FRAME_TO_GO (0.5 * FRAMES_PER_SECOND)
+#define FRAME_TO_GO_MIN 8
 
 #define FRAME_LATERAL (0.33 * FRAMES_PER_SECOND)
+#define FRAME_LATERAL_MIN 4
 
 #define FRAME_DOWN (0.5 * FRAMES_PER_SECOND)
+#define FRAME_DOWN_MIN 1
 
 #define FRAME_STOP (0.8 * FRAMES_PER_SECOND)
+#define FRAME_STOP_MIN 10
 
 //accelerate
 #define NO_ACCELERATE 1
@@ -169,7 +179,7 @@ SDL_Color colors_b[NB_BONUSES] = {{120,000,150,100},{100,070,180,100},{170,170,0
 #define NB_LINES_LASER 3
 #define MAX_HEIGHT_LASER 9
 #define SLOW_AMMOUNT (FRAMES_PER_SECOND * 45)
-#define SPEED_AMMOUNT (FRAMES_PER_SECOND * 30)
+#define SPEED_AMMOUNT (FRAMES_PER_SECOND * 40)
 
 
 #define FRAME_COMPLETE_LINE 11
