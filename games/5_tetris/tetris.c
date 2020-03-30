@@ -1029,7 +1029,7 @@ float getDrawSize(SDL_Renderer *renderer, char * msgTotal, TTF_Font * font){
 	SDL_Rect dest = {0,0,0,0};
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
 
-	float size_score = SIZE_SCORE+1;
+	float size_score = SIZE_COMBO+1;
 	do{
 		size_score--;
 		SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
@@ -1090,7 +1090,6 @@ void afficherCombo(SDL_Renderer *renderer, Score scoreAffichage, int line, TTF_F
 		strcat(msgTotal,msgFlat);
 
 		float size_score = getDrawSize(renderer, msgTotal, font);
-		printf("total :%s\n",msgTotal );
 		//drawComboText(renderer, msgTotal, font, scoreAffichage, &dest, (SDL_Color){255,255,255}, size_score);
 
 		//affichage messages
