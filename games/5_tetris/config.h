@@ -24,13 +24,14 @@ enum {ALREADY_ROUNDED, RELY_ON_BOTH, RELY_ON_LEFT, RELY_ON_RIGHT};
 SDL_Rect MATRIX = {MATRIX_X,MATRIX_Y,GRILLE_W*CASE_SIZE,GRILLE_H*CASE_SIZE };
 #define TOO_CLOSE_FROM_TOP 420
 #define FRAME_REMIND_ROTATE (FRAMES_PER_SECOND/3)
-#define SHIFT_RIGHT_NEXT 26
+#define SHIFT_RIGHT_NEXT -558
+#define SHIFT_TOP_NEXT -8
 
 
 //Score
 #define NB_CHAR_AFFICHAGE_SCORE 21
-typedef struct {int score; int frame; int frameCombo; int scoreDest; int combo; int flat;int flatDest; int multi;}Score;
-#define SIZE_SCORE (3*CASE_SIZE/4)
+typedef struct {int score; int frame; int frameCombo; int scoreDest; int combo; int flat;int flatDest; int multi; int sameColor; }Score; //int rainbow;
+#define SIZE_SCORE (7*CASE_SIZE/8)
 
 
 #define SCORE_TTL 40
@@ -42,13 +43,16 @@ SDL_Rect SCORE_SRC = {0,0, 12,18};
 const int SCORE_DEST = (MATRIX_X + (GRILLE_W-0.5)/2 * CASE_SIZE);
 #define FONT_HEIGHT_RATIO 1.5
 
-#define MAX_COMBO_LENGHT 100
+#define MAX_COMBO_LENGHT 500
 #define MAX_APPEND_LENGHT 50
 
 #define SCORE_BASE 10
 #define RATIO_COMBO_LINE 2
 #define NB_FLAT_POINT 100
 #define RATIO_MULTI_POINT 3
+#define RATIO_SAME_COLOR 5
+
+#define SIZE_DRAW_COMBO 600
 
 #define COMBO_DRAW_X (MATRIX_X + GRILLE_W * CASE_SIZE + 80)
 
@@ -91,7 +95,7 @@ SDL_Color MULTI_COLOR[GRILLE_W] = {
 	{0x5b, 0x18, 0x5b}
 };
 
-#define NB_RAINBOW 8
+/*#define NB_RAINBOW 8
 SDL_Color RAINBOW_COLOR[NB_RAINBOW] = {
 	{0x30, 0x00, 0x9b},
 	{0xdd, 0x00, 0x00},
@@ -101,7 +105,7 @@ SDL_Color RAINBOW_COLOR[NB_RAINBOW] = {
 	{0x00, 0x9b, 0xfe},
 	{0xfe, 0xf6, 0x00},
 	{0xbc, 0xbc, 0xcd}
-};
+};*/
 
 //Textures
 SDL_Rect LASER_DIM = {0,0,500,40};
@@ -111,9 +115,9 @@ SDL_Rect LASER_DIM = {0,0,500,40};
 SDL_Rect BRICK_SRC = {0,0,32,32};
 SDL_Rect BRICK_DEST = {0,0, CASE_SIZE,CASE_SIZE};
 
-#define DIST_HUD_GRILLE_X 77
-#define DIST_HUD_GRILLE_Y 91
-SDL_Rect HUD_GRILLE_DIM = {MATRIX_X-DIST_HUD_GRILLE_X, MATRIX_Y-DIST_HUD_GRILLE_Y, 680, 950};
+#define DIST_HUD_GRILLE_X (77+153)
+#define DIST_HUD_GRILLE_Y 63
+SDL_Rect HUD_GRILLE_DIM = {MATRIX_X-DIST_HUD_GRILLE_X, MATRIX_Y-DIST_HUD_GRILLE_Y, 676, 854};
 SDL_Rect BACKGROUND_SRC = {0,0,960,540};
 #define BACKGROUND_COL 8
 #define BACKGROUND_ROW 10
@@ -144,12 +148,17 @@ const SDL_Color CONTOUR_GRILLE = {0, 51, 94, 255};
 const SDL_Color CORPS_GRILLE = {0,87,142,255};
 const SDL_Color COL_PIECE = {17,108,166,255};
 //{0,166,251,255};
-SDL_Color colors[NB_PIECES] = {{150,100,100,100},{100,150,100,100},{100,100,150,100},{000,100,100,100},{100,000,100,100},{100,100,000,100},{100,255,100,100}};
+SDL_Color BRICK_COLORS[NB_PIECES] = {
+	{0xff, 0x00, 0x00},
+	{0xf3, 0x69, 0x0d},
+	{0xff, 0xe4, 0x00},
+	{0xff, 0xe4, 0x00},
+	{0x00, 0x39, 0xb5},
+	{0x69, 0x03, 0xd3},
+	{0xf1, 0x01, 0xab}
+};
 
 #define HUD_X (MATRIX_X - 200)
-
-
-typedef struct{ int lineDown; float shift;} ShiftDown;
 
 //Bonus
 #define NB_BONUSES 7

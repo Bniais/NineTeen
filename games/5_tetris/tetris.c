@@ -95,6 +95,7 @@ void clearCombo(Score * scoreToClear){
 	scoreToClear->combo = 1;
 	scoreToClear->multi = 1;
 	scoreToClear->frameCombo = 0;
+	scoreToClear->sameColor = -1;
 }
 
 void clearScore(Score * scoreToClear){
@@ -114,6 +115,7 @@ void initScore(Score * score){
 		score[i].combo = 1;
 		score[i].multi = 1;
 		score[i].frameCombo = 0;
+		score[i].sameColor = -1;
 	}
 }
 
@@ -227,7 +229,7 @@ void getNewPiece(Piece *piece, int giant){
 		piece->grille = realloc( piece->grille, piece->size * piece->size * sizeof(int));
 
 	piece->giant = giant;
-	piece->id = rand() % NB_PIECES;
+	piece->id = 0;// rand() % NB_PIECES;
 
 	//handle bonus
 	piece->bonus = MULTI_POINT;//rand() % (NB_BONUSES+1);
@@ -272,6 +274,7 @@ void drawPiece(SDL_Renderer *renderer,SDL_Texture* brickTexture, SDL_Texture *bo
 
 	if(isNextPiece){
 		shiftCenterNext.x+=SHIFT_RIGHT_NEXT;
+		shiftCenterNext.y+=SHIFT_TOP_NEXT;
 		if((piece.lastCol-piece.firstCol)%2 == 0 || (piece.giant && ((piece.lastCol-piece.firstCol)/2)%2 == 0 ))
 			shiftCenterNext.x -= CASE_SIZE / 2;
 
@@ -688,6 +691,22 @@ void savePiece(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 	}
 }
 
+/*int isLineRainbow(int matrix[GRILLE_W][GRILLE_H],int line){
+	int colorCheck[NB_PIECES];
+
+	for (int i = 0; i< NB_PIECES; i++)
+		colorCheck[i] = SDL_FALSE;
+
+	for(int i = 0; i < GRILLE_W; i++)
+		colorCheck[getPieceId(matrix[i][line])] = SDL_TRUE;
+
+	for (int i = 0; i< NB_PIECES; i++)
+		if(!colorCheck[i])
+			return SDL_FALSE;
+
+	return SDL_TRUE;
+}*/
+
 void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine){
 	int bonusGet = -1;
 	if( frameCompleteLine[line] == -1 ){
@@ -707,9 +726,19 @@ void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H
 
 
 		if(getBonuses){
+			int sameColor = getPieceId(matrix[0][line]);
+			//int rainbow = isLineRainbow(matrix, line);
+			int idPiece;
 			for(int i = 0; i < GRILLE_W; i++){
 				if(matrix[i][line] >= BONUS_TRI ){
 
+					//gestion color/rainbow
+					idPiece = getPieceId(matrix[i][line]);
+					if(idPiece == NB_PIECES || (i > 0 && idPiece != getPieceId(matrix[i-1][line])) )
+						sameColor = -1;
+
+
+					//gestion bonus
 					bonusGet = getBonusId(matrix[i][line]);
 
 					if(bonusGet == FLAT_POINT )
@@ -722,10 +751,22 @@ void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H
 				}
 			}
 
-			scoreAdd[line].score += scoreAdd[line].flat * NB_FLAT_POINT;
-			//printf("score after flat bonus ! %d\n",scoreAdd[line].score );
+			if(sameColor != -1){
+				printf("same c olor :))\n" );
+				scoreAdd[line].sameColor = sameColor;
+				scoreAdd[line].score *= RATIO_SAME_COLOR;
+			}
+			/*else if(rainbow){
+				scoreAdd[line].rainbow = SDL_TRUE;
+				scoreAdd[line].score *= RATIO_RAINBOW;
+			}*/
+
 			scoreAdd[line].score *= scoreAdd[line].multi;
 			//printf("score after MULTI_POINT bonus ! %d\n",scoreAdd[line].score );
+
+			scoreAdd[line].score += scoreAdd[line].flat * NB_FLAT_POINT;
+			//printf("score after flat bonus ! %d\n",scoreAdd[line].score );
+
 		}
 	}
 
@@ -813,6 +854,9 @@ void updateScore(Score * scoreAffichage, Score scoreAdd[GRILLE_H]){
 
 			if(scoreAdd[i].multi>1)
 				scoreAffichage[i].multi = scoreAdd[i].multi;
+
+			if(scoreAdd[i].sameColor != -1)
+				scoreAffichage[i].sameColor = scoreAdd[i].sameColor;
 
 
 
@@ -960,22 +1004,43 @@ void afficherScores(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score sc
 
 }
 
-void drawComboText(SDL_Renderer *renderer, char * msgCombo, TTF_Font * font, Score scoreAffichage, SDL_Rect * dest, SDL_Color comboColor){
+void drawComboText(SDL_Renderer *renderer, char * msgCombo, TTF_Font * font, Score scoreAffichage, SDL_Rect * dest, SDL_Color comboColor, float size_score){
 
 	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, msgCombo, comboColor);
 	SDL_SetSurfaceAlphaMod(surfaceMessage, ALPHA_SCORE[SCORE_TTL -scoreAffichage.frameCombo]);
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
 
 	SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest->w), &(dest->h) );
-	dest->w /= (OPEN_FONT_SIZE / SIZE_SCORE);
-	dest->h /= (OPEN_FONT_SIZE / SIZE_SCORE);
+	dest->w /= (OPEN_FONT_SIZE / size_score);
+	dest->h /= (OPEN_FONT_SIZE / size_score);
+	dest->y += (CASE_SIZE - dest->h)/2;
 
 	SDL_RenderCopy(renderer, Message, NULL, dest);
-
+	dest->y -= (CASE_SIZE - dest->h)/2;
 	dest->x += dest->w;
 
 	SDL_FreeSurface(surfaceMessage);
 	SDL_DestroyTexture(Message);
+}
+
+float getDrawSize(SDL_Renderer *renderer, char * msgTotal, TTF_Font * font){
+
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, msgTotal, (SDL_Color){255,255,255});
+	SDL_Rect dest = {0,0,0,0};
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
+	float size_score = SIZE_SCORE+1;
+	do{
+		size_score--;
+		SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+		dest.w /= (OPEN_FONT_SIZE / size_score);
+	}while(dest.w > SIZE_DRAW_COMBO);
+
+
+	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(Message);
+
+	return size_score;
 }
 
 int intlog(double x, double base) {
@@ -987,17 +1052,15 @@ void afficherCombo(SDL_Renderer *renderer, Score scoreAffichage, int line, TTF_F
 	if(scoreAffichage.frameCombo && scoreAffichage.frameCombo<=SCORE_TTL){
 		char msgCombo[MAX_APPEND_LENGHT]= "";
 		char msgFlat[MAX_APPEND_LENGHT]= "";
-		char msgMulti[MAX_APPEND_LENGHT]= "";
+		char msgMulti[MAX_APPEND_LENGHT]= "" ;
+		char msgColor[MAX_APPEND_LENGHT]= "";
+		char msgTotal[4*MAX_APPEND_LENGHT] = "";
 		SDL_Color comboColor;
 
 		SDL_Rect dest = {COMBO_DRAW_X,MATRIX_Y + line * CASE_SIZE ,0,0};
 
-		/*if(scoreAffichage.sameColor ){
-			comboColor = colors[scoreAffichage.sameColor];
-			sprintf(msgCombo, "Color! x%d ", MULTI_SAME_COLOR);
-			drawComboText(renderer, msgCombo, font, scoreAffichage, &dest, comboColor);
-		}
-		if(scoreAffichage.rainbow ){
+
+		/*if(scoreAffichage.rainbow ){
 
 			for(int i=0; i<NB_RAINBOW; i++){
 				sprintf(msgCombo, "%c", RAINBOW_TEXT[i]);
@@ -1006,21 +1069,48 @@ void afficherCombo(SDL_Renderer *renderer, Score scoreAffichage, int line, TTF_F
 			}
 		}*/
 
+		//creations messages
+		if(scoreAffichage.sameColor != -1 )
+			sprintf(msgColor, "Color!  x%d  ", RATIO_SAME_COLOR);
+
+		if(scoreAffichage.combo > 1)
+			sprintf(msgCombo, "Combo!  x%d  ",scoreAffichage.combo);
+
+		if(scoreAffichage.multi > 1)
+			sprintf(msgMulti, "x%d ",scoreAffichage.multi);
+
+		if(scoreAffichage.flat)
+			sprintf(msgFlat, "+ %d",scoreAffichage.flat * NB_FLAT_POINT);
+
+		//calcul taille max
+
+		strcat(msgTotal,msgColor);
+		strcat(msgTotal,msgCombo);
+		strcat(msgTotal,msgMulti);
+		strcat(msgTotal,msgFlat);
+
+		float size_score = getDrawSize(renderer, msgTotal, font);
+		printf("total :%s\n",msgTotal );
+		//drawComboText(renderer, msgTotal, font, scoreAffichage, &dest, (SDL_Color){255,255,255}, size_score);
+
+		//affichage messages
+		if(scoreAffichage.sameColor != -1 ){
+			comboColor = BRICK_COLORS[scoreAffichage.sameColor];
+			drawComboText(renderer, msgColor, font, scoreAffichage, &dest, comboColor, size_score);
+		}
 		if(scoreAffichage.combo>1){
 			comboColor = COMBO_COLOR[ intlog(scoreAffichage.combo, RATIO_COMBO_LINE) - 1 ];
-			sprintf(msgCombo, "Combo! x%d  ",scoreAffichage.combo);
-			drawComboText(renderer, msgCombo, font, scoreAffichage, &dest, comboColor);
-		}
-		if(scoreAffichage.flat){
-			comboColor = FLAT_COLOR[scoreAffichage.flat-1];
-			sprintf(msgFlat, "+ %d  ",scoreAffichage.flat * NB_FLAT_POINT);
-			drawComboText(renderer, msgFlat, font, scoreAffichage, &dest, comboColor);
+			drawComboText(renderer, msgCombo, font, scoreAffichage, &dest, comboColor, size_score);
 		}
 		if(scoreAffichage.multi > 1){
 			comboColor = MULTI_COLOR[ intlog(scoreAffichage.multi, RATIO_MULTI_POINT) - 1 ];
-			sprintf(msgMulti, "x%d !",scoreAffichage.multi);
-			drawComboText(renderer, msgMulti, font, scoreAffichage, &dest, comboColor);
+			drawComboText(renderer, msgMulti, font, scoreAffichage, &dest, comboColor, size_score);
 		}
+		if(scoreAffichage.flat){
+			comboColor = FLAT_COLOR[scoreAffichage.flat-1];
+			drawComboText(renderer, msgFlat, font, scoreAffichage, &dest, comboColor, size_score);
+		}
+
 
 		/*if(strlen(msgCombo))
 			printf("\n\ncombo phrase : %s\n", msgCombo);
