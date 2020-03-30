@@ -203,19 +203,18 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 		reglageVolume(2,0.0,0.0,camera.px,camera.pz,10.0);
 		bruitagePas(&jouerSon,camera,3,*(musicEnvironnement + 3));
 
+		GL_InitialiserParametre(WinWidth,WinHeight,camera);
+		SDL_GL_AppliquerScene(scene,&camera);
 
 		lancerMachine(scene,&Running,camera,cible,token,chaine);
-		GL_InitialiserParametre(WinWidth,WinHeight,camera);
+
 
 		sscanf(chaine,"%d %d / %d",&tscore,&tclassement,&ttotal);
 		sprintf(score,"SCORE : %d",tscore);
 		sprintf(classement,"CLASSEMENT : %d/%d",tclassement,ttotal);
 
-		SDL_GL_AppliquerScene(scene,&camera);
-
 		RenderText(font,score,color,WinWidth/30,WinHeight - WinWidth/30, camera.ouverture);
 		RenderText(font,classement,color,WinWidth/30,WinHeight - WinWidth/15, camera.ouverture);
-
 
 
 
@@ -236,7 +235,7 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 
 		ips++;
 		if(SDL_GetTicks() - count_IPS > 1000){
-			printf("IPS %f\n",ips );
+		//	printf("IPS %f\n",ips );
 			count_IPS = SDL_GetTicks();
 			//sprintf(fpsString,"IPS : %.0f",ips);
 			ips = 0;
@@ -421,19 +420,110 @@ void initalisation(struct Camera_s *camera, struct Camera_s *cible)
 	camera->ouverture = START_OUVERTURE;
 
 
-	cible[1].px = -6.56;
-	cible[1].pz = 12.9;
+	cible[0].px = -6.56;
+	cible[0].pz = 12.9;
+	cible[0].py = 3.45;
+	cible[0].cible_py = -.34;
+	cible[0].angle = M_PI;
+	cible[0].ouverture =70;
+
+	cible[1].px = -4.62;
+	cible[1].pz = 12.85;
 	cible[1].py = 3.45;
 	cible[1].cible_py = -.34;
 	cible[1].angle = M_PI;
 	cible[1].ouverture =70;
 
-	cible[2].px = -4.64;
-	cible[2].pz = 12.9;
+	cible[2].px = -2.68;
+	cible[2].pz = 12.85;
 	cible[2].py = 3.45;
 	cible[2].cible_py = -.34;
 	cible[2].angle = M_PI;
 	cible[2].ouverture =70;
+
+	cible[3].px = -6.56;
+	cible[3].pz = 9.25;
+	cible[3].py = 3.45;
+	cible[3].cible_py = -.34;
+	cible[3].angle = 0.0;
+	cible[3].ouverture =70;
+
+	cible[4].px = -4.62;
+	cible[4].pz = 9.25;
+	cible[4].py = 3.45;
+	cible[4].cible_py = -.34;
+	cible[4].angle = 0;
+	cible[4].ouverture =70;
+
+	cible[5].px = -2.68;
+	cible[5].pz = 9.25;
+	cible[5].py = 3.45;
+	cible[5].cible_py = -.34;
+	cible[5].angle = 0;
+	cible[5].ouverture =70;
+
+	cible[6].px = 2.68;
+	cible[6].pz = 12.85;
+	cible[6].py = 3.45;
+	cible[6].cible_py = -.34;
+	cible[6].angle = M_PI;
+	cible[6].ouverture =70;
+
+	cible[7].px = 4.62;
+	cible[7].pz = 12.85;
+	cible[7].py = 3.45;
+	cible[7].cible_py = -.34;
+	cible[7].angle = M_PI;
+	cible[7].ouverture =70;
+
+	cible[8].px = 6.56;
+	cible[8].pz = 12.85;
+	cible[8].py = 3.45;
+	cible[8].cible_py = -.34;
+	cible[8].angle = M_PI;
+	cible[8].ouverture =70;
+
+	cible[9].px = 2.71;
+	cible[9].pz = 9.25;
+	cible[9].py = 3.45;
+	cible[9].cible_py = -.34;
+	cible[9].angle = 0.0;
+	cible[9].ouverture =70;
+
+	cible[10].px = 4.65;
+	cible[10].pz = 9.25;
+	cible[10].py = 3.45;
+	cible[10].cible_py = -.34;
+	cible[10].angle = 0;
+	cible[10].ouverture =70;
+
+	cible[11].px = 6.59;
+	cible[11].pz = 9.25;
+	cible[11].py = 3.45;
+	cible[11].cible_py = -.34;
+	cible[11].angle = 0;
+	cible[11].ouverture =70;
+
+	cible[12].px = -13.10;
+	cible[12].pz = 10.50;
+	cible[12].py = 3.45;
+	cible[12].cible_py = -.34;
+	cible[12].angle = 3*M_PI/2;
+	cible[12].ouverture =70;
+
+	cible[13].px = -13.10;
+	cible[13].pz = 12.44;
+	cible[13].py = 3.45;
+	cible[13].cible_py = -.34;
+	cible[13].angle = 3*M_PI/2;
+	cible[13].ouverture =70;
+
+	cible[14].px = 0.0;
+	cible[14].pz = 0.82;
+	cible[14].py = 4.65;
+	cible[14].cible_py = -.34;
+	cible[14].angle = M_PI;
+	cible[14].ouverture =70;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -522,9 +612,10 @@ void mouvementCamera(struct Camera_s *camera)
 	}
 
 
+
 	// gestion des hauteur dans l'espace
 	if (camera->px <= 4 && camera->px >= -4 && camera->pz <= 4 && camera->pz >= -4)
-		camera->py = 1.0F + HAUTEUR_CAMERA;
+		camera->py = 1.2F + HAUTEUR_CAMERA;
 	else
 		camera->py = HAUTEUR_CAMERA;
 
@@ -540,7 +631,7 @@ void mouvementCamera(struct Camera_s *camera)
 
 int detectionEnvironnement(float x,float y)
 {
-	printf("X = %f Z = %f\n",x,y);
+	//printf("X = %f Z = %f\n",x,y);
 
 
 	// HITBOX
@@ -558,7 +649,7 @@ int detectionEnvironnement(float x,float y)
 		return 0;
 
 	// machine central
-	if( x >= -1.0 && x <= 1.0 && y >= -1.0 && y <= 1.0)
+	if( x >= -1.0 && x <= 1.0 && y >= -1.5 && y <= 1.5)
 		return 0;
 
 	// coter non droit au abord de l'accueil de la room
@@ -578,7 +669,7 @@ int detectionEnvironnement(float x,float y)
 		return 0;
 
 	// billard
-	if( x <= -7.5 && x >= -12.0 && y <= 5.0 && y >= -1.5)
+	if( x <= -7.5 && x >= -12.0 && y <= 5.0 && y >= -2.3)
 		return 0;
 	// BASE DE LA SALLE
 
@@ -586,6 +677,13 @@ int detectionEnvironnement(float x,float y)
 	if(x > 15.0 && (  y < -3.0 || y > 12.5  )  )
 		return 0;
 
+	// separation toilette
+	if( x > 21.0 && x < 22.0 && y < 9.0 && y > 0.5)
+		return 0;
+
+	// separation toilette 2
+	if( x > 18.0 && y > 4.5 && y < 5.5)
+		return 0;
 
 	// HAUT DE LA SALLE
 	if( y < -5.0 )
@@ -681,17 +779,32 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible)
 	int i = 0;
 	float x = (cible.px - camera.px)/DUREE_ANIM ;
 	float z = (cible.pz - camera.pz)/DUREE_ANIM ;
-	float angle = ( (cible.angle - camera.angle)/DUREE_ANIM ) ;
 	float cib = (cible.cible_py - camera.cible_py) / DUREE_ANIM;
 	float y = (cible.py - camera.py)/DUREE_ANIM;
+
+	float angle = cible.angle - camera.angle;
+
+
+	// correction angle negatif
+	if( angle < -M_PI){
+		printf("CORRECTION ANGLE NEGATIF %f\n",camera.angle);
+		cible.angle = 2*M_PI;
+		angle = cible.angle - camera.angle;
+	}
+	//correction angle positu
+	else if ( angle > M_PI){
+		printf("CORRECTION ANGLE POSITIF\n");
+		angle -= 2*M_PI;
+	}
+	angle /= DUREE_ANIM ;
 
 	while( i++ < 60)
 	{
 		camera.px += x;
 		camera.pz += z;
-		camera.angle += angle;
 		camera.cible_py += cib;
 		camera.py += y;
+		camera.angle += angle;
 
 		glDisable(GL_LIGHTING);
 	  glLoadIdentity();
@@ -738,22 +851,36 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								int machine = detecterMachine(camera.px, camera.pz);
 								if ( machine)
 								{
-									animationLancerMachine(camera,cible[machine]);
+									animationLancerMachine(camera,cible[machine-1]);
 									// centrer sur la machine //
 									// zoomer sur la machine //
 
 
 
 									// lancer la machine
-									SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
+									SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 
 									switch (machine) {
-										case 1: printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, 50,WinWidth,WinHeight,token));break;
+										case 1: printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, 1,WinWidth,WinHeight,token));break;
+										case 2: SDL_Delay(1500);break;
+										case 3: SDL_Delay(1500);break;
+										case 4: SDL_Delay(1500);break;
+										case 5: SDL_Delay(1500);break;
+										case 6: SDL_Delay(1500);break;
+										case 7: SDL_Delay(1500);break;
+										case 8: SDL_Delay(1500);break;
+										case 9: SDL_Delay(1500);break;
+										case 10: SDL_Delay(1500);break;
+										case 11: SDL_Delay(1500);break;
+										case 12: SDL_Delay(1500);break;
+										case 13: SDL_Delay(1500);break;
+										case 14: SDL_Delay(1500);break;
+										case 15: SDL_Delay(1500);break;
 										default:break;
 									}
 
-									SDL_DestroyRenderer(pRenderer);
-									SDL_DestroyWindow(Window);
+									SDL_Renderer *ptr_renderer = pRenderer;
+									SDL_Window *ptr_Window = Window;
 									// retour sur la Window 3D.
 
 
@@ -765,10 +892,16 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									Context = SDL_GL_CreateContext(Window);
 									scene_list = 0;
 
+
+
 									while(SDL_PollEvent(&Event) );
 									SDL_GL_AppliquerScene(scene,&camera);
-									animationLancerMachine(cible[machine],camera);
-									printf("FLASH\n" );
+									while(SDL_PollEvent(&Event) );
+									animationLancerMachine(cible[machine-1],camera);
+									while(SDL_PollEvent(&Event) );
+
+									SDL_DestroyRenderer(ptr_renderer);
+								//	SDL_DestroyWindow(ptr_Window);
 								}
 
 
