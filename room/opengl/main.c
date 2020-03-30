@@ -46,6 +46,11 @@ static SDL_GLContext Context;
 uint32_t WindowFlags = SDL_WINDOW_OPENGL | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC ;
 
 
+// lier au son
+#define NB_INDICE_PORTER 2
+#define MAX_VOLUME_ARCADE 80
+typedef enum{ PORTER_10, PORTER_20 }PORTERS;
+const float COEF_LOG[2][NB_INDICE_PORTER] = { {270, 200}, {-118, -67.5} };
 
 // STATIC VAR FOR CAMERA
 struct Camera_s
@@ -64,7 +69,7 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible);
 void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, char *chaine);
 
 float distancePoint(float xa, float ya, float xb, float yb);
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter);
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, int porter);
 void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music);
 
 void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y, float ouverture);
@@ -198,9 +203,9 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 	{
 		int times_at_start_frame = SDL_GetTicks();
 
-		reglageVolume(0,-4.0,10.5,camera.px,camera.pz,10.0);
-		reglageVolume(1,4.0,10.5,camera.px,camera.pz,10.0);
-		reglageVolume(2,0.0,0.0,camera.px,camera.pz,10.0);
+		reglageVolume(0,-4.0,10.5,camera.px,camera.pz,PORTER_10);
+		reglageVolume(1,4.0,10.5,camera.px,camera.pz,PORTER_10);
+		reglageVolume(2,0.0,0.0,camera.px,camera.pz,PORTER_10);
 		bruitagePas(&jouerSon,camera,3,*(musicEnvironnement + 3));
 
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
@@ -325,6 +330,20 @@ float distancePoint(float xa, float ya, float xb, float yb)
 }
 
 
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, int porter)
+{
+    float distance = distancePoint(xa,ya,xb,yb);
+    float volume = (COEF_LOG[0][porter] + COEF_LOG[1][porter] * log(distance)) * MAX_VOLUME_ARCADE/128.;
+
+    if(volume < 0)
+        volume = 0;
+    else if(volume >MAX_VOLUME_ARCADE)
+        volume = MAX_VOLUME_ARCADE;
+
+    printf("%d : %f %f\n",channel, distance, volume );
+    Mix_Volume(channel, (int)volume);
+}
+/*
 void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter)
 {
 	float volume = MIX_MAX_VOLUME;
@@ -339,7 +358,7 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, float po
 	}
 
 	Mix_Volume(channel, (int)volume);
-}
+}*/
 
 void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music)
 {
