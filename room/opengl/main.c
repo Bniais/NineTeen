@@ -143,11 +143,20 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 	initalisation(&camera,cible);
 	jouerSon = camera;
 
+
 	Mix_Chunk **musicEnvironnement = malloc(sizeof(Mix_Chunk));
 	*(musicEnvironnement + 0)	= Mix_LoadWAV("01.wav");
+	if( !*(musicEnvironnement + 0) )
+		printf("Erreur de chargement son 1\n");
 	*(musicEnvironnement + 1)	= Mix_LoadWAV("02.wav");
+	if( !*(musicEnvironnement + 1) )
+		printf("Erreur de chargement son 2\n");
 	*(musicEnvironnement + 2)	= Mix_LoadWAV("03.wav");
+	if( !*(musicEnvironnement + 2) )
+		printf("Erreur de chargement son 3\n");
 	*(musicEnvironnement + 3)	= Mix_LoadWAV("walk.wav");
+	if( !*(musicEnvironnement + 3) )
+		printf("Erreur de chargement son 4\n");
 
 	Mix_Volume(0,0);
 	Mix_Volume(1,0);
