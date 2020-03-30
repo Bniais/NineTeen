@@ -921,14 +921,10 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 
 
-									while(SDL_PollEvent(&Event) );
 									SDL_GL_AppliquerScene(scene,&camera);
-									while(SDL_PollEvent(&Event) );
 									animationLancerMachine(cible[machine-1],camera);
-									while(SDL_PollEvent(&Event) );
-
 									SDL_DestroyRenderer(ptr_renderer);
-								//	SDL_DestroyWindow(ptr_Window);
+									SDL_DestroyWindow(ptr_Window);
 								}
 
 
