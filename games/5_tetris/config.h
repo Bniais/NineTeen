@@ -27,6 +27,8 @@ SDL_Rect MATRIX = {MATRIX_X,MATRIX_Y,GRILLE_W*CASE_SIZE,GRILLE_H*CASE_SIZE };
 #define SHIFT_RIGHT_NEXT (-558-8)
 #define SHIFT_TOP_NEXT -8
 
+typedef enum{R_NORMAL, R_LEFT, R_RIGHT, R_DOWN}R_STYLES;
+#define ROTATE_TRIES 4
 
 //Score
 #define NB_CHAR_AFFICHAGE_SCORE 21
@@ -60,9 +62,12 @@ const int SCORE_DEST = (MATRIX_X + (GRILLE_W-0.5)/2 * CASE_SIZE);
 #define FRAME_DEST_SCORE_TOTAL 15
 #define COMBO_DRAW_X (MATRIX_X + GRILLE_W * CASE_SIZE + 80)
 
+#define FRAME_DEST_JAUGE 20
 
 
 SDL_Color SCORE_TOTAL_COLOR = {0x7D,0xF9,0xFF};
+SDL_Color JAUGE_COLOR = {0x00,0xcc,0xFF};
+SDL_Color JAUGE_COLOR_BACKGROUND = {0x06,0x1a,0x35};//061a35
 
 #define NB_COMBO 8
 SDL_Color COMBO_COLOR[NB_COMBO] = { // rouges
@@ -124,31 +129,27 @@ SDL_Rect BRICK_DEST = {0,0, CASE_SIZE,CASE_SIZE};
 
 #define DIST_HUD_GRILLE_X (77+153+8)
 #define DIST_HUD_GRILLE_Y 63
-SDL_Rect HUD_GRILLE_DIM = {MATRIX_X-DIST_HUD_GRILLE_X, MATRIX_Y-DIST_HUD_GRILLE_Y, 692, 862};
 SDL_Rect BACKGROUND_SRC = {0,0,960,540};
 #define BACKGROUND_COL 8
 #define BACKGROUND_ROW 10
 
+SDL_Rect HUD_GRILLE_DIM = {MATRIX_X-DIST_HUD_GRILLE_X   , MATRIX_Y-DIST_HUD_GRILLE_Y      , 692, 862};
+SDL_Rect JAUGE_SPEED_DEST = {MATRIX_X-DIST_HUD_GRILLE_X + 632, MATRIX_Y-DIST_HUD_GRILLE_Y + 428, 40 , 402};
+SDL_Rect JAUGE_SPEED_SRC = {0, 0, 40 , 402};
 
 //frames and distances
 #define NB_FRAMES 4
 #define NB_DISTANCES 2
-const float GROW_RATE = 0.99993;
-const float GROW_RATE_LATERAL = 0.99995;
-const int NB_GROW = FRAMES_PER_SECOND / 30.;
 
 enum{LATERAL, DOWN, TO_GO, STOP};
-#define FRAME_TO_GO (0.5 * FRAMES_PER_SECOND)
-#define FRAME_TO_GO_MIN 8
+float GROW_RATE[NB_FRAMES] = {0.9999, 0.99976, 0.9999, 0.99988};
+float FRAME_START[NB_FRAMES] = {10, 13, 15 ,16};
+float FRAME_MIN[NB_FRAMES] =   {4 ,  1,  8, 9};
+float FRAME_MAX[NB_FRAMES] =   {12, 20, 18, 20};
 
-#define FRAME_LATERAL (0.33 * FRAMES_PER_SECOND)
-#define FRAME_LATERAL_MIN 4
 
-#define FRAME_DOWN (0.5 * FRAMES_PER_SECOND)
-#define FRAME_DOWN_MIN 1
-
-#define FRAME_STOP (0.8 * FRAMES_PER_SECOND)
-#define FRAME_STOP_MIN 10
+#define TIME_TO_REACH_MAX (FRAMES_PER_SECOND*60*7)
+#define TIME_START (FRAMES_PER_SECOND*60)
 
 //accelerate
 #define NO_ACCELERATE 1
@@ -212,6 +213,7 @@ SDL_Point SPAWN_FILL={(MATRIX_X + (GRILLE_W+3)* CASE_SIZE),(MATRIX_Y+(3*GRILLE_H
 
 
 //pieces
+typedef struct {int firstCol; int lastCol; int firstRow; int lastRow;} RowColInfos;
 typedef struct {unsigned int rota; int id; float x; float y; int* grille; int size; int giant; int frameToGo; int dir; int frameDir; int frameStop; int firstCol; int lastCol; int firstRow; int lastRow; int bonus;} Piece;
 const SDL_Point UNDEFINED = {-500, -500};
 
