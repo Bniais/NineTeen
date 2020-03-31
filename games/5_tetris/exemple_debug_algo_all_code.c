@@ -324,19 +324,6 @@ int tooCloseFromWall(Piece piece){
 	return (piece.y + piece.firstRow < -ROUNDABLE || piece.x + piece.firstCol < -ROUNDABLE || piece.x + piece.lastCol > GRILLE_W - 1 || piece.y + piece.lastRow > GRILLE_H - 1);
 }
 
-int tryShift(int shiftInit, int maxShift, Piece * piece, float * pieceCoor, int sign, int matrix[GRILLE_W][GRILLE_H]){
-	*pieceCoor += sign * shiftInit;
-	int shift;
-
-	for(shift=shiftInit; shift <= maxShift ; shift++, (*pieceCoor) += sign)
-		if( !(tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix) ) )
-			return SDL_TRUE;
-
-	//revert
-	piece->x -= sign * shift;
-	return SDL_FALSE;
-}
-
 void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H]){
 	if( rotateSens ){
 
@@ -347,83 +334,49 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H]){
 		updateGrille(piece);
 		getColRawInfos(piece);
 
-		//try rotate shifts:
-		int downShift=0, upShift = 0;
-		int maxDownShift=originalInfos.firstRow - piece->firstRow,
-			maxUpShift = piece->lastRow -  originalInfos.lastRow,
-			maxLeftShift=piece->lastCol - originalInfos.lastCol,
-			maxRightShift= originalInfos.firstCol - piece->firstCol;
 
+		//try rotates :
+
+		int downShift=0, rightShift=0, leftShift=0;
 		int found = SDL_FALSE;
-
-		//try normal
-		if( !(tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix) )  )
-			found = SDL_TRUE;
-
-		//left
-		if(!found)
-			found = tryShift(0, maxLeftShift, piece, &(piece->x), -1, matrix);
-
-		//right
-		if(!found)
-			found = tryShift(0, maxRightShift, piece, &(piece->x), 1, matrix);
-
 		//try down
-		if(!found){
-			piece->y++;
-			for(downShift=1; downShift <= maxDownShift && !found ; downShift++, piece->y++){
-				if( !(tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix) )  ){
+		printf("d%d l%d r%d\n", originalInfos.firstRow - piece->firstRow, piece->firstCol - originalInfos.firstCol, originalInfos.lastCol - piece->lastCol);
+
+		for(downShift=0; downShift <= originalInfos.firstRow - piece->firstRow && !found ; downShift++, piece->y++){
+			//down left
+			for(leftShift=0; leftShift <= piece->firstCol - originalInfos.firstCol && !found; leftShift++, piece->x++){
+				if( !tooCloseFromWall(*piece) && !tooCloseFromMatrix(*piece, matrix))
 					found = SDL_TRUE;
-					break;
-				}
-
-				//down left
-				if(!found)
-					found = tryShift(1, maxLeftShift, piece, &(piece->x), -1, matrix);
 				else
-					break;
-
-				//down right
-				if(!found)
-					found = tryShift(1, maxRightShift, piece, &(piece->x), 1, matrix);
-				else
-					break;
-
+					printf("LEFT NOT FOUND\n");
 			}
-			//revert down
+			//rever left
 			if(!found){
-				piece->y -= downShift;
+				printf("LEFT NOT FOUND AT ALL\n");
+				piece->x -= leftShift;
 			}
-		}
 
-		//try up
-		if(!found){
-			piece->y--;
-			for(upShift=1; upShift <= maxUpShift && !found ; upShift++, piece->y--){
-				if( !(tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix) )  ){
+
+
+			//down right
+			for(rightShift=0; rightShift <= originalInfos.lastCol - piece->lastCol  &&  !found ; rightShift++, piece->x--){
+				if( !tooCloseFromWall(*piece) && !tooCloseFromMatrix(*piece, matrix))
 					found = SDL_TRUE;
-					break;
-				}
-
-				//up left
-				if(!found)
-					found = tryShift(1, maxLeftShift, piece, &(piece->x), -1, matrix);
 				else
-					break;
-
-				//up right
-				if(!found)
-					found = tryShift(1, maxRightShift, piece, &(piece->x), 1, matrix);
-				else
-					break;
-
+					printf("RIGHT NOT FOUND\n");
+			}
+			//revert right
+			if(!found){
+				printf("RIGHT NOT FOUND AT ALL\n");
+				piece->x += rightShift;
+				printf("DOWN NOT FOUND\n");
 			}
 		}
+		printf("final shift : d%d l%d r%d\n",downShift, leftShift, rightShift );
+		//revert all
 		if(!found){
-			//revert up
-			piece->y += upShift;
-
-			//revert all
+			printf("DOWN NOT FOUND AT ALL\n");
+			piece->y -= downShift;
 			piece->rota -= rotateSens;
 			updateGrille(piece);
 			getColRawInfos(piece);
@@ -1154,7 +1107,7 @@ int intlog(double x, double base) {
 void afficherScoreTotal(SDL_Renderer * renderer, TTF_Font *font, ScoreTotal score){
 
 	char msgScore[MAX_APPEND_LENGHT];
-	sprintf(msgScore, "%ld", score.score);
+
 	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, msgScore, SCORE_TOTAL_COLOR);
 	SDL_Rect dest = SCORE_TOTAL_DEST;
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
