@@ -156,6 +156,7 @@ void room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Windo
 	if(!sega)
 		printf("Erreur chargement font %s\n",DIR_FONT_SEGA);
 
+
 	Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, WindowFlags);
 	if( !Window)
 		printf("Impossible de cree la fenetre %s\n",SDL_GetError() );
