@@ -28,13 +28,12 @@
 // END INCLUDE
 
 
-
 GLuint scene_list = 0; // NB SCENE
 float VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
 float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 
-#define WinWidth 1280
-#define WinHeight 720
+static int WinWidth = 1280;
+static int WinHeight = 720;
 
 #define FPS 120
 static const float FRAME_TIME = 1000/FPS;
@@ -72,7 +71,23 @@ float distancePoint(float xa, float ya, float xb, float yb);
 void reglageVolume(int channel, float xa, float ya, float xb, float yb, int porter);
 void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music);
 
-void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y, float ouverture);
+void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y);
+
+
+void windowMaxSize()
+{
+	SDL_DisplayMode dm;
+
+	if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
+	{
+     SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
+
+	 }
+
+WinWidth = dm.w*0.9;
+WinHeight = dm.h*0.9;
+printf("SIZE : %d %d\n", WinWidth, WinHeight);
+}
 
 
 
@@ -109,10 +124,38 @@ void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y, fl
 
 
 
+void messageMachine(float x,float y,TTF_Font *font,int printMessage)
+{
+	int detection = detecterMachine(x, y);
+	if(detection)
+	{
+		SDL_Color color = {255,255,255};
+		char message[50];
+		switch (detection) {
+			case 1:{
+				RenderText(font,"FLAPPY   BIRD",color,-1,WinHeight/6);
+				RenderText(font,"RECORD  : 50  PAR   SAMY",color,-1,WinHeight/10);
+				if(printMessage)
+					RenderText(font,"APPUYER   SUR   E",color,-1,-1);
+			};break;
+			case 2:{
+				RenderText(font,"TETRIS",color,-1,WinHeight/6);
+				RenderText(font,"RECORD : 50 PAR SAMY",color,-1,WinHeight/10);
 
+				if(printMessage)
+					RenderText(font,"APPUYER SUR |E|",color,-1,-1);
+			};break;
+			default: {
+				RenderText(font,"TETRIS",color,-1,WinHeight/6);
+				RenderText(font,"RECORD : 50 PAR SAMY",color,-1,WinHeight/10);
 
+				if(printMessage)
+					RenderText(font,"APPUYER SUR |E|",color,-1,-1);
+			};break;
+		}
 
-
+	}
+}
 
 
 
@@ -126,23 +169,14 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 {
 	//SDL INIT
 	SDL_Init(SDL_INIT_EVERYTHING);
+	windowMaxSize();
 	Window = SDL_CreateWindow("Nineteen", 0, 0, WinWidth, WinHeight, WindowFlags);
 	Context = SDL_GL_CreateContext(Window);
+
 
 	//MIXER Init
 	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 1, 1024 ) == -1 )
 			printf("Erreur init SDL_Mixer : %s\n",Mix_GetError() );
-
-
-
-
-
-
-	// PRESET VALUE CAMERA //
-	static struct Camera_s camera,cible[15],jouerSon;
-	initalisation(&camera,cible);
-	jouerSon = camera;
-
 
 	Mix_Chunk **musicEnvironnement = malloc(sizeof(Mix_Chunk));
 	*(musicEnvironnement + 0)	= Mix_LoadWAV("01.wav");
@@ -176,6 +210,7 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 
 	TTF_Init();
 	TTF_Font * font = TTF_OpenFont("police.ttf", WinWidth/50);
+	TTF_Font * sega = TTF_OpenFont("sega.ttf", WinWidth/50);
 	SDL_Color color = {255,255,0};
 
 
@@ -183,20 +218,26 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 
 	const C_STRUCT aiScene* scene = NULL;
 	aiImportModel("salle.obj",&scene);
+
+	// PRESET VALUE CAMERA //
+	static struct Camera_s camera,cible[15],jouerSon;
+	initalisation(&camera,cible);
+	jouerSon = camera;
+
 	GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
 
 	int Running = 1;
 	int count_IPS = SDL_GetTicks();
 	float ips=0.0;
-
+	int printMessage = 0;
 
 
 
 	// temp a mettre dans le load du launcher;
 	char *token = "l8Ysl)8LFn1N^kzzMQY^cV@rlr9*5rrng*LN#_oN3VaxBWsNm(XKhe1OCrKDe1q!#)TAN7O(Yo9ZGh28tF-Hk0Vmnv5)scEkZXlmb*yzznV6QDu!Z9NFpy7IqsVOAZ*qxgYUrD_W6kIT4_ZJ82OtgB)S9Sh!scwlEA5vTA)GlWZlV^uZwEOYVbrKtEQhw#-0$_rMAoi1GDSr)IMtca-x1pDr9UElMThViEiy8(fLA$2NR*7tl5mjqqWf!qMSFtoo";
 	char chaine[10];
-	getCoinsValues(token,chaine);
+//	getCoinsValues(token,chaine);
 
 	int tscore,tclassement,ttotal;
 	sscanf(chaine,"%d %d / %d",&tscore,&tclassement,&ttotal);
@@ -215,6 +256,7 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 		reglageVolume(0,-4.0,10.5,camera.px,camera.pz,PORTER_10);
 		reglageVolume(1,4.0,10.5,camera.px,camera.pz,PORTER_10);
 		reglageVolume(2,0.0,0.0,camera.px,camera.pz,PORTER_10);
+
 		bruitagePas(&jouerSon,camera,3,*(musicEnvironnement + 3));
 
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
@@ -226,20 +268,19 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 		sscanf(chaine,"%d %d / %d",&tscore,&tclassement,&ttotal);
 		sprintf(score,"SCORE : %d",tscore);
 		sprintf(classement,"CLASSEMENT : %d/%d",tclassement,ttotal);
+		RenderText(font,score,color,WinWidth/30,WinHeight - WinWidth/30);
+		RenderText(font,classement,color,WinWidth/30,WinHeight - WinWidth/15);
 
-		RenderText(font,score,color,WinWidth/30,WinHeight - WinWidth/30, camera.ouverture);
-		RenderText(font,classement,color,WinWidth/30,WinHeight - WinWidth/15, camera.ouverture);
 
 
+		messageMachine(camera.px,camera.pz,sega,printMessage);
 
 
 
 		SDL_GL_SwapWindow(Window);
 
 
-
-
-		// attente FPS
+		// MAX FPS
 		int frame_delay = SDL_GetTicks() - times_at_start_frame;
 			if(frame_delay < FRAME_TIME)
 				SDL_Delay(FRAME_TIME - frame_delay );
@@ -251,7 +292,7 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 		if(SDL_GetTicks() - count_IPS > 1000){
 			printf("IPS %f\n",ips );
 			count_IPS = SDL_GetTicks();
-			//sprintf(fpsString,"IPS : %.0f",ips);
+			printMessage = !printMessage;
 			ips = 0;
 		}
 
@@ -260,9 +301,9 @@ int main( int argc, char *argv[ ], char *envp[ ] )
 
 
 	TTF_CloseFont(font);
-	Mix_FreeChunk(*(musicEnvironnement + 0) );
-	Mix_FreeChunk(*(musicEnvironnement + 1) );
-	Mix_FreeChunk(*(musicEnvironnement + 2) );
+	TTF_Quit();
+	Mix_Quit();
+
 	aiReleaseImport(scene);
 	SDL_GL_DeleteContext(Context);
 	SDL_DestroyWindow(Window);
@@ -351,6 +392,7 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, int port
 
     Mix_Volume(channel, (int)volume);
 }
+
 /*
 void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter)
 {
@@ -367,6 +409,8 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, float po
 
 	Mix_Volume(channel, (int)volume);
 }*/
+
+
 
 void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music)
 {
@@ -733,7 +777,6 @@ int detecterMachine(float x,float y)
 	if(x > -8.0 && x < -1.0 && y > 7.0 && y < 15.0)
 	{
 		// machine face/dos
-		printf("\n%f\n",y);
 		if( y > 11.0) // vrai = face
 		{
 			if( x < -5.7 )
@@ -759,7 +802,6 @@ int detecterMachine(float x,float y)
 	if(x < 8.0 && x > 1.0 && y > 7.0 && y < 15.0)
 	{
 		// machine face/dos
-		printf("\n%f\n",y);
 		if( y > 11.0) // vrai = face
 		{
 			if( x < 3.4 )
@@ -873,7 +915,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					{
 						// verifier si on est proche d'une machine //
 								// si oui renvoi le code de la machine
-								printf("SPACE_BAR \n");
 
 								int machine = detecterMachine(camera.px, camera.pz);
 								if ( machine)
@@ -908,6 +949,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 									SDL_DestroyRenderer(pRenderer);
 									SDL_DestroyWindow(Window);
+									// retour sur la Window 3D.
 
 
 									getCoinsValues(token,chaine);
@@ -919,10 +961,10 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									scene_list = 0;
 
 
-
-									SDL_GL_AppliquerScene(scene,&camera);
 									while(SDL_PollEvent(&Event) );
+									SDL_GL_AppliquerScene(scene,&camera);
 									animationLancerMachine(cible[machine-1],camera);
+
 								}
 
 
@@ -955,7 +997,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 }
 
 
-void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y, float ouverture)
+void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 {
 	glPushMatrix();
 
@@ -982,6 +1024,11 @@ void RenderText(TTF_Font *font, char *message, SDL_Color color, int x, int y, fl
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sFont->w, sFont->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
+
+	if(x == -1)
+		x = WinWidth/2 - sFont->w/2;
+	if(y == -1)
+		y = WinHeight/2 - sFont->h/2;
 
   glBegin(GL_QUADS);
   {
