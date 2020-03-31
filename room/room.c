@@ -133,7 +133,7 @@ void room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Wind
 
 void room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window)
 {
-	//SDL_DestroyWindow(Window);
+	SDL_DestroyWindow(Window);
 	//SDL INIT
 	windowMaxSize();
 
@@ -174,6 +174,7 @@ void room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Windo
 	int count_IPS = SDL_GetTicks();
 	float ips=0.0;
 	int printMessage = 0;
+
 
 
 	while (Running)
