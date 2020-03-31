@@ -133,19 +133,18 @@ void room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Wind
 
 void room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window)
 {
-	SDL_DestroyWindow(Window);
+	//SDL_DestroyWindow(Window);
 	//SDL INIT
 	windowMaxSize();
 
-	Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, WindowFlags);
-	if( !Window)
-		printf("Impossible de cree la fenetre %s\n",SDL_GetError() );
+	const C_STRUCT aiScene* scene = NULL;
+	GLuint scene_list = 0; // NB SCENE
+	aiImportModel(DIR_OBJ_LOAD,&scene);
 
-	SDL_GLContext Context = SDL_GL_CreateContext(Window);
-	if( !Context)
-		printf("Impossible de cree le context %s\n",SDL_GetError() );
-
-
+	// PRESET VALUE CAMERA //
+	static struct Camera_s camera,cible[15],jouerSon;
+	InitCamera(&camera,cible);
+	jouerSon = camera;
 
 	Mix_Chunk **musicEnvironnement = malloc(sizeof(Mix_Chunk));
 	mixerInit(musicEnvironnement);
@@ -157,18 +156,17 @@ void room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Windo
 	if(!sega)
 		printf("Erreur chargement font %s\n",DIR_FONT_SEGA);
 
+	Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, WindowFlags);
+	if( !Window)
+		printf("Impossible de cree la fenetre %s\n",SDL_GetError() );
+
+	SDL_GLContext Context = SDL_GL_CreateContext(Window);
+	if( !Context)
+		printf("Impossible de cree le context %s\n",SDL_GetError() );
+
+
+
 	SDL_Color rouge = {255,0,0};
-
-
-
-	const C_STRUCT aiScene* scene = NULL;
-	GLuint scene_list = 0; // NB SCENE
-	aiImportModel(DIR_OBJ_LOAD,&scene);
-
-	// PRESET VALUE CAMERA //
-	static struct Camera_s camera,cible[15],jouerSon;
-	InitCamera(&camera,cible);
-	jouerSon = camera;
 
 	// VARIABLE DE DEROULEMENT
 	int Running = 1;
