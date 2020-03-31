@@ -132,9 +132,6 @@ void renduTextField(SDL_Renderer *renderer,char *chaine ,TTF_Font *font , SDL_Co
 int textField(SDL_Renderer* renderer, TTF_Font *police, SDL_Color color, char *chaine, int startWhere, SDL_Rect *cible, SDL_Point *mouse,int *pressMaj)
 {
 	int currentSize = startWhere;
-	int pressReturn = SDL_FALSE;
-	int clickOut = SDL_FALSE;
-	int touchPressed = SDL_FALSE;
 
 	int retour = 0;
 

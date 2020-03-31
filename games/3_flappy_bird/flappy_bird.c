@@ -37,7 +37,7 @@ const SDL_Rect HIGH_SCORE = {0,0,512,512};
 
 // PARAMETRES POUR GESTION DES OBSTACLES
 #define DISTANCE_BETWEEN_OBSTACLE 50
-#define DISTANCE_UNDER_OBSTACLE 80 // difficulte max en distance d'obstacle
+int DISTANCE_UNDER_OBSTACLE = 100; // difficulte max en distance d'obstacle
 #define NB_POS_OBSTACLE 5
 #define TRANCHE_POS_OBSTACLE 550 // largeur sur Y des positions possible des portes de passages des pilonnes
 
@@ -61,20 +61,20 @@ const int VITESSE_DEPLACEMENT_DECOR = 8 / (FPS/30); // vitesse de deplacement de
 #define BAN_CODE -666
 
 // ADRESS TEXTURE
-#define DIR_TILSET "../../games/3_flappy_bird/Textures/tilset.png"
-#define DIR_BIRDS "../../games/3_flappy_bird/Textures/birds.png"
-#define DIR_MEDALS "../../games/3_flappy_bird/Textures/medals.png"
-#define DIR_PIPES "../../games/3_flappy_bird/Textures/pipes.png"
-#define DIR_SCOREBOARD "../../games/3_flappy_bird/Textures/scoreBoard.png"
-#define DIR_BACKGROUND "../../games/3_flappy_bird/Textures/backgrounds.png"
-#define DIR_NUM "../../games/3_flappy_bird/Textures/chiffre.png"
-#define DIR_SOL "../../games/3_flappy_bird/Textures/sol.png"
-#define DIR_HIGHSCORE "../../games/3_flappy_bird/Textures/high_score.png"
+#define DIR_TILSET "games/3_flappy_bird/Textures/tilset.png"
+#define DIR_BIRDS "games/3_flappy_bird/Textures/birds.png"
+#define DIR_MEDALS "games/3_flappy_bird/Textures/medals.png"
+#define DIR_PIPES "games/3_flappy_bird/Textures/pipes.png"
+#define DIR_SCOREBOARD "games/3_flappy_bird/Textures/scoreBoard.png"
+#define DIR_BACKGROUND "games/3_flappy_bird/Textures/backgrounds.png"
+#define DIR_NUM "games/3_flappy_bird/Textures/chiffre.png"
+#define DIR_SOL "games/3_flappy_bird/Textures/sol.png"
+#define DIR_HIGHSCORE "games/3_flappy_bird/Textures/high_score.png"
 
 // ADRESS SOUND
-#define DIR_FLAP_WAV "../../games/3_flappy_bird/Sounds/flap.wav"
-#define DIR_HURT_WAV "../../games/3_flappy_bird/Sounds/hurt.wav"
-#define DIR_SCORE_WAV "../../games/3_flappy_bird/Sounds/score.wav"
+#define DIR_FLAP_WAV "games/3_flappy_bird/Sounds/flap.wav"
+#define DIR_HURT_WAV "games/3_flappy_bird/Sounds/hurt.wav"
+#define DIR_SCORE_WAV "games/3_flappy_bird/Sounds/score.wav"
 
 //LOCAL ERROR CODE
 #define IMAGE_ERROR_LOAD -101
@@ -521,8 +521,12 @@ void maj_var_environement(SDL_Point *emplacementPersonnage, int *upper, double *
 
 
 // primary func
-int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h, char *token)
+int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h, char *token , int hardcore)
 {
+	if(hardcore)
+		DISTANCE_UNDER_OBSTACLE = 80;
+
+
 	//SDL_Renderer *renderer = SDL_GetRenderer(window);
 	if (renderer == NULL){
 		printf("\nCREATION RENDU ECHEC %s",SDL_GetError());
@@ -611,6 +615,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 		// faire un premier saut //
 		upper = UPPER_STEP;
 
+
 		while(!end && !exit_code){
 
 				int times_at_start_frame = SDL_GetTicks();
@@ -645,7 +650,72 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 																												texture_background,  texture_pipes,  texture_birds,   texture_medals,  texture_scoreBoard,  texture_sol,   texture_chiffre, texture_highscore );
 
 				if(emplacementPersonnage.y >= WINDOW_H - SOL.h*SCALE_TO_FIT)
-					end = SDL_TRUE;
+				{
+
+					if (  score_hash == hashage(score, const_1, const_2, const_3, const_4) )
+					{
+						char buffer[10];
+						sprintf(buffer,"%d",score);
+						printf("ATTENDRE ENVI DU SCORE\n" );
+						if(hardcore)
+							updateScore("1",buffer,token);
+						else
+							updateScore("11",buffer,token);
+
+					}
+
+					int wait = 1;
+					while( wait )
+					{
+						SDL_Event ev;
+						while ( SDL_PollEvent(&ev) )
+						{
+							if (ev.type == SDL_KEYDOWN){
+
+								if(ev.key.keysym.sym == SDLK_SPACE)
+								{
+									wait = 0;
+									score=0;
+									init_pilonne(pilonne,&varAnimationPersonnage,&varAnimationSol,&end,&dead,&traitement);
+									cible = (highscore-1)*DISTANCE_UNDER_OBSTACLE*SCALE_TO_FIT + pilonne[0].position;
+									angle  = 0;
+									// end init pilonne //
+
+									// init AfficherPersonnage y //
+
+									emplacementPersonnage.x = WINDOW_L/2 - ( (PERSO.w*SCALE_TO_FIT)/2 );
+									emplacementPersonnage.y =  WINDOW_H/2;
+
+									//init var to hash score
+									initialisationConstantHashage(&const_1, &const_2, &const_3, &const_4);
+									score_hash = hashage(score, const_1, const_2, const_3, const_4);
+
+									upper = 0;
+									nb_boucle = 0;
+									vitesseGraviter = 0;
+
+									exit_code = afficherTout(renderer, emplacementPersonnage , pilonne, score ,1 , 0, cible, angle ,
+																																	texture_background, texture_pipes,  texture_birds, texture_medals,   texture_scoreBoard, texture_sol, texture_chiffre,texture_highscore);
+
+
+									attendreAvantDepart(flap_wav);
+									upper = UPPER_STEP;
+								}
+								else if (ev.key.keysym.sym == SDLK_e)
+								{
+										wait = 0;
+										end = SDL_TRUE;
+								}
+
+							}
+
+						}
+					}
+					if(end == SDL_FALSE)
+						attendreAvantDepart(flap_wav);
+
+				}
+
 			}
 
 			//next frame
@@ -656,12 +726,6 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 
 		}
 
-		if (  score_hash == hashage(score, const_1, const_2, const_3, const_4) )
-		{
-			char buffer[10];
-			sprintf(buffer,"%d",score);
-			updateScore("1",buffer,token);
-		}
 
 
 	}

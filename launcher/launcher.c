@@ -11,13 +11,22 @@
 #include "../include/textField.h"
 
 #include "../include/libWeb.h"
+#include "../room/room.h"
+
+#include "launcher.h"
 
 #define TRUE 1
 #define FALSE 0
 
-#define DIR_TOKEN_FILE ".token"
-#define DIR_CONFIG_FILE ".config"
-#define DIR_MUSIC_FILE "../assets/background.wav"
+#define DIR_TOKEN_FILE "launcher/.token"
+#define DIR_CONFIG_FILE "launcher/.config"
+#define DIR_MUSIC_FILE "assets/background.wav"
+
+#define DIR_IMG_BACKGROUND "assets/image/launcher_no_font.png"
+#define DIR_ING_BACKGROUND_TXT "assets/image/launcher.png"
+
+#define DIR_FONT_POLICE "assets/font/police.ttf"
+#define DIR_FONT_PASSWORD "assets/font/password.ttf"
 
 const SDL_Color rouge = {255,0,0};
 const	SDL_Color noir = {0,0,0};
@@ -203,14 +212,19 @@ void connexion(SDL_Renderer *renderer, char **token)
 
 
 	// AFFICHAGE
-	SDL_Texture* background = IMG_LoadTexture(renderer,"../assets/image/launcher_no_font.png");
+	SDL_Texture* background = IMG_LoadTexture(renderer,DIR_IMG_BACKGROUND);
+	if(!background)
+		printf("Impossible de charger %s\n",DIR_IMG_BACKGROUND );
 
 	TTF_Font *police = NULL;
 	TTF_Font *ttf_pwd = NULL;
-	police = TTF_OpenFont("../assets/font/police.ttf",100);
 
-	ttf_pwd = TTF_OpenFont("../assets/font/password.ttf",100);
-
+	police = TTF_OpenFont(DIR_FONT_POLICE,100);
+	if(!police)
+		printf("Impossible de charger %s\n",DIR_FONT_POLICE );
+	ttf_pwd = TTF_OpenFont(DIR_FONT_PASSWORD,100);
+	if(!ttf_pwd)
+		printf("Impossible de charger %s\n",DIR_FONT_PASSWORD );
 
 	char identifiant[24]="";
 	char motDePasse[24]="";
@@ -228,7 +242,6 @@ void connexion(SDL_Renderer *renderer, char **token)
 
 	SDL_Point mouse = {0,0};
 	int pressMaj = SDL_FALSE;
-	int connecter = SDL_FALSE;
 
 	do
 	{
@@ -330,14 +343,70 @@ void connexion(SDL_Renderer *renderer, char **token)
 
 
 
-int chargementFichier(SDL_Renderer *renderer)
+int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token )
 {
 	SDL_RenderClear(renderer);
 
-	SDL_Texture* background = IMG_LoadTexture(renderer,"../assets/image/launcher.png");
+	SDL_Texture* background = IMG_LoadTexture(renderer,DIR_ING_BACKGROUND_TXT);
 	SDL_RenderCopy(renderer, background, NULL, NULL);
+
+	//fond chargement
+	SDL_Rect chargement = {LARGUEUR*0.05,HAUTEUR*0.85,LARGUEUR*0.90,HAUTEUR*0.08};
+	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
+	SDL_RenderFillRect(renderer,&chargement);
 	SDL_RenderPresent(renderer);
-	SDL_Delay(2000);
+
+
+	SDL_Rect chargementAff = {LARGUEUR*0.05,HAUTEUR*0.85,0,HAUTEUR*0.08};
+	int progression = LARGUEUR*0.90 / NB_FILE;
+
+
+	for(int i = 0 ; i < NB_FILE ; i++)
+	{
+
+		FILE *fp = fopen(verifierFichier[i],"r");
+		if(!fp)
+		{
+			printf("Fichier %s introuvable \n",verifierFichier[i] );
+			return SDL_FALSE;
+		}
+		else
+			fclose(fp);
+
+		SDL_RenderClear(renderer);
+		SDL_RenderCopy(renderer, background, NULL, NULL);
+
+		SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
+		SDL_RenderFillRect(renderer,&chargement);
+
+
+
+		chargementAff.w += progression;
+		SDL_SetRenderDrawColor(renderer, blanc.r , blanc.g, blanc.b,200);
+		SDL_RenderFillRect(renderer,&chargementAff);
+
+
+		SDL_RenderPresent(renderer);
+	}
+
+
+	InitMeilleureScore(meilleureScore);
+	updateMeilleureScore(meilleureScore,token);
+	SDL_RenderClear(renderer);
+	SDL_RenderCopy(renderer, background, NULL, NULL);
+
+	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
+	SDL_RenderFillRect(renderer,&chargement);
+
+
+	chargementAff.w = LARGUEUR*0.90;
+	SDL_SetRenderDrawColor(renderer, blanc.r , blanc.g, blanc.b,200);
+	SDL_RenderFillRect(renderer,&chargementAff);
+
+
+	SDL_RenderPresent(renderer);
+
+
 	return SDL_TRUE;
 }
 
@@ -349,7 +418,7 @@ int chargementFichier(SDL_Renderer *renderer)
 
 
 
-int launcher(SDL_Renderer* renderer, char **token)
+int launcher(SDL_Renderer* renderer, char **token,struct MeilleureScore_s meilleureScore[])
 {
 
 	printf("TON PING %d\n",ping() );
@@ -358,6 +427,8 @@ int launcher(SDL_Renderer* renderer, char **token)
 	{
    printf("%s", Mix_GetError());
 	}
+
+
 	Mix_VolumeMusic(MIX_MAX_VOLUME); //Mettre le volume à la moitié
 	Mix_Music *musique;
 	musique = Mix_LoadMUS(DIR_MUSIC_FILE);
@@ -374,13 +445,23 @@ int launcher(SDL_Renderer* renderer, char **token)
   }
 
 
+//temp
+	SDL_Event ev;
+	while ( SDL_PollEvent(&ev) );
 	// chargement puis envoi vers room
-	chargementFichier(renderer);
+	if( !chargementFichier(renderer,meilleureScore,*token) )
+	{
+		Mix_HaltMusic();
+		Mix_FreeMusic(musique);
+		return EXIT_FAILURE;
+	}
+	else
+	{
+		Mix_HaltMusic();
+		Mix_FreeMusic(musique);
+		return EXIT_SUCCESS;
+	}
 
-	Mix_HaltMusic();
-	Mix_FreeMusic(musique);
-	Mix_CloseAudio(); //Fermeture de l'API
-	return 0;
 }
 
 
@@ -403,11 +484,16 @@ int main()
 	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
 	TTF_Init();
 
-	launcher(renderer,&token);
+	struct MeilleureScore_s meilleureScore[16];
+	if( launcher(renderer,&token,meilleureScore) == EXIT_SUCCESS)
+		room(token,meilleureScore,window);
 
 	TTF_Quit();
+	Mix_CloseAudio();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+
+
 	return 0;
 }

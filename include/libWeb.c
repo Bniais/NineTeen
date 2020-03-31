@@ -346,7 +346,7 @@ int connectWithKey(char *key)
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int getCoinsValues(char *key,char *coins)
+int getCoinsValues(char *key,char *retour)
 {
 	char *request;
 	char *response;
@@ -355,8 +355,7 @@ int getCoinsValues(char *key,char *coins)
 		if ( !envoyez_requet(&response,URL_GET_COINS,request) )
 		{
 			printf("%s\n",response );
-			strcpy(coins,response);
-
+			strcpy(retour,response);
 			free(request);
 			request = NULL;
 			free(response);
