@@ -126,7 +126,6 @@ void updateDistances(float frame[NB_FRAMES], float distances[NB_DISTANCES], int 
 	*framePassed = 0;
 
 	for(int i=0; i<NB_FRAMES; i++){
-		printf("%ld %f \n",*frameTotalSpeed, FRAME_MAX[i] * pow(GROW_RATE[i], *frameTotalSpeed)  );
 		frame[i] = FRAME_MAX[i] * pow(GROW_RATE[i], *frameTotalSpeed);
 
 		if(frame[i] < FRAME_MIN[i])
@@ -245,10 +244,10 @@ void getNewPiece(Piece *piece, int giant){
 	else
 		piece->giant = SDL_FALSE;
 
-	piece->id =1;// rand() % NB_PIECES;
+	piece->id = 0;// rand() % NB_PIECES;
 
 	//handle bonus
-	piece->bonus = SLOW;//rand() % (NB_BONUSES+1);
+	piece->bonus = FILL;//rand() % (NB_BONUSES+1);
 
 	updateGrille(piece);
 
@@ -269,7 +268,7 @@ int putAtTop(Piece *piece,  int matrix[GRILLE_W][GRILLE_H], int frameToGo){
 	piece->frameStop = 0;
 	if(tooCloseFromMatrix(*piece, matrix)){
 		piece->y = UNDEFINED.y;
-		piece->frameToGo = 9999;
+		piece->frameToGo = 32000;
 		return COULDNT_PUT;
 	}
 
@@ -480,9 +479,9 @@ int moveDown(Piece *piece, int accelerate, int matrix[GRILLE_W][GRILLE_H], float
 			piece->y -= floor(distanceMoveDown);
 		}
 		if(accelerate == ACCELERATE)
-			piece->frameStop = frameStop;
+			piece->frameStop += FRAME_STOP_ACCELERATE;
 
-		if(piece->frameStop != frameStop)
+		if(piece->frameStop <= frameStop)
 			piece->frameStop ++;
 		else
 			return STOPPED;
@@ -760,16 +759,17 @@ void drawFill(SDL_Renderer* renderer, SDL_Texture *brickTexture, int matrixFill[
 				}
 				else if(matrixFill[col][row] <= FRAME_FILL){ //cas deplacement
 					//src.y=BRICK_SRC.h;
-					dest.x = SPAWN_FILL.x + ((col * CASE_SIZE + MATRIX.x) - SPAWN_FILL.x ) * (FRAME_FILL - matrixFill[col][row] + 1) / (float)(FRAME_DEPLACEMENT_FILL );
-					dest.y = SPAWN_FILL.y + ((row * CASE_SIZE + MATRIX.y) - SPAWN_FILL.y ) * (FRAME_FILL - matrixFill[col][row] + 1) / (float)(FRAME_DEPLACEMENT_FILL );
+					dest.x = SPAWN_FILL_X + ((col * CASE_SIZE + MATRIX.x) - SPAWN_FILL_X ) * (FRAME_FILL - matrixFill[col][row] + 1) / (float)(FRAME_DEPLACEMENT_FILL );
+					dest.y = SPAWN_FILL_Y + ((row * CASE_SIZE + MATRIX.y) - SPAWN_FILL_Y ) * (FRAME_FILL - matrixFill[col][row] + 1) / (float)(FRAME_DEPLACEMENT_FILL );
 
-					if(dest.x < INNER_RIGHT){
-						if(INNER_RIGHT-dest.x<CASE_SIZE)
-							dest.w=INNER_RIGHT-dest.x;
-						else
-							dest.w=BRICK_DEST.w;
+
+
+					if(dest.x + CASE_SIZE > INNER_LEFT){
+						if(dest.x < INNER_LEFT){
+							dest.w = dest.x + CASE_SIZE-INNER_LEFT;
+							dest.x = INNER_LEFT;
+						}
 						SDL_RenderCopy(renderer, brickTexture, &src, &dest);
-						SDL_SetTextureColorMod(brickTexture, 255, 255, 255);
 					}
 				}
 			}
@@ -814,6 +814,7 @@ void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H
 	int bonusGet = -1;
 	if( frameCompleteLine[line] == -1 ){
 		frameCompleteLine[line] = FRAME_COMPLETE_LINE;
+		printf("c%d\n",line );
 		if(comboLine){
 
 			scoreAdd[line].score += scoreAdd[lastLine].score  * RATIO_COMBO_LINE;
@@ -824,7 +825,6 @@ void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H
 			scoreAdd[line].score += SCORE_BASE;
 			//printf("score after base ! %d\n",scoreAdd[line].score );
 		}
-
 
 		if(getBonuses){
 			int sameColor = getPieceId(matrix[0][line]);
@@ -968,7 +968,7 @@ void updateScore(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *s
 				scoreAffichage[i].frame = RESET_ANIM;
 			}
 
-			if((scoreAdd[i].combo > 1  ||  scoreAdd[i].multi>1 || scoreAdd[i].flat || scoreAdd[i].sameColor )){
+			if((scoreAdd[i].combo > 1  ||  scoreAdd[i].multi>1 || scoreAdd[i].flat || scoreAdd[i].sameColor != -1 )){
 				if(scoreAffichage[i].frameCombo == 0){
 					scoreAffichage[i].flat += scoreAdd[i].flat;
 					scoreAffichage[i].frameCombo = SCORE_TTL;
@@ -986,8 +986,11 @@ void updateScore(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *s
 
 int lineEmpty(int matrix[GRILLE_W][GRILLE_H], int line ){
 	for(int i=0;i<GRILLE_W; i++)
-		if(matrix[i][line] != EMPTY)
+		if(matrix[i][line] != EMPTY){
+			printf("%d\n", matrix[i][line]);
 			return 0;
+		}
+	printf("emty\n");
 	return 1;
 }
 
@@ -1004,9 +1007,10 @@ void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteL
 	for(int i=0; i<GRILLE_H; i++){
 		if(frameLaser[i] == LASER_FRAME - LASER_START_COMPLETE){
 			if(frameCompleteLine[i] == -1){
-				frameCompleteLine[i] = FRAME_COMPLETE_LINE + 1;
-				if(!lineEmpty(matrix, i)){}
+				frameCompleteLine[i] = FRAME_COMPLETE_LINE;
+				if(!lineEmpty(matrix, i)){
 					scoreAdd[i].score += SCORE_BASE;
+				}
 			}
 		}
 
@@ -1273,6 +1277,26 @@ void drawJauge(SDL_Renderer * renderer, SDL_Texture * jaugeTexture, long int fra
 
 	SDL_RenderCopy(renderer, jaugeTexture, &JAUGE_SPEED_SRC, &JAUGE_SPEED_DEST);
 }
+
+int linesInCompletion(int matrixFill[GRILLE_W][GRILLE_H], int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H]){
+	for(int line=0; line<GRILLE_H; line++){
+	//	printf("fl %d\n",frameCompleteLine[line] );
+		if(frameLaser[line] != -1 || frameCompleteLine[line] != -1){
+			printf("fl %d\n",frameLaser[line] );
+			return SDL_TRUE;
+		}
+
+
+		for(int col=0; col<GRILLE_W; col++){
+			printf("ff %d\n",matrixFill[col][line]);
+			if(matrixFill[col][line])
+				return SDL_TRUE;
+		}
+	}
+	printf("no line in c\n");
+	return SDL_FALSE;
+}
+
 // int launchSnake(SDL_Window *myWindow, SDL_Renderer* renderer, char *identifiant, char *token){
 int main(){
 /////////////////////
@@ -1290,9 +1314,12 @@ int main(){
 	int lateralMove = NO_MOVE;
 	int rotate = SDL_FALSE;
 	int rdyToRotate[2] = {SDL_TRUE, SDL_TRUE};
+	int rdyToSpace = SDL_TRUE;
 	int cantMoveSide = SDL_FALSE;
 	int nextIsGiant = 0;
 
+	int doGameplay = SDL_TRUE;
+	int waitToPlace = SDL_FALSE;
 
 	//frames and distances
 	int totalFrame = 0;
@@ -1381,7 +1408,6 @@ int main(){
 	SDL_Rect background_src = BACKGROUND_SRC;
 
 	//hud and menus
-	int paused = SDL_FALSE;
 	int rdyToPause = SDL_TRUE;
 
 
@@ -1447,11 +1473,13 @@ int main(){
 						rdyToRotate[0] = SDL_TRUE;
 					else if( event.key.keysym.sym == SDLK_e)
 						rdyToRotate[1] = SDL_TRUE;
+					else if( event.key.keysym.sym == SDLK_SPACE)
+						rdyToSpace = SDL_TRUE;
 					break;
 
 				case SDL_KEYDOWN:
 					if ( event.key.keysym.sym == SDLK_ESCAPE && rdyToPause ){
-						paused = !paused;
+						doGameplay = !doGameplay;
 						rdyToPause = SDL_FALSE;
 					}
 					break;
@@ -1467,9 +1495,11 @@ int main(){
 		if( keystate[SDL_SCANCODE_DOWN] )
 			accelerate = ACCELERATE;
 
-		if( keystate[SDL_SCANCODE_SPACE] )
-			maxDown = SDL_TRUE;
 
+		if( keystate[SDL_SCANCODE_SPACE] && rdyToSpace){
+			maxDown = SDL_TRUE;
+			rdyToSpace = SDL_FALSE;
+		}
 
 		if( keystate[SDL_SCANCODE_RIGHT] )
 			lateralMove = MOVE_RIGHT;
@@ -1479,23 +1509,15 @@ int main(){
 
 
 		if( (keystate[SDL_SCANCODE_Q] && rdyToRotate[0]) ){
-			if(keystate[SDL_SCANCODE_Q] && rdyToRotate[0]){
-				rdyToRotate[0] = SDL_FALSE;
-			}
-
+			rdyToRotate[0] = SDL_FALSE;
 			rotate = 1;
-
-
 		}
 		else if( (keystate[SDL_SCANCODE_E] && rdyToRotate[1])){
-			if(keystate[SDL_SCANCODE_E] && rdyToRotate[1]){
-				rdyToRotate[1] = SDL_FALSE;
-			}
-
+			rdyToRotate[1] = SDL_FALSE;
 			rotate = -1;
-
-
 		}
+
+
 		//printf("Q %d E %d rdyQ %d rdyE %d\n", keystate[SDL_SCANCODE_Q],keystate[SDL_SCANCODE_E], rdyToRotate[0], rdyToRotate[1]);
 
 
@@ -1504,44 +1526,55 @@ int main(){
 	//////////////
 	// Gameplay //`
 	//////////////
-		//rotate normal then left down right
-		rotatePiece(&currentPiece, rotate, matrix);
+		if(doGameplay && !waitToPlace){
+			//rotate normal then left down right
+			rotatePiece(&currentPiece, rotate, matrix);
 
 
 
-		if(!cantMoveSide)
-			changeDir(&currentPiece, lateralMove, (int)frame[LATERAL]);
+			if(!cantMoveSide)
+				changeDir(&currentPiece, lateralMove, (int)frame[LATERAL]);
 
-		moveSide(&currentPiece, matrix, distances[LATERAL], maxDown);
+			moveSide(&currentPiece, matrix, distances[LATERAL], maxDown);
 
 
-		cantMoveSide = SDL_FALSE;
-		if(!currentPiece.frameToGo){
-			if( moveDown(&currentPiece, accelerate, matrix, distances[DOWN], (int)frame[STOP], maxDown) == STOPPED){
-				cantMoveSide = SDL_TRUE;
-				if(currentPiece.frameDir == 0){
-					//Piece is saved and remplaced
-					savePiece(currentPiece, matrix);
-					clearIntTab(bonusActivate, NB_BONUSES);
-					checkLines(matrix, frameCompleteLine, bonusActivate, SDL_TRUE, scoreAdd);
-					activateBonuses(bonusActivate, frameLaser, &framePassed, matrix, matrixFill, &nextIsGiant);
-					updateDistances(frame, distances, &framePassed, &frameDestJauge, &frameTotalSpeed);
-					transfertNextPiece(&currentPiece,nextPiece);
+			cantMoveSide = SDL_FALSE;
+			if(!currentPiece.frameToGo){
+				if( moveDown(&currentPiece, accelerate, matrix, distances[DOWN], (int)frame[STOP], maxDown) == STOPPED){
+					cantMoveSide = SDL_TRUE;
+					if(currentPiece.frameDir == 0){
+						//Piece is saved and remplaced
+						savePiece(currentPiece, matrix);
+						clearIntTab(bonusActivate, NB_BONUSES);
+						checkLines(matrix, frameCompleteLine, bonusActivate, SDL_TRUE, scoreAdd);
+						activateBonuses(bonusActivate, frameLaser, &framePassed, matrix, matrixFill, &nextIsGiant);
+						updateDistances(frame, distances, &framePassed, &frameDestJauge, &frameTotalSpeed);
+						transfertNextPiece(&currentPiece,nextPiece);
 
-					getNewPiece(&nextPiece, nextIsGiant);
-					if(nextIsGiant)
-						nextIsGiant--;
+						getNewPiece(&nextPiece, nextIsGiant);
+						if(nextIsGiant)
+							nextIsGiant--;
 
-					if( putAtTop(&currentPiece, matrix, (int)frame[TO_GO]) == COULDNT_PUT )
-						break;
+						if( putAtTop(&currentPiece, matrix, (int)frame[TO_GO]) == COULDNT_PUT ){
+							if(linesInCompletion(matrixFill, frameLaser, frameCompleteLine))
+								waitToPlace = SDL_TRUE;
+							else
+								break;//lose
+						}
+					}
 				}
-
-
+			}
+			else
+				currentPiece.frameToGo--;
+		}
+		else if(waitToPlace){
+			if(putAtTop(&currentPiece, matrix, 2*(int)frame[TO_GO]) != COULDNT_PUT){
+				waitToPlace = SDL_FALSE;
+			}
+			else if(!linesInCompletion(matrixFill, frameLaser, frameCompleteLine)){
+				break;
 			}
 		}
-		else
-			currentPiece.frameToGo--;
-
 		updateScore(scoreAffichage, scoreAdd, &score);
 	///////////////////
 	// Check hitboxs //`
@@ -1601,7 +1634,10 @@ int main(){
 		lastTime = currentTime;
 
 		//Actualise frames
-		updateFrames(&framePassed, frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, scoreAffichage, scoreAdd, &score, &frameDestJauge, frameTotalSpeed, &frameTotalShow);
+		if(doGameplay){
+			updateFrames(&framePassed, frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, scoreAffichage, scoreAdd, &score, &frameDestJauge, frameTotalSpeed, &frameTotalShow);
+		}
+
 		totalFrame++;
 		background_src.x = BACKGROUND_SRC.w * ((totalFrame/3)%BACKGROUND_COL);
 		background_src.y = BACKGROUND_SRC.h * ((totalFrame/(3*BACKGROUND_COL))%BACKGROUND_ROW);
