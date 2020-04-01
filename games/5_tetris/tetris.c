@@ -430,8 +430,8 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H]){
 	}
 }
 
-void moveSide(Piece *piece, int matrix[GRILLE_W][GRILLE_H], float distanceLateral, int maxDown){
-	if(maxDown && piece->frameToGo == 0){
+void moveSide(Piece *piece, int matrix[GRILLE_W][GRILLE_H], float distanceLateral){
+	/*if(maxDown && piece->frameToGo == 0){
 		piece->x += piece->dir;
 		if(piece->dir > 0)
 			piece->x = floor(piece->x);
@@ -444,7 +444,7 @@ void moveSide(Piece *piece, int matrix[GRILLE_W][GRILLE_H], float distanceLatera
 		piece->dir = NO_MOVE;
 		piece->frameDir = 0;
 	}
-	else if( piece->dir ){
+	else*/ if( piece->dir ){
 		piece->x += piece->dir * distanceLateral;
 		piece->frameDir--;
 
@@ -467,6 +467,11 @@ int moveDown(Piece *piece, int accelerate, int matrix[GRILLE_W][GRILLE_H], float
 	if(distanceMoveDown >= 2)
 		distanceMoveDown = 5/3;
 
+	if(maxDown){
+		piece->x = roundf(piece->x);
+		piece->frameDir = 0;
+	}
+
 	piece->y += distanceMoveDown;
 	if(almostRound(piece->x))
 		piece->x = roundf(piece->x);
@@ -480,7 +485,7 @@ int moveDown(Piece *piece, int accelerate, int matrix[GRILLE_W][GRILLE_H], float
 		}
 		if(accelerate == ACCELERATE)
 			piece->frameStop += FRAME_STOP_ACCELERATE;
-
+			
 		if(piece->frameStop <= frameStop)
 			piece->frameStop ++;
 		else
@@ -1535,7 +1540,7 @@ int main(){
 			if(!cantMoveSide)
 				changeDir(&currentPiece, lateralMove, (int)frame[LATERAL]);
 
-			moveSide(&currentPiece, matrix, distances[LATERAL], maxDown);
+			moveSide(&currentPiece, matrix, distances[LATERAL]);
 
 
 			cantMoveSide = SDL_FALSE;
