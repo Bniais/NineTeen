@@ -124,14 +124,12 @@ void windowMaxSize();
 
 
 /////////////////////////////////////////////////////
-/// \fn int mixerInit(Mix_Chunk **musicEnvironnement)
-/// \brief charger et lancer les musiques d'ambiance
+/// \fn void mixerInit()
+/// \brief initalisation du volume
 ///
-/// \param Mix_Chunk **musicEnvironnement tableau qui stock les son
 ///
-/// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int mixerInit(Mix_Chunk **musicEnvironnement);
+void mixerInit();
 
 
 /////////////////////////////////////////////////////
@@ -217,9 +215,42 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 	//////////////////////////////////////////////////////////
 	// INITALISATION SON
-	Mix_Chunk **musicEnvironnement = malloc(sizeof(Mix_Chunk));
-	mixerInit(musicEnvironnement);
+	mixerInit();
+	// CHARGER LES MUSIQUES D"AMBIANCE
+	Mix_Chunk *music_01	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_1);
+	if( !music_01 )
+	{
+		printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_1);
+		return EXIT_FAILURE;
+	}
+
+	Mix_Chunk *music_02	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_2);
+	if( !music_02 )
+	{
+		printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_2);
+		return EXIT_FAILURE;
+	}
+
+	Mix_Chunk *music_03	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_3);
+	if( !music_03 )
+	{
+		printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_3);
+		return EXIT_FAILURE;
+	}
+
+	Mix_Chunk *music_walk	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_WALK);
+	if( !music_walk )
+	{
+		printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_WALK);
+		return EXIT_FAILURE;
+	}
 	//////////////////////////////////////////////////////////
+	// LANCER LES MUSIQUE D'AMBIANCE //
+	Mix_PlayChannel(0 , music_01, -1);
+	Mix_PlayChannel(1 , music_02, -1);
+	Mix_PlayChannel(2 , music_03 , -1);
+	//////////////////////////////////////////////////////////
+
 
 
 	//////////////////////////////////////////////////////////
@@ -279,7 +310,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		//////////////////////////////////////////////////////////
 		// JOUER SON BRUIT DE PAS QUAND C'EST NECESSAIRE
-		bruitagePas(&jouerSon,camera,3,*(musicEnvironnement + 3));
+		bruitagePas(&jouerSon,camera,3,music_walk);
 		//////////////////////////////////////////////////////////
 
 
@@ -343,11 +374,10 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 	// LIBERER LA MEMOIRE ALLOUER ET NON NECESSAIRE A LA SUITE
 	// LIBERATION DES SONS
-	Mix_FreeChunk(*(musicEnvironnement + 0) );
-	Mix_FreeChunk(*(musicEnvironnement + 1) );
-	Mix_FreeChunk(*(musicEnvironnement + 2) );
-	Mix_FreeChunk(*(musicEnvironnement + 3) );
-	free(musicEnvironnement);
+	Mix_FreeChunk(music_01 );
+	Mix_FreeChunk(music_02 );
+	Mix_FreeChunk(music_03);
+	Mix_FreeChunk(music_walk );
 	//////////////////////////////////////////////////////////
 	// LIBERATION DES POLICES
 	TTF_CloseFont(font);
@@ -457,7 +487,7 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 
 
 
-int mixerInit(Mix_Chunk **musicEnvironnement)
+void mixerInit()
 {
 		// REGLER VOLUME DES PISTES AUDIO
 		Mix_Volume(0,0);
@@ -467,44 +497,6 @@ int mixerInit(Mix_Chunk **musicEnvironnement)
 		Mix_Volume(4,MIX_MAX_VOLUME/5);
 		Mix_Volume(5,MIX_MAX_VOLUME/5);
 		Mix_Volume(6,MIX_MAX_VOLUME/5);
-
-
-		// CHARGER LES MUSIQUES D"AMBIANCE
-		*(musicEnvironnement + 0)	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_1);
-		if( !*(musicEnvironnement + 0) )
-		{
-			printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_1);
-			return EXIT_FAILURE;
-		}
-
-		*(musicEnvironnement + 1)	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_2);
-		if( !*(musicEnvironnement + 1) )
-		{
-			printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_2);
-			return EXIT_FAILURE;
-		}
-
-		*(musicEnvironnement + 2)	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_3);
-		if( !*(musicEnvironnement + 2) )
-		{
-			printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_3);
-			return EXIT_FAILURE;
-		}
-
-		*(musicEnvironnement + 3)	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_WALK);
-		if( !*(musicEnvironnement + 3) )
-		{
-			printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_WALK);
-			return EXIT_FAILURE;
-		}
-
-
-		// LANCER LES MUSIQUE D'AMBIANCE //
-		Mix_PlayChannel(0 , *(musicEnvironnement + 0), -1);
-		Mix_PlayChannel(1 , *(musicEnvironnement + 1), -1);
-		Mix_PlayChannel(2 , *(musicEnvironnement + 2) , -1);
-
-		return EXIT_SUCCESS;
 }
 
 
@@ -1084,7 +1076,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					*Running = 0;
 					break;
 				case SDLK_e:
-					{
 						// verifier si on est proche d'une machine //
 						// si oui renvoi le code de la machine
 
@@ -1101,10 +1092,10 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 
 							switch (machine) {
-								case 1: {
+								case 1:
 									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].score,WinWidth,WinHeight,token,1));
 									updateMeilleureScore(meilleureScore,token);
-								}break;
+								break;
 								case 2:
 									tetris( pRenderer ,meilleureScore[TETRIS_HARD].score, 1920./WinWidth,token,1);
 									break;
@@ -1141,9 +1132,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 
 
-					}break;
+					break;
 				case SDLK_c:
-				{
 					if(VITESSE_DEPLACEMENT == VITESSE_DEPLACEMENT_DEBOUT )
 					{
 						HAUTEUR_CAMERA = HAUTEUR_CAMERA_ACCROUPI;
@@ -1155,7 +1145,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
 					}
 
-				}break;
+					break;
 				default:
 					break;
 			}
