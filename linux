@@ -4,7 +4,7 @@ HEADER	= room.h flappy_bird.h tetris.h
 OUT	= Nineteen
 CC	 = gcc
 FLAGS	 = -g -c -Wall
-LFLAGS	 = `sdl2-config --cflags --libs` -lm -lcurl -lcurl -L/usr/local/opt/openssl/lib -lcrypto -lassimp
+LFLAGS	 =  -lm -lcurl -lcurl -L/usr/local/opt/openssl/lib -lcrypto -lassimp
 LSDL = `sdl2-config --cflags --libs` -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer
 
 
