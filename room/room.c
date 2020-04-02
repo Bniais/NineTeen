@@ -865,7 +865,7 @@ int detectionEnvironnement(float x,float y)
 		return 0;
 
 	// machine central
-	if( x >= -1.0 && x <= 1.0 && y >= -1.5 && y <= 1.5)
+	if( x >= -1.5 && x <= 1.5 && y >= -1.5 && y <= 1.5)
 		return 0;
 
 	// coter non droit au abord de l'accueil de la room
@@ -1174,8 +1174,8 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
-
-
+	glDisable(GL_DEPTH_TEST);
+	glLoadIdentity();
 
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   GLuint texture;
