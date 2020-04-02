@@ -249,14 +249,27 @@ int strlen_num(int score)
 }
 
 
-
-int afficherScore(SDL_Renderer *renderer , SDL_Texture *texture_chiffre,int score)
+int afficherScore(SDL_Renderer *renderer , SDL_Texture *texture_chiffre,int score,int mode)
 {
 	int taille = strlen_num(score);
 	int error_code = 0;
 
 	SDL_Rect chiffre = CHIFFRE;
-	SDL_Rect target = {WINDOW_L/2 - CHIFFRE.w*SCALE_TO_FIT ,WINDOW_H/6  , CHIFFRE.w * SCALE_TO_FIT, CHIFFRE.h * SCALE_TO_FIT};
+	SDL_Rect target  = {WINDOW_L/2 - CHIFFRE.w*SCALE_TO_FIT,WINDOW_H/6  , CHIFFRE.w * SCALE_TO_FIT, CHIFFRE.h * SCALE_TO_FIT};
+
+	if (mode == 2)
+	{
+		target.x = WINDOW_L*0.72 - CHIFFRE.w*SCALE_TO_FIT;
+		target.y = WINDOW_H*0.4;
+	}
+	else if ( mode == 3)
+	{
+		target.x = WINDOW_L*0.72 - CHIFFRE.w*SCALE_TO_FIT;
+		target.y = WINDOW_H*0.6;
+	}
+
+
+
 
 	for(int i=0 ; i < taille; i++)
 	{
@@ -306,7 +319,7 @@ int afficherTout(SDL_Renderer * renderer, SDL_Point emplacementPersonnage, pilon
 		return SDL_RENDER_ERROR_SOL;
 	if ( AfficherPersonnage(renderer , texture_birds, emplacementPersonnage  , varAnimationPersonnage , angle) )
 		return SDL_RENDER_ERROR_PERSONNAGE;
-	if ( afficherScore(renderer, texture_chiffre, score) )
+	if ( afficherScore(renderer, texture_chiffre, score , 1) )
 		return SDL_RENDER_ERROR_PRINT_SCORE;
 	if( afficherMeilleurScore(renderer,texture_highscore,score,6,cible ) )
 		return SDL_RENDER_ERROR_PRINT_HS;
@@ -488,10 +501,6 @@ void evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_w
 				*vitesseGraviter = 0;
 				*nb_boucle = 0;
 			}
-			else if (ev.key.keysym.sym == SDLK_ESCAPE)
-			{
-				SDL_Delay(5000);
-			}
 
 		}
 
@@ -523,26 +532,38 @@ void maj_var_environement(SDL_Point *emplacementPersonnage, int *upper, double *
 // primary func
 int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h, char *token , int hardcore)
 {
+	///////////////////////////////////////////////////////
+	// INITALISATION DU RAND
+	srand(time(NULL));
+	///////////////////////////////////////////////////////
+
+	///////////////////////////////////////////////////////
+	// mise a jour variable pour difficulte hardcore
 	if(hardcore)
+	{
 		DISTANCE_UNDER_OBSTACLE = 80;
+	}
+	///////////////////////////////////////////////////////
 
 
-	//SDL_Renderer *renderer = SDL_GetRenderer(window);
+	///////////////////////////////////////////////////////
+	// Verifier l'existance d'une fenetre SDL
 	if (renderer == NULL){
 		printf("\nCREATION RENDU ECHEC %s",SDL_GetError());
-		return -1;
+		return EXIT_FAILURE;
 	}
+	///////////////////////////////////////////////////////
 
 
-	printf("\nLe jeu commence");
-	int exit_code = 0;
-	srand(time(NULL));
-	// rescale afficherTout
+	///////////////////////////////////////////////////////
+	// RESCALE A LA TAILLE DE LA VUE
 	SDL_RenderSetScale(renderer,
                        send_l/WINDOW_L,
                        send_h/WINDOW_H);
+	///////////////////////////////////////////////////////
 
-	// init texture
+	///////////////////////////////////////////////////////
+	// INITALISATION DES TEXTURES
 	SDL_Texture *texture_background = LoadTextureWithErrorCode(renderer,DIR_BACKGROUND);
 	SDL_Texture *texture_pipes = LoadTextureWithErrorCode(renderer,DIR_PIPES);
 	SDL_Texture *texture_birds = LoadTextureWithErrorCode(renderer,DIR_BIRDS);
@@ -551,188 +572,270 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 	SDL_Texture *texture_sol = LoadTextureWithErrorCode(renderer,DIR_SOL);
 	SDL_Texture *texture_chiffre = LoadTextureWithErrorCode(renderer,DIR_NUM);
 	SDL_Texture *texture_highscore = LoadTextureWithErrorCode(renderer,DIR_HIGHSCORE);
-
+	// GESTION ERREUR CHARGEMENT TEXTURE
 	if( !texture_background || !texture_pipes || !texture_birds || !texture_medals || !texture_scoreBoard || !texture_sol || !texture_chiffre || !texture_highscore)
-		exit_code = IMAGE_ERROR_LOAD;
+		return IMAGE_ERROR_LOAD;
 
 
-	// init sound effect //
-
-
-
+	//////////////////////////////////////////////////////////////////
+	// INITIALISER SON + GESTION ERREUR
 	Mix_Chunk *flap_wav = Mix_LoadWAV( DIR_FLAP_WAV);
 	if(!flap_wav)
+	{
 		printf("\nError load %s CODE : %s", DIR_FLAP_WAV,SDL_GetError() );
-
+		return SOUND_ERROR_LOAD;
+	}
 	Mix_Chunk *hurt_wav = Mix_LoadWAV( DIR_HURT_WAV);
 	if(!hurt_wav)
+	{
 		printf("\nError load %s CODE : %s", DIR_HURT_WAV,SDL_GetError() );
+		return SOUND_ERROR_LOAD;
+	}
 
 	Mix_Chunk *score_wav = Mix_LoadWAV( DIR_SCORE_WAV);
 	if(!score_wav)
-		printf("\nError load %s CODE : %s", DIR_SCORE_WAV,SDL_GetError() );
-
-
-	//if( !flap_wav || !hurt_wav || !score_wav)
-		//exit_code = SOUND_ERROR_LOAD;
-	// end sound effect //
-
-	if (!exit_code)
 	{
-		//init pilone
-		pilonne pilonne[PRELOAD_POS_OBSTACLE];
+		printf("\nError load %s CODE : %s", DIR_SCORE_WAV,SDL_GetError() );
+		return SOUND_ERROR_LOAD;
+	}
+	//////////////////////////////////////////////////////////////////
 
-		// init variable
-		int varAnimationPersonnage,varAnimationSol,end,dead,traitement;
-		long long score_hash;
-		int score=0;
-		init_pilonne(pilonne,&varAnimationPersonnage,&varAnimationSol,&end,&dead,&traitement);
-		int cible = (highscore-1)*DISTANCE_UNDER_OBSTACLE*SCALE_TO_FIT + pilonne[0].position;
-		double angle  = 0;
-		// end init pilonne //
 
-		// init AfficherPersonnage y //
+	//////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////
 
-		SDL_Point emplacementPersonnage = {WINDOW_L/2 - ( (PERSO.w*SCALE_TO_FIT)/2 ) , WINDOW_H/2};
 
-		//init var to hash score
-		long const_1, const_2, const_3, const_4;
-		initialisationConstantHashage(&const_1, &const_2, &const_3, &const_4);
-		score_hash = hashage(score, const_1, const_2, const_3, const_4);
+	//////////////////////////////////////////////////////////////////
+	// INITALISATION PILONNE AVEC PRECHARGEMENT
+	pilonne pilonne[PRELOAD_POS_OBSTACLE];
+	//////////////////////////////////////////////////////////////////
 
-		// initialisation des variables de suivi est d'animation
-		int upper = 0;
-		int nb_boucle = 0;
-		int vitesseGraviter = 0;
+	//////////////////////////////////////////////////////////////////
+	// INITALISATION VARIABLE NECESSAIRE A L'ENVIRONEMENT
+	// VAR ANIMATION EVENEMENT JEU
+	int varAnimationPersonnage,varAnimationSol,end,dead,traitement;
+	//////////////////////////////////////////////////////////////////
+	// VAR SCORE
+	long long score_hash;
+	int score=0;
+	long const_1, const_2, const_3, const_4;
+	// preset var hash
+	initialisationConstantHashage(&const_1, &const_2, &const_3, &const_4);
+	// preset score hash
+	score_hash = hashage(score, const_1, const_2, const_3, const_4);
+	//////////////////////////////////////////////////////////////////
+	// INITALISATION DES PILONNES ET VALEURS VARIABLES
+	init_pilonne(pilonne,&varAnimationPersonnage,&varAnimationSol,&end,&dead,&traitement);
+	int cible = (highscore-1)*DISTANCE_UNDER_OBSTACLE*SCALE_TO_FIT + pilonne[0].position;
+	// ANGLE DU PERSONNAGES AU DEBUT
+	double angle  = 0;
+	//////////////////////////////////////////////////////////////////
+	// INIT POSTITION PERSONNAGES
+	SDL_Point emplacementPersonnage = {WINDOW_L/2 - ( (PERSO.w*SCALE_TO_FIT)/2 ) , WINDOW_H/2};
+	//////////////////////////////////////////////////////////////////
 
-		// preaffichage avant lancement
-		// afficher la vue //
-		exit_code = afficherTout(renderer, emplacementPersonnage , pilonne, score ,1 , 0, cible, angle ,
+	//////////////////////////////////////////////////////////////////
+	// CREATTION DES VARIABLES DE MOUVEMENT PEROSNNAGES
+	int upper = 0;
+	int nb_boucle = 0;
+	int vitesseGraviter = 0;
+	//////////////////////////////////////////////////////////////////
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// AFFICHAGE DU JEU
+	int exitCode = afficherTout(renderer, emplacementPersonnage , pilonne, score ,1 , 0, cible, angle ,
 																										texture_background, texture_pipes,  texture_birds, texture_medals,   texture_scoreBoard, texture_sol, texture_chiffre,texture_highscore);
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		// attendre la touch espace //
-		attendreAvantDepart(flap_wav);
-		// faire un premier saut //
-		upper = UPPER_STEP;
-
-
-		while(!end && !exit_code){
-
-				int times_at_start_frame = SDL_GetTicks();
-				//si pas dans l'anim de mort
-				if(!dead){
-
-					evenement(&upper,&vitesseGraviter,&nb_boucle,flap_wav);
-
-					maj_var_environement(&emplacementPersonnage, &upper, &angle, &nb_boucle,&vitesseGraviter);
+	//////////////////////////////////////////////////////////////////
+	// ATTENDRE APPUI TOUCHE ESPACE + JOUER PREMIER SON + PREMIER SAUT
+	attendreAvantDepart(flap_wav);
+	upper = UPPER_STEP;
+	//////////////////////////////////////////////////////////////////
 
 
+	//////////////////////////////////////////////////////////////////
+	// DEBUT DU JEU
+	while(!end && !exitCode){
 
-					exit_code = afficherTout(renderer, emplacementPersonnage , pilonne, score ,varAnimationPersonnage , varAnimationSol, cible, angle ,
+		//////////////////////////////////////////////////////////////////
+		// PERMET DE LIMITER LES FRAMES
+		int tempsDebutFrame = SDL_GetTicks();
+
+		//////////////////////////////////////////////////////////////////
+		// SI JOUEUR EN VIE
+		if(!dead){
+
+				//////////////////////////////////////////////////////////////////
+				// VERIFIER EVENEMENT
+				evenement(&upper,&vitesseGraviter,&nb_boucle,flap_wav);
+
+				// UPDATE VARIABLE ENVIRONEMENT
+				maj_var_environement(&emplacementPersonnage, &upper, &angle, &nb_boucle,&vitesseGraviter);
+
+
+				// UPDATE AFFICHAGE
+				exitCode = afficherTout(renderer, emplacementPersonnage , pilonne, score ,varAnimationPersonnage , varAnimationSol, cible, angle ,
 																																						texture_background,  texture_pipes, texture_birds, texture_medals,  texture_scoreBoard,  texture_sol, texture_chiffre, texture_highscore);
 
-					// traitement de mon pilonne
-					traitement = traitement_pilonne(pilonne,traitement,&score,  &score_hash,
+				// UPDATE DECORE
+				traitement = traitement_pilonne(pilonne,traitement,&score,  &score_hash,
 																							 &const_1,   &const_2,   &const_3,    &const_4, score_wav);
 
-					traitementVariableAnimation(&varAnimationPersonnage,&varAnimationSol);
-					cible -= VITESSE_DEPLACEMENT_DECOR;
-
-					dead = collision(pilonne,emplacementPersonnage,hurt_wav);
-
-			}
-			else
-			{ //animate death
-				if (angle < ANGLE_DOWN)
-							angle += ANGLE_VITESSE*2 / (FPS/30);
-				emplacementPersonnage.y += (vitesseGraviter++) / (FPS/30);
-				exit_code = afficherTout(renderer, emplacementPersonnage , pilonne, score ,1 , 0 , cible , angle,
-																												texture_background,  texture_pipes,  texture_birds,   texture_medals,  texture_scoreBoard,  texture_sol,   texture_chiffre, texture_highscore );
-
-				if(emplacementPersonnage.y >= WINDOW_H - SOL.h*SCALE_TO_FIT)
-				{
-
-					if (  score_hash == hashage(score, const_1, const_2, const_3, const_4) )
-					{
-						char buffer[10];
-						sprintf(buffer,"%d",score);
-						printf("ATTENDRE ENVI DU SCORE\n" );
-						if(hardcore)
-							updateScore("1",buffer,token);
-						else
-							updateScore("11",buffer,token);
-
-					}
-
-					int wait = 1;
-					while( wait )
-					{
-						SDL_Event ev;
-						while ( SDL_PollEvent(&ev) )
-						{
-							if (ev.type == SDL_KEYDOWN){
-
-								if(ev.key.keysym.sym == SDLK_SPACE)
-								{
-									wait = 0;
-									score=0;
-									init_pilonne(pilonne,&varAnimationPersonnage,&varAnimationSol,&end,&dead,&traitement);
-									cible = (highscore-1)*DISTANCE_UNDER_OBSTACLE*SCALE_TO_FIT + pilonne[0].position;
-									angle  = 0;
-									// end init pilonne //
-
-									// init AfficherPersonnage y //
-
-									emplacementPersonnage.x = WINDOW_L/2 - ( (PERSO.w*SCALE_TO_FIT)/2 );
-									emplacementPersonnage.y =  WINDOW_H/2;
-
-									//init var to hash score
-									initialisationConstantHashage(&const_1, &const_2, &const_3, &const_4);
-									score_hash = hashage(score, const_1, const_2, const_3, const_4);
-
-									upper = 0;
-									nb_boucle = 0;
-									vitesseGraviter = 0;
-
-									exit_code = afficherTout(renderer, emplacementPersonnage , pilonne, score ,1 , 0, cible, angle ,
-																																	texture_background, texture_pipes,  texture_birds, texture_medals,   texture_scoreBoard, texture_sol, texture_chiffre,texture_highscore);
+				// UPDATE VARIABLE ANIMATION
+				traitementVariableAnimation(&varAnimationPersonnage,&varAnimationSol);
+				cible -= VITESSE_DEPLACEMENT_DECOR;
 
 
-									attendreAvantDepart(flap_wav);
-									upper = UPPER_STEP;
-								}
-								else if (ev.key.keysym.sym == SDLK_e)
-								{
-										wait = 0;
-										end = SDL_TRUE;
-								}
+				// DETECTION COLLISION
+				dead = collision(pilonne,emplacementPersonnage,hurt_wav);
 
-							}
-
-						}
-					}
-					if(end == SDL_FALSE)
-						attendreAvantDepart(flap_wav);
-
-				}
-
-			}
-
-			//next frame
-			int frame_delay = SDL_GetTicks() - times_at_start_frame;
-			if(frame_delay < FRAME_TIME)
-				SDL_Delay(FRAME_TIME - frame_delay );
-
+				//////////////////////////////////////////////////////////////////
+				//////////////////////////////////////////////////////////////////
+				// REPRENDRE LA BOUCLE
+				//////////////////////////////////////////////////////////////////
+				//////////////////////////////////////////////////////////////////
 
 		}
+		else
+		{
+			//////////////////////////////////////////////////////////////////
+			// LE JOUEUR EST MORT
+			if (angle < ANGLE_DOWN)
+						angle += ANGLE_VITESSE*2 / (FPS/30);
 
+			// MISE A JOURS DE l'EMPLACEMENT PERSONNAGES
+			emplacementPersonnage.y += (vitesseGraviter++) / (FPS/30);
+
+			// MISE A JOUR DE l"AFFICHAGE
+			exitCode = afficherTout(renderer, emplacementPersonnage , pilonne, score ,1 , 0 , cible , angle,
+																												texture_background,  texture_pipes,  texture_birds,   texture_medals,  texture_scoreBoard,  texture_sol,   texture_chiffre, texture_highscore );
+
+			// SI LE PERSONNAGE A ETEIND LE SOL
+			if(emplacementPersonnage.y >= WINDOW_H - SOL.h*SCALE_TO_FIT)
+			{
+
+				// VERIFIER QUE LE SCORE N 'AS PAS ETAIT CHANGER
+				if (  score_hash == hashage(score, const_1, const_2, const_3, const_4) )
+				{
+					// CONVERTIR SCORE EN TEXT
+					char buffer[10];
+					sprintf(buffer,"%d",score);
+					printf("ATTENDRE ENVI DU SCORE\n" );
+					if(hardcore)
+						updateScore("1",buffer,token);
+					else
+						updateScore("11",buffer,token);
+					//////////////////////////////////////////////////////////////////
+				}
+
+				//////////////////////////////////////////////////////////////////
+				// AFFICHER SCORE ET MEDAIL ICI
+				SDL_Rect positionScoreBoard= {WINDOW_L/4,WINDOW_H/4,WINDOW_L/2,WINDOW_H/2};
+				SDL_RenderCopy(renderer, texture_scoreBoard, NULL, &positionScoreBoard);
+				afficherScore(renderer, texture_chiffre, score , 2);
+				if( score > highscore)
+					highscore = score;
+				afficherScore(renderer, texture_chiffre, highscore , 3);
+				SDL_RenderPresent(renderer);
+				SDL_Delay(300);
+				//////////////////////////////////////////////////////////////////
+
+				//////////////////////////////////////////////////////////////////
+				// ATTENDRE UNE DECISION DU JOUEUR
+				// REJOUER OU QUITTER
+				int wait = 1;
+				//////////////////////////////////////////////////////////////////
+				while( wait )
+				{
+					SDL_Event ev;
+					while ( SDL_PollEvent(&ev) )
+					{
+						if (ev.type == SDL_KEYDOWN){
+							if(ev.key.keysym.sym == SDLK_SPACE)
+							{
+								//////////////////////////////////////////////////////////////////
+								// LE JOUEUR REJOUE
+
+								//////////////////////////////////////////////////////////////////
+								// REMISE A ZERO DES VARIABLES DE JEU
+								score=0;
+								angle =0;
+								upper = 0;
+								nb_boucle = 0;
+								vitesseGraviter = 0;
+								//////////////////////////////////////////////////////////////////
+								// GENERER NOUVEAU DECORS
+								init_pilonne(pilonne,&varAnimationPersonnage,&varAnimationSol,&end,&dead,&traitement);
+								cible = (highscore-1)*DISTANCE_UNDER_OBSTACLE*SCALE_TO_FIT + pilonne[0].position;
+								//////////////////////////////////////////////////////////////////
+								// REPLACER PERSONNAGE
+								emplacementPersonnage.x = WINDOW_L/2 - ( (PERSO.w*SCALE_TO_FIT)/2 );
+								emplacementPersonnage.y =  WINDOW_H/2;
+								//////////////////////////////////////////////////////////////////
+
+								//////////////////////////////////////////////////////////////////
+								// REINIALISER HASHAGE DU SCORE
+								initialisationConstantHashage(&const_1, &const_2, &const_3, &const_4);
+								score_hash = hashage(score, const_1, const_2, const_3, const_4);
+								//////////////////////////////////////////////////////////////////
+
+								//////////////////////////////////////////////////////////////////
+								// TOUS AFFICHER
+								exitCode = afficherTout(renderer, emplacementPersonnage , pilonne, score ,1 , 0, cible, angle ,
+																																	texture_background, texture_pipes,  texture_birds, texture_medals,   texture_scoreBoard, texture_sol, texture_chiffre,texture_highscore);
+								//////////////////////////////////////////////////////////////////
+
+								// ATTENDRE UNE TOUCHE
+								attendreAvantDepart(NULL);
+								//////////////////////////////////////////////////////////////////
+
+
+								// ARRETER d'ATTENDRE
+								wait = 0;
+								// QUIITER LE while
+								//////////////////////////////////////////////////////////////////
+							}
+							else if (ev.key.keysym.sym == SDLK_ESCAPE)
+							{
+								//////////////////////////////////////////////////////////////////
+								// QUIITER WHILE ET JEU
+								wait = 0;
+								end = SDL_TRUE;
+								//////////////////////////////////////////////////////////////////
+							}
+						}
+
+					}
+				}
+				//////////////////////////////////////////////////////////////////
+				// VIDER LA PILE D'EVENEMENT
+				if(end == SDL_FALSE)
+				{
+					//////////////////////////////////////////////////////////////////
+					// ATTENDRE UNE TOUCHE + SON + UP
+					attendreAvantDepart(flap_wav);
+					upper = UPPER_STEP;
+					//////////////////////////////////////////////////////////////////
+				}
+				//////////////////////////////////////////////////////////////////
+
+			}
+
+		}
+		//////////////////////////////////////////////////////////////////
+		// DELAI FRAME
+		int frame_delay = SDL_GetTicks() - tempsDebutFrame;
+		if(frame_delay < FRAME_TIME)
+			SDL_Delay(FRAME_TIME - frame_delay );
+		//////////////////////////////////////////////////////////////////
 
 
 	}
 
 
-
-	// liberer la memoire
+	//////////////////////////////////////////////////////////////////
+	// LIBERER MEMOIRE ALLOUER NON NECESSAIRE
 	Mix_FreeChunk(flap_wav);
 	Mix_FreeChunk(hurt_wav);
 	Mix_FreeChunk(score_wav);
@@ -745,7 +848,8 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 	SDL_DestroyTexture(texture_sol);
 	SDL_DestroyTexture(texture_chiffre);
 	SDL_DestroyTexture(texture_highscore);
+	//////////////////////////////////////////////////////////////////
 
 
-	return exit_code;
+	return exitCode;
 }
