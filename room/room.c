@@ -30,9 +30,9 @@
 
 //
 // SON
-#define DIR_SON_ENIRONNEMENT_1 "room/01.wav"
-#define DIR_SON_ENIRONNEMENT_2 "room/02.wav"
-#define DIR_SON_ENIRONNEMENT_3 "room/03.wav"
+#define DIR_SON_ENIRONNEMENT_1 "room/borne1.wav"
+#define DIR_SON_ENIRONNEMENT_2 "room/borne2.wav"
+#define DIR_SON_ENIRONNEMENT_3 "room/borne3.wav"
 #define DIR_SON_ENIRONNEMENT_WALK "room/walk.wav"
 // POLICE
 #define DIR_FONT_SEGA "room/sega.ttf"
