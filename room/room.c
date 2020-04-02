@@ -75,8 +75,6 @@ SDL_Color Text_rouge = {255,0,0};
 // lier au son
 #define NB_INDICE_PORTER 2
 #define MAX_VOLUME_ARCADE 80
-typedef enum{ PORTER_10, PORTER_20 }PORTERS;
-const float COEF_LOG[2][NB_INDICE_PORTER] = { {270, 200}, {-118, -67.5} };
 
 // STATIC VAR FOR CAMERA
 struct Camera_s
@@ -183,7 +181,7 @@ float distancePoint(float xa, float ya, float xb, float yb);
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, int porter);
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter);
 
 
 /////////////////////////////////////////////////////
@@ -387,9 +385,12 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
-		reglageVolume(0,-4.0,10.5,camera.px,camera.pz,PORTER_10);
-		reglageVolume(1,4.0,10.5,camera.px,camera.pz,PORTER_10);
-		reglageVolume(2,0.0,0.0,camera.px,camera.pz,PORTER_10);
+		// MUSIQUE LOT MACHINE GAUCHE
+		reglageVolume(0,-5.0,11.0,camera.px,camera.pz,10.0);
+		// MUSIQUE LOT MACHINE DROITE
+		reglageVolume(1,5.0,11.0,camera.px,camera.pz,10.0);
+		// MUSIQUE MACHINE SEUL
+		reglageVolume(2,0.0,0.0,camera.px,camera.pz,15.0);
 		//////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////
@@ -639,25 +640,15 @@ float distancePoint(float xa, float ya, float xb, float yb)
 }
 
 
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, int porter)
-{
-    float distance = distancePoint(xa,ya,xb,yb);
-    float volume = (COEF_LOG[0][porter] + COEF_LOG[1][porter] * log(distance)) * MAX_VOLUME_ARCADE/128.;
 
-    if(volume < 0)
-        volume = 0;
-    else if(volume >MAX_VOLUME_ARCADE)
-        volume = MAX_VOLUME_ARCADE;
 
-    Mix_Volume(channel, (int)volume);
-}
 
-/*
 void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter)
 {
 	float volume = MIX_MAX_VOLUME;
 	float distance = distancePoint(xa,ya,xb,yb);
-
+	if(distance < 5.0)
+		printf("CHANNEL %d distance MACHINE %f\n",channel,distance );
 	if(distance > porter)
 		volume = 0;
 	else
@@ -667,7 +658,7 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, float po
 	}
 
 	Mix_Volume(channel, (int)volume);
-}*/
+}
 
 
 
