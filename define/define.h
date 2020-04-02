@@ -1,4 +1,4 @@
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #define TRUE  1
 #define FALSE  0
 #define PI 3.1415

@@ -1099,6 +1099,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								break;
 								case 2:
 									tetris( pRenderer ,meilleureScore[TETRIS_HARD].score, 1920./WinWidth,token,1);
+									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 3: SDL_Delay(500);break;
 								case 4: SDL_Delay(500);break;

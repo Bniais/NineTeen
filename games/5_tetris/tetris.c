@@ -21,8 +21,6 @@ void myInit(){
 
 	//audio
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-	if( Mix_OpenAudio( MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 1, 1024 ) == -1 )
-		printf("Erreur init SDL_Mixer\n" );
 
 	//rand
 	srand(time(NULL));
