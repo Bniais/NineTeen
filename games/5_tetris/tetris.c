@@ -1551,11 +1551,11 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *t
 			if( keystate[SDL_SCANCODE_SPACE] && rdyToSpace){
 				maxDown = SDL_TRUE;
 				rdyToSpace = SDL_FALSE;
-				if(nbDeadPieces){ //restart
-					break;
-				}
+			}
 
-
+			if( keystate[SDL_SCANCODE_ESCAPE] ){
+				quit = SDL_TRUE;
+				break;
 			}
 
 			if( keystate[SDL_SCANCODE_RIGHT] )

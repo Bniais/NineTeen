@@ -89,7 +89,6 @@ SDL_Rect SCORE_SRC = {0,0, 12,18};
 const int SCORE_DEST = (MATRIX_X + (GRILLE_W-0.5)/2 * CASE_SIZE);
 #define FONT_HEIGHT_RATIO 1.5
 
-#define MAX_COMBO_LENGHT 500
 #define MAX_APPEND_LENGHT 50
 
 #define SCORE_BASE 10
@@ -98,9 +97,10 @@ const int SCORE_DEST = (MATRIX_X + (GRILLE_W-0.5)/2 * CASE_SIZE);
 #define RATIO_MULTI_POINT 3
 #define RATIO_SAME_COLOR 10
 
-#define SIZE_DRAW_COMBO 600
+#define SIZE_DRAW_COMBO 630
 #define FRAME_DEST_SCORE_TOTAL 15
-#define COMBO_DRAW_X (MATRIX_X + GRILLE_W * CASE_SIZE + 80)
+#define COMBO_DRAW_X (MATRIX_X + GRILLE_W * CASE_SIZE + 95)
+
 
 #define FRAME_DEST_JAUGE 20
 
@@ -135,16 +135,16 @@ SDL_Color FLAT_COLOR[GRILLE_W] = {//vert bleu
 };
 
 SDL_Color MULTI_COLOR[GRILLE_W] = {
-	{0x30, 0x29, 0x76},
-	{0x4e, 0x00, 0x91},
-	{0x57, 0x11, 0x8d},
-	{0x53, 0x0d, 0x6f},
-	{0x5b, 0x18, 0x5b},
-	{0x5b, 0x18, 0x5b},
-	{0x5b, 0x18, 0x5b},
-	{0x5b, 0x18, 0x5b},
-	{0x5b, 0x18, 0x5b},
-	{0x5b, 0x18, 0x5b}
+	{0xff, 0x33, 0xa6},
+	{0xd0, 0x40, 0xb1},
+	{0xb4, 0x42, 0xae},
+	{0x94, 0x42, 0xae},
+	{0x78, 0x3d, 0x8b},
+	{0x78, 0x3d, 0x8b},
+	{0x78, 0x3d, 0x8b},
+	{0x78, 0x3d, 0x8b},
+	{0x78, 0x3d, 0x8b},
+	{0x78, 0x3d, 0x8b}
 };
 
 /*#define NB_RAINBOW 8
