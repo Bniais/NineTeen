@@ -75,8 +75,6 @@ SDL_Color Text_rouge = {255,0,0};
 // lier au son
 #define NB_INDICE_PORTER 2
 #define MAX_VOLUME_ARCADE 80
-typedef enum{ PORTER_10, PORTER_20 }PORTERS;
-const float COEF_LOG[2][NB_INDICE_PORTER] = { {270, 200}, {-118, -67.5} };
 
 // STATIC VAR FOR CAMERA
 struct Camera_s
@@ -105,28 +103,51 @@ int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Windo
 
 
 
-
-void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list);
-void GL_InitialiserParametre(int width, int height, struct Camera_s camera);
-void InitCamera(struct Camera_s *camera, struct Camera_s *cible);
-void mouvementCamera(struct Camera_s *camera);
-int detectionEnvironnement(float x,float y);
-int detecterMachine(float x,float y);
-void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window);
-void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context);
-
-
-
-
-void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y);
-
+/////////////////////////////////////////////////////
+/// \fn void windowMaxSize()
+/// \brief fonction qui charge fixe la taille max de la fenetre
+///
+/////////////////////////////////////////////////////
 void windowMaxSize();
+
+
+
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+//// FUNCTION LIER A L'ENVIRONNEMENT ////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////
+/// \fn int detectionEnvironnement(float x,float y)
+/// \brief fonction de collision avec l'environement
+///
+/// \param float x coordonner x
+/// \param float y coordonner y
+///
+/// \return TRUE/FALSE
+/////////////////////////////////////////////////////
+int detectionEnvironnement(float x,float y);
+
+
+/////////////////////////////////////////////////////
+/// \fn detecterMachine(float x,float y,float angle)
+/// \brief fonction qui detecte la proxmiter avec une machine de jeu
+///
+/// \param float x coordonner x
+/// \param float y coordonner y
+/// \param float angle angle
+///
+/// \return TRUE/FALSE
+/////////////////////////////////////////////////////
+int detecterMachine(float x,float y,float angle);
 
 
 /////////////////////////////////////////////////////
 /// \fn void mixerInit()
 /// \brief initalisation du volume
-///
 ///
 /////////////////////////////////////////////////////
 void mixerInit();
@@ -160,7 +181,7 @@ float distancePoint(float xa, float ya, float xb, float yb);
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, int porter);
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter);
 
 
 /////////////////////////////////////////////////////
@@ -177,9 +198,67 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, int port
 void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music);
 
 
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+////   FUNCTION LIER A L'AFFICHAGE   ////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+
+
+void GL_InitialiserParametre(int width, int height, struct Camera_s camera);
+void InitCamera(struct Camera_s *camera, struct Camera_s *cible);
+void mouvementCamera(struct Camera_s *camera);
+
+void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list);
+void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y);
+void messageMachine(struct MeilleureScore_s str[],struct Camera_s camera,TTF_Font *font,int afficherMessage);
+
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+////   FUNCTION LIER A L'ANIMATION   ////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+
+void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context);
+void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window);
+
+
+
+
+
+
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+////  FUNCTION LIER AU DONNER RESEAU ////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+
+
+
+/////////////////////////////////////////////////////
+/// \fn void InitMeilleureScore(struct MeilleureScore_s str[])
+/// \brief initialise la strcuture MeilleureScore_s avec le nom des jeux
+///
+/// \param struct MeilleureScore_s str[] tableau de donner
+///
+/////////////////////////////////////////////////////
 void InitMeilleureScore(struct MeilleureScore_s str[]);
+
+
+/////////////////////////////////////////////////////
+/// \fn void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
+/// \brief Mes a jours les donnees liee au score de la structure meilleureScore
+///
+/// \param struct MeilleureScore_s str[] tableau de donner
+///
+/////////////////////////////////////////////////////
 void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
-void messageMachine(struct MeilleureScore_s str[],float x,float y,TTF_Font *font,int afficherMessage);
 
 
 
@@ -273,7 +352,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 	//////////////////////////////////////////////////////////
 	//
-	Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+	Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL );
 	//////////////////////////////////////////////////////////
 	// VERIFIER EXISTANCE DE LA FENETRE ET CREATION CONTEXT
 	if( !Window)
@@ -306,9 +385,12 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
-		reglageVolume(0,-4.0,10.5,camera.px,camera.pz,PORTER_10);
-		reglageVolume(1,4.0,10.5,camera.px,camera.pz,PORTER_10);
-		reglageVolume(2,0.0,0.0,camera.px,camera.pz,PORTER_10);
+		// MUSIQUE LOT MACHINE GAUCHE
+		reglageVolume(0,-5.0,11.0,camera.px,camera.pz,10.0);
+		// MUSIQUE LOT MACHINE DROITE
+		reglageVolume(1,5.0,11.0,camera.px,camera.pz,10.0);
+		// MUSIQUE MACHINE SEUL
+		reglageVolume(2,0.0,0.0,camera.px,camera.pz,15.0);
 		//////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////
@@ -336,7 +418,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		AfficherText(sega,meilleureScore[0].nomJoueur,Text_rouge,WinWidth/30,WinHeight - WinWidth/15);
 		//////////////////////////////////////////////////////////
 		// AFFICHAGE MESSAGE A PROXIMITER DES MACHINES
-		messageMachine(meilleureScore,camera.px,camera.pz,sega,afficherMessage);
+		messageMachine(meilleureScore,camera,sega,afficherMessage);
 		//////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////
@@ -427,8 +509,27 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void InitMeilleureScore(struct MeilleureScore_s str[])
 {
+	////////////////////////////////////////////////////////////////
+	// PERMET DE REMPLIR LE TABLEAU DES SCORES DE JEUX PAR LE NOM DES JEUX
+	// FUNCTION APPELER DANS LAUNCHER UNIQUEMENT
+	// PRESENTE ICI CAR ELLE EST UTILISER UNIQUEMENT ICI CETTE STRCUTURE
+
 	strcpy(str[FLAPPY_HARD].nomJeux,"FLAPPY   BIRD");
 
 	strcpy(str[TETRIS_HARD].nomJeux,"TETRIS");
@@ -453,6 +554,7 @@ void InitMeilleureScore(struct MeilleureScore_s str[])
 
 	strcpy(str[TETRIS_EASY].nomJeux,"TETRIS");
 
+
 	strcpy(str[13].nomJeux,"COMMING   SOON");
 	strcpy(str[14].nomJeux,"COMMING   SOON");
 	strcpy(str[15].nomJeux,"COMMING   SOON");
@@ -462,9 +564,16 @@ void InitMeilleureScore(struct MeilleureScore_s str[])
 
 void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 {
+	///////////////////////////////////////////////////////////
+	// INITALISATION D'UNE CHAINE POUR STOCKER LA REPONSE
 	char reponse[1024];
 
+	///////////////////////////////////////////////////////////
+	// RECUPERATION DU SCORE JUSQU'A REUSSITE
 	while( getCoinsValues(token,reponse) == EXIT_FAILURE );
+
+	///////////////////////////////////////////////////////////
+	// PARSING DANS LA CHAINE DE DONNER RECU
 	int temp1,temp2;
 	sscanf(reponse,"%d %d / %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d", &str[0].score,&temp1,&temp2,
 																																str[1].nomJoueur,&str[1].score,
@@ -484,6 +593,8 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 																																str[15].nomJoueur,&str[15].score
 																															);
 
+		///////////////////////////////////////////////////////////
+		// REMPLISSAGE DE L'EMPLACEMENT 0 PAR MEILLEURE SCORE ET CLASSEMENT DU JOUEUR
 		sprintf(str[0].nomJeux,"SCORE : %d",str[0].score);
 		sprintf(str[0].nomJoueur,"CLASSEMENT : %d / %d",temp1,temp2);
 
@@ -529,25 +640,15 @@ float distancePoint(float xa, float ya, float xb, float yb)
 }
 
 
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, int porter)
-{
-    float distance = distancePoint(xa,ya,xb,yb);
-    float volume = (COEF_LOG[0][porter] + COEF_LOG[1][porter] * log(distance)) * MAX_VOLUME_ARCADE/128.;
 
-    if(volume < 0)
-        volume = 0;
-    else if(volume >MAX_VOLUME_ARCADE)
-        volume = MAX_VOLUME_ARCADE;
 
-    Mix_Volume(channel, (int)volume);
-}
 
-/*
 void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter)
 {
 	float volume = MIX_MAX_VOLUME;
 	float distance = distancePoint(xa,ya,xb,yb);
-
+	if(distance < 5.0)
+		printf("CHANNEL %d distance MACHINE %f\n",channel,distance );
 	if(distance > porter)
 		volume = 0;
 	else
@@ -557,7 +658,7 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, float po
 	}
 
 	Mix_Volume(channel, (int)volume);
-}*/
+}
 
 
 
@@ -849,60 +950,74 @@ void mouvementCamera(struct Camera_s *camera)
 
 int detectionEnvironnement(float x,float y)
 {
-	//printf("X = %f Z = %f\n",x,y);
 
-
+	///////////////////////////////////////////////////
 	// HITBOX
+	///////////////////////////////////////////////////
 
-	// accueil nineteen
+	///////////////////////////////////////////////////
+	// ACCUEIL NINETEEN
 	if( x <= 5.0 && x >= -5.0 && y >= 20.0)
 		return 0;
 
-	// lot de 12 machine au milieu de la salle
+	///////////////////////////////////////////////////
+	// LOT 12 MACHINE MILIEU DE SALLE
 	if( y >= 8.5 && y <= 13.5 && (  (x <= 8.0 && x >= 1.5) || (x > -8.0 && x <= -1.5)   )   )
 		return 0;
 
-	// double machine a gauche de la salle
+	///////////////////////////////////////////////////
+	// DOUBLE MACHINE A GAUCHE DE LA SALLE
 	if( x <= -12.5 && y <= 13.5 && y >= 9.0)
 		return 0;
 
-	// machine central
+	///////////////////////////////////////////////////
+	// MACHINE SEUL CENTRAL
 	if( x >= -1.5 && x <= 1.5 && y >= -1.5 && y <= 1.5)
 		return 0;
 
-	// coter non droit au abord de l'accueil de la room
+	///////////////////////////////////////////////////
+	// FUNTION POUR MUR AVEC ANGLE A PROXIMITER DE NINETEEN
 	if(  y >= 14.0 &&  (    ( x >= -0.4736842105*y + 19.36842105  ) || (  x <= -(-0.4736842105*y + 19.36842105))    )   )
 		return 0;
 
-	// ouverture entre toilette et salle
+	///////////////////////////////////////////////////
+	// OUVERTURE ENTRE POUR ALLER DANS LA SALLE TOILETTE
 	if( (y >= 7.0 || y <= 2.0) && x >= 14.5 && x <= 15.5)
 		return 0;
 
-	// mur toilette // salle
+	///////////////////////////////////////////////////
+	// MUR QUI SEPARE LA SALLE ET LES TOILETTES
 	if( x >= 18.0 && x <= 19.0 && y >= -0.5 && y <= 10.0 )
 		return 0;
 
-	// machine voiture
+	///////////////////////////////////////////////////
+	// MACHINE VOITURE
 	if ( x >= 4.0 && x <= 10.0 && y <= 3.6 && y >= - 3.6)
 		return 0;
 
-	// billard
+	///////////////////////////////////////////////////
+	// BILLARD
 	if( x <= -7.5 && x >= -12.0 && y <= 5.0 && y >= -2.3)
 		return 0;
-	// BASE DE LA SALLE
 
-	// dimension toilette
+	///////////////////////////////////////////////////
+	// DIMESION SALLE DES TOILETTE
 	if(x > 15.0 && (  y < -3.0 || y > 12.5  )  )
 		return 0;
 
-	// separation toilette
+	///////////////////////////////////////////////////
+	// SEPARATION ENTRE TOILETTE
 	if( x > 21.0 && x < 22.0 && y < 9.0 && y > 0.5)
 		return 0;
 
-	// separation toilette 2
+	///////////////////////////////////////////////////
+	// SEPARATION AXE Y TOILETTE
 	if( x > 18.0 && y > 4.5 && y < 5.5)
 		return 0;
 
+
+	///////////////////////////////////////////////////
+	// DIMESION SALLE DE BASE
 	// HAUT DE LA SALLE
 	if( y < -5.0 )
 		return 0;
@@ -918,78 +1033,124 @@ int detectionEnvironnement(float x,float y)
 	return 1;
 }
 
-int detecterMachine(float x,float y)
+
+
+int detecterMachine(float x,float y,float angle)
 {
-	//ranger 6 machine a gauche
+	///////////////////////////////////////////////////
+	// DETECTION MACHINE
+	///////////////////////////////////////////////////
+	// DETECTER RANGER 6 MACHINE A GAUCHE
 	if(x > -8.0 && x < -1.0 && y > 7.0 && y < 15.0)
 	{
-		// machine face/dos
-		if( y > 11.0) // vrai = face
+		///////////////////////////////////////////////////
+		// DETECTER SI RANGER NORD / SUD
+		if( y > 11.0)
 		{
-			if( x < -5.7 )
-				return 1;
-			else if ( x < -3.7)
-				return 2;
-			else
-				return 3;
+			///////////////////////////////////////////////////
+			// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
+			if(angle > M_PI - (M_PI/3) && angle < M_PI + (M_PI/3) )
+			{
+				///////////////////////////////////////////////////
+				// DETECTER PRECICEMENT LA MACHINE PARMIS LES 3
+				if( x < -5.7 )
+					return 1;
+				else if ( x < -3.7)
+					return 2;
+				else
+					return 3;
+			}
 		}
+		///////////////////////////////////////////////////
+		// RANGER SUD
 		else
 		{
-			if( x < -5.7 )
-				return 4;
-			else if ( x < -3.7)
-				return 5;
-			else
-				return 6;
+			///////////////////////////////////////////////////
+			// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
+			if( ( angle > ( 2*M_PI - (M_PI/3) ) && angle <= 2*M_PI  ) ||    (    angle >= 0 && angle < 0 + (M_PI/3)   )   )
+			{
+				///////////////////////////////////////////////////
+				// DETECTER PRECICEMENT LA MACHINE PARMIS LES 3
+				if( x < -5.7 )
+					return 4;
+				else if ( x < -3.7)
+					return 5;
+				else
+					return 6;
+			}
 		}
 	}
 
 
-	// ranger de 6 machine a droite
+	///////////////////////////////////////////////////
+	// DETECTER RANGER 6 MACHINE A DROITE
 	if(x < 8.0 && x > 1.0 && y > 7.0 && y < 15.0)
 	{
-		// machine face/dos
+		///////////////////////////////////////////////////
+		// DETECTER SI RANGER NORD / SUD
 		if( y > 11.0) // vrai = face
 		{
-			if( x < 3.4 )
-				return 7;
-			else if ( x < 5.8)
-				return 8;
-			else
-				return 9;
+			///////////////////////////////////////////////////
+			// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
+			if(angle > M_PI - (M_PI/3) && angle < M_PI + (M_PI/3) )
+			{
+				if( x < 3.4 )
+					return 7;
+				else if ( x < 5.8)
+					return 8;
+				else
+					return 9;
+			}
 		}
+		///////////////////////////////////////////////////
+		// RANGER SUD
 		else
 		{
-			if( x < 3.4 )
-				return 10;
-			else if ( x < 5.8)
-				return 11;
-			else
-				return 12;
+			///////////////////////////////////////////////////
+			// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
+			if( ( angle > ( 2*M_PI - (M_PI/3) ) && angle <= 2*M_PI  ) ||    (    angle >= 0 && angle < 0 + (M_PI/3)   )   )
+			{
+				if( x < 3.4 )
+					return 10;
+				else if ( x < 5.8)
+					return 11;
+				else
+					return 12;
+			}
 		}
 	}
 
-	// 2 machine sur la gauche
+	///////////////////////////////////////////////////
+	// DETECTER 2 MACHINE A GAUCHE
 	if( x < -11 && y > 9.0 && y < 13.5)
 	{
-		if(y < 11.25)
-			return 13;
-		else
-			return 14;
+		///////////////////////////////////////////////////
+		// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
+		if(angle > 3*M_PI/2 - (M_PI/3) && angle < 3*M_PI/2 + (M_PI/3))
+		{
+			if(y < 11.25)
+				return 13;
+			else
+				return 14;
+		}
 	}
 
-	// machine centrale
+	///////////////////////////////////////////////////
+	// DETECTER MACHINE CENTRAL
 	if( x > -1.0 && x < 1.0 && y > 1.0 && y < 3.0)
-		return 15;
+		///////////////////////////////////////////////////
+		// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
+		if(angle > M_PI - (M_PI/3) && angle < M_PI + (M_PI/3) )
+			return 15;
 
 
 
 	return 0;
 }
 
-void messageMachine(struct MeilleureScore_s str[],float x,float y,TTF_Font *font,int afficherMessage)
+void messageMachine(struct MeilleureScore_s str[],struct Camera_s camera,TTF_Font *font,int afficherMessage)
 {
-	int detection = detecterMachine(x, y);
+	int detection = detecterMachine(camera.px, camera.pz,camera.angle);
 	if(detection)
 	{
 		SDL_Color white = {255,255,255};
@@ -1082,7 +1243,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						// verifier si on est proche d'une machine //
 						// si oui renvoi le code de la machine
 
-						int machine = detecterMachine(camera.px, camera.pz);
+						int machine = detecterMachine(camera.px, camera.pz, camera.angle);
 						if ( machine)
 						{
 							animationLancerMachine(camera,cible[machine-1],*scene_list,Window);
