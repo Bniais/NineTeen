@@ -22,6 +22,8 @@
 #define WINDOW_FLAG 0
 #define PLAYGROUND_SIZE_W 1728
 #define PLAYGROUND_SIZE_H 972
+#define BASE_WINDOW_W 1920
+#define BASE_WINDOW_H 1080
 
 #define HUD_W 96
 #define HUD_H 54
