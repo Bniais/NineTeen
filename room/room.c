@@ -1076,6 +1076,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					*Running = 0;
 					break;
 				case SDLK_e:
+				{
 						// verifier si on est proche d'une machine //
 						// si oui renvoi le code de la machine
 
@@ -1132,7 +1133,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 
 
-					break;
+					}break;
 				case SDLK_c:
 					if(VITESSE_DEPLACEMENT == VITESSE_DEPLACEMENT_DEBOUT )
 					{
