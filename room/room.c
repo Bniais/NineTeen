@@ -389,6 +389,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	// LIBERATION DU CONTEXT
 	SDL_GL_DeleteContext(Context);
 	//////////////////////////////////////////////////////////
+	return EXIT_SUCCESS;
 }
 
 
@@ -1130,7 +1131,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							while(SDL_PollEvent(&Event));
 							SDL_GL_AppliquerScene(scene,&camera,scene_list);
 							animationLancerMachine(cible[machine-1],camera,*scene_list,Window);
-
+							while(SDL_PollEvent(&Event));
 						}
 
 
