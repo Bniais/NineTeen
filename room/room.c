@@ -272,6 +272,9 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 
 	//////////////////////////////////////////////////////////
+	//
+	Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+	//////////////////////////////////////////////////////////
 	// VERIFIER EXISTANCE DE LA FENETRE ET CREATION CONTEXT
 	if( !Window)
 	{
@@ -507,14 +510,12 @@ void windowMaxSize()
 	SDL_DisplayMode dm;
 
 	if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
-	{
      SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
 
-	 }
+	 WinWidth = dm.w*0.9;
+	 WinHeight = (dm.w*0.9)*9/16;
 
-WinWidth = dm.w*0.9;
-WinHeight = dm.h*0.9;
-printf("SIZE : %d %d\n", WinWidth, WinHeight);
+	 printf("SIZE : %d %d\n", WinWidth, WinHeight);
 }
 
 float distancePoint(float xa, float ya, float xb, float yb)

@@ -299,7 +299,7 @@ void connexion(SDL_Renderer *renderer, char *token)
 					else if ( retour == -5 )
 					{
 					//	for (int i=0;i < tentative && retour == -5 ;i++) {
-							printf("ECHEC : Veuilliez reessayer erreur serveur\n");
+							printf("ECHEC : -5 DELAI DEPASSER (PB LINUX CONNU)\n");
 					//		SDL_Delay(delai);
 					//		retour = connectWithUsername(token,identifiant,motDePasse);
 					//	}
@@ -501,7 +501,6 @@ int main()
 	{
 		SDL_DestroyRenderer(renderer);
 		SDL_DestroyWindow(window);
-		window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, DM.w*0.9, (DM.w*0.9)*9/16, SDL_WINDOW_OPENGL | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 		room(token,meilleureScore,window,scene);
 	}
 	aiReleaseImport(scene);
