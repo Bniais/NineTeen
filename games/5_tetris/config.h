@@ -1,5 +1,5 @@
 #include "pieces.h"
-
+typedef struct {float x; float y;} Vector2f;
 #define FRAMES_PER_SECOND 30
 const int FRAME_TIME = 1000 / 30;
 
@@ -19,8 +19,8 @@ enum {ALREADY_ROUNDED, RELY_ON_BOTH, RELY_ON_LEFT, RELY_ON_RIGHT};
 #define BONUS_SIZE 20
 #define GRILLE_W 10
 #define GRILLE_H 20
-#define MATRIX_X (PLAYGROUND_SIZE_W/2-(CASE_SIZE*GRILLE_W)/2)
-#define MATRIX_Y (PLAYGROUND_SIZE_H/2-(CASE_SIZE*GRILLE_H)/2)
+#define MATRIX_X (BASE_WINDOW_W/2-(CASE_SIZE*GRILLE_W)/2)
+#define MATRIX_Y (BASE_WINDOW_H/2-(CASE_SIZE*GRILLE_H)/2)
 SDL_Rect MATRIX = {MATRIX_X,MATRIX_Y,GRILLE_W*CASE_SIZE,GRILLE_H*CASE_SIZE };
 #define TOO_CLOSE_FROM_TOP 420
 #define FRAME_REMIND_ROTATE (FRAMES_PER_SECOND/3)
@@ -38,7 +38,7 @@ typedef struct {long int score; float scoreShow; int frameToDest;}ScoreTotal;
 #define SIZE_SCORE 25
 #define SIZE_SCORE_TOTAL 40
 #define SIZE_DRAW_SCORE_TOTAL 150
-SDL_Rect SCORE_TOTAL_DEST = {489, 272,SIZE_DRAW_SCORE_TOTAL,SIZE_SCORE_TOTAL};
+SDL_Rect SCORE_TOTAL_DEST = {489+96, 272+54,SIZE_DRAW_SCORE_TOTAL,SIZE_SCORE_TOTAL};
 
 #define SCORE_TTL 40
 #define RESET_ANIM 34
@@ -145,8 +145,8 @@ SDL_Rect JAUGE_SPEED_SRC = {0, 0, 40 , 402};
 
 enum{LATERAL, DOWN, TO_GO, STOP};
 float GROW_RATE[NB_FRAMES] = {0.9999, 0.99976, 0.9999, 0.99988};
-float FRAME_START[NB_FRAMES] = {10, 13, 15 ,16};
-float FRAME_MIN[NB_FRAMES] =   {4 ,  1,  8, 9};
+float FRAME_START[NB_FRAMES] = {10, 13, 15 ,18};
+float FRAME_MIN[NB_FRAMES] =   {4 ,  1,  8, 15};
 float FRAME_MAX[NB_FRAMES] =   {12, 20, 18, 20};
 #define FRAME_STOP_ACCELERATE 1
 
@@ -175,12 +175,13 @@ SDL_Color BRICK_COLORS[NB_PIECES] = {
 #define HUD_X (MATRIX_X - 200)
 
 //Bonus
+#define PROBA_BONUS 5
 #define NB_BONUSES 7
 enum{NO_BONUS, FILL, MULTI_POINT, LASER, SLOW, SPEED, GIANT, FLAT_POINT};
 #define BONUS_TRI 10
 SDL_Color colors_b[NB_BONUSES] = {{120,000,150,100},{100,070,180,100},{170,170,000,170},{000,255,120,100}};
 #define NB_LINES_LASER 3
-#define MAX_HEIGHT_LASER 9
+#define MAX_HEIGHT_LASER 13
 #define SLOW_AMMOUNT (FRAMES_PER_SECOND * 45)
 #define SPEED_AMMOUNT (FRAMES_PER_SECOND * 40)
 
@@ -188,7 +189,7 @@ SDL_Color colors_b[NB_BONUSES] = {{120,000,150,100},{100,070,180,100},{170,170,0
 #define FRAME_COMPLETE_LINE 11
 
 
-#define LASER_FRAME 40
+#define LASER_FRAME 36
 #define LASER_START_COMPLETE 22
 #define LASER_START_SHOOT 28
 #define LASER_ARRIVED 33
@@ -214,6 +215,18 @@ int LASER_RECOIL_DIST[LASER_RECOIL_DURATION] = {8,4,2};
 typedef struct {int firstCol; int lastCol; int firstRow; int lastRow;} RowColInfos;
 typedef struct {unsigned int rota; int id; float x; float y; int* grille; int size; int giant; int frameToGo; int dir; int frameDir; int frameStop; int firstCol; int lastCol; int firstRow; int lastRow; int bonus;} Piece;
 const SDL_Point UNDEFINED = {-500, -500};
+
+//death
+#define GRAVITE 0.2
+#define MIN_DEAD_SPEED -50
+typedef struct {Vector2f speed; float x; float y; float rota; float rotaSpeed; int id;} DeadPiece;
+#define PRECISION 100.
+SDL_Point INTERVALE_DEAD_SPEED = {14*PRECISION+1,4*PRECISION+1}; // à diviser par PRECISION
+Vector2f BASE_DEAD_SPEED = {-7, 3};
+#define INTERVALE_ROTA_SPEED (50*PRECISION+1)
+#define BASE_ROTA_SPEED -25
+#define COEF_LINE 0.2
+#define MIN_ROTA 12
 
 
 

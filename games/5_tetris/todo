@@ -6,11 +6,12 @@
 
 bugs :
 	?Piece se stoppe instant en atterissant alors que pas accé
+	//score dest bug
 
 
  - bonus :
  	//fill trous
-	/more ptns (flat or multiplier)
+	//more ptns (flat or multiplier)
 	//laser : supprime lignes du bas
 	//slow
 
@@ -25,7 +26,7 @@ bugs :
 
 //when dying, check if no laser, fill or complete line, if there are, WAIT
 //when cant rotate, try decaler piece (g d b +h?)
-death anim
+//death anim
 //remove touche bas stop piece
 //make "cd on espace"
 //make space be roundf
