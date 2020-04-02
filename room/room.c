@@ -68,9 +68,7 @@ static int WinHeight = 720;
 static const float FRAME_TIME = 1000/FPS;
 
 
-
-
-uint32_t WindowFlags = SDL_WINDOW_OPENGL | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC ;
+SDL_Color Text_rouge = {255,0,0};
 
 
 // lier au son
@@ -91,6 +89,19 @@ enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINE
 
 
 
+/////////////////////////////////////////////////////
+/// \fn int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene )
+/// \brief fonction d'appel principal
+///
+/// \param char *token cle de connexion
+/// \param struct MeilleureScore_s meilleureScore[] tableau charger des scores
+/// \param SDL_Window *Window fenetre initaliser
+/// \param const C_STRUCT aiScene* scene scene charger
+///
+/// \return EXIT_SUCCESS / EXIT_FAILURE
+/////////////////////////////////////////////////////
+int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene );
+
 
 
 
@@ -103,25 +114,73 @@ int detecterMachine(float x,float y);
 void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window);
 void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context);
 
-float distancePoint(float xa, float ya, float xb, float yb);
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, int porter);
-void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music);
+
 
 
 void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y);
 
 void windowMaxSize();
-void mixerInit(Mix_Chunk **musicEnvironnement);
+
+
+/////////////////////////////////////////////////////
+/// \fn int mixerInit(Mix_Chunk **musicEnvironnement)
+/// \brief charger et lancer les musiques d'ambiance
+///
+/// \param Mix_Chunk **musicEnvironnement tableau qui stock les son
+///
+/// \return EXIT_SUCCESS / EXIT_FAILURE
+/////////////////////////////////////////////////////
+int mixerInit(Mix_Chunk **musicEnvironnement);
+
+
+/////////////////////////////////////////////////////
+/// \fn float distancePoint(float xa, float ya, float xb, float yb)
+/// \brief renvoi la distance entre deux point
+///
+/// \param float xa
+/// \param float ya
+/// \param float xb
+/// \param float yb
+///
+/// \return float distance point a et b
+/////////////////////////////////////////////////////
+float distancePoint(float xa, float ya, float xb, float yb);
+
+
+
+/////////////////////////////////////////////////////
+/// \fn void reglageVolume(int channel, float xa, float ya, float xb, float yb, int porter)
+/// \brief regle le volume de l'environement sur un chainnel particuliere
+///
+/// \param int channel canal du son a regler
+/// \param float xa
+/// \param float ya
+/// \param float xb
+/// \param float yb
+/// \param int porter Porter du son
+///
+/// \return void
+/////////////////////////////////////////////////////
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, int porter);
+
+
+/////////////////////////////////////////////////////
+/// \fn void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music)
+/// \brief permet de deplacer la source du son des pas et de le jouer
+///
+/// \param struct Camera_s *dernierePosition derniere position ou le son a etait jouer
+/// \param struct Camera_s camera position actuel
+/// \param struct int channel channel sur le quelle jouer le son
+/// \param struct Mix_Chumk *music son a jouer
+///
+/// \return void
+/////////////////////////////////////////////////////
+void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music);
+
 
 void InitMeilleureScore(struct MeilleureScore_s str[]);
 void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
-void messageMachine(struct MeilleureScore_s str[],float x,float y,TTF_Font *font,int printMessage);
-
-
-
-
-
-void room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window);
+void messageMachine(struct MeilleureScore_s str[],float x,float y,TTF_Font *font,int afficherMessage);
 
 
 
@@ -131,109 +190,171 @@ void room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Wind
 
 
 
-void room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window)
+
+int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene)
 {
-	SDL_DestroyWindow(Window);
-	//SDL INIT
+	//////////////////////////////////////////////////////////
+	// RECUPERER C'EST VALEUR DES PARAMS A L'AVENIR
 	windowMaxSize();
+	//////////////////////////////////////////////////////////
 
-	const C_STRUCT aiScene* scene = NULL;
+
+	//////////////////////////////////////////////////////////
+	// OpenGL
+	//////////////////////////////////////////////////////////
+	// INITIALISATION LIST SCENE
 	GLuint scene_list = 0; // NB SCENE
-	aiImportModel(DIR_OBJ_LOAD,&scene);
+	//////////////////////////////////////////////////////////
 
-	// PRESET VALUE CAMERA //
+
+	//////////////////////////////////////////////////////////
+	// INITIALISATION CAMERA / CIBLE SUR MACHINE /
 	static struct Camera_s camera,cible[15],jouerSon;
 	InitCamera(&camera,cible);
 	jouerSon = camera;
+	//////////////////////////////////////////////////////////
 
+	//////////////////////////////////////////////////////////
+	// INITALISATION SON
 	Mix_Chunk **musicEnvironnement = malloc(sizeof(Mix_Chunk));
 	mixerInit(musicEnvironnement);
+	//////////////////////////////////////////////////////////
 
+
+	//////////////////////////////////////////////////////////
+	// INITALISATION DES POLICES
 	TTF_Font * font = TTF_OpenFont(DIR_FONT_POLICE, WinWidth/50);
 	if(!font)
+	{
 		printf("Erreur chargement font %s\n",DIR_FONT_POLICE);
+		return EXIT_FAILURE;
+	}
 	TTF_Font * sega = TTF_OpenFont(DIR_FONT_SEGA, WinWidth/50);
 	if(!sega)
+	{
 		printf("Erreur chargement font %s\n",DIR_FONT_SEGA);
+		return EXIT_FAILURE;
+	}
+	//////////////////////////////////////////////////////////
 
 
-	Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, WindowFlags);
+
+	//////////////////////////////////////////////////////////
+	// VERIFIER EXISTANCE DE LA FENETRE ET CREATION CONTEXT
 	if( !Window)
+	{
 		printf("Impossible de cree la fenetre %s\n",SDL_GetError() );
-
+		return EXIT_FAILURE;
+	}
 	SDL_GLContext Context = SDL_GL_CreateContext(Window);
 	if( !Context)
+	{
 		printf("Impossible de cree le context %s\n",SDL_GetError() );
+		return EXIT_FAILURE;
+	}
+	//////////////////////////////////////////////////////////
 
 
-
-	SDL_Color rouge = {255,0,0};
-
+	//////////////////////////////////////////////////////////
 	// VARIABLE DE DEROULEMENT
 	int Running = 1;
 	int count_IPS = SDL_GetTicks();
 	float ips=0.0;
-	int printMessage = 0;
+	int afficherMessage = 0;
+	//////////////////////////////////////////////////////////
 
 
 
 	while (Running)
 	{
-		int times_at_start_frame = SDL_GetTicks();
+		int tempsLancerFrame = SDL_GetTicks();
 
+		//////////////////////////////////////////////////////////
+		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
 		reglageVolume(0,-4.0,10.5,camera.px,camera.pz,PORTER_10);
 		reglageVolume(1,4.0,10.5,camera.px,camera.pz,PORTER_10);
 		reglageVolume(2,0.0,0.0,camera.px,camera.pz,PORTER_10);
+		//////////////////////////////////////////////////////////
 
+		//////////////////////////////////////////////////////////
+		// JOUER SON BRUIT DE PAS QUAND C'EST NECESSAIRE
 		bruitagePas(&jouerSon,camera,3,*(musicEnvironnement + 3));
+		//////////////////////////////////////////////////////////
 
+
+		//////////////////////////////////////////////////////////
+		// OpenGL
+		//////////////////////////////////////////////////////////
+		// APPLIQUER PARAMETRE D'ORIGINE OPENGL
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
+		//////////////////////////////////////////////////////////
+		// CHARGER LA SCENE
 		SDL_GL_AppliquerScene(scene,&camera,&scene_list);
+		//////////////////////////////////////////////////////////
 
+
+		//////////////////////////////////////////////////////////
+		// OpemGL Text
+		//////////////////////////////////////////////////////////
+		// AFFICHER CLASSEMENT / SCORE EN HAUT A GAUCHE
+		AfficherText(sega,meilleureScore[0].nomJeux,Text_rouge,WinWidth/30,WinHeight - WinWidth/30);
+		AfficherText(sega,meilleureScore[0].nomJoueur,Text_rouge,WinWidth/30,WinHeight - WinWidth/15);
+		//////////////////////////////////////////////////////////
+		// AFFICHAGE MESSAGE A PROXIMITER DES MACHINES
+		messageMachine(meilleureScore,camera.px,camera.pz,sega,afficherMessage);
+		//////////////////////////////////////////////////////////
+
+		//////////////////////////////////////////////////////////
+		// LANCEMENT DES MACHINES
 		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context);
+		//////////////////////////////////////////////////////////
 
-
-
-
-		AfficherText(sega,meilleureScore[0].nomJeux,rouge,WinWidth/30,WinHeight - WinWidth/30);
-		AfficherText(sega,meilleureScore[0].nomJoueur,rouge,WinWidth/30,WinHeight - WinWidth/15);
-
-
-
-		messageMachine(meilleureScore,camera.px,camera.pz,sega,printMessage);
-
-
-
+		//////////////////////////////////////////////////////////
+		// OpenGL
+		//////////////////////////////////////////////////////////
+		// APPLIQUER MODIF SUR LA VUE
 		SDL_GL_SwapWindow(Window);
 
 
-		// MAX FPS
-		int frame_delay = SDL_GetTicks() - times_at_start_frame;
+		//////////////////////////////////////////////////////////
+		// LIMITER LES FRAMES
+		int frame_delay = SDL_GetTicks() - tempsLancerFrame;
 			if(frame_delay < FRAME_TIME)
 				SDL_Delay(FRAME_TIME - frame_delay );
+		//////////////////////////////////////////////////////////
 
 
-
-
+		//////////////////////////////////////////////////////////
+		// AFFICHER LES FPS DANS LE TERMINAL
 		ips++;
 		if(SDL_GetTicks() - count_IPS > 1000){
 			printf("IPS %f\n",ips );
 			count_IPS = SDL_GetTicks();
-			printMessage = !printMessage;
+			afficherMessage = !afficherMessage;
 			ips = 0;
 		}
+		//////////////////////////////////////////////////////////
 
 	}
 
 
+
+	//////////////////////////////////////////////////////////
+	// LIBERER LA MEMOIRE ALLOUER ET NON NECESSAIRE A LA SUITE
+	// LIBERATION DES SONS
+	Mix_FreeChunk(*(musicEnvironnement + 0) );
+	Mix_FreeChunk(*(musicEnvironnement + 1) );
+	Mix_FreeChunk(*(musicEnvironnement + 2) );
+	Mix_FreeChunk(*(musicEnvironnement + 3) );
+	free(musicEnvironnement);
+	//////////////////////////////////////////////////////////
+	// LIBERATION DES POLICES
 	TTF_CloseFont(font);
 	TTF_CloseFont(sega);
-
-
-	aiReleaseImport(scene);
+	//////////////////////////////////////////////////////////
+	// LIBERATION DU CONTEXT
 	SDL_GL_DeleteContext(Context);
-	SDL_DestroyWindow(Window);
-	SDL_Quit();
+	//////////////////////////////////////////////////////////
 }
 
 
@@ -334,12 +455,10 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 }
 
 
-void mixerInit(Mix_Chunk **musicEnvironnement)
-{
-	//MIXER Init
-	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 1, 1024 ) == -1 )
-			printf("Erreur init SDL_Mixer : %s\n",Mix_GetError() );
 
+int mixerInit(Mix_Chunk **musicEnvironnement)
+{
+		// REGLER VOLUME DES PISTES AUDIO
 		Mix_Volume(0,0);
 		Mix_Volume(1,0);
 		Mix_Volume(2,0);
@@ -349,23 +468,42 @@ void mixerInit(Mix_Chunk **musicEnvironnement)
 		Mix_Volume(6,MIX_MAX_VOLUME/5);
 
 
+		// CHARGER LES MUSIQUES D"AMBIANCE
 		*(musicEnvironnement + 0)	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_1);
 		if( !*(musicEnvironnement + 0) )
+		{
 			printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_1);
+			return EXIT_FAILURE;
+		}
+
 		*(musicEnvironnement + 1)	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_2);
 		if( !*(musicEnvironnement + 1) )
+		{
 			printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_2);
+			return EXIT_FAILURE;
+		}
+
 		*(musicEnvironnement + 2)	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_3);
 		if( !*(musicEnvironnement + 2) )
+		{
 			printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_3);
+			return EXIT_FAILURE;
+		}
+
 		*(musicEnvironnement + 3)	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_WALK);
 		if( !*(musicEnvironnement + 3) )
+		{
 			printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_WALK);
+			return EXIT_FAILURE;
+		}
 
 
+		// LANCER LES MUSIQUE D'AMBIANCE //
 		Mix_PlayChannel(0 , *(musicEnvironnement + 0), -1);
 		Mix_PlayChannel(1 , *(musicEnvironnement + 1), -1);
 		Mix_PlayChannel(2 , *(musicEnvironnement + 2) , -1);
+
+		return EXIT_SUCCESS;
 }
 
 
@@ -854,7 +992,7 @@ int detecterMachine(float x,float y)
 	return 0;
 }
 
-void messageMachine(struct MeilleureScore_s str[],float x,float y,TTF_Font *font,int printMessage)
+void messageMachine(struct MeilleureScore_s str[],float x,float y,TTF_Font *font,int afficherMessage)
 {
 	int detection = detecterMachine(x, y);
 	if(detection)
@@ -865,7 +1003,7 @@ void messageMachine(struct MeilleureScore_s str[],float x,float y,TTF_Font *font
 		AfficherText(font,message,white,-1,WinHeight/8);
 		AfficherText(font,str[detection].nomJeux,white,-1,WinHeight/6);
 
-		if(printMessage)
+		if(afficherMessage)
 		{
 					AfficherText(font,"APPUYER   SUR   E",white,-1,-1);
 		}

@@ -12,6 +12,7 @@
 
 #include "../include/libWeb.h"
 #include "../room/room.h"
+#define DIR_OBJ_LOAD "room/salle.obj"
 
 #include "launcher.h"
 
@@ -82,7 +83,7 @@ SDL_Texture *load_texture_png(SDL_Renderer* renderer, char directory[]){
 	}
 }
 
-int dejaConneceter(char **token)
+int dejaConneceter(char *token)
 {
 	FILE * fp;
     fp = fopen (DIR_TOKEN_FILE, "r");
@@ -92,10 +93,10 @@ int dejaConneceter(char **token)
 	}
 	else
 	{
-		fscanf(fp,"%s",*token);
+		fscanf(fp,"%s",token);
 		fclose(fp);
 
-		if ( !connectWithKey(*token) ){
+		if ( !connectWithKey(token) ){
 			return 1;
 		}
 	}
@@ -200,34 +201,29 @@ void ouvrirUrlRegistration()
 
 }
 
-void connexion(SDL_Renderer *renderer, char **token)
+void connexion(SDL_Renderer *renderer, char *token)
 {
+	// AFFICHAGE
+	SDL_Texture* background = IMG_LoadTexture(renderer,DIR_IMG_BACKGROUND);
+	if(!background)
+		printf("Impossible de charger %s\n",DIR_IMG_BACKGROUND );
+	TTF_Font *police = police = TTF_OpenFont(DIR_FONT_POLICE,100);
+	if(!police)
+		printf("Impossible de charger %s\n",DIR_FONT_POLICE );
+	TTF_Font *ttf_pwd = ttf_pwd = TTF_OpenFont(DIR_FONT_PASSWORD,100);
+	if(!ttf_pwd)
+		printf("Impossible de charger %s\n",DIR_FONT_PASSWORD );
 
 
 	// permet de recuperer depuis le serveur l'information sur
 	// le nombre de tentative de connexion
 	int delai = DELAY;
 	int tentative = TENTATIVE;
-	chargementConfig(&delai,&tentative);
-
-
-	// AFFICHAGE
-	SDL_Texture* background = IMG_LoadTexture(renderer,DIR_IMG_BACKGROUND);
-	if(!background)
-		printf("Impossible de charger %s\n",DIR_IMG_BACKGROUND );
-
-	TTF_Font *police = NULL;
-	TTF_Font *ttf_pwd = NULL;
-
-	police = TTF_OpenFont(DIR_FONT_POLICE,100);
-	if(!police)
-		printf("Impossible de charger %s\n",DIR_FONT_POLICE );
-	ttf_pwd = TTF_OpenFont(DIR_FONT_PASSWORD,100);
-	if(!ttf_pwd)
-		printf("Impossible de charger %s\n",DIR_FONT_PASSWORD );
+//	chargementConfig(&delai,&tentative);
 
 	char identifiant[24]="";
 	char motDePasse[24]="";
+
 
 	SDL_Rect targetId = { LARGUEUR/5.5 , HAUTEUR/3, LARGUEUR/1.7 , HAUTEUR/14};
 	SDL_Rect targetPwd = { LARGUEUR/5.5 , HAUTEUR/1.9 , LARGUEUR/1.7 , HAUTEUR/14 };
@@ -292,6 +288,7 @@ void connexion(SDL_Renderer *renderer, char **token)
 				}
 				else if ( TF_ClickIn( targetConnect , mouse) )
 				{
+					printf("CONNEXION...\n" );
 					int retour = connectWithUsername(token,identifiant,motDePasse);
 					if ( !retour )
 					{
@@ -301,17 +298,17 @@ void connexion(SDL_Renderer *renderer, char **token)
 					}
 					else if ( retour == -5 )
 					{
-						for (int i=0;i < tentative && retour == -5 ;i++) {
-							printf("ECHEC : Nouvelle tentative de connexion dans 200MS\n");
-							SDL_Delay(delai);
-							retour = connectWithUsername(token,identifiant,motDePasse);
-						}
-						if (!retour)
-						{
-							pressConnexion = SDL_TRUE;
-							etatMotDePasse = RESPONDER_FALSE;
-							etatIdentifant = RESPONDER_FALSE;
-						}
+					//	for (int i=0;i < tentative && retour == -5 ;i++) {
+							printf("ECHEC : Veuilliez reessayer erreur serveur\n");
+					//		SDL_Delay(delai);
+					//		retour = connectWithUsername(token,identifiant,motDePasse);
+					//	}
+						//if (!retour)
+						//{
+						//	pressConnexion = SDL_TRUE;
+						//	etatMotDePasse = RESPONDER_FALSE;
+						//	etatIdentifant = RESPONDER_FALSE;
+						//}
 					}
 
 				}
@@ -339,11 +336,17 @@ void connexion(SDL_Renderer *renderer, char **token)
 		SDL_RenderClear(renderer);
 
 		} while( !pressConnexion ) ;
+
+
+		//destruction des creations
+		SDL_DestroyTexture(background);
+		TTF_CloseFont(police);
+		TTF_CloseFont(ttf_pwd);
 }
 
 
 
-int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token )
+int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene )
 {
 	SDL_RenderClear(renderer);
 
@@ -358,7 +361,7 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 
 	SDL_Rect chargementAff = {LARGUEUR*0.05,HAUTEUR*0.85,0,HAUTEUR*0.08};
-	int progression = LARGUEUR*0.90 / NB_FILE;
+	int progression = LARGUEUR*0.90 / (NB_FILE+1);
 
 
 	for(int i = 0 ; i < NB_FILE ; i++)
@@ -392,19 +395,31 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 	InitMeilleureScore(meilleureScore);
 	updateMeilleureScore(meilleureScore,token);
+
+
 	SDL_RenderClear(renderer);
 	SDL_RenderCopy(renderer, background, NULL, NULL);
-
 	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
 	SDL_RenderFillRect(renderer,&chargement);
+	chargementAff.w += progression;
+	SDL_SetRenderDrawColor(renderer, blanc.r , blanc.g, blanc.b,200);
+	SDL_RenderFillRect(renderer,&chargementAff);
+	SDL_RenderPresent(renderer);
 
 
+	aiImportModel(DIR_OBJ_LOAD,scene);
+
+	SDL_RenderClear(renderer);
+	SDL_RenderCopy(renderer, background, NULL, NULL);
+	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
+	SDL_RenderFillRect(renderer,&chargement);
 	chargementAff.w = LARGUEUR*0.90;
 	SDL_SetRenderDrawColor(renderer, blanc.r , blanc.g, blanc.b,200);
 	SDL_RenderFillRect(renderer,&chargementAff);
-
-
 	SDL_RenderPresent(renderer);
+
+
+	SDL_DestroyTexture(background);
 
 
 	return SDL_TRUE;
@@ -418,38 +433,26 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 
 
-int launcher(SDL_Renderer* renderer, char **token,struct MeilleureScore_s meilleureScore[])
+int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene)
 {
-
-	printf("TON PING %d\n",ping() );
-
-	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) //Initialisation de l'API Mixer
-	{
-   printf("%s", Mix_GetError());
-	}
-
-
-	Mix_VolumeMusic(MIX_MAX_VOLUME); //Mettre le volume à la moitié
-	Mix_Music *musique;
-	musique = Mix_LoadMUS(DIR_MUSIC_FILE);
+	Mix_Music *musique = Mix_LoadMUS(DIR_MUSIC_FILE);
 	if (musique == NULL)
 		printf("Impossible de charger musique dans %s\n", DIR_MUSIC_FILE );
-	Mix_PlayMusic(musique, -1);
+
+	Mix_Volume(0,MIX_MAX_VOLUME/2);
+	Mix_PlayMusic(musique, 0);
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-
 	if ( !dejaConneceter(token) )
 	{
 		connexion(renderer,token);
-		sauvegarderToken(*token);
+		sauvegarderToken(token);
   }
 
 
-//temp
-	SDL_Event ev;
-	while ( SDL_PollEvent(&ev) );
-	// chargement puis envoi vers room
-	if( !chargementFichier(renderer,meilleureScore,*token) )
+
+
+	if( !chargementFichier(renderer,meilleureScore,token,scene) )
 	{
 		Mix_HaltMusic();
 		Mix_FreeMusic(musique);
@@ -469,29 +472,46 @@ int launcher(SDL_Renderer* renderer, char **token,struct MeilleureScore_s meille
 
 int main()
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_Init(SDL_INIT_VIDEO);
+	TTF_Init();
+	Mix_Init(MIX_INIT_MP3);
+	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) //Initialisation de l'API Mixer
+	{
+	 printf("%s", Mix_GetError());
+	}
 
-	// size of screen
+
 	SDL_DisplayMode DM;
 	SDL_GetCurrentDisplayMode(0, &DM);
 	LARGUEUR = DM.w/1.78;
 	HAUTEUR = LARGUEUR*0.66667;
+
 	char *token = malloc(sizeof(char) * SIZE_SESSION + 1);
+	const C_STRUCT aiScene* scene = NULL;
 
 
+	SDL_Window *window = NULL;
+	SDL_Renderer *renderer = NULL;
+	window = SDL_CreateWindow("Nineteen | Launcher", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,LARGUEUR,HAUTEUR, 0  );
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
-	SDL_Window *window = SDL_CreateWindow("Nineteen | Launcher", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,LARGUEUR,HAUTEUR,SDL_WINDOW_SHOWN );
-	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
-	TTF_Init();
 
 	struct MeilleureScore_s meilleureScore[16];
-	if( launcher(renderer,&token,meilleureScore) == EXIT_SUCCESS)
-		room(token,meilleureScore,window);
+	if( launcher(renderer,token,meilleureScore,&scene) == EXIT_SUCCESS)
+	{
+		SDL_DestroyRenderer(renderer);
+		SDL_DestroyWindow(window);
+		window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, DM.w*0.9, (DM.w*0.9)*9/16, SDL_WINDOW_OPENGL | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+		room(token,meilleureScore,window,scene);
+	}
+	aiReleaseImport(scene);
+	free(token);
 
 	TTF_Quit();
 	Mix_CloseAudio();
-	SDL_DestroyRenderer(renderer);
+	Mix_Quit();
 	SDL_DestroyWindow(window);
+	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 	SDL_Quit();
 
 

@@ -11,7 +11,6 @@
 	#include <GL/gl.h>
 	#include <GL/glu.h>
 	#include <GL/glut.h>
-  #define M_PI 3.1415
 #endif
 
 

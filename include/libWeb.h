@@ -46,16 +46,16 @@ int construire_requete(char **dest, char *email, char *password, char *key, char
 
 
 /////////////////////////////////////////////////////
-/// \fn int connectWithUsername(char **key, char *email, char *password)
+/// \fn int connectWithUsername(char *key, char *email, char *password)
 /// \brief connexion avec nom utilisateur
 ///
-/// \param char **key Ecriture de la clé dans key
+/// \param char *key Ecriture de la clé dans key
 /// \param char *email Email de connexion
 /// \param char *password Mot de passe de connexion
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int connectWithUsername(char **key, char *email, char *password);
+int connectWithUsername(char *key, char *email, char *password);
 
 /////////////////////////////////////////////////////
 /// \fn getCoinsValues(char *key,int *coins)

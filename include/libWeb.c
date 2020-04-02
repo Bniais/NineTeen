@@ -186,7 +186,6 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 	char secure[MD5_SIZE];
 	securePass(secure);
 	// end
-
 	if( key && !username && !password && !gameID && !score)
 	{
 		// requet connexion avec key
@@ -204,6 +203,7 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 	else if( !key && username && password && !gameID && !score)
 	{
 		// requet connexion avec email/password
+
 		lenght = strlen(username) + 1 + strlen(password) + 1 + 25 + 32; // 17 = "username= &pwd= &secure"
 		*dest = malloc( sizeof(char) * lenght );
 
@@ -252,34 +252,30 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 
 
 /////////////////////////////////////////////////////
-/// \fn int connectWithUsername(char **key, char *email, char *password)
+/// \fn int connectWithUsername(char *key, char *email, char *password)
 /// \brief connexion avec nom d'utilisateur
 ///
-/// \param char **key Ecriture de la clé dans key
+/// \param char *key Ecriture de la clé dans key
 /// \param char *email Email de connexion
 /// \param char *password Mot de passe de connexion
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int connectWithUsername(char **key, char *email, char *password)
+int connectWithUsername(char *key, char *email, char *password)
 {
-
 	char *request;
 	char *response;
 	if ( !construire_requete(&request, email, password, NULL, NULL, NULL) )
 	{
-
 		if ( !envoyez_requet(&response,URL_CONNECT_EMAIL,request) )
 		{
-
 			free(request);
 			request = NULL;
 
-
 			if ( strlen(response) >= 255  )
 			{
-				*key = malloc( sizeof(char) * strlen(response) + 1 );
-				strcpy(*key,response);
+				//key = malloc( sizeof(char) * strlen(response) + 1 );
+				strcpy(key,response);
 				free(response);
 				response = NULL;
 				return EXIT_SUCCESS;
