@@ -25,6 +25,7 @@
 #include "room.h"
 #include "../include/libWeb.h"
 #include "../games/3_flappy_bird/flappy_bird.h"
+#include "../games/5_tetris/tetris.h"
 // END INCLUDE
 
 //
@@ -1085,56 +1086,58 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 				case SDLK_e:
 					{
 						// verifier si on est proche d'une machine //
-								// si oui renvoi le code de la machine
+						// si oui renvoi le code de la machine
 
-								int machine = detecterMachine(camera.px, camera.pz);
-								if ( machine)
-								{
-									animationLancerMachine(camera,cible[machine-1],*scene_list,Window);
-									// centrer sur la machine //
-									// zoomer sur la machine //
+						int machine = detecterMachine(camera.px, camera.pz);
+						if ( machine)
+						{
+							animationLancerMachine(camera,cible[machine-1],*scene_list,Window);
+							// centrer sur la machine //
+							// zoomer sur la machine //
 
 
 
-									// lancer la machine
-									SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+							// lancer la machine
+							SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 
-									switch (machine) {
-										case 1: {
-											printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].score,WinWidth,WinHeight,token,1));
-											updateMeilleureScore(meilleureScore,token);
-										}break;
-										case 2: SDL_Delay(500);break;
-										case 3: SDL_Delay(500);break;
-										case 4: SDL_Delay(500);break;
-										case 5: SDL_Delay(500);break;
-										case 6: SDL_Delay(500);break;
-										case 7: SDL_Delay(500);break;
-										case 8: SDL_Delay(500);break;
-										case 9: SDL_Delay(500);break;
-										case 10: SDL_Delay(500);break;
-										case 11: {
-											printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].score,WinWidth,WinHeight,token,0));
-											updateMeilleureScore(meilleureScore,token);
-										}break;
-										case 12: SDL_Delay(500);break;
-										case 13: SDL_Delay(500);break;
-										case 14: SDL_Delay(500);break;
-										case 15: SDL_Delay(500);break;
-										default:break;
-									}
+							switch (machine) {
+								case 1: {
+									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].score,WinWidth,WinHeight,token,1));
+									updateMeilleureScore(meilleureScore,token);
+								}break;
+								case 2:
+									tetris( pRenderer ,meilleureScore[TETRIS_HARD].score, 1920./WinWidth,token,1);
+									break;
+								case 3: SDL_Delay(500);break;
+								case 4: SDL_Delay(500);break;
+								case 5: SDL_Delay(500);break;
+								case 6: SDL_Delay(500);break;
+								case 7: SDL_Delay(500);break;
+								case 8: SDL_Delay(500);break;
+								case 9: SDL_Delay(500);break;
+								case 10: SDL_Delay(500);break;
+								case 11: {
+									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].score,WinWidth,WinHeight,token,0));
+									updateMeilleureScore(meilleureScore,token);
+								}break;
+								case 12: SDL_Delay(500);break;
+								case 13: SDL_Delay(500);break;
+								case 14: SDL_Delay(500);break;
+								case 15: SDL_Delay(500);break;
+								default:break;
+							}
 
-									SDL_DestroyRenderer(pRenderer);
-									SDL_GL_DeleteContext(*Context);
-									// retour sur la Window 3D.
+							SDL_DestroyRenderer(pRenderer);
+							SDL_GL_DeleteContext(*Context);
+							// retour sur la Window 3D.
 
-									*Context = SDL_GL_CreateContext(Window);
-									*scene_list = 0;
-									while(SDL_PollEvent(&Event));
-									SDL_GL_AppliquerScene(scene,&camera,scene_list);
-									animationLancerMachine(cible[machine-1],camera,*scene_list,Window);
+							*Context = SDL_GL_CreateContext(Window);
+							*scene_list = 0;
+							while(SDL_PollEvent(&Event));
+							SDL_GL_AppliquerScene(scene,&camera,scene_list);
+							animationLancerMachine(cible[machine-1],camera,*scene_list,Window);
 
-								}
+						}
 
 
 

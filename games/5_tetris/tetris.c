@@ -947,7 +947,7 @@ void transfertNextPiece(Piece *currentPiece, Piece nextPiece){
 	updateGrille(currentPiece);
 }
 
-void updateScore(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal){
+void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal){
 	for(int i=0; i<GRILLE_H; i++){
 		if(scoreAdd[i].score){
 			scoreTotal->score += scoreAdd[i].score;
@@ -1368,54 +1368,36 @@ void moveDeadPiece(DeadPiece *deadPiece){
 }
 
 // int launchSnake(SDL_Window *myWindow, SDL_Renderer* renderer, char *identifiant, char *token){
-int main(){
+int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *token,int hardcore){
 /////////////////////
 /// MISE EN PLACE ///``
 /////////////////////
 	myInit();
-	//Fonts
-	TTF_Font* comboFont = TTF_OpenFont("./Fonts/zorque.ttf", OPEN_FONT_SIZE);
-	if( comboFont == NULL ){
-		printf("TTF_OpenFont() Failed: %s\n", TTF_GetError());
-		return EXIT_FAILURE;
+	SDL_Texture* textures[NB_TETRIS_TEXTURES];
+	//Textures
+	for(int i=0; i< NB_TETRIS_TEXTURES; i++){
+		 textures[i] = IMG_LoadTexture(renderer, DIR_TEXTURES_TETRIS[i]);
+		 if( textures[i] == NULL ){
+			printf("Erreur lors de la creation de texture %s", SDL_GetError());
+			return EXIT_FAILURE;
+		}
 	}
+
+	//Fonts
+	TTF_Font* fonts[NB_TETRIS_FONTS];
+	for(int i=0; i< NB_TETRIS_FONTS; i++){
+		 fonts[i] =  TTF_OpenFont(DIR_FONTS_TETRIS[i], OPEN_FONT_SIZE);
+		 if( fonts[i] == NULL ){
+			printf("Erreur lors de la creation de font %s", TTF_GetError());
+			return EXIT_FAILURE;
+		}
+	}
+	printf("TOUT EST CHARGé\n");
 
 	//audio
-	/*Mix_Chunk *flap_wav = Mix_LoadWAV( "../3_flappy_bird/Sounds/flap.wav" );
-	if( !flap_wav)
-		printf("Erreur chargement des sons\n");*/
-
-	//Window and renderer
-	float ratioWindowSize = 1;
-	SDL_Rect displayBounds;
-	SDL_GetDisplayBounds(0, &displayBounds);
-	SDL_Point maxWindowSize = maximizeWindow(displayBounds, &ratioWindowSize);
-
-	SDL_Window *myWindow = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, maxWindowSize.x ,maxWindowSize.y, WINDOW_FLAG);
-	if( myWindow == NULL ){
-		printf("Erreur lors de la creation de la fenêtre : %s", SDL_GetError());
-		return EXIT_FAILURE;
-	}
-	printf("%d, %d\n", maxWindowSize.x ,maxWindowSize.y );
-
-	SDL_Renderer *renderer = SDL_CreateRenderer(myWindow, -1, SDL_RENDERER_ACCELERATED);
-	if( renderer == NULL ){
-		printf("Erreur lors de la creation d'un renderer : %s", SDL_GetError());
-		return EXIT_FAILURE;
-	}
-
-	//Textures
-	SDL_Texture *laserTexture = IMG_LoadTexture(renderer, "./Textures/laserAnim.png");
-	SDL_Texture *brickTexture = IMG_LoadTexture(renderer, "./Textures/bricks.png");
-	SDL_Texture *bonusTexture = IMG_LoadTexture(renderer, "./Textures/bonus.png");
-	SDL_Texture *grilleHudTexture = IMG_LoadTexture(renderer, "./Textures/hud_grille.png");
-	SDL_Texture *backgroundTexture = IMG_LoadTexture(renderer, "./Textures/background.png");
-	SDL_Texture *scoreTexture = IMG_LoadTexture(renderer, "./Textures/chiffre.png");
-	SDL_Texture *jaugeTexture = IMG_LoadTexture(renderer, "./Textures/speedJauge.png");
-	if( jaugeTexture == NULL ){
-		printf("Erreur lors de la creation de texture%s", SDL_GetError());
-		return EXIT_FAILURE;
-	}
+	//Mix_Chunk *flap_wav = Mix_LoadWAV( "../3_flappy_bird/Sounds/flap.wav" );
+	//if( !flap_wav)
+	//	printf("Erreur chargement des sons\n");
 
 	int backgroundFrame = 0;
 
@@ -1592,6 +1574,10 @@ int main(){
 			else if( (keystate[SDL_SCANCODE_E] && rdyToRotate[1])){
 				rdyToRotate[1] = SDL_FALSE;
 				rotate = -1;
+				if(nbDeadPieces){ //stop
+					return 0;
+				}
+
 			}
 
 
@@ -1655,7 +1641,7 @@ int main(){
 					//break;
 				}
 			}
-			updateScore(scoreAffichage, scoreAdd, &score);
+			updateScoreAffichage(scoreAffichage, scoreAdd, &score);
 
 			for(int i=0; i<nbDeadPieces; i++)
 				moveDeadPiece(&(deadPieces[i]));
@@ -1669,28 +1655,28 @@ int main(){
 		//////////
 
 
-			SDL_RenderCopy(renderer, backgroundTexture, &background_src, NULL);
+			SDL_RenderCopy(renderer, textures[T_BACKGROUND], &background_src, NULL);
 
-			SDL_RenderCopy(renderer, grilleHudTexture, NULL, &HUD_GRILLE_DIM);
-			drawJauge(renderer, jaugeTexture, frameTotalShow);
-			drawMatrix(renderer, brickTexture, bonusTexture, matrix, frameCompleteLine, currentPiece);
-			drawPiece(renderer, brickTexture, bonusTexture, currentPiece, SDL_FALSE);
-			drawPiece(renderer, brickTexture, bonusTexture, nextPiece, SDL_TRUE);
-			drawLaser(renderer, laserTexture, frameLaser);
-			drawFill(renderer,brickTexture, matrixFill);
+			SDL_RenderCopy(renderer, textures[T_HUD_GRILLE], NULL, &HUD_GRILLE_DIM);
+			drawJauge(renderer, textures[T_SPEED_JAUGE], frameTotalShow);
+			drawMatrix(renderer, textures[T_BRICKS], textures[T_BONUS], matrix, frameCompleteLine, currentPiece);
+			drawPiece(renderer, textures[T_BRICKS], textures[T_BONUS], currentPiece, SDL_FALSE);
+			drawPiece(renderer, textures[T_BRICKS], textures[T_BONUS], nextPiece, SDL_TRUE);
+			drawLaser(renderer, textures[T_LASER_ANIM], frameLaser);
+			drawFill(renderer,textures[T_BRICKS], matrixFill);
 
 
 
 			//SDL_RenderFillRect(renderer, &SCORE_TOTAL_DEST);
-			afficherScoreTotal(renderer,comboFont, score);
+			afficherScoreTotal(renderer,fonts[T_FONT_COMBO], score);
 			//drawNextPiece(nextPiece);
 
 			for(int i=0; i<GRILLE_H; i++){
-				afficherScores(renderer, scoreTexture, scoreAffichage[i], i);
-				afficherCombo(renderer,  scoreAffichage[i], i, comboFont);
+				afficherScores(renderer, textures[T_CHIFFRE], scoreAffichage[i], i);
+				afficherCombo(renderer,  scoreAffichage[i], i, fonts[T_FONT_COMBO]);
 			}
 			for(int i=0; i<nbDeadPieces; i++)
-				afficherDeadPiece(renderer, deadPieces[i], brickTexture, bonusTexture);
+				afficherDeadPiece(renderer, deadPieces[i], textures[T_BRICKS], textures[T_BONUS]);
 
 			//hud
 			SDL_RenderSetScale(renderer, 1, 1);
@@ -1711,10 +1697,10 @@ int main(){
 
 			//regulateFPS
 			currentTime = SDL_GetTicks();
-			while( currentTime - lastTime < FRAME_TIME )
+			while( currentTime - lastTime < 1000./FRAMES_PER_SECOND )
 				currentTime = SDL_GetTicks();
 
-			if( currentTime - lastTime > FRAME_TIME )
+			if( currentTime - lastTime > 1000./FRAMES_PER_SECOND )
 				printf(" TIME FRAME : %d\n", currentTime - lastTime);
 
 			lastTime = currentTime;
@@ -1739,3 +1725,46 @@ int main(){
 	printf("Waw t'es nul\n");
 	return 0;
 }
+
+
+/*int main(){ // pour tester tetris
+	myInit();
+	//"games/5_tetris/Textures/laserAnim.png",
+	//"games/5_tetris/Textures/bricks.png",
+	//"games/5_tetris/Textures/bonus.png",
+	//"games/5_tetris/Textures/hud_grille.png",
+	//"games/5_tetris/Textures/background.png",
+	//"games/5_tetris/Textures/chiffre.png",
+	//"games/5_tetris/Textures/speedJauge.png"
+
+
+
+
+	float ratioWindowSize = 1;
+	SDL_Rect displayBounds;
+	if (SDL_GetDisplayBounds(0, &displayBounds) != 0) {
+		SDL_Log("SDL_GetDisplayBounds failed: %s", SDL_GetError());
+		return 1;
+	}
+
+	printf("display : %d %d\n",displayBounds.w, displayBounds.h );
+	SDL_Point windowDim = maximizeWindow(displayBounds, &ratioWindowSize);
+	printf("rat%f\n",ratioWindowSize );
+
+	SDL_Window *myWindow = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowDim.x, windowDim.y, WINDOW_FLAG);
+	if( myWindow == NULL ){
+		printf("Erreur lors de la creation de la fenêtre : %s", SDL_GetError());
+		return EXIT_FAILURE;
+	}
+	printf("%d, %d\n", windowDim.x ,windowDim.y );
+
+	SDL_Renderer *renderer = SDL_CreateRenderer(myWindow, -1, SDL_RENDERER_ACCELERATED);
+	if( renderer == NULL ){
+		printf("Erreur lors de la creation d'un renderer : %s", SDL_GetError());
+		return EXIT_FAILURE;
+	}
+
+
+
+	tetris(renderer, 0, ratioWindowSize, NULL, SDL_FALSE, textures, fonts);
+}*/

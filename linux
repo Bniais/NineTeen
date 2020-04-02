@@ -1,11 +1,11 @@
-OBJS	= launcher.o room.o flappy_bird.o import.o libWeb.o textField.o
+OBJS	= launcher.o room.o flappy_bird.o import.o libWeb.o textField.o tetris.o
 SOURCE	= launcher.c
-HEADER	= room.h flappy_bird.h
+HEADER	= room.h flappy_bird.h tetris.h
 OUT	= Nineteen
 CC	 = gcc
 FLAGS	 = -g -c -Wall
-LFLAGS	 = -lm -lcurl -lcurl -L/usr/local/opt/openssl/lib -lcrypto -lassimp
-LSDL = -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer
+LFLAGS	 = `sdl2-config --cflags --libs` -lm -lcurl -lcurl -L/usr/local/opt/openssl/lib -lcrypto -lassimp
+LSDL = `sdl2-config --cflags --libs` -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer
 
 
 
@@ -15,13 +15,16 @@ all: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS) $(LSDL) $(FFLAGS)
 
 launcher.o: launcher/launcher.c
-	$(CC) $(FLAGS) $<
+	$(CC) $(FLAGS) $(LSDL) $<
 
 room.o : room/room.c import.o
 	$(CC) $(FLAGS) $<
 
 flappy_bird.o : games/3_flappy_bird/flappy_bird.c
-	$(CC) $(FLAGS) $^
+	$(CC) $(FLAGS) $(LSDL) $^
+
+tetris.o : games/5_tetris/tetris.c
+	$(CC) $(FLAGS) $(LSDL) $^
 
 import.o : room/import.c
 	$(CC) $(FLAGS) $^

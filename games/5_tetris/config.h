@@ -1,7 +1,47 @@
+
+
 #include "pieces.h"
 typedef struct {float x; float y;} Vector2f;
 #define FRAMES_PER_SECOND 30
-const int FRAME_TIME = 1000 / 30;
+
+//textures test
+/*#define NB_TETRIS_TEXTURES 7
+typedef enum{T_LASER_ANIM, T_BRICKS, T_BONUS, T_HUD_GRILLE, T_BACKGROUND, T_CHIFFRE, T_SPEED_JAUGE}T_TEXTURES;
+char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
+	"./Textures/laserAnim.png",
+	"./Textures/bricks.png",
+	"./Textures/bonus.png",
+	"./Textures/hud_grille.png",
+	"./Textures/background.png",
+	"./Textures/chiffre.png",
+	"./Textures/speedJauge.png"
+};
+//fonts test
+#define NB_TETRIS_FONTS 1
+typedef enum{T_FONT_COMBO}T_FONTS;
+
+char* DIR_FONTS_TETRIS[NB_TETRIS_TEXTURES] = {
+	"./Fonts/zorque.ttf"
+};*/
+
+#define NB_TETRIS_TEXTURES 7
+typedef enum{T_LASER_ANIM, T_BRICKS, T_BONUS, T_HUD_GRILLE, T_BACKGROUND, T_CHIFFRE, T_SPEED_JAUGE}T_TEXTURES;
+char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
+	"./games/5_tetris/Textures/laserAnim.png",
+	"./games/5_tetris/Textures/bricks.png",
+	"./games/5_tetris/Textures/bonus.png",
+	"./games/5_tetris/Textures/hud_grille.png",
+	"./games/5_tetris/Textures/background.png",
+	"./games/5_tetris/Textures/chiffre.png",
+	"./games/5_tetris/Textures/speedJauge.png"
+};
+//fonts
+#define NB_TETRIS_FONTS 1
+typedef enum{T_FONT_COMBO}T_FONTS;
+
+char* DIR_FONTS_TETRIS[NB_TETRIS_TEXTURES] = {
+	"./games/5_tetris/Fonts/zorque.ttf"
+};
 
 //
 #define NO_MOVE 0
