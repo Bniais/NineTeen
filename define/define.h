@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #define TRUE  1
 #define FALSE  0
-#define PI 3.1415
+#define PI 3.14159265
 
 // launcher params
 #define LAUNCHER_WIDTH_SIZE 640
@@ -46,8 +46,3 @@ const SDL_Rect BOUTON_PAUSE_BASE = {(PLAYGROUND_SIZE_W + 2 * HUD_W) / 2 - BOUTON
 //Colors
 const SDL_Color Black = {0, 0, 0, 255};
 const SDL_Color White = {255, 255, 255, 255};
-
-//fonctions
-SDL_Point maximizeWindow(SDL_Rect , float* );
-
-void afficherPauseMenu(SDL_Renderer *, SDL_Point , SDL_Texture *, SDL_Texture *);

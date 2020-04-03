@@ -1,29 +1,9 @@
-
-
 #include "pieces.h"
+
 typedef struct {float x; float y;} Vector2f;
 #define FRAMES_PER_SECOND 30
 
-//textures test
-/*#define NB_TETRIS_TEXTURES 7
-typedef enum{T_LASER_ANIM, T_BRICKS, T_BONUS, T_HUD_GRILLE, T_BACKGROUND, T_CHIFFRE, T_SPEED_JAUGE}T_TEXTURES;
-char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
-	"./Textures/laserAnim.png",
-	"./Textures/bricks.png",
-	"./Textures/bonus.png",
-	"./Textures/hud_grille.png",
-	"./Textures/background.png",
-	"./Textures/chiffre.png",
-	"./Textures/speedJauge.png"
-};
-//fonts test
-#define NB_TETRIS_FONTS 1
-typedef enum{T_FONT_COMBO}T_FONTS;
-
-char* DIR_FONTS_TETRIS[NB_TETRIS_TEXTURES] = {
-	"./Fonts/zorque.ttf"
-};*/
-
+//textures
 #define NB_TETRIS_TEXTURES 7
 typedef enum{T_LASER_ANIM, T_BRICKS, T_BONUS, T_HUD_GRILLE, T_BACKGROUND, T_CHIFFRE, T_SPEED_JAUGE}T_TEXTURES;
 char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
@@ -35,10 +15,10 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 	"./games/5_tetris/Textures/chiffre.png",
 	"./games/5_tetris/Textures/speedJauge.png"
 };
+
 //fonts
 #define NB_TETRIS_FONTS 1
 typedef enum{T_FONT_COMBO}T_FONTS;
-
 char* DIR_FONTS_TETRIS[NB_TETRIS_TEXTURES] = {
 	"./games/5_tetris/Fonts/zorque.ttf"
 };
@@ -47,12 +27,6 @@ char* DIR_FONTS_TETRIS[NB_TETRIS_TEXTURES] = {
 #define NO_MOVE 0
 #define MOVE_RIGHT 1
 #define MOVE_LEFT -1
-
-enum{COULDNT_PUT, COULD_PUT};
-
-//Rely
-enum {ALREADY_ROUNDED, RELY_ON_BOTH, RELY_ON_LEFT, RELY_ON_RIGHT};
-
 
 //Grille
 #define CASE_SIZE 38
@@ -67,18 +41,14 @@ SDL_Rect MATRIX = {MATRIX_X,MATRIX_Y,GRILLE_W*CASE_SIZE,GRILLE_H*CASE_SIZE };
 #define SHIFT_RIGHT_NEXT (-558-8)
 #define SHIFT_TOP_NEXT -8
 
-typedef enum{R_NORMAL, R_LEFT, R_RIGHT, R_DOWN}R_STYLES;
-#define ROTATE_TRIES 4
-
 //Score
-#define NB_CHAR_AFFICHAGE_SCORE 21
 typedef struct {int score; int frame; int frameCombo; int scoreDest; int combo; int flat;int flatDest; int multi; int sameColor; }Score; //int rainbow;
 typedef struct {long int score; float scoreShow; int frameToDest;}ScoreTotal;
 #define SIZE_COMBO (7.*CASE_SIZE/8)
 #define SIZE_SCORE 25
 #define SIZE_SCORE_TOTAL 40
-#define SIZE_DRAW_SCORE_TOTAL 150
-SDL_Rect SCORE_TOTAL_DEST = {489+96, 272+54,SIZE_DRAW_SCORE_TOTAL,SIZE_SCORE_TOTAL};
+#define WIDTH_SCORE_TOTAL 150
+SDL_Rect SCORE_TOTAL_DEST = {489+96, 272+54,WIDTH_SCORE_TOTAL,SIZE_SCORE_TOTAL};
 
 #define SCORE_TTL 40
 #define RESET_ANIM 34
@@ -89,7 +59,7 @@ SDL_Rect SCORE_SRC = {0,0, 12,18};
 const int SCORE_DEST = (MATRIX_X + (GRILLE_W-0.5)/2 * CASE_SIZE);
 #define FONT_HEIGHT_RATIO 1.5
 
-#define MAX_APPEND_LENGHT 50
+#define MAX_APPEND_LENGHT 20
 
 #define SCORE_BASE 10
 #define RATIO_COMBO_LINE 2
@@ -97,7 +67,7 @@ const int SCORE_DEST = (MATRIX_X + (GRILLE_W-0.5)/2 * CASE_SIZE);
 #define RATIO_MULTI_POINT 3
 #define RATIO_SAME_COLOR 10
 
-#define SIZE_DRAW_COMBO 630
+#define WIDTH_DRAW_COMBO 630
 #define FRAME_DEST_SCORE_TOTAL 15
 #define COMBO_DRAW_X (MATRIX_X + GRILLE_W * CASE_SIZE + 95)
 
@@ -212,8 +182,6 @@ SDL_Color BRICK_COLORS[NB_PIECES] = {
 	{0xf1, 0x01, 0xab}
 };
 
-#define HUD_X (MATRIX_X - 200)
-
 //Bonus
 #define PROBA_BONUS 5
 #define NB_BONUSES 7
@@ -223,7 +191,7 @@ SDL_Color colors_b[NB_BONUSES] = {{120,000,150,100},{100,070,180,100},{170,170,0
 #define NB_LINES_LASER 3
 #define MAX_HEIGHT_LASER 13
 #define SLOW_AMMOUNT (FRAMES_PER_SECOND * 45)
-#define SPEED_AMMOUNT (FRAMES_PER_SECOND * 40)
+#define SPEED_AMMOUNT (FRAMES_PER_SECOND * 35)
 
 
 #define FRAME_COMPLETE_LINE 11
@@ -252,7 +220,6 @@ int LASER_RECOIL_DIST[LASER_RECOIL_DURATION] = {8,4,2};
 #define SPAWN_FILL_Y (MATRIX_Y+(3*GRILLE_H/4)*CASE_SIZE)
 
 //pieces
-typedef struct {int firstCol; int lastCol; int firstRow; int lastRow;} RowColInfos;
 typedef struct {unsigned int rota; int id; float x; float y; int* grille; int size; int giant; int frameToGo; int dir; int frameDir; int frameStop; int firstCol; int lastCol; int firstRow; int lastRow; int bonus;} Piece;
 const SDL_Point UNDEFINED = {-500, -500};
 
@@ -260,7 +227,7 @@ const SDL_Point UNDEFINED = {-500, -500};
 #define GRAVITE 0.2
 #define MIN_DEAD_SPEED -50
 typedef struct {Vector2f speed; float x; float y; float rota; float rotaSpeed; int id;} DeadPiece;
-#define PRECISION 100.
+#define PRECISION 1000.
 SDL_Point INTERVALE_DEAD_SPEED = {14*PRECISION+1,4*PRECISION+1}; // à diviser par PRECISION
 Vector2f BASE_DEAD_SPEED = {-7, 3};
 #define INTERVALE_ROTA_SPEED (50*PRECISION+1)
@@ -268,11 +235,7 @@ Vector2f BASE_DEAD_SPEED = {-7, 3};
 #define COEF_LINE 0.2
 #define MIN_ROTA 12
 
-
-
 #define STOPPED -1
 #define EMPTY -1
 
 #define ROUNDABLE 0.0001
-
-const SDL_Point matrixSize = {500, 1000};
