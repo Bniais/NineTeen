@@ -263,17 +263,52 @@ void detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid
 
 }
 // Vaisseau
-void turnLeft(Vaiss * vaisseau){
-	vaisseau->angle -= TURN_AMMOUNT;
+void turn_vaiss(Vaiss * vaisseau, int turn, Vector2f * accelerate){
+	if(turn == LEFT){
+		accelerate->x -=  RATIO_ACCEL_TURN * sin(3.1415*(vaisseau->angle+45)/180);
+		accelerate->y -=  RATIO_ACCEL_TURN * cos(3.1415*(vaisseau->angle+45)/180);
+		vaisseau->frame_turn_left ++;
+		vaisseau->angle -= TURN_AMMOUNT;
+		if(vaisseau->angle < 0){
+			vaisseau->angle += 2 * PI;
+		}
+		if(vaisseau->frame_turn_left > 8)
+			vaisseau->frame_turn_left = 6;
 
-	if(vaisseau->angle < 0){
-		vaisseau->angle += 2 * PI;
 	}
+	else{
+		vaisseau->frame_turn_left --;
+		if(vaisseau->frame_turn_left>5)
+			vaisseau->frame_turn_left=5;
+
+		if(vaisseau->frame_turn_left < 0)
+			vaisseau->frame_turn_left = 0;
+	}
+
+	if(turn == RIGHT){
+		accelerate->x +=  RATIO_ACCEL_TURN * sin(3.1415*(vaisseau->angle-45)/180);
+		accelerate->y +=  RATIO_ACCEL_TURN * cos(3.1415*(vaisseau->angle-45)/180);
+		vaisseau->frame_turn_right ++;
+		vaisseau->angle += TURN_AMMOUNT;
+		if(vaisseau->angle < 0){
+			vaisseau->angle += 2 * PI;
+		}
+		if(vaisseau->frame_turn_right > 8)
+			vaisseau->frame_turn_right = 6;
+
+	}
+	else{
+		vaisseau->frame_turn_right --;
+		if(vaisseau->frame_turn_right>5)
+			vaisseau->frame_turn_right=5;
+
+		if(vaisseau->frame_turn_right < 0)
+			vaisseau->frame_turn_right = 0;
+	}
+
 }
 
-void turnRight(Vaiss * vaisseau){
-	vaisseau->angle += TURN_AMMOUNT;
-}
+
 
 void acceleration( Vector2f *accelerate, Vaiss vaisseau){
 	accelerate->x+=ACCEL*cos(vaisseau.angle);
@@ -286,18 +321,22 @@ void move( Vaiss *vaisseau,Vector2f accelerate){
 
 }
 
-void afficher_vaisseau( Vaiss vaisseau, SDL_Renderer *renderer){
+void afficher_vaisseau( Vaiss vaisseau, SDL_Renderer *renderer, SDL_Texture * vaisseau_texture){
 
-	SDL_Rect vaisseauRect={(int)vaisseau.x-RAYON_VAISS, (int)vaisseau.y-RAYON_VAISS,RAYON_VAISS*2,RAYON_VAISS*2};
-	if(vaisseau.bouclier){
-			SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-	}
-	else
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	SDL_RenderFillRect(renderer,&vaisseauRect);
-	SDL_RenderDrawLine(renderer, vaisseauRect.x+RAYON_VAISS , vaisseauRect.y+RAYON_VAISS, vaisseauRect.x+RAYON_VAISS+DISTANCE_CANON*cos(vaisseau.angle) , vaisseauRect.y+RAYON_VAISS+DISTANCE_CANON*sin(vaisseau.angle));
+	SDL_Rect vaisseau_src = VAISSEAU_SRC;
+	SDL_Rect vaisseau_dest= VAISSEAU_DEST;
 
-	if(vaisseauRect.x<0){
+	vaisseau_dest.x=vaisseau.x-CENTRE_VAISS.x;
+	vaisseau_dest.y=vaisseau.y-CENTRE_VAISS.y;
+
+	vaisseau_src.x=vaisseau.frame_turn_right*vaisseau_src.w;
+	SDL_RenderCopyEx(renderer, vaisseau_texture, &vaisseau_src, &vaisseau_dest,vaisseau.angle*180/PI+90,&CENTRE_VAISS,SDL_FLIP_NONE);
+	vaisseau_src.y+=vaisseau_src.w;
+	vaisseau_src.x=vaisseau.frame_turn_left*vaisseau_src.w;
+	SDL_RenderCopyEx(renderer, vaisseau_texture, &vaisseau_src, &vaisseau_dest,vaisseau.angle*180/PI+90,&CENTRE_VAISS,SDL_FLIP_NONE);
+
+
+	/*if(vaisseauRect.x<0){
 		vaisseauRect.x+=PLAYGROUND_SIZE_W;
 	}
 	else if(vaisseauRect.x+RAYON_VAISS*2>PLAYGROUND_SIZE_W){
@@ -328,7 +367,7 @@ void afficher_vaisseau( Vaiss vaisseau, SDL_Renderer *renderer){
 
 	SDL_SetRenderDrawColor(renderer,255,0,0,255);
 	SDL_RenderDrawPoint(renderer, vaisseauRect.x+RAYON_VAISS ,vaisseauRect.y+RAYON_VAISS);
-
+*/
 }
 
 
@@ -513,7 +552,20 @@ int main(){
 	//Window and renderer
 
 	//VAISSEAU
- 	Vaiss vaisseau={500,500,BASE_ANGLE,0,RECHARGE_TIR,1,0,VITESSE_MISSILE,DEGAT_MISSILE};
+ 	Vaiss vaisseau=
+	{
+		500, //coord x
+		500, //coord y
+		BASE_ANGLE,
+		0, // frame recharge
+		RECHARGE_TIR, // temps recharge
+		1, // nb tir
+		0, //bouclier
+		VITESSE_MISSILE,
+		DEGAT_MISSILE,
+		0, //frame turn left
+		0  //frame turn right
+	};
 	Vector2f accelerate={0,0};
 
 	//MISSILES
@@ -558,11 +610,16 @@ int main(){
 	SDL_Point mouseCoor;
 
 	//Textures
+
 	SDL_Texture *hudTexture = IMG_LoadTexture(renderer, DIR_HUD);
 	if( hudTexture == NULL ){
 		printf("Erreur lors de la creation de texture");
 		return EXIT_FAILURE;
 	}
+	SDL_Texture* vaisseau_texture = IMG_LoadTexture(renderer, "Textures/vaisseau.png");
+	/*SDL_Texture* gem = IMG_LoadTexture(renderer, "gem.png");
+	SDL_Texture* thrust = IMG_LoadTexture(renderer, "thrust.png");*/
+
 
 	//Vaisseau
 	int turn;
@@ -638,11 +695,7 @@ int main(){
 
 	printf("NB DE POINT : %d \n",point);
 
-	if( turn == LEFT )
-		turnLeft(&vaisseau);
-	if( turn == RIGHT )
-		turnRight(&vaisseau);
-
+	turn_vaiss(&vaisseau,turn,&accelerate);
 
 	if( keystate[SDL_SCANCODE_UP] ){
         acceleration(&accelerate,vaisseau);
@@ -712,7 +765,7 @@ int main(){
 	//////////
 
 
-	afficher_vaisseau(vaisseau,renderer);
+	afficher_vaisseau(vaisseau,renderer,vaisseau_texture);
 
 	for(int i=0; i<nb_missiles; i++){
 		afficher_tir(renderer, missiles[i]);

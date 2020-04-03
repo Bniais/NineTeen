@@ -2,7 +2,7 @@
 //ASTEROID CONFIGS//
 /////////////////
 
-typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier; float vitesse_missile; float degat_missile;}Vaiss;
+typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right;}Vaiss;
 typedef struct{  float x;  float y; }Vector2f;
 typedef struct{ float x; float y; float angle; int frame; float vitesse; float degat;}Missile;
 typedef struct{float x; float y; float angle; float taille; int bonus; int pv; float vitesse;}Asteroid;
@@ -22,6 +22,7 @@ const Vector2f UNDEFINED = {-500, -500};
 #define VITESSE 10
 #define ACCEL 0.35
 #define BASE_ANGLE 3 * PI / 2
+#define RATIO_ACCEL_TURN 0.03
 
 //asteroid
 #define NB_TAILLE 3
@@ -40,7 +41,7 @@ SDL_Point coord_spawn[3]={{0,0},{0,(PLAYGROUND_SIZE_H/2)},{(PLAYGROUND_SIZE_W/2)
 
 //missiles
 
-#define DISTANCE_CANON 50
+#define DISTANCE_CANON 20
 #define VITESSE_MISSILE 10
 #define RAYON_MISSILE 5
 #define DUREE_MISSILE 90
@@ -89,3 +90,12 @@ float angle_tir_multiple[NB_TIR_MAX][NB_TIR_MAX]={
 
 
 //Score
+
+
+//Textures
+
+SDL_Rect THRUST_SRC ={0,0,72,70};
+SDL_Rect VAISSEAU_SRC = {0,0,72,70};
+SDL_Rect VAISSEAU_DEST = {200,200,72,70};
+SDL_Rect GEM_SRC = {0,0,72,70};
+SDL_Point CENTRE_VAISS  = {36,20};
