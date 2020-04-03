@@ -199,15 +199,7 @@ void decaler_gauche_m(Missile * tab, int taille_tab, int i){
         tab[i]=tab[i+1];
     }
 }
-int est_taille(Asteroid asteroid){
-	if(asteroid.taille==TAILLE_ASTEROID[PETIT]){
-		return PETIT;
-	}
-	else if(asteroid.taille==TAILLE_ASTEROID[MOYEN]){
-		return MOYEN;
-	}
-	else return GRAND;
-}
+
 
 void asteroid_cpy(Asteroid * asteroid_src, Asteroid * asteroid_dest){
     asteroid_dest->x = asteroid_src->x;
@@ -225,15 +217,10 @@ void detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid
     (*asteroides)[i_asteroid].bonus = NO_BONUS;
 
 
-    if((*asteroides)[i_asteroid].taille>=TAILLE_ASTEROID[MOYEN] && !touche_bouclier && bonus != BOMBE_NUCLEAIRE){
+    if((*asteroides)[i_asteroid].taille>TAILLE_MIN_SPLIT && !touche_bouclier && bonus != BOMBE_NUCLEAIRE){
 
-        if(est_taille((*asteroides)[i_asteroid])==GRAND){
-            (*asteroides)[i_asteroid].pv=PV[MOYEN];
-        }
-        else {
-            (*asteroides)[i_asteroid].pv=PV[PETIT];
-        }
-        (*asteroides)[i_asteroid].taille=TAILLE_ASTEROID[est_taille((*asteroides)[i_asteroid])-1];
+
+        (*asteroides)[i_asteroid].taille/=2;
         (*asteroides)[i_asteroid].angle+=PI/2;
         (*nb_asteroid)++;
 
@@ -264,9 +251,10 @@ void detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid
 }
 // Vaisseau
 void turn_vaiss(Vaiss * vaisseau, int turn, Vector2f * accelerate){
-	if(turn == LEFT){
-		accelerate->x -=  RATIO_ACCEL_TURN * sin(3.1415*(vaisseau->angle+45)/180);
-		accelerate->y -=  RATIO_ACCEL_TURN * cos(3.1415*(vaisseau->angle+45)/180);
+	if(turn == LEFT || turn == BOTH){
+		accelerate->x +=  RATIO_ACCEL_TURN * cos(vaisseau->angle-PI/4);
+		accelerate->y +=  RATIO_ACCEL_TURN * sin(vaisseau->angle-PI/4);
+
 		vaisseau->frame_turn_left ++;
 		vaisseau->angle -= TURN_AMMOUNT;
 		if(vaisseau->angle < 0){
@@ -285,9 +273,9 @@ void turn_vaiss(Vaiss * vaisseau, int turn, Vector2f * accelerate){
 			vaisseau->frame_turn_left = 0;
 	}
 
-	if(turn == RIGHT){
-		accelerate->x +=  RATIO_ACCEL_TURN * sin(3.1415*(vaisseau->angle-45)/180);
-		accelerate->y +=  RATIO_ACCEL_TURN * cos(3.1415*(vaisseau->angle-45)/180);
+	if(turn == RIGHT || turn == BOTH){
+		accelerate->x +=  RATIO_ACCEL_TURN * cos(vaisseau->angle+PI/4);
+		accelerate->y +=  RATIO_ACCEL_TURN * sin(vaisseau->angle+PI/4);
 		vaisseau->frame_turn_right ++;
 		vaisseau->angle += TURN_AMMOUNT;
 		if(vaisseau->angle < 0){
@@ -313,6 +301,7 @@ void turn_vaiss(Vaiss * vaisseau, int turn, Vector2f * accelerate){
 void acceleration( Vector2f *accelerate, Vaiss vaisseau){
 	accelerate->x+=ACCEL*cos(vaisseau.angle);
 	accelerate->y+=ACCEL*sin(vaisseau.angle);
+
 }
 
 void move( Vaiss *vaisseau,Vector2f accelerate){
@@ -320,54 +309,71 @@ void move( Vaiss *vaisseau,Vector2f accelerate){
 	vaisseau->y+=accelerate.y;
 
 }
+void afficher_texture_vaisseau(Vaiss vaisseau, SDL_Renderer * renderer, SDL_Texture * vaisseau_texture, SDL_Texture * gem_texture, SDL_Texture * thrust_texture){
 
-void afficher_vaisseau( Vaiss vaisseau, SDL_Renderer *renderer, SDL_Texture * vaisseau_texture){
+	if(vaisseau.bouclier){
+		SDL_SetTextureColorMod(vaisseau_texture, 246,239,92);
+	}
 
 	SDL_Rect vaisseau_src = VAISSEAU_SRC;
 	SDL_Rect vaisseau_dest= VAISSEAU_DEST;
+	SDL_Rect gem_src = GEM_SRC;
 
 	vaisseau_dest.x=vaisseau.x-CENTRE_VAISS.x;
 	vaisseau_dest.y=vaisseau.y-CENTRE_VAISS.y;
 
 	vaisseau_src.x=vaisseau.frame_turn_right*vaisseau_src.w;
+
 	SDL_RenderCopyEx(renderer, vaisseau_texture, &vaisseau_src, &vaisseau_dest,vaisseau.angle*180/PI+90,&CENTRE_VAISS,SDL_FLIP_NONE);
 	vaisseau_src.y+=vaisseau_src.w;
 	vaisseau_src.x=vaisseau.frame_turn_left*vaisseau_src.w;
 	SDL_RenderCopyEx(renderer, vaisseau_texture, &vaisseau_src, &vaisseau_dest,vaisseau.angle*180/PI+90,&CENTRE_VAISS,SDL_FLIP_NONE);
 
+	SDL_SetTextureColorMod(gem_texture, 255,0,0);
+	SDL_RenderCopyEx(renderer, gem_texture, &gem_src, &vaisseau_dest,vaisseau.angle*180/PI+90,&CENTRE_VAISS,SDL_FLIP_NONE);
+	vaisseau_src.y=0;
+	vaisseau_src.x=vaisseau.frame_thrust*vaisseau_src.w;
+	SDL_RenderCopyEx(renderer,thrust_texture, &vaisseau_src, &vaisseau_dest,vaisseau.angle*180/PI+90,&CENTRE_VAISS,SDL_FLIP_NONE);
+	printf(" Vaisseau.frame_thrust = %d \n",vaisseau.frame_thrust);
 
-	/*if(vaisseauRect.x<0){
-		vaisseauRect.x+=PLAYGROUND_SIZE_W;
+}
+
+void afficher_vaisseau( Vaiss vaisseau, SDL_Renderer *renderer, SDL_Texture * vaisseau_texture, SDL_Texture * gem_texture, SDL_Texture * thrust_texture ){
+
+	SDL_Rect vaisseauRect = {vaisseau.x-RAYON_VAISS,vaisseau.y-RAYON_VAISS,RAYON_VAISS*2,RAYON_VAISS*2};
+
+	afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
+	if(vaisseauRect.x<0){
+		vaisseau.x+=PLAYGROUND_SIZE_W;
+		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
 	}
 	else if(vaisseauRect.x+RAYON_VAISS*2>PLAYGROUND_SIZE_W){
-		vaisseauRect.x-=PLAYGROUND_SIZE_W;
+		vaisseau.x-=PLAYGROUND_SIZE_W;
+		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
 	}
-	SDL_RenderFillRect(renderer,&vaisseauRect);
-	SDL_RenderDrawLine(renderer, vaisseauRect.x+RAYON_VAISS , vaisseauRect.y+RAYON_VAISS, vaisseauRect.x+RAYON_VAISS+DISTANCE_CANON*cos(vaisseau.angle) , vaisseauRect.y+RAYON_VAISS+DISTANCE_CANON*sin(vaisseau.angle));
 
 	if(vaisseauRect.y<0){
-		vaisseauRect.y+=PLAYGROUND_SIZE_H;
+		vaisseau.y+=PLAYGROUND_SIZE_H;
+		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
 	}
 	else if(vaisseauRect.y+RAYON_VAISS*2>PLAYGROUND_SIZE_H){
-		vaisseauRect.y-=PLAYGROUND_SIZE_H;
+		vaisseau.y-=PLAYGROUND_SIZE_H;
+		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
 	}
 
-	SDL_RenderFillRect(renderer,&vaisseauRect);
-	SDL_RenderDrawLine(renderer, vaisseauRect.x+RAYON_VAISS , vaisseauRect.y+RAYON_VAISS, vaisseauRect.x+RAYON_VAISS+DISTANCE_CANON*cos(vaisseau.angle) , vaisseauRect.y+RAYON_VAISS+DISTANCE_CANON*sin(vaisseau.angle));
 
 	if(vaisseauRect.x<0){
-		vaisseauRect.x+=PLAYGROUND_SIZE_W;
+		vaisseau.x+=PLAYGROUND_SIZE_W;
+		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
 	}
 	else if(vaisseauRect.x+RAYON_VAISS*2>PLAYGROUND_SIZE_W){
-		vaisseauRect.x-=PLAYGROUND_SIZE_W;
+		vaisseau.x-=PLAYGROUND_SIZE_W;
+		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
 	}
-	SDL_RenderFillRect(renderer,&vaisseauRect);
-	SDL_RenderDrawLine(renderer, vaisseauRect.x+RAYON_VAISS , vaisseauRect.y+RAYON_VAISS, vaisseauRect.x+RAYON_VAISS+DISTANCE_CANON*cos(vaisseau.angle) , vaisseauRect.y+RAYON_VAISS+DISTANCE_CANON*sin(vaisseau.angle));
 
 
-	SDL_SetRenderDrawColor(renderer,255,0,0,255);
-	SDL_RenderDrawPoint(renderer, vaisseauRect.x+RAYON_VAISS ,vaisseauRect.y+RAYON_VAISS);
-*/
+
+
 }
 
 
@@ -436,15 +442,33 @@ int get_bonus(int rand_proba){
 	for(i=0;rand_proba>=proba_bonus[i] && i<NB_BONUS;i++);
 	return i;
 }
-void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid){
+
+
+void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, float difficulte){
 
 	int id_coord;
+	float ratio_pv;
 	(*nb_asteroid)++;
 	(*asteroides)=realloc((*asteroides),sizeof(Asteroid)*(*nb_asteroid));
-	(*asteroides)[*nb_asteroid-1].taille=TAILLE_ASTEROID[rand()%NB_TAILLE];
-	(*asteroides)[*nb_asteroid-1].angle=(rand()%628)/100;
-	(*asteroides)[*nb_asteroid-1].pv=PV[est_taille((*asteroides)[*nb_asteroid-1])];
-	(*asteroides)[*nb_asteroid-1].vitesse=rand()%10+1;
+	(*asteroides)[*nb_asteroid-1].angle=(rand()%628)/100.;
+	(*asteroides)[*nb_asteroid-1].pv=PV_BASE;
+	(*asteroides)[*nb_asteroid-1].vitesse=VITESSE_BASE;
+	(*asteroides)[*nb_asteroid-1].difficulte=difficulte;
+
+	if(difficulte >= 1+1/PRECISION_RAND_FLOAT){
+			ratio_pv=1+(rand()%(int)((difficulte-1)*PRECISION_RAND_FLOAT))/PRECISION_RAND_FLOAT;
+	}
+	else ratio_pv = 1;
+	(*asteroides)[*nb_asteroid-1].taille=(ratio_pv/difficulte)*MAX_ASTEROID_SIZE;
+	if((*asteroides)[*nb_asteroid-1].taille < TAILLE_MIN_ASTEROID){
+		(*asteroides)[*nb_asteroid-1].taille=TAILLE_MIN_ASTEROID;
+	}
+	(*asteroides)[*nb_asteroid-1].pv*=ratio_pv;
+	(*asteroides)[*nb_asteroid-1].vitesse*=difficulte/ratio_pv;
+	if((*asteroides)[*nb_asteroid-1].vitesse > VITESSE_MAX_ASTEROID){
+		(*asteroides)[*nb_asteroid-1].vitesse= VITESSE_MAX_ASTEROID;
+	}
+
 	if(rand()%PROBA_BONUS==0){
 		(*asteroides)[*nb_asteroid-1].bonus=get_bonus(rand()%proba_bonus[NB_BONUS-1]);
 
@@ -576,6 +600,11 @@ int main(){
 	Asteroid * asteroides=malloc(sizeof(Asteroid));
 	int nb_asteroid=0;
 
+	//DIFFICULTE
+
+	float difficulte =START_DIFFICULTE;
+
+	//Window
 	float ratioWindowSize = 1;
 	SDL_Rect displayBounds;
 	SDL_GetDisplayBounds(0, &displayBounds);
@@ -617,8 +646,8 @@ int main(){
 		return EXIT_FAILURE;
 	}
 	SDL_Texture* vaisseau_texture = IMG_LoadTexture(renderer, "Textures/vaisseau.png");
-	/*SDL_Texture* gem = IMG_LoadTexture(renderer, "gem.png");
-	SDL_Texture* thrust = IMG_LoadTexture(renderer, "thrust.png");*/
+	SDL_Texture* gem_texture = IMG_LoadTexture(renderer, "Textures/gem.png");
+	SDL_Texture* thrust_texture = IMG_LoadTexture(renderer, "Textures/thrust.png");
 
 
 	//Vaisseau
@@ -663,6 +692,7 @@ int main(){
 					break;
 */
 				case SDL_KEYUP:
+
 					if ( event.key.keysym.sym == SDLK_ESCAPE )
 						rdyToPause = 1;
 					break;
@@ -682,11 +712,14 @@ int main(){
 	////////////////////////////
 		SDL_PumpEvents();
 
-
-		if( keystate[SDL_SCANCODE_LEFT] )
+		if (keystate[SDL_SCANCODE_LEFT] && keystate[SDL_SCANCODE_RIGHT]){
+			turn = BOTH;
+		}
+		else if( keystate[SDL_SCANCODE_LEFT] )
 			turn = LEFT;
 		else if( keystate[SDL_SCANCODE_RIGHT] )
 			turn = RIGHT;
+
 
 
 	//////////////
@@ -698,9 +731,20 @@ int main(){
 	turn_vaiss(&vaisseau,turn,&accelerate);
 
 	if( keystate[SDL_SCANCODE_UP] ){
-        acceleration(&accelerate,vaisseau);
-
-    }
+    acceleration(&accelerate,vaisseau);
+		vaisseau.frame_thrust++;
+		if(vaisseau.frame_thrust > 4)
+			vaisseau.frame_thrust = 2;
+	}
+	else {
+		vaisseau.frame_thrust--;
+		if(vaisseau.frame_thrust>1){
+			vaisseau.frame_thrust=1;
+		}
+		if(vaisseau.frame_thrust<0){
+			vaisseau.frame_thrust=0;
+		}
+	}
 
   accelerate.x/=DECELERATION;
   accelerate.y/=DECELERATION;
@@ -765,14 +809,14 @@ int main(){
 	//////////
 
 
-	afficher_vaisseau(vaisseau,renderer,vaisseau_texture);
+	afficher_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
 
 	for(int i=0; i<nb_missiles; i++){
 		afficher_tir(renderer, missiles[i]);
 	}
 
 	if((frame_apparition_asteroid==0 || nb_asteroid <= (frame/FRAME_APPARITION_ASTEROID))&& frame_2asteroid == 0 ){
-		spawn_asteroid(vaisseau,&asteroides,&nb_asteroid);
+		spawn_asteroid(vaisseau,&asteroides,&nb_asteroid,difficulte);
 		frame_2asteroid=FRAME_2ASTEROID;
 		frame_apparition_asteroid=vitesse_spawn;
 
@@ -798,6 +842,7 @@ int main(){
 	////////////////
 
 		update_frame(&missiles,&nb_missiles,&vaisseau,&frame,&frame_apparition_asteroid,&vitesse_spawn,&frame_2asteroid);
+		difficulte+=RATIO_DIFFICULTE_AUGMENT;
 		//regulateFPS
 		currentTime = SDL_GetTicks();
 		while( currentTime - lastTime < FRAME_TIME )
