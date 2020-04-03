@@ -675,6 +675,12 @@ int compareInt(const void *a,const void* b){
 }
 
 
+int isOnArray(int n, int array[], int size){
+	for(int i = 0; i < size; i++)
+		if(array[i] == n)
+			return 1;
+	return 0;
+}
 /**
 *\fn void getFillPlaces(int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int nbFill)
 * Détermine aléatoirement quelles cases de la matrices doivent être replies par le bonus FILL et enclenche l'animation
@@ -755,6 +761,24 @@ void getFillPlaces(int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRIL
 			}
 		}
 	}
+}
+
+
+/**
+*\fn int getBonusId(int n)
+* Détermine l'id du bonus d'une case de la grille
+* \param n La valeur de la case de la grille
+* \return L'id du bonus correspondant
+*/
+int getBonusId(int n){
+	int bonusId = 0;
+
+	while(n >= BONUS_TRI){
+		n -= BONUS_TRI;
+		bonusId++;
+	}
+
+	return bonusId;
 }
 
 /**
@@ -866,22 +890,6 @@ void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse
 	}
 }
 
-/**
-*\fn int getBonusId(int n)
-* Détermine l'id du bonus d'une case de la grille
-* \param n La valeur de la case de la grille
-* \return L'id du bonus correspondant
-*/
-int getBonusId(int n){
-	int bonusId = 0;
-
-	while(n >= BONUS_TRI){
-		n -= BONUS_TRI;
-		bonusId++;
-	}
-
-	return bonusId;
-}
 
 /**
 *\fn void drawMatrix(SDL_Renderer *renderer, int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], Piece currentPiece, SDL_Texture *brickTexture, SDL_Texture *bonusTexture){
@@ -1799,7 +1807,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *t
 
 							for(int i=0; i<NB_BONUSES; i++)
 								if(bonusActivate[i])
-									useBonus(i+1, frameLaser, framePassed, bonusActivate[i], matrix, matrixFill, nextIsGiant);
+									useBonus(i+1, frameLaser, &framePassed, bonusActivate[i], matrix, matrixFill, &nextIsGiant);
 
 							updateDistances(frame, distances, &framePassed, &frameDestJauge, &frameTotalSpeed);
 							transfertNextPiece(&currentPiece,nextPiece);
