@@ -67,10 +67,10 @@ void afficherPauseMenu(SDL_Renderer *renderer, SDL_Point mouseCoor, SDL_Texture 
 
 //BONUS
 
-void detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid, Vaiss * vaisseau,int touche_bouclier, int *frame_2asteroid);
+void detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid, Vaiss * vaisseau,int touche_bouclier, int *frame_2asteroid, int * point);
 
-void recoit_bonus(int id_bonus, Vaiss * vaisseau, Asteroid ** asteroides, int * nb_asteroid, int * frame_2asteroid){
-
+void recoit_bonus(int id_bonus, Vaiss * vaisseau, Asteroid ** asteroides, int * nb_asteroid, int * frame_2asteroid, int * point){
+	printf("BONUS : %d \n", id_bonus);
 	switch (id_bonus) {
 		case VITESSE_DE_TIR:
 			vaisseau->temps_recharge/=2;
@@ -99,12 +99,23 @@ void recoit_bonus(int id_bonus, Vaiss * vaisseau, Asteroid ** asteroides, int * 
 			}
 			break;
 
-	  case BOMBE_NUCLEAIRE:
-			for(int i=0;i<*nb_asteroid;i++){
-				detruire_asteroid(asteroides, nb_asteroid, i, vaisseau, SDL_TRUE, frame_2asteroid);
-			}
-			*frame_2asteroid=FRAME_BOMBE_NUCLEAIRE;
-			break;
+			case BOMBE_NUCLEAIRE:
+	    	(*nb_asteroid) = 0;
+	      (*asteroides) = realloc(*asteroides, sizeof(Asteroid));
+	      *frame_2asteroid=FRAME_BOMBE_NUCLEAIRE;
+	      break;
+
+			case POINT_PETIT:
+				(*point) += BONUS_POINT[PETIT];
+
+				break;
+			case POINT_MOYEN:
+				(*point) += BONUS_POINT[MOYEN];
+
+				break;
+			case POINT_GRAND:
+				(*point) += BONUS_POINT[GRAND];
+				break;
 
 	}
 }
@@ -198,27 +209,41 @@ int est_taille(Asteroid asteroid){
 	else return GRAND;
 }
 
-void detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid,Vaiss * vaisseau,int touche_bouclier,int *frame_2asteroid){
+void asteroid_cpy(Asteroid * asteroid_src, Asteroid * asteroid_dest){
+    asteroid_dest->x = asteroid_src->x;
+    asteroid_dest->y = asteroid_src->y;
+    asteroid_dest->taille = asteroid_src->taille;
+    asteroid_dest->angle = asteroid_src->angle;
+		asteroid_dest->vitesse = asteroid_src->vitesse;
+		asteroid_dest->pv = asteroid_src->pv;
+		asteroid_dest->bonus = asteroid_src->bonus;
+}
 
-    if((*asteroides)[i_asteroid].taille>=TAILLE_ASTEROID[MOYEN] && !touche_bouclier && (*asteroides)[i_asteroid].bonus != BOMBE_NUCLEAIRE){
-			if(est_taille((*asteroides)[i_asteroid])==GRAND){
-				(*asteroides)[i_asteroid].pv=PV[MOYEN];
-			}
-			else {
-				(*asteroides)[i_asteroid].pv=PV[PETIT];
-			}
-      (*asteroides)[i_asteroid].taille=TAILLE_ASTEROID[est_taille((*asteroides)[i_asteroid])-1];
-      (*asteroides)[i_asteroid].angle+=PI/2;
-			(*nb_asteroid)++;
-      (*asteroides)=realloc(*asteroides,sizeof(Asteroid)*(*nb_asteroid));
-			(*asteroides)[*nb_asteroid-1].x = (*asteroides)[i_asteroid].x;
-	    (*asteroides)[*nb_asteroid-1].y = (*asteroides)[i_asteroid].y;
-	    (*asteroides)[*nb_asteroid-1].taille = (*asteroides)[i_asteroid].taille;
-	    (*asteroides)[*nb_asteroid-1].angle = (*asteroides)[i_asteroid].angle;
-      (*asteroides)[*nb_asteroid-1].angle += PI;
-			(*asteroides)[*nb_asteroid-1].bonus = NO_BONUS;
-			(*asteroides)[*nb_asteroid-1].vitesse=(*asteroides)[i_asteroid].vitesse;
-			(*asteroides)[*nb_asteroid-1].pv=(*asteroides)[i_asteroid].pv;
+void detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid,Vaiss * vaisseau,int touche_bouclier,int *frame_2asteroid, int * point){
+
+    int bonus = (*asteroides)[i_asteroid].bonus;
+    (*asteroides)[i_asteroid].bonus = NO_BONUS;
+
+
+    if((*asteroides)[i_asteroid].taille>=TAILLE_ASTEROID[MOYEN] && !touche_bouclier && bonus != BOMBE_NUCLEAIRE){
+
+        if(est_taille((*asteroides)[i_asteroid])==GRAND){
+            (*asteroides)[i_asteroid].pv=PV[MOYEN];
+        }
+        else {
+            (*asteroides)[i_asteroid].pv=PV[PETIT];
+        }
+        (*asteroides)[i_asteroid].taille=TAILLE_ASTEROID[est_taille((*asteroides)[i_asteroid])-1];
+        (*asteroides)[i_asteroid].angle+=PI/2;
+        (*nb_asteroid)++;
+
+        (*asteroides)=realloc(*asteroides,sizeof(Asteroid)*(*nb_asteroid));
+        asteroid_cpy(&(*asteroides)[i_asteroid], &(*asteroides)[*nb_asteroid-1]);
+
+
+        (*asteroides)[*nb_asteroid-1].angle += PI;
+
+
 
     }
     else{
@@ -229,19 +254,13 @@ void detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid
         if(*nb_asteroid !=0){
             (*asteroides)=realloc(*asteroides,sizeof(Asteroid)*(*nb_asteroid));
         }
-
     }
 
-		if((*asteroides)[i_asteroid].bonus != NO_BONUS){
-			if((*asteroides)[i_asteroid].bonus!=BOMBE_NUCLEAIRE){
-				recoit_bonus((*asteroides)[i_asteroid].bonus,vaisseau,asteroides,nb_asteroid,frame_2asteroid);
-				(*asteroides)[i_asteroid].bonus=NO_BONUS;
-			}
-			else{
-				recoit_bonus((*asteroides)[i_asteroid].bonus,vaisseau,asteroides,nb_asteroid,frame_2asteroid);
-			}
+    if(bonus != NO_BONUS)
+        recoit_bonus(bonus,vaisseau,asteroides,nb_asteroid,frame_2asteroid,point);
 
-		}
+
+
 }
 // Vaisseau
 void turnLeft(Vaiss * vaisseau){
@@ -373,9 +392,14 @@ void afficher_tir( SDL_Renderer * renderer, Missile shot){
 }
 
 //ASTEROID
-
+int get_bonus(int rand_proba){
+	int i;
+	for(i=0;rand_proba>=proba_bonus[i] && i<NB_BONUS;i++);
+	return i;
+}
 void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid){
-	int proche;
+
+	int id_coord;
 	(*nb_asteroid)++;
 	(*asteroides)=realloc((*asteroides),sizeof(Asteroid)*(*nb_asteroid));
 	(*asteroides)[*nb_asteroid-1].taille=TAILLE_ASTEROID[rand()%NB_TAILLE];
@@ -383,26 +407,23 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid){
 	(*asteroides)[*nb_asteroid-1].pv=PV[est_taille((*asteroides)[*nb_asteroid-1])];
 	(*asteroides)[*nb_asteroid-1].vitesse=rand()%10+1;
 	if(rand()%PROBA_BONUS==0){
-		(*asteroides)[*nb_asteroid-1].bonus=rand()%NB_BONUS ;
-		printf("BONUS : %d \n",(*asteroides)[*nb_asteroid-1].bonus);
+		(*asteroides)[*nb_asteroid-1].bonus=get_bonus(rand()%proba_bonus[NB_BONUS-1]);
+
 	}
 	else (*asteroides)[*nb_asteroid-1].bonus=NO_BONUS;
 
 	do{
-		proche=0;
 
-		(*asteroides)[*nb_asteroid-1].x= rand()%PLAYGROUND_SIZE_W;
-		(*asteroides)[*nb_asteroid-1].y= rand()%PLAYGROUND_SIZE_H;
-
-		for(int i=0;i<(*nb_asteroid)-1;i++){
-
-			if(trop_pres(	(*asteroides)[i].x,	(*asteroides)[i].y,	(*asteroides)[*nb_asteroid-1].x,(*asteroides)[*nb_asteroid-1].y,DIST_2ASTEROID+(*asteroides)[i].taille+(*asteroides)[*nb_asteroid-1].taille)){
-				proche=1;
-				break;
-			}
+		id_coord=rand()%4;
+		if(id_coord<2){
+			id_coord=1;
 		}
+		printf("id_coord : %d \n",id_coord);
+		(*asteroides)[*nb_asteroid-1].x= coord_spawn[id_coord-1].x;
+		(*asteroides)[*nb_asteroid-1].y= coord_spawn[id_coord-1].y;
 
-	}	while(trop_pres(vaisseau.x,vaisseau.y,(*asteroides)[*nb_asteroid-1].x,(*asteroides)[*nb_asteroid-1].y,DIST_2ASTEROID+RAYON_VAISS+(*asteroides)[*nb_asteroid-1].taille)|| proche);
+
+	}	while(trop_pres(vaisseau.x,vaisseau.y,(*asteroides)[*nb_asteroid-1].x,(*asteroides)[*nb_asteroid-1].y,DIST_VAISSEAU_ASTEROID+RAYON_VAISS+(*asteroides)[*nb_asteroid-1].taille));
 
 }
 void mouvement_asteroid(Asteroid* asteroid){
@@ -474,6 +495,7 @@ int main(){
 	int frame_apparition_asteroid= 0;
 	float vitesse_spawn = VITESSE_SPAWN_INIT;
 	int frame_2asteroid= 0;
+	int point=0;
 
 
 	//Fonts
@@ -614,6 +636,8 @@ int main(){
 	// Gameplay //`
 	//////////////
 
+	printf("NB DE POINT : %d \n",point);
+
 	if( turn == LEFT )
 		turnLeft(&vaisseau);
 	if( turn == RIGHT )
@@ -653,17 +677,16 @@ int main(){
 
 			int i_missile=asteroid_touche(asteroides[i],missiles,nb_missiles);
 			if(i_missile!=-1){
-				printf("POINT DE VIE AVANT : %d \n",	asteroides[i].pv);
+
 				asteroides[i].pv-=missiles[i_missile].degat;
 				decaler_gauche_m(missiles, nb_missiles, i_missile);
 				(nb_missiles)--;
 				if(nb_missiles !=0){
 						missiles=realloc(missiles,sizeof(Missile)*(nb_missiles));
 				}
-				printf("POINT DE VIE : %d \n",	asteroides[i].pv);
-				printf("DEGAT DU MISSILE : %f \n",missiles[i_missile].degat);
+
 				if(asteroides[i].pv<=0){
-						detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_FALSE, &frame_2asteroid);
+						detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_FALSE, &frame_2asteroid, &point);
 				}
 
 				//si--;
@@ -673,9 +696,9 @@ int main(){
 	if(i_touche != -1){
 		if(vaisseau.bouclier){
 			vaisseau.bouclier=0;
-			detruire_asteroid(&asteroides,&nb_asteroid,i_touche, &vaisseau,SDL_TRUE,&frame_2asteroid);
+			detruire_asteroid(&asteroides,&nb_asteroid,i_touche, &vaisseau,SDL_TRUE,&frame_2asteroid,&point);
 		}
-		else break;
+		//else break;
 	}
 	for(int i=0;i<nb_missiles;i++){
 			collision_mur(&missiles[i].x,&missiles[i].y,RAYON_MISSILE);
