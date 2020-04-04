@@ -217,8 +217,8 @@ void connexion(SDL_Renderer *renderer, char *token)
 
 	// permet de recuperer depuis le serveur l'information sur
 	// le nombre de tentative de connexion
-	int delai = DELAY;
-	int tentative = TENTATIVE;
+//	int delai = DELAY;
+//	int tentative = TENTATIVE;
 //	chargementConfig(&delai,&tentative);
 
 	char identifiant[24]="";
@@ -349,6 +349,10 @@ void connexion(SDL_Renderer *renderer, char *token)
 int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene )
 {
 	SDL_RenderClear(renderer);
+
+	//FIX ANIMATION AFFICHAGE MAC
+	SDL_Event fixMac;
+	while ( SDL_PollEvent(&fixMac) );
 
 	SDL_Texture* background = IMG_LoadTexture(renderer,DIR_ING_BACKGROUND_TXT);
 	SDL_RenderCopy(renderer, background, NULL, NULL);

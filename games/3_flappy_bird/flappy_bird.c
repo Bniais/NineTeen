@@ -738,7 +738,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 					highscore = score;
 				afficherScore(renderer, texture_chiffre, highscore , 3);
 				SDL_RenderPresent(renderer);
-				SDL_Delay(300);
+				SDL_Delay(500);
 				//////////////////////////////////////////////////////////////////
 
 				//////////////////////////////////////////////////////////////////

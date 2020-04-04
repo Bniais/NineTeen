@@ -65,7 +65,11 @@ float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 static int WinWidth = 1280;
 static int WinHeight = 720;
 
+
+//////////////////////////////////////////////////
+// FIXER NOMBRE FPS MAX
 #define FPS 60
+// EN DEDUIRE LE DELAI MIN D'UNE FRAME
 static const float FRAME_TIME = 1000/FPS;
 
 
@@ -104,13 +108,37 @@ int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Windo
 
 
 /////////////////////////////////////////////////////
-/// \fn void windowMaxSize()
+/// \fn int windowMaxSize()
 /// \brief fonction qui charge fixe la taille max de la fenetre
 ///
+/// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-void windowMaxSize();
+int windowMaxSize();
 
 
+/////////////////////////////////////////////////////
+/// \fn void limiterFrame(const float delayLancementFrame,float *_IPS)
+/// \brief permet de mettre un nombre d'image max et reglger la vitesse de deplacement en fonction des ips
+///
+/// \param const float delayLancementFrame temps au lancement de la frame
+/// \param float *_IPS mise a jour de la constante IPS
+///
+/// \return void
+/////////////////////////////////////////////////////
+void limiterFrame(const float delayLancementFrame,float *_IPS);
+
+/////////////////////////////////////////////////////
+/// \fn int attendreXsecondeMessage(int *compterSeconde, int *afficherMessage,const int MS, const float _IPS)
+/// \brief permet d'attendre avant d'afficher message CLIGNOTANT affiche egalement les IPS
+///
+/// \param int *compterSeconde delai d'attente mesurer
+/// \param int *afficherMessage booleen vrai ou faux
+/// \param const int MS delai d'attente
+/// \param const float _IPS affichage des IPS
+///
+/// \return VRAI/FAUX
+/////////////////////////////////////////////////////
+int attendreXsecondeMessage(int *compterSeconde, int *afficherMessage,const int MS, const float _FPS);
 
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
@@ -207,12 +235,83 @@ void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int 
 /////////////////////////////////////////////////////
 
 
-void GL_InitialiserParametre(int width, int height, struct Camera_s camera);
-void InitCamera(struct Camera_s *camera, struct Camera_s *cible);
-void mouvementCamera(struct Camera_s *camera);
 
-void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list);
+
+/////////////////////////////////////////////////////
+/// \fn void GL_InitialiserParametre(int width, int height, struct Camera_s camera)
+/// \brief regle le mode de vue voulu et les lummiere de opengl
+///
+/// \param int width
+/// \param int height
+/// \param struct Camera_s camera
+///
+/// \return void
+/////////////////////////////////////////////////////
+void GL_InitialiserParametre(int width, int height, struct Camera_s camera);
+
+
+/////////////////////////////////////////////////////
+/// \fn void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
+/// \brief initialisation des variables lier au camera joueur et machines
+///
+/// \param struct Camera_s *camera
+/// \param struct Camera_s *cible
+///
+/// \return void
+/////////////////////////////////////////////////////
+void InitCamera(struct Camera_s *camera, struct Camera_s *cible);
+
+
+/////////////////////////////////////////////////////
+/// \fn void mouvementCamera(struct Camera_s *camera,const float IPS)
+/// \brief Permet de gerer les deplacements de la camera
+///
+/// \param struct Camera_s *camera prend l'adresse de la camera
+/// \param
+///
+/// \return void
+/////////////////////////////////////////////////////
+void mouvementCamera(struct Camera_s *camera, const float IPS);
+
+
+/////////////////////////////////////////////////////
+/// \fn void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list)
+/// \brief permet d'appliquer la scene dans la window + mouvement camera
+///
+/// \param const C_STRUCT aiScene *scene scene ou est stocker notre obj
+/// \param struct Camera_s *camera mise a jour de LookAt
+/// \param GLuint *scene_list Nombre de scene
+///
+/// \return void
+/////////////////////////////////////////////////////
+void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list, const float IPS);
+
+
+/////////////////////////////////////////////////////
+/// \fn void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
+/// \brief affichage de text sur un rendu OpenGL
+///
+/// \param TTF_Font *font police d'ecriture du texte
+/// \param char *message message a afficher
+/// \param SDL_Color color couleur du texte
+/// \param int x position du text sur X -1 = centrer
+/// \param int y position du text sur Y -1 = centrer
+///
+/// \return void
+/////////////////////////////////////////////////////
 void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y);
+
+/////////////////////////////////////////////////////
+/// \fn void messageMachine(struct MeilleureScore_s str[],struct Camera_s camera,TTF_Font *font,int afficherMessage)
+/// \brief affichage un message propre a chaque machine
+///
+/// \param struct MeilleureScore_s str[] structure stockant les nom et score des meilleure joueur par machine
+/// \param struct Camera_s camera Camera du joueur pour detection des machines
+/// \param TTF_Font *font pointeur sur la police
+/// \param int afficherMessage afficher messages clignotant ou nom
+///
+/// \return void
+/////////////////////////////////////////////////////
 void messageMachine(struct MeilleureScore_s str[],struct Camera_s camera,TTF_Font *font,int afficherMessage);
 
 /////////////////////////////////////////////////////
@@ -223,7 +322,38 @@ void messageMachine(struct MeilleureScore_s str[],struct Camera_s camera,TTF_Fon
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
 
+
+
+/////////////////////////////////////////////////////
+/// \fn void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context);
+/// \brief permet de lancer une machine de jeux comprend plusieur fonction annexe
+///
+/// \param const C_STRUCT aiScene *scene permet de passer la scene a re afficher au retour de la machine
+/// \param int *Running permet de mettre fin au jeux
+/// \param struct Camera_s camera camera du joueur
+/// \param struct Camera_s cible[] camera cible machine
+/// \param char *token cle du joueur pour mode en ligne
+/// \param struct MeilleureScore_s meilleureScore[] strucuteur des score et nom meilleure joueur
+/// \param GLuint *scene_list liste des scenes
+/// \param SDL_Window *Window fenetre sdl/opengl
+/// \param SDL_GLContext *Context context sdl/opengl
+///
+/// \return void
+/////////////////////////////////////////////////////
 void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context);
+
+
+/////////////////////////////////////////////////////
+/// \fn void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window)
+/// \brief permet d'animer le lancement et retour des machines
+///
+/// \param struct Camera_s camera camera de depart
+/// \param struct Camera_s cible camera de fin
+/// \param GLuint scene_list scene
+/// \param SDL_Window *Window vue d'affichae
+///
+/// \return void
+/////////////////////////////////////////////////////
 void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window);
 
 
@@ -372,16 +502,16 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 	// VARIABLE DE DEROULEMENT
 	int Running = 1;
-	int count_IPS = SDL_GetTicks();
-	float ips=0.0;
+	int compterSeconde = SDL_GetTicks();
 	int afficherMessage = 0;
+	float _IPS = FPS;
 	//////////////////////////////////////////////////////////
 
 
 
 	while (Running)
 	{
-		int tempsLancerFrame = SDL_GetTicks();
+		int delayLancementFrame = SDL_GetTicks();
 
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
@@ -406,7 +536,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 		//////////////////////////////////////////////////////////
 		// CHARGER LA SCENE
-		SDL_GL_AppliquerScene(scene,&camera,&scene_list);
+		SDL_GL_AppliquerScene(scene,&camera,&scene_list,_IPS);
 		//////////////////////////////////////////////////////////
 
 
@@ -434,26 +564,17 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 
 		//////////////////////////////////////////////////////////
-		// LIMITER LES FRAMES
-		int frame_delay = SDL_GetTicks() - tempsLancerFrame;
-			if(frame_delay < FRAME_TIME)
-				SDL_Delay(FRAME_TIME - frame_delay );
+		// LIMITER LES FRAMES A CONST FPS
+		limiterFrame(delayLancementFrame,&_IPS);
 		//////////////////////////////////////////////////////////
 
 
 		//////////////////////////////////////////////////////////
-		// AFFICHER LES FPS DANS LE TERMINAL
-		ips++;
-		if(SDL_GetTicks() - count_IPS > 1000){
-			printf("IPS %f\n",ips );
-			count_IPS = SDL_GetTicks();
-			afficherMessage = !afficherMessage;
-			ips = 0;
-		}
+		// ATTENDRE 1000 MS POUR MESSAGE CLIGNOTANT
+		attendreXsecondeMessage(&compterSeconde, &afficherMessage,1000, _IPS);
 		//////////////////////////////////////////////////////////
 
 	}
-
 
 
 	//////////////////////////////////////////////////////////
@@ -461,7 +582,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	// LIBERATION DES SONS
 	Mix_FreeChunk(music_01 );
 	Mix_FreeChunk(music_02 );
-	Mix_FreeChunk(music_03);
+	Mix_FreeChunk(music_03 );
 	Mix_FreeChunk(music_walk );
 	//////////////////////////////////////////////////////////
 	// LIBERATION DES POLICES
@@ -617,21 +738,36 @@ void mixerInit()
 
 
 
-void windowMaxSize()
+int windowMaxSize()
 {
+	/////////////////////////////////////////////////////
+	// CREATION VARIABLE
 	SDL_DisplayMode dm;
 
+	/////////////////////////////////////////////////////
+	// RECUPRATION DE LA TAILLE D'ECRAN SI CA ECHOU ON RECUPERER L'ERREUR
 	if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
-     SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
+	{
+		SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
+		return EXIT_FAILURE;
+	}
 
-	 WinWidth = dm.w*0.9;
-	 WinHeight = (dm.w*0.9)*9/16;
+	/////////////////////////////////////////////////////
+	// ON APPLIQUE A NOTRE VARIABLE GLOBALE
+	WinWidth = dm.w*0.9;
+	WinHeight = (dm.w*0.9)*9/16;
 
-	 printf("SIZE : %d %d\n", WinWidth, WinHeight);
+	printf("SIZE : %d %d\n", WinWidth, WinHeight);
+
+	return EXIT_SUCCESS;
 }
+
+
 
 float distancePoint(float xa, float ya, float xb, float yb)
 {
+	/////////////////////////////////////////////////////
+	// PERMET DE CALCULER LA DISTANCE ENTRE 2 POINTS ET LA RENDRE POSITIF TOUJOURS
 	float resultat = sqrt( pow( (xb - xa) , 2 ) + pow( (yb - ya) , 2 ) ) ;
 	if (resultat < 0)
 		return resultat * -1;
@@ -640,23 +776,55 @@ float distancePoint(float xa, float ya, float xb, float yb)
 }
 
 
+void limiterFrame(const float delayLancementFrame,float *_IPS)
+{
+	float delayFrame = SDL_GetTicks() - delayLancementFrame;
+	// MISE A JOURS DU NOMBRE DE FPS
+	*_IPS = 1000.0/delayFrame;
+	// ATTENDRE SI NECESSAIRE POUR LIMITER A 60 FPS
+	if(delayFrame < FRAME_TIME)
+	{
+		SDL_Delay(FRAME_TIME - delayFrame );
+		// MAJ IPS APRES ATTENTE
+		*_IPS = 1000.0/ ( delayFrame + (FRAME_TIME - delayFrame) );
+	}
 
+}
 
+int attendreXsecondeMessage(int *compterSeconde, int *afficherMessage, const int MS, const float _IPS)
+{
+	if(SDL_GetTicks() - *compterSeconde > MS){
+		*compterSeconde = SDL_GetTicks();
+		*afficherMessage = !(*afficherMessage);
+		// AFFICHER NOMBRE IPS
+		printf("IPS : %f\n",_IPS );
+	}
+	return *afficherMessage;
+}
 
 void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter)
 {
+	////////////////////////////////////////////////////
+	// FIX VOLUME MAX PAR DEFAULT
 	float volume = MIX_MAX_VOLUME;
+	// CALCUL DISTANCE SOURCE SONOR
 	float distance = distancePoint(xa,ya,xb,yb);
-	if(distance < 5.0)
-		printf("CHANNEL %d distance MACHINE %f\n",channel,distance );
+	////////////////////////////////////////////////////
+
+	////////////////////////////////////////////////////
+	// MET LE SON A 0 SI TROP LOIN
 	if(distance > porter)
 		volume = 0;
 	else
 	{
+		////////////////////////////////////////////////////
+		// REGLE LE SON EN FONCTION DE LA DISTANCE
 		float _distance = porter - distance;
 		volume = ( volume /porter) * _distance;
 	}
 
+	////////////////////////////////////////////////////
+	// APPLIQUE CE QUI A ETAIT FAIT
 	Mix_Volume(channel, (int)volume);
 }
 
@@ -664,73 +832,110 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, float po
 
 void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music)
 {
+	////////////////////////////////////////////////////
+	// CALCUL LA DISTANCE ENTRE LA DERNIERE POSITION ET CELLE ACTUELLE
 	if ( distancePoint(dernierePosition->px,dernierePosition->pz, camera.px, camera.pz) > 1.6F )
 	{
+		////////////////////////////////////////////////////
+		// SI ON A PARCOURU 1.6M ON JOUE UN SONS
+		// MISE A JOUR DE LA DERNIERE POSITION OU ON A JOUER LE SON
 		*dernierePosition = camera;
 		Mix_PlayChannel(channel,music,0);
 	}
 }
 
 
-void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list)
+
+void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list,const float IPS)
 {
+	////////////////////////////////////////////////////
+	// REGLE COULEUR DE FOND NETTOIE LE DERNIERE AFFICHAGE
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// REGLE EN MODE MODELVIEW
 	glMatrixMode(GL_MODELVIEW);
+	// CHARGE LES REGLAGES
 	glLoadIdentity();
 
 
+	////////////////////////////////////////////////////
+	// GERER LES MOUVEMENT DE CAMERA
+	mouvementCamera(camera,60.0);
 
-	mouvementCamera(camera);
-
-
+	////////////////////////////////////////////////////
+	// SI LE RENDU DE LA SCENE N'EST PAS FAIT LE FAIRE
 	if(*scene_list == 0) {
+		// FIXER LA SCENE A 1
 		*scene_list = glGenLists(1);
 		glNewList(*scene_list, GL_COMPILE);
 		aiDessinerScene(scene, scene->mRootNode);
 		glEndList();
 	}
 
+	// APPELER LA LISTE DE SCENE CREE
 	glCallList(*scene_list);
 }
 
 
 void GL_InitialiserParametre(int width, int height, struct Camera_s camera)
 {
-	GLfloat mat_shininess[] = { 50.0 };
 
-
-	GLfloat light_position0[] = { camera.px, camera.pz, 0.0, 1.0 };
+	///////////////////////////////////////////////////
+	//ON CLEAR
 	glClearColor (0.0, 0.0, 0.0, 0.0);
+	// ACTIVATION DU LISSAGE
 	glShadeModel (GL_SMOOTH);
 
+	///////////////////////////////////////////////////
+	// NIVEAU DE LUSTRAGE 0 - 128
+	GLfloat mat_shininess[] = { 50.0 };
+	// APPLICATION DU LUSTRAGE
 	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+	// POSITION DE LA LUMIERE SUR LE PERSONNAGES
+	GLfloat light_position0[] = { camera.px, camera.pz, 0.0, 1.0 };
+	// POSITIONNEMENT LUMIERE
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position0);
 
 
+	///////////////////////////////////////////////////
+	// ACTIVATION DES LUMIERES
 	glEnable(GL_LIGHTING);
+	// ACTIVATION DE LA LUMIERE 0
 	glEnable(GL_LIGHT0);
+	// ACTIVATION DE LA DETECTION D'OBJET L'UN DEVANT L'AUTRE POUR NE PAS TOUS AFFICHER
 	glEnable(GL_DEPTH_TEST);
 
-
+	///////////////////////////////////////////////////
+	// MOD PROJECTION
 	glMatrixMode( GL_PROJECTION );
+	// CHARGEMENT DE LA MATRICE
 	glLoadIdentity();
 
-	gluPerspective(camera.ouverture,(float)(width)/(float)(height),0.2,500);	//Pour les explications, lire le tutorial sur OGL et win
+	///////////////////////////////////////////////////
+	// REGALGES DU NIVEAU DE PERSPECTIVE
+	// REGLAGES DE LA DISTANCE DE VUE MIN MAX
+	gluPerspective(camera.ouverture,(float)(width)/(float)(height),0.2,500);
 
-	//Initialize Modelview Matrix
+	////////////////////////////////////////////////////
+	// ACTIVATION DU MODE MODEL VIEW
 	glMatrixMode( GL_MODELVIEW );
+	// CHARGEMENT DE LA MATRICE
 	glLoadIdentity();
 
+	// ACTIVATION DES TEXTURES 2D
 	glEnable(GL_TEXTURE_2D);
   glEnable(GL_BLEND);
+	// CHARGEMENT DE LA MATRICE
 	glLoadIdentity();
 }
 
 
 
+
 void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 {
+	///////////////////////////////////////////////////
+	// POSITION DU DEPART DU PERSONNAGE
 	camera->px = START_PX;
 	camera->py = START_PY;
 	camera->pz = START_PZ;
@@ -739,6 +944,8 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	camera->ouverture = START_OUVERTURE;
 
 
+	///////////////////////////////////////////////////
+	// PLACEMENT DES CAMERA FIX SUR LES MACHINES
 	cible[FLAPPY_HARD-1].px = -6.56;
 	cible[FLAPPY_HARD-1].pz = 12.9;
 	cible[FLAPPY_HARD-1].py = 3.45;
@@ -848,91 +1055,144 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 /* ---------------------------------------------------------------------------- */
 
 
-void mouvementCamera(struct Camera_s *camera)
+void mouvementCamera(struct Camera_s *camera, const float IPS)
 {
+
+	///////////////////////////////////////////////////
+	// REGLAGE EN FONCTION DES FPS FIXER
+	// VALEUR BASER SUR 60 FPS DE BASE
+	float _SENSIBILITE_CAMERA = SENSIBILITE_CAMERA * (IPS/FPS);
+	float _VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT * (IPS/FPS);
+
+
+	///////////////////////////////////////////////////
+	// INITALISATION D'UN EVENEMENT SDL
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 
+	///////////////////////////////////////////////////
+	// MOUVEMENT CAMERA SUR X ET Z
+
+
+	///////////////////////////////////////////////////
+	// APUI FLECHE GAUCHE
 	if( keystate[SDL_SCANCODE_LEFT] )
 	{
-		camera->angle += SENSIBILITE_CAMERA;
+		camera->angle += _SENSIBILITE_CAMERA;
+
+		///////////////////////////////////////////////////
+		// PERMET DE REMETRE A VALEUR COMPRISE ENTRE 0 et 2*M_PI L'ANGLE CAMERA
 		if( camera->angle > 2 * M_PI)
 			camera->angle -= 2*M_PI;
 	}
 
+	///////////////////////////////////////////////////
+	// APUI FLECHE DROITE
 	if( keystate[SDL_SCANCODE_RIGHT] )
 	{
-		camera->angle -= SENSIBILITE_CAMERA;
+		camera->angle -= _SENSIBILITE_CAMERA;
+
+		///////////////////////////////////////////////////
+		// PERMET DE REMETRE A VALEUR COMPRISE ENTRE 0 et 2*M_PI L'ANGLE CAMERA
 		if( camera->angle < 0)
 			camera->angle += 2*M_PI;
 	}
 
+	///////////////////////////////////////////////////
+	// APUI FLECHE HAUT
 	if( keystate[SDL_SCANCODE_UP] )
-				if(camera->cible_py + SENSIBILITE_CAMERA < MAX_Y_AXE_CIBLE )
-					camera->cible_py += SENSIBILITE_CAMERA;
+
+				///////////////////////////////////////////////////
+				// VERIFIE SI ON A ATTEIND LA VALEUR MAX
+				if(camera->cible_py + _SENSIBILITE_CAMERA < MAX_Y_AXE_CIBLE )
+					camera->cible_py += _SENSIBILITE_CAMERA;
+
+	///////////////////////////////////////////////////
+	// APUI FLECHE BAS
 	if( keystate[SDL_SCANCODE_DOWN] )
-				if(camera->cible_py - SENSIBILITE_CAMERA > -MAX_Y_AXE_CIBLE )
-					camera->cible_py -= SENSIBILITE_CAMERA;
+				///////////////////////////////////////////////////
+				// VERIFIE SI ON A ATTEIND LA VALEUR MAX
+				if(camera->cible_py - _SENSIBILITE_CAMERA > -MAX_Y_AXE_CIBLE )
+					camera->cible_py -= _SENSIBILITE_CAMERA;
 
 
 
 
+	///////////////////////////////////////////////////
+	// MOUVEMENT PERSONNAGES SUR X et Z
 
+	///////////////////////////////////////////////////
+	// APUI TOUCHE W
 	if( keystate[SDL_SCANCODE_W] )
 	{
 
-		if( detectionEnvironnement( (camera->px + VITESSE_DEPLACEMENT *sin(camera->angle) ),
-									( camera->pz +  VITESSE_DEPLACEMENT *cos(camera->angle) ) )   )
-									{
-										camera->px += VITESSE_DEPLACEMENT *sin(camera->angle);
-										camera->pz += VITESSE_DEPLACEMENT *cos(camera->angle);
-									}
+		///////////////////////////////////////////////////
+		// VERIFIE SI LE NOUVEAU DEPLACEMENT RENTRE TOUJOURS DANS LES DIMENSIONS DE LA SALLE
+		if( detectionEnvironnement( (camera->px + _VITESSE_DEPLACEMENT *sin(camera->angle) ),
+															( camera->pz +  _VITESSE_DEPLACEMENT *cos(camera->angle) ) )   )
+		{
+					///////////////////////////////////////////////////
+					// CONDITION VERIFIER ON DEPLACE X ET Y EN FONCTION DE L' ANGLE
+					// ON AVANCE
+					camera->px += _VITESSE_DEPLACEMENT *sin(camera->angle);
+					camera->pz += _VITESSE_DEPLACEMENT *cos(camera->angle);
+		}
 
 	}
 
+
 	if( keystate[SDL_SCANCODE_S] )
 	{
-		if(
-			detectionEnvironnement(  camera->px - VITESSE_DEPLACEMENT *sin(camera->angle),
-									 camera->pz - VITESSE_DEPLACEMENT *cos(camera->angle)
-								  )
-		)
+
+		///////////////////////////////////////////////////
+		// VERIFIE SI LE NOUVEAU DEPLACEMENT RENTRE TOUJOURS DANS LES DIMENSIONS DE LA SALLE
+		if(	detectionEnvironnement(  camera->px - _VITESSE_DEPLACEMENT *sin(camera->angle),
+									 							camera->pz - _VITESSE_DEPLACEMENT *cos(camera->angle)   )	)
 		{
-				camera->px -= VITESSE_DEPLACEMENT *sin(camera->angle);
-				camera->pz -= VITESSE_DEPLACEMENT *cos(camera->angle);
+				///////////////////////////////////////////////////
+				// CONDITION VERIFIER ON DEPLACE X ET Y EN FONCTION DE L'ANGLE
+				// ON RECULE
+				camera->px -= _VITESSE_DEPLACEMENT *sin(camera->angle);
+				camera->pz -= _VITESSE_DEPLACEMENT *cos(camera->angle);
 		}
 
 	}
 	if( keystate[SDL_SCANCODE_A] )
 	{
-		if(
-			detectionEnvironnement(  camera->px + VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2),
-									 camera->pz + VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2)
-								  )
-		)
+		///////////////////////////////////////////////////
+		// VERIFIE SI LE NOUVEAU DEPLACEMENT RENTRE TOUJOURS DANS LES DIMENSIONS DE LA SALLE
+		if( detectionEnvironnement(  camera->px + _VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2),
+									 								camera->pz + _VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2)		  )		)
 		{
-				camera->px += VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2);
-				camera->pz += VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2);
+				///////////////////////////////////////////////////
+				// CONDITION VERIFIER ON DEPLACE X ET Y EN FONCTION DE L'ANGLE
+				// ON VAS AU GAUCHE
+				camera->px += _VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2);
+				camera->pz += _VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2);
 		}
 
 
 	}
 	if( keystate[SDL_SCANCODE_D] )
 	{
-		if(
-			detectionEnvironnement(  camera->px - VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2),
-									 camera->pz - VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2)
-								  )
-		)
+		///////////////////////////////////////////////////
+		// VERIFIE SI LE NOUVEAU DEPLACEMENT RENTRE TOUJOURS DANS LES DIMENSIONS DE LA SALLE
+		if(  detectionEnvironnement(  camera->px - _VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2),
+									 								camera->pz - _VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2)		  )		)
 		{
-			camera->px -= VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2);
-			camera->pz -= VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2);
+			///////////////////////////////////////////////////
+			// CONDITION VERIFIER ON DEPLACE X ET Y EN FONCTION DE L'ANGLE
+			// ON VAS A DROITE
+			camera->px -= _VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2);
+			camera->pz -= _VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2);
 		}
 
 	}
 
 
 
-	// gestion des hauteur dans l'espace
+	///////////////////////////////////////////////////
+	// ON VERIFIE SI ON EST SUR LE BLOQUE SUR ELEVER CENTRAL
+	// SI C'EST LE CAS ON AUGMENTE LA HAUTEUR DE LA CAMERA
 	if (camera->px <= 4 && camera->px >= -4 && camera->pz <= 4 && camera->pz >= -4)
 		camera->py = 1.2F + HAUTEUR_CAMERA;
 	else
@@ -1150,75 +1410,93 @@ int detecterMachine(float x,float y,float angle)
 
 void messageMachine(struct MeilleureScore_s str[],struct Camera_s camera,TTF_Font *font,int afficherMessage)
 {
+	///////////////////////////////////////////////////////////////////
+	// RETOURNE LE CODE DE LA MACHINE DETECTER 0 SI NON DETECTER
 	int detection = detecterMachine(camera.px, camera.pz,camera.angle);
 	if(detection)
 	{
+		////////////////////////////////////////////////
 		SDL_Color white = {255,255,255};
+		// BUFFER POUR LE MESSAGE DES RECORDS
 		char message[60];
+		// CONCATENATION DES SCORES ET NOM DES JOUEUR DANS UNE MEME CHAINE
 		sprintf(message, "RECORD   :  %d  PAR  %s",str[detection].score,str[detection].nomJoueur);
+		// AFFICHAGE DU TEXT DU RECORD
 		AfficherText(font,message,white,-1,WinHeight/8);
+		// AFFICHAGE DU TEXT DU NOM DU JEU
 		AfficherText(font,str[detection].nomJeux,white,-1,WinHeight/6);
 
+		////////////////////////////////////////////////
+		// AFFICHAGE CLIGNOTANT
 		if(afficherMessage)
-		{
-					AfficherText(font,"APPUYER   SUR   E",white,-1,-1);
-		}
+				AfficherText(font,"APPUYER   SUR   E",white,-1,-1);
 
 	}
 }
 
+
 void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window)
 {
+	// FIXER DUREE ANIMATION
 	float DUREE_ANIM = 60.0F;
-	printf("CAM %f CIBLE %f\n",camera.angle,cible.angle );
 
-	int i = 0;
+	////////////////////////////////////////////////////////////
+	// CALCUL DES DIFFERENTE VALEUR A INCREMENTER
 	float x = (cible.px - camera.px)/DUREE_ANIM ;
 	float z = (cible.pz - camera.pz)/DUREE_ANIM ;
 	float cib = (cible.cible_py - camera.cible_py) / DUREE_ANIM;
 	float y = (cible.py - camera.py)/DUREE_ANIM;
 
+
 	float angle = cible.angle - camera.angle;
-
-
-	// correction angle negatif
+	////////////////////////////////////////////////////////////
+	// CORRECTION DES ANGLES NEGATIF POUR INCREMENTATION VUE QUE A 2 PI RETOUR A 0
 	if( angle < -M_PI){
-		printf("CORRECTION ANGLE NEGATIF %f\n",camera.angle);
 		cible.angle = 2*M_PI;
 		angle = cible.angle - camera.angle;
 	}
-	//correction angle positu
-	else if ( angle > M_PI){
-		printf("CORRECTION ANGLE POSITIF\n");
+	////////////////////////////////////////////////////////////
+	// CORRECTION DES ANGLES POSITIF POUR INCREMENTATION VUE QUE A 2 PI RETOUR A 0
+	else if ( angle > M_PI)
 		angle -= 2*M_PI;
-	}
+	////////////////////////////////////////////////////////////
 	angle /= DUREE_ANIM ;
 
-	while( i++ < 60)
+	////////////////////////////////////////////////////////////
+	// DEBUT ANIM
+	int i = 0;
+	while( i++ < DUREE_ANIM)
 	{
+		////////////////////////////////////////////////////////////
+		// INCREMENTATION
 		camera.px += x;
 		camera.pz += z;
 		camera.cible_py += cib;
 		camera.py += y;
 		camera.angle += angle;
 
-		glDisable(GL_LIGHTING);
+
+		// CHARGEMENT DE LA MATRICE
 	  glLoadIdentity();
-	  gluOrtho2D(0, WinWidth, 0, WinHeight); // m_Width and m_Height is the resolution of window
+		// RESOULTION POUR AFFICHAGE 2D
+	  gluOrtho2D(0, WinWidth, 0, WinHeight);
+		// INIT GL PARAMS
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
+		// NETTOYAGE DE LA FENETRE
 		glClearColor(0.f, 0.f, 0.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 
-
+		// MISE A JOURS DE LA CAMERA
 		gluLookAt(camera.px                   ,camera.py    ,camera.pz                  ,
 				  camera.px+sin(camera.angle) ,camera.py + camera.cible_py    , camera.pz+cos(camera.angle),
 				  0.0
 				               ,1.0         ,0.0)                        ;
 
+		// APPEL LIST SCENE
 		glCallList(scene_list);
-
+		// APPLICATION A LA WINDOW
 		SDL_GL_SwapWindow(Window);
 
 	}
@@ -1227,34 +1505,43 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 
 void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context)
 {
-
+	///////////////////////////////////////////////////
+	// GESTION EVENEMENT
 	SDL_Event Event;
 	while (SDL_PollEvent(&Event))
 	{
+		///////////////////////////////////////////////////
+		// EVENEMENT APPUI TOUCHE
 		if (Event.type == SDL_KEYDOWN)
 		{
 			switch (Event.key.keysym.sym)
 			{
+				///////////////////////////////////////////////////
+				// TOUCHE ESPACE METTRE FIN AU JEUX
 				case SDLK_ESCAPE:
-					*Running = 0;
-					break;
+													*Running = 0;
+													break;
+				///////////////////////////////////////////////////
+				// TOUCHE E ENTRER DANS UN JEUX
 				case SDLK_e:
 				{
-						// verifier si on est proche d'une machine //
-						// si oui renvoi le code de la machine
-
+						///////////////////////////////////////////////////
+						// VERIFIER SI ON EST PROCHES D UNE MACHINE
+						// RENVOIE LE CODE DE LA MACHINE
 						int machine = detecterMachine(camera.px, camera.pz, camera.angle);
 						if ( machine)
 						{
+							///////////////////////////////////////////////////
+							// ANIMATION CENTRAGE SUR MACHINE
 							animationLancerMachine(camera,cible[machine-1],*scene_list,Window);
-							// centrer sur la machine //
-							// zoomer sur la machine //
 
-
-
-							// lancer la machine
+							///////////////////////////////////////////////////
+							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
 							SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 
+							///////////////////////////////////////////////////
+							// CASE POUR CHAQUE MACHINE
+							// AVEC UPDATE DU SCORE A L ISSUS
 							switch (machine) {
 								case 1:
 									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].score,WinWidth,WinHeight,token,1));
@@ -1283,22 +1570,32 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								default:break;
 							}
 
+							///////////////////////////////////////////////////
+							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
 							SDL_DestroyRenderer(pRenderer);
 							SDL_GL_DeleteContext(*Context);
-							// retour sur la Window 3D.
-
+							///////////////////////////////////////////////////
 							*Context = SDL_GL_CreateContext(Window);
+							///////////////////////////////////////////////////
+							// REMISE A ZERO DE LA SCENE
 							*scene_list = 0;
+							// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
 							while(SDL_PollEvent(&Event));
-							SDL_GL_AppliquerScene(scene,&camera,scene_list);
+							// AFFICHAGE DE LA SCENE
+							SDL_GL_AppliquerScene(scene,&camera,scene_list,FPS);
+							// ANIMATION DE RETOUR SUR MACHINE
 							animationLancerMachine(cible[machine-1],camera,*scene_list,Window);
+							// VIDER POLL EVENEMENT
 							while(SDL_PollEvent(&Event));
 						}
+					}
+					break;
 
-
-
-					}break;
+				///////////////////////////////////////////////////
+				// TOUCHE C CE METTRE A CROUPI
 				case SDLK_c:
+					///////////////////////////////////////////////////
+					// MET LE JOUEUR A CROUPI ET REDUIT CA VITESSE DE DEPLACEMENT
 					if(VITESSE_DEPLACEMENT == VITESSE_DEPLACEMENT_DEBOUT )
 					{
 						HAUTEUR_CAMERA = HAUTEUR_CAMERA_ACCROUPI;
@@ -1311,14 +1608,19 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					}
 
 					break;
+
+				///////////////////////////////////////////////////
+				// DEFAULT
 				default:
 					break;
 			}
 		}
+
+		///////////////////////////////////////////////////
+		// IF APPUI CROIS ROUGE
 		else if (Event.type == SDL_QUIT)
-		{
 			*Running = 0;
-		}
+
 	}
 
 }
@@ -1326,37 +1628,56 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 {
+	////////////////////////////////////////////////
+	// ENVOI MATRICE
 	glPushMatrix();
 
-
+	////////////////////////////////////////////////
+	// DESACTIVER LES LUMIERE
 	glDisable(GL_LIGHTING);
   glLoadIdentity();
 
-
-  gluOrtho2D(0, WinWidth, 0, WinHeight); // m_Width and m_Height is the resolution of window
+	////////////////////////////////////////////////
+	// PRECISION SUR LA FENETRE
+  gluOrtho2D(0, WinWidth, 0, WinHeight);
+	// MOD PROJECTION
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
+	////////////////////////////////////////////////
+	// DESACTIVATION DU TEST D ARRIERE PLAN
 	glDisable(GL_DEPTH_TEST);
 	glLoadIdentity();
 
+	////////////////////////////////////////////////
+	// BLEND
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// INIT LOAD TEXTURE
   GLuint texture;
   glGenTextures(1, &texture);
   glBindTexture(GL_TEXTURE_2D, texture);
 
+	////////////////////////////////////////////////
+	// CREATION TEXTURE AVEC LE TEXT EN SDL
   SDL_Surface * sFont = TTF_RenderText_Blended(font, message, color);
 
-
+	////////////////////////////////////////////////
+	// PARAMETRE 2D
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
+	// CONVERTION TEXTURE IMAGE
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sFont->w, sFont->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
 
+	////////////////////////////////////////////////
+	// SI PARAMS X A -1 ON CENTRE LE TEXT SUR X
 	if(x == -1)
 		x = WinWidth/2 - sFont->w/2;
+	////////////////////////////////////////////////
+	// SI PARAMS X A -1 ON CENTRE LE TEXT SUR Y
 	if(y == -1)
 		y = WinHeight/2 - sFont->h/2;
 
+	////////////////////////////////////////////////
+	// DEBUT DU RENDU
   glBegin(GL_QUADS);
   {
     glTexCoord2f(0,0); glVertex2f(x, y);
@@ -1365,12 +1686,15 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
     glTexCoord2f(0,-1); glVertex2f(x, y + sFont->h);
   }
   glEnd();
+	////////////////////////////////////////////////
 
-
-
+	////////////////////////////////////////////////
+	// DESTRUCTUIN DES ELLEMENTS CREE
   glDeleteTextures(1, &texture);
   SDL_FreeSurface(sFont);
 
+	////////////////////////////////////////////////
+	// RECUPERATION DE LA MATRICE AVANT MODIF
 	glPopMatrix();
 	glLoadIdentity();
 }
