@@ -1,6 +1,6 @@
 /**
 *\file tetris.c
-* Jeu tetris avec bonus
+*\brief Jeu tetris avec bonus
 *\author Hugo Lecomte
 *\version 1.0
 *\date 03/04/2020
@@ -20,9 +20,10 @@
 #include <string.h>
 #include <math.h>
 
+
 /**
 *\fn void myInit()
-* Initialise l'environement SDL, TTF et rand
+*\brief Initialise l'environement SDL, TTF et rand
 */
 void myInit(){
 	// SDL Init
@@ -38,7 +39,7 @@ void myInit(){
 
 /**
 *\fn void initMatrix(int matrix[GRILLE_W][GRILLE_H], int init)
-* Initialise les cases de la matrice
+*\brief Initialise les cases de la matrice
 *\param matrix La matrice à initialiser
 *\param init La valeur d'initialisation
 */
@@ -50,8 +51,8 @@ void initMatrix(int matrix[GRILLE_W][GRILLE_H], int init){
 
 /**
 *\fn void initPiece(Piece *piece)
-* Initialise une pièce
-* \param piece La pièce à initialiser
+*\brief Initialise une pièce
+*\param piece La pièce à initialiser
 */
 void initPiece(Piece *piece){
 	piece->rota = 0;
@@ -74,8 +75,8 @@ void initPiece(Piece *piece){
 
 /**
 *\fn void clearCombo(Score * scoreToClear)
-* Efface les attributs combo d'un score
-* \param scoreToClear Le score à effacer
+*\brief Efface les attributs combo d'un score
+*\param scoreToClear Le score à effacer
 */
 void clearCombo(Score * scoreToClear){
 	scoreToClear->flat = 0;
@@ -88,8 +89,8 @@ void clearCombo(Score * scoreToClear){
 
 /**
 *\fn void clearScore(Score * scoreToClear)
-* Efface les attributs score d'un score
-* \param scoreToClear Le score à effacer
+*\brief Efface les attributs score d'un score
+*\param scoreToClear Le score à effacer
 */
 void clearScore(Score * scoreToClear){
 	scoreToClear->score = 0;
@@ -99,8 +100,8 @@ void clearScore(Score * scoreToClear){
 
 /**
 *\fn void initScore(Score * score)
-* Initialise un tableau de scores
-* \param score Le tableau de scores à effacer
+*\brief Initialise un tableau de scores
+*\param score Le tableau de scores à initialiser
 */
 void initScore(Score * score){
 	for(int i=0; i<GRILLE_H; i++){
@@ -119,12 +120,12 @@ void initScore(Score * score){
 
 /**
 *\fn void updateDistances(float frame[NB_FRAMES], float distances[NB_DISTANCES], int *framePassed, int *frameDestJauge, long int * frameTotalSpeed)
-* Met à jour les distances et frames de déplacement, d'arrêt et de départ des pièces selon le nombre de frames qui se sont passées depuis le dernier appel
-* \param frame Les frames de déplacement, d'arrêt et de départ
-* \param distances Les distances de déplacement
-* \param framePassed Le nombre de frame depuis le dernier appel
-* \param frameDestJauge Les frames pour l'animation d'augmentation de la jauge de vitesse
-* \param frameTotalSpeed Le nombre de frame théorique (avec bonus) depuis le début (pour la jauge)
+*\brief Met à jour les distances et frames de déplacement, d'arrêt et de départ des pièces selon le nombre de frames qui se sont passées depuis le dernier appel
+*\param frame Les frames de déplacement, d'arrêt et de départ
+*\param distances Les distances de déplacement
+*\param framePassed Le nombre de frame depuis le dernier appel
+*\param frameDestJauge Les frames pour l'animation d'augmentation de la jauge de vitesse
+*\param frameTotalSpeed Le nombre de frame théorique (avec bonus) depuis le début (pour la jauge)
 */
 void updateDistances(float frame[NB_FRAMES], float distances[NB_DISTANCES], int *framePassed, int *frameDestJauge, long int * frameTotalSpeed){
 	*frameTotalSpeed += *framePassed;
@@ -149,10 +150,10 @@ void updateDistances(float frame[NB_FRAMES], float distances[NB_DISTANCES], int 
 
 /**
 *\fn int tooCloseFromMatrix(Piece piece, int matrix[GRILLE_W][GRILLE_H])
-* Teste si une pièce est en collision avec les pièces déjà inscrites dans la grille
-* \param piece La pièce à tester
-* \param matrix La grille
-* \return Vrai si la piece à une collision avec les éléments de la grille, sinon faux
+*\brief Teste si une pièce est en collision avec les pièces déjà inscrites dans la grille
+*\param piece La pièce à tester
+*\param matrix La grille
+*\return Vrai si la piece à une collision avec les éléments de la grille, sinon faux
 */
 int tooCloseFromMatrix(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 	//Pas besoin de verifier si i + (int)piece.x < GRILLE_W car on le vérifie dans tooCloseFromWall
@@ -199,9 +200,9 @@ int tooCloseFromMatrix(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 
 /**
 *\fn int getFirstColumn(Piece piece)
-* Calcule l'indice de la première collone d'une pièce
-* \param piece La pièce
-* \return L'indice de la première collone ou -1 en cas d'erreur
+*\brief Calcule l'indice de la première collone d'une pièce
+*\param piece La pièce
+*\return L'indice de la première collone ou -1 en cas d'erreur
 */
 int getFirstColumn(Piece piece){
 	for(int j = 0; j < piece.size; j++)
@@ -214,9 +215,9 @@ int getFirstColumn(Piece piece){
 
 /**
 *\fn int getLastColumn(Piece piece)
-* Calcule l'indice de la dernière collone d'une pièce
-* \param piece La pièce
-* \return L'indice de la dernière collone ou -1 en cas d'erreur
+*\brief Calcule l'indice de la dernière collone d'une pièce
+*\param piece La pièce
+*\return L'indice de la dernière collone ou -1 en cas d'erreur
 */
 int getLastColumn(Piece piece){
 	for(int j = piece.size - 1; j >= 0; j--)
@@ -229,9 +230,9 @@ int getLastColumn(Piece piece){
 
 /**
 *\fn int getFirstRow(Piece piece)
-* Calcule l'indice de la première ligne d'une pièce
-* \param piece La pièce
-* \return L'indice de la première ligne ou -1 en cas d'erreur
+*\brief Calcule l'indice de la première ligne d'une pièce
+*\param piece La pièce
+*\return L'indice de la première ligne ou -1 en cas d'erreur
 */
 int getFirstRow(Piece piece){
 	for(int j = 0; j < piece.size; j++)
@@ -244,9 +245,9 @@ int getFirstRow(Piece piece){
 
 /**
 *\fn int getLastRow(Piece piece)
-* Calcule l'indice de la dernière ligne d'une pièce
-* \param piece La pièce
-* \return L'indice de la dernière ligne ou -1 en cas d'erreur
+*\brief Calcule l'indice de la dernière ligne d'une pièce
+*\param piece La pièce
+*\return L'indice de la dernière ligne ou -1 en cas d'erreur
 */
 int getLastRow(Piece piece){
 	for(int j = piece.size - 1; j >= 0; j--)
@@ -259,8 +260,8 @@ int getLastRow(Piece piece){
 
 /**
 *\fn void getColRawInfos(Piece *piece)
-* Met à jour les informations de premières et dernière ligne et collone d'une pièce
-* \param piece La pièce
+*\brief Met à jour les informations de premières et dernière ligne et collone d'une pièce
+*\param piece La pièce
 */
 void getColRawInfos(Piece *piece){
 	piece->firstCol = getFirstColumn(*piece);
@@ -270,24 +271,25 @@ void getColRawInfos(Piece *piece){
 }
 
 /**
-*\fn void updateGrille(Piece *piece)
-* Met à jour les informations de la grille de la pièce selon son id, sa rotation et le fait qu'elle soit géante ou non
-* \param piece La pièce
+*\fn void updateGrille(Piece *piece, int hardcore)
+*\brief Met à jour les informations de la grille de la pièce selon son id, sa rotation et le fait qu'elle soit géante ou non
+*\param piece La pièce
+*\param hardcore Indique si le mode de jeu est facile ou difficile
 */
-void updateGrille(Piece *piece){
+void updateGrille(Piece *piece, int hardcore){
 	for(int i = 0; i < piece->size; i++)
 		for(int j = 0; j < piece->size; j++)
-			(piece->grille)[i * piece->size + j] = PIECES[piece->giant][piece->id][(piece->rota) % NB_ROTA][i][j];
+			(piece->grille)[i * piece->size + j] = PIECES[hardcore][piece->giant][piece->id][(piece->rota) % NB_ROTA][i][j];
 }
 
-
 /**
-*\fn void getNewPiece(Piece *piece, int giant)
-* Obtient une nouvelle pièce aléatoire
-* \param piece La pièce où stocker cette nouvelle pièce
-* \param giant Indique si cette nouvelle pièce sera géante ou non
+*\fn void getNewPiece(Piece *piece, int giant, int hardcore)
+*\brief Obtient une nouvelle pièce aléatoire
+*\param piece La pièce où stocker cette nouvelle pièce
+*\param giant Indique si cette nouvelle pièce sera géante ou non
+*\param hardcore Indique si le mode de jeu est facile ou difficile
 */
-void getNewPiece(Piece *piece, int giant){
+void getNewPiece(Piece *piece, int giant, int hardcore){
 	piece->rota = 0;
 	piece->size = PIECE_SIZE * (giant ? RATIO_GIANT : 1);
 
@@ -306,7 +308,7 @@ void getNewPiece(Piece *piece, int giant){
 	else
 		piece->bonus = NO_BONUS;
 
-	updateGrille(piece);
+	updateGrille(piece, hardcore);
 
 	getColRawInfos(piece);
 
@@ -314,9 +316,9 @@ void getNewPiece(Piece *piece, int giant){
 
 /**
 *\fn int almostRound( float f )
-* Determine si un float est proche d'un entier ou non
-* \param f Le float
-* \return Vrai si il est proche d'un entier, sinon faux
+*\brief Determine si un float est proche d'un entier ou non
+*\param f Le float
+*\return Vrai si il est proche d'un entier, sinon faux
 */
 int almostRound( float f ){
 	return fabs(f - roundf(f)) < ROUNDABLE;
@@ -324,11 +326,11 @@ int almostRound( float f ){
 
 /**
 *\fn int putAtTop(Piece *piece,  int matrix[GRILLE_W][GRILLE_H], int frameToGo)
-* Met une pièce en haut de la grille en vérifiant que c'est possible
-* \param piece La pièce à mettre en haut
-* \param matrix La grille
-* \param frameToGo Le nombre de frame avant que la pièce commence à tomber
-* \return Vrai si la pièce a pu être placée, sinon faux
+*\brief Met une pièce en haut de la grille en vérifiant que c'est possible
+*\param piece La pièce à mettre en haut
+*\param matrix La grille
+*\param frameToGo Le nombre de frame avant que la pièce commence à tomber
+*\return Vrai si la pièce a pu être placée, sinon faux
 */
 int putAtTop(Piece *piece,  int matrix[GRILLE_W][GRILLE_H], int frameToGo){
 	piece->x = roundf((GRILLE_W - piece->size) / 2);
@@ -349,8 +351,8 @@ int putAtTop(Piece *piece,  int matrix[GRILLE_W][GRILLE_H], int frameToGo){
 
 /**
 *\fn void putAtNextPiece(Piece *piece)
-* Met une pièce dans l'emplacement qui indique la prochaine pièce
-* \param piece La pièce à mettre dans cet emplacement
+*\brief Met une pièce dans l'emplacement qui indique la prochaine pièce
+*\param piece La pièce à mettre dans cet emplacement
 */
 void putAtNextPiece(Piece *piece){
 	piece->x = GRILLE_W;
@@ -359,12 +361,12 @@ void putAtNextPiece(Piece *piece){
 
 /**
 *\fn void drawPiece(SDL_Renderer *renderer, Piece piece, SDL_Texture* brickTexture, SDL_Texture *bonusTexture, int isNextPiece)
-* Dessine une pièce (en train de tomber ou à venir)
-* \param renderer Le renderer où dessiner
-* \param piece La pièce à dessiner
-* \param brickTexture La texture des briques des pièces
-* \param bonusTexture La texture des bonus
-* \param isNextPiece Indique si c'est une pièce à venir ou qui est en train de tomber
+*\brief Dessine une pièce (en train de tomber ou à venir)
+*\param renderer Le renderer où dessiner
+*\param piece La pièce à dessiner
+*\param brickTexture La texture des briques des pièces
+*\param bonusTexture La texture des bonus
+*\param isNextPiece Indique si c'est une pièce à venir ou qui est en train de tomber
 */
 void drawPiece(SDL_Renderer *renderer, Piece piece, SDL_Texture* brickTexture, SDL_Texture *bonusTexture, int isNextPiece){
 	int caseSize = CASE_SIZE;
@@ -408,9 +410,9 @@ void drawPiece(SDL_Renderer *renderer, Piece piece, SDL_Texture* brickTexture, S
 
 /**
 *\fn int tooCloseFromWall(Piece piece)
-* Détermine si une pièce dépasse des bords de la grille
-* \param piece La pièce
-* \return Vrai si elle dépasse sinon faux
+*\brief Détermine si une pièce dépasse des bords de la grille
+*\param piece La pièce
+*\return Vrai si elle dépasse sinon faux
 */
 int tooCloseFromWall(Piece piece){
 	return (piece.y + piece.firstRow < -ROUNDABLE || piece.x + piece.firstCol < -ROUNDABLE || piece.x + piece.lastCol > GRILLE_W - 1 || piece.y + piece.lastRow > GRILLE_H - 1);
@@ -419,13 +421,13 @@ int tooCloseFromWall(Piece piece){
 
 /**
 *\fn int tryShift(int shiftInit, int maxShift, Piece * piece, float * pieceCoor, int sign, int matrix[GRILLE_W][GRILLE_H])
-* Essaye de déplacer une pièce en vérifiant si elle est dans un emplacement valide
-* \param shiftInit Le décallage de base (minimum)
-* \param maxShift Le décallage maximum
-* \param piece La pièce à tester
-* \param pieceCoor La coordonnée (x ou y) de la pièce à tester
-* \param matrix La matrice pour tester la validité de la pièce
-* \return Vrai si un emplacement valide a été trouvé sinon faux
+*\brief Essaye de déplacer une pièce en vérifiant si elle est dans un emplacement valide
+*\param shiftInit Le décallage de base (minimum)
+*\param maxShift Le décallage maximum
+*\param piece La pièce à tester
+*\param pieceCoor La coordonnée (x ou y) de la pièce à tester
+*\param matrix La matrice pour tester la validité de la pièce
+*\return Vrai si un emplacement valide a été trouvé sinon faux
 */
 int tryShift(int shiftInit, int maxShift, Piece * piece, float * pieceCoor, int sign, int matrix[GRILLE_W][GRILLE_H]){
 	*pieceCoor += sign * shiftInit;
@@ -441,13 +443,14 @@ int tryShift(int shiftInit, int maxShift, Piece * piece, float * pieceCoor, int 
 }
 
 /**
-*\fn void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H])
-* Essaye de tourner une pièce, en la déplaçant si besoin
-* \param piece La pièce à tourner
-* \param rotateSens Le sens de rotation
-* \param matrix La matrice pour vérifier les collisions
+*\fn void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], int hardcore)
+*\brief Essaye de tourner une pièce, en la déplaçant si besoin
+*\param piece La pièce à tourner
+*\param rotateSens Le sens de rotation
+*\param matrix La matrice pour vérifier les collisions
+*\param hardcore Indique si le mode de jeu est facile ou difficile
 */
-void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H]){
+void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], int hardcore){
 	if( rotateSens ){
 
 		int originalFirstCol = piece->firstCol,
@@ -457,7 +460,7 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H]){
 
 		piece->rota += rotateSens;
 
-		updateGrille(piece);
+		updateGrille(piece, hardcore);
 		getColRawInfos(piece);
 
 		//try rotate shifts:
@@ -538,7 +541,7 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H]){
 
 			//revert all
 			piece->rota -= rotateSens;
-			updateGrille(piece);
+			updateGrille(piece, hardcore);
 			getColRawInfos(piece);
 		}
 	}
@@ -547,10 +550,10 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H]){
 
 /**
 *\fn void moveSide(Piece *piece, int matrix[GRILLE_W][GRILLE_H], float distanceLateral)
-* Déplace la pièce sur le côté
-* \param piece La pièce à déplacer
-* \param matrix La matrice pour vérifier les collisions
-* \param distanceLateral La distance de déplacement
+*\brief Déplace la pièce sur le côté
+*\param piece La pièce à déplacer
+*\param matrix La matrice pour vérifier les collisions
+*\param distanceLateral La distance de déplacement
 */
 void moveSide(Piece *piece, int matrix[GRILLE_W][GRILLE_H], float distanceLateral){
  	if( piece->dir ){
@@ -574,14 +577,14 @@ void moveSide(Piece *piece, int matrix[GRILLE_W][GRILLE_H], float distanceLatera
 
 /**
 *\fn int moveDown(Piece *piece, int accelerate, int matrix[GRILLE_W][GRILLE_H], float distanceDown, int frameStop, int maxDown)
-* Déplace la pièce vers le bas
-* \param piece La pièce à déplacer
-* \param accelerate Indique si la pièce est accélérée par le joueur
-* \param matrix La matrice pour vérifier les collisions
-* \param distanceDown La distance de déplacement
-* \param frameStop Le nombre de frame maximum avant que la pièce ne se fasse inscrire dans la grille
-* \param maxDown Indique si la pièce doit être descendue jusqu'en bas
-* \return STOPPED si la pièce s'est arrêtée et doit être inscite dans la matrice sinon 0
+*\brief Déplace la pièce vers le bas
+*\param piece La pièce à déplacer
+*\param accelerate Indique si la pièce est accélérée par le joueur
+*\param matrix La matrice pour vérifier les collisions
+*\param distanceDown La distance de déplacement
+*\param frameStop Le nombre de frame maximum avant que la pièce ne se fasse inscrire dans la grille
+*\param maxDown Indique si la pièce doit être descendue jusqu'en bas
+*\return STOPPED si la pièce s'est arrêtée et doit être inscite dans la matrice sinon 0
 */
 int moveDown(Piece *piece, int accelerate, int matrix[GRILLE_W][GRILLE_H], float distanceDown, int frameStop, int maxDown){
 	float distanceMoveDown = distanceDown * accelerate;
@@ -625,10 +628,10 @@ int moveDown(Piece *piece, int accelerate, int matrix[GRILLE_W][GRILLE_H], float
 
 /**
 *\fn void changeDir(Piece *piece, int lateralMove, int frameLateral)
-* Change la direction horizontale d'une pièce
-* \param piece La pièce à modifer la direction
-* \param lateralMove La direction à attribuer
-* \param frameLateral Le nombre de frame pour parcourir une case en horizontal
+*\brief Change la direction horizontale d'une pièce
+*\param piece La pièce à modifer la direction
+*\param lateralMove La direction à attribuer
+*\param frameLateral Le nombre de frame pour parcourir une case en horizontal
 */
 void changeDir(Piece *piece, int lateralMove, int frameLateral){
 	if(lateralMove != NO_MOVE){
@@ -644,9 +647,9 @@ void changeDir(Piece *piece, int lateralMove, int frameLateral){
 
 /**
 *\fn int getPieceId(int n)
-* Obtient l'id d'une case de la matrice
-* \param n La valeur de la case de la matrice
-* \return L'id de cette case
+*\brief Obtient l'id d'une case de la matrice
+*\param n La valeur de la case de la matrice
+*\return L'id de cette case
 */
 int getPieceId(int n){
 	return n%BONUS_TRI;
@@ -654,10 +657,10 @@ int getPieceId(int n){
 
 /**
 *\fn int compareInt_i(const int * a,const int * b)
-* Fonction de comparaison de deux entiers
-* \param a Le premier entier
-* \param b Le deuxième entier
-* \return Une valeur positive si a>b et négative si b>a
+*\brief Fonction de comparaison de deux entiers
+*\param a Le premier entier
+*\param b Le deuxième entier
+*\return Une valeur positive si a>b et négative si b>a
 */
 int compareInt_i(const int * a,const int * b){
 	return(*a - *b);
@@ -665,28 +668,36 @@ int compareInt_i(const int * a,const int * b){
 
 /**
 *\fn int compareInt(const void *a,const void* b)
-* Fonction de comparaison inversée de deux entiers avec types adaptés pour qsort
-* \param a Le premier entier
-* \param b Le deuxième entier
-* \return Une valeur positive si a>b et négative si b>a
+*\brief Fonction de comparaison inversée de deux entiers avec types adaptés pour qsort
+*\param a Le premier entier
+*\param b Le deuxième entier
+*\return Une valeur positive si a>b et négative si b>a
 */
 int compareInt(const void *a,const void* b){
 	return compareInt_i(a, b);
 }
 
-
+/**
+*\fn int isOnArray(int n, int array[], int size)
+*\brief Détermine si un nombre n est présent dans un tableau
+*\param n Le nombre à chercher
+*\param array Le tableau
+*\param size La taille du tableau
+*\return Vrai si l'entier est présent, sinon faux
+*/
 int isOnArray(int n, int array[], int size){
 	for(int i = 0; i < size; i++)
 		if(array[i] == n)
 			return 1;
 	return 0;
 }
+
 /**
 *\fn void getFillPlaces(int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int nbFill)
-* Détermine aléatoirement quelles cases de la matrices doivent être replies par le bonus FILL et enclenche l'animation
-* \param matrix La grille
-* \param matrixFill Les frames d'animation de FILL pour chaque case
-* \param nbFill Le nombre de cases à remplir
+*\brief Détermine aléatoirement quelles cases de la matrices doivent être replies par le bonus FILL et enclenche l'animation
+*\param matrix La grille
+*\param matrixFill Les frames d'animation de FILL pour chaque case
+*\param nbFill Le nombre de cases à remplir
 */
 void getFillPlaces(int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int nbFill){
 	int nbEmpty = 0;
@@ -766,9 +777,9 @@ void getFillPlaces(int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRIL
 
 /**
 *\fn int getBonusId(int n)
-* Détermine l'id du bonus d'une case de la grille
-* \param n La valeur de la case de la grille
-* \return L'id du bonus correspondant
+*\brief Détermine l'id du bonus d'une case de la grille
+*\param n La valeur de la case de la grille
+*\return L'id du bonus correspondant
 */
 int getBonusId(int n){
 	int bonusId = 0;
@@ -783,15 +794,15 @@ int getBonusId(int n){
 
 /**
 *\fn void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine)
-* Enclenche l'animation de destruction de ligne et comptabilise les points rapportés et les bonus gagnés
-* \param matrix La grille
-* \param frameCompleteLine Les frames d'animation de complétion de ligne
-* \param line La ligne à compléter
-* \param lastLine L'indice de la dernière ligne complétée cette frame
-* \param bonusActivate Le nombre de chaque bonus gagnés cette frame
-* \param getBonuses Indique si la complétion de la ligne doit faire ganger les bonus présents
-* \param scoreAdd Le tableau du nombre de points et combos rapportés cette frame pour chaque ligne
-* \param comboLine Le nombre de ligne déjà complétées cette frame
+*\brief Enclenche l'animation de destruction de ligne et comptabilise les points rapportés et les bonus gagnés
+*\param matrix La grille
+*\param frameCompleteLine Les frames d'animation de complétion de ligne
+*\param line La ligne à compléter
+*\param lastLine L'indice de la dernière ligne complétée cette frame
+*\param bonusActivate Le nombre de chaque bonus gagnés cette frame
+*\param getBonuses Indique si la complétion de la ligne doit faire ganger les bonus présents
+*\param scoreAdd Le tableau du nombre de points et combos rapportés cette frame pour chaque ligne
+*\param comboLine Le nombre de ligne déjà complétées cette frame
 */
 void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine){
 	int bonusGet = -1;
@@ -853,14 +864,14 @@ void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H
 
 /**
 *\fn void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse, int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int* nextIsGiant)
-* Effectue l'action d'un bonus
-* \param bonusId L'identifiant du bonus
-* \param frameLaser Les frames d'animation du bonus LASER
-* \param framePassed Le nombre de frames déroules (pour SLOW et SPEED)
-* \param nbUse Le nombre d'exemplaires de ce bonus gagnés
-* \param matrix La grille
-* \param matrixFill Les frames d'animation du bonus FILL
-* \param nextIsGiant Indique si la prochaine pièce est géante
+*\brief Effectue l'action d'un bonus
+*\param bonusId L'identifiant du bonus
+*\param frameLaser Les frames d'animation du bonus LASER
+*\param framePassed Le nombre de frames déroules (pour SLOW et SPEED)
+*\param nbUse Le nombre d'exemplaires de ce bonus gagnés
+*\param matrix La grille
+*\param matrixFill Les frames d'animation du bonus FILL
+*\param nextIsGiant Indique si la prochaine pièce est géante
 */
 void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse, int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int* nextIsGiant){
 	switch (bonusId) {
@@ -893,13 +904,13 @@ void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse
 
 /**
 *\fn void drawMatrix(SDL_Renderer *renderer, int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], Piece currentPiece, SDL_Texture *brickTexture, SDL_Texture *bonusTexture){
-* Dessine la grille et son contenu
-* \param renderer Le renderer où dessiner
-* \param matrix La grille à dessiner
-* \param frameCompleteLine Les frames d'animation de complétion de ligne
-* \param currentPiece La pièce qui est en train de tomber (pour dessiner la collone où elle se trouve plus claire)
-* \param brickTexture La texture des briques des pièces
-* \param bonusTexture La texture des bonus
+*\brief Dessine la grille et son contenu
+*\param renderer Le renderer où dessiner
+*\param matrix La grille à dessiner
+*\param frameCompleteLine Les frames d'animation de complétion de ligne
+*\param currentPiece La pièce qui est en train de tomber (pour dessiner la collone où elle se trouve plus claire)
+*\param brickTexture La texture des briques des pièces
+*\param bonusTexture La texture des bonus
 */
 void drawMatrix(SDL_Renderer *renderer, int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], Piece currentPiece, SDL_Texture *brickTexture, SDL_Texture *bonusTexture){
 	SDL_Rect src = BRICK_SRC;
@@ -949,10 +960,10 @@ void drawMatrix(SDL_Renderer *renderer, int matrix[GRILLE_W][GRILLE_H], int fram
 
 /**
 *\fn void drawLaser(SDL_Renderer *renderer, int frameLaser[GRILLE_H], SDL_Texture *laserTexture){
-* Dessine l'animation du bonus LASER
-* \param renderer Le renderer où dessiner
-* \param frameLaser Les frames d'animation du bonus LASER
-* \param laserTexture La texture du laser
+*\brief Dessine l'animation du bonus LASER
+*\param renderer Le renderer où dessiner
+*\param frameLaser Les frames d'animation du bonus LASER
+*\param laserTexture La texture du laser
 */
 void drawLaser(SDL_Renderer *renderer, int frameLaser[GRILLE_H], SDL_Texture *laserTexture){
 	//laser
@@ -998,10 +1009,10 @@ void drawLaser(SDL_Renderer *renderer, int frameLaser[GRILLE_H], SDL_Texture *la
 
 /**
 *\fn void drawFill(SDL_Renderer* renderer, int matrixFill[GRILLE_W][GRILLE_H], SDL_Texture *brickTexture){
-* Dessine l'animation du bonus FILL
-* \param renderer Le renderer où dessiner
-* \param matrixFill Les frames d'animation du bonus FILL
-* \param brickTexture La texture des briques
+*\brief Dessine l'animation du bonus FILL
+*\param renderer Le renderer où dessiner
+*\param matrixFill Les frames d'animation du bonus FILL
+*\param brickTexture La texture des briques
 */
 void drawFill(SDL_Renderer* renderer, int matrixFill[GRILLE_W][GRILLE_H], SDL_Texture *brickTexture){
 	SDL_Rect src = BRICK_SRC;
@@ -1046,9 +1057,9 @@ void drawFill(SDL_Renderer* renderer, int matrixFill[GRILLE_W][GRILLE_H], SDL_Te
 
 /**
 *\fn void savePiece(Piece piece, int matrix[GRILLE_W][GRILLE_H])
-* Inscrit une pièce dans la matrice
-* \param piece La pièce à inscrire
-* \param matrix La matrice
+*\brief Inscrit une pièce dans la matrice
+*\param piece La pièce à inscrire
+*\param matrix La matrice
 */
 void savePiece(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 	piece.y = roundf(piece.y);
@@ -1067,13 +1078,13 @@ void savePiece(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 
 /**
 *\fn void eraseLine(int matrix[GRILLE_W][GRILLE_H], int line, int matrixFill[GRILLE_W][GRILLE_H], int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], Score * scoreAffichage)
-* Supprime une ligne de la matrice et fait descendre celles au desus
-* \param matrix La matrice
-* \param line La ligne à supprimer
-* \param matrixFill Les frames d'animations du bonus FILL pour chaque ligne
-* \param frameLaser  Les frames d'animations du bonus LASER pour chaque ligne
-* \param frameCompleteLine Les frames d'animations de complétion de ligne
-* \parm scoreAffichage Les scores de chaque ligne
+*\brief Supprime une ligne de la matrice et fait descendre celles au desus
+*\param matrix La matrice
+*\param line La ligne à supprimer
+*\param matrixFill Les frames d'animations du bonus FILL pour chaque ligne
+*\param frameLaser  Les frames d'animations du bonus LASER pour chaque ligne
+*\param frameCompleteLine Les frames d'animations de complétion de ligne
+*\parm scoreAffichage Les scores de chaque ligne
 */
 void eraseLine(int matrix[GRILLE_W][GRILLE_H], int line, int matrixFill[GRILLE_W][GRILLE_H], int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], Score * scoreAffichage){
 	for(int i = line; i > 0; i-- ){
@@ -1098,11 +1109,20 @@ void eraseLine(int matrix[GRILLE_W][GRILLE_H], int line, int matrixFill[GRILLE_W
 
 }
 
+/**
+*\fn void checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H])
+*\brief Vérifie si des lignes sont complétées
+*\param matrix La matrice
+*\param frameCompleteLine Les frames d'animation de complétion de ligne
+*\param bonusActivate Le tableau des bonus obtenus cette frame
+*\param getBonus Determine si les bonus des lignes complétés sont à donner au joueur
+*\param scoreAdd Le tableau de score par frame et par ligne
+*/
 void checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H]){
 
-	int comboLine = 0;
+	int comboLine = 0; //Le nombre de ligne complétées cette frame
 	int j;
-	int lastLine = -1;
+	int lastLine = -1; //La dernière ligne complétée cette frame
 
 	for(int i=0; i<GRILLE_H; i++){
 		for(j=0; j<GRILLE_W && matrix[j][i] != EMPTY; j++);
@@ -1112,20 +1132,29 @@ void checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H],
 				lastLine = i;
 				comboLine++;
 			}
-
-
 		}
-
 	}
-
 }
 
+/**
+*\fn void clearIntTab( int *tab, int size)
+*\brief Vide un tableau d'entier (l'initialise à 0)
+*\param tab Le tableau à initialiser
+*\param size La taille du tableau
+*/
 void clearIntTab( int *tab, int size){
 	for(int i=0; i<size; i++)
 		tab[i] = 0;
 }
 
-void transfertNextPiece(Piece *currentPiece, Piece nextPiece){
+/**
+*\fn void transfertNextPiece(Piece *currentPiece, Piece nextPiece, int hardcore)
+*\brief Copie une pièce dans une autre
+*\param currentPiece La pièce destinatrice
+*\param nextPiece La pièce source
+*\param hardcore La difficulté du jeu
+*/
+void transfertNextPiece(Piece *currentPiece, Piece nextPiece, int hardcore){
 	currentPiece->size = PIECE_SIZE * (nextPiece.giant ? RATIO_GIANT : 1);
 	if(currentPiece->giant != nextPiece.giant)
 		currentPiece->grille = realloc( currentPiece->grille, currentPiece->size * currentPiece->size * sizeof(int));
@@ -1138,14 +1167,27 @@ void transfertNextPiece(Piece *currentPiece, Piece nextPiece){
 	currentPiece->lastCol = nextPiece.lastCol;
 	currentPiece->firstRow = nextPiece.firstRow;
 	currentPiece->lastRow = nextPiece.lastRow;
-	updateGrille(currentPiece);
+	updateGrille(currentPiece, hardcore);
 }
 
+
+/**
+*\fn void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal)
+*\brief Rajoute les scores et combos obtenus cette frame dans le tableau de score à afficher pour toutes les lignes
+*\param currentPiece La pièce destinatrice
+*\param nextPiece La pièce source
+*\param hardcore La difficulté du jeu
+*/
 void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal){
 	for(int i=0; i<GRILLE_H; i++){
-		if(scoreAdd[i].score){
+		if(scoreAdd[i].score){ //Si un score est à rajouter
+
+			//Update score total
 			scoreTotal->score += scoreAdd[i].score;
+
+			//Lancer anim score total
 			scoreTotal->frameToDest = FRAME_DEST_SCORE_TOTAL;
+
 
 			scoreAffichage[i].scoreDest += scoreAdd[i].score;
 			scoreAffichage[i].flatDest += scoreAdd[i].flat;
@@ -1160,10 +1202,7 @@ void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H], Scor
 			if(scoreAdd[i].sameColor != -1)
 				scoreAffichage[i].sameColor = scoreAdd[i].sameColor;
 
-
-
-
-
+			//Lancer ou reset animation des scores de ligne
 			if(scoreAffichage[i].frame == 0){
 				scoreAffichage[i].score += scoreAdd[i].score;
 				scoreAffichage[i].frame = SCORE_TTL;
@@ -1172,6 +1211,8 @@ void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H], Scor
 				scoreAffichage[i].frame = RESET_ANIM;
 			}
 
+
+			//Si un combo est à rajouter
 			if((scoreAdd[i].combo > 1  ||  scoreAdd[i].multi>1 || scoreAdd[i].flat || scoreAdd[i].sameColor != -1 )){
 				if(scoreAffichage[i].frameCombo == 0){
 					scoreAffichage[i].flat += scoreAdd[i].flat;
@@ -1181,33 +1222,54 @@ void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H], Scor
 					scoreAffichage[i].frameCombo = RESET_ANIM;
 				}
 			}
+
 		}
 	}
+
+	//Remmetre les scores de cette frame à 0
 	initScore(scoreAdd);
 }
 
 
-
+/**
+*\fn int lineEmpty(int matrix[GRILLE_W][GRILLE_H], int line )
+*\brief Determine si une ligne est vide
+*\param matrix La matrice
+*\param line La ligne à vérifier
+*\return Vrai si la ligne est vide sinon faux
+*/
 int lineEmpty(int matrix[GRILLE_W][GRILLE_H], int line ){
 	for(int i=0;i<GRILLE_W; i++)
-		if(matrix[i][line] != EMPTY){
-			printf("%d\n", matrix[i][line]);
+		if(matrix[i][line] != EMPTY)
 			return 0;
-		}
-	printf("emty\n");
+
 	return 1;
 }
 
-void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], Score * scoreAffichage, Score * scoreAdd, ScoreTotal* scoreTotal,int *frameDestJauge,long int frameTotalSpeed,long int * frameTotalShow){
-	(*framePassed)++;
+/**
+*\fn void updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], Score * scoreAffichage, Score * scoreAdd, ScoreTotal* scoreTotal,int *frameDestJauge,long int frameTotalSpeed,long int * frameTotalShow)
+*\brief Actualise toutes les animations et réagis lorsqu'elles arrivent à certains moments
+*\remark De nombreuses variables et choses différentes se passent dans cette fonction, mais pour beaucoup elles dépendent les unes des autres donc décomposer en fonction ne ferait qu'ajouter des appels lourds
+*\param frameLaser Les animations de LASER
+*\param frameCompleteLine Les animations de complétion de ligne
+*\param matrix La matrice
+*\param matrixFill Les animations de FILL
+*\param bonusActivate Le tableau des bonus obtenus cette frame
+*\param scoreAffichage Les animations de score et combo de lignes
+*\param scoreAdd Les scores et combos obtenus cette frame
+*\param scoreTotal Le score total
+*\param frameDestJauge Les frames de l'animation de remplissage de la jauge
+*\param frameTotalSpeed Le nombre de frame total compabilisé avec bonus
+*\param frameTotalShow Le nombre de frame total qui tend vers frameTotalSpeed pour l'animation d'update score total
+*/
+void updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], Score * scoreAffichage, Score * scoreAdd, ScoreTotal* scoreTotal,int *frameDestJauge,long int frameTotalSpeed,long int * frameTotalShow){
+
 
 	if(scoreTotal->frameToDest){
 		scoreTotal->frameToDest--;
-		if(scoreTotal->score != scoreTotal->scoreShow){
-			printf("score %ld\n", scoreTotal->score);
-			printf("scoreshow %f\n", scoreTotal->scoreShow);
+		if(scoreTotal->score != scoreTotal->scoreShow)
 			scoreTotal->scoreShow += (scoreTotal->score-scoreTotal->scoreShow)/ (scoreTotal->frameToDest);
-		}
+
 	}
 
 	for(int i=0; i<GRILLE_H; i++){
@@ -1230,7 +1292,6 @@ void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteL
 
 		for(int j=0; j<GRILLE_W; j++)
 			if(matrixFill[j][i]){
-				//printf("mf %d\n",matrixFill[j][i] );
 				matrixFill[j][i]--;
 				if(matrixFill[j][i] == 0){
 					matrix[j][i] = NB_PIECES;
@@ -1250,6 +1311,7 @@ void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteL
 			}
 		}
 
+		//combo
 		if(scoreAffichage[i].frameCombo){
 			scoreAffichage[i].frameCombo--;
 			if(!scoreAffichage[i].frameCombo){
@@ -1265,60 +1327,82 @@ void updateFrames(int *framePassed, int frameLaser[GRILLE_H], int frameCompleteL
 		}
 	}
 
+	//animJauge
 	if(*frameDestJauge){
 		*frameTotalShow += (float)(frameTotalSpeed - *frameTotalShow )/ ( *frameDestJauge );
 		(*frameDestJauge)--;
 	}
 }
 
-//score
-
-int len_num(int score)
+/**
+*\fn int len_num(int n)
+*\brief Determine le nombre de chiffre d'un nombre
+*\param n Le nombre
+*\return Le nombre de chiffre que contient le nombre
+*/
+int len_num(int n)
 {
 	int count=1;
 
-	while(score >= 10){
-		score /=10;
+	while(n >= 10){
+		n /=10;
 		count++;
 	}
 
 	return count;
 }
 
+/**
+*\fn void afficherScores(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score scoreAffichage, int iScore)
+*\brief Affiche les animations de score d'une ligne
+*\param renderer Le renderer
+*\param scoreTexture La texture des chiffres
+*\param scoreAffichage L'animation de score d'une ligne
+*\param iScore L'indice de cette ligne
+*/
 void afficherScores(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score scoreAffichage, int iScore)
 {
 	if(scoreAffichage.frame && scoreAffichage.frame<=SCORE_TTL){
 		int len, size;
 		SDL_Rect src, dest;
 
-
 		len = len_num(scoreAffichage.score);
 		src = SCORE_SRC;
 		size = SIZE_SCORE;
-		dest = (SDL_Rect){SCORE_DEST + (size*len)/2 , MATRIX_Y+iScore*CASE_SIZE + (FONT_HEIGHT_RATIO*size) / 2, size, FONT_HEIGHT_RATIO*size};
 
+		//Centrer le texte
+		dest = (SDL_Rect){SCORE_DEST + (size*len)/2 , MATRIX_Y+iScore*CASE_SIZE + (FONT_HEIGHT_RATIO*size) / 2, size, FONT_HEIGHT_RATIO*size};
 		dest.x -= dest.w/2;
 		dest.y -= dest.h/2;
-		if(dest.h < CASE_SIZE){
+		if(dest.h < CASE_SIZE)
 			dest.y += (CASE_SIZE-dest.h) / 2;
-		}
 
-		for(int j=0 ; j < len; j++)
+
+		for(int j=0 ; j < len; j++) //pour chaque chiffre en partant de la droite
 		{
-			src.x = SCORE_SRC.w * (scoreAffichage.score%10);
 			SDL_SetTextureAlphaMod(scoreTexture, ALPHA_SCORE[SCORE_TTL -scoreAffichage.frame]);
 
+			src.x = SCORE_SRC.w * (scoreAffichage.score%10);
 			SDL_RenderCopy(renderer,scoreTexture,&src,&dest);
 
 			scoreAffichage.score /=10;
 			dest.x -= size;
 		}
 	}
-
-
-
 }
 
+
+/**
+*\fn void drawComboText(SDL_Renderer *renderer, char * msgCombo, TTF_Font * font, Score scoreAffichage, SDL_Rect * dest, SDL_Color comboColor, float size_score)
+*\brief Affiche un texte de combo
+*\param renderer Le renderer
+*\param msgCombo Le message à afficher
+*\param font La police d'écriture du combo
+*\param scoreAffichage Les informations du combo
+*\param dest L'endroit où l'afficher
+*\param comboColor La couleur d'écriture
+*\param size_score La taille d'écriture
+*/
 void drawComboText(SDL_Renderer *renderer, char * msgCombo, TTF_Font * font, Score scoreAffichage, SDL_Rect * dest, SDL_Color comboColor, float size_score){
 
 	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, msgCombo, comboColor);
@@ -1338,6 +1422,14 @@ void drawComboText(SDL_Renderer *renderer, char * msgCombo, TTF_Font * font, Sco
 	SDL_DestroyTexture(Message);
 }
 
+/**
+*\fn float getDrawSize(SDL_Renderer *renderer, char * msgTotal, TTF_Font * font)
+*\brief Determine la taille d'écriture d'un message
+*\param renderer Le renderer
+*\param msgCombo Le message à afficher
+*\param font La police d'écriture du combo
+*\return La taille d'écriture maximale de ce message
+*/
 float getDrawSize(SDL_Renderer *renderer, char * msgTotal, TTF_Font * font){
 
 	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, msgTotal, (SDL_Color){255,255,255});
@@ -1357,11 +1449,26 @@ float getDrawSize(SDL_Renderer *renderer, char * msgTotal, TTF_Font * font){
 	return size_score;
 }
 
+/**
+*\fn int intlog(double x, double base)
+*\brief Calcule le logarithme d'un nombre à une certaine base
+*\param x Le nombre
+*\param base La base
+*\return Le logarithme de x à la base "base"
+*/
 int intlog(double x, double base) {
     return (int)(log(x) / log(base));
 }
 
-void afficherScoreTotal(SDL_Renderer * renderer, TTF_Font *font, ScoreTotal score){
+
+/**
+*\fn void drawTotalScore(SDL_Renderer * renderer, TTF_Font *font, ScoreTotal score)
+*\brief Affiche le score total du joueur
+*\param renderer Le renderer où afficher
+*\param font La police d'écriture
+*\param score Le score du joueur
+*/
+void drawTotalScore(SDL_Renderer * renderer, TTF_Font *font, ScoreTotal score){
 
 	char msgScore[MAX_APPEND_LENGHT];
 	sprintf(msgScore, "%d", (int)score.scoreShow);
@@ -1387,7 +1494,15 @@ void afficherScoreTotal(SDL_Renderer * renderer, TTF_Font *font, ScoreTotal scor
 	SDL_DestroyTexture(Message);
 }
 
-void afficherCombo(SDL_Renderer *renderer, Score scoreAffichage, int line, TTF_Font *font ){
+/**
+*\fn void drawCombo(SDL_Renderer *renderer, Score scoreAffichage, int line, TTF_Font *font )
+*\brief Determine les textes de combos et leurs attributs et les affiche
+*\param renderer Le renderer où afficher
+*\param scoreAffichage Le combo à afficher
+*\param line La ligne du combo
+*\param font La police d'écriture à utiliser
+*/
+void drawCombo(SDL_Renderer *renderer, Score scoreAffichage, int line, TTF_Font *font ){
 
 	if(scoreAffichage.frameCombo && scoreAffichage.frameCombo<=SCORE_TTL){
 		char msgCombo[MAX_APPEND_LENGHT]= "";
@@ -1399,42 +1514,33 @@ void afficherCombo(SDL_Renderer *renderer, Score scoreAffichage, int line, TTF_F
 
 		SDL_Rect dest = {COMBO_DRAW_X,MATRIX_Y + line * CASE_SIZE ,0,0};
 
-
-		/*if(scoreAffichage.rainbow ){
-
-			for(int i=0; i<NB_RAINBOW; i++){
-				sprintf(msgCombo, "%c", RAINBOW_TEXT[i]);
-				comboColor = RAINBOW_COLOR[i];
-				drawComboText(renderer, msgCombo, font, scoreAffichage, &dest, comboColor);
-			}
-		}*/
-
 		//creations messages
+		//Combo color
 		if(scoreAffichage.sameColor != -1 )
 			sprintf(msgColor, "Color!  x%d  ", RATIO_SAME_COLOR);
 
+		//Combo basique
 		if(scoreAffichage.combo > 1)
 			sprintf(msgCombo, "Combo!  x%d  ",scoreAffichage.combo);
 
+		//Combo bonus multiple
 		if(scoreAffichage.multi > 1)
 			sprintf(msgMulti, "x%d ",scoreAffichage.multi);
 
+		//Combo bonus flat
 		if(scoreAffichage.flat)
 			sprintf(msgFlat, "+ %d",scoreAffichage.flat * NB_FLAT_POINT);
 
 		//calcul taille max
-
 		strcat(msgTotal,msgColor);
 		strcat(msgTotal,msgCombo);
 		strcat(msgTotal,msgMulti);
 		strcat(msgTotal,msgFlat);
-
 		float size_score = getDrawSize(renderer, msgTotal, font);
-		//drawComboText(renderer, msgTotal, font, scoreAffichage, &dest, (SDL_Color){255,255,255}, size_score);
+
 
 		//affichage messages
 		if(scoreAffichage.sameColor != -1 ){
-
 			comboColor = BRICK_COLORS[scoreAffichage.sameColor];
 			drawComboText(renderer, msgColor, font, scoreAffichage, &dest, comboColor, size_score);
 		}
@@ -1450,59 +1556,76 @@ void afficherCombo(SDL_Renderer *renderer, Score scoreAffichage, int line, TTF_F
 			comboColor = FLAT_COLOR[scoreAffichage.flat-1];
 			drawComboText(renderer, msgFlat, font, scoreAffichage, &dest, comboColor, size_score);
 		}
-
-
-		/*if(strlen(msgCombo))
-			printf("\n\ncombo phrase : %s\n", msgCombo);
-		if(strlen(msgFlat))
-			printf("combo phrase : %s\n", msgFlat);
-		if(strlen(msgMulti))
-			printf("combo phrase : %s\n", msgMulti);*/
-
 	}
-
 }
 
+/**
+*\fn void drawJauge(SDL_Renderer * renderer, SDL_Texture * jaugeTexture, long int frameTotalShow)
+*\brief Affiche la jauge de vitesse en fonction de l'avancement de la partie
+*\param renderer Le renderer où afficher
+*\param jaugeTexture La texture de la jauge
+*\param frameTotalShow Le total de frame à utiliser
+*/
 void drawJauge(SDL_Renderer * renderer, SDL_Texture * jaugeTexture, long int frameTotalShow){
 
-
+	//Calcule le ratio de frame actuelles / frame max
 	float ratioVitesse =  (float)frameTotalShow / TIME_TO_REACH_MAX ;
 	if(ratioVitesse>1)
 		ratioVitesse = 1;
 	else if(ratioVitesse<0)
 		ratioVitesse = 0;
-	SDL_Rect jauge = JAUGE_SPEED_DEST;
 
+	SDL_Rect jauge = JAUGE_SPEED_DEST;
+	jauge.y--; //Pour eviter les débordements quand la fenetre est redimensionnées
+	jauge.h-=2;
+
+	//Dessine l'arrière plan
 	SDL_SetRenderDrawColor(renderer, JAUGE_COLOR_BACKGROUND.r, JAUGE_COLOR_BACKGROUND.g, JAUGE_COLOR_BACKGROUND.b, 255);
 	SDL_RenderFillRect(renderer, &jauge);
 
+	//Dessiner le taux de vitesse dans la jauge
 	jauge.h *= ratioVitesse;
 	jauge.y += JAUGE_SPEED_DEST.h - jauge.h;
 	SDL_SetRenderDrawColor(renderer, JAUGE_COLOR.r, JAUGE_COLOR.g, JAUGE_COLOR.b, 255);
 	SDL_RenderFillRect(renderer, &jauge);
 
+	//dessiner la texture de jauge pour recouvrir
+	jauge = JAUGE_SPEED_DEST;
 	SDL_RenderCopy(renderer, jaugeTexture, &JAUGE_SPEED_SRC, &JAUGE_SPEED_DEST);
 }
 
+
+/**
+*\fn int linesInCompletion(int matrixFill[GRILLE_W][GRILLE_H], int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H])
+*\brief Détermine si une ligne va potentiellement bientôt être complétée
+*\param matrixFill Les animations du bonus FILL
+*\param frameLaser Les animations du bonus LASER
+*\param frameCompleteLine Les animations de complétion de ligne
+*/
 int linesInCompletion(int matrixFill[GRILLE_W][GRILLE_H], int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H]){
 	for(int line=0; line<GRILLE_H; line++){
-	//	printf("fl %d\n",frameCompleteLine[line] );
-		if(frameLaser[line] != -1 || frameCompleteLine[line] != -1){
-			printf("fl %d\n",frameLaser[line] );
+
+		//checkLaser and complete anim
+		if(frameLaser[line] != -1 || frameCompleteLine[line] != -1)
 			return SDL_TRUE;
-		}
 
-
-		for(int col=0; col<GRILLE_W; col++){
-			printf("ff %d\n",matrixFill[col][line]);
+		//Check Fill anim
+		for(int col=0; col<GRILLE_W; col++)
 			if(matrixFill[col][line])
 				return SDL_TRUE;
-		}
+
 	}
-	printf("no line in c\n");
+
 	return SDL_FALSE;
 }
 
+/**
+*\fn void deathAnimInit(int *gameOver,DeadPiece **deadPieces,int *nbDeadPieces, int matrix[GRILLE_W][GRILLE_H])
+*\brief Met en place et enclenche l'animation de fin de partie en scannant la matrice et créant les pièces mortes
+*\param deadPieces Le tableau de pièce mortes
+*\param nbDeadPieces Le nombre de pièces mortes
+*\param matrix La matrice
+*/
 void deathAnimInit(int *gameOver,DeadPiece **deadPieces,int *nbDeadPieces, int matrix[GRILLE_W][GRILLE_H]){
 
 	(*deadPieces) = malloc(GRILLE_W * GRILLE_H * sizeof(DeadPiece));
@@ -1510,7 +1633,8 @@ void deathAnimInit(int *gameOver,DeadPiece **deadPieces,int *nbDeadPieces, int m
 
 	for(int col = 0; col<GRILLE_W; col++){
 		for(int line=0; line<GRILLE_H; line++){
-			if(matrix[col][line] != EMPTY){
+			if(matrix[col][line] != EMPTY){ //Si il y a une brique
+
 				(*deadPieces)[(*nbDeadPieces)++] = (DeadPiece){
 					(Vector2f){(rand()%INTERVALE_DEAD_SPEED.x)/PRECISION + BASE_DEAD_SPEED.x, (rand()%INTERVALE_DEAD_SPEED.y)/PRECISION + BASE_DEAD_SPEED.y + COEF_LINE * line}, //speed
 					MATRIX_X + col * CASE_SIZE, //x
@@ -1519,52 +1643,74 @@ void deathAnimInit(int *gameOver,DeadPiece **deadPieces,int *nbDeadPieces, int m
 					rand()%(int)INTERVALE_ROTA_SPEED/PRECISION + BASE_ROTA_SPEED,//rotaSpeed
 					matrix[col][line]//id
 				};
-				while(abs( (*deadPieces)[(*nbDeadPieces)-1].rotaSpeed ) > MIN_ROTA )
-					(*deadPieces)[(*nbDeadPieces)-1].rotaSpeed = rand()%(int)INTERVALE_ROTA_SPEED/PRECISION + BASE_ROTA_SPEED;
 
-				printf("rota : %f\n", (*deadPieces)[(*nbDeadPieces)-1].rotaSpeed);
+				while(abs( (*deadPieces)[(*nbDeadPieces)-1].rotaSpeed ) > MIN_ROTA )
+					(*deadPieces)[(*nbDeadPieces)-1].rotaSpeed = rand()%(int)INTERVALE_ROTA_SPEED/PRECISION + BASE_ROTA_SPEED; //Veille à ce que la valeur de rotation soit dans les normes
+
 			}
-			matrix[col][line] = EMPTY;
+			matrix[col][line] = EMPTY; //vide la case de la matrice
 		}
 	}
 	(*deadPieces) = realloc(*deadPieces, (*nbDeadPieces) * sizeof(DeadPiece));
-	printf("nb %d\n",(*nbDeadPieces) );
-
 }
 
+/**
+*\fn void afficherDeadPiece(SDL_Renderer *renderer, DeadPiece deadPiece, SDL_Texture* brickTexture, SDL_Texture* bonusTexture)
+*\brief Affiche une pièce morte de l'animation de fin de partie
+*\param renderer Le renderer où afficher
+*\param deadPiece La pièce morte à afficher
+*\param brickTexture La texture des briques
+*\param bonusTexture La texture des bonus
+*/
 void afficherDeadPiece(SDL_Renderer *renderer, DeadPiece deadPiece, SDL_Texture* brickTexture, SDL_Texture* bonusTexture){
 
 	SDL_Rect src = BRICK_SRC;
 	SDL_Rect dest = BRICK_DEST;
 
+	//positionner la brique
 	dest.x = deadPiece.x;
 	dest.y = deadPiece.y;
 	src.x = getPieceId(deadPiece.id) * BRICK_SRC.w;
 
+	//afficher brique
 	SDL_RenderCopyEx(renderer, brickTexture, &src, &dest,deadPiece.rota,NULL,SDL_FLIP_NONE);
-	//SDL_RenderCopy(renderer, brickTexture, &src, &dest);
 
+	//afficher bonus
 	if(deadPiece.id >= 10){
 		src.x = (getBonusId(deadPiece.id) -1) * BRICK_SRC.w;
 		SDL_RenderCopyEx(renderer, bonusTexture, &src, &dest,deadPiece.rota,NULL,SDL_FLIP_NONE);
-		//SDL_RenderCopy(renderer, bonusTexture, &src, &dest);
 	}
 }
 
+/**
+*\fn void moveDeadPiece(DeadPiece *deadPiece)
+*\brief Déplace une pièce morte en fonction de ses attributs
+*\param deadPiece La pièce morte à afficher
+*/
 void moveDeadPiece(DeadPiece *deadPiece){
 	deadPiece->x += deadPiece->speed.x;
 	deadPiece->y -= deadPiece->speed.y;
-	printf("%f\n", deadPiece->speed.y);
+
 	deadPiece->speed.y -= GRAVITE;
 	if(deadPiece->speed.y < MIN_DEAD_SPEED)
 		deadPiece->speed.y = MIN_DEAD_SPEED;
 	deadPiece->rota += deadPiece->rotaSpeed;
 }
 
-// int launchSnake(SDL_Window *myWindow, SDL_Renderer* renderer, char *identifiant, char *token){
-int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *token,int hardcore){
+
+/**
+*\fn int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *token,int hardcore)
+*\brief La fonction principale : Lance et fait tourner le jeu tetris
+*\param renderer Le renderer où afficher
+*\param highscore Le meilleur score fait par le joueur
+*\param ratioWindowSize Le ratio de la taille de fenetre par rapport à la taille max
+*\param token Le token du joueur pour les requêtes
+*\param hardcore Le niveau de difficulté du jeu
+*\return 0 en cas de retour normal
+*/
+int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *token, int hardcore){
 /////////////////////
-/// MISE EN PLACE ///``
+// MISE EN PLACE   //``
 /////////////////////
 	myInit();
 	SDL_Texture* textures[NB_TETRIS_TEXTURES];
@@ -1599,7 +1745,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *t
 	int quit = SDL_FALSE;
 	while(!quit){
 		////////////
-		/// Vars ///`
+		// Vars   //`
 		////////////
 		int gameOver = SDL_FALSE;
 		//move
@@ -1675,23 +1821,23 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *t
 		//mouse
 		SDL_Point mouseCoor;
 
-		///////////////////////
-		/// Initialize vars ///`
-		///////////////////////
+		 // // // // // // // //
+		//   Initialize vars   //
+		 // // // // // // // //
 		initScore(scoreAffichage);
 		initScore(scoreAdd);
 		initMatrix(matrix, EMPTY);
 		initMatrix(matrixFill, 0);
 		initPiece(&currentPiece);
 		initPiece(&nextPiece);
-		getNewPiece(&currentPiece, SDL_FALSE);
-		getNewPiece(&nextPiece, SDL_FALSE);
+		getNewPiece(&currentPiece, SDL_FALSE, hardcore);
+		getNewPiece(&nextPiece, SDL_FALSE, hardcore);
 		putAtTop(&currentPiece, matrix, (int)frame[TO_GO]);
 		putAtNextPiece(&nextPiece);
 
-	/////////////////////
-	/// BOUCLE DU JEU ///``
-	/////////////////////
+	 // // // // // // //
+	//   BOUCLE DU JEU  //``
+	 // // // // // // //
 
 		while( 1 ){
 
@@ -1702,9 +1848,9 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *t
 			rotate = SDL_FALSE;
 			maxDown = SDL_FALSE;
 
-		////////////
+		// // // //
 		// Events //`
-		////////////
+		// // // //
 			SDL_Event event;
 			while( SDL_PollEvent(&event) ){
 				switch( event.type ){
@@ -1735,9 +1881,9 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *t
 			}
 
 
-		////////////////////////////
+		 // // // // // // // // //
 		// Handle Keyboard inputs //`
-		////////////////////////////
+		 // // // // // // // // //
 			SDL_PumpEvents();
 
 			if( keystate[SDL_SCANCODE_DOWN] )
@@ -1747,6 +1893,8 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *t
 			if( keystate[SDL_SCANCODE_SPACE] && rdyToSpace){
 				maxDown = SDL_TRUE;
 				rdyToSpace = SDL_FALSE;
+				if(nbDeadPieces)
+					break;
 			}
 
 			if( keystate[SDL_SCANCODE_ESCAPE] ){
@@ -1768,10 +1916,6 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *t
 			else if( (keystate[SDL_SCANCODE_E] && rdyToRotate[1])){
 				rdyToRotate[1] = SDL_FALSE;
 				rotate = -1;
-				if(nbDeadPieces){ //stop
-					return 0;
-				}
-
 			}
 
 
@@ -1780,12 +1924,12 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *t
 
 			//gérer utilisation bonus ?
 
-		//////////////
+		// // // // //
 		// Gameplay //`
-		//////////////
+		// // // // //
 			if(!gameOver && !waitToPlace){
 				//rotate normal then left down right
-				rotatePiece(&currentPiece, rotate, matrix);
+				rotatePiece(&currentPiece, rotate, matrix, hardcore);
 
 
 
@@ -1810,9 +1954,9 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *t
 									useBonus(i+1, frameLaser, &framePassed, bonusActivate[i], matrix, matrixFill, &nextIsGiant);
 
 							updateDistances(frame, distances, &framePassed, &frameDestJauge, &frameTotalSpeed);
-							transfertNextPiece(&currentPiece,nextPiece);
+							transfertNextPiece(&currentPiece,nextPiece, hardcore);
 
-							getNewPiece(&nextPiece, nextIsGiant);
+							getNewPiece(&nextPiece, nextIsGiant, hardcore);
 							if(nextIsGiant)
 								nextIsGiant--;
 
@@ -1844,14 +1988,10 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *t
 			for(int i=0; i<nbDeadPieces; i++)
 				moveDeadPiece(&(deadPieces[i]));
 
-		///////////////////
-		// Check hitboxs //`
-		///////////////////
 
-		//////////
+		 // // //
 		// Draw //`
-		//////////
-
+		 // // //
 
 			SDL_RenderCopy(renderer, textures[T_BACKGROUND], &background_src, NULL);
 
@@ -1866,12 +2006,12 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *t
 
 
 			//SDL_RenderFillRect(renderer, &SCORE_TOTAL_DEST);
-			afficherScoreTotal(renderer,fonts[T_FONT_COMBO], score);
+			drawTotalScore(renderer,fonts[T_FONT_COMBO], score);
 			//drawNextPiece(nextPiece);
 
 			for(int i=0; i<GRILLE_H; i++){
 				afficherScores(renderer, textures[T_CHIFFRE], scoreAffichage[i], i);
-				afficherCombo(renderer,  scoreAffichage[i], i, fonts[T_FONT_COMBO]);
+				drawCombo(renderer,  scoreAffichage[i], i, fonts[T_FONT_COMBO]);
 			}
 			for(int i=0; i<nbDeadPieces; i++)
 				afficherDeadPiece(renderer, deadPieces[i], textures[T_BRICKS], textures[T_BONUS]);
@@ -1889,25 +2029,26 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *t
 			SDL_RenderPresent(renderer);
 
 
-		////////////////
+		 // // // // //
 		// Next frame //`
-		////////////////
+		 // // // // //
 
 			//regulateFPS
 			currentTime = SDL_GetTicks();
 			while( currentTime - lastTime < 1000./FRAMES_PER_SECOND )
 				currentTime = SDL_GetTicks();
 
-			if( currentTime - lastTime > 1000./FRAMES_PER_SECOND )
-				printf(" TIME FRAME : %d\n", currentTime - lastTime);
+			/*if( currentTime - lastTime > 1000./FRAMES_PER_SECOND )
+				printf(" TIME FRAME : %d\n", currentTime - lastTime);*/
 
 			lastTime = currentTime;
 
 			//Actualise frames
-			if(!gameOver){
-				updateFrames(&framePassed, frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, scoreAffichage, scoreAdd, &score, &frameDestJauge, frameTotalSpeed, &frameTotalShow);
-			}
+			framePassed++;
+			if(!gameOver)
+				updateFrames(frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, scoreAffichage, scoreAdd, &score, &frameDestJauge, frameTotalSpeed, &frameTotalShow);
 
+			//background
 			backgroundFrame++;
 			background_src.x = BACKGROUND_SRC.w * ((backgroundFrame/3)%BACKGROUND_COL);
 			background_src.y = BACKGROUND_SRC.h * ((backgroundFrame/(3*BACKGROUND_COL))%BACKGROUND_ROW);

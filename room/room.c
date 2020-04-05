@@ -1563,7 +1563,10 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].score,WinWidth,WinHeight,token,0));
 									updateMeilleureScore(meilleureScore,token);
 								}break;
-								case 12: SDL_Delay(500);break;
+								case 12:
+									tetris( pRenderer ,meilleureScore[TETRIS_EASY].score, 1920./WinWidth,token,0);
+									updateMeilleureScore(meilleureScore,token);
+									break;
 								case 13: SDL_Delay(500);break;
 								case 14: SDL_Delay(500);break;
 								case 15: SDL_Delay(500);break;
