@@ -476,6 +476,7 @@ int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleu
 
 int main()
 {
+	// juste pour push
 	SDL_Init(SDL_INIT_VIDEO);
 	TTF_Init();
 	Mix_Init(MIX_INIT_MP3);
