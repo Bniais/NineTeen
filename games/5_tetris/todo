@@ -2,15 +2,15 @@
 \\  canceled
 /   in progress
 ?   still needed??
-/?/ Surely done 
+/?/ Surely done
 
-bonus is at random brick
+?bonus is at random brick
 
 
 bugs :
 	/?/Piece se stoppe instant en atterissant alors que pas accé
 	//score dest bug
-	afficher next bugs
+	//afficher next bugs
 	?rotate diagonale
 
 

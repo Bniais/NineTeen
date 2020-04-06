@@ -19,12 +19,23 @@ const SDL_Point UNDEFINED = {-500, -500};
 
 
 //Grille
-#define CASE_SIZE 38
-#define BONUS_SIZE 20
+#define CASE_SIZE 38.
+#define BONUS_SIZE 20.
 #define GRILLE_W 10
 #define GRILLE_H 20
 #define FRAME_COMPLETE_LINE 11
 #define EMPTY -1
+
+
+//quit
+char * QUIT = "Echap";
+SDL_Rect QUIT_DEST = {20,20,0,0};
+#define SIZE_QUIT 28.
+
+///replay
+char* REPLAY = "Appuyer sur Espace pour rejouer !";
+#define Y_START_REPLAY BASE_WINDOW_H
+#define SIZE_REPLAY 43.
 
 
 //deplacement
@@ -56,7 +67,7 @@ const SDL_Point UNDEFINED = {-500, -500};
 //Bonus
 #define PROBA_BONUS 5
 #define NB_BONUSES 7
-enum{NO_BONUS, FILL, MULTI_POINT, LASER, SLOW, SPEED, GIANT, FLAT_POINT};
+enum{NO_BONUS, FILL, LASER, MULTI_POINT, FLAT_POINT, SLOW, SPEED, GIANT};
 #define BONUS_TRI 10 //pour stocker bonus et id dans matrice et deadPiece
 
 	//laser
@@ -130,7 +141,7 @@ enum{NO_BONUS, FILL, MULTI_POINT, LASER, SLOW, SPEED, GIANT, FLAT_POINT};
 *\brief Contient des informations sur une pièce (actuelle ou suivante)
 */
 typedef struct {
-	unsigned int rota;  /*!< \brief */
+	unsigned int rota;  /*!< \brief La rotation de la pièce*/
 	int id; /*!< \brief L'id de la pièce (determine la forme)*/
 	float x; /*!< \brief La position en x de la pièce */
 	float y; /*!< \brief La position en y de la pièce*/
@@ -175,17 +186,34 @@ Vector2f BASE_DEAD_SPEED = {-7, 3};
 
 
 //textures and animations
-#define NB_TETRIS_TEXTURES 7
-typedef enum{T_LASER_ANIM, T_BRICKS, T_BONUS, T_HUD_GRILLE, T_BACKGROUND, T_CHIFFRE, T_SPEED_JAUGE}T_TEXTURES;
+#define NB_TETRIS_TEXTURES 8
+typedef enum{T_LASER_ANIM, T_BRICKS, T_BONUS, T_HUD_GRILLE, T_CHIFFRE, T_SPEED_JAUGE, T_TURN, T_FLECHE}T_TEXTURES;
+
+
 char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 	"./games/5_tetris/Textures/laserAnim.png",
 	"./games/5_tetris/Textures/bricks.png",
 	"./games/5_tetris/Textures/bonus.png",
 	"./games/5_tetris/Textures/hud_grille.png",
-	"./games/5_tetris/Textures/background.png",
 	"./games/5_tetris/Textures/chiffre.png",
-	"./games/5_tetris/Textures/speedJauge.png"
+	"./games/5_tetris/Textures/speedJauge.png",
+	"./games/5_tetris/Textures/turn.png",
+	"./games/5_tetris/Textures/fleche.png"
 };
+
+//to test
+/*
+char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
+	"./Textures/laserAnim.png",
+	"./Textures/bricks.png",
+	"./Textures/bonus.png",
+	"./Textures/hud_grille.png",
+	"./Textures/chiffre.png",
+	"./Textures/speedJauge.png",
+	"./Textures/turn.png",
+	"./Textures/fleche.png"
+};*/
+
 
 	//hud et grille
 	#define MATRIX_X (BASE_WINDOW_W/2-(CASE_SIZE*GRILLE_W)/2)
@@ -201,14 +229,62 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 	#define SHIFT_RIGHT_NEXT (-558-8)
 	#define SHIFT_TOP_NEXT -8
 
+
+	//helpText
+	#define NB_HELP 4
+	char * HELP_TEXT[NB_HELP] = {
+		"Tourner :         A      E",
+		"Deplacer :  ",
+		"Accelerer :  ",
+		"Descendre max :     ESPACE"
+	};
+	#define SIZE_HELP 32.
+	#define WIDTH_HELP 150
+	SDL_Rect HELP_DEST[NB_HELP] = {
+		{30, 100,WIDTH_HELP,SIZE_HELP},
+		{30, 200,WIDTH_HELP,SIZE_HELP},
+		{30, 300,WIDTH_HELP,SIZE_HELP},
+		{30, 400,WIDTH_HELP,SIZE_HELP}
+
+	};
+
+	SDL_Rect FLECHE_SRC = {0,0, 500, 435};
+	SDL_Rect FLECHE_DEST[3] = {
+		{250,204,50,30},
+		{320,204,50,30},
+		{285,300,50,30}
+	};
+
+	SDL_Rect TURN_SRC = {0,0, 624, 289};
+	SDL_Rect TURN_DEST[2] = {
+		{245,84,50,24},
+		{318,84,50,24}
+	};
+
+	//bonus help text
+	#define SIZE_HELP_BONUS 28.
+	SDL_Rect BONUS_HINT_DEST = {80,500,50,30};
+	SDL_Rect BRICK_HELP_BONUS_DEST = {30 ,500, CASE_SIZE, CASE_SIZE};
+	#define ID_HELP_BONUS 4
+	char * BONUS_TEXT[NB_BONUSES] = {
+		"Remplit les trous des lignes",
+		"Supprime les 3 lignes du bas",
+		"Points de la ligne :  x5",
+		"Points de la ligne :  +100",
+		"Ralentit le jeu",
+		"Accelere le jeu",
+		"La prochaine piece sera geante"
+	};
+	#define ESPACEMENT_HINT_BONUS 70
+
 	//combo
 	#define SIZE_COMBO (7.*CASE_SIZE/8)
 	#define WIDTH_DRAW_COMBO 630
 	#define COMBO_DRAW_X (MATRIX_X + GRILLE_W * CASE_SIZE + 95)
 
 	//score
-	#define SIZE_SCORE 25
-	#define SIZE_SCORE_TOTAL 40
+	#define SIZE_SCORE 25.
+	#define SIZE_SCORE_TOTAL 40.
 	#define WIDTH_SCORE_TOTAL 150
 	SDL_Rect SCORE_TOTAL_DEST = {489+96, 272+54,WIDTH_SCORE_TOTAL,SIZE_SCORE_TOTAL};
 	#define SCORE_TTL 40
@@ -230,9 +306,15 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 	//fonts
 	#define NB_TETRIS_FONTS 1
 	typedef enum{T_FONT_COMBO}T_FONTS;
+
 	char* DIR_FONTS_TETRIS[NB_TETRIS_TEXTURES] = {
 		"./games/5_tetris/Fonts/zorque.ttf"
 	};
+
+	//to test
+	/*char* DIR_FONTS_TETRIS[NB_TETRIS_TEXTURES] = {
+		"./Fonts/zorque.ttf"
+	};*/
 
 	//laser
 	SDL_Rect LASER_DIM = {0,0,500,40};
@@ -249,9 +331,13 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 
 
 //colors
+const SDL_Color WHITE = {255,255,255};
+	//background
+	const SDL_Color BACKGROUND_COLOR = {0x00, 0x19, 0x3a};
+
 	//jauge
-	SDL_Color JAUGE_COLOR = {0x00,0xcc,0xFF};
-	SDL_Color JAUGE_COLOR_BACKGROUND = {0x06,0x1a,0x35};//061a35
+	const SDL_Color JAUGE_COLOR = {0x00,0xcc,0xFF};
+	const SDL_Color JAUGE_COLOR_BACKGROUND = {0x06,0x1a,0x35};//061a35
 
 	//grille
 	const SDL_Color CONTOUR_GRILLE = {0, 51, 94, 255};
@@ -259,13 +345,13 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 	const SDL_Color COL_PIECE = {17,108,166,255};
 
 	//score
-	SDL_Color SCORE_TOTAL_COLOR = {0x7D,0xF9,0xFF};
+	const SDL_Color SCORE_TOTAL_COLOR = {0x7D,0xF9,0xFF};
 
 	//combo
 	#define NB_COMBO 8
 
 		//same color
-		SDL_Color BRICK_COLORS[NB_PIECES] = {
+		const SDL_Color BRICK_COLORS[NB_PIECES] = {
 			{0xff, 0x00, 0x00},
 			{0xf3, 0x69, 0x0d},
 			{0xff, 0xe4, 0x00},
@@ -276,7 +362,7 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 		};
 
 		//classic combo
-		SDL_Color COMBO_COLOR[NB_COMBO] =
+		const SDL_Color COMBO_COLOR[NB_COMBO] =
 		{ // rouges
 			{0xfe, 0xdf, 0x15},
 			{0xfe, 0x88, 0x28},
@@ -289,7 +375,7 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 		};
 
 		//flat bonus
-		SDL_Color FLAT_COLOR[GRILLE_W] =
+		const SDL_Color FLAT_COLOR[GRILLE_W] =
 		{//vert bleu
 			{0x00, 0xad, 0xf1},
 			{0x00, 0xb1, 0x94},
@@ -304,7 +390,7 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 		};
 
 		//multi bonus
-		SDL_Color MULTI_COLOR[GRILLE_W] =
+		const SDL_Color MULTI_COLOR[GRILLE_W] =
 		{ //violet
 			{0xff, 0x33, 0xa6},
 			{0xd0, 0x40, 0xb1},

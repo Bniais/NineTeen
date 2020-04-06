@@ -18,7 +18,7 @@ launcher.o: launcher/launcher.c
 	$(CC) $(FLAGS) $(LSDL) $<
 
 room.o : room/room.c import.o
-	$(CC) $(FLAGS) $<
+	$(CC) $(FLAGS) $(LSDL) $<
 
 flappy_bird.o : games/3_flappy_bird/flappy_bird.c
 	$(CC) $(FLAGS) $(LSDL) $^

@@ -360,35 +360,65 @@ void putAtNextPiece(Piece *piece){
 }
 
 /**
-*\fn void drawPiece(SDL_Renderer *renderer, Piece piece, SDL_Texture* brickTexture, SDL_Texture *bonusTexture, int isNextPiece)
+*\fn void drawPiece(SDL_Renderer *renderer, Piece piece, SDL_Texture* brickTexture, SDL_Texture *bonusTexture, int isNextPiece, int hardcore)
 *\brief Dessine une pièce (en train de tomber ou à venir)
 *\param renderer Le renderer où dessiner
 *\param piece La pièce à dessiner
 *\param brickTexture La texture des briques des pièces
 *\param bonusTexture La texture des bonus
 *\param isNextPiece Indique si c'est une pièce à venir ou qui est en train de tomber
+*\param hardcore La difficulté de la partie
 */
-void drawPiece(SDL_Renderer *renderer, Piece piece, SDL_Texture* brickTexture, SDL_Texture *bonusTexture, int isNextPiece){
+void drawPiece(SDL_Renderer *renderer, Piece piece, SDL_Texture* brickTexture, SDL_Texture *bonusTexture, int isNextPiece, int hardcore){
 	int caseSize = CASE_SIZE;
 	SDL_Point shiftCenterNext={0,0};
-	if(isNextPiece && piece.giant)
-		caseSize = CASE_SIZE / 2;
+
+
+	int largeur = piece.lastCol - piece.firstCol + 1;
+	int hauteur = piece.lastRow - piece.firstRow + 1;
 
 	if(isNextPiece){
-		shiftCenterNext.x+=SHIFT_RIGHT_NEXT;
-		shiftCenterNext.y+=SHIFT_TOP_NEXT;
-		if((piece.lastCol-piece.firstCol)%2 == 0 || (piece.giant && ((piece.lastCol-piece.firstCol)/2)%2 == 0 ))
-			shiftCenterNext.x -= CASE_SIZE / 2;
-
-		if((piece.lastRow-piece.firstRow)%2 == 0)
-			shiftCenterNext.y -= CASE_SIZE / 2;
-		if((piece.lastRow-piece.firstRow) == 0)
-			shiftCenterNext.y += CASE_SIZE;
-
 		if(piece.giant)
-			shiftCenterNext.x+=(piece.x) * caseSize;
+			caseSize = CASE_SIZE / 2;
+
+		if((!piece.giant && largeur>4)  || (piece.giant && largeur >8) )
+			caseSize *= 0.8;
+
+		//Placer en haut à gauche+
+		shiftCenterNext.x+=SHIFT_RIGHT_NEXT - piece.firstCol*caseSize;
+		shiftCenterNext.y+=SHIFT_TOP_NEXT- piece.firstRow*caseSize;
+
+		//puis centrer
+		float piece_size = PIECE_SIZE;
+		if(piece.giant)
+			piece_size*= RATIO_GIANT;
+
+		//Ajustements
+		if(!hardcore){
+			if(piece.id == 0 ){
+				shiftCenterNext.x += caseSize/4.;
+				if(piece.giant){
+					shiftCenterNext.x += caseSize/4.;
+				}
+			}
+			if(piece.id == 1 ){
+				shiftCenterNext.x -= caseSize/4.;
+				if(piece.giant )
+					shiftCenterNext.x -= caseSize/4.;
+			}
+
+			shiftCenterNext.y +=(piece.giant +1) * caseSize/4.;
+		}
+
+
+		shiftCenterNext.x+= (float)caseSize/2 * (float)(piece_size-largeur)/2;
+		shiftCenterNext.y+=  (float)caseSize/2 * (float)(piece_size-hauteur)/2;
+		if(piece.id == 1 && hardcore)
+			shiftCenterNext.y+=  (float)caseSize/2 * (float)(piece_size-hauteur)/2;
+
 	}
 
+	//dessiner
 	SDL_Rect src = BRICK_SRC;
 	SDL_Rect dest = BRICK_DEST;
 	dest.w = caseSize;
@@ -397,7 +427,7 @@ void drawPiece(SDL_Renderer *renderer, Piece piece, SDL_Texture* brickTexture, S
 		for(int j = 0; j < piece.size; j++)
 			if((piece.grille)[i * piece.size + j]){
 				src.x = piece.id * BRICK_SRC.w;
-				dest.x = (j + piece.x) * caseSize + MATRIX.x + shiftCenterNext.x;
+				dest.x =piece.x*CASE_SIZE+ j * caseSize + MATRIX.x + shiftCenterNext.x;
 				dest.y = (i + piece.y) * caseSize + MATRIX.y + shiftCenterNext.y;
 				SDL_RenderCopy(renderer, brickTexture, &src, &dest);
 				if( (piece.grille)[i * piece.size + j] == 2 && piece.bonus  != NO_BONUS){
@@ -426,6 +456,7 @@ int tooCloseFromWall(Piece piece){
 *\param maxShift Le décallage maximum
 *\param piece La pièce à tester
 *\param pieceCoor La coordonnée (x ou y) de la pièce à tester
+*\param sign Le sens de décallage
 *\param matrix La matrice pour tester la validité de la pièce
 *\return Vrai si un emplacement valide a été trouvé sinon faux
 */
@@ -469,6 +500,13 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], i
 			maxUpShift = piece->lastRow -  originalLastRow,
 			maxLeftShift=piece->lastCol - originalLastCol,
 			maxRightShift= originalFirstCol - piece->firstCol;
+
+
+		if(rotateSens == 1 &&  originalLastCol - piece->lastCol > maxLeftShift)
+			maxLeftShift = originalLastCol - piece->lastCol;
+		if(rotateSens == -1 &&piece->firstCol - originalFirstCol > maxRightShift)
+			maxRightShift = piece->firstCol - originalFirstCol;
+
 
 		int found = SDL_FALSE;
 
@@ -1084,7 +1122,7 @@ void savePiece(Piece piece, int matrix[GRILLE_W][GRILLE_H]){
 *\param matrixFill Les frames d'animations du bonus FILL pour chaque ligne
 *\param frameLaser  Les frames d'animations du bonus LASER pour chaque ligne
 *\param frameCompleteLine Les frames d'animations de complétion de ligne
-*\parm scoreAffichage Les scores de chaque ligne
+*\param scoreAffichage Les scores de chaque ligne
 */
 void eraseLine(int matrix[GRILLE_W][GRILLE_H], int line, int matrixFill[GRILLE_W][GRILLE_H], int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], Score * scoreAffichage){
 	for(int i = line; i > 0; i-- ){
@@ -1174,9 +1212,9 @@ void transfertNextPiece(Piece *currentPiece, Piece nextPiece, int hardcore){
 /**
 *\fn void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal)
 *\brief Rajoute les scores et combos obtenus cette frame dans le tableau de score à afficher pour toutes les lignes
-*\param currentPiece La pièce destinatrice
-*\param nextPiece La pièce source
-*\param hardcore La difficulté du jeu
+*\param scoreAffichage Les scores des lignes
+*\param scoreAdd Les scores et combo de lignes à ajouter
+*\param scoreTotal Le score total
 */
 void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal){
 	for(int i=0; i<GRILLE_H; i++){
@@ -1409,7 +1447,7 @@ void drawComboText(SDL_Renderer *renderer, char * msgCombo, TTF_Font * font, Sco
 	SDL_SetSurfaceAlphaMod(surfaceMessage, ALPHA_SCORE[SCORE_TTL -scoreAffichage.frameCombo]);
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
 
-	SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest->w), &(dest->h) );
+	SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest->w), &(dest->h) );
 	dest->w /= (OPEN_FONT_SIZE / size_score);
 	dest->h /= (OPEN_FONT_SIZE / size_score);
 	dest->y += (CASE_SIZE - dest->h)/2;
@@ -1426,7 +1464,7 @@ void drawComboText(SDL_Renderer *renderer, char * msgCombo, TTF_Font * font, Sco
 *\fn float getDrawSize(SDL_Renderer *renderer, char * msgTotal, TTF_Font * font)
 *\brief Determine la taille d'écriture d'un message
 *\param renderer Le renderer
-*\param msgCombo Le message à afficher
+*\param msgTotal Le message à mesurer
 *\param font La police d'écriture du combo
 *\return La taille d'écriture maximale de ce message
 */
@@ -1439,7 +1477,7 @@ float getDrawSize(SDL_Renderer *renderer, char * msgTotal, TTF_Font * font){
 	float size_score = SIZE_COMBO+1;
 	do{
 		size_score--;
-		SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+		SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
 		dest.w /= (OPEN_FONT_SIZE / size_score);
 	}while(dest.w > WIDTH_DRAW_COMBO);
 
@@ -1479,7 +1517,7 @@ void drawTotalScore(SDL_Renderer * renderer, TTF_Font *font, ScoreTotal score){
 	float size_score = SIZE_SCORE_TOTAL+1;
 	do{
 		size_score--;
-		SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+		SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
 		dest.w /= (OPEN_FONT_SIZE / size_score);
 	}while(dest.w > WIDTH_SCORE_TOTAL);
 
@@ -1490,6 +1528,123 @@ void drawTotalScore(SDL_Renderer * renderer, TTF_Font *font, ScoreTotal score){
 
 	SDL_RenderCopy(renderer, Message, NULL, &dest);
 
+	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(Message);
+}
+
+/**
+*\fn void drawHelpText(SDL_Renderer * renderer, TTF_Font *font, SDL_Texture * flecheTexture, SDL_Texture * turnTexture, SDL_Texture* bonusTexture, SDL_Texture* brickTexture)
+*\brief Affiche les commandes et explications des bonus
+*\param renderer Le renderer où afficher
+*\param font La police d'écriture
+*\param flecheTexture La texture des flèches directionelles
+*\param turnTexture La texture des flèches rotatives
+*\param bonusTexture La texture des bonus
+*\param brickTexture La texture des briques
+*/
+void drawHelpText(SDL_Renderer * renderer, TTF_Font *font, SDL_Texture * flecheTexture, SDL_Texture * turnTexture, SDL_Texture* bonusTexture, SDL_Texture* brickTexture){
+
+	//bonus
+	for(int i=0; i<NB_BONUSES; i++){
+		//brick
+		SDL_Rect brickSrc = BRICK_SRC;
+		SDL_Rect brickDest = BRICK_HELP_BONUS_DEST;
+		brickSrc.x = ID_HELP_BONUS * brickSrc.w;
+		brickDest.y += i * ESPACEMENT_HINT_BONUS;
+		SDL_RenderCopy(renderer, brickTexture, &brickSrc, &brickDest);
+		brickSrc.x = i * brickSrc.w;
+		SDL_RenderCopy(renderer, bonusTexture, &brickSrc, &brickDest);
+
+		char * text = BONUS_TEXT[i];
+
+		SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, JAUGE_COLOR);
+		SDL_Rect destMsg = BONUS_HINT_DEST;
+
+		destMsg.y += i * ESPACEMENT_HINT_BONUS;
+
+		SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+		SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(destMsg.w), &(destMsg.h) );
+
+		destMsg.w /= (OPEN_FONT_SIZE / SIZE_HELP_BONUS);
+		destMsg.h /= (OPEN_FONT_SIZE / SIZE_HELP_BONUS);
+
+		SDL_RenderCopy(renderer, Message, NULL, &destMsg);
+		SDL_FreeSurface(surfaceMessage);
+		SDL_DestroyTexture(Message);
+	}
+
+	//commandes
+	for(int i=0; i<NB_HELP; i++){
+		char * text = HELP_TEXT[i];
+
+		SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, COL_PIECE);
+		SDL_Rect dest = HELP_DEST[i];
+		SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+		SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+		dest.w /= (OPEN_FONT_SIZE / SIZE_HELP);
+		dest.h /= (OPEN_FONT_SIZE / SIZE_HELP);
+
+		SDL_RenderCopy(renderer, Message, NULL, &dest);
+		SDL_FreeSurface(surfaceMessage);
+		SDL_DestroyTexture(Message);
+	}
+	SDL_SetTextureColorMod(flecheTexture, COL_PIECE.r, COL_PIECE.g, COL_PIECE.b);
+
+	SDL_RenderCopy(renderer, flecheTexture, &FLECHE_SRC, &FLECHE_DEST[0]);
+	SDL_RenderCopyEx(renderer, flecheTexture, &FLECHE_SRC, &FLECHE_DEST[1], 0, NULL, SDL_FLIP_HORIZONTAL);
+	SDL_RenderCopyEx(renderer, flecheTexture, &FLECHE_SRC, &FLECHE_DEST[2], -90, NULL, SDL_FLIP_NONE);
+
+
+	SDL_SetTextureColorMod(turnTexture, COL_PIECE.r, COL_PIECE.g, COL_PIECE.b);
+
+	SDL_RenderCopy(renderer, turnTexture, &TURN_SRC, &TURN_DEST[0]);
+	SDL_RenderCopyEx(renderer, turnTexture, &TURN_SRC, &TURN_DEST[1], 0, NULL, SDL_FLIP_HORIZONTAL);
+
+}
+
+/**
+*\fn void drawQuit(SDL_Renderer* renderer, TTF_Font* font)
+*\brief Affiche la commande pour quitter le jeu
+*\param renderer Le renderer où afficher
+*\param font La police d'écriture
+*/
+void drawQuit(SDL_Renderer* renderer, TTF_Font* font){
+	char * text = QUIT;
+
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, JAUGE_COLOR);
+	SDL_Rect dest = QUIT_DEST;
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+	SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+	dest.w /= (OPEN_FONT_SIZE / SIZE_QUIT);
+	dest.h /= (OPEN_FONT_SIZE / SIZE_QUIT);
+
+	SDL_RenderCopy(renderer, Message, NULL, &dest);
+	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(Message);
+}
+
+
+/**
+*\fn void drawReplay(SDL_Renderer* renderer, TTF_Font* font)
+*\brief Affiche un texte invitant le joueur à rejouer
+*\param renderer Le renderer où afficher
+*\param font La police d'écriture
+*/
+void drawReplay(SDL_Renderer* renderer, TTF_Font* font){
+	char * text = REPLAY;
+
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, WHITE);
+	SDL_Rect dest;
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+	SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+	dest.w /= (OPEN_FONT_SIZE / SIZE_REPLAY);
+	dest.h /= (OPEN_FONT_SIZE / SIZE_REPLAY);
+
+	//centrer
+	dest.x = BASE_WINDOW_W/2 - dest.w/2;
+	dest.y = BASE_WINDOW_H/2 - dest.h/2;
+
+	SDL_RenderCopy(renderer, Message, NULL, &dest);
 	SDL_FreeSurface(surfaceMessage);
 	SDL_DestroyTexture(Message);
 }
@@ -1622,6 +1777,7 @@ int linesInCompletion(int matrixFill[GRILLE_W][GRILLE_H], int frameLaser[GRILLE_
 /**
 *\fn void deathAnimInit(int *gameOver,DeadPiece **deadPieces,int *nbDeadPieces, int matrix[GRILLE_W][GRILLE_H])
 *\brief Met en place et enclenche l'animation de fin de partie en scannant la matrice et créant les pièces mortes
+*\param gameOver Determine si la partie est finie
 *\param deadPieces Le tableau de pièce mortes
 *\param nbDeadPieces Le nombre de pièces mortes
 *\param matrix La matrice
@@ -1644,7 +1800,7 @@ void deathAnimInit(int *gameOver,DeadPiece **deadPieces,int *nbDeadPieces, int m
 					matrix[col][line]//id
 				};
 
-				while(fabsf( (*deadPieces)[(*nbDeadPieces)-1].rotaSpeed ) > MIN_ROTA )
+				while(abs( (*deadPieces)[(*nbDeadPieces)-1].rotaSpeed ) > MIN_ROTA )
 					(*deadPieces)[(*nbDeadPieces)-1].rotaSpeed = rand()%(int)INTERVALE_ROTA_SPEED/PRECISION + BASE_ROTA_SPEED; //Veille à ce que la valeur de rotation soit dans les normes
 
 			}
@@ -1734,16 +1890,11 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 	}
 	printf("TOUT EST CHARGé\n");
 
-	//audio
-	//Mix_Chunk *flap_wav = Mix_LoadWAV( "../3_flappy_bird/Sounds/flap.wav" );
-	//if( !flap_wav)
-	//	printf("Erreur chargement des sons\n");
-
-	int backgroundFrame = 0;
 
 
 	int quit = SDL_FALSE;
 	while(!quit){
+
 		////////////
 		// Vars   //`
 		////////////
@@ -1811,9 +1962,6 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 
 		//Time
 		unsigned int lastTime = 0, currentTime;
-
-
-		SDL_Rect background_src = BACKGROUND_SRC;
 
 		//hud and menus
 		int rdyToPause = SDL_TRUE;
@@ -1992,17 +2140,19 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 		 // // //
 		// Draw //`
 		 // // //
-
-			SDL_RenderCopy(renderer, textures[T_BACKGROUND], &background_src, NULL);
-
+		 	drawHelpText(renderer, fonts[T_FONT_COMBO], textures[T_FLECHE], textures[T_TURN], textures[T_BONUS], textures[T_BRICKS]);
 			SDL_RenderCopy(renderer, textures[T_HUD_GRILLE], NULL, &HUD_GRILLE_DIM);
 			drawJauge(renderer, textures[T_SPEED_JAUGE], frameTotalShow);
 			drawMatrix(renderer, matrix, frameCompleteLine, currentPiece, textures[T_BRICKS], textures[T_BONUS]);
-			drawPiece(renderer, currentPiece, textures[T_BRICKS], textures[T_BONUS], SDL_FALSE);
-			drawPiece(renderer, nextPiece, textures[T_BRICKS], textures[T_BONUS], SDL_TRUE);
+			drawPiece(renderer, currentPiece, textures[T_BRICKS], textures[T_BONUS], SDL_FALSE, hardcore);
+			drawPiece(renderer, nextPiece, textures[T_BRICKS], textures[T_BONUS], SDL_TRUE, hardcore);
 			drawLaser(renderer, frameLaser, textures[T_LASER_ANIM]);
 			drawFill(renderer, matrixFill,textures[T_BRICKS]);
+			drawQuit(renderer, fonts[T_FONT_COMBO]);
+			if(nbDeadPieces && deadPieces[0].y > Y_START_REPLAY)
+				drawReplay(renderer, fonts[T_FONT_COMBO]);
 
+printf("hau\n");
 
 
 			//SDL_RenderFillRect(renderer, &SCORE_TOTAL_DEST);
@@ -2048,13 +2198,9 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			if(!gameOver)
 				updateFrames(frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, scoreAffichage, scoreAdd, &score, &frameDestJauge, frameTotalSpeed, &frameTotalShow);
 
-			//background
-			backgroundFrame++;
-			background_src.x = BACKGROUND_SRC.w * ((backgroundFrame/3)%BACKGROUND_COL);
-			background_src.y = BACKGROUND_SRC.h * ((backgroundFrame/(3*BACKGROUND_COL))%BACKGROUND_ROW);
 
 			// On efface
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			SDL_SetRenderDrawColor(renderer, BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, 255);
 			SDL_RenderClear(renderer);
 
 		}
@@ -2079,23 +2225,22 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 
 
 
-	float ratioWindowSize = 1;
+
 	SDL_Rect displayBounds;
 	if (SDL_GetDisplayBounds(0, &displayBounds) != 0) {
 		SDL_Log("SDL_GetDisplayBounds failed: %s", SDL_GetError());
 		return 1;
 	}
 
-	printf("display : %d %d\n",displayBounds.w, displayBounds.h );
-	SDL_Point windowDim = maximizeWindow(displayBounds, &ratioWindowSize);
-	printf("rat%f\n",ratioWindowSize );
 
-	SDL_Window *myWindow = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowDim.x, windowDim.y, WINDOW_FLAG);
+	SDL_Window *myWindow = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 0.9*displayBounds.w, 0.9*displayBounds.h, WINDOW_FLAG);
 	if( myWindow == NULL ){
 		printf("Erreur lors de la creation de la fenêtre : %s", SDL_GetError());
 		return EXIT_FAILURE;
 	}
-	printf("%d, %d\n", windowDim.x ,windowDim.y );
+
+
+	float ratioWindowSize = BASE_WINDOW_W/(0.9*displayBounds.w);
 
 	SDL_Renderer *renderer = SDL_CreateRenderer(myWindow, -1, SDL_RENDERER_ACCELERATED);
 	if( renderer == NULL ){
@@ -2105,5 +2250,5 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 
 
 
-	tetris(renderer, 0, ratioWindowSize, NULL, SDL_FALSE, textures, fonts);
+	tetris(renderer, 0, ratioWindowSize, NULL, SDL_FALSE);
 }*/
