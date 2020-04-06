@@ -6,6 +6,7 @@
 *\date 03/04/2020
 */
 #include "../../define/define.h"
+#include "../../include/hashage.h"
 #include "config.h"
 #include <time.h>
 
@@ -841,19 +842,23 @@ int getBonusId(int n){
 *\param getBonuses Indique si la complétion de la ligne doit faire ganger les bonus présents
 *\param scoreAdd Le tableau du nombre de points et combos rapportés cette frame pour chaque ligne
 *\param comboLine Le nombre de ligne déjà complétées cette frame
+*\param score_hash Le scroe hashé
+*\param keys Les clés de hashage
+*\return Vrai si pas de problème, faux si problème dans le hashage
 */
-void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine){
+int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine, ScoreTotal *scoreTotal, long long *score_hash, long keys[4]){
 	int bonusGet = -1;
 	if( frameCompleteLine[line] == -1 ){
 		frameCompleteLine[line] = FRAME_COMPLETE_LINE;
-		printf("c%d\n",line );
 		if(comboLine){
-
+			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score)+scoreAdd[lastLine].score  * RATIO_COMBO_LINE, keys))
+				return SDL_FALSE;
 			scoreAdd[line].score += scoreAdd[lastLine].score  * RATIO_COMBO_LINE;
 			scoreAdd[line].combo = pow(2, comboLine);
 		}
 		else{
-
+			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score) + SCORE_BASE, keys))
+				return SDL_FALSE;
 			scoreAdd[line].score += SCORE_BASE;
 			//printf("score after base ! %d\n",scoreAdd[line].score );
 		}
@@ -884,6 +889,8 @@ void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H
 			if(sameColor != -1){
 				scoreAdd[line].sameColor = sameColor;
 				scoreAdd[line].score *= RATIO_SAME_COLOR;
+				if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score)*RATIO_SAME_COLOR, keys))
+					return SDL_FALSE;
 			}
 			/*else if(rainbow){
 				scoreAdd[line].rainbow = SDL_TRUE;
@@ -891,13 +898,18 @@ void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H
 			}*/
 
 			scoreAdd[line].score *= scoreAdd[line].multi;
+			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score)*scoreAdd[line].multi, keys))
+				return SDL_FALSE;
 			//printf("score after MULTI_POINT bonus ! %d\n",scoreAdd[line].score );
 
 			scoreAdd[line].score += scoreAdd[line].flat * NB_FLAT_POINT;
+			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score)+scoreAdd[line].flat * NB_FLAT_POINT, keys))
+				return SDL_FALSE;
 			//printf("score after flat bonus ! %d\n",scoreAdd[line].score );
 
 		}
 	}
+	return SDL_TRUE;
 }
 
 /**
@@ -1156,7 +1168,7 @@ void eraseLine(int matrix[GRILLE_W][GRILLE_H], int line, int matrixFill[GRILLE_W
 *\param getBonus Determine si les bonus des lignes complétés sont à donner au joueur
 *\param scoreAdd Le tableau de score par frame et par ligne
 */
-void checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H]){
+int checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal, long long * score_hash, long keys[4]){
 
 	int comboLine = 0; //Le nombre de ligne complétées cette frame
 	int j;
@@ -1165,13 +1177,15 @@ void checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H],
 	for(int i=0; i<GRILLE_H; i++){
 		for(j=0; j<GRILLE_W && matrix[j][i] != EMPTY; j++);
 		if(j == GRILLE_W){
-			completeLine(matrix, frameCompleteLine, i, lastLine, bonusActivate, getBonus, scoreAdd, comboLine);
+			if(!completeLine(matrix, frameCompleteLine, i, lastLine, bonusActivate, getBonus, scoreAdd, comboLine, scoreTotal, score_hash, keys))
+				return SDL_FALSE;
 			if(getBonus){
 				lastLine = i;
 				comboLine++;
 			}
 		}
 	}
+	return SDL_TRUE;
 }
 
 /**
@@ -1210,18 +1224,14 @@ void transfertNextPiece(Piece *currentPiece, Piece nextPiece, int hardcore){
 
 
 /**
-*\fn void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal)
+*\fn void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H])
 *\brief Rajoute les scores et combos obtenus cette frame dans le tableau de score à afficher pour toutes les lignes
 *\param scoreAffichage Les scores des lignes
 *\param scoreAdd Les scores et combo de lignes à ajouter
-*\param scoreTotal Le score total
 */
 void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal){
 	for(int i=0; i<GRILLE_H; i++){
 		if(scoreAdd[i].score){ //Si un score est à rajouter
-
-			//Update score total
-			scoreTotal->score += scoreAdd[i].score;
 
 			//Lancer anim score total
 			scoreTotal->frameToDest = FRAME_DEST_SCORE_TOTAL;
@@ -1300,7 +1310,7 @@ int lineEmpty(int matrix[GRILLE_W][GRILLE_H], int line ){
 *\param frameTotalSpeed Le nombre de frame total compabilisé avec bonus
 *\param frameTotalShow Le nombre de frame total qui tend vers frameTotalSpeed pour l'animation d'update score total
 */
-void updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], Score * scoreAffichage, Score * scoreAdd, ScoreTotal* scoreTotal,int *frameDestJauge,long int frameTotalSpeed,long int * frameTotalShow){
+int updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], Score * scoreAffichage, Score * scoreAdd, ScoreTotal* scoreTotal,int *frameDestJauge,long int frameTotalSpeed,long int * frameTotalShow, long long * score_hash, long keys[4]){
 
 
 	if(scoreTotal->frameToDest){
@@ -1333,7 +1343,9 @@ void updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int
 				matrixFill[j][i]--;
 				if(matrixFill[j][i] == 0){
 					matrix[j][i] = NB_PIECES;
-					checkLines(matrix, frameCompleteLine, bonusActivate, SDL_FALSE, scoreAdd);
+					if(!checkLines(matrix, frameCompleteLine, bonusActivate, SDL_FALSE, scoreAdd, scoreTotal, score_hash, keys))
+						return SDL_FALSE;
+
 				}
 			}
 
@@ -1370,6 +1382,7 @@ void updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int
 		*frameTotalShow += (float)(frameTotalSpeed - *frameTotalShow )/ ( *frameDestJauge );
 		(*frameDestJauge)--;
 	}
+	return SDL_TRUE;
 }
 
 /**
@@ -1853,6 +1866,10 @@ void moveDeadPiece(DeadPiece *deadPiece){
 	deadPiece->rota += deadPiece->rotaSpeed;
 }
 
+void myFrees(){
+
+}
+
 
 /**
 *\fn int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *token,int hardcore)
@@ -1945,6 +1962,11 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 		Score scoreAffichage[GRILLE_H];
 		Score scoreAdd[GRILLE_H];
 		ScoreTotal score = {0,0,0};
+
+		//hash setup
+		long keys[4];
+		initialisationConstantHashage(keys);
+		long long score_hash = hashage(score.score, keys);
 
 		//matrice
 		int matrix[GRILLE_W][GRILLE_H];
@@ -2095,7 +2117,12 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 							//Piece is saved and remplaced
 							savePiece(currentPiece, matrix);
 							clearIntTab(bonusActivate, NB_BONUSES);
-							checkLines(matrix, frameCompleteLine, bonusActivate, SDL_TRUE, scoreAdd);
+							if(!checkLines(matrix, frameCompleteLine, bonusActivate, SDL_TRUE, scoreAdd, &score, &score_hash, keys)){
+								myFrees();
+								printf("U HACKER\n" );
+								return HACKED;
+							}
+
 
 							for(int i=0; i<NB_BONUSES; i++)
 								if(bonusActivate[i])
@@ -2196,7 +2223,11 @@ printf("hau\n");
 			//Actualise frames
 			framePassed++;
 			if(!gameOver)
-				updateFrames(frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, scoreAffichage, scoreAdd, &score, &frameDestJauge, frameTotalSpeed, &frameTotalShow);
+				if(!updateFrames(frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, scoreAffichage, scoreAdd, &score, &frameDestJauge, frameTotalSpeed, &frameTotalShow, &score_hash, keys))
+				{
+					printf("U HACKER\n" );
+					return HACKED;
+				}
 
 
 			// On efface

@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 
 #define SHAPE_SIZE 500
-
+#define HACKED -123
 //Window
 #define WINDOW_FLAG 0
 #define PLAYGROUND_SIZE_W 1728

@@ -6,7 +6,7 @@
 #include <SDL2/SDL_mixer.h>
 
 #include "../../include/libWeb.h"
-
+#include "../../include/hashage.h"
 //native resolution
 #define WINDOW_L 1820.
 #define WINDOW_H 1024.
@@ -87,63 +87,7 @@ const int VITESSE_DEPLACEMENT_DECOR = 8 / (FPS/30); // vitesse de deplacement de
 #define SDL_RENDER_ERROR_PRINT_SCORE -107
 #define SDL_RENDER_ERROR_PRINT_HS -108
 
-// HASH FONCTION -- A METTRE DANS UN FICHIER GLOBALE
-long long int hashage (int value, long const_1, long const_2, long const_3, long const_4 )
-{
 
-	long long hash;
-
-	if(value){
-		hash = value * const_1;
-		hash = hash - const_2;
-		hash = hash * const_3;
-		hash = hash / const_4;
-	} else {
-		hash = const_1;
-		hash = hash - const_2;
-		hash = hash * const_3;
-		hash = hash / const_4;
-	}
-
-	return hash;
-}
-
-// INIT VARIABLE ALEATOIRE
-void initialisationConstantHashage(long *const_1, long *const_2, long *const_3, long *const_4)
-{
-	*const_1 = rand();
-	*const_2 = rand();
-	*const_3 = rand();
-	*const_4 = rand();
-
-}
-
-// VERIFIE SI LE SCORE NA PAS CHANGER
-// RETOURNE VRAI SI RIEN N'A CHANGER
-// GENERER DE NOUVELLE VALEUR ALEATOIRE
-// HASH LE NOUVEAU SCORE AVEC C'EST VALEUR ALEATOIRE
-int changeProtectedVar(long long int *score_hash,int *var, int updatedVar, long *const_1, long *const_2, long *const_3, long *const_4)
-{
-	if( *score_hash == hashage(*var, *const_1, *const_2, *const_3, *const_4)){
-		*const_1 = rand();
-		*const_2 = rand();
-		*const_3 = rand();
-		*const_4 = rand();
-
-		*score_hash = updatedVar * *const_1;
-		*score_hash = *score_hash - *const_2;
-		*score_hash = *score_hash * *const_3;
-		*score_hash = *score_hash / *const_4;
-
-		*var = updatedVar;
-		return 1;
-	}
-	else{
-		// BAN
-		printf("Baned\n");
-		return 0;
-	}
-}
 
 // CHARGER LES TEXTURES
 SDL_Texture * LoadTextureWithErrorCode(SDL_Renderer *renderer ,char directory[])
@@ -351,14 +295,14 @@ void init_pilonne(pilonne *pilonne, int *varAnimationPersonnage, int *varAnimati
 	*traitement = -1;
 }
 
-int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *score_hash, long *const_1, long *const_2, long *const_3, long *const_4, Mix_Chunk *score_wav)
+int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *score_hash, long keys[4], Mix_Chunk *score_wav)
 {
 
 	if(traitement == -1){
 		if(pilonne[0].position + OBSTACLE_VERT.w*SCALE_TO_FIT + PERSO.w*SCALE_TO_FIT < WINDOW_L/2  ){
 			traitement = 0;
 
-			if(changeProtectedVar(score_hash, score, (*score)+1, const_1, const_2, const_3, const_4))
+			if(changeProtectedVar(score_hash, score, (*score)+1, keys))
 				Mix_PlayChannel( 5, score_wav,0);
 			/*else
 				ban commands*/
@@ -369,7 +313,7 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 			traitement = 1;
 
 
-			if(changeProtectedVar(score_hash, score, (*score)+1, const_1, const_2, const_3, const_4))
+			if(changeProtectedVar(score_hash, score, (*score)+1, keys))
 				Mix_PlayChannel( 5, score_wav,0);
 			/*else
 				ban commands*/
@@ -378,7 +322,7 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 	} else if ( traitement == 1){
 		if(pilonne[2].position + OBSTACLE_VERT.w*SCALE_TO_FIT + PERSO.w*SCALE_TO_FIT < WINDOW_L/2 ){
 			traitement = 2;
-			if(changeProtectedVar(score_hash, score, (*score)+1, const_1, const_2, const_3, const_4))
+			if(changeProtectedVar(score_hash, score, (*score)+1, keys))
 				Mix_PlayChannel( 5, score_wav,0);
 			/*else
 				ban commands*/
@@ -387,7 +331,7 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 	} else if ( traitement == 2){
 		if(pilonne[3].position + OBSTACLE_VERT.w*SCALE_TO_FIT + PERSO.w*SCALE_TO_FIT < WINDOW_L/2 ){
 			traitement = 3;
-			if( changeProtectedVar(score_hash, score, (*score)+1, const_1, const_2, const_3, const_4) )
+			if( changeProtectedVar(score_hash, score, (*score)+1, keys) )
 				Mix_PlayChannel( 5, score_wav,0);
 			/*else
 				ban commands*/
@@ -619,11 +563,11 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 	// VAR SCORE
 	long long score_hash;
 	int score=0;
-	long const_1, const_2, const_3, const_4;
+	long keys[4];
 	// preset var hash
-	initialisationConstantHashage(&const_1, &const_2, &const_3, &const_4);
+	initialisationConstantHashage(keys);
 	// preset score hash
-	score_hash = hashage(score, const_1, const_2, const_3, const_4);
+	score_hash = hashage(score, keys);
 	//////////////////////////////////////////////////////////////////
 	// INITALISATION DES PILONNES ET VALEURS VARIABLES
 	init_pilonne(pilonne,&varAnimationPersonnage,&varAnimationSol,&end,&dead,&traitement);
@@ -680,8 +624,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 																																						texture_background,  texture_pipes, texture_birds, texture_medals,  texture_scoreBoard,  texture_sol, texture_chiffre, texture_highscore);
 
 				// UPDATE DECORE
-				traitement = traitement_pilonne(pilonne,traitement,&score,  &score_hash,
-																							 &const_1,   &const_2,   &const_3,    &const_4, score_wav);
+				traitement = traitement_pilonne(pilonne,traitement,&score,  &score_hash, keys, score_wav);
 
 				// UPDATE VARIABLE ANIMATION
 				traitementVariableAnimation(&varAnimationPersonnage,&varAnimationSol);
@@ -717,7 +660,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 			{
 
 				// VERIFIER QUE LE SCORE N 'AS PAS ETAIT CHANGER
-				if (  score_hash == hashage(score, const_1, const_2, const_3, const_4) )
+				if (  score_hash == hashage(score, keys) )
 				{
 					// CONVERTIR SCORE EN TEXT
 					char buffer[10];
@@ -805,8 +748,8 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 
 								//////////////////////////////////////////////////////////////////
 								// REINIALISER HASHAGE DU SCORE
-								initialisationConstantHashage(&const_1, &const_2, &const_3, &const_4);
-								score_hash = hashage(score, const_1, const_2, const_3, const_4);
+								initialisationConstantHashage(keys);
+								score_hash = hashage(score, keys);
 								//////////////////////////////////////////////////////////////////
 
 								//////////////////////////////////////////////////////////////////

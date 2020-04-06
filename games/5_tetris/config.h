@@ -26,18 +26,6 @@ const SDL_Point UNDEFINED = {-500, -500};
 #define FRAME_COMPLETE_LINE 11
 #define EMPTY -1
 
-
-//quit
-char * QUIT = "Echap";
-SDL_Rect QUIT_DEST = {20,20,0,0};
-#define SIZE_QUIT 28.
-
-///replay
-char* REPLAY = "Appuyer sur Espace pour rejouer !";
-#define Y_START_REPLAY BASE_WINDOW_H
-#define SIZE_REPLAY 43.
-
-
 //deplacement
 #define FRAME_REMIND_ROTATE (FRAMES_PER_SECOND/3)
 #define ROUNDABLE 0.0001
@@ -123,7 +111,7 @@ enum{NO_BONUS, FILL, LASER, MULTI_POINT, FLAT_POINT, SLOW, SPEED, GIANT};
 	*\brief Contient des informations sur le score total
 	*/
 	typedef struct {
-		long int score; /*!< \brief Le score total stocké */
+		int score; /*!< \brief Le score total stocké */
 		float scoreShow; /*!< \brief Le score total affiché (tend vers score)*/
 		int frameToDest; /*!< \brief Le nombre de frame avant que scoreShow arrive à score*/
 	}ScoreTotal;
@@ -228,6 +216,16 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 	//nextpiece
 	#define SHIFT_RIGHT_NEXT (-558-8)
 	#define SHIFT_TOP_NEXT -8
+
+	//quit
+	char * QUIT = "Echap";
+	SDL_Rect QUIT_DEST = {20,20,0,0};
+	#define SIZE_QUIT 28.
+
+	///replay
+	char* REPLAY = "Appuyer sur Espace pour rejouer !";
+	#define Y_START_REPLAY BASE_WINDOW_H
+	#define SIZE_REPLAY 43.
 
 
 	//helpText
