@@ -115,16 +115,16 @@ int envoyez_requet(char **response, char *url, char *request)
 		// envoyez la requete
 		res = curl_easy_perform(curl);
 		if(res != CURLE_OK)
+		{
 			fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
-		else {
+		}
+		else
+		{
 			*response = malloc( sizeof(char) * strlen(s.ptr)+1 );
 			strcpy(*response,s.ptr);
 
 			// memory clean
 			free(s.ptr);
-			curl_easy_cleanup(curl);
-			curl_global_cleanup();
-
 			s.ptr = NULL;
 			curl = NULL;
 
@@ -132,11 +132,11 @@ int envoyez_requet(char **response, char *url, char *request)
 			return EXIT_SUCCESS;
 		}
 
-		//nettoyage curl
-		curl_easy_cleanup(curl);
+
 
 	}
 	//nettoyage
+	curl_easy_cleanup(curl);
 	curl_global_cleanup();
 	free(curl);
 	curl = NULL;
