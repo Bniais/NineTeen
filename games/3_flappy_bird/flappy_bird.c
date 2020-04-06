@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "define.h"
 #include <time.h>
 
 #include <SDL2/SDL.h>
