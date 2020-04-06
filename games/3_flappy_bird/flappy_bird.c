@@ -29,6 +29,8 @@ const SDL_Rect SOL = {0, 0, 168, 55};
 const SDL_Rect CHIFFRE = {0, 0, 12, 18};
 const SDL_Rect PERSO = {0, 0, 17, 12};
 const SDL_Rect HIGH_SCORE = {0,0,512,512};
+const SDL_Rect SCOREBOARD = {0,0,113,57};
+const SDL_Rect MEDALS = {0,0,22,22};
 #define COMPENSATITION_HITBOX_DOWN 20
 
 // PARAMETRE BUFFER OBSTACLE
@@ -259,12 +261,12 @@ int afficherScore(SDL_Renderer *renderer , SDL_Texture *texture_chiffre,int scor
 	if (mode == 2)
 	{
 		target.x = WINDOW_L*0.72 - CHIFFRE.w*SCALE_TO_FIT;
-		target.y = WINDOW_H*0.4;
+		target.y = WINDOW_H*0.39;
 	}
 	else if ( mode == 3)
 	{
 		target.x = WINDOW_L*0.72 - CHIFFRE.w*SCALE_TO_FIT;
-		target.y = WINDOW_H*0.6;
+		target.y = WINDOW_H*0.56;
 	}
 
 
@@ -710,7 +712,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 			exitCode = afficherTout(renderer, emplacementPersonnage , pilonne, score ,1 , 0 , cible , angle,
 																												texture_background,  texture_pipes,  texture_birds,   texture_medals,  texture_scoreBoard,  texture_sol,   texture_chiffre, texture_highscore );
 
-			// SI LE PERSONNAGE A ETEIND LE SOL
+			// SI LE PERSONNAGE A ATTENDRE LE SOL
 			if(emplacementPersonnage.y >= WINDOW_H - SOL.h*SCALE_TO_FIT)
 			{
 
@@ -728,15 +730,43 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 					//////////////////////////////////////////////////////////////////
 				}
 
+
 				//////////////////////////////////////////////////////////////////
 				// AFFICHER SCORE ET MEDAIL ICI
-				SDL_Rect positionScoreBoard= {WINDOW_L/4,WINDOW_H/4,WINDOW_L/2,WINDOW_H/2};
+				// ON AUGMENTE LA TAILLE DU SCOREBOARD PAR 2
+				SDL_Rect positionScoreBoard= {WINDOW_L/4,WINDOW_H/4,SCOREBOARD.w * SCALE_TO_FIT * 2, SCOREBOARD.h*SCALE_TO_FIT * 2};
 				SDL_RenderCopy(renderer, texture_scoreBoard, NULL, &positionScoreBoard);
+
+				// ON AUGMENTE LA TAILLE DE LA MEDALS PAR 2
+				SDL_Rect positionMedals = {WINDOW_L/4 + 13 * SCALE_TO_FIT * 2 ,WINDOW_H/4 + 21 * SCALE_TO_FIT * 2,22*SCALE_TO_FIT * 2,22*SCALE_TO_FIT * 2};
+
+
+				//////////////////////////////////////////////////////////////////
+				// CHOISIR MEDAIL A AFFICHER EN FONCTION DU SCORE
+				//
+				int choixMedalsAvecScore = 0;
+				if ( score < 1)
+					choixMedalsAvecScore = 0;
+				else if(score < 2 )
+						choixMedalsAvecScore = 1;
+				else if(score < 3 )
+						choixMedalsAvecScore = 2;
+				else if(score < 4 )
+						choixMedalsAvecScore = 3;
+
+				SDL_Rect choisirMedals = {MEDALS.w * choixMedalsAvecScore , MEDALS.y, MEDALS.w, MEDALS.h};
+				SDL_RenderCopy(renderer, texture_medals, &choisirMedals, &positionMedals);
+				//////////////////////////////////////////////////////////////////
+
+
+				//////////////////////////////////////////////////////////////////
+				// AFFICHAGE DU BEST SCORE ET DE SON SCORE DANS L'AFFICHEUR
 				afficherScore(renderer, texture_chiffre, score , 2);
 				if( score > highscore)
 					highscore = score;
 				afficherScore(renderer, texture_chiffre, highscore , 3);
 				SDL_RenderPresent(renderer);
+
 				SDL_Delay(500);
 				//////////////////////////////////////////////////////////////////
 
