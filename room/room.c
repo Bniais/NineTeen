@@ -394,7 +394,7 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 
 
 
-void GL_DrawRectangle(int x, int y)
+void GL_DrawRectangle()
 {
 	////////////////////////////////////////////////
 	// ENVOI MATRICE
@@ -438,12 +438,10 @@ void GL_DrawRectangle(int x, int y)
 
 	////////////////////////////////////////////////
 	// SI PARAMS X A -1 ON CENTRE LE TEXT SUR X
-	if(x == -1)
-		x = WinWidth/2 - sFont->w/2;
+	int x = WinWidth/2 - sFont->w/2;
 	////////////////////////////////////////////////
 	// SI PARAMS X A -1 ON CENTRE LE TEXT SUR Y
-	if(y == -1)
-		y = WinHeight/2 - sFont->h/2;
+	int y = WinHeight/2 - sFont->h/2;
 
 	////////////////////////////////////////////////
 	// DEBUT DU RENDU
@@ -603,7 +601,6 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		bruitagePas(&jouerSon,camera,3,music_walk);
 		//////////////////////////////////////////////////////////
 
-
 		//////////////////////////////////////////////////////////
 		// OpenGL
 		//////////////////////////////////////////////////////////
@@ -626,20 +623,17 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		messageMachine(meilleureScore,camera,sega,afficherMessage);
 		//////////////////////////////////////////////////////////
 
-		GL_DrawRectangle(-1,-1);
 
 		//////////////////////////////////////////////////////////
 		// LANCEMENT DES MACHINES
 		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context);
 		//////////////////////////////////////////////////////////
 
-
 		//////////////////////////////////////////////////////////
 		// OpenGL
 		//////////////////////////////////////////////////////////
 		// APPLIQUER MODIF SUR LA VUE
 		SDL_GL_SwapWindow(Window);
-
 
 		//////////////////////////////////////////////////////////
 		// LIMITER LES FRAMES A CONST FPS
@@ -1597,8 +1591,54 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 				///////////////////////////////////////////////////
 				// TOUCHE ESPACE METTRE FIN AU JEUX
 				case SDLK_ESCAPE:
-													*Running = 0;
-													break;
+				{
+						///////////////////////////////////////////////////
+						// INIT AFFICHAGE DU MESSAGE
+						GL_InitialiserParametre(WinWidth,WinHeight,camera);
+						SDL_GL_AppliquerScene(scene,&camera,scene_list,FPS);
+						GL_DrawRectangle();
+						SDL_GL_SwapWindow(Window);
+
+						///////////////////////////////////////////////////
+						// VIDER LA LISTE DES EVENEMENTS
+						do
+      			{
+         				SDL_WaitEvent(&Event);
+      			}
+      			while (Event.key.keysym.sym != SDLK_ESCAPE);
+
+
+						///////////////////////////////////////////////////
+						// DECISION PRISE
+						int decision = 1;
+						while(decision)
+						{
+							while (SDL_PollEvent(&Event))
+							{
+								switch (Event.key.keysym.sym)
+								{
+									case SDLK_ESCAPE:
+										decision = 0;
+										printf("Commande annuler\n");
+										break;
+									case SDLK_q:
+										decision = 0;
+										printf("Vous quittez\n");
+										*Running = 0;
+										break;
+									case SDLK_d:
+										decision = 0;
+										printf("Vous vous deconnecter\n");
+										FILE *fp = fopen("launcher/.token","w");
+										fclose(fp);
+										*Running = 0;
+										break;
+									default:break;
+								}
+							}
+						}
+						break;
+				}
 				///////////////////////////////////////////////////
 				// TOUCHE E ENTRER DANS UN JEUX
 				case SDLK_e:
