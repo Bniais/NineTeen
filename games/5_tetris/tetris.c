@@ -7,6 +7,7 @@
 */
 #include "../../define/define.h"
 #include "../../include/hashage.h"
+#include "../../include/libWeb.h"
 #include "config.h"
 #include <time.h>
 
@@ -2138,9 +2139,21 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 							if( !putAtTop(&currentPiece, matrix, (int)frame[TO_GO]) ){
 								if(linesInCompletion(matrixFill, frameLaser, frameCompleteLine))
 									waitToPlace = SDL_TRUE;
-								else
+								else{
 									deathAnimInit(&gameOver, &deadPieces, &nbDeadPieces, matrix);
-									//break;//lose
+									if (  score_hash == hashage(score.score, keys) )
+									{
+										// CONVERTIR SCORE EN TEXT
+										char buffer[10];
+										sprintf(buffer,"%d",score.score);
+										printf("ATTENDRE ENVI DU SCORE\n" );
+										if(hardcore)
+											updateScore("2",buffer,token);
+										else
+											updateScore("12",buffer,token);
+										//////////////////////////////////////////////////////////////////
+									}
+								}
 							}
 						}
 					}
@@ -2155,6 +2168,18 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 				else if(!linesInCompletion(matrixFill, frameLaser, frameCompleteLine)){
 					waitToPlace = SDL_FALSE;
 					deathAnimInit(&gameOver, &deadPieces, &nbDeadPieces, matrix);
+					if (  score_hash == hashage(score.score, keys) )
+					{
+						// CONVERTIR SCORE EN TEXT
+						char buffer[10];
+						sprintf(buffer,"%d",score.score);
+						printf("ATTENDRE ENVI DU SCORE\n" );
+						if(hardcore)
+							updateScore("2",buffer,token);
+						else
+							updateScore("12",buffer,token);
+						//////////////////////////////////////////////////////////////////
+					}
 					//break;
 				}
 			}
