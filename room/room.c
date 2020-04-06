@@ -18,6 +18,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 #include <math.h>
 
 // LOCAL LIBRARY
@@ -393,8 +394,79 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 
 
 
+void GL_DrawRectangle(int x, int y)
+{
+	////////////////////////////////////////////////
+	// ENVOI MATRICE
+	glPushMatrix();
+
+	////////////////////////////////////////////////
+	// DESACTIVER LES LUMIERE
+	glDisable(GL_LIGHTING);
+	glLoadIdentity();
+
+	////////////////////////////////////////////////
+	// PRECISION SUR LA FENETRE
+	gluOrtho2D(0, WinWidth, 0, WinHeight);
+	// MOD PROJECTION
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	////////////////////////////////////////////////
+	// DESACTIVATION DU TEST D ARRIERE PLAN
+	glDisable(GL_DEPTH_TEST);
+	glLoadIdentity();
+
+	////////////////////////////////////////////////
+	// BLEND
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// INIT LOAD TEXTURE
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	////////////////////////////////////////////////
+	// CREATION TEXTURE AVEC LE TEXT EN SDL
+	SDL_Surface *sFont = IMG_Load("room/exit.png");
 
 
+	////////////////////////////////////////////////
+	// PARAMETRE 2D
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// CONVERTION TEXTURE IMAGE
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sFont->w , sFont->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
+
+	////////////////////////////////////////////////
+	// SI PARAMS X A -1 ON CENTRE LE TEXT SUR X
+	if(x == -1)
+		x = WinWidth/2 - sFont->w/2;
+	////////////////////////////////////////////////
+	// SI PARAMS X A -1 ON CENTRE LE TEXT SUR Y
+	if(y == -1)
+		y = WinHeight/2 - sFont->h/2;
+
+	////////////////////////////////////////////////
+	// DEBUT DU RENDU
+	glBegin(GL_QUADS);
+	{
+		glTexCoord2f(0,0); glVertex2f(x, y);
+		glTexCoord2f(1,0); glVertex2f(x + sFont->w, y);
+		glTexCoord2f(1,-1); glVertex2f(x + sFont->w, y + sFont->h);
+		glTexCoord2f(0,-1); glVertex2f(x, y + sFont->h);
+	}
+	glEnd();
+	////////////////////////////////////////////////
+
+	////////////////////////////////////////////////
+	// DESTRUCTUIN DES ELLEMENTS CREE
+	glDeleteTextures(1, &texture);
+	SDL_FreeSurface(sFont);
+
+	////////////////////////////////////////////////
+	// RECUPERATION DE LA MATRICE AVANT MODIF
+	glPopMatrix();
+	glLoadIdentity();
+}
 
 
 
@@ -490,6 +562,9 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		printf("Impossible de cree la fenetre %s\n",SDL_GetError() );
 		return EXIT_FAILURE;
 	}
+
+
+
 	SDL_GLContext Context = SDL_GL_CreateContext(Window);
 	if( !Context)
 	{
@@ -551,10 +626,13 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		messageMachine(meilleureScore,camera,sega,afficherMessage);
 		//////////////////////////////////////////////////////////
 
+		GL_DrawRectangle(-1,-1);
+
 		//////////////////////////////////////////////////////////
 		// LANCEMENT DES MACHINES
 		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context);
 		//////////////////////////////////////////////////////////
+
 
 		//////////////////////////////////////////////////////////
 		// OpenGL
@@ -1701,10 +1779,6 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 	glPopMatrix();
 	glLoadIdentity();
 }
-
-
-
-
 
 
 

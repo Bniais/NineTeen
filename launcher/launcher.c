@@ -476,46 +476,88 @@ int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleu
 
 int main()
 {
-	// juste pour push
+	/////////////////////////////////////////////////////////////////
+	// INIT SDL // TTF // MIXER
 	SDL_Init(SDL_INIT_VIDEO);
 	TTF_Init();
 	Mix_Init(MIX_INIT_MP3);
 	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) //Initialisation de l'API Mixer
-	{
 	 printf("%s", Mix_GetError());
-	}
 
-
+	/////////////////////////////////////////////////////////////////
+	// RECUPERER TAILLE ECRAN
 	SDL_DisplayMode DM;
 	SDL_GetCurrentDisplayMode(0, &DM);
+	// APPLIQUER UN RATIO
 	LARGUEUR = DM.w/1.78;
 	HAUTEUR = LARGUEUR*0.66667;
 
+	/////////////////////////////////////////////////////////////////
+	// INIT VARIABLE TOKEN
 	char *token = malloc(sizeof(char) * SIZE_SESSION + 1);
+	/////////////////////////////////////////////////////////////////
+	// INIT VARIABLE QUI POINTE SUR LA SCENE
 	const C_STRUCT aiScene* scene = NULL;
 
-
+	/////////////////////////////////////////////////////////////////
+	// INIT FENETRE WINDOWS ET RENDERER
 	SDL_Window *window = NULL;
 	SDL_Renderer *renderer = NULL;
+	SDL_Surface* favicon;
+	/////////////////////////////////////////////////////////////////
+	// CREATION WINDOWS ET RENDERER ET FAVICON
 	window = SDL_CreateWindow("Nineteen | Launcher", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,LARGUEUR,HAUTEUR, 0  );
+	/////////////////////////////////////////////////////////////////
+	// CHARGEMENT ICON
+	// NOM PROBLEMATIQUE SI NON CHARGER ON APPLIQUE PAS SI NON CHARGER
+	if( ( favicon=IMG_Load("favicon.png") ) )
+		SDL_SetWindowIcon(window, favicon);
+	else
+		printf("Erreur chargement favicon\n");
+	/////////////////////////////////////////////////////////////////
+	// CREATION DU RENDU
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
 
+	/////////////////////////////////////////////////////////////////
+	// INIT STRUCTURE MEILLEURE_SCORE
 	struct MeilleureScore_s meilleureScore[16];
+	/////////////////////////////////////////////////////////////////
+	// APPEL DU LAUNCHER
 	if( launcher(renderer,token,meilleureScore,&scene) == EXIT_SUCCESS)
 	{
 		SDL_DestroyRenderer(renderer);
 		SDL_DestroyWindow(window);
-		room(token,meilleureScore,window,scene);
+		/////////////////////////////////////////////////////////////////
+		// APPEL DE LA ROOM
+		printf("ROOM : %d\n",room(token,meilleureScore,window,scene) );
 	}
-	aiReleaseImport(scene);
-	free(token);
 
+
+	/////////////////////////////////////////////////////////////////
+	// LIBERER MEMOIRE
+	/////////////////////////////////////////////////////////////////
+	// VIDER LA MEMOIRE DE LA SCENE
+	aiReleaseImport(scene);
+	// VIDER MEMOIRE TOKEN
+	free(token);
+	/////////////////////////////////////////////////////////////////
+	// QUITTER TTF
 	TTF_Quit();
+	/////////////////////////////////////////////////////////////////
+	// FERMER AUDIO
 	Mix_CloseAudio();
+	/////////////////////////////////////////////////////////////////
+	// QUITTER MIXER
 	Mix_Quit();
+	/////////////////////////////////////////////////////////////////
+	// DETRUIRE LA FENETRE
 	SDL_DestroyWindow(window);
+	/////////////////////////////////////////////////////////////////
+	// QUITTER TOUS LES SYSTEME SDL INITALISER
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
+	/////////////////////////////////////////////////////////////////
+	// QUITTER SDL
 	SDL_Quit();
 
 
