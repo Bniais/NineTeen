@@ -1,2 +1,0 @@
-game : main.c
-	gcc main.c launcher/launcher.c room/room.c games/2_snake/snake.c `sdl2-config --cflags --libs` -lSDL2_image -lSDL2_ttf -lm
