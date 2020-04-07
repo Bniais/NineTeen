@@ -6,6 +6,7 @@
 
 ?bonus is at random brick
 
+//hash et envoi score
 
 bugs :
 	/?/Piece se stoppe instant en atterissant alors que pas accé

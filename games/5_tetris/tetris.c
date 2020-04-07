@@ -447,7 +447,7 @@ void drawPiece(SDL_Renderer *renderer, Piece piece, SDL_Texture* brickTexture, S
 *\return Vrai si elle dépasse sinon faux
 */
 int tooCloseFromWall(Piece piece){
-	return (piece.y + piece.firstRow < -ROUNDABLE || piece.x + piece.firstCol < -ROUNDABLE || piece.x + piece.lastCol > GRILLE_W - 1 || piece.y + piece.lastRow > GRILLE_H - 1);
+	return (piece.y + piece.firstRow < 0 || piece.x + piece.firstCol < 0 || piece.x + piece.lastCol > GRILLE_W - 1 || piece.y + piece.lastRow > GRILLE_H - 1);
 }
 
 
@@ -471,7 +471,7 @@ int tryShift(int shiftInit, int maxShift, Piece * piece, float * pieceCoor, int 
 			return SDL_TRUE;
 
 	//revert
-	piece->x -= sign * shift;
+	(*pieceCoor) -= sign * shift;
 	return SDL_FALSE;
 }
 
@@ -504,12 +504,6 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], i
 			maxRightShift= originalFirstCol - piece->firstCol;
 
 
-		if(rotateSens == 1 &&  originalLastCol - piece->lastCol > maxLeftShift)
-			maxLeftShift = originalLastCol - piece->lastCol;
-		if(rotateSens == -1 &&piece->firstCol - originalFirstCol > maxRightShift)
-			maxRightShift = piece->firstCol - originalFirstCol;
-
-
 		int found = SDL_FALSE;
 
 		//try normal
@@ -522,27 +516,24 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], i
 
 		//right
 		if(!found)
-			found = tryShift(0, maxRightShift, piece, &(piece->x), 1, matrix);
+			found = tryShift(1, maxRightShift, piece, &(piece->x), 1, matrix);
 
 		//try down
 		if(!found){
 			piece->y++;
 			for(downShift=1; downShift <= maxDownShift && !found ; downShift++, piece->y++){
-				if( !(tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix) )  ){
+				if( !(tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix) )  )
 					found = SDL_TRUE;
-					break;
-				}
 
 				//down left
 				if(!found)
-					found = tryShift(1, maxLeftShift, piece, &(piece->x), -1, matrix);
-				else
-					break;
+					found = tryShift(0, maxLeftShift, piece, &(piece->x), -1, matrix);
 
 				//down right
 				if(!found)
-					found = tryShift(1, maxRightShift, piece, &(piece->x), 1, matrix);
-				else
+					found = tryShift(0, maxRightShift, piece, &(piece->x), 1, matrix);
+
+				if(found)
 					break;
 
 			}
@@ -556,21 +547,19 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], i
 		if(!found){
 			piece->y--;
 			for(upShift=1; upShift <= maxUpShift && !found ; upShift++, piece->y--){
-				if( !(tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix) )  ){
+				if( !(tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix) ) )
 					found = SDL_TRUE;
-					break;
-				}
+
 
 				//up left
 				if(!found)
-					found = tryShift(1, maxLeftShift, piece, &(piece->x), -1, matrix);
-				else
-					break;
+					found = tryShift(0, maxLeftShift, piece, &(piece->x), -1, matrix);
 
 				//up right
 				if(!found)
-					found = tryShift(1, maxRightShift, piece, &(piece->x), 1, matrix);
-				else
+					found = tryShift(0, maxRightShift, piece, &(piece->x), 1, matrix);
+
+				if(found)
 					break;
 
 			}
@@ -766,8 +755,6 @@ void getFillPlaces(int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRIL
 	if(firstRow != 0)
 		nbEmpty -= GRILLE_W; //car la dernière ligne scannée aura GRILLE_W cases vides
 
-	//printf(" empty %d\n",nbEmpty);
-
 	int toFill[nbFill];
 	for(int i=0; i<nbFill; i++)
 		toFill[i] = 0;
@@ -833,7 +820,7 @@ int getBonusId(int n){
 }
 
 /**
-*\fn void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine)
+*\fn int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine, ScoreTotal *scoreTotal, long long *score_hash, long keys[4])
 *\brief Enclenche l'animation de destruction de ligne et comptabilise les points rapportés et les bonus gagnés
 *\param matrix La grille
 *\param frameCompleteLine Les frames d'animation de complétion de ligne
@@ -843,6 +830,7 @@ int getBonusId(int n){
 *\param getBonuses Indique si la complétion de la ligne doit faire ganger les bonus présents
 *\param scoreAdd Le tableau du nombre de points et combos rapportés cette frame pour chaque ligne
 *\param comboLine Le nombre de ligne déjà complétées cette frame
+*\param scoreTotal Le score total
 *\param score_hash Le scroe hashé
 *\param keys Les clés de hashage
 *\return Vrai si pas de problème, faux si problème dans le hashage
@@ -861,7 +849,6 @@ int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H]
 			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score) + SCORE_BASE, keys))
 				return SDL_FALSE;
 			scoreAdd[line].score += SCORE_BASE;
-			//printf("score after base ! %d\n",scoreAdd[line].score );
 		}
 
 		if(getBonuses){
@@ -893,20 +880,16 @@ int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H]
 				if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score)*RATIO_SAME_COLOR, keys))
 					return SDL_FALSE;
 			}
-			/*else if(rainbow){
-				scoreAdd[line].rainbow = SDL_TRUE;
-				scoreAdd[line].score *= RATIO_RAINBOW;
-			}*/
 
 			scoreAdd[line].score *= scoreAdd[line].multi;
 			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score)*scoreAdd[line].multi, keys))
 				return SDL_FALSE;
-			//printf("score after MULTI_POINT bonus ! %d\n",scoreAdd[line].score );
+
 
 			scoreAdd[line].score += scoreAdd[line].flat * NB_FLAT_POINT;
 			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score)+scoreAdd[line].flat * NB_FLAT_POINT, keys))
 				return SDL_FALSE;
-			//printf("score after flat bonus ! %d\n",scoreAdd[line].score );
+
 
 		}
 	}
@@ -931,18 +914,15 @@ void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse
 			break;
 
 		case LASER:
-			printf("laser\n");
 			for(int i=GRILLE_H-1; i > GRILLE_H - (NB_LINES_LASER * nbUse) - 1 && i > GRILLE_H - MAX_HEIGHT_LASER -1; i--)
 				frameLaser[i] = LASER_FRAME;
 			break;
 
 		case SLOW:
-			printf("slow\n");
 			*framePassed -= nbUse * SLOW_AMMOUNT;
 			break;
 
 		case SPEED:
-			printf("speed\n");
 			*framePassed += nbUse * SPEED_AMMOUNT;
 			break;
 
@@ -1161,13 +1141,17 @@ void eraseLine(int matrix[GRILLE_W][GRILLE_H], int line, int matrixFill[GRILLE_W
 }
 
 /**
-*\fn void checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H])
+*\fn int checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal, long long * score_hash, long keys[4])
 *\brief Vérifie si des lignes sont complétées
 *\param matrix La matrice
 *\param frameCompleteLine Les frames d'animation de complétion de ligne
 *\param bonusActivate Le tableau des bonus obtenus cette frame
 *\param getBonus Determine si les bonus des lignes complétés sont à donner au joueur
 *\param scoreAdd Le tableau de score par frame et par ligne
+*\param scoreTotal Le score total
+*\param score_hash Le score hashé
+*\param keys Les clés de hashage
+*\return Vrai si pas de problème, faux si problème dans le hashage
 */
 int checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal, long long * score_hash, long keys[4]){
 
@@ -1223,13 +1207,14 @@ void transfertNextPiece(Piece *currentPiece, Piece nextPiece, int hardcore){
 	updateGrille(currentPiece, hardcore);
 }
 
-
 /**
-*\fn void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H])
+*\fn void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal)
 *\brief Rajoute les scores et combos obtenus cette frame dans le tableau de score à afficher pour toutes les lignes
 *\param scoreAffichage Les scores des lignes
 *\param scoreAdd Les scores et combo de lignes à ajouter
+*\param scoreTotal Le score total
 */
+
 void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal){
 	for(int i=0; i<GRILLE_H; i++){
 		if(scoreAdd[i].score){ //Si un score est à rajouter
@@ -1867,7 +1852,35 @@ void moveDeadPiece(DeadPiece *deadPiece){
 	deadPiece->rota += deadPiece->rotaSpeed;
 }
 
-void myFrees(){
+void myFrees(Piece * currentPiece, Piece * nextPiece, DeadPiece ** deadPieces, SDL_Texture * textures[NB_TETRIS_TEXTURES], TTF_Font * fonts[NB_TETRIS_FONTS]){
+	if(currentPiece->grille){
+		free(currentPiece->grille);
+		currentPiece->grille = NULL;
+	}
+
+	if(nextPiece->grille){
+		free(nextPiece->grille);
+		nextPiece->grille = NULL;
+	}
+
+	if(*deadPieces){
+		free(*deadPieces);
+		*deadPieces = NULL;
+	}
+
+
+	for(int i=0; i<NB_TETRIS_TEXTURES; i++)
+		if(textures[i]){
+			SDL_DestroyTexture(textures[i]);
+			textures[i] = NULL;
+		}
+
+
+	for(int i=0; i<NB_TETRIS_FONTS; i++)
+		if(fonts[i]){
+			TTF_CloseFont(fonts[i]);
+			fonts[i] = NULL;
+		}
 
 }
 
@@ -1906,7 +1919,6 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			return EXIT_FAILURE;
 		}
 	}
-	printf("TOUT EST CHARGé\n");
 
 
 
@@ -2069,8 +2081,8 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			}
 
 			if( keystate[SDL_SCANCODE_ESCAPE] ){
-				quit = SDL_TRUE;
-				break;
+				myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
+				return 0;
 			}
 
 			if( keystate[SDL_SCANCODE_RIGHT] )
@@ -2089,11 +2101,6 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 				rotate = -1;
 			}
 
-
-			//printf("Q %d E %d rdyQ %d rdyE %d\n", keystate[SDL_SCANCODE_Q],keystate[SDL_SCANCODE_E], rdyToRotate[0], rdyToRotate[1]);
-
-
-			//gérer utilisation bonus ?
 
 		// // // // //
 		// Gameplay //`
@@ -2119,7 +2126,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 							savePiece(currentPiece, matrix);
 							clearIntTab(bonusActivate, NB_BONUSES);
 							if(!checkLines(matrix, frameCompleteLine, bonusActivate, SDL_TRUE, scoreAdd, &score, &score_hash, keys)){
-								myFrees();
+								myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
 								printf("U HACKER\n" );
 								return HACKED;
 							}
@@ -2151,6 +2158,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 											updateScore("2",buffer,token);
 										else
 											updateScore("12",buffer,token);
+										printf("SCORE ENVOYER\n" );
 										//////////////////////////////////////////////////////////////////
 									}
 								}
@@ -2178,6 +2186,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 							updateScore("2",buffer,token);
 						else
 							updateScore("12",buffer,token);
+						printf("SCORE ENVOYER\n" );
 						//////////////////////////////////////////////////////////////////
 					}
 					//break;
@@ -2203,9 +2212,6 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			drawQuit(renderer, fonts[T_FONT_COMBO]);
 			if(nbDeadPieces && deadPieces[0].y > Y_START_REPLAY)
 				drawReplay(renderer, fonts[T_FONT_COMBO]);
-
-printf("hau\n");
-
 
 			//SDL_RenderFillRect(renderer, &SCORE_TOTAL_DEST);
 			drawTotalScore(renderer,fonts[T_FONT_COMBO], score);
@@ -2240,19 +2246,17 @@ printf("hau\n");
 			while( currentTime - lastTime < 1000./FRAMES_PER_SECOND )
 				currentTime = SDL_GetTicks();
 
-			/*if( currentTime - lastTime > 1000./FRAMES_PER_SECOND )
-				printf(" TIME FRAME : %d\n", currentTime - lastTime);*/
-
 			lastTime = currentTime;
 
 			//Actualise frames
 			framePassed++;
 			if(!gameOver)
-				if(!updateFrames(frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, scoreAffichage, scoreAdd, &score, &frameDestJauge, frameTotalSpeed, &frameTotalShow, &score_hash, keys))
-				{
-					printf("U HACKER\n" );
-					return HACKED;
-				}
+			if(!updateFrames(frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, scoreAffichage, scoreAdd, &score, &frameDestJauge, frameTotalSpeed, &frameTotalShow, &score_hash, keys))
+			{
+				printf("U HACKER\n" );
+				myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
+				return HACKED;
+			}
 
 
 			// On efface
@@ -2262,24 +2266,12 @@ printf("hau\n");
 		}
 
 	}
-
-	printf("Waw t'es nul\n");
 	return 0;
 }
 
 
 /*int main(){ // pour tester tetris
 	myInit();
-	//"games/5_tetris/Textures/laserAnim.png",
-	//"games/5_tetris/Textures/bricks.png",
-	//"games/5_tetris/Textures/bonus.png",
-	//"games/5_tetris/Textures/hud_grille.png",
-	//"games/5_tetris/Textures/background.png",
-	//"games/5_tetris/Textures/chiffre.png",
-	//"games/5_tetris/Textures/speedJauge.png"
-
-
-
 
 
 	SDL_Rect displayBounds;
