@@ -820,7 +820,7 @@ int getBonusId(int n){
 }
 
 /**
-*\fn void completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine)
+*\fn int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine, ScoreTotal *scoreTotal, long long *score_hash, long keys[4])
 *\brief Enclenche l'animation de destruction de ligne et comptabilise les points rapportés et les bonus gagnés
 *\param matrix La grille
 *\param frameCompleteLine Les frames d'animation de complétion de ligne
@@ -830,6 +830,7 @@ int getBonusId(int n){
 *\param getBonuses Indique si la complétion de la ligne doit faire ganger les bonus présents
 *\param scoreAdd Le tableau du nombre de points et combos rapportés cette frame pour chaque ligne
 *\param comboLine Le nombre de ligne déjà complétées cette frame
+*\param scoreTotal Le score total
 *\param score_hash Le scroe hashé
 *\param keys Les clés de hashage
 *\return Vrai si pas de problème, faux si problème dans le hashage
@@ -1140,13 +1141,17 @@ void eraseLine(int matrix[GRILLE_W][GRILLE_H], int line, int matrixFill[GRILLE_W
 }
 
 /**
-*\fn void checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H])
+*\fn int checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal, long long * score_hash, long keys[4])
 *\brief Vérifie si des lignes sont complétées
 *\param matrix La matrice
 *\param frameCompleteLine Les frames d'animation de complétion de ligne
 *\param bonusActivate Le tableau des bonus obtenus cette frame
 *\param getBonus Determine si les bonus des lignes complétés sont à donner au joueur
 *\param scoreAdd Le tableau de score par frame et par ligne
+*\param scoreTotal Le score total
+*\param score_hash Le score hashé
+*\param keys Les clés de hashage
+*\return Vrai si pas de problème, faux si problème dans le hashage
 */
 int checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal, long long * score_hash, long keys[4]){
 
@@ -1202,13 +1207,14 @@ void transfertNextPiece(Piece *currentPiece, Piece nextPiece, int hardcore){
 	updateGrille(currentPiece, hardcore);
 }
 
-
 /**
-*\fn void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H])
+*\fn void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal)
 *\brief Rajoute les scores et combos obtenus cette frame dans le tableau de score à afficher pour toutes les lignes
 *\param scoreAffichage Les scores des lignes
 *\param scoreAdd Les scores et combo de lignes à ajouter
+*\param scoreTotal Le score total
 */
+
 void updateScoreAffichage(Score * scoreAffichage, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal){
 	for(int i=0; i<GRILLE_H; i++){
 		if(scoreAdd[i].score){ //Si un score est à rajouter
@@ -1846,7 +1852,35 @@ void moveDeadPiece(DeadPiece *deadPiece){
 	deadPiece->rota += deadPiece->rotaSpeed;
 }
 
-void myFrees(){
+void myFrees(Piece * currentPiece, Piece * nextPiece, DeadPiece ** deadPieces, SDL_Texture * textures[NB_TETRIS_TEXTURES], TTF_Font * fonts[NB_TETRIS_FONTS]){
+	if(currentPiece->grille){
+		free(currentPiece->grille);
+		currentPiece->grille = NULL;
+	}
+
+	if(nextPiece->grille){
+		free(nextPiece->grille);
+		nextPiece->grille = NULL;
+	}
+
+	if(*deadPieces){
+		free(*deadPieces);
+		*deadPieces = NULL;
+	}
+
+
+	for(int i=0; i<NB_TETRIS_TEXTURES; i++)
+		if(textures[i]){
+			SDL_DestroyTexture(textures[i]);
+			textures[i] = NULL;
+		}
+
+
+	for(int i=0; i<NB_TETRIS_FONTS; i++)
+		if(fonts[i]){
+			TTF_CloseFont(fonts[i]);
+			fonts[i] = NULL;
+		}
 
 }
 
@@ -2047,8 +2081,8 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			}
 
 			if( keystate[SDL_SCANCODE_ESCAPE] ){
-				quit = SDL_TRUE;
-				break;
+				myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
+				return 0;
 			}
 
 			if( keystate[SDL_SCANCODE_RIGHT] )
@@ -2092,7 +2126,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 							savePiece(currentPiece, matrix);
 							clearIntTab(bonusActivate, NB_BONUSES);
 							if(!checkLines(matrix, frameCompleteLine, bonusActivate, SDL_TRUE, scoreAdd, &score, &score_hash, keys)){
-								myFrees();
+								myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
 								printf("U HACKER\n" );
 								return HACKED;
 							}
@@ -2217,11 +2251,12 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			//Actualise frames
 			framePassed++;
 			if(!gameOver)
-				if(!updateFrames(frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, scoreAffichage, scoreAdd, &score, &frameDestJauge, frameTotalSpeed, &frameTotalShow, &score_hash, keys))
-				{
-					printf("U HACKER\n" );
-					return HACKED;
-				}
+			if(!updateFrames(frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, scoreAffichage, scoreAdd, &score, &frameDestJauge, frameTotalSpeed, &frameTotalShow, &score_hash, keys))
+			{
+				printf("U HACKER\n" );
+				myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
+				return HACKED;
+			}
 
 
 			// On efface

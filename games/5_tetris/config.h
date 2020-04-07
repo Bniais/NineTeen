@@ -190,8 +190,7 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 };
 
 //to test
-/*
-char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
+/*char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 	"./Textures/laserAnim.png",
 	"./Textures/bricks.png",
 	"./Textures/bonus.png",
