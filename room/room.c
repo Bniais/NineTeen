@@ -60,6 +60,10 @@
 const int SON_PAS = 5;
 float HAUTEUR_PERSONNAGE = HAUTEUR_CAMERA_DEBOUT;
 
+
+
+#define MIN_INTENSITE 50 // INTENSITE SON STEREO
+
 float VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
 float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 
@@ -210,7 +214,7 @@ float distancePoint(float xa, float ya, float xb, float yb);
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter);
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter,float angleJoueur);
 
 
 /////////////////////////////////////////////////////
@@ -221,6 +225,7 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, float po
 /// \param struct Camera_s camera position actuel
 /// \param struct int channel channel sur le quelle jouer le son
 /// \param struct Mix_Chumk *music son a jouer
+/// \param float angleJoueur angle de la camera du joueur
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -529,11 +534,12 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
 		// MUSIQUE LOT MACHINE GAUCHE
-		reglageVolume(0,-5.0,11.0,camera.px,camera.pz,10.0);
+		printf("ANGLE JOUEUR = %f\n",camera.angle );
+		reglageVolume(0,-5.0,11.0,camera.px,camera.pz,10.0,camera.angle);
 		// MUSIQUE LOT MACHINE DROITE
-		reglageVolume(1,5.0,11.0,camera.px,camera.pz,10.0);
+		reglageVolume(1,5.0,11.0,camera.px,camera.pz,10.0,camera.angle);
 		// MUSIQUE MACHINE SEUL
-		reglageVolume(2,0.0,0.0,camera.px,camera.pz,15.0);
+		reglageVolume(2,0.0,0.0,camera.px,camera.pz,15.0,camera.angle);
 		//////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////
@@ -779,11 +785,8 @@ int windowMaxSize()
 float distancePoint(float xa, float ya, float xb, float yb)
 {
 	/////////////////////////////////////////////////////
-	// PERMET DE CALCULER LA DISTANCE ENTRE 2 POINTS ET LA RENDRE POSITIF TOUJOURS
+	// PERMET DE CALCULER LA DISTANCE ENTRE 2 POINTS
 	float resultat = sqrt( pow( (xb - xa) , 2 ) + pow( (yb - ya) , 2 ) ) ;
-	if (resultat < 0)
-		return resultat * -1;
-	else
 	 	return resultat;
 }
 
@@ -814,7 +817,54 @@ int attendreXsecondeMessage(int *compterSeconde, int *afficherMessage, const int
 	return *afficherMessage;
 }
 
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter)
+float calculAngle(float xa, float ya,      float xb, float yb,       float xc, float yc)
+{
+	// ON A LE TRIANGLE A B C
+	// ON VEUT CALCULER L ANGLE BAC
+	// AVEC A SOURCE DU SON
+	// B EMPLACEMENT PERSONNAGES
+	// C POINT SUR LE MEME AXE X QUE A SOURCE DU SON
+
+	float numerateur = yb*(xa-xc) + ya*(xc-xb) + yc*(xb-xa);
+	float denominateur = (xb-xa)*(xa-xc) + (yb-ya)*(ya-yc);
+
+	float ratio = numerateur/denominateur;
+
+	float angleRad = atan(ratio);
+
+	if(xa<xb)
+	{
+		if(ya<yb)
+		{
+			// COMPENSATION DEVANT A DROIT DE LA SOURCE
+			angleRad += 2*M_PI;
+		}
+		else
+		{
+			// COMPENSATION DERRIERE A DROIT DE LA SOURCE
+			angleRad += M_PI;
+		}
+	}
+	else
+	{
+		if(ya<yb)
+		{
+			// PAS DE COMPENSATION NECESSAIRE DEVANT GAUCHE
+		}
+		else
+		{
+			// COMPENSATION DERRIERE A GAUCHE DE LA SOURCE
+			angleRad += M_PI;
+		}
+	}
+
+	return (2*M_PI) - angleRad;
+
+
+
+}
+
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur)
 {
 	////////////////////////////////////////////////////
 	// FIX VOLUME MAX PAR DEFAULT
@@ -838,6 +888,32 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, float po
 	////////////////////////////////////////////////////
 	// APPLIQUE CE QUI A ETAIT FAIT
 	Mix_Volume(channel, (int)volume);
+
+
+
+	float angleSrc = calculAngle(xa,ya,  xb,yb,  xa,ya - 1.0);
+
+	float angleOreilleD = angleJoueur - M_PI/4;
+	float angleOreilleG = angleJoueur + M_PI/4;
+
+
+	float deltaAngleD = fabs(angleSrc + M_PI - angleOreilleD); //
+	float deltaAngleG = fabs(angleSrc + M_PI - angleOreilleG);
+
+
+	while(deltaAngleD >M_PI)
+		deltaAngleD-=2*M_PI;
+	while(deltaAngleG >M_PI)
+	 	deltaAngleG-=2*M_PI;
+
+	int intensiteOreilleD = 255 - fabs(deltaAngleD)*(255-MIN_INTENSITE)/(M_PI);
+	int intensiteOreilleG = 255 - fabs(deltaAngleG)*(255-MIN_INTENSITE)/(M_PI);
+
+//	printf("GAUCHE %d DROITE %d\n",intensiteOreilleG,intensiteOreilleD );
+	if(!Mix_SetPanning(channel, intensiteOreilleG, intensiteOreilleD))
+		printf("Mix_SetPanning: %s\n", Mix_GetError());
+
+
 }
 
 
