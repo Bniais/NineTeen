@@ -514,6 +514,7 @@ int main()
 		SDL_SetWindowIcon(window, favicon);
 	else
 		printf("Erreur chargement favicon\n");
+	SDL_FreeSurface(favicon);
 	/////////////////////////////////////////////////////////////////
 	// CREATION DU RENDU
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);

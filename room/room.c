@@ -394,7 +394,7 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 
 
 
-void GL_DrawRectangle()
+void MessageQuitterRoom()
 {
 	////////////////////////////////////////////////
 	// ENVOI MATRICE
@@ -427,30 +427,42 @@ void GL_DrawRectangle()
 
 	////////////////////////////////////////////////
 	// CREATION TEXTURE AVEC LE TEXT EN SDL
-	SDL_Surface *sFont = IMG_Load("room/exit.png");
-
+	// CHOISIR EN FONCTION DE 3 TAILLES D'ECRAN
+	SDL_Surface *sImage = NULL;
+	if( WinWidth > 2000)
+	{
+		sImage = IMG_Load("room/exit@3.png");
+	}
+	else if ( WinWidth > 1300)
+	{
+		sImage = IMG_Load("room/exit@2.png");
+	}
+	else
+	{
+		sImage = IMG_Load("room/exit.png");	
+	}
 
 	////////////////////////////////////////////////
 	// PARAMETRE 2D
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	// CONVERTION TEXTURE IMAGE
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sFont->w , sFont->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sImage->w , sImage->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sImage->pixels);
 
 	////////////////////////////////////////////////
 	// SI PARAMS X A -1 ON CENTRE LE TEXT SUR X
-	int x = WinWidth/2 - sFont->w/2;
+	int x = WinWidth/2 - sImage->w/2;
 	////////////////////////////////////////////////
 	// SI PARAMS X A -1 ON CENTRE LE TEXT SUR Y
-	int y = WinHeight/2 - sFont->h/2;
+	int y = WinHeight/2 - sImage->h/2;
 
 	////////////////////////////////////////////////
 	// DEBUT DU RENDU
 	glBegin(GL_QUADS);
 	{
 		glTexCoord2f(0,0); glVertex2f(x, y);
-		glTexCoord2f(1,0); glVertex2f(x + sFont->w, y);
-		glTexCoord2f(1,-1); glVertex2f(x + sFont->w, y + sFont->h);
-		glTexCoord2f(0,-1); glVertex2f(x, y + sFont->h);
+		glTexCoord2f(1,0); glVertex2f(x + sImage->w, y);
+		glTexCoord2f(1,-1); glVertex2f(x + sImage->w, y + sImage->h);
+		glTexCoord2f(0,-1); glVertex2f(x, y + sImage->h);
 	}
 	glEnd();
 	////////////////////////////////////////////////
@@ -458,7 +470,7 @@ void GL_DrawRectangle()
 	////////////////////////////////////////////////
 	// DESTRUCTUIN DES ELLEMENTS CREE
 	glDeleteTextures(1, &texture);
-	SDL_FreeSurface(sFont);
+	SDL_FreeSurface(sImage);
 
 	////////////////////////////////////////////////
 	// RECUPERATION DE LA MATRICE AVANT MODIF
@@ -560,8 +572,14 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		printf("Impossible de cree la fenetre %s\n",SDL_GetError() );
 		return EXIT_FAILURE;
 	}
-
-
+	//////////////////////////////////////////////////////////
+	// CREATION DE L'ICON D'APPLICATION
+	SDL_Surface *favicon;
+	if( ( favicon=IMG_Load("favicon.png") ) )
+		SDL_SetWindowIcon(Window, favicon);
+	else
+		printf("Erreur chargement favicon\n");
+	SDL_FreeSurface(favicon);
 
 	SDL_GLContext Context = SDL_GL_CreateContext(Window);
 	if( !Context)
@@ -1596,7 +1614,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						// INIT AFFICHAGE DU MESSAGE
 						GL_InitialiserParametre(WinWidth,WinHeight,camera);
 						SDL_GL_AppliquerScene(scene,&camera,scene_list,FPS);
-						GL_DrawRectangle();
+						MessageQuitterRoom();
 						SDL_GL_SwapWindow(Window);
 
 						///////////////////////////////////////////////////
