@@ -447,7 +447,7 @@ void drawPiece(SDL_Renderer *renderer, Piece piece, SDL_Texture* brickTexture, S
 *\return Vrai si elle dépasse sinon faux
 */
 int tooCloseFromWall(Piece piece){
-	return (piece.y + piece.firstRow < -ROUNDABLE || piece.x + piece.firstCol < -ROUNDABLE || piece.x + piece.lastCol > GRILLE_W - 1 || piece.y + piece.lastRow > GRILLE_H - 1);
+	return (piece.y + piece.firstRow < 0 || piece.x + piece.firstCol < 0 || piece.x + piece.lastCol > GRILLE_W - 1 || piece.y + piece.lastRow > GRILLE_H - 1);
 }
 
 
@@ -471,7 +471,7 @@ int tryShift(int shiftInit, int maxShift, Piece * piece, float * pieceCoor, int 
 			return SDL_TRUE;
 
 	//revert
-	piece->x -= sign * shift;
+	(*pieceCoor) -= sign * shift;
 	return SDL_FALSE;
 }
 
@@ -504,12 +504,6 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], i
 			maxRightShift= originalFirstCol - piece->firstCol;
 
 
-		if(rotateSens == 1 &&  originalLastCol - piece->lastCol > maxLeftShift)
-			maxLeftShift = originalLastCol - piece->lastCol;
-		if(rotateSens == -1 &&piece->firstCol - originalFirstCol > maxRightShift)
-			maxRightShift = piece->firstCol - originalFirstCol;
-
-
 		int found = SDL_FALSE;
 
 		//try normal
@@ -522,27 +516,24 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], i
 
 		//right
 		if(!found)
-			found = tryShift(0, maxRightShift, piece, &(piece->x), 1, matrix);
+			found = tryShift(1, maxRightShift, piece, &(piece->x), 1, matrix);
 
 		//try down
 		if(!found){
 			piece->y++;
 			for(downShift=1; downShift <= maxDownShift && !found ; downShift++, piece->y++){
-				if( !(tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix) )  ){
+				if( !(tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix) )  )
 					found = SDL_TRUE;
-					break;
-				}
 
 				//down left
 				if(!found)
-					found = tryShift(1, maxLeftShift, piece, &(piece->x), -1, matrix);
-				else
-					break;
+					found = tryShift(0, maxLeftShift, piece, &(piece->x), -1, matrix);
 
 				//down right
 				if(!found)
-					found = tryShift(1, maxRightShift, piece, &(piece->x), 1, matrix);
-				else
+					found = tryShift(0, maxRightShift, piece, &(piece->x), 1, matrix);
+
+				if(found)
 					break;
 
 			}
@@ -556,21 +547,19 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], i
 		if(!found){
 			piece->y--;
 			for(upShift=1; upShift <= maxUpShift && !found ; upShift++, piece->y--){
-				if( !(tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix) )  ){
+				if( !(tooCloseFromWall(*piece) || tooCloseFromMatrix(*piece, matrix) ) )
 					found = SDL_TRUE;
-					break;
-				}
+
 
 				//up left
 				if(!found)
-					found = tryShift(1, maxLeftShift, piece, &(piece->x), -1, matrix);
-				else
-					break;
+					found = tryShift(0, maxLeftShift, piece, &(piece->x), -1, matrix);
 
 				//up right
 				if(!found)
-					found = tryShift(1, maxRightShift, piece, &(piece->x), 1, matrix);
-				else
+					found = tryShift(0, maxRightShift, piece, &(piece->x), 1, matrix);
+
+				if(found)
 					break;
 
 			}
@@ -766,8 +755,6 @@ void getFillPlaces(int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRIL
 	if(firstRow != 0)
 		nbEmpty -= GRILLE_W; //car la dernière ligne scannée aura GRILLE_W cases vides
 
-	//printf(" empty %d\n",nbEmpty);
-
 	int toFill[nbFill];
 	for(int i=0; i<nbFill; i++)
 		toFill[i] = 0;
@@ -861,7 +848,6 @@ int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H]
 			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score) + SCORE_BASE, keys))
 				return SDL_FALSE;
 			scoreAdd[line].score += SCORE_BASE;
-			//printf("score after base ! %d\n",scoreAdd[line].score );
 		}
 
 		if(getBonuses){
@@ -893,20 +879,16 @@ int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H]
 				if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score)*RATIO_SAME_COLOR, keys))
 					return SDL_FALSE;
 			}
-			/*else if(rainbow){
-				scoreAdd[line].rainbow = SDL_TRUE;
-				scoreAdd[line].score *= RATIO_RAINBOW;
-			}*/
 
 			scoreAdd[line].score *= scoreAdd[line].multi;
 			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score)*scoreAdd[line].multi, keys))
 				return SDL_FALSE;
-			//printf("score after MULTI_POINT bonus ! %d\n",scoreAdd[line].score );
+
 
 			scoreAdd[line].score += scoreAdd[line].flat * NB_FLAT_POINT;
 			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score)+scoreAdd[line].flat * NB_FLAT_POINT, keys))
 				return SDL_FALSE;
-			//printf("score after flat bonus ! %d\n",scoreAdd[line].score );
+
 
 		}
 	}
@@ -931,18 +913,15 @@ void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse
 			break;
 
 		case LASER:
-			printf("laser\n");
 			for(int i=GRILLE_H-1; i > GRILLE_H - (NB_LINES_LASER * nbUse) - 1 && i > GRILLE_H - MAX_HEIGHT_LASER -1; i--)
 				frameLaser[i] = LASER_FRAME;
 			break;
 
 		case SLOW:
-			printf("slow\n");
 			*framePassed -= nbUse * SLOW_AMMOUNT;
 			break;
 
 		case SPEED:
-			printf("speed\n");
 			*framePassed += nbUse * SPEED_AMMOUNT;
 			break;
 
@@ -1906,7 +1885,6 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			return EXIT_FAILURE;
 		}
 	}
-	printf("TOUT EST CHARGé\n");
 
 
 
@@ -2090,11 +2068,6 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			}
 
 
-			//printf("Q %d E %d rdyQ %d rdyE %d\n", keystate[SDL_SCANCODE_Q],keystate[SDL_SCANCODE_E], rdyToRotate[0], rdyToRotate[1]);
-
-
-			//gérer utilisation bonus ?
-
 		// // // // //
 		// Gameplay //`
 		// // // // //
@@ -2151,6 +2124,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 											updateScore("2",buffer,token);
 										else
 											updateScore("12",buffer,token);
+										printf("SCORE ENVOYER\n" );
 										//////////////////////////////////////////////////////////////////
 									}
 								}
@@ -2178,6 +2152,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 							updateScore("2",buffer,token);
 						else
 							updateScore("12",buffer,token);
+						printf("SCORE ENVOYER\n" );
 						//////////////////////////////////////////////////////////////////
 					}
 					//break;
@@ -2203,9 +2178,6 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			drawQuit(renderer, fonts[T_FONT_COMBO]);
 			if(nbDeadPieces && deadPieces[0].y > Y_START_REPLAY)
 				drawReplay(renderer, fonts[T_FONT_COMBO]);
-
-printf("hau\n");
-
 
 			//SDL_RenderFillRect(renderer, &SCORE_TOTAL_DEST);
 			drawTotalScore(renderer,fonts[T_FONT_COMBO], score);
@@ -2240,9 +2212,6 @@ printf("hau\n");
 			while( currentTime - lastTime < 1000./FRAMES_PER_SECOND )
 				currentTime = SDL_GetTicks();
 
-			/*if( currentTime - lastTime > 1000./FRAMES_PER_SECOND )
-				printf(" TIME FRAME : %d\n", currentTime - lastTime);*/
-
 			lastTime = currentTime;
 
 			//Actualise frames
@@ -2262,24 +2231,12 @@ printf("hau\n");
 		}
 
 	}
-
-	printf("Waw t'es nul\n");
 	return 0;
 }
 
 
 /*int main(){ // pour tester tetris
 	myInit();
-	//"games/5_tetris/Textures/laserAnim.png",
-	//"games/5_tetris/Textures/bricks.png",
-	//"games/5_tetris/Textures/bonus.png",
-	//"games/5_tetris/Textures/hud_grille.png",
-	//"games/5_tetris/Textures/background.png",
-	//"games/5_tetris/Textures/chiffre.png",
-	//"games/5_tetris/Textures/speedJauge.png"
-
-
-
 
 
 	SDL_Rect displayBounds;
