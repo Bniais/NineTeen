@@ -230,6 +230,7 @@ int afficherScore(SDL_Renderer *renderer , SDL_Texture *texture_chiffre,int scor
 
 }
 
+
 int afficherMeilleurScore(SDL_Renderer* renderer,SDL_Texture *texture_highscore, int score, int high_score, int cible)
 {
 	if(score + PRELOAD_POS_OBSTACLE >= high_score )
@@ -241,45 +242,94 @@ int afficherMeilleurScore(SDL_Renderer* renderer,SDL_Texture *texture_highscore,
 	return 0;
 }
 
-// regroupe toute les fonctions d'affichage
+/////////////////////////////////////////////////////
+/// \fn int afficherTout(SDL_Renderer * renderer, SDL_Point emplacementPersonnage, pilonne *pilonne ,int score,int varAnimationPersonnage,int varAnimationSol, int cible, double angle ,SDL_Texture *texture_background, SDL_Texture *texture_pipes, SDL_Texture *texture_birds, SDL_Texture *texture_medals, SDL_Texture *texture_scoreBoard, SDL_Texture *texture_sol, SDL_Texture *texture_chiffre, SDL_Texture* texture_highscore)
+/// \brief regroupement de toute les fonctions d'affichage pour afficher tous
+///
+/// \param SDL_Renderer * renderer
+/// \param SDL_Point emplacementPersonnage
+/// \param pilonne *pilonne
+/// \param int score
+/// \param int varAnimationPersonnage
+/// \param int cible
+/// \param  double angle
+/// \param  SDL_Texture *texture_background
+/// \param  SDL_Texture *texture_pipes
+/// \param  SDL_Texture *texture_birds
+/// \param  SDL_Texture *texture_medals
+/// \param  SDL_Texture *texture_scoreBoard
+/// \param  SDL_Texture *texture_sol
+/// \param  SDL_Texture *texture_chiffre
+/// \param  SDL_Texture* texture_highscore)
+///
+/// \return void
+/////////////////////////////////////////////////////
 int afficherTout(SDL_Renderer * renderer, SDL_Point emplacementPersonnage, pilonne *pilonne ,int score,int varAnimationPersonnage,int varAnimationSol, int cible, double angle ,SDL_Texture *texture_background, SDL_Texture *texture_pipes, SDL_Texture *texture_birds, SDL_Texture *texture_medals, SDL_Texture *texture_scoreBoard, SDL_Texture *texture_sol, SDL_Texture *texture_chiffre, SDL_Texture* texture_highscore)
 {
 
-
+	/////////////////////////////////////////////////////
+	// NETTOYAGE DE LA FENETRE PRECEDANTE
 	SDL_RenderClear(renderer);
 
-
+	/////////////////////////////////////////////////////
+	// AFFICHAGE DU FOND
 	if ( afficherBackground(renderer,texture_background) )
 		return SDL_RENDER_ERROR_BACKGROUND;
 
+	/////////////////////////////////////////////////////
 	// cas particuler charger X obstacle
 	for (int i = 0; i < PRELOAD_POS_OBSTACLE; i++) {
+		// AFFICHER LES PILONNES
 		if ( afficherPilonne(renderer,texture_pipes,pilonne[i].hauteur,pilonne[i].position) )
 			return SDL_RENDER_ERROR_OBSTACLE;
 
 	}
 
-
+	////////////////////////////////////////////////////
+	// AFFICHER LE SOL
 	if ( afficherSol(renderer,texture_sol,varAnimationSol) )
 		return SDL_RENDER_ERROR_SOL;
+	/////////////////////////////////////////////////////
+	// AFFICHER PERSONNAGES
 	if ( AfficherPersonnage(renderer , texture_birds, emplacementPersonnage  , varAnimationPersonnage , angle) )
 		return SDL_RENDER_ERROR_PERSONNAGE;
+	/////////////////////////////////////////////////////
+	// AFFICHER SCORE
 	if ( afficherScore(renderer, texture_chiffre, score , 1) )
 		return SDL_RENDER_ERROR_PRINT_SCORE;
+	/////////////////////////////////////////////////////
+	// AFFICHER MEILLEURE SCORE
 	if( afficherMeilleurScore(renderer,texture_highscore,score,6,cible ) )
 		return SDL_RENDER_ERROR_PRINT_HS;
 
-	//On affiche
 
+	/////////////////////////////////////////////////////
+	// AFFICHER TOUS
 	SDL_RenderPresent(renderer);
+
 	return 0;
 
 }
 
+
+/////////////////////////////////////////////////////
+/// \fn void init_pilonne(pilonne *pilonne, int *varAnimationPersonnage, int *varAnimationSol, int *end, int* dead, int *traitement)
+/// \brief initialisation des pilonnes et des animation et de certaine variables liee au boucle du jeu
+///
+/// \param pilonne *pilonne struct pilonne
+/// \param int *varAnimationPersonnage
+/// \param int *varAnimationSol
+/// \param int *end
+/// \param int* dead
+/// \param int *traitement
+///
+/// \return void
+/////////////////////////////////////////////////////
 void init_pilonne(pilonne *pilonne, int *varAnimationPersonnage, int *varAnimationSol, int *end, int* dead, int *traitement)
 {
 
-
+	/////////////////////////////////////////////////////
+	// ATTRIBUTION D UNE VARIABLE ALEATOIRE
 	for(int i=0; i<PRELOAD_POS_OBSTACLE;i++){
 		pilonne[i].hauteur = rand() % NB_POS_OBSTACLE ;
 		if (i)
@@ -288,6 +338,8 @@ void init_pilonne(pilonne *pilonne, int *varAnimationPersonnage, int *varAnimati
 			pilonne[i].position = WINDOW_L;
 	}
 
+	/////////////////////////////////////////////////////
+	// SET TO 0
 	*varAnimationPersonnage = 0;
 	*varAnimationSol = 0;
 	*end = 0;
@@ -295,65 +347,117 @@ void init_pilonne(pilonne *pilonne, int *varAnimationPersonnage, int *varAnimati
 	*traitement = -1;
 }
 
+
+/////////////////////////////////////////////////////
+/// \fn int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *score_hash, long keys[4], Mix_Chunk *score_wav)
+/// \brief detecte le passage d'un pilonne et joue un son
+///
+/// \param pilonne *pilonne struct pilonne
+/// \param int traitement pilonne a traiter
+/// \param int *score score a incrementer
+/// \param long long *score_hash liee a la securite
+/// \param long keys[4] liee a la securite
+/// \param Mix_Chunk *score_wav son a jouer
+///
+/// \return int TRUE/FALSE
+/////////////////////////////////////////////////////
 int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *score_hash, long keys[4], Mix_Chunk *score_wav)
 {
 
+	/////////////////////////////////////////////////////
+	// INITIALISATION SI AUCUN TRAITEMENT REALISER
 	if(traitement == -1){
+		/////////////////////////////////////////////////////
+		// ON VERIFIE SI ON A PASSER
 		if(pilonne[0].position + OBSTACLE_VERT.w*SCALE_TO_FIT + PERSO.w*SCALE_TO_FIT < WINDOW_L/2  ){
+			/////////////////////////////////////////////////////
+			// ON TRAIT LE PILONNE SUIVANT
 			traitement = 0;
-
+			// UPDATE SCORE AVEC SECURITER
 			if(changeProtectedVar(score_hash, score, (*score)+1, keys))
 				Mix_PlayChannel( 5, score_wav,0);
-			/*else
+				// LE JOUEUR EST REPORTER
+		/*else
 				ban commands*/
 		}
 
-	} else if(traitement == 0){
+	}
+	/////////////////////////////////////////////////////
+	// TRAITEMENT DU PILONNE 1
+	else if(traitement == 0){
+		/////////////////////////////////////////////////////
+		// ON VERIFIE SI ON A PASSER
 		if(pilonne[1].position + OBSTACLE_VERT.w*SCALE_TO_FIT + PERSO.w*SCALE_TO_FIT < WINDOW_L/2 ){
+			/////////////////////////////////////////////////////
+			// ON TRAIT LE PILONNE SUIVANT
 			traitement = 1;
-
-
+			// UPDATE SCORE AVEC SECURITER
 			if(changeProtectedVar(score_hash, score, (*score)+1, keys))
 				Mix_PlayChannel( 5, score_wav,0);
+				// LE JOUEUR EST REPORTER
 			/*else
 				ban commands*/
-
 		}
-	} else if ( traitement == 1){
+
+	}
+	/////////////////////////////////////////////////////
+	// TRAITEMENT DU PILONNE 2
+	else if ( traitement == 1){
+		/////////////////////////////////////////////////////
+		// ON VERIFIE SI ON A PASSER
 		if(pilonne[2].position + OBSTACLE_VERT.w*SCALE_TO_FIT + PERSO.w*SCALE_TO_FIT < WINDOW_L/2 ){
+			/////////////////////////////////////////////////////
+			// ON TRAIT LE PILONNE SUIVANT
 			traitement = 2;
+			// UPDATE SCORE AVEC SECURITER
 			if(changeProtectedVar(score_hash, score, (*score)+1, keys))
 				Mix_PlayChannel( 5, score_wav,0);
+				// LE JOUEUR EST REPORTER
 			/*else
 				ban commands*/
 		}
 
-	} else if ( traitement == 2){
+	}
+	/////////////////////////////////////////////////////
+	// ICI ON BOUCLERA ENTRE PILONNE 3 ET 4
+	/////////////////////////////////////////////////////
+	// TRAITEMENT DU PILONNE 3
+	else if ( traitement == 2){
+		/////////////////////////////////////////////////////
+		// ON VERIFIE SI ON A PASSER
 		if(pilonne[3].position + OBSTACLE_VERT.w*SCALE_TO_FIT + PERSO.w*SCALE_TO_FIT < WINDOW_L/2 ){
+			/////////////////////////////////////////////////////
+			// ON TRAIT LE PILONNE SUIVANT
 			traitement = 3;
+			// UPDATE SCORE AVEC SECURITER
 			if( changeProtectedVar(score_hash, score, (*score)+1, keys) )
 				Mix_PlayChannel( 5, score_wav,0);
+				// LE JOUEUR EST REPORTER
 			/*else
 				ban commands*/
 		}
 
 	}
+	/////////////////////////////////////////////////////
+	// TRAITEMENT DU PILONNE 4
 	else if (traitement == 3 ){
-
+		/////////////////////////////////////////////////////
+		// TRAITEMENT DU PILONNE 3
 		if(  !(pilonne[3].position + OBSTACLE_VERT.w*SCALE_TO_FIT + PERSO.w*SCALE_TO_FIT < WINDOW_L/2)  )
 		{
+			/////////////////////////////////////////////////////
+			// ON TRAIT LE PILONNE PRECEDANT
 			traitement = 2;
 		}
-
-
-
 	}
 
 
+	/////////////////////////////////////////////////////
 	for(int i=0; i<PRELOAD_POS_OBSTACLE;i++)
 
 		pilonne[i].position -= VITESSE_DEPLACEMENT_DECOR;
 
+	/////////////////////////////////////////////////////
 	//condition pour supprimer le dernier pilonne
 	// il faut qu'on est franchis le troisieme pillonne et qu'il est disparu de la vue
 	if( (pilonne[0].position + OBSTACLE_VERT.w*SCALE_TO_FIT < -( DISTANCE_UNDER_OBSTACLE*3 ) - OBSTACLE_VERT.w*SCALE_TO_FIT - PERSO.w*SCALE_TO_FIT) && pilonne[0].position + OBSTACLE_VERT.w*SCALE_TO_FIT < 0 ){
@@ -369,13 +473,25 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 	return traitement;
 }
 
+
+/////////////////////////////////////////////////////
+/// \fn int collision(pilonne *pilonne, SDL_Point emplacementPersonnage, Mix_Chunk *hurt_wav)
+/// \brief permet de detecter une collision et de jouer un son
+///
+/// \param pilonne *pilonne
+/// \param SDL_Point emplacementPersonnage
+/// \param Mix_Chunk *hurt_wav
+///
+/// \return int TRUE/FALSE
+/////////////////////////////////////////////////////
 int collision(pilonne *pilonne, SDL_Point emplacementPersonnage, Mix_Chunk *hurt_wav)
 {
 	int collision_detecter = 0;
-
+	/////////////////////////////////////////////////////
 	// permet de dire quand on sur l'axe d'un obstacle et de qu'elle obstacle
 	// + detection collision
 	for (int i = 0; i < PRELOAD_POS_OBSTACLE; i++) {
+		/////////////////////////////////////////////////////
 		// verifier qu'il ce trouve actuellement sur l'axe de deux bloque
 		if( pilonne[i].position + PERSO.w*SCALE_TO_FIT > (  WINDOW_L/2 - ( (OBSTACLE_VERT.w*SCALE_TO_FIT) ) ) && pilonne[i].position + PERSO.w*SCALE_TO_FIT < (  WINDOW_L/2 + ( (OBSTACLE_VERT.w*SCALE_TO_FIT)/2 ) )){
 			int bas =( (  -TRANCHE_POS_OBSTACLE + (TRANCHE_POS_OBSTACLE/NB_POS_OBSTACLE)*pilonne[i].hauteur ) + OBSTACLE_VERT.h*SCALE_TO_FIT ) + PERSO.h*SCALE_TO_FIT/2;
@@ -386,31 +502,52 @@ int collision(pilonne *pilonne, SDL_Point emplacementPersonnage, Mix_Chunk *hurt
 		}
 
 	}
-
-	// detection du sol
+	/////////////////////////////////////////////////////
+	// DETECTION DU SOL
 	if(emplacementPersonnage.y + PERSO.h*SCALE_TO_FIT > WINDOW_H - SOL.h*SCALE_TO_FIT){
 		collision_detecter = 1;
 	}
-
-	// jouer un son
+	/////////////////////////////////////////////////////
+	// JOUER UN SON SI COLLISION
 	if (collision_detecter)
 		Mix_PlayChannel( 6, hurt_wav,0);
 
 	return collision_detecter;
 }
 
+
+/////////////////////////////////////////////////////
+/// \fn void traitementVariableAnimation(int *varAnimationPersonnage,int *varAnimationSol)
+/// \brief mise a jours des variables liee a l'environement/decor
+///
+/// \param int *varAnimationPersonnage
+/// \param int *varAnimationSol
+///
+/// \return void
+/////////////////////////////////////////////////////
 void traitementVariableAnimation(int *varAnimationPersonnage,int *varAnimationSol)
 {
+	// ON IMCREMTNTE L IMAGE CHOISI DE L OISEAU
 	*varAnimationPersonnage += 1;
 	if(*varAnimationPersonnage > 3 )
 		*varAnimationPersonnage = 1;
 
+	// ON FAIT AVANCER L IMAGE DU SOL
 	if( ( *varAnimationSol * -1) >= ( SOL.w*SCALE_TO_FIT)*3  )
 		*varAnimationSol = 0;
 	else
 		*varAnimationSol -= VITESSE_DEPLACEMENT_DECOR;
 }
 
+
+/////////////////////////////////////////////////////
+/// \fn void attendreAvantDepart(Mix_Chunk *flap_wav)
+/// \brief attend l'appui sur espace pour demarrer joue un son
+///
+/// \param Mix_Chunk *flap_wav jouer le son passer en parametre
+///
+/// \return void
+/////////////////////////////////////////////////////
 void attendreAvantDepart(Mix_Chunk *flap_wav)
 {
 	// attendre le toucher de la barre espace pour demarrer
@@ -432,6 +569,18 @@ void attendreAvantDepart(Mix_Chunk *flap_wav)
 
 }
 
+
+/////////////////////////////////////////////////////
+/// \fn void evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_wav)
+/// \brief remet les variables au DEFINE si on appui sur espace
+///
+/// \param int *upper
+/// \param int *vitesseGraviter
+/// \param int *nb_boucle
+/// \param Mix_Chunk *flap_wav
+///
+/// \return void
+/////////////////////////////////////////////////////
 void evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_wav)
 {
 	SDL_Event ev;
@@ -441,8 +590,11 @@ void evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_w
 
 			if(ev.key.keysym.sym == SDLK_SPACE)
 			{
+				// JOUER SON DU SAUT
 				Mix_PlayChannel( 4, flap_wav,0);
+				// AJOUTER UN SAUT
 				*upper = UPPER_STEP;
+				// REMETTRE A 0 LA BOUCLE ET LA VITESSE DE GRAVITER
 				*vitesseGraviter = 0;
 				*nb_boucle = 0;
 			}
@@ -452,23 +604,54 @@ void evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_w
 	}
 }
 
-void maj_var_environement(SDL_Point *emplacementPersonnage, int *upper, double *angle, int *nb_boucle, int* vitesseGraviter)
+
+/////////////////////////////////////////////////////
+/// \fn void updateVariableEnvironement(SDL_Point *emplacementPersonnage, int *upper, double *angle, int *nb_boucle, int* vitesseGraviter)
+/// \brief permet de mettre a jours les variables utilisez
+///
+/// \param SDL_Point *emplacementPersonnage point X,Y sur la position de l'oiseau
+/// \param int *upper l'oiseau monte
+/// \param double *angle angle de l'oiseau
+/// \param int *nb_boucle nombre de boucle
+/// \param int* vitesseGraviter vitesse de graviter
+///
+/// \return void
+/////////////////////////////////////////////////////
+void updateVariableEnvironement(SDL_Point *emplacementPersonnage, int *upper, double *angle, int *nb_boucle, int* vitesseGraviter)
 {
+	/////////////////////////////////////////////////////
+	// SI ON MONTE
 	if ( *upper > 0 ){
+		/////////////////////////////////////////////////////
+		// ON REDUIT LA VITESSE DE MONTER
 		emplacementPersonnage->y -= ( UPPER_BY_STEP - ( *upper ) )/ (FPS/30);
+		// ON REDUIT LA BOUCLE DE MONTER
 		*upper -= 1;
+		/////////////////////////////////////////////////////
+		// ON REDUIT L'ANGLE DE MONTER
 		if( *angle > ANGLE_UP)
 		{
+			/////////////////////////////////////////////////////
+			// ON REDUIT L ANGLE 2 FOIS PLUS VITE SI > 0
 			if (*angle > 0)
 				*angle -= ANGLE_VITESSE*2 ;
 			else
 				*angle -= ANGLE_VITESSE ;
 		}
-		} else if( *nb_boucle% (FPS/30) == 0 ){
+	}
+	/////////////////////////////////////////////////////
+	// SI IL MONTE PAS ON FAIT JOUER JUSTE LA GRAVITER
+	else if ( *nb_boucle% (FPS/30) == 0 )
+	{
+			/////////////////////////////////////////////////////
+			// LE FAIRE DESCENDRE
 			emplacementPersonnage->y += ( *vitesseGraviter += GRAVITY_SPEED ) / (FPS/30);
+			// REDUIRE L'ANGLE
 			if ( *angle < ANGLE_DOWN)
 				*angle += ANGLE_VITESSE / 2;
 		}
+		/////////////////////////////////////////////////////
+		// AJOUTER UNE BOUCLE
 		*nb_boucle += 1;
 }
 
@@ -616,7 +799,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 				evenement(&upper,&vitesseGraviter,&nb_boucle,flap_wav);
 
 				// UPDATE VARIABLE ENVIRONEMENT
-				maj_var_environement(&emplacementPersonnage, &upper, &angle, &nb_boucle,&vitesseGraviter);
+				updateVariableEnvironement(&emplacementPersonnage, &upper, &angle, &nb_boucle,&vitesseGraviter);
 
 
 				// UPDATE AFFICHAGE
@@ -709,8 +892,6 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 					highscore = score;
 				afficherScore(renderer, texture_chiffre, highscore , 3);
 				SDL_RenderPresent(renderer);
-
-				SDL_Delay(500);
 				//////////////////////////////////////////////////////////////////
 
 				//////////////////////////////////////////////////////////////////
@@ -757,12 +938,6 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 								exitCode = afficherTout(renderer, emplacementPersonnage , pilonne, score ,1 , 0, cible, angle ,
 																																	texture_background, texture_pipes,  texture_birds, texture_medals,   texture_scoreBoard, texture_sol, texture_chiffre,texture_highscore);
 								//////////////////////////////////////////////////////////////////
-
-								// ATTENDRE UNE TOUCHE
-								attendreAvantDepart(NULL);
-								//////////////////////////////////////////////////////////////////
-
-
 								// ARRETER d'ATTENDRE
 								wait = 0;
 								// QUIITER LE while
