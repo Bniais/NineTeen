@@ -1461,7 +1461,7 @@ void drawComboText(SDL_Renderer *renderer, char * msgCombo, TTF_Font * font, Sco
 	SDL_SetSurfaceAlphaMod(surfaceMessage, ALPHA_SCORE[SCORE_TTL -scoreAffichage.frameCombo]);
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
 
-	SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest->w), &(dest->h) );
+	SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest->w), &(dest->h) );
 	dest->w /= (OPEN_FONT_SIZE / size_score);
 	dest->h /= (OPEN_FONT_SIZE / size_score);
 	dest->y += (CASE_SIZE - dest->h)/2;
@@ -1491,7 +1491,7 @@ float getDrawSize(SDL_Renderer *renderer, char * msgTotal, TTF_Font * font){
 	float size_score = SIZE_COMBO+1;
 	do{
 		size_score--;
-		SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+		SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
 		dest.w /= (OPEN_FONT_SIZE / size_score);
 	}while(dest.w > WIDTH_DRAW_COMBO);
 
@@ -1531,7 +1531,7 @@ void drawTotalScore(SDL_Renderer * renderer, TTF_Font *font, ScoreTotal score){
 	float size_score = SIZE_SCORE_TOTAL+1;
 	do{
 		size_score--;
-		SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+		SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
 		dest.w /= (OPEN_FONT_SIZE / size_score);
 	}while(dest.w > WIDTH_SCORE_TOTAL);
 
@@ -1577,7 +1577,7 @@ void drawHelpText(SDL_Renderer * renderer, TTF_Font *font, SDL_Texture * flecheT
 		destMsg.y += i * ESPACEMENT_HINT_BONUS;
 
 		SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-		SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(destMsg.w), &(destMsg.h) );
+		SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(destMsg.w), &(destMsg.h) );
 
 		destMsg.w /= (OPEN_FONT_SIZE / SIZE_HELP_BONUS);
 		destMsg.h /= (OPEN_FONT_SIZE / SIZE_HELP_BONUS);
@@ -1594,7 +1594,7 @@ void drawHelpText(SDL_Renderer * renderer, TTF_Font *font, SDL_Texture * flecheT
 		SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, COL_PIECE);
 		SDL_Rect dest = HELP_DEST[i];
 		SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-		SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+		SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
 		dest.w /= (OPEN_FONT_SIZE / SIZE_HELP);
 		dest.h /= (OPEN_FONT_SIZE / SIZE_HELP);
 
@@ -1628,7 +1628,7 @@ void drawQuit(SDL_Renderer* renderer, TTF_Font* font){
 	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, JAUGE_COLOR);
 	SDL_Rect dest = QUIT_DEST;
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-	SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+	SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
 	dest.w /= (OPEN_FONT_SIZE / SIZE_QUIT);
 	dest.h /= (OPEN_FONT_SIZE / SIZE_QUIT);
 
@@ -1650,7 +1650,7 @@ void drawReplay(SDL_Renderer* renderer, TTF_Font* font){
 	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, WHITE);
 	SDL_Rect dest;
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-	SDL_QueryTexture(Message,NULL,SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+	SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
 	dest.w /= (OPEN_FONT_SIZE / SIZE_REPLAY);
 	dest.h /= (OPEN_FONT_SIZE / SIZE_REPLAY);
 
@@ -1814,7 +1814,7 @@ void deathAnimInit(int *gameOver,DeadPiece **deadPieces,int *nbDeadPieces, int m
 					matrix[col][line]//id
 				};
 
-				while(abs( (*deadPieces)[(*nbDeadPieces)-1].rotaSpeed ) > MIN_ROTA )
+				while(fabsf( (*deadPieces)[(*nbDeadPieces)-1].rotaSpeed ) > MIN_ROTA )
 					(*deadPieces)[(*nbDeadPieces)-1].rotaSpeed = rand()%(int)INTERVALE_ROTA_SPEED/PRECISION + BASE_ROTA_SPEED; //Veille à ce que la valeur de rotation soit dans les normes
 
 			}
