@@ -231,6 +231,21 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, float po
 /////////////////////////////////////////////////////
 void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music);
 
+/////////////////////////////////////////////////////
+/// \fn float calculAngle(float xa, float ya,      float xb, float yb,       float xc, float yc)
+/// \brief renvoi l'angle entre 3 points
+///
+/// \param float xa
+/// \param float ya
+/// \param float xb
+/// \param float yb
+/// \param float xc
+/// \param float yc
+///
+/// \return void
+/////////////////////////////////////////////////////
+float calculAngle(float xa, float ya,      float xb, float yb,       float xc, float yc);
+
 
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
@@ -320,6 +335,15 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y);
 /////////////////////////////////////////////////////
 void messageMachine(struct MeilleureScore_s str[],struct Camera_s camera,TTF_Font *font,int afficherMessage);
 
+
+/////////////////////////////////////////////////////
+/// \fn void MessageQuitterRoom()
+/// \brief permet d'afficher le message avant de quitter
+///
+///
+/////////////////////////////////////////////////////
+void MessageQuitterRoom();
+
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
@@ -396,14 +420,6 @@ void InitMeilleureScore(struct MeilleureScore_s str[]);
 /////////////////////////////////////////////////////
 void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 
-
-/////////////////////////////////////////////////////
-/// \fn void MessageQuitterRoom()
-/// \brief permet d'afficher le message avant de quitter
-///
-///
-/////////////////////////////////////////////////////
-void MessageQuitterRoom();
 
 
 
@@ -832,6 +848,7 @@ float calculAngle(float xa, float ya,      float xb, float yb,       float xc, f
 
 	float angleRad = atan(ratio);
 
+
 	if(xa<xb)
 	{
 		if(ya<yb)
@@ -859,9 +876,6 @@ float calculAngle(float xa, float ya,      float xb, float yb,       float xc, f
 	}
 
 	return (2*M_PI) - angleRad;
-
-
-
 }
 
 void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur)
