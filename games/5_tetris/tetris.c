@@ -1998,7 +1998,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			frameCompleteLine[i] = -1;
 
 		//death
-		DeadPiece *deadPieces;
+		DeadPiece *deadPieces = NULL;
 		int nbDeadPieces = 0;
 
 		//Keyboard
