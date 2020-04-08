@@ -82,17 +82,10 @@ void snakeInit(){
 		}
 	}
 
-	// SDL Init
-	/*SDL_Init(SDL_INIT_EVERYTHING);
-	TTF_Init();*/
-
 	// Settings
 	SDL_Init(SDL_INIT_EVERYTHING);
 	TTF_Init();
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-	/*if( Mix_OpenAudio( MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 1, 1024 ) == -1 )
-		printf("Erreur init SDL_Mixer\n" );*/
-
 
 	//rand
 	srand(time(NULL));
@@ -148,18 +141,6 @@ Vector2f angleToVector2f(double angle){
 
 double norme(Vector2f v){
 	return sqrt(v.x * v.x + v.y * v.y);
-}
-
-double Vector2fToAngle(Vector2f v){
-	Vector2f v2 = {1, 0};
-	return acos((v.x * v2.x + v.y * v2.y) / (norme(v) * norme(v2)));
-}
-
-double dirBetween(Vector2f v1, Vector2f v2){
-	Vector2f v3;
-	v3.x = v2.x - v1.x;
-	v3.y = v2.y - v1.y;
-	return Vector2fToAngle(v3);
 }
 
 SDL_Point v2fToPoint(Vector2f v){
@@ -1412,8 +1393,6 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 			currentTime = SDL_GetTicks();
 			while( currentTime - lastTime < FRAME_TIME )
 				currentTime = SDL_GetTicks();
-
-			printf(" speed pspawn : %f \n", chance_spawn_hardcore);
 
 			lastTime = currentTime;
 

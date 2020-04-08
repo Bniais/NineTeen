@@ -451,7 +451,7 @@ int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleu
 	{
 		connexion(renderer,token);
 		sauvegarderToken(token);
-  }
+    }
 
 
 
@@ -527,11 +527,13 @@ int main()
 	// APPEL DU LAUNCHER
 	if( launcher(renderer,token,meilleureScore,&scene) == EXIT_SUCCESS)
 	{
+		SDL_Rect windowBorders; // top left bot right = x y w h
+		SDL_GetWindowBordersSize(window, &windowBorders.x, &windowBorders.y, &windowBorders.w, &windowBorders.h );
 		SDL_DestroyRenderer(renderer);
 		SDL_DestroyWindow(window);
 		/////////////////////////////////////////////////////////////////
 		// APPEL DE LA ROOM
-		printf("ROOM : %d\n",room(token,meilleureScore,window,scene) );
+		printf("ROOM : %d\n",room(token,meilleureScore,window,scene, windowBorders) );
 	}
 
 
@@ -552,6 +554,7 @@ int main()
 	// QUITTER MIXER
 	Mix_Quit();
 	/////////////////////////////////////////////////////////////////
+
 	// DETRUIRE LA FENETRE
 	SDL_DestroyWindow(window);
 	/////////////////////////////////////////////////////////////////
