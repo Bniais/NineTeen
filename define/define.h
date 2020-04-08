@@ -1,5 +1,9 @@
 #include <SDL2/SDL.h>
-
+/**
+*\struct Vector2f
+*\brief Une structure regroupant deux float
+*/
+typedef struct {float x; float y;} Vector2f;
 #define SHAPE_SIZE 500
 #define HACKED -123
 //Window
@@ -10,10 +14,8 @@
 #define BASE_WINDOW_H 1080
 #define HUD_W 96
 #define HUD_H 54
-const SDL_Point ESPACE_DISPLAY_WINDOW = {67, 57};
 
 //font
 #define OPEN_FONT_SIZE 100
 
-//Textures
-char *DIR_HUD = "../../assets/texture/hud.png";
+//colors

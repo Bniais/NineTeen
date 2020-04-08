@@ -1,6 +1,7 @@
 /////////////////
 //SNAKE CONFIGS//
 /////////////////
+#define PI 3.1415
 #define NO_TURN 0
 #define LEFT 1
 #define RIGHT 2
@@ -8,19 +9,62 @@
 #define ACCELERATE_ENABLED 2
 #define HIT 1
 #define NO_HIT 0
-typedef struct {float x; float y;} Vector2f;
-const Vector2f UNDEFINED = {-500, -500};
+static const SDL_Color WHITE = {255,255,255};
+const SDL_Point ESPACE_DISPLAY_WINDOW = {67, 57};
+const Vector2f UNDEF = {-500, -500};
+//textures
+#define NB_SNAKE_TEXTURES 7
+typedef enum{S_BASKET, S_BACKGROUND, S_SNAKE, S_FRUITS, S_ANIM, S_HUD, S_CHIFFRE}T_TEXTURES;
 
+char* DIR_TEXTURES_SNAKE[NB_SNAKE_TEXTURES] = {
+	"games/2_snake/Textures/basket.png",
+	"games/2_snake/Textures/backgroundSnake.png",
+	"games/2_snake/Textures/snake.png",
+	"games/2_snake/Textures/fruits.png",
+	"games/2_snake/Textures/anim.png",
+	"games/2_snake/Textures/hud.png",
+	"games/2_snake/Textures/chiffre.png"
+};
+
+//fonts
+#define NB_SNAKE_FONTS 2
+typedef enum{S_BASE_FONT, S_FLAPPY}T_FONTS;
+
+char* DIR_FONTS_SNAKE[NB_SNAKE_FONTS] = {
+	"games/2_snake/Fonts/zorque.ttf",
+	"games/2_snake/Fonts/flappy.ttf"
+};
+
+//hud
+	//quit
+	static char * QUIT = "Echap";
+	static SDL_Rect QUIT_DEST = {10,10,0,0};
+	#define SIZE_QUIT 28.
+
+	///replay
+	static char* REPLAY = "Appuyer sur Espace pour rejouer !";
+	#define RELAY_SNAKE_SIZE 15
+	#define SIZE_REPLAY 43.
+
+	//jauge
+	SDL_Rect BASKET_DIM = {0, 0, 62, 950};
+	SDL_Color COLOR_JAUGE_BACK = {0x56,0x46,0x3b};
+	SDL_Color COLOR_JAUGE = {0x77,0xcd,0x44};
+	#define BASE_JAUGE 1.6
+	#define FRAME_JAUGE_ANIM 20
 
 //Window
 #define FRAMES_PER_SECOND 30
-const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
+static const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
+SDL_Color HUD_COLOR = {138,82,47};
+
+
 
 //Snake
 typedef struct {float x; float y; int frame; float radius;} SnakePart;
 const Vector2f INIT_HEAD = {PLAYGROUND_SIZE_W / 2, PLAYGROUND_SIZE_H / 2};
 #define BODY_RADIUS 20
-#define INIT_BODY 20
+#define INIT_BODY 30
 const Vector2f INIT_DECAL = {0, 5};
 #define BASE_ANGLE 3 * PI / 2
 #define TURN_AMMOUNT 0.13
@@ -95,25 +139,41 @@ typedef enum {FRAISE, ORANGE, CITROUILLE, PIMENT, CERISE, POMME, PASTEQUE, CAROT
 #define POTION_POISON_ADD (1.5 / FRAMES_PER_SECOND)
 #define POISON_SCALE 1.001
 #define BOMB_TEXTURE_RATE 4
+#define ESPACEMENT_SHOW_POTION 70
+#define NB_POTION_MAX 5
+SDL_Rect SHOW_POTION_DEST = {0,BASE_WINDOW_H/2 - 1.25* (ESPACEMENT_SHOW_POTION+60),60,60};
+#define MAX_BOMB_SIZE 1000
 
 //Malus
 #define NB_FRAME_CAFE_ACCE  (4 * FRAMES_PER_SECOND)
 
 //death
-#define FINAL_DEATH_RATE_INIT  (6. / FRAMES_PER_SECOND)
-#define FINAL_DEATH_RATE_GROW 1.02
-#define FINAL_DEATH_MAX  (10. / FRAMES_PER_SECOND)
+#define FINAL_DEATH_RATE_INIT  (9. / FRAMES_PER_SECOND)
+#define FINAL_DEATH_RATE_GROW 1.03
+#define FINAL_DEATH_MAX  (12. / FRAMES_PER_SECOND)
 #define INIT_FRAME_DEATH 4
 
 //Score
 #define NB_CHAR_AFFICHAGE_SCORE 21
 typedef struct {float x; float y; int score; int frame; int size;} Score;
+/**
+*\struct ScoreTotal
+*\brief Contient des informations sur le score total
+*/
+typedef struct {
+	int score; /*!< \brief Le score total stocké */
+	float scoreShow; /*!< \brief Le score total affiché (tend vers score)*/
+	int frameToDest; /*!< \brief Le nombre de frame avant que scoreShow arrive à score*/
+}ScoreTotal;
+#define FRAME_SCORE_ANIM 20
+SDL_Color TOTAL_SCORE_COLOR = {0x02,0x31,0x02};
+
 #define RATIO_SCORE_SIZE
 #define MIN_SIZE_SCORE 22
 #define MAX_SIZE_SCORE 45
 #define SCORE_TTL 20
-const int ALPHA_SCORE[SCORE_TTL] = { 40, 80, 160, 255, 255,   255, 255, 255, 255, 255,   255, 255, 255, 255, 255,   255, 195, 150, 80, 40 };
-SDL_Rect SCORE_SRC = {0,0, 12,18};
+static const int ALPHA_SCORE[SCORE_TTL] = { 40, 80, 160, 255, 255,   255, 255, 255, 255, 255,   255, 255, 255, 255, 255,   255, 195, 150, 80, 40 };
+static SDL_Rect SCORE_SRC = {0,0, 12,18};
 #define FONT_HEIGHT_RATIO 1.5
 
 #define NB_BLINK 15
@@ -124,39 +184,41 @@ typedef enum{ACCELERATION, RADIUS, PROBA, SCORE, DIGESTION_SIZE, MIN_FRUIT_TO_AP
 #define NB_PROPRIETES 6
 const float FRUIT_PROPRIETES[NB_FRUITS + NB_BONUSES][NB_PROPRIETES]=
 {// ACCE    RADIUS  PROBA   SCORE    DIGES    APPEAR
-{   0.02,    20,      7,      200,       5,       0 }, // fraise
-{   0.08,    24,      7,      500,       8,       0 }, // orange
-{   0.12,    36,      7,     1500,      13,       0 }, // citrouille
-{   0.24,    18,      6,     2000,       6,       5 }, // piment
-{   0.02,    18,      6,      410,       4,       5 }, // cerise
-{   0.05,    22,      6,     1070,       7,       5 }, // pomme
-{   0.06,    30,      6,     3500,      11,       10 }, // pastèque
-{   0.03,    22,      6,     1280,       7,       10}, // carotte
-{   0.09,    26,      6,     4600,      11,       10}, // ananas
-{   0.07,    22,      6,     1320,       8,       10}, // tomate
-{   0.01,    22,      5,     5000,      13,       15}, // fromage
-{   0.02,    26,      5,    10000,      11,       15}, // viande
-{  0.005,    28,      4,    12345,      18,       20}, // pizza
-{      0,    24,      4,    24000,      19,       20}, // burger
-{      0,    24,      3,    35001,      18,       20}, // hot-dog
-{      0,    24,      4,    22222,      17,       25}, // pancakes
-{   0.03,    22,      5,    17000,      12,       25}, // sucette
-{   -0.5,    24,      5,     5000,      14,       30}, // glace baton
-{     -1,    24,      4,     6000,      14,       30}, // glace cone
-{   -1.5,    24,      3,     7000,      14,       30}, // glace pot
-{   0.03,    24,      6,    21808,      15,       35}, // donut
-{   0.03,    26,      5,    37000,      16,       35}, // muffin
-{   0.03,    24,      4,    40000,      18,       35}, // gateau
-{   0.06,    26,      2,    91000,      16,       40}, // muffin op
-{      0,    24,      2,    50000,       3,       10}, // café
-{     -1,    28,     10,        0,       0,       0 }, // plume
-{      0,    28,     10,        0,       0,       0 }, // BOMBE
-{      0,    28,     10,        0,       0,       0 }, // coffre
-{      0,    28,      8,        0,       0,       10}, // ARC_EN_CIEL
-{      0,    28,      6,        0,       0,       15}, // potion hitbox
+{   0.02,    20,      3,      200,       5,       0 }, // fraise
+{   0.08,    24,      3,      500,       8,       0 }, // orange
+{   0.12,    36,      3,     1500,      13,       0 }, // citrouille
+{   0.24,    18,      4,     2000,       6,       10 }, // piment
+{   0.02,    18,      4,      410,       4,       11 }, // cerise
+{   0.05,    22,      5,     1070,       7,       12 }, // pomme
+{   0.06,    30,      5,     3500,      11,       13 }, // pastèque
+{   0.03,    22,      6,     1280,       7,       15}, // carotte
+{   0.09,    26,      6,     4600,      11,       17}, // ananas
+{   0.07,    22,      7,     1320,       8,       19}, // tomate
+{   0.01,    22,      6,     5000,      13,       23}, // fromage
+{   0.02,    26,      5,    10000,      11,       25}, // viande
+{  0.005,    28,      7,    12345,      18,       30}, // pizza
+{      0,    24,      6,    24000,      19,       31}, // burger
+{      0,    24,      5,    35001,      18,       32}, // hot-dog
+{      0,    24,      6,    22222,      17,       34}, // pancakes
+{   0.03,    22,      6,    17000,      12,       36}, // sucette
+{   -0.5,    24,      5,     5000,      14,       42}, // glace baton
+{     -1,    24,      5,     6000,      14,       43}, // glace cone
+{   -1.5,    24,      4,     7000,      14,       44}, // glace pot
+{   0.03,    24,      5,    21808,      15,       45}, // donut
+{   0.03,    26,      4,    37000,      16,       46}, // muffin
+{   0.03,    24,      3,    40000,      18,       47}, // gateau
+{   0.06,    26,      2,    91000,      16,       50}, // muffin op
+{      0,    24,      1,    50000,       3,       15}, // café
+{     -1,    28,     11,        0,       0,       0 }, // plume
+{      0,    28,     11,        0,       0,       0 }, // BOMBE
+{      0,    28,      7,        0,       0,       5 }, // coffre
+{      0,    28,      5,        0,       0,       15}, // ARC_EN_CIEL
+{      0,    28,      3,        0,       0,       20}, // potion hitbox
 {      0,    28,      2,        0,       0,       35}, // potion verte
-{      0,    28,      3,   100000,       0,       25} // potion jaune
+{      0,    28,      1,   150000,       0,       45} // potion jaune
 };
+#define APPEAR_MAX 50.
+
 
 #define SIZE_PRE_RADIUS 31
 int FRUIT_ADD_RADIUS[NB_FRUITS + NB_BONUSES][SIZE_PRE_RADIUS];

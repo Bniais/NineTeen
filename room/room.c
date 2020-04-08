@@ -25,6 +25,7 @@
 #include "import.h" // YOU NEED ASSIMP LIB FOR import.h (README.dm)
 #include "room.h"
 #include "../include/libWeb.h"
+#include "../games/2_snake/snake.h"
 #include "../games/3_flappy_bird/flappy_bird.h"
 #include "../games/5_tetris/tetris.h"
 // END INCLUDE
@@ -1701,10 +1702,16 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									break;
 								case 3: SDL_Delay(500);break;
 								case 4: SDL_Delay(500);break;
-								case 5: SDL_Delay(500);break;
+								case 5:
+									printf("snake\n" );
+									snake( pRenderer ,meilleureScore[SNAKE_HARD].score, WinWidth/1920.,token,1);
+									updateMeilleureScore(meilleureScore,token);
 								case 6: SDL_Delay(500);break;
 								case 7: SDL_Delay(500);break;
-								case 8: SDL_Delay(500);break;
+								case 8:
+									printf("snake\n" );
+									snake( pRenderer ,meilleureScore[SNAKE_EASY].score, WinWidth/1920.,token,0);
+									updateMeilleureScore(meilleureScore,token);
 								case 9: SDL_Delay(500);break;
 								case 10: SDL_Delay(500);break;
 								case 11: {

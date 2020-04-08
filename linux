@@ -1,6 +1,6 @@
-OBJS	= launcher.o room.o flappy_bird.o import.o libWeb.o textField.o tetris.o hashage.o
+OBJS	= launcher.o room.o flappy_bird.o import.o libWeb.o textField.o tetris.o snake.o hashage.o
 SOURCE	= launcher.c
-HEADER	= room.h flappy_bird.h tetris.h
+HEADER	= room.h flappy_bird.h tetris.h snake.h
 OUT	= Nineteen
 CC	 = gcc
 FLAGS	 = -g -c -Wall
@@ -24,6 +24,9 @@ flappy_bird.o : games/3_flappy_bird/flappy_bird.c
 	$(CC) $(FLAGS) $(LSDL) $^
 
 tetris.o : games/5_tetris/tetris.c
+	$(CC) $(FLAGS) $(LSDL) $^
+
+snake.o : games/2_snake/snake.c
 	$(CC) $(FLAGS) $(LSDL) $^
 
 import.o : room/import.c
