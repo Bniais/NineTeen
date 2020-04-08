@@ -696,7 +696,7 @@ float move_snake(SnakePart** snake, Vector2f pastBody[REMIND_BODY], size_t *size
 	}
 	else{
 		// On décompose le mouvement en mouvements de speed inférieurs
-		int i;
+		int i=0;
 		while( speed > SPEED_DECOMPOSITION ){
 			i++;
 
@@ -724,7 +724,7 @@ int scoreSize(Fruit fruit){
 }
 
 void eat_fruit(SnakePart **snake, size_t *size, Fruit** fruitTab, size_t* nbFruits, Fruit fruit, float *speed, ScoreTotal *score, int *nbFruitEaten, int *frameJaugeAnim, Vector2f* pastBody, Fruit* bonus, SnakePart **deadBodies, size_t *nbDeadBodies, int* nbPotion, float* poisoned, Score** scoreAffichage, size_t* nbScoreAffichage, int *frameAcce, Mix_Chunk *flap_wav){
-	Mix_PlayChannel(-1, flap_wav, 0);
+	//Mix_PlayChannel(-1, flap_wav, 0);
 	//manger
 	if( fruit.giant ){
 		for( int i = 0; i < SIZE_PRE_RADIUS; i++ )
@@ -955,11 +955,11 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 			return EXIT_FAILURE;
 		}
 	}
-
-	Mix_Chunk *flap_wav = Mix_LoadWAV( "WRONG/PATH" );
+	Mix_Chunk *flap_wav = NULL;
+	/*Mix_Chunk *flap_wav = Mix_LoadWAV( "WRONG/PATH" );
 
 	if( !flap_wav)
-		printf("Erreur chargement des sons: %s\n",Mix_GetError());
+		printf("Erreur chargement des sons: %s\n",Mix_GetError());*/
 
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 
@@ -985,6 +985,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 		//Time
 		unsigned int lastTime = 0, currentTime;
+		int rdyToSpace = SDL_TRUE;
 
 		//Quantities of things gotten
 		int nbPotion = 0;
@@ -1071,6 +1072,11 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 					case SDL_QUIT:
 						myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts );
 						return 0;// fermer
+					case SDL_KEYUP:
+						if( event.key.keysym.sym == SDLK_SPACE)
+							rdyToSpace = SDL_TRUE;
+						break;
+
 				}
 			}
 
@@ -1079,6 +1085,9 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 		// Handle Keyboard inputs //`
 		////////////////////////////
 			SDL_PumpEvents();
+			if( keystate[SDL_SCANCODE_SPACE] && done && rdyToSpace)
+				break; //replay
+
 			if(keystate[SDL_SCANCODE_ESCAPE]){
 				myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts );
 				return 0;
@@ -1089,11 +1098,14 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 			else if( keystate[SDL_SCANCODE_RIGHT] )
 				turn = RIGHT;
 
-			if( frameAcce  ||  keystate[SDL_SCANCODE_UP]  ||  keystate[SDL_SCANCODE_LSHIFT]  ||  keystate[SDL_SCANCODE_SPACE]  )
+			if( frameAcce  ||  keystate[SDL_SCANCODE_UP]  ||  keystate[SDL_SCANCODE_LSHIFT]  ||  keystate[SDL_SCANCODE_SPACE]  ){
 				accelerate = ACCELERATE_ENABLED;
+				if( keystate[SDL_SCANCODE_SPACE] )
+					rdyToSpace = SDL_FALSE;
+			}
 
-			if( keystate[SDL_SCANCODE_SPACE] && done)
-				break; //replay
+
+
 
 
 
