@@ -9,6 +9,7 @@
 #include <SDL2/SDL_mixer.h>
 
 #include "../include/textField.h"
+#include "../include/fullpath.h"
 
 #include "../include/libWeb.h"
 #include "../room/room.h"
@@ -83,10 +84,13 @@ SDL_Texture *load_texture_png(SDL_Renderer* renderer, char directory[]){
 	}
 }
 
-int dejaConneceter(char *token)
+int dejaConneceter(char *token,char path[])
 {
+	char concatenation[128];
+	strcpy(concatenation,path);
+  strcat(concatenation,DIR_TOKEN_FILE);
 	FILE * fp;
-    fp = fopen (DIR_TOKEN_FILE, "r");
+    fp = fopen (concatenation, "r");
 	if (!fp)
 	{
 		return 0;
@@ -103,8 +107,12 @@ int dejaConneceter(char *token)
 	return 0;
 }
 
-int sauvegarderToken(char *token)
+int sauvegarderToken(char *token,char path[])
 {
+	char concatenation[128];
+	strcpy(concatenation,path);
+  strcat(concatenation,DIR_TOKEN_FILE);
+
 	FILE *fp;
 	fp = fopen(DIR_TOKEN_FILE,"w");
 	if (!fp)
@@ -201,18 +209,32 @@ void ouvrirUrlRegistration()
 
 }
 
-void connexion(SDL_Renderer *renderer, char *token)
+void connexion(SDL_Renderer *renderer, char *token,char path[])
 {
+	//////////////////////////////////////////
+	// INIT CHAINE DE CONCATENATION DU PATH
+	char concatenation[128]="";
+	//////////////////////////////////////////
+
+	strcat(concatenation,path);
+	strcat(concatenation,DIR_IMG_BACKGROUND);
 	// AFFICHAGE
-	SDL_Texture* background = IMG_LoadTexture(renderer,DIR_IMG_BACKGROUND);
+	SDL_Texture* background = IMG_LoadTexture(renderer,concatenation);
 	if(!background)
-		printf("Impossible de charger %s\n",DIR_IMG_BACKGROUND );
-	TTF_Font *police = police = TTF_OpenFont(DIR_FONT_POLICE,100);
+		printf("Impossible de charger %s\n",concatenation );
+
+
+	strcpy(concatenation,path);
+	strcat(concatenation,DIR_FONT_POLICE);
+	TTF_Font *police = police = TTF_OpenFont(concatenation,100);
 	if(!police)
-		printf("Impossible de charger %s\n",DIR_FONT_POLICE );
-	TTF_Font *ttf_pwd = ttf_pwd = TTF_OpenFont(DIR_FONT_PASSWORD,100);
+		printf("Impossible de charger %s\n",concatenation );
+
+		strcpy(concatenation,path);
+		strcat(concatenation,DIR_FONT_PASSWORD);
+	TTF_Font *ttf_pwd = ttf_pwd = TTF_OpenFont(concatenation,100);
 	if(!ttf_pwd)
-		printf("Impossible de charger %s\n",DIR_FONT_PASSWORD );
+		printf("Impossible de charger %s\n",concatenation );
 
 
 	// permet de recuperer depuis le serveur l'information sur
@@ -346,8 +368,13 @@ void connexion(SDL_Renderer *renderer, char *token)
 
 
 
-int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene )
+int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene,char path[] )
 {
+	char concatenation[128]="";
+
+
+
+
 	SDL_RenderClear(renderer);
 
 	//FIX ANIMATION AFFICHAGE MAC
@@ -355,7 +382,10 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 	while ( SDL_PollEvent(&fixMac) );
 
 	SDL_Texture* background = IMG_LoadTexture(renderer,DIR_ING_BACKGROUND_TXT);
+	if(!background)
+		printf("Fichier introuvable %s\n", DIR_ING_BACKGROUND_TXT);
 	SDL_RenderCopy(renderer, background, NULL, NULL);
+
 
 	//fond chargement
 	SDL_Rect chargement = {LARGUEUR*0.05,HAUTEUR*0.85,LARGUEUR*0.90,HAUTEUR*0.08};
@@ -370,15 +400,19 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 	for(int i = 0 ; i < NB_FILE ; i++)
 	{
-
-		FILE *fp = fopen(verifierFichier[i],"r");
+		strcpy(concatenation,path);
+		strcat(concatenation,verifierFichier[i]);
+		FILE *fp = fopen(concatenation,"r");
 		if(!fp)
 		{
-			printf("Fichier %s introuvable \n",verifierFichier[i] );
+			printf("Fichier %s introuvable \n",concatenation );
 			return SDL_FALSE;
 		}
 		else
+		{
 			fclose(fp);
+		}
+
 
 		SDL_RenderClear(renderer);
 		SDL_RenderCopy(renderer, background, NULL, NULL);
@@ -410,8 +444,9 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 	SDL_RenderFillRect(renderer,&chargementAff);
 	SDL_RenderPresent(renderer);
 
-
-	aiImportModel(DIR_OBJ_LOAD,scene);
+	strcpy(concatenation,path);
+	strcat(concatenation,DIR_OBJ_LOAD);
+	aiImportModel(concatenation,scene);
 
 	SDL_RenderClear(renderer);
 	SDL_RenderCopy(renderer, background, NULL, NULL);
@@ -437,26 +472,27 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 
 
-int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene)
+int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[])
 {
 	Mix_Music *musique = Mix_LoadMUS(DIR_MUSIC_FILE);
 	if (musique == NULL)
 		printf("Impossible de charger musique dans %s\n", DIR_MUSIC_FILE );
 
+
 	Mix_Volume(0,MIX_MAX_VOLUME/2);
 	Mix_PlayMusic(musique, 0);
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	if ( !dejaConneceter(token) )
+	if ( !dejaConneceter(token,path) )
 	{
-		connexion(renderer,token);
-		sauvegarderToken(token);
+		connexion(renderer,token,path);
+		sauvegarderToken(token,path);
   }
 
 
 
 
-	if( !chargementFichier(renderer,meilleureScore,token,scene) )
+	if( !chargementFichier(renderer,meilleureScore,token,scene,path) )
 	{
 		Mix_HaltMusic();
 		Mix_FreeMusic(musique);
@@ -474,8 +510,11 @@ int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleu
 
 
 
-int main()
+int main(int argc, char *argv[])
 {
+	printf("REPERTOIRE D'EXECUTION %s\n",argv[0] );
+	char *addPath = fullPath(argv[0]);
+	printf("AJOUTER : %s\n",addPath);
 	/////////////////////////////////////////////////////////////////
 	// INIT SDL // TTF // MIXER
 	SDL_Init(SDL_INIT_VIDEO);
@@ -525,7 +564,7 @@ int main()
 	struct MeilleureScore_s meilleureScore[16];
 	/////////////////////////////////////////////////////////////////
 	// APPEL DU LAUNCHER
-	if( launcher(renderer,token,meilleureScore,&scene) == EXIT_SUCCESS)
+	if( launcher(renderer,token,meilleureScore,&scene,addPath) == EXIT_SUCCESS)
 	{
 		SDL_DestroyRenderer(renderer);
 		SDL_DestroyWindow(window);
