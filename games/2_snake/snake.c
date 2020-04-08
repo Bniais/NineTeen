@@ -1277,7 +1277,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 				for( int i = 0; i<nbDeadBodies; i++ ){
 					deadBodies[i].frame++;
 
-					if( deadBodies[i].frame > FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1) + NB_FRAME_DEATH_BODY ){
+					if( deadBodies[i].frame > FRUIT_TTL + NB_FRAME_DEATH_BODY ){
 
 						for( int j = i; j < nbDeadBodies - 1; j++ )
 							deadBodies[j] = deadBodies[j + 1];
