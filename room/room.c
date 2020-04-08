@@ -551,7 +551,6 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
 		// MUSIQUE LOT MACHINE GAUCHE
-		printf("ANGLE JOUEUR = %f\n",camera.angle );
 		reglageVolume(0,-5.0,11.0,camera.px,camera.pz,10.0,camera.angle);
 		// MUSIQUE LOT MACHINE DROITE
 		reglageVolume(1,5.0,11.0,camera.px,camera.pz,10.0,camera.angle);
@@ -906,12 +905,17 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, float po
 
 
 
+	////////////////////////////////////////////////////
+	// RETOURNE ANGLE SOURCE/PERSONNAGES
 	float angleSrc = calculAngle(xa,ya,  xb,yb,  xa,ya - 1.0);
 
+	////////////////////////////////////////////////////
+	// VARIABLES AVEC ANGLE POUR OREILLES G/D
 	float angleOreilleD = angleJoueur - M_PI/4;
 	float angleOreilleG = angleJoueur + M_PI/4;
 
-
+	////////////////////////////////////////////////////
+	// CALCUL DU DELTA ENTRE ANGLE
 	float deltaAngleD = fabs(angleSrc + M_PI - angleOreilleD); //
 	float deltaAngleG = fabs(angleSrc + M_PI - angleOreilleG);
 
@@ -921,12 +925,16 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, float po
 	while(deltaAngleG >M_PI)
 	 	deltaAngleG-=2*M_PI;
 
+	////////////////////////////////////////////////////
+	// REDUCTION LINEAIRE EN FONCTION DU DELTA
 	int intensiteOreilleD = 255 - fabs(deltaAngleD)*(255-MIN_INTENSITE)/(M_PI);
 	int intensiteOreilleG = 255 - fabs(deltaAngleG)*(255-MIN_INTENSITE)/(M_PI);
 
-//	printf("GAUCHE %d DROITE %d\n",intensiteOreilleG,intensiteOreilleD );
+	////////////////////////////////////////////////////
+	// APPLICATION DU SON STEREO
 	if(!Mix_SetPanning(channel, intensiteOreilleG, intensiteOreilleD))
 		printf("Mix_SetPanning: %s\n", Mix_GetError());
+
 
 
 }
