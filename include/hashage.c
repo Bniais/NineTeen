@@ -48,7 +48,7 @@ long long int hashage (int value, long keys[4])
 void initialisationConstantHashage(long keys[4])
 {
 	for(int i = 0; i<4; i++)
-		keys[i] = rand();
+		keys[i] = rand() + 1;
 }
 
 /////////////////////////////////////////////
@@ -65,15 +65,17 @@ void initialisationConstantHashage(long keys[4])
 int changeProtectedVar(long long int *score_hash,int *var, int updatedVar, long keys[4])
 {
 	if( *score_hash == hashage(*var, keys)){
-		keys[0] = rand();
-		keys[1] = rand();
-		keys[2] = rand();
-		keys[3] = rand();
+		keys[0] = rand() + 1;
+		keys[1] = rand() + 1;
+		keys[2] = rand() + 1;
+		keys[3] = rand() + 1;
 
-		*score_hash = updatedVar * keys[0];
+
+		*score_hash = (updatedVar ? updatedVar : 1) * keys[0];
 		*score_hash = *score_hash - keys[1];
 		*score_hash = *score_hash * keys[2];
 		*score_hash = *score_hash / keys[3];
+
 
 		*var = updatedVar;
 		return 1;
