@@ -727,7 +727,7 @@ int eat_fruit(SnakePart **snake, size_t *size, Fruit** fruitTab, size_t* nbFruit
 		*speed = MIN_SPEED;
 
 	//score
-	int scoreFruit = (int)((hardcore ? RATIO_GET_FRUIT_HARDCORE : 1) * (fruit.giant == 0 ? 1 : GIANT_SCORE) * FRUIT_PROPRIETES[fruit.id][SCORE]);
+	int scoreFruit = (int)((hardcore && fruit.id != POTION_JAUNE ? RATIO_GET_FRUIT_HARDCORE : 1) * (fruit.giant == 0 ? 1 : GIANT_SCORE) * FRUIT_PROPRIETES[fruit.id][SCORE]);
 	if(FRUIT_PROPRIETES[fruit.id][SCORE]){
 		if(!changeProtectedVar(score_hash, &(score->score), (score->score) + scoreFruit, keys))
 			return SDL_FALSE;
