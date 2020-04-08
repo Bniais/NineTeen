@@ -474,7 +474,7 @@ int hitboxFruit(Fruit fruit, SnakePart head){
 	return (norme((Vector2f){fruit.x - head.x, fruit.y - head.y}) <= (FRUIT_PROPRIETES[fruit.id][RADIUS] + (fruit.giant * GIANT_SIZE) + BODY_RADIUS + head.radius) * HITBOX_SECURITY);
 }
 
-void afficherFruit(SDL_Renderer *renderer, SDL_Texture *fruitTexture, SDL_Texture *spawnTexture, Fruit fruit){
+void afficherFruit(SDL_Renderer *renderer, SDL_Texture *fruitTexture, SDL_Texture *spawnTexture, Fruit fruit, int hardcore){
 	SDL_Rect currentBody = (SDL_Rect){
 		roundf(fruit.x) - (FRUIT_PROPRIETES[fruit.id][RADIUS] + (fruit.giant * GIANT_SIZE)) * fruit.coefRadius,
 		roundf(fruit.y) - (FRUIT_PROPRIETES[fruit.id][RADIUS] + (fruit.giant * GIANT_SIZE)) * fruit.coefRadius,
@@ -483,9 +483,9 @@ void afficherFruit(SDL_Renderer *renderer, SDL_Texture *fruitTexture, SDL_Textur
 	};
 
 	int blinking = 0;
-	if( fruit.frame >= BLINK_FRAMES[0] )
+	if( fruit.frame >= (hardcore? RATIO_TTL_HARDCORE : 1 ) * BLINK_FRAMES[0] )
 		for( int i = 0; i < NB_BLINK; i++ )
-			if( fruit.frame == BLINK_FRAMES[i] )
+			if( fruit.frame == (hardcore? RATIO_TTL_HARDCORE : 1 ) * BLINK_FRAMES[i] )
 				blinking = 1;
 
 
@@ -493,8 +493,8 @@ void afficherFruit(SDL_Renderer *renderer, SDL_Texture *fruitTexture, SDL_Textur
 		SDL_Rect src = (SDL_Rect){fruit.id * FRUIT_DIM.x, FRUIT_DIM.y * (RANGEE_BLINK - 1), FRUIT_DIM.x, FRUIT_DIM.y};
 		SDL_RenderCopy(renderer, fruitTexture, &src, &currentBody);
 	}
-	else if( fruit.frame >= FRUIT_TTL ){ //die
-		SDL_Rect src = (SDL_Rect){(fruit.frame - FRUIT_TTL) / (NB_FRAME_DEATH_FRUIT / NB_ANIM_DEATH) * FRUIT_DIM.x, FRUIT_DIM.y, FRUIT_DIM.x, FRUIT_DIM.y};
+	else if( fruit.frame >= FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1) ){ //die
+		SDL_Rect src = (SDL_Rect){(fruit.frame - FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1)) / (NB_FRAME_DEATH_FRUIT / NB_ANIM_DEATH) * FRUIT_DIM.x, FRUIT_DIM.y, FRUIT_DIM.x, FRUIT_DIM.y};
 		SDL_RenderCopy(renderer, spawnTexture, &src, &currentBody);
 	}
 	else if( fruit.frame >= 0 ){ //Normal
@@ -670,7 +670,7 @@ void decale_radius(SnakePart **snake, size_t *size, Vector2f pastBody[REMIND_BOD
 	}
 }
 
-float move_snake(SnakePart** snake, Vector2f pastBody[REMIND_BODY], size_t *size, float speed, double dir, Fruit *fruit, size_t nbFruits, Fruit *bonus, float *radiusRestant)
+float move_snake(SnakePart** snake, Vector2f pastBody[REMIND_BODY], size_t *size, float speed, double dir, Fruit *fruit, size_t nbFruits, Fruit *bonus, float *radiusRestant, int hardcore)
 {
 	// Verif speed not too high
 	if( speed == SPEED_DECOMPOSITION ){
@@ -689,11 +689,11 @@ float move_snake(SnakePart** snake, Vector2f pastBody[REMIND_BODY], size_t *size
 		(*snake)[SIZE_PRE_RADIUS].y += angleToVector2f(dir).y * speed;
 
 		for( int i = 0; i<nbFruits; i++ )
-			if( fruit[i].frame > 0  &&  fruit[i].frame < FRUIT_TTL  &&  hitboxFruit(fruit[i], (*snake)[SIZE_PRE_RADIUS]) )
+			if( fruit[i].frame > 0  &&  fruit[i].frame < FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1)  &&  hitboxFruit(fruit[i], (*snake)[SIZE_PRE_RADIUS]) )
 				fruit[i].hitbox = HIT;
 
 
-		if( bonus->frame > 0  &&  bonus->frame < FRUIT_TTL  &&  hitboxFruit(*bonus, (*snake)[SIZE_PRE_RADIUS]) )
+		if( bonus->frame > 0  &&  bonus->frame < FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1)  &&  hitboxFruit(*bonus, (*snake)[SIZE_PRE_RADIUS]) )
 			bonus->hitbox = HIT;
 
 		return speed;
@@ -704,7 +704,7 @@ float move_snake(SnakePart** snake, Vector2f pastBody[REMIND_BODY], size_t *size
 		while( speed > SPEED_DECOMPOSITION ){
 			i++;
 
-			move_snake(snake, pastBody, size, SPEED_DECOMPOSITION, dir, fruit, nbFruits, bonus, radiusRestant);
+			move_snake(snake, pastBody, size, SPEED_DECOMPOSITION, dir, fruit, nbFruits, bonus, radiusRestant, hardcore);
 			speed -= SPEED_DECOMPOSITION;
 
 			decale_radius(snake, size, pastBody, *fruit, speed, radiusRestant);
@@ -1051,7 +1051,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 		///////////////////////
 
 		//Bonus
-		bonus = (Fruit){UNDEF.x, UNDEF.y, 0, 0, NO_HIT, FRUIT_TTL + NB_FRAME_DEATH_FRUIT + 1};
+		bonus = (Fruit){UNDEF.x, UNDEF.y, 0, 0, NO_HIT, FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1) + NB_FRAME_DEATH_FRUIT + 1};
 		//Fruit
 
 		spawnFruit(snakeBody[SIZE_PRE_RADIUS], &fruit[0], 0, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0);
@@ -1132,16 +1132,16 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 				//Move
 
-				speedRestant = move_snake(&snakeBody, pastBody, &snakeSize, accelerate * speedSnake + speedRestant, dirAngle, fruit, nbFruits, &bonus, &radiusRestant);
+				speedRestant = move_snake(&snakeBody, pastBody, &snakeSize, accelerate * speedSnake + speedRestant, dirAngle, fruit, nbFruits, &bonus, &radiusRestant, hardcore);
 
 				//spawn more fruits
-				if( (hardcore && rand()%(int)roundf(chance_spawn_hardcore) == 0)  || rand() % (CHANCE_SPAWN_FRUIT * nbFruits) == 0 ){
+				if( (hardcore && rand()%(int)(PRECISION_SPAWN*chance_spawn_hardcore) < PRECISION_SPAWN)  || rand() % (CHANCE_SPAWN_FRUIT * nbFruits) == 0 ){
 					fruit = realloc(fruit, sizeof(Fruit) * (++nbFruits));
 					spawnFruit(snakeBody[SIZE_PRE_RADIUS], fruit, nbFruits - 1, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0);
 				}
 
 				//spawn more bonus
-				if(( bonus.frame > FRUIT_TTL + NB_FRAME_DEATH_FRUIT) && (rand() % (CHANCE_SPAWN_BONUS) == 0) )
+				if(( bonus.frame > FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1) + NB_FRAME_DEATH_FRUIT) && (rand() % (CHANCE_SPAWN_BONUS) == 0) )
 					spawnBonus(snakeBody[SIZE_PRE_RADIUS], &bonus, nbFruitEaten, fruit, nbFruits);
 
 				//Reach dest
@@ -1196,7 +1196,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 						return HACKED;
 					}
 
-					bonus.frame = FRUIT_TTL + NB_FRAME_DEATH_FRUIT ;
+					bonus.frame = FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1) + NB_FRAME_DEATH_FRUIT ;
 					if(snakeSize == SIZE_PRE_RADIUS){
 						done = 1;
 						dead = 1;
@@ -1253,15 +1253,15 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 			//fruits
 			for( int i = 0; i < nbFruits; i++ )
-				afficherFruit(renderer, textures[S_FRUITS], textures[S_ANIM], fruit[i]);
+				afficherFruit(renderer, textures[S_FRUITS], textures[S_ANIM], fruit[i], hardcore);
 
 			//score
 			for( int i = 0; i< nbScoreAffichage; i++ )
 				afficherScore(renderer, textures[S_CHIFFRE], scoreAffichage[i]);
 
 			//bonus
-			if(bonus.frame < FRUIT_TTL + NB_FRAME_DEATH_FRUIT)
-				afficherFruit(renderer, textures[S_FRUITS], textures[S_ANIM], bonus);
+			if(bonus.frame < FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1) + NB_FRAME_DEATH_FRUIT)
+				afficherFruit(renderer, textures[S_FRUITS], textures[S_ANIM], bonus, hardcore);
 
 
 			if(done && snakeSize < (SIZE_PRE_RADIUS + RELAY_SNAKE_SIZE))
@@ -1296,7 +1296,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 				for( int i = 0; i<nbDeadBodies; i++ ){
 					deadBodies[i].frame++;
 
-					if( deadBodies[i].frame > FRUIT_TTL + NB_FRAME_DEATH_BODY ){
+					if( deadBodies[i].frame > FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1) + NB_FRAME_DEATH_BODY ){
 
 						for( int j = i; j < nbDeadBodies - 1; j++ )
 							deadBodies[j] = deadBodies[j + 1];
@@ -1311,7 +1311,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 				//fruitUneat
 				for( int i = 0; i<nbFruits; i++ ){
-					if(!done && fruit[i].frame == FRUIT_TTL+1 ){
+					if(!done && fruit[i].frame == FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1)+1 ){
 
 						if( fruit[i].id != CAFE ){//change jauge
 							nbFruitEaten += (hardcore ? FRUIT_TIMEOUT_EATEN_HARDCORE : -2);
@@ -1351,7 +1351,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 				for( int i = 0; i<nbFruits; i++ ){
 					fruit[i].frame++;
 
-					if( fruit[i].frame > FRUIT_TTL + NB_FRAME_DEATH_FRUIT ){
+					if( fruit[i].frame > FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1) + NB_FRAME_DEATH_FRUIT ){
 						for( int j = i; j<nbFruits - 1; j++ )
 							fruit[j] = fruit[j + 1];
 
@@ -1385,7 +1385,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 				//bonusTimeout
 				bonus.frame++;
-				if( bonus.frame == FRUIT_TTL + NB_FRAME_DEATH_FRUIT +1 )
+				if( bonus.frame == FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1) + NB_FRAME_DEATH_FRUIT +1 )
 					initBonus(&bonus);
 
 				//malus timeout
@@ -1413,8 +1413,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 			while( currentTime - lastTime < FRAME_TIME )
 				currentTime = SDL_GetTicks();
 
-			if( currentTime - lastTime > FRAME_TIME )
-				printf(" TIME FRAME : %d\n", currentTime - lastTime);
+			printf(" speed pspawn : %f \n", chance_spawn_hardcore);
 
 			lastTime = currentTime;
 
