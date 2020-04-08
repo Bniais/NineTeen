@@ -1853,20 +1853,27 @@ void moveDeadPiece(DeadPiece *deadPiece){
 }
 
 void myFrees(Piece * currentPiece, Piece * nextPiece, DeadPiece ** deadPieces, SDL_Texture * textures[NB_TETRIS_TEXTURES], TTF_Font * fonts[NB_TETRIS_FONTS]){
+	printf("begin free\n" );
 	if(currentPiece->grille){
 		free(currentPiece->grille);
 		currentPiece->grille = NULL;
 	}
+
+	printf("piece freed\n" );
 
 	if(nextPiece->grille){
 		free(nextPiece->grille);
 		nextPiece->grille = NULL;
 	}
 
+	printf("nextpiece freed\n" );
+
 	if(*deadPieces){
 		free(*deadPieces);
 		*deadPieces = NULL;
 	}
+
+	printf("dead freed\n" );
 
 
 	for(int i=0; i<NB_TETRIS_TEXTURES; i++)
@@ -1875,13 +1882,15 @@ void myFrees(Piece * currentPiece, Piece * nextPiece, DeadPiece ** deadPieces, S
 			textures[i] = NULL;
 		}
 
+	printf("textures freed\n" );
 
 	for(int i=0; i<NB_TETRIS_FONTS; i++)
 		if(fonts[i]){
 			TTF_CloseFont(fonts[i]);
 			fonts[i] = NULL;
 		}
-
+	printf("font freed\n" );
+	printf("end free\n" );
 }
 
 
