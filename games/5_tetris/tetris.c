@@ -2160,6 +2160,11 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 										printf("SCORE ENVOYER\n" );
 										//////////////////////////////////////////////////////////////////
 									}
+									else{
+										myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
+										return HACKED;
+									}
+
 								}
 							}
 						}
@@ -2188,6 +2193,11 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 						printf("SCORE ENVOYER\n" );
 						//////////////////////////////////////////////////////////////////
 					}
+					else{
+						myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
+						return HACKED;
+					}
+
 					//break;
 				}
 			}
