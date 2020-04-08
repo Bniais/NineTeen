@@ -213,28 +213,20 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 {
 	//////////////////////////////////////////
 	// INIT CHAINE DE CONCATENATION DU PATH
-	char concatenation[128]="";
 	//////////////////////////////////////////
-
-	strcat(concatenation,path);
-	strcat(concatenation,DIR_IMG_BACKGROUND);
 	// AFFICHAGE
-	SDL_Texture* background = IMG_LoadTexture(renderer,concatenation);
+	SDL_Texture* background = IMG_LoadTexture(renderer,DIR_IMG_BACKGROUND);
 	if(!background)
-		printf("Impossible de charger %s\n",concatenation );
+		printf("Impossible de charger %s\n",DIR_IMG_BACKGROUND );
 
 
-	strcpy(concatenation,path);
-	strcat(concatenation,DIR_FONT_POLICE);
-	TTF_Font *police = police = TTF_OpenFont(concatenation,100);
+	TTF_Font *police = police = TTF_OpenFont(DIR_FONT_POLICE,100);
 	if(!police)
-		printf("Impossible de charger %s\n",concatenation );
+		printf("Impossible de charger %s\n",DIR_FONT_POLICE );
 
-		strcpy(concatenation,path);
-		strcat(concatenation,DIR_FONT_PASSWORD);
-	TTF_Font *ttf_pwd = ttf_pwd = TTF_OpenFont(concatenation,100);
+	TTF_Font *ttf_pwd = ttf_pwd = TTF_OpenFont(DIR_FONT_PASSWORD,100);
 	if(!ttf_pwd)
-		printf("Impossible de charger %s\n",concatenation );
+		printf("Impossible de charger %s\n",DIR_FONT_PASSWORD );
 
 
 	// permet de recuperer depuis le serveur l'information sur
