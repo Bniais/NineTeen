@@ -9,13 +9,9 @@
 #include"pieces.h"
 
 //system
-/**
-*\struct Vector2f
-*\brief Une structure regroupant deux float
-*/
-typedef struct {float x; float y;} Vector2f;
+static const SDL_Color WHITE = {255,255,255};
+const Vector2f UNDEFINED = {-500, -500};
 #define FRAMES_PER_SECOND 30
-const SDL_Point UNDEFINED = {-500, -500};
 
 
 //Grille
@@ -304,7 +300,7 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 	#define NB_TETRIS_FONTS 1
 	typedef enum{T_FONT_COMBO}T_FONTS;
 
-	char* DIR_FONTS_TETRIS[NB_TETRIS_TEXTURES] = {
+	char* DIR_FONTS_TETRIS[NB_TETRIS_FONTS] = {
 		"./games/5_tetris/Fonts/zorque.ttf"
 	};
 
@@ -328,7 +324,7 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 
 
 //colors
-const SDL_Color WHITE = {255,255,255};
+
 	//background
 	const SDL_Color BACKGROUND_COLOR = {0x00, 0x19, 0x3a};
 

@@ -2039,6 +2039,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 				switch( event.type ){
 					case SDL_QUIT:
 						// fermer
+						myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
 						return 0;
 						break;
 
