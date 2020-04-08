@@ -106,6 +106,9 @@ const SDL_Point FRUIT_DIM = {64, 64};
 #define GIANT_CHANCE 200
 #define MAX_TRIES_RAND 1000
 #define CHANCE_SPAWN_FRUIT (4 * FRAMES_PER_SECOND)
+#define CHANCE_SPAWN_FRUIT_HARDCORE_INIT 6
+#define CHANCE_SPAWN_FRUIT_HARDCORE_MIN 2
+#define CHANCE_SPAWN_FRUIT_HARDCORE_RATE ((CHANCE_SPAWN_FRUIT_HARDCORE_INIT - CHANCE_SPAWN_FRUIT_HARDCORE_MIN) / (4*60)) //3mins
 #define FRUIT_TTL (FRAMES_PER_SECOND * 10)
 #define NB_FRAME_SPAWN_FRUIT 12
 #define NB_ANIM_SPAWN 4
@@ -116,6 +119,14 @@ typedef enum {FRAISE, ORANGE, CITROUILLE, PIMENT, CERISE, POMME, PASTEQUE, CAROT
 #define FROM_COFFRE 1
 #define FROM_RAINBOW 2
 #define HITBOX_SECURITY 1
+
+//hardcore
+#define RATIO_RADIUS_HARDCORE 1
+#define RATIO_SPEED_HARDCORE 10
+#define RATIO_GET_FRUIT_HARDCORE -10
+#define FRUIT_EATEN_HARDCORE -5
+#define FRUIT_TIMEOUT_EATEN_HARDCORE 0.25
+#define FRUIT_TIMEOUT_SCORE_HARDCORE 0.5
 
 //Bonuses
 #define FLAT_REDUCE_SCISOR 10
@@ -155,7 +166,7 @@ SDL_Rect SHOW_POTION_DEST = {0,BASE_WINDOW_H/2 - 1.25* (ESPACEMENT_SHOW_POTION+6
 
 //Score
 #define NB_CHAR_AFFICHAGE_SCORE 21
-typedef struct {float x; float y; int score; int frame; int size;} Score;
+typedef struct {float x; float y; int score; int frame; int size;int fromTimeOut;} Score;
 /**
 *\struct ScoreTotal
 *\brief Contient des informations sur le score total
@@ -173,6 +184,8 @@ SDL_Color TOTAL_SCORE_COLOR = {0x02,0x31,0x02};
 #define MAX_SIZE_SCORE 45
 #define SCORE_TTL 20
 static const int ALPHA_SCORE[SCORE_TTL] = { 40, 80, 160, 255, 255,   255, 255, 255, 255, 255,   255, 255, 255, 255, 255,   255, 195, 150, 80, 40 };
+static const int ALPHA_SCORE_TIMEOUT[SCORE_TTL] = { 20, 40, 80, 125, 145,    155, 155, 155, 155, 145,   125, 95, 75, 45, 25,       0,0,0,0,0 };
+
 static SDL_Rect SCORE_SRC = {0,0, 12,18};
 #define FONT_HEIGHT_RATIO 1.5
 
