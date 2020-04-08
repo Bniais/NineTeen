@@ -106,20 +106,20 @@ enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINE
 /// \param struct MeilleureScore_s meilleureScore[] tableau charger des scores
 /// \param SDL_Window *Window fenetre initaliser
 /// \param const C_STRUCT aiScene* scene scene charger
-///
+/// \param SDL_Rect windowBorders La taille des bordures d'une fenêtre
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene );
+int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, SDL_Rect windowBorders );
 
 
 
 /////////////////////////////////////////////////////
 /// \fn int windowMaxSize()
 /// \brief fonction qui charge fixe la taille max de la fenetre
-///
+/// \param windowBorders La taille des bords d'une fenêtre
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int windowMaxSize();
+int windowMaxSize(SDL_Rect windowBorders);
 
 
 /////////////////////////////////////////////////////
@@ -425,11 +425,11 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 
 
 
-int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene)
+int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, SDL_Rect windowBorders)
 {
 	//////////////////////////////////////////////////////////
 	// RECUPERER C'EST VALEUR DES PARAMS A L'AVENIR
-	windowMaxSize();
+	windowMaxSize(windowBorders);
 	//////////////////////////////////////////////////////////
 
 
@@ -774,24 +774,34 @@ void mixerInit()
 
 
 
-int windowMaxSize()
+int windowMaxSize(SDL_Rect windowBorders)
 {
 	/////////////////////////////////////////////////////
 	// CREATION VARIABLE
-	SDL_DisplayMode dm;
+	SDL_Rect dm;
 
 	/////////////////////////////////////////////////////
 	// RECUPRATION DE LA TAILLE D'ECRAN SI CA ECHOU ON RECUPERER L'ERREUR
-	if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
+	if (SDL_GetDisplayUsableBounds(0,&dm) != 0)
 	{
-		SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
+		SDL_Log("SDL_GetDisplayUsableBounds failed: %s", SDL_GetError());
 		return EXIT_FAILURE;
 	}
+	dm.w -= windowBorders.y + windowBorders.h; // remove left and right
+	dm.h -=  windowBorders.x + windowBorders.w; // remove top and bot
 
 	/////////////////////////////////////////////////////
 	// ON APPLIQUE A NOTRE VARIABLE GLOBALE
-	WinWidth = dm.w*0.9;
-	WinHeight = (dm.w*0.9)*9/16;
+	if((float)dm.w/dm.h > 16/9.){
+		dm.w = 16 * dm.h / 9.;
+	}
+	else if((float)dm.w/dm.h < 16/9.){
+		dm.h = 9 * dm.w / 16.;
+	}
+
+	WinWidth = dm.w;
+	WinHeight = dm.h;
+
 
 	printf("SIZE : %d %d\n", WinWidth, WinHeight);
 
