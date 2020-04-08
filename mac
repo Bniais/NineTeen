@@ -1,4 +1,4 @@
-OBJS	= launcher.o room.o flappy_bird.o import.o libWeb.o textField.o tetris.o snake.o hashage.o
+OBJS	= launcher.o room.o flappy_bird.o import.o libWeb.o textField.o tetris.o snake.o hashage.o fullpath.o
 SOURCE	= launcher.c
 HEADER	= room.h flappy_bird.h tetris.h snake.h
 OUT	= Nineteen
@@ -38,6 +38,9 @@ hashage.o : include/hashage.c
 	$(CC) $(FLAGS) $^
 
 textField.o : include/textField.c
+	$(CC) $(FLAGS) $^
+
+fullpath.o : include/fullpath.c
 	$(CC) $(FLAGS) $^
 
 clean:
