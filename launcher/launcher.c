@@ -558,14 +558,12 @@ int main(int argc, char *argv[])
 	// APPEL DU LAUNCHER
 	if( launcher(renderer,token,meilleureScore,&scene,addPath) == EXIT_SUCCESS)
 	{
-		SDL_Rect windowBorders; // top left bot right = x y w h
-		SDL_GetWindowBordersSize(window, &windowBorders.x, &windowBorders.y, &windowBorders.w, &windowBorders.h );
 
 		SDL_DestroyRenderer(renderer);
 		SDL_DestroyWindow(window);
 		/////////////////////////////////////////////////////////////////
 		// APPEL DE LA ROOM
-		printf("ROOM : %d\n",room(token,meilleureScore,window,scene, windowBorders) );
+		printf("ROOM : %d\n",room(token,meilleureScore,window,scene) );
 	}
 
 

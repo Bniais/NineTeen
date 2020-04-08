@@ -68,6 +68,8 @@ float HAUTEUR_PERSONNAGE = HAUTEUR_CAMERA_DEBOUT;
 float VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
 float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 
+
+#define RATIO_WINDOW_SCREEN 0.93
 static int WinWidth = 1280;
 static int WinHeight = 720;
 
@@ -106,20 +108,18 @@ enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINE
 /// \param struct MeilleureScore_s meilleureScore[] tableau charger des scores
 /// \param SDL_Window *Window fenetre initaliser
 /// \param const C_STRUCT aiScene* scene scene charger
-/// \param SDL_Rect windowBorders La taille des bordures d'une fenêtre
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, SDL_Rect windowBorders );
+int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene );
 
 
 
 /////////////////////////////////////////////////////
 /// \fn int windowMaxSize()
 /// \brief fonction qui charge fixe la taille max de la fenetre
-/// \param windowBorders La taille des bords d'une fenêtre
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int windowMaxSize(SDL_Rect windowBorders);
+int windowMaxSize();
 
 
 /////////////////////////////////////////////////////
@@ -425,11 +425,11 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 
 
 
-int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, SDL_Rect windowBorders)
+int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene)
 {
 	//////////////////////////////////////////////////////////
 	// RECUPERER C'EST VALEUR DES PARAMS A L'AVENIR
-	windowMaxSize(windowBorders);
+	windowMaxSize();
 	//////////////////////////////////////////////////////////
 
 
@@ -774,7 +774,7 @@ void mixerInit()
 
 
 
-int windowMaxSize(SDL_Rect windowBorders)
+int windowMaxSize()
 {
 	/////////////////////////////////////////////////////
 	// CREATION VARIABLE
@@ -787,8 +787,9 @@ int windowMaxSize(SDL_Rect windowBorders)
 		SDL_Log("SDL_GetDisplayUsableBounds failed: %s", SDL_GetError());
 		return EXIT_FAILURE;
 	}
-	dm.w -= windowBorders.y + windowBorders.h; // remove left and right
-	dm.h -=  windowBorders.x + windowBorders.w; // remove top and bot
+
+	dm.w *= RATIO_WINDOW_SCREEN;
+	dm.h *= RATIO_WINDOW_SCREEN;
 
 	/////////////////////////////////////////////////////
 	// ON APPLIQUE A NOTRE VARIABLE GLOBALE
