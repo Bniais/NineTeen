@@ -508,6 +508,8 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 	//////////////////////////////////////////////////////////
 	//
+	/*WinWidth = 2304;
+	WinHeight = 1296;*/
 	Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL );
 	//////////////////////////////////////////////////////////
 	// VERIFIER EXISTANCE DE LA FENETRE ET CREATION CONTEXT
@@ -1711,13 +1713,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								case 3: SDL_Delay(500);break;
 								case 4: SDL_Delay(500);break;
 								case 5:
-									printf("snake\n" );
 									snake( pRenderer ,meilleureScore[SNAKE_HARD].score, WinWidth/1920.,token,1);
 									updateMeilleureScore(meilleureScore,token);
 								case 6: SDL_Delay(500);break;
 								case 7: SDL_Delay(500);break;
 								case 8:
-									printf("snake\n" );
 									snake( pRenderer ,meilleureScore[SNAKE_EASY].score, WinWidth/1920.,token,0);
 									updateMeilleureScore(meilleureScore,token);
 								case 9: SDL_Delay(500);break;

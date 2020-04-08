@@ -341,7 +341,6 @@ int tooCloseFromFruit(Fruit* fruitRang, int rang, Fruit* fruitSearch, int nbFrui
 }
 
 void spawnFruit(SnakePart head, Fruit *fruit, int rang, int nbFruits, float nbFruitEaten, Fruit *bonus, Vector2f spawn, int spawnCondition, int retardFrame){
-	printf("okspd\n" );
 	fruit[rang].x = UNDEF.x;
 	fruit[rang].y = UNDEF.y;
 	fruit[rang].giant = 0;
@@ -360,12 +359,11 @@ void spawnFruit(SnakePart head, Fruit *fruit, int rang, int nbFruits, float nbFr
 			nbRand += FRUIT_PROPRIETES[i][PROBA];
 
 	nbRand = rand() % nbRand;
-	printf("oknb\n" );
+
 	int i;
 	for( i = 0; i < NB_FRUITS  &&  (nbRand >= FRUIT_PROPRIETES[i][PROBA]  ||  FRUIT_PROPRIETES[i][MIN_FRUIT_TO_APPEAR] > nbFruitEaten) ; i++ )
 		if( FRUIT_PROPRIETES[i][MIN_FRUIT_TO_APPEAR] <= nbFruitEaten )
 			nbRand -= FRUIT_PROPRIETES[i][PROBA];
-	printf("okid\n" );
 	fruit[rang].id = i;
 
 	//fruit.giant
@@ -374,13 +372,11 @@ void spawnFruit(SnakePart head, Fruit *fruit, int rang, int nbFruits, float nbFr
 		if( fruit[rang].giant != 1 )
 			fruit[rang].giant = 0;
 	}
-	printf("okg\n" );
 
 	//fruit coordinates
 	if( spawnCondition == FROM_NATURAL ){
 		i = -1;
 		do{
-			printf("try\n");
 			fruit[rang].x = rand() % (int)(PLAYGROUND_SIZE_W);
 			fruit[rang].y = rand() % (int)(PLAYGROUND_SIZE_H);
 			i++;
@@ -769,7 +765,6 @@ int eat_fruit(SnakePart **snake, size_t *size, Fruit** fruitTab, size_t* nbFruit
 			SDL_FALSE
 		};
 	}
-	printf("ok\n" );
 	//update nbEaten
 	if( fruit.id < NB_FRUITS ){
 		(*nbFruitEaten)+= (hardcore ? FRUIT_EATEN_HARDCORE : 1);
@@ -1068,8 +1063,6 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 		int done = 0, dead = 0;
 		while( 1 ){
-			printf("oks\n" );
-
 			// Init input
 			turn = NO_TURN;
 			accelerate = ACCELERATE_DISABLED;
@@ -1091,7 +1084,6 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 				}
 			}
-			printf("oke\n" );
 
 		////////////////////////////
 		// Handle Keyboard inputs //`
@@ -1115,21 +1107,15 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 				if( keystate[SDL_SCANCODE_SPACE] )
 					rdyToSpace = SDL_FALSE;
 			}
-			printf("oksc\n" );
-
-
-
 
 
 			if( !paused && !done && !dead ){
 		//////////////
 		// Gameplay //`
 		//////////////
-								printf("okdgp\n" );
 				//poison
 				poison += poisoned;
 				if( poison >= 1){
-					//printf("%f (%f)\n", poisoned, poisoned*FRAMES_PER_SECOND );
 					rm_body(&snakeBody, &snakeSize, (int)poison, pastBody, &deadBodies, &nbDeadBodies, 1, 1, 0);
 					poison -= (int)poison;
 					if(snakeSize == SIZE_PRE_RADIUS){
@@ -1147,23 +1133,20 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 				//Move
 
 				speedRestant = move_snake(&snakeBody, pastBody, &snakeSize, accelerate * speedSnake + speedRestant, dirAngle, fruit, nbFruits, &bonus, &radiusRestant);
-				printf("okmv\n" );
-				//spawn more fruits
 
+				//spawn more fruits
 				if( (hardcore && rand()%(int)roundf(chance_spawn_hardcore) == 0)  || rand() % (CHANCE_SPAWN_FRUIT * nbFruits) == 0 ){
 					fruit = realloc(fruit, sizeof(Fruit) * (++nbFruits));
-					printf("okrea\n");
 					spawnFruit(snakeBody[SIZE_PRE_RADIUS], fruit, nbFruits - 1, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0);
 				}
-				printf("oksp\n" );
+
 				//spawn more bonus
 				if(( bonus.frame > FRUIT_TTL + NB_FRAME_DEATH_FRUIT) && (rand() % (CHANCE_SPAWN_BONUS) == 0) )
 					spawnBonus(snakeBody[SIZE_PRE_RADIUS], &bonus, nbFruitEaten, fruit, nbFruits);
-				printf("okspb\n" );
+
 				//Reach dest
 				reachDest(fruit, nbFruits);
 
-				printf("okgp\n" );
 		///////////////////
 		// Check hitboxs //`
 		///////////////////
@@ -1223,7 +1206,6 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 			else if( !paused && !dead ){ //death anim
 				finalDeath += finalDeathRate;
 				if( finalDeath >= 1){
-					//printf("%f (%f)\n", poisoned, poisoned*FRAMES_PER_SECOND );
 					rm_body(&snakeBody, &snakeSize, (int)finalDeath, pastBody, &deadBodies, &nbDeadBodies, 1, 1, INIT_FRAME_DEATH);
 					finalDeath -= (int)finalDeath;
 					if(snakeSize == SIZE_PRE_RADIUS){
@@ -1256,7 +1238,6 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 			}
 
-			printf("okbd\n" );
 		//////////
 		// Draw //`
 		//////////
@@ -1306,7 +1287,6 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 
            SDL_RenderSetScale(renderer, ratioWindowSize, ratioWindowSize);
-		   	printf("okd\n" );
 		////////////////
 		// Next frame //`
 		////////////////
@@ -1421,16 +1401,12 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 			}
 
 			//anim jauge
-				printf("oka\n" );
 			if(frameJaugeAnim)
 				jaugeValue += (float)(nbFruitEaten - jaugeValue ) / ( frameJaugeAnim-- );
 
 			//anim score
-			printf("okj\n" );
 			if(score.frameToDest)
 				score.scoreShow += (float)(score.score - score.scoreShow ) / ( score.frameToDest-- );
-			printf("oks\n" );
-			//printf("%f\n", score.scoreShow );
 
 			//regulateFPS
 			currentTime = SDL_GetTicks();
@@ -1445,7 +1421,6 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 			// On efface
 			SDL_SetRenderDrawColor(renderer, HUD_COLOR.r, HUD_COLOR.g, HUD_COLOR.b, 255);
 			SDL_RenderClear(renderer);
-				printf("okok\n" );
 		}
 	}
 	return 0;
