@@ -579,7 +579,8 @@ static void drawJauge(SDL_Renderer *renderer, SDL_Texture *basketTexture, float 
 
 
 	float ratioFruti = (jaugeValue+BASE_JAUGE) / (APPEAR_MAX+BASE_JAUGE);
-
+	if(ratioFruti > 1 )
+		ratioFruti = 1;
 	//texture jauge
 	SDL_Rect dest = BASKET_DIM;
 	dest.w *= ratioWindowSize;
@@ -871,25 +872,6 @@ static void afficherScore(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Sc
 	}
 }
 
-
-SDL_Point maximizeWindow(SDL_Rect displayBounds, float* ratioWindowSize){
-	SDL_Point maxW = {(PLAYGROUND_SIZE_W + 2 * HUD_W), (PLAYGROUND_SIZE_H + 2 * HUD_H)};
-	if( maxW.x > displayBounds.w - ESPACE_DISPLAY_WINDOW.x  ||  maxW.y > (displayBounds.h - ESPACE_DISPLAY_WINDOW.y) - ESPACE_DISPLAY_WINDOW.y){
-		if( (float)maxW.x/maxW.y > (float)(displayBounds.w - ESPACE_DISPLAY_WINDOW.x)/(displayBounds.h - ESPACE_DISPLAY_WINDOW.y) ){
-			*ratioWindowSize = (float)maxW.x / (displayBounds.w - ESPACE_DISPLAY_WINDOW.x);
-			maxW.y /= (float)maxW.x / (displayBounds.w - ESPACE_DISPLAY_WINDOW.x);
-			maxW.x = displayBounds.w - ESPACE_DISPLAY_WINDOW.x;
-		}
-		else{
-			*ratioWindowSize = (float)maxW.y / (displayBounds.h - ESPACE_DISPLAY_WINDOW.y);
-			maxW.x /= (float)maxW.y / (displayBounds.h - ESPACE_DISPLAY_WINDOW.y);
-			maxW.y = (displayBounds.h - ESPACE_DISPLAY_WINDOW.y);
-		}
-	}
-	*ratioWindowSize = 1 / *ratioWindowSize;
-	return maxW;
-}
-
 static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeBody, Score ** scoreAffichage, Mix_Chunk ** sound, SDL_Texture * textures[NB_SNAKE_TEXTURES], TTF_Font * fonts[NB_SNAKE_FONTS]){
 	if(*fruits){
 		free(*fruits);
@@ -931,7 +913,7 @@ static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeB
 
 }
 
-// int launchSnake(SDL_Window *myWindow, SDL_Renderer* renderer, char *identifiant, char *token){
+
 int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *token, int hardcore){
 /////////////////////
 /// MISE EN PLACE ///``
@@ -1030,7 +1012,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 		size_t nbScoreAffichage = 0;
 		int frameJaugeAnim = 0;
 
-		SDL_Rect playgroundView = {HUD_W*ratioWindowSize, HUD_H*ratioWindowSize, PLAYGROUND_SIZE_W, PLAYGROUND_SIZE_H};
+		SDL_Rect playgroundView = {HUD_W*ratioWindowSize, HUD_H*ratioWindowSize, PLAYGROUND_SIZE_W*ratioWindowSize, PLAYGROUND_SIZE_H*ratioWindowSize};
 		SDL_Rect hudView = {0, 0, (PLAYGROUND_SIZE_W + 2 * HUD_W), (PLAYGROUND_SIZE_H + 2 * HUD_H)};
 		SDL_Rect hudDraw = {0, 0, (PLAYGROUND_SIZE_W + 2 * HUD_W)*ratioWindowSize, (PLAYGROUND_SIZE_H + 2 * HUD_H)*ratioWindowSize};
 
@@ -1362,7 +1344,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 			lastTime = currentTime;
 
 			// On efface
-			SDL_SetRenderDrawColor(renderer, 0, 40, 200, 255);
+			SDL_SetRenderDrawColor(renderer, HUD_COLOR.r, HUD_COLOR.g, HUD_COLOR.b, 255);
 			SDL_RenderClear(renderer);
 		}
 	}
