@@ -1358,6 +1358,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 			if( currentTime - lastTime > FRAME_TIME )
 				printf(" TIME FRAME : %d\n", currentTime - lastTime);
 
+			printf("ratio : %f\n", ratioWindowSize );
 			lastTime = currentTime;
 
 			// On efface
