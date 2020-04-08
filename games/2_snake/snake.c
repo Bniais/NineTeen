@@ -1013,7 +1013,6 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 		int frameJaugeAnim = 0;
 
 		SDL_Rect playgroundView = {HUD_W*ratioWindowSize, HUD_H*ratioWindowSize, PLAYGROUND_SIZE_W*ratioWindowSize, PLAYGROUND_SIZE_H*ratioWindowSize};
-		SDL_Rect hudDraw = {0, 0, (PLAYGROUND_SIZE_W + 2 * HUD_W)*ratioWindowSize, (PLAYGROUND_SIZE_H + 2 * HUD_H)*ratioWindowSize};
 
 		//hud and menus
 		int paused = 0;
@@ -1224,22 +1223,23 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 
 			//hud
-			SDL_RenderSetScale(renderer, 1, 1);
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-			SDL_RenderSetViewport(renderer, &hudDraw);
-			SDL_RenderCopy(renderer, textures[S_HUD], NULL, &hudDraw);
+           SDL_RenderSetScale(renderer, 1, 1);
+           SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+           SDL_RenderSetViewport(renderer, NULL);
+           SDL_RenderCopy(renderer, textures[S_HUD], NULL, NULL);
 
-			afficherPotions(renderer, nbPotion, textures[S_FRUITS], ratioWindowSize);
-			drawQuit(renderer, fonts[S_BASE_FONT], ratioWindowSize);
-			drawJauge(renderer, textures[S_BASKET], ratioWindowSize, jaugeValue);
-			afficherScoreTotal(renderer, fonts[S_FLAPPY], score.scoreShow, ratioWindowSize);
-
-			SDL_RenderSetViewport(renderer, &playgroundView);
+           afficherPotions(renderer, nbPotion, textures[S_FRUITS], ratioWindowSize);
+           drawQuit(renderer, fonts[S_BASE_FONT], ratioWindowSize);
+           drawJauge(renderer, textures[S_BASKET], ratioWindowSize, jaugeValue);
+           afficherScoreTotal(renderer, fonts[S_FLAPPY], score.scoreShow, ratioWindowSize);
 
 
-			SDL_RenderSetScale(renderer, ratioWindowSize, ratioWindowSize);
-			//afficher
-			SDL_RenderPresent(renderer);
+           //afficher
+           SDL_RenderPresent(renderer);
+           SDL_RenderSetViewport(renderer, &playgroundView);
+
+
+           SDL_RenderSetScale(renderer, ratioWindowSize, ratioWindowSize);
 
 		////////////////
 		// Next frame //`
