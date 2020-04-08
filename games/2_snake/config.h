@@ -214,7 +214,7 @@ const float FRUIT_PROPRIETES[NB_FRUITS + NB_BONUSES][NB_PROPRIETES]=
 {      0,    28,      7,        0,       0,       5 }, // coffre
 {      0,    28,      5,        0,       0,       15}, // ARC_EN_CIEL
 {      0,    28,      3,        0,       0,       20}, // potion hitbox
-{      0,    28,      2,        0,       0,       35}, // potion verte
+{      0,    28,      2,        0,       0,       0}, // potion verte
 {      0,    28,      1,   150000,       0,       45} // potion jaune
 };
 #define APPEAR_MAX 50.
