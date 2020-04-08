@@ -1681,7 +1681,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									case SDLK_d:
 										decision = 0;
 										printf("Vous vous deconnecter\n");
-										FILE *fp = fopen("launcher/.token","w");
+										FILE *fp = fopen("/tmp/.Nineteen","w");
 										fclose(fp);
 										*Running = 0;
 										break;

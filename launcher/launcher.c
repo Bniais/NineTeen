@@ -20,7 +20,7 @@
 #define TRUE 1
 #define FALSE 0
 
-#define DIR_TOKEN_FILE "launcher/.token"
+#define DIR_TOKEN_FILE "/tmp/.Nineteen"
 #define DIR_CONFIG_FILE "launcher/.config"
 #define DIR_MUSIC_FILE "assets/background.wav"
 
@@ -84,13 +84,10 @@ SDL_Texture *load_texture_png(SDL_Renderer* renderer, char directory[]){
 	}
 }
 
-int dejaConneceter(char *token,char path[])
+int dejaConneceter(char *token)
 {
-	char concatenation[128];
-	strcpy(concatenation,path);
-  strcat(concatenation,DIR_TOKEN_FILE);
 	FILE * fp;
-    fp = fopen (concatenation, "r");
+    fp = fopen (DIR_TOKEN_FILE, "r");
 	if (!fp)
 	{
 		return 0;
@@ -107,12 +104,8 @@ int dejaConneceter(char *token,char path[])
 	return 0;
 }
 
-int sauvegarderToken(char *token,char path[])
+int sauvegarderToken(char *token)
 {
-	char concatenation[128];
-	strcpy(concatenation,path);
-  strcat(concatenation,DIR_TOKEN_FILE);
-
 	FILE *fp;
 	fp = fopen(DIR_TOKEN_FILE,"w");
 	if (!fp)
@@ -475,10 +468,10 @@ int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleu
 	Mix_PlayMusic(musique, 0);
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	if ( !dejaConneceter(token,path) )
+	if ( !dejaConneceter(token) )
 	{
 		connexion(renderer,token,path);
-		sauvegarderToken(token,path);
+		sauvegarderToken(token);
   }
 
 
