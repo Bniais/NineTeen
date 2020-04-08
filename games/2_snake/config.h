@@ -123,7 +123,7 @@ typedef enum {FRAISE, ORANGE, CITROUILLE, PIMENT, CERISE, POMME, PASTEQUE, CAROT
 #define DURATION_POTION 180
 #define RELATIVE_ACCELERATE_COFEE 0.25
 #define NB_BONUSES 7
-#define CHANCE_SPAWN_BONUS  (1 * FRAMES_PER_SECOND)
+#define CHANCE_SPAWN_BONUS  (10 * FRAMES_PER_SECOND)
 #define FLAT_RM_BOMB 10
 #define RELATIVE_RM_BOMB 0.2
 #define RELATIVE_SLOW_FEATHER 0.3
@@ -211,10 +211,10 @@ const float FRUIT_PROPRIETES[NB_FRUITS + NB_BONUSES][NB_PROPRIETES]=
 {      0,    24,      1,    50000,       3,       15}, // café
 {     -1,    28,     11,        0,       0,       0 }, // plume
 {      0,    28,     11,        0,       0,       0 }, // BOMBE
-{      0,    28,      7,        0,       0,       5 }, // coffre
-{      0,    28,      5,        0,       0,       15}, // ARC_EN_CIEL
-{      0,    28,      3,        0,       0,       20}, // potion hitbox
-{      0,    28,      2,        0,       0,       0}, // potion verte
+{      0,    28,      7,        0,       0,       7 }, // coffre
+{      0,    28,      5,        0,       0,       20}, // ARC_EN_CIEL
+{      0,    28,      3,        0,       0,       25}, // potion hitbox
+{      0,    28,      2,        0,       0,       35}, // potion verte
 {      0,    28,      1,   150000,       0,       45} // potion jaune
 };
 #define APPEAR_MAX 50.
