@@ -45,7 +45,7 @@ int LARGUEUR = 0;
 int HAUTEUR = 0;
 
 #define SIZE_SESSION 256
-#define URL_REGISTRATION "https://nineteen.recognizer.fr/connect.php"
+#define URL_REGISTRATION "https://nineteen.recognizer.fr/inscription.php"
 #define URL_CONFIG_FILE "https://nineteen.recognizer.fr/include/launcher/config.php"
 const int DELAY = 200;
 const int TENTATIVE = 8;
