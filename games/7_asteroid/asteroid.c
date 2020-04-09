@@ -655,9 +655,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 	float difficulte =START_DIFFICULTE;
 
 	//Views
-	SDL_Rect playgroundView = {HUD_W/ratioWindowSize, HUD_H/ratioWindowSize, PLAYGROUND_SIZE_W, PLAYGROUND_SIZE_H};
-	SDL_Rect hudView = {0, 0, (PLAYGROUND_SIZE_W + 2 * HUD_W), (PLAYGROUND_SIZE_H + 2 * HUD_H)};
-	SDL_Rect hudDraw = {0, 0, (PLAYGROUND_SIZE_W + 2 * HUD_W)/ratioWindowSize, (PLAYGROUND_SIZE_H + 2 * HUD_H)/ratioWindowSize};
+	SDL_Rect playgroundView = {HUD_W/ratioWindowSize, HUD_H/ratioWindowSize, PLAYGROUND_SIZE_W/ratioWindowSize, PLAYGROUND_SIZE_H/ratioWindowSize};
 
 	//mouse
 	SDL_Point mouseCoor;
@@ -809,7 +807,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 			vaisseau.bouclier=0;
 			detruire_asteroid(&asteroides,&nb_asteroid,i_touche, &vaisseau,SDL_TRUE,&point, &nbBombeNucleaire);
 		}
-		//else break;
+		else break;
 	}
 	for(int i=0;i<nb_missiles;i++){
 			collision_mur(&missiles[i].x,&missiles[i].y,RAYON_MISSILE);
@@ -850,9 +848,9 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 
 		//afficher
 		SDL_RenderPresent(renderer);
-		
-		SDL_RenderSetScale(renderer, 1. / ratioWindowSize, 1. / ratioWindowSize);
+
 		SDL_RenderSetViewport(renderer, &playgroundView);
+		SDL_RenderSetScale(renderer, 1. / ratioWindowSize, 1. / ratioWindowSize);
 	////////////////
 	// Next frame //`
 	////////////////
@@ -870,7 +868,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 		lastTime = currentTime;
 
 		// On efface
-		SDL_SetRenderDrawColor(renderer, 0, 40, 200, 255);
+		SDL_SetRenderDrawColor(renderer, 3, 22, 34, 255);
 		SDL_RenderClear(renderer);
 	}
 
