@@ -1148,6 +1148,13 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	cible[TETRIS_EASY-1].angle = 0;
 	cible[TETRIS_EASY-1].ouverture =70;
 
+	cible[FLAPPY_EASY-1].px = 6.59;
+ 	cible[FLAPPY_EASY-1].pz = 9.25;
+ 	cible[FLAPPY_EASY-1].py = 3.45;
+ 	cible[FLAPPY_EASY-1].cible_py = -.34;
+	cible[FLAPPY_EASY-1].angle = 0;
+	cible[FLAPPY_EASY-1].ouverture =70;
+
 	cible[12].px = -13.10;
 	cible[12].pz = 10.50;
 	cible[12].py = 3.45;
@@ -1397,7 +1404,7 @@ int detectionEnvironnement(float x,float y)
 	if( y < -4.5 )
 		return 0;
 	// BAS DE LA SALLE
-	if( y > 24.0 )
+	if( y > 23.5 )
 		return 0;
 	// GAUCHE DE LA SALLE
 	if( x < -14.0 )
