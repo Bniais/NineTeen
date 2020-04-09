@@ -2156,7 +2156,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 										if(hardcore)
 											updateScore("2",buffer,token);
 										else
-											updateScore("12",buffer,token);
+											updateScore("11",buffer,token);
 										printf("SCORE ENVOYER\n" );
 										//////////////////////////////////////////////////////////////////
 									}
@@ -2189,7 +2189,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 						if(hardcore)
 							updateScore("2",buffer,token);
 						else
-							updateScore("12",buffer,token);
+							updateScore("11",buffer,token);
 						printf("SCORE ENVOYER\n" );
 						//////////////////////////////////////////////////////////////////
 					}

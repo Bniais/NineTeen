@@ -529,7 +529,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 					if(hardcore)
 						updateScore("1",buffer,token);
 					else
-						updateScore("11",buffer,token);
+						updateScore("12",buffer,token);
 					//////////////////////////////////////////////////////////////////
 				}
 

@@ -50,11 +50,11 @@
 #define HAUTEUR_CAMERA_ACCROUPI 2.7F
 #define MAX_Y_AXE_CIBLE 2.8F
 
-#define START_PX 0.0F //AXE X
+#define START_PX -13.0F //AXE X
 #define START_PY 3.5F // hauteur CAMERA
-#define START_PZ 19.0F // AXE Y
+#define START_PZ 7.0F // AXE Y
 #define START_CIBLE_Y 0.0F // REGARDE SUR AXE HAUTEUR
-#define START_CIBLE_X M_PI// REGARDE SUR AXE X
+#define START_CIBLE_X M_PI/2// REGARDE SUR AXE X
 #define START_OUVERTURE 70.0F //OUVERTURE CAMERA
 
 
@@ -96,7 +96,7 @@ struct Camera_s
 
 
 
-enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINEUR_HARD,DEMINEUR_EASY,SNAKE_EASY,PACMAN_EASY,ASTEROID_EASY,FLAPPY_EASY,TETRIS_EASY};
+enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINEUR_HARD,DEMINEUR_EASY,SNAKE_EASY,PACMAN_EASY,ASTEROID_EASY,TETRIS_EASY,FLAPPY_EASY};
 
 
 
@@ -707,9 +707,9 @@ void InitMeilleureScore(struct MeilleureScore_s str[])
 
 	strcpy(str[ASTEROID_EASY].nomJeux,"ASTEROID");
 
-	strcpy(str[FLAPPY_EASY].nomJeux,"FLAPPY   BIRD");
-
 	strcpy(str[TETRIS_EASY].nomJeux,"TETRIS");
+
+	strcpy(str[FLAPPY_EASY].nomJeux,"FLAPPY   BIRD");
 
 
 	strcpy(str[13].nomJeux,"COMMING   SOON");
@@ -733,18 +733,18 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 	// PARSING DANS LA CHAINE DE DONNER RECU
 	int temp1,temp2;
 	sscanf(reponse,"%d %d / %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d", &str[0].score,&temp1,&temp2,
-																																str[1].nomJoueur,&str[1].score,
-																																str[2].nomJoueur,&str[2].score,
-																																str[3].nomJoueur,&str[3].score,
-																																str[4].nomJoueur,&str[4].score,
-																																str[5].nomJoueur,&str[5].score,
-																																str[6].nomJoueur,&str[6].score,
-																																str[7].nomJoueur,&str[7].score,
-																																str[8].nomJoueur,&str[8].score,
-																																str[9].nomJoueur,&str[9].score,
-																																str[10].nomJoueur,&str[10].score,
-																																str[11].nomJoueur,&str[11].score,
-																																str[12].nomJoueur,&str[12].score,
+																																str[FLAPPY_HARD].nomJoueur,&str[FLAPPY_HARD].score,
+																																str[TETRIS_HARD].nomJoueur,&str[TETRIS_HARD].score,
+																																str[ASTEROID_HARD].nomJoueur,&str[ASTEROID_HARD].score,
+																																str[PACMAN_HARD].nomJoueur,&str[PACMAN_HARD].score,
+																																str[SNAKE_HARD].nomJoueur,&str[SNAKE_HARD].score,
+																																str[DEMINEUR_HARD].nomJoueur,&str[DEMINEUR_HARD].score,
+																																str[DEMINEUR_EASY].nomJoueur,&str[DEMINEUR_EASY].score,
+																																str[SNAKE_EASY].nomJoueur,&str[SNAKE_EASY].score,
+																																str[PACMAN_EASY].nomJoueur,&str[PACMAN_EASY].score,
+																																str[ASTEROID_EASY].nomJoueur,&str[ASTEROID_EASY].score,
+																																str[TETRIS_EASY].nomJoueur,&str[TETRIS_EASY].score,
+																																str[FLAPPY_EASY].nomJoueur,&str[FLAPPY_EASY].score,
 																																str[13].nomJoueur,&str[13].score,
 																																str[14].nomJoueur,&str[14].score,
 																																str[15].nomJoueur,&str[15].score
@@ -1140,14 +1140,7 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	cible[ASTEROID_EASY-1].angle = 0.0;
 	cible[ASTEROID_EASY-1].ouverture =70;
 
-	cible[FLAPPY_EASY-1].px = 4.65;
-	cible[FLAPPY_EASY-1].pz = 9.25;
-	cible[FLAPPY_EASY-1].py = 3.45;
-	cible[FLAPPY_EASY-1].cible_py = -.34;
-	cible[FLAPPY_EASY-1].angle = 0;
-	cible[FLAPPY_EASY-1].ouverture =70;
-
-	cible[TETRIS_EASY-1].px = 6.59;
+	cible[TETRIS_EASY-1].px = 4.65;
 	cible[TETRIS_EASY-1].pz = 9.25;
 	cible[TETRIS_EASY-1].py = 3.45;
 	cible[TETRIS_EASY-1].cible_py = -.34;
@@ -1196,13 +1189,12 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 	///////////////////////////////////////////////////
 	// MOUVEMENT CAMERA SUR X ET Z
 
-
+		printf("X : %f Z ; %f\n",camera->px,camera->pz );
 	///////////////////////////////////////////////////
 	// APUI FLECHE GAUCHE
 	if( keystate[SDL_SCANCODE_LEFT] )
 	{
 		camera->angle += _SENSIBILITE_CAMERA;
-
 		///////////////////////////////////////////////////
 		// PERMET DE REMETRE A VALEUR COMPRISE ENTRE 0 et 2*M_PI L'ANGLE CAMERA
 		if( camera->angle > 2 * M_PI)
@@ -1318,7 +1310,7 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 	// ON VERIFIE SI ON EST SUR LE BLOQUE SUR ELEVER CENTRAL
 	// SI C'EST LE CAS ON AUGMENTE LA HAUTEUR DE LA CAMERA
 	if (camera->px <= 4 && camera->px >= -4 && camera->pz <= 4 && camera->pz >= -4)
-		camera->py = 1.2F + HAUTEUR_CAMERA;
+		camera->py = 0.6F + HAUTEUR_CAMERA;
 	else
 		camera->py = HAUTEUR_CAMERA;
 
@@ -1366,12 +1358,12 @@ int detectionEnvironnement(float x,float y)
 
 	///////////////////////////////////////////////////
 	// OUVERTURE ENTRE POUR ALLER DANS LA SALLE TOILETTE
-	if( (y >= 7.0 || y <= 2.0) && x >= 14.5 && x <= 15.5)
+	if( (y >= 7.0 || y <= 2.5) && x >= 14.0 && x <= 16.0)
 		return 0;
 
 	///////////////////////////////////////////////////
 	// MUR QUI SEPARE LA SALLE ET LES TOILETTES
-	if( x >= 18.0 && x <= 19.0 && y >= -0.5 && y <= 10.0 )
+	if( x >= 18.0 && x <= 19.0 && y >= -0.5 && y <= 10.5 )
 		return 0;
 
 	///////////////////////////////////////////////////
@@ -1381,12 +1373,12 @@ int detectionEnvironnement(float x,float y)
 
 	///////////////////////////////////////////////////
 	// BILLARD
-	if( x <= -7.5 && x >= -12.0 && y <= 5.0 && y >= -2.3)
+	if( x <= -5.0 && x >= -13.5 && y <= 2.5 && y >= -2.5)
 		return 0;
 
 	///////////////////////////////////////////////////
 	// DIMESION SALLE DES TOILETTE
-	if(x > 15.0 && (  y < -3.0 || y > 12.5  )  )
+	if(x > 15.0 && (  y < -2.0 || y > 12.0  )  )
 		return 0;
 
 	///////////////////////////////////////////////////
@@ -1403,16 +1395,16 @@ int detectionEnvironnement(float x,float y)
 	///////////////////////////////////////////////////
 	// DIMESION SALLE DE BASE
 	// HAUT DE LA SALLE
-	if( y < -5.0 )
+	if( y < -4.5 )
 		return 0;
 	// BAS DE LA SALLE
 	if( y > 24.0 )
 		return 0;
 	// GAUCHE DE LA SALLE
-	if( x < -14.5 )
+	if( x < -14.0 )
 		return 0;
 	// DROIT DE LA SALLE
-	if ( x > 24.0 )
+	if ( x > 23.5 )
 		return 0;
 	return 1;
 }
@@ -1734,11 +1726,12 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								case 9: SDL_Delay(500);break;
 								case 10: SDL_Delay(500);break;
 								case 11: {
-									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].score,WinWidth,WinHeight,token,0));
+									tetris( pRenderer ,meilleureScore[TETRIS_EASY].score, 1920./WinWidth,token,0);
 									updateMeilleureScore(meilleureScore,token);
+									break;
 								}break;
 								case 12:
-									tetris( pRenderer ,meilleureScore[TETRIS_EASY].score, 1920./WinWidth,token,0);
+									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].score,WinWidth,WinHeight,token,0));
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 13: SDL_Delay(500);break;
