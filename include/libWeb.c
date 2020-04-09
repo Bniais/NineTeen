@@ -158,7 +158,7 @@ void securePass(char secure[])
 
 	char temp[MD5_SIZE*2];
 	//printf("HEURE A l'ENVOI DE LA REQUET %d-%02d-%02d %02d  %02d  %d\n",year , mon, day, hour , min, sec);
-	sprintf(temp, "%d-%02d-%02d 0A1kjxal9MaSECURE32 %02d 0 %02d D(ancIjaa) %d", year  , mon , day, hour , min, sec);
+	sprintf(temp, "%d-%02d-%02d JDlaliljasnc329832 %02d 0 %02d D(ancIjaa) %d", year  , mon , day, hour , min, sec);
 	md5Hash(temp, secure);
 
 	free(t_server);
