@@ -698,7 +698,7 @@ float move_snake(SnakePart** snake, Vector2f pastBody[REMIND_BODY], size_t *size
 }
 
 int scoreSize(Fruit fruit){
-	int size = 0.15 + 3.65 * log((int)(fruit.giant == 0 ? 1 : GIANT_SCORE) * FRUIT_PROPRIETES[fruit.id][SCORE]);
+	int size = 0.15 + 3.65 * log((int)(fruit.giant == 0 ? 1 : GIANT_SCORE) * 10 *  FRUIT_PROPRIETES[fruit.id][SCORE]); 
 
 	if( size < MIN_SIZE_SCORE )
 		size = MIN_SIZE_SCORE;
