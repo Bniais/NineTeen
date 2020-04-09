@@ -843,14 +843,16 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 		//hud
 		SDL_RenderSetScale(renderer, 1, 1);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderSetViewport(renderer, &hudView);
-		SDL_RenderCopy(renderer, textures[T_HUD], &hudView, &hudDraw);
+		SDL_RenderSetViewport(renderer, NULL);
+		SDL_RenderCopy(renderer, textures[T_HUD], NULL, NULL);
+
+
 
 		//afficher
 		SDL_RenderPresent(renderer);
-
-		SDL_RenderSetViewport(renderer, &playgroundView);
+		
 		SDL_RenderSetScale(renderer, 1. / ratioWindowSize, 1. / ratioWindowSize);
+		SDL_RenderSetViewport(renderer, &playgroundView);
 	////////////////
 	// Next frame //`
 	////////////////
