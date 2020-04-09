@@ -445,7 +445,7 @@ void spawnBonus(SnakePart head, Fruit* bonus, float nbFruitEaten, Fruit* fruit, 
 void reachDest(Fruit* fruit, size_t nbFruits){
 	for( int i=0; i < nbFruits; i++ )
 		if( fruit[i].frame < 0  &&  fruit[i].frame >= -NB_FRAME_SPAWN_FRUIT  &&  fruit[i].dest.x != fruit[i].x ){
-			fruit[i].coefRadius = 1 + (abs(abs(-fruit[i].frame - NB_FRAME_SPAWN_FRUIT/2.) - NB_FRAME_SPAWN_FRUIT/2.) / (3 * NB_FRAME_SPAWN_FRUIT/2.));
+			fruit[i].coefRadius = 1 + (fabs(fabs(-fruit[i].frame - NB_FRAME_SPAWN_FRUIT/2.) - NB_FRAME_SPAWN_FRUIT/2.) / (3 * NB_FRAME_SPAWN_FRUIT/2.));
 			fruit[i].x += ((NB_FRAME_SPAWN_FRUIT + (float)fruit[i].frame) / NB_FRAME_SPAWN_FRUIT) * (fruit[i].dest.x - fruit[i].x);
 			fruit[i].y += ((NB_FRAME_SPAWN_FRUIT + (float)fruit[i].frame) / NB_FRAME_SPAWN_FRUIT) * (fruit[i].dest.y - fruit[i].y);
 		}
@@ -698,7 +698,7 @@ float move_snake(SnakePart** snake, Vector2f pastBody[REMIND_BODY], size_t *size
 }
 
 int scoreSize(Fruit fruit){
-	int size = 0.15 + 3.65 * log((int)(fruit.giant == 0 ? 1 : GIANT_SCORE) * 10 *  FRUIT_PROPRIETES[fruit.id][SCORE]); 
+	int size = 0.15 + 3.65 * log((int)(fruit.giant == 0 ? 1 : GIANT_SCORE) * 10 *  FRUIT_PROPRIETES[fruit.id][SCORE]);
 
 	if( size < MIN_SIZE_SCORE )
 		size = MIN_SIZE_SCORE;
