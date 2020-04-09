@@ -123,10 +123,10 @@ typedef enum {FRAISE, ORANGE, CITROUILLE, PIMENT, CERISE, POMME, PASTEQUE, CAROT
 //hardcore
 #define RATIO_RADIUS_HARDCORE 0.8
 #define RATIO_SPEED_HARDCORE 5
-#define RATIO_GET_FRUIT_HARDCORE -10
-#define FRUIT_EATEN_HARDCORE -5
+#define RATIO_GET_FRUIT_HARDCORE -5
+#define FRUIT_EATEN_HARDCORE -3
 #define FRUIT_TIMEOUT_EATEN_HARDCORE 0.25
-#define FRUIT_TIMEOUT_SCORE_HARDCORE 0.5
+#define FRUIT_TIMEOUT_SCORE_HARDCORE 0.25
 #define RATIO_TTL_HARDCORE 0.5
 #define PRECISION_SPAWN 100
 
@@ -199,38 +199,38 @@ typedef enum{ACCELERATION, RADIUS, PROBA, SCORE, DIGESTION_SIZE, MIN_FRUIT_TO_AP
 #define NB_PROPRIETES 6
 const float FRUIT_PROPRIETES[NB_FRUITS + NB_BONUSES][NB_PROPRIETES]=
 {// ACCE    RADIUS  PROBA   SCORE    DIGES    APPEAR
-{   0.02,    20,      3,      200,       5,       0 }, // fraise
-{   0.08,    24,      3,      500,       8,       0 }, // orange
-{   0.12,    36,      3,     1500,      13,       0 }, // citrouille
-{   0.24,    18,      4,     2000,       6,       10 }, // piment
-{   0.02,    18,      4,      410,       4,       11 }, // cerise
-{   0.05,    22,      5,     1070,       7,       12 }, // pomme
-{   0.06,    30,      5,     3500,      11,       13 }, // pastèque
-{   0.03,    22,      6,     1280,       7,       15}, // carotte
-{   0.09,    26,      6,     4600,      11,       17}, // ananas
-{   0.07,    22,      7,     1320,       8,       19}, // tomate
-{   0.01,    22,      6,     5000,      13,       23}, // fromage
-{   0.02,    26,      5,    10000,      11,       25}, // viande
-{  0.005,    28,      7,    12345,      18,       30}, // pizza
-{      0,    24,      6,    24000,      19,       31}, // burger
-{      0,    24,      5,    35001,      18,       32}, // hot-dog
-{      0,    24,      6,    22222,      17,       34}, // pancakes
-{   0.03,    22,      6,    17000,      12,       36}, // sucette
-{   -0.5,    24,      5,     5000,      14,       42}, // glace baton
-{     -1,    24,      5,     6000,      14,       43}, // glace cone
-{   -1.5,    24,      4,     7000,      14,       44}, // glace pot
-{   0.03,    24,      5,    21808,      15,       45}, // donut
-{   0.03,    26,      4,    37000,      16,       46}, // muffin
-{   0.03,    24,      3,    40000,      18,       47}, // gateau
-{   0.06,    26,      2,    91000,      16,       50}, // muffin op
-{      0,    24,      1,    50000,       3,       15}, // café
-{     -1,    28,     11,        0,       0,       0 }, // plume
-{      0,    28,     11,        0,       0,       0 }, // BOMBE
-{      0,    28,      7,        0,       0,       7 }, // coffre
-{      0,    28,      5,        0,       0,       20}, // ARC_EN_CIEL
-{      0,    28,      3,        0,       0,       25}, // potion hitbox
-{      0,    28,      2,        0,       0,       35}, // potion verte
-{      0,    28,      1,   150000,       0,       45} // potion jaune
+{   0.02,    20,      3,      20,       5,       0}, // fraise
+{   0.08,    24,      3,      50,       8,       0}, // orange
+{   0.12,    36,      3,     150,      13,       0}, // citrouille
+{   0.24,    18,      4,     200,       6,       5}, // piment
+{   0.02,    18,      4,      41,       4,       8}, // cerise
+{   0.05,    22,      5,     107,       7,       10}, // pomme
+{   0.06,    30,      5,     350,      11,       11}, // pastèque
+{   0.03,    22,      6,     128,       7,       13}, // carotte
+{   0.09,    26,      6,     460,      11,       16}, // ananas
+{   0.07,    22,      7,     132,       8,       18}, // tomate
+{   0.01,    22,      6,     500,      13,       21}, // fromage
+{   0.02,    26,      5,    1000,      11,       24}, // viande
+{  0.005,    28,      7,    1234,      18,       28}, // pizza
+{      0,    24,      6,    2400,      19,       30}, // burger
+{      0,    24,      5,    3500,      18,       32}, // hot-dog
+{      0,    24,      6,    2222,      17,       34}, // pancakes
+{   0.03,    22,      6,    1700,      12,       36}, // sucette
+{   -0.5,    24,      5,     500,      14,       42}, // glace baton
+{     -1,    24,      5,     600,      14,       43}, // glace cone
+{   -1.5,    24,      4,     700,      14,       44}, // glace pot
+{   0.03,    24,      5,    2180,      15,       45}, // donut
+{   0.03,    26,      4,    3700,      16,       46}, // muffin
+{   0.03,    24,      3,    4000,      18,       47}, // gateau
+{   0.06,    26,      2,    9100,      16,       50}, // muffin op
+{      0,    24,      1,    5000,       3,       15}, // café
+{     -1,    28,     11,       0,       0,       0 }, // plume
+{      0,    28,     11,       0,       0,       0 }, // BOMBE
+{      0,    28,      7,       0,       0,       7 }, // coffre
+{      0,    28,      5,       0,       0,       20}, // ARC_EN_CIEL
+{      0,    28,      3,       0,       0,       25}, // potion hitbox
+{      0,    28,      2,       0,       0,       35}, // potion verte
+{      0,    28,      1,   15000,       0,       45} // potion jaune
 };
 #define APPEAR_MAX 50.
 

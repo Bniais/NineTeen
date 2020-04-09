@@ -2,14 +2,29 @@
 //ASTEROID CONFIGS//
 /////////////////
 
+//textures
+#define NB_ASTEROID_TEXTURES 5
+typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD}TEXTURES;
+
+
+char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
+	"Textures/vaisseau.png",
+	"Textures/gem.png",
+	"Textures/thrust.png",
+	"Textures/background.png",
+	"Textures/hud.png"
+};
+
+
+
 typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust;}Vaiss;
 typedef struct{  float x;  float y; }Vector2f;
 typedef struct{ float x; float y; float angle; int frame; float vitesse; float degat;}Missile;
-typedef struct{float x; float y; float angle; float taille; int bonus; float pv; float vitesse; float difficulte;}Asteroid;
+typedef struct{float x; float y; float angle; float taille; int bonus; float pv; float pv_max; float vitesse; float difficulte;}Asteroid;
 
 
 const Vector2f UNDEFINED = {-500, -500};
-#define PRECISION_RAND_FLOAT 100
+#define PRECISION_RAND_FLOAT 100.
 
 // vaisseau
 #define TRUE 1
@@ -22,37 +37,46 @@ typedef enum{
 }dir_turn;
 #define RAYON_VAISS 25
 #define DECELERATION 1.015
-#define TURN_AMMOUNT 0.08
 #define RECHARGE_TIR (FRAMES_PER_SECOND/2)
+#define TURN_AMMOUNT 0.13
 #define VITESSE 10
-#define ACCEL 0.35
+#define ACCEL 0.45
 #define BASE_ANGLE 3 * PI / 2
-#define RATIO_ACCEL_TURN 0.06
+#define RATIO_ACCEL_TURN 0.16
+
+//anim vaisseau
+#define NB_FRAME_TURN 9
+#define RESET_TURN 6
+const float RATIO_TURN[NB_FRAME_TURN] = {0, 0.1, 0.2, 0.3, 0.6, 0.8, 1, 1, 1};
+#define NB_FRAME_THRUST 5
+#define RESET_THRUST 2
+const float RATIO_ACCEL[NB_FRAME_THRUST+1] = {0, 0.3, 0.6, 1, 1, 1};
+
 
 //asteroid
 
 #define DIST_2ASTEROID 30
 #define DIST_VAISSEAU_ASTEROID 300
 #define FRAME_APPARITION_ASTEROID (10* FRAMES_PER_SECOND)
-#define VITESSE_SPAWN_INIT (FRAMES_PER_SECOND*5)
-#define VITESSE_SPAWN_MIN (FRAMES_PER_SECOND*3)
-#define ACCELERATION_SPAWN 0.05
+#define VITESSE_SPAWN_INIT (FRAMES_PER_SECOND*10)
+#define VITESSE_SPAWN_MIN (FRAMES_PER_SECOND*5)
+#define ACCELERATION_SPAWN 0.03
 #define FRAME_2ASTEROID (FRAMES_PER_SECOND/2)
 #define PV_BASE 1
 #define VITESSE_BASE 2
 SDL_Point coord_spawn[3]={{0,0},{0,(PLAYGROUND_SIZE_H/2)},{(PLAYGROUND_SIZE_W/2),0}};
-#define MAX_ASTEROID_SIZE 70
-#define TAILLE_MIN_SPLIT 15
-#define TAILLE_MIN_ASTEROID 7
-#define VITESSE_MAX_ASTEROID 20
+#define MAX_ASTEROID_SIZE 90
+#define TAILLE_MIN_SPLIT 25
+#define TAILLE_MIN_ASTEROID 12
+#define VITESSE_MAX_ASTEROID 18
 #define START_DIFFICULTE 2
-#define RATIO_DIFFICULTE_AUGMENT 0.01
+#define RATIO_DIFFICULTE_AUGMENT 0.001
 //missiles
 
 #define DISTANCE_CANON 20
-#define VITESSE_MISSILE 10
-#define RAYON_MISSILE 5
-#define DUREE_MISSILE 90
+#define VITESSE_MISSILE 15
+#define RAYON_MISSILE 6
+#define DUREE_MISSILE (2*FRAMES_PER_SECOND)
 #define DEGAT_MISSILE 1
 
 //Window
@@ -98,6 +122,8 @@ float angle_tir_multiple[NB_TIR_MAX][NB_TIR_MAX]={
 
 #define BONUS_ACCELERATION_MISSILE 1.7
 #define VITESSE_MISSILE_MAX (2*VITESSE_MISSILE)
+#define BONUS_FREQUENCE_MISSILE 1.5
+#define FREQUENCE_MISSILE_MIN (FRAMES_PER_SECOND/6)
 #define DEGAT_MISSILE_MAX 5
 #define FRAME_BOMBE_NUCLEAIRE (FRAMES_PER_SECOND*1.5)
 
