@@ -1171,7 +1171,7 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 
 	cible[14].px = 0.0;
 	cible[14].pz = 0.82;
-	cible[14].py = 4.65;
+	cible[14].py = 4.05;
 	cible[14].cible_py = -.34;
 	cible[14].angle = M_PI;
 	cible[14].ouverture =70;
