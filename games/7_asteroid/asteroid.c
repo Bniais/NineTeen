@@ -1,4 +1,4 @@
-#include "define.h"
+
 #include "config.h"
 #include <time.h>
 
@@ -14,7 +14,7 @@
 
 #include <math.h>
 
-void myInit(){
+void asteroidInit(){
 
 	// SDL Init
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -27,42 +27,6 @@ void myInit(){
 
 	//rand
 	srand(time(NULL));
-}
-
-SDL_Point maximizeWindow(SDL_Rect displayBounds, float* ratioWindowSize){
-	SDL_Point maxW = {(PLAYGROUND_SIZE_W + 2 * HUD_W), (PLAYGROUND_SIZE_H + 2 * HUD_H)};
-	if( maxW.x > displayBounds.w - ESPACE_DISPLAY_WINDOW.x  ||  maxW.y > (displayBounds.h - ESPACE_DISPLAY_WINDOW.y) - ESPACE_DISPLAY_WINDOW.y){
-		if( (float)maxW.x/maxW.y > (float)(displayBounds.w - ESPACE_DISPLAY_WINDOW.x)/(displayBounds.h - ESPACE_DISPLAY_WINDOW.y) ){
-			*ratioWindowSize = (float)maxW.x / (displayBounds.w - ESPACE_DISPLAY_WINDOW.x);
-			maxW.y /= (float)maxW.x / (displayBounds.w - ESPACE_DISPLAY_WINDOW.x);
-			maxW.x = displayBounds.w - ESPACE_DISPLAY_WINDOW.x;
-		}
-		else{
-			*ratioWindowSize = (float)maxW.y / (displayBounds.h - ESPACE_DISPLAY_WINDOW.y);
-			maxW.x /= (float)maxW.y / (displayBounds.h - ESPACE_DISPLAY_WINDOW.y);
-			maxW.y = (displayBounds.h - ESPACE_DISPLAY_WINDOW.y);
-		}
-	}
-	return maxW;
-}
-
-void afficherPauseMenu(SDL_Renderer *renderer, SDL_Point mouseCoor, SDL_Texture *voileTexture, SDL_Texture *pauseMenuTexture){
-	//voile noir
-	SDL_RenderCopy(renderer, voileTexture, NULL, NULL);
-	SDL_Rect dest = BOUTON_PAUSE_BASE;
-	SDL_Rect src = {0, 0, BOUTON_PAUSE_SIZE_W, BOUTON_PAUSE_SIZE_H};
-
-	//boutons liste
-	for(int i = 0; i < NB_BOUTON_PAUSE; i++){
-		if( mouseCoor.x >= dest.x && mouseCoor.x <= dest.x + dest.w && mouseCoor.y >= dest.y && mouseCoor.y <= dest.y + dest.h)
-			src.y = BOUTON_PAUSE_SIZE_H;
-		else
-			src.y = 0;
-
-		SDL_RenderCopy(renderer, pauseMenuTexture, &src, &dest);
-		src.x += BOUTON_PAUSE_SIZE_W;
-		dest.y += BOUTON_PAUSE_SIZE_H + ESPACEMENT_BOUTON_PAUSE;
-	}
 }
 
 //BONUS
@@ -216,8 +180,13 @@ void asteroid_cpy(Asteroid * asteroid_src, Asteroid * asteroid_dest){
 	asteroid_dest->vitesse = asteroid_src->vitesse;
 	asteroid_dest->pv = asteroid_src->pv;
 	asteroid_dest->difficulte = asteroid_src->difficulte;
+	asteroid_dest->difficulte_pere = asteroid_src->difficulte_pere;
 	asteroid_dest->pv_max = asteroid_src->pv_max;
 	asteroid_dest->bonus = asteroid_src->bonus;
+}
+
+int randSign(){
+	return (rand()%2 ? 1 : -1);
 }
 
 void detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid,Vaiss * vaisseau,int touche_bouclier, int * point, int* nbBombeNucleaire){
@@ -228,12 +197,15 @@ void detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid
 
     if((*asteroides)[i_asteroid].taille>TAILLE_MIN_SPLIT && !touche_bouclier && bonus != BOMBE_NUCLEAIRE){
 
-
         (*asteroides)[i_asteroid].taille/=2;
         (*asteroides)[i_asteroid].angle+=PI/2;
 		(*asteroides)[i_asteroid].pv_max /= 2;
 		(*asteroides)[i_asteroid].difficulte /= 2;
 		(*asteroides)[i_asteroid].pv = (*asteroides)[i_asteroid].pv_max;
+		(*asteroides)[i_asteroid].angle_rota=rand()%(int)(2*PI*100);
+		(*asteroides)[i_asteroid].vitesse_rota = randSign() * ((1+ MAX_ASTEROID_SIZE - (*asteroides)[i_asteroid].taille) / (float)(MAX_ASTEROID_SIZE - TAILLE_MIN_ASTEROID)) * (rand()%(int)(MAX_VITESSE_ROTA*PRECISION_RAND_FLOAT)/PRECISION_RAND_FLOAT) ;
+
+
         (*nb_asteroid)++;
 
         (*asteroides)=realloc(*asteroides,sizeof(Asteroid)*(*nb_asteroid));
@@ -241,7 +213,8 @@ void detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid
 
 
         (*asteroides)[*nb_asteroid-1].angle += PI;
-
+		(*asteroides)[*nb_asteroid-1].angle_rota=rand()%(int)(2*PI*100);
+		(*asteroides)[*nb_asteroid-1].vitesse_rota = -(*asteroides)[i_asteroid].vitesse_rota;
 
     }
     else{
@@ -326,7 +299,7 @@ void move( Vaiss *vaisseau,Vector2f accelerate){
 void afficher_texture_vaisseau(Vaiss vaisseau, SDL_Renderer * renderer, SDL_Texture * vaisseau_texture, SDL_Texture * gem_texture, SDL_Texture * thrust_texture){
 
 	if(vaisseau.bouclier){
-		SDL_SetTextureColorMod(vaisseau_texture, 246,239,92);
+		SDL_SetTextureColorMod(vaisseau_texture, 246,200,50);
 	}
 
 	SDL_Rect vaisseau_src = VAISSEAU_SRC;
@@ -339,7 +312,7 @@ void afficher_texture_vaisseau(Vaiss vaisseau, SDL_Renderer * renderer, SDL_Text
 	vaisseau_src.x=vaisseau.frame_turn_right*vaisseau_src.w;
 
 	SDL_RenderCopyEx(renderer, vaisseau_texture, &vaisseau_src, &vaisseau_dest,vaisseau.angle*180/PI+90,&CENTRE_VAISS,SDL_FLIP_NONE);
-	vaisseau_src.y+=vaisseau_src.w;
+	vaisseau_src.y+=vaisseau_src.h;
 	vaisseau_src.x=vaisseau.frame_turn_left*vaisseau_src.w;
 	SDL_RenderCopyEx(renderer, vaisseau_texture, &vaisseau_src, &vaisseau_dest,vaisseau.angle*180/PI+90,&CENTRE_VAISS,SDL_FLIP_NONE);
 
@@ -350,7 +323,6 @@ void afficher_texture_vaisseau(Vaiss vaisseau, SDL_Renderer * renderer, SDL_Text
 		vaisseau_src.y=0;
 		vaisseau_src.x=vaisseau.frame_thrust*vaisseau_src.w;
 		SDL_RenderCopyEx(renderer,thrust_texture, &vaisseau_src, &vaisseau_dest,vaisseau.angle*180/PI+90,&CENTRE_VAISS,SDL_FLIP_NONE);
-		printf(" Vaisseau.frame_thrust = %d \n",vaisseau.frame_thrust);
 	}
 
 }
@@ -360,6 +332,7 @@ void afficher_vaisseau( Vaiss vaisseau, SDL_Renderer *renderer, SDL_Texture * va
 	SDL_Rect vaisseauRect = {vaisseau.x-RAYON_VAISS,vaisseau.y-RAYON_VAISS,RAYON_VAISS*2,RAYON_VAISS*2};
 
 	afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
+
 	if(vaisseauRect.x<0){
 		vaisseau.x+=PLAYGROUND_SIZE_W;
 		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
@@ -378,7 +351,6 @@ void afficher_vaisseau( Vaiss vaisseau, SDL_Renderer *renderer, SDL_Texture * va
 		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
 	}
 
-
 	if(vaisseauRect.x<0){
 		vaisseau.x+=PLAYGROUND_SIZE_W;
 		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
@@ -387,9 +359,6 @@ void afficher_vaisseau( Vaiss vaisseau, SDL_Renderer *renderer, SDL_Texture * va
 		vaisseau.x-=PLAYGROUND_SIZE_W;
 		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
 	}
-
-
-
 
 }
 
@@ -418,6 +387,11 @@ void mouvement_tir(Missile * shot){
 	shot->x+=shot->vitesse*cos(shot->angle);
 	shot->y+=shot->vitesse*sin(shot->angle);
 
+}
+
+void rotateAsteroides(Asteroid * asteroides, int nb_asteroid){
+	for(int i=0; i<nb_asteroid; i++)
+		asteroides[i].angle_rota += asteroides[i].vitesse_rota;
 }
 
 void update_frame(Missile ** missiles, int * nb_missiles, Vaiss * vaisseau, long int * frame, int * frame_apparition_asteroid, float * vitesse_spawn, int * frame_2asteroid){
@@ -462,7 +436,7 @@ int get_bonus(int rand_proba){
 
 
 void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, float difficulte){
-
+	difficulte *= 1 + randSign() * rand()%(int)(PRECISION_RAND_FLOAT *INTERVALE_RAND_DIFFICULTE)/(float)PRECISION_RAND_FLOAT;
 	int id_coord;
 	float ratio_pv;
 	(*nb_asteroid)++;
@@ -471,6 +445,8 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 	(*asteroides)[*nb_asteroid-1].pv=PV_BASE;
 	(*asteroides)[*nb_asteroid-1].vitesse=VITESSE_BASE;
 	(*asteroides)[*nb_asteroid-1].difficulte=difficulte;
+	(*asteroides)[*nb_asteroid-1].difficulte_pere = (*asteroides)[*nb_asteroid-1].difficulte;
+	(*asteroides)[*nb_asteroid-1].angle_rota=rand()%(int)(2*PI*100);
 
 	if(difficulte >= 1+1/PRECISION_RAND_FLOAT){
 			ratio_pv=1+(rand()%(int)((difficulte-1)*PRECISION_RAND_FLOAT))/PRECISION_RAND_FLOAT;
@@ -484,6 +460,7 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 	if((*asteroides)[*nb_asteroid-1].taille < TAILLE_MIN_ASTEROID){
 		(*asteroides)[*nb_asteroid-1].taille=TAILLE_MIN_ASTEROID;
 	}
+	(*asteroides)[*nb_asteroid-1].vitesse_rota= randSign() * ((1+ MAX_ASTEROID_SIZE - (*asteroides)[*nb_asteroid-1].taille) / (float)(MAX_ASTEROID_SIZE - TAILLE_MIN_ASTEROID)) * (rand()%(int)(MAX_VITESSE_ROTA*PRECISION_RAND_FLOAT)/PRECISION_RAND_FLOAT) ;
 
 
 	(*asteroides)[*nb_asteroid-1].vitesse*=difficulte/ratio_pv;
@@ -502,7 +479,7 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 		if(id_coord<2){
 			id_coord=1;
 		}
-		printf("id_coord : %d \n",id_coord);
+
 		(*asteroides)[*nb_asteroid-1].x= coord_spawn[id_coord-1].x;
 		(*asteroides)[*nb_asteroid-1].y= coord_spawn[id_coord-1].y;
 
@@ -517,54 +494,102 @@ void mouvement_asteroid(Asteroid* asteroid){
 
 }
 
+void afficher_texture_asteroid(SDL_Renderer* renderer, SDL_Texture * textureAsteroid, SDL_Texture* textureFissure, SDL_Rect src, SDL_Rect dest, SDL_Rect bonusRect, SDL_Rect srcFissure, Asteroid asteroid){
+	SDL_RenderCopyEx(renderer, textureAsteroid, &src, &dest, asteroid.angle_rota, NULL, SDL_FLIP_NONE);
+	if(asteroid.bonus != NO_BONUS){
+		SDL_RenderFillRect(renderer, &bonusRect);
+	}
+	if(srcFissure.y>=0){
 
-void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer){
+		SDL_RenderCopyEx(renderer, textureFissure, &srcFissure, &dest, asteroid.angle_rota, NULL, SDL_FLIP_NONE);
+	}
+}
 
-
+void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* textureAsteroid, SDL_Texture* textureFissure){
+	SDL_Rect src = ASTE_SRC;
 
 	SDL_Rect asteroidRect={(int)asteroid.x-asteroid.taille, (int)asteroid.y-asteroid.taille,asteroid.taille*2,asteroid.taille*2};
-	if(asteroid.bonus != -1){
-		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	}
-	else SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 
-	SDL_RenderFillRect(renderer,&asteroidRect);
+	int sizeAste = (roundf(asteroid.taille/(MAX_ASTEROID_SIZE/NB_TAILLE_ASTE)) - 1);
+	if(sizeAste < 0)
+		sizeAste = 0;
 
-	if(asteroidRect.x<0){
-		asteroidRect.x+=PLAYGROUND_SIZE_W;
-	}
-	else if(asteroidRect.x+asteroid.taille*2>PLAYGROUND_SIZE_W){
-		asteroidRect.x-=PLAYGROUND_SIZE_W;
+	src.w = DIAMETRE_ASTE[sizeAste];
+	src.h = DIAMETRE_ASTE[sizeAste];
+
+	src.x = ASTE_SRC.w * sizeAste;
+
+	SDL_Rect srcFissure = src;
+	int fissure = (int)(((float)(asteroid.pv_max - asteroid.pv) / asteroid.pv_max) * (NB_FISSURES+1) ) - 1;
+	if(sizeAste < 0)
+		sizeAste = 0;
+	srcFissure.y = fissure * ASTE_SRC.h;
+
+	int skinAste = (int)((asteroid.difficulte_pere-START_DIFFICULTE)/(MAX_DIFF/NB_ASTE_TEXTURES));
+	if(skinAste < 0)
+		skinAste = 0;
+	if(skinAste > NB_ASTE_TEXTURES-1)
+		skinAste = NB_ASTE_TEXTURES-1;
+
+	src.y = ASTE_SRC.h * skinAste;
+
+
+	SDL_SetRenderDrawColor(renderer, 255, 150, 80, 255);
+	SDL_Rect bonusRect = asteroidRect;
+	bonusRect.x += bonusRect.w/2 - bonusRect.w/4;
+	bonusRect.y += bonusRect.h/2- bonusRect.h/4;
+	bonusRect.w /=2;
+	bonusRect.h /=2;
+
+	afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, src, asteroidRect, bonusRect, srcFissure, asteroid);
+
+	//Dessiner bonus est différent quand bord de l'écran car on ne peut pas déssiner en desous de 0 -> à faire
+	if(asteroidRect.x+asteroid.taille*2>PLAYGROUND_SIZE_W || asteroidRect.x<0){
+		if(asteroidRect.x<0){
+			asteroidRect.x+=PLAYGROUND_SIZE_W;
+			bonusRect.x +=PLAYGROUND_SIZE_W;
+		}
+		else{
+			asteroidRect.x-=PLAYGROUND_SIZE_W;
+			bonusRect.x-=PLAYGROUND_SIZE_W;
+		}
+		afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, src, asteroidRect, bonusRect, srcFissure, asteroid);
 	}
 
-	SDL_RenderFillRect(renderer,&asteroidRect);
 
-	if(asteroidRect.y<0){
-		asteroidRect.y+=PLAYGROUND_SIZE_H;
-	}
-	else if(asteroidRect.y+asteroid.taille*2>PLAYGROUND_SIZE_H){
-		asteroidRect.y-=PLAYGROUND_SIZE_H;
-	}
+	if(asteroidRect.y+asteroid.taille*2>PLAYGROUND_SIZE_H || asteroidRect.y<0){
+		if(asteroidRect.y<0){
+			asteroidRect.y+=PLAYGROUND_SIZE_H;
+			bonusRect.y+=PLAYGROUND_SIZE_H;
+		}
+		else {
+			asteroidRect.y-=PLAYGROUND_SIZE_H;
+			bonusRect.y-=PLAYGROUND_SIZE_H;
+		}
 
-	SDL_RenderFillRect(renderer,&asteroidRect);
-
-	if(asteroidRect.x<0){
-		asteroidRect.x+=PLAYGROUND_SIZE_W;
-	}
-	else if(asteroidRect.x+asteroid.taille*2>PLAYGROUND_SIZE_W){
-		asteroidRect.x-=PLAYGROUND_SIZE_W;
+		afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, src, asteroidRect, bonusRect, srcFissure, asteroid);
 	}
 
-	SDL_RenderFillRect(renderer,&asteroidRect);
+	if(asteroidRect.x+asteroid.taille*2>PLAYGROUND_SIZE_W || asteroidRect.x<0){
+		if(asteroidRect.x<0){
+			asteroidRect.x+=PLAYGROUND_SIZE_W;
+			bonusRect.x+=PLAYGROUND_SIZE_W;
+		}
+		else{
+			asteroidRect.x-=PLAYGROUND_SIZE_W;
+			bonusRect.x+=PLAYGROUND_SIZE_W;
+		}
+		afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, src, asteroidRect, bonusRect, srcFissure, asteroid);
+	}
 
 }
 
-// int launchSnake(SDL_Window *myWindow, SDL_Renderer* renderer, char *identifiant, char *token){
-int main(){
+int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char *token, int hardcore){
+
 /////////////////////
 /// MISE EN PLACE ///``
 /////////////////////
-	myInit();
+	asteroidInit();
 
 	////////////
 	/// Vars ///`
@@ -628,28 +653,6 @@ int main(){
 
 	//DIFFICULTE
 	float difficulte =START_DIFFICULTE;
-
-	//Window
-	float ratioWindowSize = 1;
-	SDL_Rect displayBounds;
-	SDL_GetDisplayBounds(0, &displayBounds);
-	SDL_Point maxWindowSize = maximizeWindow(displayBounds, &ratioWindowSize);
-
-
-
-	SDL_Window *myWindow = SDL_CreateWindow("Asteroïde", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, maxWindowSize.x ,maxWindowSize.y, WINDOW_FLAG);
-	if( myWindow == NULL ){
-		printf("Erreur lors de la creation de la fenêtre : %s", SDL_GetError());
-		return EXIT_FAILURE;
-	}
-	printf("%d, %d\n", maxWindowSize.x ,maxWindowSize.y );
-
-	SDL_Renderer *renderer = SDL_CreateRenderer(myWindow, -1, SDL_RENDERER_ACCELERATED);
-	if( renderer == NULL ){
-		printf("Erreur lors de la creation d'un renderer : %s", SDL_GetError());
-		return EXIT_FAILURE;
-	}
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
 	//Views
 	SDL_Rect playgroundView = {HUD_W/ratioWindowSize, HUD_H/ratioWindowSize, PLAYGROUND_SIZE_W, PLAYGROUND_SIZE_H};
@@ -737,8 +740,6 @@ int main(){
 	//////////////
 	// Gameplay //`
 	//////////////
-
-	printf("NB DE POINT : %d \n",point);
 
 	accelerate.x/=DECELERATION;
     accelerate.y/=DECELERATION;
@@ -837,7 +838,7 @@ int main(){
 	}
 
 	for(int j=0;j<nb_asteroid;j++){
-		afficher_asteroid(asteroides[j],renderer);
+		afficher_asteroid(asteroides[j],renderer, textures[T_ASTEROID], textures[T_FISSURE]);
 	}
 		//hud
 		SDL_RenderSetScale(renderer, 1, 1);
@@ -853,7 +854,7 @@ int main(){
 	////////////////
 	// Next frame //`
 	////////////////
-
+		rotateAsteroides(asteroides, nb_asteroid);
 		update_frame(&missiles,&nb_missiles,&vaisseau,&frame,&frame_apparition_asteroid,&vitesse_spawn,&frame_2asteroid);
 		difficulte+=RATIO_DIFFICULTE_AUGMENT;
 		//regulateFPS

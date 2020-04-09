@@ -3,6 +3,7 @@
 *\struct Vector2f
 *\brief Une structure regroupant deux float
 */
+#define PI 3.1415
 typedef struct {float x; float y;} Vector2f;
 #define SHAPE_SIZE 500
 #define HACKED -123

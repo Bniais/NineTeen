@@ -28,6 +28,7 @@
 #include "../games/2_snake/snake.h"
 #include "../games/3_flappy_bird/flappy_bird.h"
 #include "../games/5_tetris/tetris.h"
+#include "../games/7_asteroid/asteroid.h"
 // END INCLUDE
 
 //
@@ -1188,8 +1189,6 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 
 	///////////////////////////////////////////////////
 	// MOUVEMENT CAMERA SUR X ET Z
-
-		printf("X : %f Z ; %f\n",camera->px,camera->pz );
 	///////////////////////////////////////////////////
 	// APUI FLECHE GAUCHE
 	if( keystate[SDL_SCANCODE_LEFT] )
@@ -1713,7 +1712,10 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									tetris( pRenderer ,meilleureScore[TETRIS_HARD].score, 1920./WinWidth,token,1);
 									updateMeilleureScore(meilleureScore,token);
 									break;
-								case 3: SDL_Delay(500);break;
+								case 3:
+									asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].score, 1920./WinWidth,token,1);
+									updateMeilleureScore(meilleureScore,token);
+									break;
 								case 4: SDL_Delay(500);break;
 								case 5:
 									snake( pRenderer ,meilleureScore[SNAKE_HARD].score, WinWidth/1920.,token,1);
@@ -1724,7 +1726,10 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									snake( pRenderer ,meilleureScore[SNAKE_EASY].score, WinWidth/1920.,token,0);
 									updateMeilleureScore(meilleureScore,token);
 								case 9: SDL_Delay(500);break;
-								case 10: SDL_Delay(500);break;
+								case 10:
+									asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].score, 1920./WinWidth,token,0);
+									updateMeilleureScore(meilleureScore,token);
+									break;
 								case 11: {
 									tetris( pRenderer ,meilleureScore[TETRIS_EASY].score, 1920./WinWidth,token,0);
 									updateMeilleureScore(meilleureScore,token);

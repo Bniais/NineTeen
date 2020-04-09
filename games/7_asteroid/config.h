@@ -1,29 +1,29 @@
 /////////////////
 //ASTEROID CONFIGS//
 /////////////////
-
+#include "../../define/define.h"
 //textures
-#define NB_ASTEROID_TEXTURES 5
-typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD}TEXTURES;
+#define NB_ASTEROID_TEXTURES 7
+typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD, T_ASTEROID, T_FISSURE}TEXTURES;
 
 
 char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
-	"Textures/vaisseau.png",
-	"Textures/gem.png",
-	"Textures/thrust.png",
-	"Textures/background.png",
-	"Textures/hud.png"
+	"games/7_asteroid/Textures/vaisseau.png",
+	"games/7_asteroid/Textures/gem.png",
+	"games/7_asteroid/Textures/thrust.png",
+	"games/7_asteroid/Textures/background.png",
+	"games/7_asteroid/Textures/hud.png",
+	"games/7_asteroid/Textures/asteroid.png",
+	"games/7_asteroid/Textures/fissure.png"
 };
 
 
 
 typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust;}Vaiss;
-typedef struct{  float x;  float y; }Vector2f;
+
 typedef struct{ float x; float y; float angle; int frame; float vitesse; float degat;}Missile;
-typedef struct{float x; float y; float angle; float taille; int bonus; float pv; float pv_max; float vitesse; float difficulte;}Asteroid;
+typedef struct{float x; float y; float angle; float taille; int bonus; float pv; float pv_max; float vitesse; float difficulte; float difficulte_pere; float angle_rota; float vitesse_rota;}Asteroid;
 
-
-const Vector2f UNDEFINED = {-500, -500};
 #define PRECISION_RAND_FLOAT 100.
 
 // vaisseau
@@ -66,22 +66,32 @@ const float RATIO_ACCEL[NB_FRAME_THRUST+1] = {0, 0.3, 0.6, 1, 1, 1};
 #define VITESSE_BASE 2
 SDL_Point coord_spawn[3]={{0,0},{0,(PLAYGROUND_SIZE_H/2)},{(PLAYGROUND_SIZE_W/2),0}};
 #define MAX_ASTEROID_SIZE 90
-#define TAILLE_MIN_SPLIT 25
-#define TAILLE_MIN_ASTEROID 12
+#define TAILLE_MIN_SPLIT 32
+#define TAILLE_MIN_ASTEROID 14
 #define VITESSE_MAX_ASTEROID 18
 #define START_DIFFICULTE 2
-#define RATIO_DIFFICULTE_AUGMENT 0.001
+#define RATIO_DIFFICULTE_AUGMENT 0.004
+#define MAX_VITESSE_ROTA 14
+
+#define NB_ASTE_TEXTURES 6
+#define NB_TAILLE_ASTE 2
+#define NB_FISSURES 2
+#define MAX_DIFF 40
+const int DIAMETRE_ASTE[NB_TAILLE_ASTE] = {32,48};
+SDL_Rect ASTE_SRC = {0,0,48,48};
+#define INTERVALE_RAND_DIFFICULTE 0.3
+
 //missiles
 
 #define DISTANCE_CANON 20
-#define VITESSE_MISSILE 15
+#define VITESSE_MISSILE 10
 #define RAYON_MISSILE 6
 #define DUREE_MISSILE (2*FRAMES_PER_SECOND)
 #define DEGAT_MISSILE 1
 
 //Window
 #define FRAMES_PER_SECOND 30
-const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
+static const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
 
 
 
@@ -89,7 +99,7 @@ const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
 
 #define NB_BONUS 9
 #define NO_BONUS -1
-#define PROBA_BONUS 7
+#define PROBA_BONUS 6
 #define NB_TIR_MAX 5
 #define NB_BONUS_POINT 3
 int BONUS_POINT[NB_BONUS_POINT]={5,10,20};
