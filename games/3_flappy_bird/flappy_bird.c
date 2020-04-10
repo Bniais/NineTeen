@@ -298,7 +298,7 @@ void traitementVariableAnimation(int *varAnimationPersonnage,int *varAnimationSo
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void attendreAvantDepart(Mix_Chunk *flap_wav);
+int attendreAvantDepart(Mix_Chunk *flap_wav);
 
 
 
@@ -313,7 +313,7 @@ void attendreAvantDepart(Mix_Chunk *flap_wav);
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_wav);
+int evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_wav);
 
 
 
@@ -455,15 +455,18 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 
 	//////////////////////////////////////////////////////////////////
 	// ATTENDRE APPUI TOUCHE ESPACE + JOUER PREMIER SON + PREMIER SAUT
-	attendreAvantDepart(flap_wav);
+	if(!attendreAvantDepart(flap_wav))
+		end = SDL_TRUE;
 	upper = UPPER_STEP;
 	//////////////////////////////////////////////////////////////////
 
-
+	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 	//////////////////////////////////////////////////////////////////
 	// DEBUT DU JEU
 	while(!end && !exitCode){
 
+		if( keystate[SDL_SCANCODE_ESCAPE])
+			end = SDL_TRUE;
 		//////////////////////////////////////////////////////////////////
 		// PERMET DE LIMITER LES FRAMES
 		int tempsDebutFrame = SDL_GetTicks();
@@ -474,7 +477,8 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 
 				//////////////////////////////////////////////////////////////////
 				// VERIFIER EVENEMENT
-				evenement(&upper,&vitesseGraviter,&nb_boucle,flap_wav);
+				if(!evenement(&upper,&vitesseGraviter,&nb_boucle,flap_wav))
+					end = SDL_TRUE;
 
 				// UPDATE VARIABLE ENVIRONEMENT
 				updateVariableEnvironement(&emplacementPersonnage, &upper, &angle, &nb_boucle,&vitesseGraviter);
@@ -582,6 +586,14 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 					SDL_Event ev;
 					while ( SDL_PollEvent(&ev) )
 					{
+
+						if(ev.type == SDL_QUIT){
+							//////////////////////////////////////////////////////////////////
+							// QUIITER WHILE ET JEU
+							wait = 0;
+							end = SDL_TRUE;
+							//////////////////////////////////////////////////////////////////
+						}
 						if (ev.type == SDL_KEYDOWN){
 							if(ev.key.keysym.sym == SDLK_SPACE)
 							{
@@ -639,7 +651,8 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 				{
 					//////////////////////////////////////////////////////////////////
 					// ATTENDRE UNE TOUCHE + SON + UP
-					attendreAvantDepart(flap_wav);
+					if(!attendreAvantDepart(flap_wav))
+						end = SDL_TRUE;
 					upper = UPPER_STEP;
 					//////////////////////////////////////////////////////////////////
 				}
@@ -956,7 +969,7 @@ void init_pilonne(pilonne *pilonne, int *varAnimationPersonnage, int *varAnimati
 		if (i)
 			pilonne[i].position = DISTANCE_UNDER_OBSTACLE*SCALE_TO_FIT + pilonne[i-1].position;
 		else
-			pilonne[i].position = WINDOW_L;
+			pilonne[i].position = WINDOW_L*2/3.;
 	}
 
 	/////////////////////////////////////////////////////
@@ -1133,33 +1146,46 @@ void traitementVariableAnimation(int *varAnimationPersonnage,int *varAnimationSo
 }
 
 
-void attendreAvantDepart(Mix_Chunk *flap_wav)
+int attendreAvantDepart(Mix_Chunk *flap_wav)
 {
 	// attendre le toucher de la barre espace pour demarrer
-	int attente = SDL_TRUE;
 
-	while ( attente )
+	while ( 1 )
 	{
 		SDL_Event spacebar;
 
 		while( SDL_PollEvent(&spacebar) )
 		{
-			if(spacebar.key.keysym.sym == SDLK_SPACE)
-					attente = SDL_FALSE;
+
+
+			if(spacebar.type == SDL_QUIT)
+				return SDL_FALSE;
+
+			if(spacebar.key.keysym.sym == SDLK_SPACE ){
+				// jouer le son de saut //
+				Mix_PlayChannel( 4, flap_wav,0);
+				return SDL_TRUE;
+			}
+
+			if(spacebar.key.keysym.sym == SDLK_ESCAPE ){
+				return SDL_FALSE;
+			}
+
 		}
 	}
 
-	// jouer le son de saut //
-	Mix_PlayChannel( 4, flap_wav,0);
 
 }
 
 
-void evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_wav)
+int evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_wav)
 {
 	SDL_Event ev;
 	while ( SDL_PollEvent(&ev) )
 	{
+		if(ev.type == SDL_QUIT)
+			return SDL_FALSE;
+
 		if (ev.type == SDL_KEYDOWN){
 
 			if(ev.key.keysym.sym == SDLK_SPACE)
@@ -1171,11 +1197,17 @@ void evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_w
 				// REMETTRE A 0 LA BOUCLE ET LA VITESSE DE GRAVITER
 				*vitesseGraviter = 0;
 				*nb_boucle = 0;
+
+			}
+			else if(ev.key.keysym.sym == SDLK_ESCAPE)
+			{
+					return SDL_FALSE;
 			}
 
 		}
 
 	}
+	return SDL_TRUE;
 }
 
 
