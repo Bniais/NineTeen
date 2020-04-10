@@ -111,6 +111,9 @@ int envoyez_requet(char **response, char *url, char *request)
 		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, request);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
+		
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
 
 		// envoyez la requete
 		res = curl_easy_perform(curl);
