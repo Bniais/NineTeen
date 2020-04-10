@@ -846,7 +846,7 @@ int afficherScore(SDL_Renderer *renderer , SDL_Texture *texture_chiffre,int scor
 
 
 	SDL_Rect chiffre = CHIFFRE;
-	SDL_Rect target  = {WINDOW_L/2 - CHIFFRE.w*SCALE_TO_FIT,WINDOW_H/6  , CHIFFRE.w * SCALE_TO_FIT, CHIFFRE.h * SCALE_TO_FIT};
+	SDL_Rect target  = {100+(WINDOW_L)/2- (CHIFFRE.w * SCALE_TO_FIT*taille)/2, (CHIFFRE.h * SCALE_TO_FIT)/2 , CHIFFRE.w * SCALE_TO_FIT, CHIFFRE.h * SCALE_TO_FIT};
 
 	/////////////////////////////////////////////////////
 	// score mode 2 sur le tableau final score
