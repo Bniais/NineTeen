@@ -465,7 +465,7 @@ int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleu
 
 
 	Mix_Volume(0,MIX_MAX_VOLUME/2);
-	Mix_PlayMusic(musique, 0);
+	Mix_PlayMusic(musique, -1);
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	if ( !dejaConneceter(token) )
