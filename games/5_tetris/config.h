@@ -112,10 +112,10 @@ enum{NO_BONUS, FILL, LASER, MULTI_POINT, FLAT_POINT, SLOW, SPEED, GIANT};
 		int frameToDest; /*!< \brief Le nombre de frame avant que scoreShow arrive à score*/
 	}ScoreTotal;
 
-	#define SCORE_BASE 10
+	#define SCORE_BASE 100
 	#define RATIO_COMBO_LINE 2
-	#define NB_FLAT_POINT 100
-	#define RATIO_MULTI_POINT 5
+	#define NB_FLAT_POINT 500
+	#define RATIO_MULTI_POINT 2
 	#define RATIO_SAME_COLOR 10
 
 
@@ -260,10 +260,10 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 	SDL_Rect BRICK_HELP_BONUS_DEST = {30 ,500, CASE_SIZE, CASE_SIZE};
 	#define ID_HELP_BONUS 4
 	char * BONUS_TEXT[NB_BONUSES] = {
-		"Remplit les trous des lignes",
+		"Remplit les trous des lignes du bas",
 		"Supprime les 3 lignes du bas",
-		"Points de la ligne :  x5",
-		"Points de la ligne :  +100",
+		"Points de la ligne :  x2",
+		"Points totaux :  +500",
 		"Ralentit le jeu",
 		"Accelere le jeu",
 		"La prochaine piece sera geante"

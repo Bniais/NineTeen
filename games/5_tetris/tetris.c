@@ -729,73 +729,12 @@ int isOnArray(int n, int array[], int size){
 *\param nbFill Le nombre de cases à remplir
 */
 void getFillPlaces(int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int nbFill){
-	int nbEmpty = 0;
-	int firstRow = GRILLE_H-1;
-	int isEmpty = SDL_FALSE;
-	int nbEmptyLastLine = 0;
-	int nbEmptyLine = 0;
-
-	for(int row = GRILLE_H-1; row>=0 && !isEmpty; row--){
-		isEmpty = SDL_TRUE;
-		nbEmptyLastLine=nbEmptyLine;
-		nbEmptyLine = 0;
-		for(int col = 0; col < GRILLE_W; col++){
-			if(matrix[col][row] != EMPTY)
-				isEmpty = SDL_FALSE;
-			else{
-				nbEmpty++;
-				nbEmptyLine++;
-			}
-		}
-		if(!isEmpty)
-			firstRow = row+1;
-	}
-
-	nbEmpty -= nbEmptyLastLine;
-	if(firstRow != 0)
-		nbEmpty -= GRILLE_W; //car la dernière ligne scannée aura GRILLE_W cases vides
-
-	int toFill[nbFill];
-	for(int i=0; i<nbFill; i++)
-		toFill[i] = 0;
-
-	int n;
-	if(nbFill<nbEmpty){
-		for(int i=0; i<nbFill; i++){
-			do{
-				n = rand()%nbEmpty;
-			}while(isOnArray(n, toFill, i));
-			toFill[i] = n;
-		}
-		qsort(toFill, nbFill, sizeof(int), compareInt);
-
-	}
-	else {
-		for(int i=0; i<nbEmpty; i++)
-			toFill[i] = i;
-
-		for(int i=nbEmpty; i<nbFill; i++)
-			toFill[i] = -1;
-
-		nbFill=nbEmpty;
-	}
-
-
-	n=0;
-	int iToFill = 0;
-	isEmpty = SDL_FALSE;
-	for(int row = GRILLE_H-1; row>=firstRow && !isEmpty && iToFill<nbFill; row--){
-		isEmpty = SDL_TRUE;
-		for(int col = 0; col < GRILLE_W && iToFill<nbFill; col++){
+	int nbFilled = 0;
+	for(int row = GRILLE_H-1; row>=0 && nbFilled<nbFill; row--){
+		for(int col = 0; col < GRILLE_W  && nbFilled<nbFill ; col++){
 			if(matrix[col][row] == EMPTY){
-				if(n == toFill[iToFill]){
-					matrixFill[col][row] = FRAME_FILL + iToFill * ESPACEMENT_FRAME_FILL;
-					iToFill++;
-				}
-				n++;
-			}
-			else{
-				isEmpty = SDL_FALSE;
+				matrixFill[col][row] = FRAME_FILL + nbFilled * ESPACEMENT_FRAME_FILL;
+				nbFilled++;
 			}
 		}
 	}
@@ -853,7 +792,6 @@ int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H]
 
 		if(getBonuses){
 			int sameColor = getPieceId(matrix[0][line]);
-			//int rainbow = isLineRainbow(matrix, line);
 			int idPiece;
 			for(int i = 0; i < GRILLE_W; i++){
 				idPiece = getPieceId(matrix[i][line]);
@@ -886,7 +824,6 @@ int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H]
 				return SDL_FALSE;
 
 
-			scoreAdd[line].score += scoreAdd[line].flat * NB_FLAT_POINT;
 			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score)+scoreAdd[line].flat * NB_FLAT_POINT, keys))
 				return SDL_FALSE;
 
