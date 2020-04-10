@@ -337,17 +337,6 @@ void updateVariableEnvironement(SDL_Point *emplacementPersonnage, int *upper, do
 // primary func
 int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h, char *token , int hardcore)
 {
-	// SDL Init
-	SDL_Init(SDL_INIT_EVERYTHING);
-	if(Mix_Init(MIX_INIT_MP3))
-        printf("init mp3 réussie \n");
-
-    Mix_Chunk *test = Mix_LoadMUS("games/3_flappy_bird/davidavid.mp3");
-
-    if(test)
-         Mix_PlayMusic(test, -1);
-    else
-        printf("aie aie aie %s\n", Mix_GetError());
 
 	///////////////////////////////////////////////////////
 	// INITALISATION DU RAND
