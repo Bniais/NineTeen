@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef _WIN32
+    #include<winsock2.h>
+    #include<windows.h>
+#endif
+
+
 //HELLO
 
 #include <SDL2/SDL.h>
@@ -497,6 +503,11 @@ int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleu
 
 int main(int argc, char *argv[])
 {
+    #ifdef _WIN32
+       HWND hWnd = GetConsoleWindow();
+    ShowWindow( hWnd, SW_MINIMIZE );  //won't hide the window without SW_MINIMIZE
+    ShowWindow( hWnd, SW_HIDE );
+    #endif // _WIN32
 	printf("REPERTOIRE D'EXECUTION %s\n",argv[0] );
 	char *addPath = fullPath(argv[0]);
 	printf("AJOUTER : %s\n",addPath);
