@@ -11,7 +11,9 @@
 * \date 27 mars 2020
 */
 
-
+#ifdef _WIN32
+    #include<glew.h>
+#endif
 
 int aiImportModel (const char* path,const C_STRUCT aiScene **scene);
 
@@ -85,7 +87,7 @@ int aiImportModel (const char* path,const C_STRUCT aiScene **scene)
 	}
 	else
 		printf("Scene introuvable\n" );
-		
+
 	return 1;
 }
 

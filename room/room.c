@@ -15,6 +15,11 @@
 	#include <GL/glut.h>
   #define M_PI 3.1415
 #endif
+
+#ifdef _WIN32
+    #include<glew.h>
+#endif
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
