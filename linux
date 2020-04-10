@@ -1,4 +1,4 @@
-OBJS	= launcher.o room.o flappy_bird.o import.o libWeb.o textField.o tetris.o snake.o asteroid.o hashage.o fullpath.o
+OBJS	= main.o room.o flappy_bird.o import.o libWeb.o textField.o tetris.o snake.o asteroid.o hashage.o fullpath.o
 SOURCE	= launcher.c
 HEADER	= room.h flappy_bird.h tetris.h snake.h asteroid.h fullpath.h
 OUT	= Nineteen
@@ -14,7 +14,7 @@ FFLAGS = -lGL -lGLU -lglut
 all: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS) $(LSDL) $(FFLAGS)
 
-launcher.o: launcher/launcher.c
+main.o: main.c
 	$(CC) $(FLAGS) $(LSDL) $<
 
 room.o : room/room.c import.o
