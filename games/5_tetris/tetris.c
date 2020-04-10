@@ -779,14 +779,10 @@ int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H]
 	if( frameCompleteLine[line] == -1 ){
 		frameCompleteLine[line] = FRAME_COMPLETE_LINE;
 		if(comboLine){
-			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score)+scoreAdd[lastLine].score  * RATIO_COMBO_LINE, keys))
-				return SDL_FALSE;
 			scoreAdd[line].score += scoreAdd[lastLine].score  * RATIO_COMBO_LINE;
 			scoreAdd[line].combo = pow(2, comboLine);
 		}
 		else{
-			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score) + SCORE_BASE, keys))
-				return SDL_FALSE;
 			scoreAdd[line].score += SCORE_BASE;
 		}
 
@@ -815,12 +811,11 @@ int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H]
 			if(sameColor != -1){
 				scoreAdd[line].sameColor = sameColor;
 				scoreAdd[line].score *= RATIO_SAME_COLOR;
-				if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score)*RATIO_SAME_COLOR, keys))
-					return SDL_FALSE;
 			}
 
 			scoreAdd[line].score *= scoreAdd[line].multi;
-			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score)*scoreAdd[line].multi, keys))
+
+			if(!changeProtectedVar(score_hash, &(scoreTotal->score), (scoreTotal->score) + scoreAdd[line].score, keys))
 				return SDL_FALSE;
 
 
