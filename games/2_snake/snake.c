@@ -292,7 +292,7 @@ void afficherBody(SDL_Renderer *renderer, SDL_Texture *snakeTexture, SnakePart *
 
 int hitboxQueue(SnakePart *snake, size_t size){
 	for( int i = BODY_DEATH_HITBOX + SIZE_PRE_RADIUS; i < size; i++ )
-		if( norme((Vector2f){snake[SIZE_PRE_RADIUS].x - snake[i].x, snake[SIZE_PRE_RADIUS].y - snake[i].y}) < snake[SIZE_PRE_RADIUS].radius + snake[i].radius + 2 * BODY_RADIUS )
+		if( norme((Vector2f){snake[SIZE_PRE_RADIUS].x - snake[i].x, snake[SIZE_PRE_RADIUS].y - snake[i].y}) < snake[SIZE_PRE_RADIUS].radius + snake[i].radius + 2 * BODY_RADIUS - HITBOX_GENTILLE )
 			return 1;
 
 	return 0;
@@ -1132,7 +1132,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 		// Check hitboxs //`
 		///////////////////
 				//Head-Mur-queue
-				if( tooCloseFromWall((Vector2f){snakeBody[SIZE_PRE_RADIUS].x, snakeBody[SIZE_PRE_RADIUS].y}, BODY_RADIUS + snakeBody[SIZE_PRE_RADIUS].radius) )
+				if( tooCloseFromWall((Vector2f){snakeBody[SIZE_PRE_RADIUS].x, snakeBody[SIZE_PRE_RADIUS].y}, BODY_RADIUS + snakeBody[SIZE_PRE_RADIUS].radius - HITBOX_GENTILLE) )
 					done = 1;
 
 				if( frameUnkillable == 0  &&  hitboxQueue(snakeBody, snakeSize)){
