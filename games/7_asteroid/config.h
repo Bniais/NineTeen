@@ -3,8 +3,8 @@
 /////////////////
 #include "../../define/define.h"
 //textures
-#define NB_ASTEROID_TEXTURES 7
-typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD, T_ASTEROID, T_FISSURE}TEXTURES;
+#define NB_ASTEROID_TEXTURES 8
+typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD, T_ASTEROID, T_FISSURE, T_BULLET}TEXTURES;
 
 
 char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
@@ -14,7 +14,8 @@ char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
 	"games/7_asteroid/Textures/background.png",
 	"games/7_asteroid/Textures/hud.png",
 	"games/7_asteroid/Textures/asteroid.png",
-	"games/7_asteroid/Textures/fissure.png"
+	"games/7_asteroid/Textures/fissure.png",
+	"games/7_asteroid/Textures/bullet.png"
 };
 
 
@@ -63,13 +64,13 @@ const float RATIO_ACCEL[NB_FRAME_THRUST+1] = {0, 0.3, 0.6, 1, 1, 1};
 #define ACCELERATION_SPAWN 0.03
 #define FRAME_2ASTEROID (FRAMES_PER_SECOND/2)
 #define PV_BASE 1
-#define VITESSE_BASE 2
+#define VITESSE_BASE 3
 SDL_Point coord_spawn[3]={{0,0},{0,(PLAYGROUND_SIZE_H/2)},{(PLAYGROUND_SIZE_W/2),0}};
 #define MAX_ASTEROID_SIZE 90
 #define TAILLE_MIN_SPLIT 32
 #define TAILLE_MIN_ASTEROID 14
 #define VITESSE_MAX_ASTEROID 18
-#define START_DIFFICULTE 2
+#define START_DIFFICULTE 1.5
 #define RATIO_DIFFICULTE_AUGMENT 0.004
 #define MAX_VITESSE_ROTA 14
 
@@ -84,9 +85,13 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 //missiles
 
 #define DISTANCE_CANON 20
-#define VITESSE_MISSILE 10
+#define VITESSE_MISSILE 15
 #define RAYON_MISSILE 6
+SDL_Point MISSILE_DIM = {42,82};
+SDL_Point MISSILE_CENTRE = {21,18};
 #define DUREE_MISSILE (2*FRAMES_PER_SECOND)
+#define FRAME_MISSILE_DEATH 8
+const int ALPHA_MISSILE[FRAME_MISSILE_DEATH]={10, 30, 60, 90, 140, 180, 215, 250};
 #define DEGAT_MISSILE 1
 
 //Window
@@ -99,10 +104,10 @@ static const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
 
 #define NB_BONUS 9
 #define NO_BONUS -1
-#define PROBA_BONUS 6
+#define PROBA_BONUS 3
 #define NB_TIR_MAX 5
 #define NB_BONUS_POINT 3
-int BONUS_POINT[NB_BONUS_POINT]={5,10,20};
+int BONUS_POINT[NB_BONUS_POINT]={15,50,100};
 typedef enum{
   PETIT,
   MOYEN,
@@ -120,14 +125,26 @@ typedef enum{
   POINT_GRAND
 }bonus_e;
 
-int proba_bonus[NB_BONUS]={3,6,9,12,15,18,23,26,27};
+char* NOM_BONUS[NB_BONUS] ={
+	"TIR_MULTIPLE",
+    "BOUCLIER",
+    "VITESSE_DE_TIR",
+    "BONUS_VITESSE_MISSILE",
+    "DEGAT",
+    "BOMBE_NUCLEAIRE",
+    "POINT_PETIT",
+    "POINT_MOYEN",
+    "POINT_GRAND"
+};
+
+int CHANCE_BONUS[NB_BONUS]={1,3,1,2,1,1,8,5,2};
 
 float angle_tir_multiple[NB_TIR_MAX][NB_TIR_MAX]={
   {0,0,0,0,0},
   {-PI/25,PI/25,0,0,0},
-  {-PI/10,0,PI/10,0,0},
-  {-PI/6,-PI/18,PI/6,PI/18,0},
-  {-PI/4,-PI/8,PI/4,PI/8,0}
+  {-PI/15,0,PI/15,0,0},
+  {-PI/10,-PI/25,PI/10,PI/25,0},
+  {-PI/8,-PI/15,PI/15,PI/8,0}
 };
 
 #define BONUS_ACCELERATION_MISSILE 1.7
