@@ -68,7 +68,7 @@ const Vector2f INIT_HEAD = {PLAYGROUND_SIZE_W / 2, PLAYGROUND_SIZE_H / 2};
 const Vector2f INIT_DECAL = {0, 5};
 #define BASE_ANGLE 3 * PI / 2
 #define TURN_AMMOUNT 0.13
-#define REMIND_BODY 200
+#define REMIND_BODY 100
 #define BODY_DEATH_HITBOX 35
 #define MIN_BODY_PARTS 5
 #define NB_FRAME_DEATH_BODY 12
@@ -83,7 +83,7 @@ const int BLINK_FRAMES_BODY[NB_BLINK_BODY] = {(int)(FRAMES_PER_SECOND * 4.5  + (
 
 //Speed
 #define BASE_SPEED 7
-#define MIN_SPEED 5
+#define MIN_SPEED 5.01
 #define SPEED_DECOMPOSITION 5
 #define SCALE_SPEED 0.0035
 
@@ -104,10 +104,10 @@ const SDL_Point FRUIT_DIM = {64, 64};
 #define GIANT_SPEED 2
 #define UNLOCK_GIANT 0
 #define GIANT_CHANCE 200
-#define MAX_TRIES_RAND 1000
+#define MAX_TRIES_RAND 100
 #define CHANCE_SPAWN_FRUIT (4 * FRAMES_PER_SECOND)
 #define CHANCE_SPAWN_FRUIT_HARDCORE_INIT 6
-#define CHANCE_SPAWN_FRUIT_HARDCORE_MIN 2
+#define CHANCE_SPAWN_FRUIT_HARDCORE_MIN 1.8
 #define CHANCE_SPAWN_FRUIT_HARDCORE_RATE ((CHANCE_SPAWN_FRUIT_HARDCORE_INIT - CHANCE_SPAWN_FRUIT_HARDCORE_MIN) / (3.*60 * FRAMES_PER_SECOND)) //3mins
 #define FRUIT_TTL (FRAMES_PER_SECOND * 14)
 #define NB_FRAME_SPAWN_FRUIT 12
@@ -137,6 +137,7 @@ typedef enum {FRAISE, ORANGE, CITROUILLE, PIMENT, CERISE, POMME, PASTEQUE, CAROT
 #define RELATIVE_ACCELERATE_COFEE 0.25
 #define NB_BONUSES 7
 #define CHANCE_SPAWN_BONUS  (10 * FRAMES_PER_SECOND)
+
 #define FLAT_RM_BOMB 10
 #define RELATIVE_RM_BOMB 0.2
 #define RELATIVE_SLOW_FEATHER 0.3
@@ -155,7 +156,7 @@ typedef enum {FRAISE, ORANGE, CITROUILLE, PIMENT, CERISE, POMME, PASTEQUE, CAROT
 #define ESPACEMENT_SHOW_POTION 70
 #define NB_POTION_MAX 5
 SDL_Rect SHOW_POTION_DEST = {0,BASE_WINDOW_H/2 - 1.25* (ESPACEMENT_SHOW_POTION+60),60,60};
-#define MAX_BOMB_SIZE 1000
+#define MAX_BOMB_SIZE 700
 
 //Malus
 #define NB_FRAME_CAFE_ACCE  (4 * FRAMES_PER_SECOND)
@@ -209,19 +210,19 @@ const float FRUIT_PROPRIETES[NB_FRUITS + NB_BONUSES][NB_PROPRIETES]=
 {   0.03,    22,      6,     128,       7,       13}, // carotte
 {   0.09,    26,      6,     460,      11,       16}, // ananas
 {   0.07,    22,      7,     132,       8,       18}, // tomate
-{   0.01,    22,      6,     500,      13,       21}, // fromage
-{   0.02,    26,      5,    1000,      11,       24}, // viande
+{    0.1,    22,      6,     500,      13,       21}, // fromage
+{    0.1,    26,      5,    1000,      11,       24}, // viande
 {  0.005,    28,      7,    1234,      18,       28}, // pizza
 {      0,    24,      6,    2400,      19,       30}, // burger
 {      0,    24,      5,    3500,      18,       32}, // hot-dog
 {      0,    24,      6,    2222,      17,       34}, // pancakes
-{   0.03,    22,      6,    1700,      12,       36}, // sucette
-{   -0.5,    24,      5,     500,      14,       42}, // glace baton
-{     -1,    24,      5,     600,      14,       43}, // glace cone
-{   -1.5,    24,      4,     700,      14,       44}, // glace pot
-{   0.03,    24,      5,    2180,      15,       45}, // donut
-{   0.03,    26,      4,    3700,      16,       46}, // muffin
-{   0.03,    24,      3,    4000,      18,       47}, // gateau
+{   0.05,    22,      6,    1700,      12,       36}, // sucette
+{  -0.44,    24,      5,     500,      14,       42}, // glace baton
+{  -0.66,    24,      5,     600,      14,       43}, // glace cone
+{  -0.88,    24,      4,     700,      14,       44}, // glace pot
+{   0.08,    24,      5,    2180,      15,       45}, // donut
+{   0.09,    26,      4,    3700,      16,       46}, // muffin
+{   0.08,    24,      3,    4000,      18,       47}, // gateau
 {   0.06,    26,      2,    9100,      16,       50}, // muffin op
 {      0,    24,      1,    5000,       3,       15}, // café
 {     -1,    28,     11,       0,       0,       0 }, // plume

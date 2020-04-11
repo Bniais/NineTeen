@@ -233,7 +233,7 @@ void rm_body(SnakePart **snake, size_t *size, int nbRm, Vector2f* pastBody, Snak
 		for( int i = 0; i < nbRm; i++ )
 			decale_pastBody_freeSpace(pastBody);
 
-		for( int i = 0; i < nbRm; i++ )
+		for( int i = 0; i < nbRm && *size - nbRm + i >= 0 && *size - nbRm + i < REMIND_BODY; i++ )
 			pastBody[i] = (Vector2f){(*snake)[*size - nbRm + i ].x, (*snake)[*size - nbRm + i ].y};
 
 		//deadBodies
@@ -1298,6 +1298,8 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 							nbFruitEaten += (hardcore ? FRUIT_TIMEOUT_EATEN_HARDCORE : -2);
 							if( nbFruitEaten<0 )
 								nbFruitEaten = 0;
+							else if(nbFruitEaten > APPEAR_MAX)
+								nbFruitEaten = APPEAR_MAX;
 							frameJaugeAnim = FRAME_JAUGE_ANIM;
 						}
 
