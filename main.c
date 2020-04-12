@@ -194,36 +194,31 @@ void printAll(SDL_Renderer *renderer,SDL_Texture* background, TTF_Font *police,S
 	renduTextField(renderer,"Mot de passe",police,blanc_foncer,targetPwdLabel);
 
 
-	SDL_Color vertDraw = vert;
 
+	//Change couleur boutons selon animation
+	SDL_Color vertDraw = vert;
 	vertDraw.r += RATIO_ANIM * frame_anims[ANIM_HOVER_CONNECTION];
 	vertDraw.b += RATIO_ANIM * frame_anims[ANIM_HOVER_CONNECTION];
 	vertDraw.g += RATIO_ANIM * frame_anims[ANIM_HOVER_CONNECTION];
 
 	if(frame_anims[ANIM_CONNECTION]!=-1){
-		printf("ra : %d\n", RATIO_CLICK[frame_anims[ANIM_CONNECTION]] );
 		vertDraw.r += RATIO_CLICK[frame_anims[ANIM_CONNECTION]];
 		vertDraw.b += RATIO_CLICK[frame_anims[ANIM_CONNECTION]];
 		vertDraw.g += RATIO_CLICK[frame_anims[ANIM_CONNECTION]];
 	}
 
 	SDL_Color bleu_foncerDraw = bleu_foncer;
-
 	bleu_foncerDraw.r += RATIO_ANIM * frame_anims[ANIM_HOVER_INSCRIPTION];
 	bleu_foncerDraw.b += RATIO_ANIM * frame_anims[ANIM_HOVER_INSCRIPTION];
 	bleu_foncerDraw.g += RATIO_ANIM * frame_anims[ANIM_HOVER_INSCRIPTION];
 
 	if(frame_anims[ANIM_INSCRIPTION]!=-1){
-		printf("ra : %d\n", RATIO_CLICK[frame_anims[ANIM_INSCRIPTION]] );
 		bleu_foncerDraw.r += RATIO_CLICK[frame_anims[ANIM_INSCRIPTION]];
 		bleu_foncerDraw.b += RATIO_CLICK[frame_anims[ANIM_INSCRIPTION]];
 		bleu_foncerDraw.g += RATIO_CLICK[frame_anims[ANIM_INSCRIPTION]];
 	}
 
 
-
-
-	printf("%d %d %d\n", vertDraw.r   , vertDraw.g , vertDraw.b );
 
 	SDL_SetRenderDrawColor(renderer, vertDraw.r   , vertDraw.g , vertDraw.b ,255);
 	SDL_RenderFillRect(renderer,&targetConnect);
@@ -303,7 +298,7 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 		SDL_RenderCopy(renderer, background, NULL, NULL);
 		SDL_GetMouseState(&mouse.x, &mouse.y);
 
-		//anims
+		//anims hover
 		if ( TF_ClickIn( targetConnect , mouse) )
 		{
 			frame_anims[ANIM_HOVER_CONNECTION]++;
@@ -328,6 +323,8 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 				frame_anims[ANIM_HOVER_INSCRIPTION] = 0;
 		}
 
+
+		//get text
 		if(etatIdentifant != RESPONDER_FALSE){
 			etatIdentifant = textField(renderer, police, blanc_foncer ,identifiant, strlen(identifiant) ,&targetId , &mouse,&pressMaj);
 			if(etatIdentifant)
@@ -421,9 +418,10 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 
 
 
-		printf("azeaz : %d \n", frame_anims[ANIM_INSCRIPTION]);
+
 		printAll(renderer,background,police, targetId, targetPwd, targetConnect, targetInscription, frame_anims);
-		printf("dec\n" );
+
+		//Decremente anim click
 		frame_anims[ANIM_INSCRIPTION]--;
 		if(frame_anims[ANIM_INSCRIPTION]<-1)
 			frame_anims[ANIM_INSCRIPTION]=-1;
