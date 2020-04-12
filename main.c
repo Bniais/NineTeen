@@ -16,7 +16,7 @@
 
 #include "./include/textField.h"
 #include "./include/fullpath.h"
-
+#include "./include/communFunctions.h"
 #include "./include/libWeb.h"
 #include "./room/room.h"
 #define DIR_OBJ_LOAD "room/salle.obj"
@@ -33,6 +33,7 @@
 #define DIR_IMG_BACKGROUND "assets/image/launcher_no_font.png"
 #define DIR_ING_BACKGROUND_TXT "assets/image/launcher.png"
 
+
 #define DIR_FONT_POLICE "assets/font/police.ttf"
 #define DIR_FONT_PASSWORD "assets/font/password.ttf"
 
@@ -42,6 +43,7 @@ const	SDL_Color blanc = {255,255,255};
 const	SDL_Color blanc_foncer = {200,200,200};
 const	SDL_Color vert = {76,196,66};
 const SDL_Color bleu_foncer = {66,100,196};
+const SDL_Color cyan = {0x38,0xf9,0xff};
 
 // RESOLUTION
 #define WIN_LARGUEUR 1440
@@ -58,8 +60,8 @@ const int TENTATIVE = 8;
 
 #define FPS 30
 
-#define NB_ANIM 4
-typedef enum{ANIM_CONNECTION, ANIM_HOVER_CONNECTION, ANIM_INSCRIPTION, ANIM_HOVER_INSCRIPTION} anims;
+#define NB_ANIM 5
+typedef enum{ANIM_CONNECTION, ANIM_HOVER_CONNECTION, ANIM_INSCRIPTION, ANIM_HOVER_INSCRIPTION, ANIM_LOADING} anims;
 #define FRAME_ANIM_MAX 5
 #define RATIO_ANIM 10
 const int RATIO_CLICK[FRAME_ANIM_MAX] = {-5, -20, -50, -55, -30};
@@ -175,7 +177,7 @@ void attendreEvenementAppuyer(int event)
     } while (attendre);
 }
 
-void printAll(SDL_Renderer *renderer,SDL_Texture* background, TTF_Font *police,SDL_Rect targetId, SDL_Rect targetPwd, SDL_Rect targetConnect, SDL_Rect targetInscription, int frame_anims[NB_ANIM]  )
+void printAll(SDL_Renderer *renderer, SDL_Texture* background,SDL_Texture* loading, TTF_Font *police,SDL_Rect targetId, SDL_Rect targetPwd, SDL_Rect targetConnect, SDL_Rect targetInscription, int frame_anims[NB_ANIM] )
 {
 //	SDL_Rect targetId = { LARGUEUR/5.5 , HAUTEUR/3, LARGUEUR/1.7 , HAUTEUR/14};
 	SDL_Rect targetIdLabel = { LARGUEUR/6.5 , HAUTEUR/4 , LARGUEUR/1.7 , HAUTEUR/14};
@@ -189,11 +191,18 @@ void printAll(SDL_Renderer *renderer,SDL_Texture* background, TTF_Font *police,S
 	SDL_Rect targetUIView = {LARGUEUR/6.5,HAUTEUR/4.8, HAUTEUR,HAUTEUR/2};
 
 	SDL_RenderCopy(renderer, background, NULL, NULL);
+
+	afficherLoading(renderer, loading, cyan ,frame_anims[ANIM_LOADING]);
+
 	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
 	SDL_RenderFillRect(renderer,&targetUIView);
+
+
 	SDL_SetRenderDrawColor(renderer, blanc_foncer.r , blanc_foncer.g, blanc_foncer.b,255);
 	SDL_RenderFillRect(renderer,&targetId);
+
 	SDL_RenderFillRect(renderer,&targetPwd);
+
 	renduTextField(renderer,"Identifiant",police,blanc_foncer,targetIdLabel);
 	renduTextField(renderer,"Mot de passe",police,blanc_foncer,targetPwdLabel);
 
@@ -258,6 +267,10 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 	if(!background)
 		printf("Impossible de charger %s\n",DIR_IMG_BACKGROUND );
 
+	SDL_Texture* loading = IMG_LoadTexture(renderer,DIR_LOADING);
+	if(!loading)
+		printf("Impossible de charger %s\n",DIR_LOADING );
+
 
 	TTF_Font *police = police = TTF_OpenFont(DIR_FONT_POLICE,100);
 	if(!police)
@@ -289,7 +302,7 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 	int frame = 0;
 	unsigned int lastTime = 0, currentTime;
 
-	printAll(renderer,background,police, targetId, targetPwd, targetConnect, targetInscription,frame_anims);
+	printAll(renderer,background, loading, police, targetId, targetPwd, targetConnect, targetInscription,frame_anims);
 	SDL_RenderPresent(renderer);
 	int etatIdentifant = RESPONDER_TRUE;
 	int etatMotDePasse = RESPONDER_FALSE;
@@ -365,6 +378,7 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 		else if ( etatIdentifant == TF_RETURN || etatMotDePasse  == TF_RETURN )
 		{
 			if(thread == NULL){
+				frame_anims[ANIM_LOADING] = 0;
 				connectEnded = 0;
 				frame_anims[ANIM_CONNECTION]=FRAME_ANIM_MAX-1;
 				strcpy(tokenCpy, token);
@@ -399,6 +413,7 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 				else if ( TF_ClickIn( targetConnect , mouse) )
 				{
 					if(thread == NULL){
+						frame_anims[ANIM_LOADING] = 0;
 						connectEnded = 0;
 						frame_anims[ANIM_CONNECTION]=FRAME_ANIM_MAX-1;
 						printf("CONNEXION...\n" );
@@ -448,7 +463,7 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 
 
 
-		printAll(renderer,background,police, targetId, targetPwd, targetConnect, targetInscription, frame_anims);
+		printAll(renderer,background, loading, police, targetId, targetPwd, targetConnect, targetInscription, frame_anims);
 
 
 		// permet de ne pas afficher une zone de text vide
@@ -496,8 +511,12 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 				printf("retour : %d \n", retour);
 			//SDL_DetachThread(thread);
 			thread = NULL;
+			frame_anims[ANIM_LOADING] = 0;
 		}
+		else if(thread)
+			frame_anims[ANIM_LOADING]++;
 
+		frame ++;
 
 		if(retour == EXIT_SUCCESS){
 						strcpy(token,tokenCpy);
