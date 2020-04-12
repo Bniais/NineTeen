@@ -330,7 +330,6 @@ int connectWithKey(char *key)
 	char *response;
 	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL) )
 	{
-		printf("on connect with key\n" );
 		if ( !envoyez_requet(&response,URL_CONNECT_KEY,request) )
 		{
 			if ( !strcmp(response,"SUCCESS")  )
@@ -368,7 +367,6 @@ int getCoinsValues(char *key,char *retour)
 	char *response;
 	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL) )
 	{
-		printf("on get coin\n" );
 		if ( !envoyez_requet(&response,URL_GET_COINS,request) )
 		{
 			printf("%s\n",response );
@@ -383,7 +381,6 @@ int getCoinsValues(char *key,char *retour)
 	}
 	free(request);
 	request = NULL;
-		printf("getcoine\n");
 	return EXIT_FAILURE;
 }
 
@@ -440,7 +437,6 @@ int updateScore(char *gameID, char *score, char *key)
 	char *response;
 	if ( !construire_requete(&request, NULL, NULL, key, gameID, score) )
 	{
-		printf("on update sc\n" );
 		if ( !envoyez_requet(&response,URL_UPDATE_SCORE,request) )
 		{
 			if ( !strcmp(response, "SUCCESS") )
