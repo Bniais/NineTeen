@@ -371,8 +371,9 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 				strcpy(identifiantCpy, identifiant);
 				strcpy(motDePasseCpy, motDePasse);
 				printf("CONNEXION...\n" );
+				printf("%s\n", identifiantCpy);
 				connectStruct = (ConnectStruct){tokenCpy,identifiantCpy,motDePasseCpy};
-				thread = SDL_CreateThread( (int(*)(void*)) connectWithUsername, NULL, &connectStruct );
+				thread = SDL_CreateThread(  (int(*)(void*))connectWithUsername, NULL, &connectStruct );
 			}
 
 			/*if ( !connectWithUsername(token,identifiant,motDePasse) )
@@ -488,17 +489,16 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 		/*SDL_Rect curseur = { LARGUEUR/6.5 , HAUTEUR/4 , LARGUEUR/1.7 , HAUTEUR/14};
 		curseur.x += curseur.h*0.5;
 		curseur.w = curseur.h*0.5 * strlen(motDePasse);*/
-		printf("thread : %p\n", thread);
-		if(connectEnded){
+
+		if(connectEnded && thread){
 			printf("get thread value \n" );
 			SDL_WaitThread(thread, &retour);
+				printf("retour : %d \n", retour);
 			//SDL_DetachThread(thread);
 			thread = NULL;
-
-
 		}
 
-		printf("retour : %d \n", retour);
+
 		if(retour == EXIT_SUCCESS){
 						strcpy(token,tokenCpy);
 						pressConnexion = SDL_TRUE;

@@ -266,11 +266,11 @@ int connectEnded;
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int connectWithUsername(ConnectStruct connectStruct)
+int connectWithUsername(ConnectStruct * connectStruct)
 {
 	char *request;
 	char *response;
-	if ( !construire_requete(&request, connectStruct.email, connectStruct.password, NULL, NULL, NULL) )
+	if ( !construire_requete(&request, connectStruct->email, connectStruct->password, NULL, NULL, NULL) )
 	{
 		if ( !envoyez_requet(&response,URL_CONNECT_EMAIL,request) )
 		{
@@ -280,7 +280,7 @@ int connectWithUsername(ConnectStruct connectStruct)
 			if ( strlen(response) >= 255  )
 			{
 				//key = malloc( sizeof(char) * strlen(response) + 1 );
-				strcpy(connectStruct.key,response);
+				strcpy(connectStruct->key,response);
 				free(response);
 				response = NULL;
 				connectEnded = 1;
@@ -330,6 +330,7 @@ int connectWithKey(char *key)
 	char *response;
 	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL) )
 	{
+		printf("on connect with key\n" );
 		if ( !envoyez_requet(&response,URL_CONNECT_KEY,request) )
 		{
 			if ( !strcmp(response,"SUCCESS")  )
@@ -367,6 +368,7 @@ int getCoinsValues(char *key,char *retour)
 	char *response;
 	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL) )
 	{
+		printf("on get coin\n" );
 		if ( !envoyez_requet(&response,URL_GET_COINS,request) )
 		{
 			printf("%s\n",response );
@@ -438,6 +440,7 @@ int updateScore(char *gameID, char *score, char *key)
 	char *response;
 	if ( !construire_requete(&request, NULL, NULL, key, gameID, score) )
 	{
+		printf("on update sc\n" );
 		if ( !envoyez_requet(&response,URL_UPDATE_SCORE,request) )
 		{
 			if ( !strcmp(response, "SUCCESS") )
