@@ -58,6 +58,13 @@ const int TENTATIVE = 8;
 
 #define FPS 30
 
+#define NB_ANIM 4
+typedef enum{ANIM_CONNECTION, ANIM_HOVER_CONNECTION, ANIM_INSCRIPTION, ANIM_HOVER_INSCRIPTION} anims;
+#define FRAME_ANIM_MAX 5
+#define RATIO_ANIM 10
+const int RATIO_CLICK[FRAME_ANIM_MAX] = {-5, -20, -50, -55, -30};
+
+
 void chargementConfig(int *delai, int *tentative)
 {
 	char *response;;
@@ -164,7 +171,7 @@ void attendreEvenementAppuyer(int event)
     } while (attendre);
 }
 
-void printAll(SDL_Renderer *renderer,SDL_Texture* background, TTF_Font *police,SDL_Rect targetId, SDL_Rect targetPwd, SDL_Rect targetConnect, SDL_Rect targetInscription  )
+void printAll(SDL_Renderer *renderer,SDL_Texture* background, TTF_Font *police,SDL_Rect targetId, SDL_Rect targetPwd, SDL_Rect targetConnect, SDL_Rect targetInscription, int frame_anims[NB_ANIM]  )
 {
 //	SDL_Rect targetId = { LARGUEUR/5.5 , HAUTEUR/3, LARGUEUR/1.7 , HAUTEUR/14};
 	SDL_Rect targetIdLabel = { LARGUEUR/6.5 , HAUTEUR/4 , LARGUEUR/1.7 , HAUTEUR/14};
@@ -186,11 +193,43 @@ void printAll(SDL_Renderer *renderer,SDL_Texture* background, TTF_Font *police,S
 	renduTextField(renderer,"Identifiant",police,blanc_foncer,targetIdLabel);
 	renduTextField(renderer,"Mot de passe",police,blanc_foncer,targetPwdLabel);
 
-	SDL_SetRenderDrawColor(renderer, vert.r , vert.g, vert.b,255);
+
+	SDL_Color vertDraw = vert;
+
+	vertDraw.r += RATIO_ANIM * frame_anims[ANIM_HOVER_CONNECTION];
+	vertDraw.b += RATIO_ANIM * frame_anims[ANIM_HOVER_CONNECTION];
+	vertDraw.g += RATIO_ANIM * frame_anims[ANIM_HOVER_CONNECTION];
+
+	if(frame_anims[ANIM_CONNECTION]!=-1){
+		printf("ra : %d\n", RATIO_CLICK[frame_anims[ANIM_CONNECTION]] );
+		vertDraw.r += RATIO_CLICK[frame_anims[ANIM_CONNECTION]];
+		vertDraw.b += RATIO_CLICK[frame_anims[ANIM_CONNECTION]];
+		vertDraw.g += RATIO_CLICK[frame_anims[ANIM_CONNECTION]];
+	}
+
+	SDL_Color bleu_foncerDraw = bleu_foncer;
+
+	bleu_foncerDraw.r += RATIO_ANIM * frame_anims[ANIM_HOVER_INSCRIPTION];
+	bleu_foncerDraw.b += RATIO_ANIM * frame_anims[ANIM_HOVER_INSCRIPTION];
+	bleu_foncerDraw.g += RATIO_ANIM * frame_anims[ANIM_HOVER_INSCRIPTION];
+
+	if(frame_anims[ANIM_INSCRIPTION]!=-1){
+		printf("ra : %d\n", RATIO_CLICK[frame_anims[ANIM_INSCRIPTION]] );
+		bleu_foncerDraw.r += RATIO_CLICK[frame_anims[ANIM_INSCRIPTION]];
+		bleu_foncerDraw.b += RATIO_CLICK[frame_anims[ANIM_INSCRIPTION]];
+		bleu_foncerDraw.g += RATIO_CLICK[frame_anims[ANIM_INSCRIPTION]];
+	}
+
+
+
+
+	printf("%d %d %d\n", vertDraw.r   , vertDraw.g , vertDraw.b );
+
+	SDL_SetRenderDrawColor(renderer, vertDraw.r   , vertDraw.g , vertDraw.b ,255);
 	SDL_RenderFillRect(renderer,&targetConnect);
 	renduTextField(renderer,"Connexion",police,noir,targetConnect);
 
-	SDL_SetRenderDrawColor(renderer, bleu_foncer.r , bleu_foncer.g, bleu_foncer.b,255);
+	SDL_SetRenderDrawColor(renderer, bleu_foncerDraw.r, bleu_foncerDraw.g, bleu_foncer.b,255);
 	SDL_RenderFillRect(renderer,&targetInscription);
 	renduTextField(renderer,"Inscription",police,noir,targetInscription);
 
@@ -239,7 +278,8 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 	char identifiant[24]="";
 	char motDePasse[24]="";
 
-
+	//anims (connection, hover_co, hover_inscription)
+	int frame_anims[NB_ANIM] = {-1,0,-1,0};
 	SDL_Rect targetId = { LARGUEUR/5.5 , HAUTEUR/3, LARGUEUR/1.7 , HAUTEUR/14};
 	SDL_Rect targetPwd = { LARGUEUR/5.5 , HAUTEUR/1.9 , LARGUEUR/1.7 , HAUTEUR/14 };
 	SDL_Rect targetConnect = { LARGUEUR/1.87, HAUTEUR/1.5 , LARGUEUR/4  , HAUTEUR/14};
@@ -248,7 +288,7 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 	int frame = 0;
 	unsigned int lastTime = 0, currentTime;
 
-	printAll(renderer,background,police, targetId, targetPwd, targetConnect, targetInscription);
+	printAll(renderer,background,police, targetId, targetPwd, targetConnect, targetInscription,frame_anims);
 	SDL_RenderPresent(renderer);
 	int etatIdentifant = RESPONDER_TRUE;
 	int etatMotDePasse = RESPONDER_FALSE;
@@ -261,6 +301,33 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 	{
 		targetId = (SDL_Rect){ LARGUEUR/5.5 , HAUTEUR/3, LARGUEUR/1.7 , HAUTEUR/14};
 		SDL_RenderCopy(renderer, background, NULL, NULL);
+		SDL_GetMouseState(&mouse.x, &mouse.y);
+
+		//anims
+		if ( TF_ClickIn( targetConnect , mouse) )
+		{
+			frame_anims[ANIM_HOVER_CONNECTION]++;
+			if(frame_anims[ANIM_HOVER_CONNECTION] > FRAME_ANIM_MAX)
+				frame_anims[ANIM_HOVER_CONNECTION] = FRAME_ANIM_MAX;
+		}
+		else{
+			frame_anims[ANIM_HOVER_CONNECTION]--;
+			if(frame_anims[ANIM_HOVER_CONNECTION] < 0)
+				frame_anims[ANIM_HOVER_CONNECTION] = 0;
+		}
+
+		if ( TF_ClickIn( targetInscription , mouse) )
+		{
+			frame_anims[ANIM_HOVER_INSCRIPTION]++;
+			if(frame_anims[ANIM_HOVER_INSCRIPTION] > FRAME_ANIM_MAX)
+				frame_anims[ANIM_HOVER_INSCRIPTION] = FRAME_ANIM_MAX;
+		}
+		else{
+			frame_anims[ANIM_HOVER_INSCRIPTION]--;
+			if(frame_anims[ANIM_HOVER_INSCRIPTION] < 0 )
+				frame_anims[ANIM_HOVER_INSCRIPTION] = 0;
+		}
+
 		if(etatIdentifant != RESPONDER_FALSE){
 			etatIdentifant = textField(renderer, police, blanc_foncer ,identifiant, strlen(identifiant) ,&targetId , &mouse,&pressMaj);
 			if(etatIdentifant)
@@ -313,6 +380,7 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 				}
 				else if ( TF_ClickIn( targetConnect , mouse) )
 				{
+					frame_anims[ANIM_CONNECTION]=FRAME_ANIM_MAX-1;
 					printf("CONNEXION...\n" );
 					int retour = connectWithUsername(token,identifiant,motDePasse);
 					if ( !retour )
@@ -339,6 +407,8 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 				}
 				else if ( TF_ClickIn( targetInscription , mouse) )
 				{
+					printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" );
+					frame_anims[ANIM_INSCRIPTION]=FRAME_ANIM_MAX-1;
 					ouvrirUrlRegistration();
 
 				}
@@ -350,7 +420,16 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 
 
 
-		printAll(renderer,background,police, targetId, targetPwd, targetConnect, targetInscription);
+
+		printf("azeaz : %d \n", frame_anims[ANIM_INSCRIPTION]);
+		printAll(renderer,background,police, targetId, targetPwd, targetConnect, targetInscription, frame_anims);
+		printf("dec\n" );
+		frame_anims[ANIM_INSCRIPTION]--;
+		if(frame_anims[ANIM_INSCRIPTION]<-1)
+			frame_anims[ANIM_INSCRIPTION]=-1;
+		frame_anims[ANIM_CONNECTION]--;
+		if(frame_anims[ANIM_CONNECTION]<-1)
+			frame_anims[ANIM_CONNECTION]=-1;
 
 		// permet de ne pas afficher une zone de text vide
 		if( strlen(motDePasse) >= 1){

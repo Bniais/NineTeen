@@ -119,19 +119,21 @@ int textField(SDL_Renderer* renderer, TTF_Font *police, SDL_Color color, char *c
             case SDL_QUIT:
             	retour = TF_QUIT;
 				break;
+
+			case SDL_MOUSEBUTTONDOWN :
+				// mouse
+				if (SDL_GetMouseState(&mouse->x, &mouse->y) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+					if( ! ( mouse->x >= cible->x && mouse->x <= ( cible->x + cible->w ) && mouse->y >= cible->y && mouse->y <= (cible->y + cible->h)) )
+					{
+						printf("mouse\n" );
+						retour = TF_MOUSE_OUT_CLICK;
+						//return TF_MOUSE_OUT_CLICK;
+					}
+
+				}
+				break;
         }
 
-
-		// mouse
-		if (SDL_GetMouseState(&mouse->x, &mouse->y) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
-			if( ! ( mouse->x >= cible->x && mouse->x <= ( cible->x + cible->w ) && mouse->y >= cible->y && mouse->y <= (cible->y + cible->h)) )
-			{
-
-				retour = TF_MOUSE_OUT_CLICK;
-				//return TF_MOUSE_OUT_CLICK;
-			}
-
-		}
 
 	}
 
