@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <curl/curl.h>
-
+typedef struct{char *key; char *email; char *password;}ConnectStruct;
 // secure protocol //
 #include <time.h>
 #include <openssl/md5.h>
@@ -254,6 +254,8 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 }
 
 
+
+int connectEnded;
 /////////////////////////////////////////////////////
 /// \fn int connectWithUsername(char *key, char *email, char *password)
 /// \brief connexion avec nom d'utilisateur
@@ -264,11 +266,11 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int connectWithUsername(char *key, char *email, char *password)
+int connectWithUsername(ConnectStruct connectStruct)
 {
 	char *request;
 	char *response;
-	if ( !construire_requete(&request, email, password, NULL, NULL, NULL) )
+	if ( !construire_requete(&request, connectStruct.email, connectStruct.password, NULL, NULL, NULL) )
 	{
 		if ( !envoyez_requet(&response,URL_CONNECT_EMAIL,request) )
 		{
@@ -278,15 +280,17 @@ int connectWithUsername(char *key, char *email, char *password)
 			if ( strlen(response) >= 255  )
 			{
 				//key = malloc( sizeof(char) * strlen(response) + 1 );
-				strcpy(key,response);
+				strcpy(connectStruct.key,response);
 				free(response);
 				response = NULL;
+				connectEnded = 1;
 				return EXIT_SUCCESS;
 			}
 			else if ( !strcmp(response,"-5") )
 			{
 				free(response);
 				response = NULL;
+					connectEnded = 1;
 				return -5;
 			}
 			else if ( !strcmp(response,"-3") )
@@ -294,6 +298,7 @@ int connectWithUsername(char *key, char *email, char *password)
 				printf("Mauvais login/mdp\n" );
 				free(response);
 				response = NULL;
+					connectEnded = 1;
 				return -3;
 			}
 			else
@@ -307,6 +312,7 @@ int connectWithUsername(char *key, char *email, char *password)
 	}
 
 
+		connectEnded = 1;
 	return EXIT_FAILURE;
 }
 
@@ -356,6 +362,7 @@ int connectWithKey(char *key)
 /////////////////////////////////////////////////////
 int getCoinsValues(char *key,char *retour)
 {
+	printf("getcoin\n");
 	char *request;
 	char *response;
 	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL) )
@@ -368,11 +375,13 @@ int getCoinsValues(char *key,char *retour)
 			request = NULL;
 			free(response);
 			response = NULL;
+			printf("getcoine\n");
 			return EXIT_SUCCESS;
 		}
 	}
 	free(request);
 	request = NULL;
+		printf("getcoine\n");
 	return EXIT_FAILURE;
 }
 

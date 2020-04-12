@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "SDL2/SDL_thread.h"
 #ifdef _WIN32
     #include<winsock2.h>
     #include<windows.h>
@@ -64,6 +64,10 @@ typedef enum{ANIM_CONNECTION, ANIM_HOVER_CONNECTION, ANIM_INSCRIPTION, ANIM_HOVE
 #define RATIO_ANIM 10
 const int RATIO_CLICK[FRAME_ANIM_MAX] = {-5, -20, -50, -55, -30};
 
+//Le thread qui sera utiliser
+SDL_Thread *thread = NULL;
+//Ce qui va nous permettre de quitter
+int quit = SDL_FALSE;
 
 void chargementConfig(int *delai, int *tentative)
 {
@@ -244,7 +248,7 @@ void ouvrirUrlRegistration()
 
 }
 
-void connexion(SDL_Renderer *renderer, char *token,char path[])
+void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 {
 	//////////////////////////////////////////
 	// INIT CHAINE DE CONCATENATION DU PATH
@@ -269,9 +273,11 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 //	int delai = DELAY;
 //	int tentative = TENTATIVE;
 //	chargementConfig(&delai,&tentative);
-
+	int retour = EXIT_FAILURE;
 	char identifiant[24]="";
 	char motDePasse[24]="";
+	char identifiantCpy[24]="";
+	char motDePasseCpy[24]="";
 
 	//anims (connection, hover_co, hover_inscription)
 	int frame_anims[NB_ANIM] = {-1,0,-1,0};
@@ -291,6 +297,9 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 
 	SDL_Point mouse = {0,0};
 	int pressMaj = SDL_FALSE;
+	ConnectStruct connectStruct;
+	extern int connectEnded;
+	connectEnded = SDL_FALSE;
 
 	do
 	{
@@ -355,10 +364,21 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 		}
 		else if ( etatIdentifant == TF_RETURN || etatMotDePasse  == TF_RETURN )
 		{
-			if ( !connectWithUsername(token,identifiant,motDePasse) )
+			if(thread == NULL){
+				connectEnded = 0;
+				frame_anims[ANIM_CONNECTION]=FRAME_ANIM_MAX-1;
+				strcpy(tokenCpy, token);
+				strcpy(identifiantCpy, identifiant);
+				strcpy(motDePasseCpy, motDePasse);
+				printf("CONNEXION...\n" );
+				connectStruct = (ConnectStruct){tokenCpy,identifiantCpy,motDePasseCpy};
+				thread = SDL_CreateThread( (int(*)(void*)) connectWithUsername, NULL, &connectStruct );
+			}
+
+			/*if ( !connectWithUsername(token,identifiant,motDePasse) )
 			{
 				pressConnexion = SDL_TRUE;
-			}
+			}*/
 		}
 		else if(etatIdentifant == TF_MOUSE_OUT_CLICK || etatMotDePasse  == TF_MOUSE_OUT_CLICK)
 		{
@@ -377,10 +397,18 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 				}
 				else if ( TF_ClickIn( targetConnect , mouse) )
 				{
-					frame_anims[ANIM_CONNECTION]=FRAME_ANIM_MAX-1;
-					printf("CONNEXION...\n" );
-					int retour = connectWithUsername(token,identifiant,motDePasse);
-					if ( !retour )
+					if(thread == NULL){
+						connectEnded = 0;
+						frame_anims[ANIM_CONNECTION]=FRAME_ANIM_MAX-1;
+						printf("CONNEXION...\n" );
+						strcpy(tokenCpy, token);
+                        strcpy(identifiantCpy, identifiant);
+                        strcpy(motDePasseCpy, motDePasse);
+						connectStruct = (ConnectStruct){tokenCpy,identifiantCpy,motDePasseCpy};
+						thread = SDL_CreateThread( (int(*)(void*))connectWithUsername, NULL, &connectStruct);
+					}
+
+					/*if ( !retour )
 					{
 						pressConnexion = SDL_TRUE;
 						etatMotDePasse = RESPONDER_FALSE;
@@ -399,7 +427,7 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 						//	etatMotDePasse = RESPONDER_FALSE;
 						//	etatIdentifant = RESPONDER_FALSE;
 						//}
-					}
+					}*/
 
 				}
 				else if ( TF_ClickIn( targetInscription , mouse) )
@@ -421,13 +449,6 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 
 		printAll(renderer,background,police, targetId, targetPwd, targetConnect, targetInscription, frame_anims);
 
-		//Decremente anim click
-		frame_anims[ANIM_INSCRIPTION]--;
-		if(frame_anims[ANIM_INSCRIPTION]<-1)
-			frame_anims[ANIM_INSCRIPTION]=-1;
-		frame_anims[ANIM_CONNECTION]--;
-		if(frame_anims[ANIM_CONNECTION]<-1)
-			frame_anims[ANIM_CONNECTION]=-1;
 
 		// permet de ne pas afficher une zone de text vide
 		if( strlen(motDePasse) >= 1){
@@ -467,26 +488,49 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 		/*SDL_Rect curseur = { LARGUEUR/6.5 , HAUTEUR/4 , LARGUEUR/1.7 , HAUTEUR/14};
 		curseur.x += curseur.h*0.5;
 		curseur.w = curseur.h*0.5 * strlen(motDePasse);*/
+		printf("thread : %p\n", thread);
+		if(connectEnded){
+			printf("get thread value \n" );
+			SDL_WaitThread(thread, &retour);
+			//SDL_DetachThread(thread);
+			thread = NULL;
+
+
+		}
+
+		printf("retour : %d \n", retour);
+		if(retour == EXIT_SUCCESS){
+						strcpy(token,tokenCpy);
+						pressConnexion = SDL_TRUE;
+		}
+
 
 
 		SDL_RenderPresent(renderer);
 		SDL_RenderClear(renderer);
-		frame++;
 
 		currentTime = SDL_GetTicks();
 		while( currentTime - lastTime < 1000/FPS )
 			currentTime = SDL_GetTicks();
 
-
 		lastTime = currentTime;
 
-		} while( !pressConnexion ) ;
+		//Decremente anim click
+		frame_anims[ANIM_INSCRIPTION]--;
+		if(frame_anims[ANIM_INSCRIPTION]<-1)
+			frame_anims[ANIM_INSCRIPTION]=-1;
+		frame_anims[ANIM_CONNECTION]--;
+		if(frame_anims[ANIM_CONNECTION]<-1)
+			frame_anims[ANIM_CONNECTION]=-1;
 
 
-		//destruction des creations
-		SDL_DestroyTexture(background);
-		TTF_CloseFont(police);
-		TTF_CloseFont(ttf_pwd);
+	} while( !pressConnexion ) ;
+
+
+	//destruction des creations
+	SDL_DestroyTexture(background);
+	TTF_CloseFont(police);
+	TTF_CloseFont(ttf_pwd);
 }
 
 
@@ -595,7 +639,7 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 
 
-int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[])
+int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[])
 {
 	Mix_Music *musique = Mix_LoadMUS(DIR_MUSIC_FILE);
 	if (musique == NULL)
@@ -608,7 +652,7 @@ int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleu
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	if ( !dejaConneceter(token) )
 	{
-		connexion(renderer,token,path);
+		connexion(renderer,token, tokenCpy, path);
 		sauvegarderToken(token);
   	}
 
@@ -627,7 +671,7 @@ int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleu
 		Mix_FreeMusic(musique);
 		return EXIT_SUCCESS;
 	}
-
+	printf("end room\n" );
 }
 
 
@@ -662,6 +706,8 @@ int main(int argc, char *argv[])
 	/////////////////////////////////////////////////////////////////
 	// INIT VARIABLE TOKEN
 	char *token = malloc(sizeof(char) * SIZE_SESSION + 1);
+	char *tokenCpy = malloc(sizeof(char) * SIZE_SESSION + 1);
+	tokenCpy=strcpy(tokenCpy, token);
 	/////////////////////////////////////////////////////////////////
 	// INIT VARIABLE QUI POINTE SUR LA SCENE
 	const C_STRUCT aiScene* scene = NULL;
@@ -692,9 +738,9 @@ int main(int argc, char *argv[])
 	struct MeilleureScore_s meilleureScore[16];
 	/////////////////////////////////////////////////////////////////
 	// APPEL DU LAUNCHER
-	if( launcher(renderer,token,meilleureScore,&scene,addPath) == EXIT_SUCCESS)
+	if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath) == EXIT_SUCCESS)
 	{
-
+		printf("lancement room\n" );
 		SDL_DestroyRenderer(renderer);
 		SDL_DestroyWindow(window);
 		/////////////////////////////////////////////////////////////////
@@ -710,6 +756,7 @@ int main(int argc, char *argv[])
 	aiReleaseImport(scene);
 	// VIDER MEMOIRE TOKEN
 	free(token);
+	free(tokenCpy);
 	/////////////////////////////////////////////////////////////////
 	// QUITTER TTF
 	TTF_Quit();

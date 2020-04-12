@@ -45,6 +45,9 @@ int construire_requete(char **dest, char *email, char *password, char *key, char
 
 
 
+
+
+typedef struct{char *key; char *email; char *password; int retour;}ConnectStruct;
 /////////////////////////////////////////////////////
 /// \fn int connectWithUsername(char *key, char *email, char *password)
 /// \brief connexion avec nom utilisateur
@@ -55,7 +58,7 @@ int construire_requete(char **dest, char *email, char *password, char *key, char
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int connectWithUsername(char *key, char *email, char *password);
+int connectWithUsername(ConnectStruct connectStruct);
 
 /////////////////////////////////////////////////////
 /// \fn getCoinsValues(char *key,int *coins)
