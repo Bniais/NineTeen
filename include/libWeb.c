@@ -111,7 +111,7 @@ int envoyez_requet(char **response, char *url, char *request)
 		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, request);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
-		
+
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
 
@@ -289,7 +289,16 @@ int connectWithUsername(char *key, char *email, char *password)
 				response = NULL;
 				return -5;
 			}
-			printf("%s\n",response );
+			else if ( !strcmp(response,"-3") )
+			{
+				printf("Mauvais login/mdp\n" );
+				free(response);
+				response = NULL;
+				return -3;
+			}
+			else
+				printf("erreur connection : %s\n",response );
+
 			free(response);
 			response = NULL;
 

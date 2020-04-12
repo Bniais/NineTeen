@@ -56,6 +56,8 @@ int HAUTEUR = 0;
 const int DELAY = 200;
 const int TENTATIVE = 8;
 
+#define FPS 30
+
 void chargementConfig(int *delai, int *tentative)
 {
 	char *response;;
@@ -242,6 +244,9 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 	SDL_Rect targetPwd = { LARGUEUR/5.5 , HAUTEUR/1.9 , LARGUEUR/1.7 , HAUTEUR/14 };
 	SDL_Rect targetConnect = { LARGUEUR/1.87, HAUTEUR/1.5 , LARGUEUR/4  , HAUTEUR/14};
 	SDL_Rect targetInscription = {LARGUEUR/5, HAUTEUR/1.5, LARGUEUR/3.3 , HAUTEUR/14};
+	SDL_Rect curseur;
+	int frame = 0;
+	unsigned int lastTime = 0, currentTime;
 
 	printAll(renderer,background,police, targetId, targetPwd, targetConnect, targetInscription);
 	SDL_RenderPresent(renderer);
@@ -254,11 +259,18 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 
 	do
 	{
+		targetId = (SDL_Rect){ LARGUEUR/5.5 , HAUTEUR/3, LARGUEUR/1.7 , HAUTEUR/14};
 		SDL_RenderCopy(renderer, background, NULL, NULL);
-		if(etatIdentifant != RESPONDER_FALSE)
+		if(etatIdentifant != RESPONDER_FALSE){
 			etatIdentifant = textField(renderer, police, blanc_foncer ,identifiant, strlen(identifiant) ,&targetId , &mouse,&pressMaj);
-		else if(etatMotDePasse != RESPONDER_FALSE)
+			if(etatIdentifant)
+				frame = 0;
+		}
+		else if(etatMotDePasse != RESPONDER_FALSE){
 			etatMotDePasse = textField(renderer, ttf_pwd, blanc_foncer ,motDePasse, strlen(motDePasse) ,&targetPwd , &mouse,&pressMaj);
+			if(etatMotDePasse)
+				frame = 0;
+		}
 
 		//printf("Etat ID = %d\nEtat MDP = %d\n",etatIdentifant,etatMotDePasse );
 
@@ -341,12 +353,55 @@ void connexion(SDL_Renderer *renderer, char *token,char path[])
 		printAll(renderer,background,police, targetId, targetPwd, targetConnect, targetInscription);
 
 		// permet de ne pas afficher une zone de text vide
-		if( strlen(motDePasse) >= 1)
+		if( strlen(motDePasse) >= 1){
 			renduTextField(renderer,motDePasse,ttf_pwd,noir,targetPwd);
-		if( strlen(identifiant) >= 1)
+
+		}
+
+		if( strlen(identifiant) >= 1){
 			renduTextField(renderer,identifiant,police,noir,targetId);
+
+		}
+
+		if(etatMotDePasse == RESPONDER_TRUE){
+			curseur=targetPwd;
+			curseur.x += targetPwd.h*0.5 * (strlen(motDePasse)+1);
+			curseur.w = 4;
+			curseur.y += curseur.h/6;
+			curseur.h -= curseur.h/3;
+		}
+
+		if(etatIdentifant == RESPONDER_TRUE){
+			curseur=targetId;
+			curseur.x += targetId.h*0.5 * (strlen(identifiant)+1);
+			curseur.w = 4;
+			curseur.y += curseur.h/6;
+			curseur.h -= curseur.h/3;
+		}
+
+		if(frame%(int)(FPS*1.4) < ((FPS*1.4)/2)){
+
+			SDL_SetRenderDrawColor(renderer, 0,0,0,255);
+			SDL_RenderFillRect(renderer, &curseur);
+		}
+
+
+
+		/*SDL_Rect curseur = { LARGUEUR/6.5 , HAUTEUR/4 , LARGUEUR/1.7 , HAUTEUR/14};
+		curseur.x += curseur.h*0.5;
+		curseur.w = curseur.h*0.5 * strlen(motDePasse);*/
+
+
 		SDL_RenderPresent(renderer);
 		SDL_RenderClear(renderer);
+		frame++;
+
+		currentTime = SDL_GetTicks();
+		while( currentTime - lastTime < 1000/FPS )
+			currentTime = SDL_GetTicks();
+
+
+		lastTime = currentTime;
 
 		} while( !pressConnexion ) ;
 
@@ -478,7 +533,7 @@ int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleu
 	{
 		connexion(renderer,token,path);
 		sauvegarderToken(token);
-  }
+  	}
 
 
 
@@ -503,11 +558,11 @@ int launcher(SDL_Renderer* renderer, char *token,struct MeilleureScore_s meilleu
 
 int main(int argc, char *argv[])
 {
-    #ifdef _WIN32
+   /* #ifdef _WIN32
        HWND hWnd = GetConsoleWindow();
     ShowWindow( hWnd, SW_MINIMIZE );  //won't hide the window without SW_MINIMIZE
     ShowWindow( hWnd, SW_HIDE );
-    #endif // _WIN32
+    #endif // _WIN32*/
 	printf("REPERTOIRE D'EXECUTION %s\n",argv[0] );
 	char *addPath = fullPath(argv[0]);
 	printf("AJOUTER : %s\n",addPath);
@@ -517,7 +572,7 @@ int main(int argc, char *argv[])
 	TTF_Init();
 	Mix_Init(MIX_INIT_MP3);
 	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) //Initialisation de l'API Mixer
-	 printf("%s", Mix_GetError());
+		printf("%s", Mix_GetError());
 
 	/////////////////////////////////////////////////////////////////
 	// RECUPERER TAILLE ECRAN
