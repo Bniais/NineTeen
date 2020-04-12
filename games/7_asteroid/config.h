@@ -20,9 +20,9 @@ char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
 
 
 
-typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust;}Vaiss;
+typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier;int missile_id; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust;}Vaiss;
 
-typedef struct{ float x; float y; float angle; int frame; float vitesse; float degat;}Missile;
+
 typedef struct{float x; float y; float angle; float taille; int bonus; float pv; float pv_max; float vitesse; float difficulte; float difficulte_pere; float angle_rota; float vitesse_rota;}Asteroid;
 
 #define PRECISION_RAND_FLOAT 100.
@@ -38,7 +38,6 @@ typedef enum{
 }dir_turn;
 #define RAYON_VAISS 25
 #define DECELERATION 1.015
-#define RECHARGE_TIR (FRAMES_PER_SECOND/2)
 #define TURN_AMMOUNT 0.13
 #define VITESSE 10
 #define ACCEL 0.45
@@ -83,16 +82,56 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 #define INTERVALE_RAND_DIFFICULTE 0.3
 
 //missiles
+#define NB_MISSILES 2
+	//color
+	const SDL_Color GEM_COLORS[NB_MISSILES]={
+		{255,0,0},
+		{0xfb,0xb3,0x28}
+	};
 
-#define DISTANCE_CANON 20
-#define VITESSE_MISSILE 15
-#define RAYON_MISSILE 6
-SDL_Point MISSILE_DIM = {42,82};
-SDL_Point MISSILE_CENTRE = {21,18};
-#define DUREE_MISSILE (2*FRAMES_PER_SECOND)
-#define FRAME_MISSILE_DEATH 8
-const int ALPHA_MISSILE[FRAME_MISSILE_DEATH]={10, 30, 60, 90, 140, 180, 215, 250};
-#define DEGAT_MISSILE 1
+	const SDL_Color BOUCLIER_COLOR = {0xfd,0xff,0x37};
+
+	//attributs
+	typedef struct{ float x; float y; float angle; float target_angle; int frame; float vitesse; float degat; int id;}Missile;
+
+	typedef enum{SHOT_NORMAL, SHOT_ZIGZAG}shots;
+
+	#define BASE_ZIGZAG_ANGLE 0.1
+	#define INTERVALLE_ZIGZAG_ANGLE 0.05
+	#define FRAME_TO_REACH_ANGLE 4
+
+	#define DISTANCE_CANON 23
+
+	#define FREQUENCE_BASE (FRAMES_PER_SECOND/2)
+	const float FREQUENCE_MISSILES[NB_MISSILES] = {1, 0.66};
+
+	#define BASE_VITESSE_MISSILE 15
+	const float VITESSE_MISSILES[NB_MISSILES] = {1, 1.25};
+
+	#define BASE_DEGAT_MISSILE 1
+	const float DEGAT_MISSILES[NB_MISSILES] = {1, 1.5};
+
+	const int RAYON_MISSILES[NB_MISSILES] = {6, 10};
+
+	//texures missiles
+	#define MISSILE_CUT 56
+	SDL_Point MISSILE_SRC[NB_MISSILES] ={
+		{42,82},
+		{56,74}
+	};
+
+	SDL_Point MISSILE_CENTRES[NB_MISSILES] ={
+		{21,18},
+		{28,26}
+	};
+
+	const int MISSILES_SRC_RAYON[NB_MISSILES]={6, 15};
+
+	//death missile
+	#define DUREE_MISSILE (2*FRAMES_PER_SECOND)
+	#define FRAME_MISSILE_DEATH 8
+	const int ALPHA_MISSILE[FRAME_MISSILE_DEATH]={10, 30, 60, 90, 140, 180, 215, 250};
+
 
 //Window
 #define FRAMES_PER_SECOND 30
@@ -148,7 +187,7 @@ float angle_tir_multiple[NB_TIR_MAX][NB_TIR_MAX]={
 };
 
 #define BONUS_ACCELERATION_MISSILE 1.7
-#define VITESSE_MISSILE_MAX (2*VITESSE_MISSILE)
+#define VITESSE_MISSILE_MAX (2*BASE_VITESSE_MISSILE)
 #define BONUS_FREQUENCE_MISSILE 1.5
 #define FREQUENCE_MISSILE_MIN (FRAMES_PER_SECOND/6)
 #define DEGAT_MISSILE_MAX 5
