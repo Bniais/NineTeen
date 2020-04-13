@@ -531,10 +531,10 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 					char buffer[10];
 					sprintf(buffer,"%d",score);
 					printf("ATTENDRE ENVI DU SCORE\n" );
-					if(hardcore)
+					/*if(hardcore)
 						updateScore("1",buffer,token);
 					else
-						updateScore("12",buffer,token);
+						updateScore("12",buffer,token);*/
 					//////////////////////////////////////////////////////////////////
 				}
 

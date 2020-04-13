@@ -97,7 +97,7 @@ int buyGamePass(char *key, char *gameID);
 int connectWithKey(char *key);
 
 
-
+typedef struct{char *gameID; char *score; char *key;}EnvoiScore;
 /////////////////////////////////////////////////////
 /// \fn int updateScore(char *key, char *gameID, char *score)
 /// \brief update le score
@@ -108,7 +108,8 @@ int connectWithKey(char *key);
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int updateScore(char *gameID, char *score, char *key);
+int updateScore(EnvoiScore * envoiScore );
+
 
 /////////////////////////////////////////////////////
 /// \fn int ping()

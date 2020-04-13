@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <curl/curl.h>
+#include <SDL2/SDL.h>
 typedef struct{char *key; char *email; char *password;}ConnectStruct;
+typedef struct{char *gameID; char *score; char *key;}EnvoiScore;
 // secure protocol //
 #include <time.h>
 #include <openssl/md5.h>
@@ -421,6 +423,8 @@ int buyGamePass(char *key, char *gameID)
 	return EXIT_FAILURE;
 }
 
+
+int updateEnded;
 /////////////////////////////////////////////////////
 /// \fn int updateScore(char *key, char *gameID, char *score)
 /// \brief update le score
@@ -431,11 +435,12 @@ int buyGamePass(char *key, char *gameID)
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int updateScore(char *gameID, char *score, char *key)
+int updateScore(EnvoiScore * envoiScore )
 {
+	SDL_Delay(1400);
 	char *request;
 	char *response;
-	if ( !construire_requete(&request, NULL, NULL, key, gameID, score) )
+	if ( !construire_requete(&request, NULL, NULL, envoiScore->key, envoiScore->gameID, envoiScore->score) )
 	{
 		if ( !envoyez_requet(&response,URL_UPDATE_SCORE,request) )
 		{
@@ -446,6 +451,7 @@ int updateScore(char *gameID, char *score, char *key)
 				request = NULL;
 				free(response);
 				response = NULL;
+				updateEnded = 1;
 				return EXIT_SUCCESS;
 			}
 			printf("%s\n",response );
@@ -456,6 +462,7 @@ int updateScore(char *gameID, char *score, char *key)
 	}
 	free(request);
 	request = NULL;
+	updateEnded = 1;
 	return EXIT_FAILURE;
 }
 

@@ -13,8 +13,8 @@ static const SDL_Color WHITE = {255,255,255};
 const SDL_Point ESPACE_DISPLAY_WINDOW = {67, 57};
 const Vector2f UNDEF = {-500, -500};
 //textures
-#define NB_SNAKE_TEXTURES 7
-typedef enum{S_BASKET, S_BACKGROUND, S_SNAKE, S_FRUITS, S_ANIM, S_HUD, S_CHIFFRE}T_TEXTURES;
+#define NB_SNAKE_TEXTURES 8
+typedef enum{S_BASKET, S_BACKGROUND, S_SNAKE, S_FRUITS, S_ANIM, S_HUD, S_CHIFFRE, S_LOADING}T_TEXTURES;
 
 char* DIR_TEXTURES_SNAKE[NB_SNAKE_TEXTURES] = {
 	"games/2_snake/Textures/basket.png",
@@ -23,7 +23,8 @@ char* DIR_TEXTURES_SNAKE[NB_SNAKE_TEXTURES] = {
 	"games/2_snake/Textures/fruits.png",
 	"games/2_snake/Textures/anim.png",
 	"games/2_snake/Textures/hud.png",
-	"games/2_snake/Textures/chiffre.png"
+	"games/2_snake/Textures/chiffre.png",
+	DIR_LOADING
 };
 
 //fonts

@@ -68,8 +68,7 @@ const int RATIO_CLICK[FRAME_ANIM_MAX] = {-5, -20, -50, -55, -30};
 
 //Le thread qui sera utiliser
 SDL_Thread *thread = NULL;
-//Ce qui va nous permettre de quitter
-int quit = SDL_FALSE;
+
 
 void chargementConfig(int *delai, int *tentative)
 {
@@ -192,7 +191,7 @@ void printAll(SDL_Renderer *renderer, SDL_Texture* background,SDL_Texture* loadi
 
 	SDL_RenderCopy(renderer, background, NULL, NULL);
 
-	afficherLoading(renderer, loading, cyan ,frame_anims[ANIM_LOADING]);
+	afficherLoading(renderer, loading, cyan, 0, 0 ,frame_anims[ANIM_LOADING]);
 
 	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
 	SDL_RenderFillRect(renderer,&targetUIView);

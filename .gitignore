@@ -1,3 +1,10 @@
 
 *.dll
 *.o
+NineTeen.cbp
+NineTeen.depend
+NineTeen.exe
+NineTeen.layout
+include/.DS_Store
+include/include.rar
+*.exe
