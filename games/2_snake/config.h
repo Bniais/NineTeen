@@ -201,19 +201,19 @@ typedef enum{ACCELERATION, RADIUS, PROBA, SCORE, DIGESTION_SIZE, MIN_FRUIT_TO_AP
 #define NB_PROPRIETES 6
 const float FRUIT_PROPRIETES[NB_FRUITS + NB_BONUSES][NB_PROPRIETES]=
 {// ACCE    RADIUS  PROBA   SCORE    DIGES    APPEAR
-{   0.02,    20,      3,      20,       5,       0}, // fraise
-{   0.08,    24,      3,      50,       8,       0}, // orange
-{   0.12,    36,      3,     150,      13,       0}, // citrouille
-{   0.24,    18,      4,     200,       6,       5}, // piment
-{   0.02,    18,      4,      41,       4,       8}, // cerise
-{   0.05,    22,      5,     107,       7,       10}, // pomme
-{   0.06,    30,      5,     350,      11,       11}, // pastèque
-{   0.03,    22,      6,     128,       7,       13}, // carotte
-{   0.09,    26,      6,     460,      11,       16}, // ananas
-{   0.07,    22,      7,     132,       8,       18}, // tomate
-{    0.1,    22,      6,     500,      13,       21}, // fromage
-{    0.1,    26,      5,    1000,      11,       24}, // viande
-{  0.005,    28,      7,    1234,      18,       28}, // pizza
+{   0.02,    20,      2,      20,       5,       0}, // fraise
+{   0.05,    24,      2,      50,       8,       0}, // orange
+{   0.09,    36,      2,     150,      13,       0}, // citrouille
+{   0.18,    18,      3,     200,       6,       5}, // piment
+{   0.02,    18,      3,      41,       4,       8}, // cerise
+{   0.05,    22,      4,     107,       7,       10}, // pomme
+{   0.06,    30,      4,     350,      11,       11}, // pastèque
+{   0.03,    22,      4,     128,       7,       13}, // carotte
+{   0.09,    26,      4,     460,      11,       16}, // ananas
+{   0.07,    22,      5,     132,       8,       18}, // tomate
+{    0.1,    22,      4,     500,      13,       21}, // fromage
+{    0.1,    26,      4,    1000,      11,       24}, // viande
+{  0.005,    28,      5,    1234,      18,       28}, // pizza
 {      0,    24,      6,    2400,      19,       30}, // burger
 {      0,    24,      5,    3500,      18,       32}, // hot-dog
 {      0,    24,      6,    2222,      17,       34}, // pancakes
@@ -223,8 +223,8 @@ const float FRUIT_PROPRIETES[NB_FRUITS + NB_BONUSES][NB_PROPRIETES]=
 {  -0.88,    24,      4,     700,      14,       44}, // glace pot
 {   0.08,    24,      5,    2180,      15,       45}, // donut
 {   0.09,    26,      4,    3700,      16,       46}, // muffin
-{   0.08,    24,      3,    4000,      18,       47}, // gateau
-{   0.06,    26,      2,    9100,      16,       50}, // muffin op
+{   0.08,    24,      3,    5000,      18,       47}, // gateau
+{   0.06,    26,      2,   10000,      16,       50}, // muffin op
 {      0,    24,      1,    5000,       3,       15}, // café
 {     -1,    28,     11,       0,       0,       0 }, // plume
 {      0,    28,     11,       0,       0,       0 }, // BOMBE
@@ -232,7 +232,7 @@ const float FRUIT_PROPRIETES[NB_FRUITS + NB_BONUSES][NB_PROPRIETES]=
 {      0,    28,      5,       0,       0,       20}, // ARC_EN_CIEL
 {      0,    28,      4,       0,       0,       25}, // potion hitbox
 {      0,    28,      2,       0,       0,       35}, // potion verte
-{      0,    28,      2,   50000,       0,       45} // potion jaune
+{      0,    28,      2,   30000,       0,       45} // potion jaune
 };
 #define APPEAR_MAX 50.
 
