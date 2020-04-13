@@ -108,7 +108,8 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 	#define ANGLE_TELEGUIDE 0.2
 
 	// attributs laser
-
+	#define NB_LASER_BEAM 8
+	#define LASER_ACCEL 0.1
 
 	#define DISTANCE_CANON 23
 
@@ -130,7 +131,7 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 		{42,82},
 		{56,74},
 		{56,82},
-		{954,124}
+		{2385,124}
 	};
 
 	SDL_Point MISSILE_CENTRES[NB_MISSILES] ={
@@ -213,9 +214,8 @@ float angle_tir_multiple[NB_TIR_MAX][NB_TIR_MAX]={
 
 
 //Textures
-
 SDL_Rect THRUST_SRC ={0,0,72,70};
 SDL_Rect VAISSEAU_SRC = {0,0,72,70};
 SDL_Rect VAISSEAU_DEST = {200,200,72,70};
 SDL_Rect GEM_SRC = {0,0,72,70};
-SDL_Point CENTRE_VAISS  = {36,27};
+SDL_Point CENTRE_VAISS  = {36,26};

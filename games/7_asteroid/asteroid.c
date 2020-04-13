@@ -156,7 +156,7 @@ int asteroid_touche(Asteroid asteroid, Missile * missiles, int nb_missiles ){
 }
 
 int laser_touche(Asteroid asteroid, Vaiss vaisseau){
-
+    return 1;
 }
 
 void decaler_gauche_a(Asteroid * tab, int taille_tab, int i){
@@ -367,14 +367,24 @@ void afficher_vaisseau( Vaiss vaisseau, SDL_Renderer *renderer, SDL_Texture * va
 
 //LASER
 
-void afficher_laser(SDL_Renderer * renderer, SDL_Texture * laser_texture, Vaiss vaisseau){
-	SDL_Rect vaisseauRect = {vaisseau.x-RAYON_VAISS,vaisseau.y-RAYON_VAISS,RAYON_VAISS*2,RAYON_VAISS*2};
+void afficher_laser(SDL_Renderer * renderer, SDL_Texture * laser_texture, Vaiss vaisseau, int frame){
+
 	SDL_Rect laser_src={0,MISSILE_SRC[SHOT_LASER].y,MISSILE_SRC[SHOT_LASER].x,MISSILE_SRC[SHOT_LASER].y};
-	laser_src.y= laser_src.h;
-	SDL_Point spawn_laser= {vaisseauRect.x + vaisseauRect.w/2, vaisseauRect.y};
-	spawn_laser.x*=cos(vaisseau.angle);
-	spawn_laser.y*=sin(vaisseau.angle);
-	SDL_Rect laser_dest = {spawn_laser.x - MISSILE_CENTRES[SHOT_LASER].x, spawn_laser.y - MISSILE_CENTRES[SHOT_LASER].y, laser_src.w, laser_src.h};
+
+	if(frame != 0)
+		laser_src.y= (frame%(NB_LASER_BEAM-1)+1) * laser_src.h;
+
+	SDL_Point spawn_laser= {0, RAYON_VAISS};
+	printf("%f\n",vaisseau.angle );
+	/*spawn_laser.y+=(CENTRE_VAISS.x)*cos(vaisseau.angle-PI/2) + CENTRE_VAISS.x;
+	spawn_laser.x-=(CENTRE_VAISS.y)*sin(vaisseau.angle-PI/2);*/
+
+	float xM = spawn_laser.x;
+    float yM = spawn_laser.y;
+    spawn_laser.x = xM*cos(vaisseau.angle-PI/2) - yM * sin(vaisseau.angle-PI/2) ;
+    spawn_laser.y = xM * sin(vaisseau.angle-PI/2) + yM * cos(vaisseau.angle-PI/2) ;
+
+	SDL_Rect laser_dest = {vaisseau.x + spawn_laser.x - MISSILE_CENTRES[SHOT_LASER].x,vaisseau.y + spawn_laser.y - MISSILE_CENTRES[SHOT_LASER].y, laser_src.w, laser_src.h};
 
 	SDL_RenderCopyEx(renderer,laser_texture, &laser_src, &laser_dest,vaisseau.angle*180/PI,&MISSILE_CENTRES[SHOT_LASER],SDL_FLIP_NONE);
 }
@@ -404,13 +414,12 @@ float calculer_angle(float x1, float y1, float x2, float y2){
 }
 int asteroid_plus_proche( Asteroid * asteroides, int nb_asteroid, Missile missile){
 	int i;
-	float x,y;
+	float x;
 	float dist,min_dist=9999;
 	float angle,angle_min=9999;
 	int imin_asteroid = -1;
 	for (i=0;i<nb_asteroid;i++){
 		x=missile.x-asteroides[i].x;
-		y=missile.y-asteroides[i].y;
 		if(x*sin(missile.angle-CHAMP_VISION_TELEGUIDE)> missile.y && x*sin(missile.angle+CHAMP_VISION_TELEGUIDE)< missile.y){
 			dist = dist_2f(asteroides[i].x,asteroides[i].y,missile.x, missile.y);
 			if(dist < min_dist){
@@ -786,6 +795,9 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 		}
 	}
 
+	//anims
+	int frameLaser = 0;
+
 
 	//Vaisseau
 	int turn;
@@ -961,8 +973,19 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 	for(int i=0; i<nb_missiles; i++){
 		afficher_tir(renderer, missiles[i], textures[T_BULLET]);
 	}
+
+	if(vaisseau.missile_id == SHOT_LASER && keystate[SDL_SCANCODE_SPACE]){
+		afficher_laser(renderer,textures[T_LASER], vaisseau, frameLaser);
+		frameLaser++;
+		accelerate.x -= LASER_ACCEL * cos(vaisseau.angle);
+		accelerate.y -= LASER_ACCEL * sin(vaisseau.angle);
+	}
+	else{
+		frameLaser = 0;
+	}
+
 	afficher_vaisseau(vaisseau,renderer,textures[T_VAISS],textures[T_GEM],textures[T_THRUST]);
-	afficher_laser(renderer,textures[T_LASER], vaisseau);
+
 
 	if((frame_apparition_asteroid==0 || nb_asteroid <= (frame/FRAME_APPARITION_ASTEROID))&& frame_2asteroid == 0 ){
 		spawn_asteroid(vaisseau,&asteroides,&nb_asteroid,difficulte);
