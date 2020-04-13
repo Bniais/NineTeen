@@ -4,7 +4,6 @@
 #define LOADING_SIZE 50
 #define LOADING_ANGLE_PER_FRAME (360/60)
 
-
 void afficherLoading(SDL_Renderer * renderer, SDL_Texture * loadingTexture, SDL_Color color, int frameAnim){
 	if(frameAnim){
 		int w, h;
