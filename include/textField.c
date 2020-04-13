@@ -23,6 +23,74 @@
 
 
 ///////////////////////////////////////////////////////////////
+/// \fn char SDL_Event_SecondeTouch_Convertion_USA_Keyboard (int sdlk_code)
+/// \brief Converti la valeur d'une touche en touche secondaire.
+///
+/// \param SDLK_code code de touche
+/// \return char correspondant au nouveau code de touche
+///////////////////////////////////////////////////////////////
+char SDL_Event_SecondeTouch_Convertion_USA_Keyboard(int sdlk_code)
+{
+	switch (sdlk_code) {
+		// premier ligne
+		case '`' : return '~';break;
+		case '1' : return '!';break;
+		case '2' : return '@';break;
+		case '3' : return '#';break;
+		case '4' : return '$';break;
+		case '5' : return '%';break;
+		case '6' : return '^';break;
+		case '7' : return '&';break;
+		case '8' : return '*';break;
+		case '9' : return '(';break;
+		case '0' : return ')';break;
+		case '-' : return '_';break;
+		case '=' : return '+';break;
+
+		//deuxieme ligne
+		case '[' : return '{';break;
+		case ']' : return '}';break;
+		case '\\' : return '|';break;
+
+		//troiseme ligne
+		case ';' : return ':';break;
+		case '\'' : return '"';break;
+
+		//quatrieme ligne
+		case ',' : return '<';break;
+		case '.' : return '>';break;
+		case '/' : return '?';break;
+
+	}
+	return 0;
+}
+
+///////////////////////////////////////////////////////////////
+/// \fn char SDL_Event_Charcode (int sdlk_code, int pressMaj)
+/// \brief Converti les caracteres MAJ/MIN
+///
+/// \param int sdlk_code SDLK scancode
+/// \param int pressMaj 0/1 permet de faire la bonne conversion
+/// \return char code de la touche en char
+///////////////////////////////////////////////////////////////
+char SDL_Event_Charcode(int sdlk_code, int pressMaj)
+{
+	if(pressMaj)
+	{
+		if( ( sdlk_code >= SDLK_a && sdlk_code <= SDLK_z ) )
+			return sdlk_code - ('a' - 'A');
+		else
+			return SDL_Event_SecondeTouch_Convertion_USA_Keyboard(sdlk_code);
+	}
+	else
+	{
+		return sdlk_code;
+	}
+
+	return 0;
+}
+
+///////////////////////////////////////////////////////////////
 /// \fn void renduTextField (SDL_Renderer *renderer,char *chaine ,TTF_Font *font , SDL_Color color, SDL_Rect cible)
 /// \brief sous fonction de textField()
 ///
@@ -67,75 +135,78 @@ int textField(SDL_Renderer* renderer, TTF_Font *police, SDL_Color color, char *c
 
 	int retour = 0;
 
-	// keyboard
-	SDL_StartTextInput();
-	SDL_Event evenement;
-	while ( SDL_PollEvent(&evenement) )
+	do
 	{
+		SDL_Event evenement;
+		while ( SDL_PollEvent(&evenement) )
+		{
 
-
-	   switch (evenement.type) {
-		   case SDL_TEXTINPUT:
-			   /* Add new text onto the end of our text */
-			   if(currentSize < MAX_SIZE && ((evenement.text.text[0] >= '0' && evenement.text.text[0] <='9' ) ||  (evenement.text.text[0]  >= 'a' && evenement.text.text[0] <='z' )||  (evenement.text.text[0]  >= 'A' && evenement.text.text[0] <='Z' ))  ){
-				   currentSize++;
-				   strcat(chaine, evenement.text.text);
-				   chaine[currentSize] = '\0';
-				   retour = 1;
-			   }
-			   break;
-		   case SDL_TEXTEDITING:
-			   /*
-			   Update the composition text.
-			   Update the cursor position.
-			   Update the selection length (if any).
-			   */
-			  /* composition = evenement.edit.text;
-			   cursor = evenement.edit.start;*/
-			   currentSize = evenement.edit.length;
-			    retour = 1;
-			   break;
-
-			case SDL_KEYDOWN:
-				if (evenement.key.keysym.sym == SDLK_BACKSPACE)
+			// keyboard
+			if(evenement.type == SDL_KEYDOWN)
+			{
+				if(evenement.key.keysym.sym == SDLK_RETURN) // Fin de la saisi
+				{
+					retour = TF_RETURN;
+					//return pressReturn;
+				}
+				else if(evenement.key.keysym.sym == SDLK_TAB )
+				{
+					printf("Tab clic\n");
+					retour = TF_TAB;
+				}
+				else if(evenement.key.keysym.sym == SDLK_LSHIFT || evenement.key.keysym.sym == SDLK_RSHIFT)
+				{
+					*pressMaj = SDL_TRUE;
+				}
+				else if (evenement.key.keysym.sym == SDLK_BACKSPACE)
 				{
 					if(currentSize)
 					{
 						currentSize--;
 						*(chaine + currentSize) = '\0';
 						//renduTextField(renderer, chaine, police, color, *cible);
-						retour = 1;
+						retour = TF_TEXT_TYPED;
 						//return touchPressed;
 					}
+
 				}
-				else if(evenement.key.keysym.sym == SDLK_TAB )
+				else if (currentSize < MAX_SIZE) {
+					chaine[currentSize] = SDL_Event_Charcode(evenement.key.keysym.sym, *pressMaj);
+					currentSize++;
+					chaine[currentSize] = '\0';
+					//renduTextField(renderer, chaine, police, color, *cible);
+					retour = TF_TEXT_TYPED;
+					//return touchPressed;
+				}
+
+			}
+			else if(evenement.type == SDL_KEYUP)
+			{
+				if(evenement.key.keysym.sym == SDLK_LSHIFT || evenement.key.keysym.sym == SDLK_RSHIFT)
 				{
-					retour = TF_TAB;
+						*pressMaj = SDL_FALSE;
 				}
-				else if(evenement.key.keysym.sym == SDLK_RETURN) // Fin de la saisi
-					retour = TF_RETURN;
-				break;
 
-            case SDL_QUIT:
-            	retour = TF_QUIT;
-				break;
+			}
+			else if ( evenement.type == SDL_QUIT)
+			{
+				retour = TF_QUIT;
+			}
 
-			case SDL_MOUSEBUTTONDOWN :
-				// mouse
-				if (SDL_GetMouseState(&mouse->x, &mouse->y) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-					if( ! ( mouse->x >= cible->x && mouse->x <= ( cible->x + cible->w ) && mouse->y >= cible->y && mouse->y <= (cible->y + cible->h)) )
-					{
-						printf("mouse\n" );
-						retour = TF_MOUSE_OUT_CLICK;
-						//return TF_MOUSE_OUT_CLICK;
-					}
+			// mouse
+			if (SDL_GetMouseState(&mouse->x, &mouse->y) && SDL_BUTTON(SDL_BUTTON_LEFT)) {
+				if( ! ( mouse->x >= cible->x && mouse->x <= ( cible->x + cible->w ) && mouse->y >= cible->y && mouse->y <= (cible->y + cible->h)) )
+				{
 
+					retour = TF_MOUSE_OUT_CLICK;
+					//return TF_MOUSE_OUT_CLICK;
 				}
-				break;
-        }
 
+			}
 
-	}
+		}
+
+	} while (!retour);
 
 	return retour;
 }

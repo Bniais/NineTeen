@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <curl/curl.h>
-typedef struct{char *key; char *email; char *password;}ConnectStruct;
+#include <curl/easy.h>
 // secure protocol //
 #include <time.h>
 #include <openssl/md5.h>
@@ -107,27 +107,26 @@ int envoyez_requet(char **response, char *url, char *request)
 	if(curl) {
 
 		// construction de la requet
+		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
 		curl_easy_setopt(curl, CURLOPT_URL, url);
 		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, request);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
-
-		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0);
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
 
 		// envoyez la requete
 		res = curl_easy_perform(curl);
 		if(res != CURLE_OK)
-		{
 			fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
-		}
-		else
-		{
+		else {
 			*response = malloc( sizeof(char) * strlen(s.ptr)+1 );
 			strcpy(*response,s.ptr);
 
 			// memory clean
 			free(s.ptr);
+			curl_easy_cleanup(curl);
+			curl_global_cleanup();
+
 			s.ptr = NULL;
 			curl = NULL;
 
@@ -135,11 +134,11 @@ int envoyez_requet(char **response, char *url, char *request)
 			return EXIT_SUCCESS;
 		}
 
-
+		//nettoyage curl
+		curl_easy_cleanup(curl);
 
 	}
 	//nettoyage
-	curl_easy_cleanup(curl);
 	curl_global_cleanup();
 	free(curl);
 	curl = NULL;
@@ -161,7 +160,7 @@ void securePass(char secure[])
 
 	char temp[MD5_SIZE*2];
 	//printf("HEURE A l'ENVOI DE LA REQUET %d-%02d-%02d %02d  %02d  %d\n",year , mon, day, hour , min, sec);
-	sprintf(temp, "%d-%02d-%02d JDlaliljasnc329832 %02d 0 %02d D(ancIjaa) %d", year  , mon , day, hour , min, sec);
+	sprintf(temp, "%d-%02d-%02d 0A1kjxal9MaSECURE32 %02d 0 %02d D(ancIjaa) %d", year  , mon , day, hour , min, sec);
 	md5Hash(temp, secure);
 
 	free(t_server);
@@ -254,8 +253,6 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 }
 
 
-
-int connectEnded;
 /////////////////////////////////////////////////////
 /// \fn int connectWithUsername(char *key, char *email, char *password)
 /// \brief connexion avec nom d'utilisateur
@@ -266,11 +263,11 @@ int connectEnded;
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int connectWithUsername(ConnectStruct * connectStruct)
+int connectWithUsername(char *key, char *email, char *password)
 {
 	char *request;
 	char *response;
-	if ( !construire_requete(&request, connectStruct->email, connectStruct->password, NULL, NULL, NULL) )
+	if ( !construire_requete(&request, email, password, NULL, NULL, NULL) )
 	{
 		if ( !envoyez_requet(&response,URL_CONNECT_EMAIL,request) )
 		{
@@ -280,30 +277,18 @@ int connectWithUsername(ConnectStruct * connectStruct)
 			if ( strlen(response) >= 255  )
 			{
 				//key = malloc( sizeof(char) * strlen(response) + 1 );
-				strcpy(connectStruct->key,response);
+				strcpy(key,response);
 				free(response);
 				response = NULL;
-				connectEnded = 1;
 				return EXIT_SUCCESS;
 			}
 			else if ( !strcmp(response,"-5") )
 			{
 				free(response);
 				response = NULL;
-					connectEnded = 1;
 				return -5;
 			}
-			else if ( !strcmp(response,"-3") )
-			{
-				printf("Mauvais login/mdp\n" );
-				free(response);
-				response = NULL;
-					connectEnded = 1;
-				return -3;
-			}
-			else
-				printf("erreur connection : %s\n",response );
-
+			printf("%s\n",response );
 			free(response);
 			response = NULL;
 
@@ -312,7 +297,6 @@ int connectWithUsername(ConnectStruct * connectStruct)
 	}
 
 
-		connectEnded = 1;
 	return EXIT_FAILURE;
 }
 
@@ -362,7 +346,6 @@ int connectWithKey(char *key)
 /////////////////////////////////////////////////////
 int getCoinsValues(char *key,char *retour)
 {
-	printf("getcoin\n");
 	char *request;
 	char *response;
 	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL) )
@@ -375,7 +358,6 @@ int getCoinsValues(char *key,char *retour)
 			request = NULL;
 			free(response);
 			response = NULL;
-			printf("getcoine\n");
 			return EXIT_SUCCESS;
 		}
 	}
