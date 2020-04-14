@@ -1,4 +1,4 @@
-OBJS	= launcher.o room.o flappy_bird.o import.o libWeb.o textField.o tetris.o asteroid.o snake.o hashage.o fullpath.o
+OBJS	= main.o room.o flappy_bird.o import.o libWeb.o textField.o tetris.o asteroid.o snake.o hashage.o fullpath.o communFunctions.o
 SOURCE	= launcher.c
 HEADER	= room.h flappy_bird.h tetris.h snake.h asteroid.h
 OUT	= Nineteen
@@ -13,7 +13,7 @@ FFLAGS = -framework OpenGL -framework GLUT
 all: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS) $(LSDL) $(FFLAGS)
 
-launcher.o: launcher/launcher.c
+main.o: main.c
 	$(CC) $(FLAGS) $<
 
 room.o : room/room.c import.o
@@ -44,6 +44,9 @@ textField.o : include/textField.c
 	$(CC) $(FLAGS) $^
 
 fullpath.o : include/fullpath.c
+	$(CC) $(FLAGS) $^
+
+communFunctions.o : include/communFunctions.c
 	$(CC) $(FLAGS) $^
 
 clean:
