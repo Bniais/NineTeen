@@ -473,7 +473,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 	int exitCode = afficherTout(renderer, &thread, myFont, &retour, &frame_anim_loading, &frameRetour, texture_loading, emplacementPersonnage , pilonne, score ,1 , 0, cible, angle ,
 																										texture_background, texture_pipes,  texture_birds, texture_medals,   texture_scoreBoard, texture_sol, texture_chiffre,texture_highscore,hardcore);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	SDL_RenderPresent(renderer);
 	//////////////////////////////////////////////////////////////////
 	// ATTENDRE APPUI TOUCHE ESPACE + JOUER PREMIER SON + PREMIER SAUT
 	if(!attendreAvantDepart(flap_wav))
@@ -509,7 +509,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 				exitCode = afficherTout(renderer, &thread, myFont, &retour, &frame_anim_loading, &frameRetour, texture_loading, emplacementPersonnage , pilonne, score ,varAnimationPersonnage , varAnimationSol, cible, angle ,
 																																						texture_background,  texture_pipes, texture_birds, texture_medals,  texture_scoreBoard,  texture_sol, texture_chiffre, texture_highscore,hardcore);
 
-
+				SDL_RenderPresent(renderer);
 				// UPDATE DECORE
 				traitement = traitement_pilonne(pilonne,traitement,&score,  &score_hash, keys, score_wav);
 
@@ -580,11 +580,6 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 				}
 
 
-				//////////////////////////////////////////////////////////////////
-				// AFFICHER SCORE ET MEDAIL ICI
-				// ON AUGMENTE LA TAILLE DU SCOREBOARD PAR 2
-				SDL_Rect positionScoreBoard= {WINDOW_L/4,WINDOW_H/4,SCOREBOARD.w * SCALE_TO_FIT * 2, SCOREBOARD.h*SCALE_TO_FIT * 2};
-				SDL_RenderCopy(renderer, texture_scoreBoard, NULL, &positionScoreBoard);
 
 				// ON AUGMENTE LA TAILLE DE LA MEDALS PAR 2
 				SDL_Rect positionMedals = {WINDOW_L/4 + 13 * SCALE_TO_FIT * 2 ,WINDOW_H/4 + 21 * SCALE_TO_FIT * 2,22*SCALE_TO_FIT * 2,22*SCALE_TO_FIT * 2};
@@ -613,6 +608,19 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 				//////////////////////////////////////////////////////////////////
 				while( wait )
 				{
+					SDL_RenderClear(renderer);
+
+					afficherTout(renderer, &thread, myFont, &retour, &frame_anim_loading, &frameRetour, texture_loading, emplacementPersonnage , pilonne, score ,1 , 0, cible, angle ,
+
+																												texture_background, texture_pipes,  texture_birds, texture_medals,   texture_scoreBoard, texture_sol, texture_chiffre,texture_highscore , hardcore);
+					//////////////////////////////////////////////////////////////////
+					//////////////////////////////////////////////////////////////////
+					// AFFICHER SCORE ET MEDAIL ICI
+					// ON AUGMENTE LA TAILLE DU SCOREBOARD PAR 2
+					SDL_Rect positionScoreBoard= {WINDOW_L/4,WINDOW_H/4,SCOREBOARD.w * SCALE_TO_FIT * 2, SCOREBOARD.h*SCALE_TO_FIT * 2};
+					SDL_RenderCopy(renderer, texture_scoreBoard, NULL, &positionScoreBoard);
+
+
 					SDL_Rect choisirMedals = {MEDALS.w * choixMedalsAvecScore , MEDALS.y, MEDALS.w, MEDALS.h};
 					SDL_RenderCopy(renderer, texture_medals, &choisirMedals, &positionMedals);
 					//////////////////////////////////////////////////////////////////
@@ -647,11 +655,13 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 						else
 							frameRetour++;
 					}
+
 					int frame_delay = SDL_GetTicks() - tempsDebutFrame;
 					if(frame_delay < FRAME_TIME)
 						SDL_Delay(FRAME_TIME - frame_delay );
 					SDL_RenderPresent(renderer);
 					SDL_Event ev;
+
 					while ( SDL_PollEvent(&ev) )
 					{
 
@@ -1055,7 +1065,7 @@ int afficherTout(SDL_Renderer * renderer,SDL_Thread ** thread, TTF_Font* myFont,
 
 	/////////////////////////////////////////////////////
 	// AFFICHER TOUS
-	SDL_RenderPresent(renderer);
+//	SDL_RenderPresent(renderer);
 
 	return 0;
 
