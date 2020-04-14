@@ -1,4 +1,6 @@
 <?php 
+
+
 	$recherche = 0;
 	include('include/secure.php');
 	
@@ -82,6 +84,7 @@
 	}
 	
 	$link->close(); 
+	
 ?>
 
 
@@ -90,13 +93,14 @@
 
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
-		<title></title>
-	</head>
+
+	<?php 
+	$titre = "Nineteen | Accueil";
+	 include('header.php'); 
+	?>
+	
 	<body>
+	<?php include('navigation.php'); ?>
 	
 	<h1>MEILLEUR JOUEUR</h1>
 	<h1 class="blink leader" >  <?php echo $nom[0][0]; ?>  </h1>

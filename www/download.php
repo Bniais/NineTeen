@@ -15,13 +15,13 @@
 
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
-		<title>Téléchargement</title>
-	</head>
+	<?php 
+	$titre = "Nineteen | Téléchargement";
+	 include('header.php'); 
+	?>
+	
 	<body>
+		<?php include('navigation.php'); ?>
 		<h1>Téléchargement</h1>
 		<br><br>
 		<div class="container">

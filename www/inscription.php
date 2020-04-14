@@ -1,5 +1,5 @@
 <?php
-
+	
 	$compteMessage = "S'inscrire à la beta Nineteen";
 
 	if ( $_SERVER['REQUEST_METHOD'] == 'POST')
@@ -88,13 +88,13 @@
 
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>S'inscrire</title>
-		<link rel="stylesheet" type="text/css" href="style.css">
-	</head>
+	<?php 
+	$titre = "Nineteen | Inscription";
+	 include('header.php'); 
+	?>
+	
 	<body>
-
+		<?php include('navigation.php'); ?>
 		<h4 class="title"><?php echo $compteMessage ?></h4>
 
 
@@ -180,15 +180,6 @@
 		<br>
 		<br>
 		<br>
-		<h4 class="title">Lien de téléchargement</h4>
-
-		<div class="button_cont" align="center">
-			<a class="button_a" href="#" target="_blank" rel="nofollow noopener">Linux</a>
-			<a> - </a>
-			<a class="button_b" href="https://www.dropbox.com/s/nk7w4a8f3yfw1j7/Ninteen.dmg" target="_blank" rel="nofollow noopener">Mac OS v0.1.2b</a>
-			<a> - </a>
-			<a class="button_c" href="https://www.dropbox.com/s/hhq8uyqixcw8ikf/Nineteen_v0.1.2b.exe" target="_blank" rel="nofollow noopener">Windows v0.1.2b</a>
-		</div>
 
 	</body>
 </html>
