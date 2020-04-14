@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <time.h>
-
+#include <math.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -541,7 +541,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 			// MISE A JOUR DE l"AFFICHAGE
 			exitCode = afficherTout(renderer, &thread, myFont, &retour, &frame_anim_loading, &frameRetour, texture_loading, emplacementPersonnage , pilonne, score ,1 , 0 , cible , angle,
 																												texture_background,  texture_pipes,  texture_birds,   texture_medals,  texture_scoreBoard,  texture_sol,   texture_chiffre, texture_highscore , hardcore);
-			SDL_RenderPresent(renderer);																									
+			SDL_RenderPresent(renderer);
 			// SI LE PERSONNAGE A ATTENDRE LE SOL
 			if(emplacementPersonnage.y >= WINDOW_H - SOL.h*SCALE_TO_FIT)
 			{
@@ -849,18 +849,42 @@ int afficherBackground(SDL_Renderer *renderer, SDL_Texture* texture_background, 
 int afficherPilonne(SDL_Renderer *renderer, SDL_Texture *texture_pipes, int position, int position_axe_x, int theme)
 {
 
+
 	SDL_Rect obstacle = OBSTACLE_VERT;
 	if( theme )
 		obstacle.x = 0;
 
 	obstacle.x += obstacle.w;
 
-	SDL_Rect target = {position_axe_x,-TRANCHE_POS_OBSTACLE + (TRANCHE_POS_OBSTACLE/NB_POS_OBSTACLE)*position,OBSTACLE_VERT.w*SCALE_TO_FIT,OBSTACLE_VERT.h*SCALE_TO_FIT};
+	SDL_Rect target = {position_axe_x, -TRANCHE_POS_OBSTACLE + (TRANCHE_POS_OBSTACLE/NB_POS_OBSTACLE)*position,OBSTACLE_VERT.w*SCALE_TO_FIT,OBSTACLE_VERT.h*SCALE_TO_FIT};
 
 	SDL_RenderCopy(renderer,texture_pipes,&obstacle,&target);
 
 	target.y += OBSTACLE_VERT.h*SCALE_TO_FIT + DISTANCE_BETWEEN_OBSTACLE*SCALE_TO_FIT;
 	obstacle.x -= obstacle.w;
+
+	float gaucheh =  position_axe_x;
+	float droiteh = position_axe_x + OBSTACLE_VERT.w*SCALE_TO_FIT;
+	float hauth = (-TRANCHE_POS_OBSTACLE + (TRANCHE_POS_OBSTACLE/NB_POS_OBSTACLE)*position) + OBSTACLE_VERT.h*SCALE_TO_FIT;
+	float bash = (-TRANCHE_POS_OBSTACLE + (TRANCHE_POS_OBSTACLE/NB_POS_OBSTACLE)*position) + OBSTACLE_VERT.h*SCALE_TO_FIT + DISTANCE_BETWEEN_OBSTACLE*SCALE_TO_FIT;
+
+    SDL_Rect rect;
+
+	rect = (SDL_Rect){gaucheh-3, hauth-3 , 7,7};
+	SDL_RenderFillRect(renderer, &rect);
+
+	rect = (SDL_Rect){droiteh-3, hauth-3 , 7,7};
+	SDL_RenderFillRect(renderer, &rect);
+
+	 rect = (SDL_Rect){gaucheh-3, bash-3 , 7,7};
+	SDL_RenderFillRect(renderer, &rect);
+
+	 rect = (SDL_Rect){droiteh-3, bash-3 , 7,7};
+	SDL_RenderFillRect(renderer, &rect);
+
+	/*SDL_Rect test = {position_axe_x , (-TRANCHE_POS_OBSTACLE + (TRANCHE_POS_OBSTACLE/NB_POS_OBSTACLE)*position) + OBSTACLE_VERT.h*SCALE_TO_FIT, OBSTACLE_VERT.w*SCALE_TO_FIT ,DISTANCE_BETWEEN_OBSTACLE*SCALE_TO_FIT};*/
+	//SDL_RenderFillRect(renderer, &test);
+
 	return SDL_RenderCopy(renderer,texture_pipes,&obstacle,&target);
 
 }
@@ -910,7 +934,8 @@ int AfficherPersonnage(SDL_Renderer *renderer,SDL_Texture *texture_birds, SDL_Po
 
 	SDL_Point centre = { (PERSO.w*SCALE_TO_FIT) /2, (PERSO.h*SCALE_TO_FIT)/2 };
 
-	SDL_RenderDrawRect(renderer,&target);
+
+	SDL_RenderFillRect(renderer,&target);
 
 	return SDL_RenderCopyEx(renderer,texture_birds,&pos_print,&target, angle , &centre,0);
 }
@@ -1222,11 +1247,34 @@ int collision(pilonne *pilonne, SDL_Point emplacementPersonnage, Mix_Chunk *hurt
 	for (int i = 0; i < PRELOAD_POS_OBSTACLE; i++) {
 		/////////////////////////////////////////////////////
 		// verifier qu'il ce trouve actuellement sur l'axe de deux bloque
-		if( pilonne[i].position + PERSO.w*SCALE_TO_FIT > (  WINDOW_L/2 - ( (OBSTACLE_VERT.w*SCALE_TO_FIT) ) ) && pilonne[i].position + PERSO.w*SCALE_TO_FIT < (  WINDOW_L/2 + ( (OBSTACLE_VERT.w*SCALE_TO_FIT)/2 ) )){
+		float gaucheh =  pilonne[i].position;
+		float droiteh = pilonne[i].position + OBSTACLE_VERT.w*SCALE_TO_FIT;
+		float hauth = (-TRANCHE_POS_OBSTACLE + (TRANCHE_POS_OBSTACLE/NB_POS_OBSTACLE)*pilonne[i].hauteur) + OBSTACLE_VERT.h*SCALE_TO_FIT;
+		float bash = (-TRANCHE_POS_OBSTACLE + (TRANCHE_POS_OBSTACLE/NB_POS_OBSTACLE)*pilonne[i].hauteur) + OBSTACLE_VERT.h*SCALE_TO_FIT + DISTANCE_BETWEEN_OBSTACLE*SCALE_TO_FIT;
+
+		if(emplacementPersonnage.x > gaucheh  && emplacementPersonnage.x < droiteh){
 			int bas =( (  -TRANCHE_POS_OBSTACLE + (TRANCHE_POS_OBSTACLE/NB_POS_OBSTACLE)*pilonne[i].hauteur ) + OBSTACLE_VERT.h*SCALE_TO_FIT ) + PERSO.h*SCALE_TO_FIT/2;
 			int haut = (  -TRANCHE_POS_OBSTACLE + (TRANCHE_POS_OBSTACLE/NB_POS_OBSTACLE)*pilonne[i].hauteur ) + OBSTACLE_VERT.h*SCALE_TO_FIT + DISTANCE_BETWEEN_OBSTACLE*SCALE_TO_FIT - PERSO.h*SCALE_TO_FIT + COMPENSATITION_HITBOX_DOWN;
 			if(! (emplacementPersonnage.y > bas && emplacementPersonnage.y < haut)  )
 				collision_detecter = 1;
+		}
+		else if( emplacementPersonnage.x  + (PERSO.w*SCALE_TO_FIT)/2 > gaucheh &&  emplacementPersonnage.x  - (PERSO.w*SCALE_TO_FIT)/2 < droiteh){
+			//getchar();
+
+            printf("rond hg%.3f bg%.3f hd%.3f bd%.3f %f\n",
+			sqrt( pow(emplacementPersonnage.x - gaucheh , 2) + pow(emplacementPersonnage.y- hauth  , 2)),
+			sqrt( pow( emplacementPersonnage.x - gaucheh, 2) + pow(emplacementPersonnage.y - bash , 2)),
+			sqrt( pow( emplacementPersonnage.x - droiteh, 2) + pow( emplacementPersonnage.y - hauth, 2)),
+			sqrt( pow( emplacementPersonnage.x - droiteh, 2) + pow( emplacementPersonnage.y - bash, 2)) ,
+			  (PERSO.h*SCALE_TO_FIT)/2.);
+			if( sqrt( pow(emplacementPersonnage.x - gaucheh , 2) + pow(emplacementPersonnage.y- hauth  , 2)) <= (PERSO.h*SCALE_TO_FIT)/2.
+			|| sqrt( pow( emplacementPersonnage.x - gaucheh, 2) + pow(emplacementPersonnage.y - bash , 2)) <= (PERSO.h*SCALE_TO_FIT)/2.
+			|| sqrt( pow( emplacementPersonnage.x - droiteh, 2) + pow( emplacementPersonnage.y - hauth, 2)) <= (PERSO.h*SCALE_TO_FIT)/2.
+			|| sqrt( pow( emplacementPersonnage.x - droiteh, 2) + pow( emplacementPersonnage.y - bash, 2)) <= (PERSO.h*SCALE_TO_FIT)/2.){
+                printf("colli rond\n");
+				getchar();
+                collision_detecter = 1;
+			}
 
 		}
 
