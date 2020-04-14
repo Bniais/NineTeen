@@ -1336,12 +1336,12 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 				}
    			}
    			else if(thread){
-   				afficherLoading(renderer, textures[S_LOADING], COLOR_JAUGE, 0, 15, frame_anim_loading++);
+   				afficherLoading(renderer, textures[S_LOADING], COLOR_JAUGE, 0, 15, frame_anim_loading++, BASE_WINDOW_W * ratioWindowSize, BASE_WINDOW_H * ratioWindowSize);
    			}
 
 			if(frameRetour){
 
-				afficherRetour(renderer, textures[S_LOADING],fonts[S_BASE_FONT], COLOR_JAUGE, 0, 15, frameRetour);
+				afficherRetour(renderer, textures[S_LOADING],fonts[S_BASE_FONT], COLOR_JAUGE, 0, 15, frameRetour, BASE_WINDOW_W * ratioWindowSize, BASE_WINDOW_H * ratioWindowSize);
 				if(frameRetour >0)
 					frameRetour--;
 				else
