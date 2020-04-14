@@ -89,6 +89,7 @@ int checkVersion(char version[])
   if( checkVersionOnline(version) )
   {
     #ifdef _WIN32
+      system("mshta vbscript:Execute(\"msgbox \"\"Une nouvelle version est disponible\"\":close\")");
     #endif
 
     #ifdef __APPLE__
@@ -96,7 +97,7 @@ int checkVersion(char version[])
     #endif
 
     #ifdef __linux
-      system("");
+      system("zenity --warning --text \"Une nouvelle version est disponible\"");
     #endif
 
     return EXIT_FAILURE;
