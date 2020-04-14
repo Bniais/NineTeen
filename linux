@@ -1,4 +1,4 @@
-OBJS	= main.o room.o flappy_bird.o import.o libWeb.o textField.o tetris.o snake.o asteroid.o hashage.o fullpath.o
+OBJS	= main.o room.o flappy_bird.o import.o libWeb.o textField.o tetris.o snake.o asteroid.o hashage.o fullpath.o communFunctions.o
 SOURCE	= launcher.c
 HEADER	= room.h flappy_bird.h tetris.h snake.h asteroid.h fullpath.h
 OUT	= Nineteen
@@ -46,6 +46,9 @@ textField.o : include/textField.c
 
 fullpath.o : include/fullpath.c
 	$(CC) $(FLAGS) $^
+
+communFunctions.o : include/communFunctions.c
+	$(CC) $(FLAGS) $^	
 
 clean:
 	rm -f $(OBJS) ./$(OUT)
