@@ -588,15 +588,15 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 				//////////////////////////////////////////////////////////////////
 				// CHOISIR MEDAIL A AFFICHER EN FONCTION DU SCORE
 				//
-				int choixMedalsAvecScore = 0;
-				if ( score < 1)
-					choixMedalsAvecScore = 0;
-				else if(score < 2 )
+				int choixMedalsAvecScore = 3;
+				if ( score < 5)
+					choixMedalsAvecScore = 4; // pas de médaille
+				else if(score < 10)
+						choixMedalsAvecScore = 0;
+				else if(score < 20 )
 						choixMedalsAvecScore = 1;
-				else if(score < 3 )
+				else if(score < 30 )
 						choixMedalsAvecScore = 2;
-				else if(score < 4 )
-						choixMedalsAvecScore = 3;
 
 
 				//////////////////////////////////////////////////////////////////
@@ -863,24 +863,6 @@ int afficherPilonne(SDL_Renderer *renderer, SDL_Texture *texture_pipes, int posi
 	target.y += OBSTACLE_VERT.h*SCALE_TO_FIT + DISTANCE_BETWEEN_OBSTACLE*SCALE_TO_FIT;
 	obstacle.x -= obstacle.w;
 
-	float gaucheh =  position_axe_x;
-	float droiteh = position_axe_x + OBSTACLE_VERT.w*SCALE_TO_FIT;
-	float hauth = (-TRANCHE_POS_OBSTACLE + (TRANCHE_POS_OBSTACLE/NB_POS_OBSTACLE)*position) + OBSTACLE_VERT.h*SCALE_TO_FIT;
-	float bash = (-TRANCHE_POS_OBSTACLE + (TRANCHE_POS_OBSTACLE/NB_POS_OBSTACLE)*position) + OBSTACLE_VERT.h*SCALE_TO_FIT + DISTANCE_BETWEEN_OBSTACLE*SCALE_TO_FIT;
-
-    SDL_Rect rect;
-
-	rect = (SDL_Rect){gaucheh-3, hauth-3 , 7,7};
-	SDL_RenderFillRect(renderer, &rect);
-
-	rect = (SDL_Rect){droiteh-3, hauth-3 , 7,7};
-	SDL_RenderFillRect(renderer, &rect);
-
-	 rect = (SDL_Rect){gaucheh-3, bash-3 , 7,7};
-	SDL_RenderFillRect(renderer, &rect);
-
-	 rect = (SDL_Rect){droiteh-3, bash-3 , 7,7};
-	SDL_RenderFillRect(renderer, &rect);
 
 	/*SDL_Rect test = {position_axe_x , (-TRANCHE_POS_OBSTACLE + (TRANCHE_POS_OBSTACLE/NB_POS_OBSTACLE)*position) + OBSTACLE_VERT.h*SCALE_TO_FIT, OBSTACLE_VERT.w*SCALE_TO_FIT ,DISTANCE_BETWEEN_OBSTACLE*SCALE_TO_FIT};*/
 	//SDL_RenderFillRect(renderer, &test);
@@ -935,7 +917,7 @@ int AfficherPersonnage(SDL_Renderer *renderer,SDL_Texture *texture_birds, SDL_Po
 	SDL_Point centre = { (PERSO.w*SCALE_TO_FIT) /2, (PERSO.h*SCALE_TO_FIT)/2 };
 
 
-	SDL_RenderFillRect(renderer,&target);
+	//SDL_RenderFillRect(renderer,&target);
 
 	return SDL_RenderCopyEx(renderer,texture_birds,&pos_print,&target, angle , &centre,0);
 }
@@ -1259,23 +1241,12 @@ int collision(pilonne *pilonne, SDL_Point emplacementPersonnage, Mix_Chunk *hurt
 				collision_detecter = 1;
 		}
 		else if( emplacementPersonnage.x  + (PERSO.w*SCALE_TO_FIT)/2 > gaucheh &&  emplacementPersonnage.x  - (PERSO.w*SCALE_TO_FIT)/2 < droiteh){
-			//getchar();
-
-            printf("rond hg%.3f bg%.3f hd%.3f bd%.3f %f\n",
-			sqrt( pow(emplacementPersonnage.x - gaucheh , 2) + pow(emplacementPersonnage.y- hauth  , 2)),
-			sqrt( pow( emplacementPersonnage.x - gaucheh, 2) + pow(emplacementPersonnage.y - bash , 2)),
-			sqrt( pow( emplacementPersonnage.x - droiteh, 2) + pow( emplacementPersonnage.y - hauth, 2)),
-			sqrt( pow( emplacementPersonnage.x - droiteh, 2) + pow( emplacementPersonnage.y - bash, 2)) ,
-			  (PERSO.h*SCALE_TO_FIT)/2.);
 			if( sqrt( pow(emplacementPersonnage.x - gaucheh , 2) + pow(emplacementPersonnage.y- hauth  , 2)) <= (PERSO.h*SCALE_TO_FIT)/2.
 			|| sqrt( pow( emplacementPersonnage.x - gaucheh, 2) + pow(emplacementPersonnage.y - bash , 2)) <= (PERSO.h*SCALE_TO_FIT)/2.
 			|| sqrt( pow( emplacementPersonnage.x - droiteh, 2) + pow( emplacementPersonnage.y - hauth, 2)) <= (PERSO.h*SCALE_TO_FIT)/2.
 			|| sqrt( pow( emplacementPersonnage.x - droiteh, 2) + pow( emplacementPersonnage.y - bash, 2)) <= (PERSO.h*SCALE_TO_FIT)/2.){
-                printf("colli rond\n");
-				getchar();
                 collision_detecter = 1;
 			}
-
 		}
 
 	}
