@@ -1,4 +1,4 @@
-#define VERSION_LOGICIEL "version=0.1.4b"
+#define VERSION_LOGICIEL "version=0.1.5b"
 
 
 #include <stdio.h>
@@ -29,7 +29,12 @@
 #define TRUE 1
 #define FALSE 0
 
-#define DIR_TOKEN_FILE "/tmp/.Nineteen"
+#ifdef _WIN32
+  #define DIR_TOKEN_FILE "C:\Windows\Temp\.Nineteen"
+#else
+  #define DIR_TOKEN_FILE "/tmp/.Nineteen"
+#endif
+
 #define DIR_CONFIG_FILE "launcher/.config"
 #define DIR_MUSIC_FILE "assets/background.wav"
 
@@ -88,6 +93,7 @@ int checkVersion(char version[])
     #endif
 
     #ifdef __linux
+      system("");
     #endif
 
     return EXIT_FAILURE;

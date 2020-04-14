@@ -107,6 +107,12 @@ struct Camera_s
 enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINEUR_HARD,DEMINEUR_EASY,SNAKE_EASY,PACMAN_EASY,ASTEROID_EASY,TETRIS_EASY,FLAPPY_EASY};
 
 
+#ifdef _WIN32
+  #define DIR_TOKEN_FILE "C:\Windows\Temp\.Nineteen"
+#else
+  #define DIR_TOKEN_FILE "/tmp/.Nineteen"
+#endif
+
 
 /////////////////////////////////////////////////////
 /// \fn int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene )
@@ -1720,7 +1726,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									case SDLK_d:
 										decision = 0;
 										printf("Vous vous deconnecter\n");
-										FILE *fp = fopen("/tmp/.Nineteen","w");
+										FILE *fp = fopen(DIR_TOKEN_FILE,"w");
 										fclose(fp);
 										*Running = 0;
 										break;
