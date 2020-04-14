@@ -541,7 +541,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 			// MISE A JOUR DE l"AFFICHAGE
 			exitCode = afficherTout(renderer, &thread, myFont, &retour, &frame_anim_loading, &frameRetour, texture_loading, emplacementPersonnage , pilonne, score ,1 , 0 , cible , angle,
 																												texture_background,  texture_pipes,  texture_birds,   texture_medals,  texture_scoreBoard,  texture_sol,   texture_chiffre, texture_highscore , hardcore);
-
+			SDL_RenderPresent(renderer);																									
 			// SI LE PERSONNAGE A ATTENDRE LE SOL
 			if(emplacementPersonnage.y >= WINDOW_H - SOL.h*SCALE_TO_FIT)
 			{
@@ -909,6 +909,8 @@ int AfficherPersonnage(SDL_Renderer *renderer,SDL_Texture *texture_birds, SDL_Po
 		 								PERSO.w*SCALE_TO_FIT , PERSO.h*SCALE_TO_FIT};
 
 	SDL_Point centre = { (PERSO.w*SCALE_TO_FIT) /2, (PERSO.h*SCALE_TO_FIT)/2 };
+
+	SDL_RenderDrawRect(renderer,&target);
 
 	return SDL_RenderCopyEx(renderer,texture_birds,&pos_print,&target, angle , &centre,0);
 }
