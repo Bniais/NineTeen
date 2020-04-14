@@ -437,7 +437,7 @@ int updateEnded;
 /////////////////////////////////////////////////////
 int updateScore(EnvoiScore * envoiScore )
 {
-	SDL_Delay(1400);
+	updateEnded = 0;
 	char *request;
 	char *response;
 	if ( !construire_requete(&request, NULL, NULL, envoiScore->key, envoiScore->gameID, envoiScore->score) )
