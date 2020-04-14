@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 
 body {
 	font-family: 'Orbitron', sans-serif;
@@ -68,20 +69,20 @@ a {
 
 .rang-classement {
 	margin-left: 4%;
-	width: 26%; 
-	text-align: left; 
+	width: 26%;
+	text-align: left;
 	display: inline-block;
 }
 
 .rang-name {
-	width: 36%; 
-	text-align: center; 
+	width: 36%;
+	text-align: center;
 	display: inline-block;
 }
 .rang-score {
 	margin-right: 4%;
-	width: 26%; 
-	text-align: right; 
+	width: 26%;
+	text-align: right;
 	display: inline-block;
 }
 
@@ -108,11 +109,11 @@ a {
 
 .jeu
 {
-	
+
 	margin-bottom: 5%;
-	width: 28%; 
-	height:auto; 
-	
+	width: 28%;
+	height:auto;
+
 	border-radius: 1vw;
 	border-width:5%;
 	border-style:solid ;
@@ -122,11 +123,11 @@ a {
 
 .classement
 {
-	
+
 	margin-bottom: 5%;
-	width: 28%; 
-	height:auto; 
-	
+	width: 28%;
+	height:auto;
+
 	border-radius: 1vw;
 	border-width:5%;
 	border-style:solid ;
@@ -147,17 +148,17 @@ a {
 
 
 
-.top3 
+.top3
 {
-	
+
 }
 
 .center-div {
      margin: 0 auto;
-     width: 100px; 
+     width: 100px;
 }
 
-.leader 
+.leader
 {
 	font-size: 60px;
 	color: yellow;
@@ -176,31 +177,31 @@ a {
 
 .ticket-num
 {
-	width: 15vw; 
-	height: auto; 
-	border-radius:  20px;  
-	margin-bottom: 10px; 
-	text-align: center; 
+	width: 15vw;
+	height: auto;
+	border-radius:  20px;
+	margin-bottom: 10px;
+	text-align: center;
 	background-color: white;
 	font-size: 1vw;}
 
 .ticket-message
 {
-	width: 15vw; 
-	height: auto; 
-	border-radius:  20px; 
-	margin-bottom: 10px; 
-	text-align: center; 
+	width: 15vw;
+	height: auto;
+	border-radius:  20px;
+	margin-bottom: 10px;
+	text-align: center;
 	background-color: white;
 	font-size: 1vw;
 }
-.ticket-send 
+.ticket-send
 {
-	width: 15vw; 
-	height: auto; 
-	border-radius:  20px; 
-	margin-bottom: 10px; 
-	text-align: center; 
+	width: 15vw;
+	height: auto;
+	border-radius:  20px;
+	margin-bottom: 10px;
+	text-align: center;
 	background-color: white;
 	font-size: 1vw;
 }
@@ -215,6 +216,7 @@ a:link {
 .topnav {
 	background-color: #333;
 	overflow: hidden;
+	font-family: "Roboto";
 }
 
 /* Style the links inside the navigation bar */
