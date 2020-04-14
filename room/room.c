@@ -56,7 +56,7 @@
 #define HAUTEUR_CAMERA_DEBOUT 3.5F
 #define HAUTEUR_CAMERA_ACCROUPI 2.7F
 #define MAX_Y_AXE_CIBLE 2.8F
-const float ANGLE_DETECTION_MACHINE = M_PI/5;
+const float ANGLE_DETECTION_MACHINE = M_PI/6;
 
 #define START_PX -13.0F //AXE X
 #define START_PY 3.5F // hauteur CAMERA
@@ -94,7 +94,7 @@ SDL_Color Text_rouge = {255,0,0};
 
 // lier au son
 #define NB_INDICE_PORTER 2
-#define MAX_VOLUME_ARCADE 80
+#define MAX_VOLUME_ARCADE 70
 
 // STATIC VAR FOR CAMERA
 struct Camera_s
@@ -571,7 +571,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		// MUSIQUE LOT MACHINE DROITE
 		reglageVolume(1,5.0,11.0,camera.px,camera.pz,10.0,camera.angle);
 		// MUSIQUE MACHINE SEUL
-		reglageVolume(2,0.0,0.0,camera.px,camera.pz,15.0,camera.angle);
+		reglageVolume(2,0.0,0.0,camera.px,camera.pz,10.0,camera.angle);
 		//////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////
