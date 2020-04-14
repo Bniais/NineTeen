@@ -33,7 +33,7 @@
 #define FALSE 0
 
 #ifdef _WIN32
-  #define DIR_TOKEN_FILE "C:\Windows\Temp\.Nineteen"
+  #define DIR_TOKEN_FILE "C:\\Windows\\Temp\\.Nineteen"
 #else
   #define DIR_TOKEN_FILE "/tmp/.Nineteen"
 #endif
