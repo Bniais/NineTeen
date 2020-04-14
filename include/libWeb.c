@@ -24,6 +24,9 @@ typedef struct{char *gameID; char *score; char *key;}EnvoiScore;
 #define URL_TIMESTAMP "https://nineteen.recognizer.fr/include/timestamp.php"
 #define URL_GET_COINS "https://nineteen.recognizer.fr/coins.php"
 #define URL_BUY_GAMEPASS "https://nineteen.recognizer.fr/buygamepass.php"
+#define URL_CHECK_VERSION "https://nineteen.recognizer.fr/checkVersion.php"
+
+
 
 #define ERR_REQUIERED_FIELD -1
 #define ERR_SQL_FAILED -2
@@ -491,4 +494,29 @@ int ping()
 	}
 	finish = clock();
 	return (int)(finish - start)/ CLOCKS_PER_MS;
+}
+
+/////////////////////////////////////////////////////
+/// \fn int checkVersionOnline(char message[])
+/// \brief permet de verifier la bonne version de l'utilisateur
+///
+/// \return DELAY MS
+/////////////////////////////////////////////////////
+int checkVersionOnline(char message[])
+{
+	char *response;
+	if ( !envoyez_requet(&response,URL_CHECK_VERSION,message) )
+	{
+		if ( !strcmp(response, "1") )
+		{
+			free(response);
+			response = NULL;
+			return EXIT_SUCCESS;
+		}
+		free(response);
+		response = NULL;
+		return EXIT_FAILURE;
+
+	}
+	return EXIT_FAILURE;
 }

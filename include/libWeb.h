@@ -118,3 +118,12 @@ int updateScore(EnvoiScore * envoiScore );
 /// \return DELAY MS
 /////////////////////////////////////////////////////
 int ping();
+
+
+/////////////////////////////////////////////////////
+/// \fn int checkVersionOnline(char message[])
+/// \brief permet de verifier la bonne version de l'utilisateur
+///
+/// \return DELAY MS
+/////////////////////////////////////////////////////
+int checkVersionOnline(char message[]);
