@@ -942,10 +942,13 @@ static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeB
 
 extern int updateEnded;
 int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *token, int hardcore){
+
 /////////////////////
 /// MISE EN PLACE ///``
 /////////////////////
 	snakeInit();
+	int w, h;
+	SDL_GetRendererOutputSize(renderer, &w, &h);
 	//Le thread qui sera utiliser
 	SDL_Thread *thread = NULL;
 	char buffer[10];
@@ -1336,12 +1339,12 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 				}
    			}
    			else if(thread){
-   				afficherLoading(renderer, textures[S_LOADING], COLOR_JAUGE, 0, 15, frame_anim_loading++, BASE_WINDOW_W * ratioWindowSize, BASE_WINDOW_H * ratioWindowSize);
+   				afficherLoading(renderer, textures[S_LOADING], COLOR_JAUGE, 0, 15, frame_anim_loading++, w , h);
    			}
 
 			if(frameRetour){
 
-				afficherRetour(renderer, textures[S_LOADING],fonts[S_BASE_FONT], COLOR_JAUGE, 0, 15, frameRetour, BASE_WINDOW_W * ratioWindowSize, BASE_WINDOW_H * ratioWindowSize);
+				afficherRetour(renderer, textures[S_LOADING],fonts[S_BASE_FONT], COLOR_JAUGE, 0, 15, frameRetour, w, h);
 				if(frameRetour >0)
 					frameRetour--;
 				else
