@@ -61,7 +61,7 @@ typedef struct{char *key; char *email; char *password; int retour;}ConnectStruct
 int connectWithUsername(ConnectStruct connectStruct);
 
 /////////////////////////////////////////////////////
-/// \fn getCoinsValues(char *key,int *coins)
+/// \fn updateMeilleureScoreStruct(char *key,int *coins)
 /// \brief recuperer notre somme d'argent
 ///
 /// \param char *key Ecriture de la clé dans key
@@ -69,7 +69,7 @@ int connectWithUsername(ConnectStruct connectStruct);
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int getCoinsValues(char *key,char *coins);
+int updateMeilleureScoreStruct(char *key,char *coins);
 
 /////////////////////////////////////////////////////
 /// \fn buyGamePass(char *key, char *gameID)

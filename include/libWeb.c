@@ -354,7 +354,7 @@ int connectWithKey(char *key)
 
 
 /////////////////////////////////////////////////////
-/// \fn getCoinsValues(char *key,int *coins)
+/// \fn updateMeilleureScoreStruct(char *key,int *coins)
 /// \brief recuperer notre somme d'argent
 ///
 /// \param char *key Ecriture de la clé dans key
@@ -362,7 +362,7 @@ int connectWithKey(char *key)
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int getCoinsValues(char *key,char *retour)
+int updateMeilleureScoreStruct(char *key,char *retour)
 {
 	printf("getcoin\n");
 	char *request;

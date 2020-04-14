@@ -49,12 +49,14 @@
 #define DIR_OBJ_LOAD "room/salle.obj"
 // EMPLACEMENT FIHCIER NECESSAIRE
 
+#define VITESSE_DEPLACEMENT_COURIR 0.14F
 #define VITESSE_DEPLACEMENT_DEBOUT 0.09F
 #define VITESSE_DEPLACEMENT_ACCROUPI 0.035F
 #define SENSIBILITE_CAMERA 0.08F
 #define HAUTEUR_CAMERA_DEBOUT 3.5F
 #define HAUTEUR_CAMERA_ACCROUPI 2.7F
 #define MAX_Y_AXE_CIBLE 2.8F
+const float ANGLE_DETECTION_MACHINE = M_PI/5;
 
 #define START_PX -13.0F //AXE X
 #define START_PY 3.5F // hauteur CAMERA
@@ -330,7 +332,7 @@ void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera
 void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y);
 
 /////////////////////////////////////////////////////
-/// \fn void messageMachine(struct MeilleureScore_s str[],struct Camera_s camera,TTF_Font *font,int afficherMessage)
+/// \fn void messageMachine(struct MeilleureScore_s str[] ,struct Camera_s camera,TTF_Font *font,int afficherMessage)
 /// \brief affichage un message propre a chaque machine
 ///
 /// \param struct MeilleureScore_s str[] structure stockant les nom et score des meilleure joueur par machine
@@ -340,7 +342,7 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y);
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void messageMachine(struct MeilleureScore_s str[],struct Camera_s camera,TTF_Font *font,int afficherMessage);
+void messageMachine(struct MeilleureScore_s str[] ,struct Camera_s camera,TTF_Font *font,int afficherMessage);
 
 
 /////////////////////////////////////////////////////
@@ -419,7 +421,7 @@ void InitMeilleureScore(struct MeilleureScore_s str[]);
 
 
 /////////////////////////////////////////////////////
-/// \fn void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
+/// \fn void lleureScore(struct MeilleureScore_s str[] ,char *token)
 /// \brief Mes a jours les donnees liee au score de la structure meilleureScore
 ///
 /// \param struct MeilleureScore_s str[] tableau de donner
@@ -729,16 +731,16 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 {
 	///////////////////////////////////////////////////////////
 	// INITALISATION D'UNE CHAINE POUR STOCKER LA REPONSE
-	char reponse[1024];
+	char reponse[2048];
 
 	///////////////////////////////////////////////////////////
 	// RECUPERATION DU SCORE JUSQU'A REUSSITE
-	while( getCoinsValues(token,reponse) == EXIT_FAILURE );
+	while( updateMeilleureScoreStruct(token,reponse) == EXIT_FAILURE );
 
 	///////////////////////////////////////////////////////////
 	// PARSING DANS LA CHAINE DE DONNER RECU
 	int temp1,temp2;
-	sscanf(reponse,"%d %d / %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d", &str[0].score,&temp1,&temp2,
+	sscanf(reponse,"%d %d / %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &str[0].score,&temp1,&temp2,
 																																str[FLAPPY_HARD].nomJoueur,&str[FLAPPY_HARD].score,
 																																str[TETRIS_HARD].nomJoueur,&str[TETRIS_HARD].score,
 																																str[ASTEROID_HARD].nomJoueur,&str[ASTEROID_HARD].score,
@@ -753,7 +755,23 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 																																str[FLAPPY_EASY].nomJoueur,&str[FLAPPY_EASY].score,
 																																str[13].nomJoueur,&str[13].score,
 																																str[14].nomJoueur,&str[14].score,
-																																str[15].nomJoueur,&str[15].score
+																																str[15].nomJoueur,&str[15].score,
+																																&str[1].scoreJoueurActuel,
+																																&str[2].scoreJoueurActuel,
+																																&str[3].scoreJoueurActuel,
+																																&str[4].scoreJoueurActuel,
+																																&str[5].scoreJoueurActuel,
+																																&str[6].scoreJoueurActuel,
+																																&str[7].scoreJoueurActuel,
+																																&str[8].scoreJoueurActuel,
+																																&str[9].scoreJoueurActuel,
+																																&str[10].scoreJoueurActuel,
+																																&str[11].scoreJoueurActuel,
+																																&str[12].scoreJoueurActuel,
+																																&str[13].scoreJoueurActuel,
+																																&str[14].scoreJoueurActuel,
+																																&str[15].scoreJoueurActuel
+
 																															);
 
 		///////////////////////////////////////////////////////////
@@ -1191,6 +1209,11 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 	///////////////////////////////////////////////////
 	// REGLAGE EN FONCTION DES FPS FIXER
 	// VALEUR BASER SUR 60 FPS DE BASE
+
+
+	// DETECTER COURSE A PIED
+
+
 	float _SENSIBILITE_CAMERA = SENSIBILITE_CAMERA * (IPS/FPS);
 	float _VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT * (IPS/FPS);
 
@@ -1198,6 +1221,13 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 	///////////////////////////////////////////////////
 	// INITALISATION D'UN EVENEMENT SDL
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+
+
+	//DETECTER LA COURSE A PIED
+	if( keystate[SDL_SCANCODE_LSHIFT] )
+	{
+		_VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_COURIR * (IPS/FPS);
+	}
 
 	///////////////////////////////////////////////////
 	// MOUVEMENT CAMERA SUR X ET Z
@@ -1328,6 +1358,8 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 
 
 
+
+
 	// MISE A JOURS DE LA POSITION DE LA CAMERA
 	gluLookAt(camera->px                   ,camera->py    ,camera->pz                  ,
 			  camera->px+sin(camera->angle) ,camera->py + camera->cible_py    , camera->pz+cos(camera->angle),
@@ -1436,7 +1468,7 @@ int detecterMachine(float x,float y,float angle)
 		{
 			///////////////////////////////////////////////////
 			// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
-			if(angle > M_PI - (M_PI/3) && angle < M_PI + (M_PI/3) )
+			if(angle > M_PI - (ANGLE_DETECTION_MACHINE) && angle < M_PI + (ANGLE_DETECTION_MACHINE) )
 			{
 				///////////////////////////////////////////////////
 				// DETECTER PRECICEMENT LA MACHINE PARMIS LES 3
@@ -1454,7 +1486,7 @@ int detecterMachine(float x,float y,float angle)
 		{
 			///////////////////////////////////////////////////
 			// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
-			if( ( angle > ( 2*M_PI - (M_PI/3) ) && angle <= 2*M_PI  ) ||    (    angle >= 0 && angle < 0 + (M_PI/3)   )   )
+			if( ( angle > ( 2*M_PI - (ANGLE_DETECTION_MACHINE) ) && angle <= 2*M_PI  ) ||    (    angle >= 0 && angle < 0 + (ANGLE_DETECTION_MACHINE)   )   )
 			{
 				///////////////////////////////////////////////////
 				// DETECTER PRECICEMENT LA MACHINE PARMIS LES 3
@@ -1479,7 +1511,7 @@ int detecterMachine(float x,float y,float angle)
 		{
 			///////////////////////////////////////////////////
 			// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
-			if(angle > M_PI - (M_PI/3) && angle < M_PI + (M_PI/3) )
+			if(angle > M_PI - (ANGLE_DETECTION_MACHINE) && angle < M_PI + (ANGLE_DETECTION_MACHINE) )
 			{
 				if( x < 3.4 )
 					return 7;
@@ -1495,7 +1527,7 @@ int detecterMachine(float x,float y,float angle)
 		{
 			///////////////////////////////////////////////////
 			// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
-			if( ( angle > ( 2*M_PI - (M_PI/3) ) && angle <= 2*M_PI  ) ||    (    angle >= 0 && angle < 0 + (M_PI/3)   )   )
+			if( ( angle > ( 2*M_PI - (ANGLE_DETECTION_MACHINE) ) && angle <= 2*M_PI  ) ||    (    angle >= 0 && angle < 0 + (ANGLE_DETECTION_MACHINE)   )   )
 			{
 				if( x < 3.4 )
 					return 10;
@@ -1513,7 +1545,7 @@ int detecterMachine(float x,float y,float angle)
 	{
 		///////////////////////////////////////////////////
 		// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
-		if(angle > 3*M_PI/2 - (M_PI/3) && angle < 3*M_PI/2 + (M_PI/3))
+		if(angle > 3*M_PI/2 - (ANGLE_DETECTION_MACHINE) && angle < 3*M_PI/2 + (ANGLE_DETECTION_MACHINE))
 		{
 			if(y < 11.25)
 				return 13;
@@ -1527,7 +1559,7 @@ int detecterMachine(float x,float y,float angle)
 	if( x > -1.0 && x < 1.0 && y > 1.0 && y < 3.0)
 		///////////////////////////////////////////////////
 		// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
-		if(angle > M_PI - (M_PI/3) && angle < M_PI + (M_PI/3) )
+		if(angle > M_PI - (ANGLE_DETECTION_MACHINE) && angle < M_PI + (ANGLE_DETECTION_MACHINE) )
 			return 15;
 
 
@@ -1535,7 +1567,7 @@ int detecterMachine(float x,float y,float angle)
 	return 0;
 }
 
-void messageMachine(struct MeilleureScore_s str[],struct Camera_s camera,TTF_Font *font,int afficherMessage)
+void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Font *font,int afficherMessage)
 {
 	///////////////////////////////////////////////////////////////////
 	// RETOURNE LE CODE DE LA MACHINE DETECTER 0 SI NON DETECTER
@@ -1552,6 +1584,10 @@ void messageMachine(struct MeilleureScore_s str[],struct Camera_s camera,TTF_Fon
 		AfficherText(font,message,white,-1,WinHeight/8);
 		// AFFICHAGE DU TEXT DU NOM DU JEU
 		AfficherText(font,str[detection].nomJeux,white,-1,WinHeight/6);
+		// CONCATENATION MEILLEURE SCORE DU JOUEUR
+		sprintf(message, "RECORD  PERSO  :   %d",str[detection].scoreJoueurActuel);
+		// AFFICHER RECORD PERSONNEL
+		AfficherText(font,message,white,-1,WinHeight*0.9);
 
 		////////////////////////////////////////////////
 		// AFFICHAGE CLIGNOTANT
@@ -1717,38 +1753,38 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							// AVEC UPDATE DU SCORE A L ISSUS
 							switch (machine) {
 								case 1:
-									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].score,WinWidth,WinHeight,token,1));
+									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1));
 									updateMeilleureScore(meilleureScore,token);
 								break;
 								case 2:
-									tetris( pRenderer ,meilleureScore[TETRIS_HARD].score, 1920./WinWidth,token,1);
+									tetris( pRenderer ,meilleureScore[TETRIS_HARD].scoreJoueurActuel, 1920./WinWidth,token,1);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 3:
-									asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].score, 1920./WinWidth,token,1);
+									asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].scoreJoueurActuel, 1920./WinWidth,token,1);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 4: SDL_Delay(500);break;
 								case 5:
-									snake( pRenderer ,meilleureScore[SNAKE_HARD].score, WinWidth/1920.,token,1);
+									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel, WinWidth/1920.,token,1);
 									updateMeilleureScore(meilleureScore,token);
 								case 6: SDL_Delay(500);break;
 								case 7: SDL_Delay(500);break;
 								case 8:
-									snake( pRenderer ,meilleureScore[SNAKE_EASY].score, WinWidth/1920.,token,0);
+									snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel, WinWidth/1920.,token,0);
 									updateMeilleureScore(meilleureScore,token);
 								case 9: SDL_Delay(500);break;
 								case 10:
-									asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].score, 1920./WinWidth,token,0);
+									asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 11: {
-									tetris( pRenderer ,meilleureScore[TETRIS_EASY].score, 1920./WinWidth,token,0);
+									tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								}break;
 								case 12:
-									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].score,WinWidth,WinHeight,token,0));
+									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0));
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 13: SDL_Delay(500);break;
