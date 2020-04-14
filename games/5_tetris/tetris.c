@@ -336,8 +336,14 @@ int almostRound( float f ){
 *\param frameToGo Le nombre de frame avant que la pièce commence à tomber
 *\return Vrai si la pièce a pu être placée, sinon faux
 */
-int putAtTop(Piece *piece,  int matrix[GRILLE_W][GRILLE_H], int frameToGo){
+int putAtTop(Piece *piece,  int matrix[GRILLE_W][GRILLE_H], int frameToGo, int hardcore){
 	piece->x = roundf((GRILLE_W - piece->size) / 2);
+	 //Ajustements
+	if(!hardcore && piece->id <= 1 )
+		(piece->x) ++;
+	else if(hardcore && (piece->id == 2 || piece->id == 3) )
+	(piece->x) --;
+
 	piece->y = 0 - piece->firstRow;
 	piece->frameToGo = frameToGo;
 	piece->frameDir = 0;
@@ -1963,7 +1969,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 		initPiece(&nextPiece);
 		getNewPiece(&currentPiece, SDL_FALSE, hardcore);
 		getNewPiece(&nextPiece, SDL_FALSE, hardcore);
-		putAtTop(&currentPiece, matrix, (int)frame[TO_GO]);
+		putAtTop(&currentPiece, matrix, (int)frame[TO_GO], hardcore);
 		putAtNextPiece(&nextPiece);
 
 	 // // // // // // //
@@ -2092,7 +2098,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 							if(nextIsGiant)
 								nextIsGiant--;
 
-							if( !putAtTop(&currentPiece, matrix, (int)frame[TO_GO]) ){
+							if( !putAtTop(&currentPiece, matrix, (int)frame[TO_GO], hardcore) ){
 								if(linesInCompletion(matrixFill, frameLaser, frameCompleteLine))
 									waitToPlace = SDL_TRUE;
 								else{
@@ -2140,7 +2146,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 					currentPiece.frameToGo--;
 			}
 			else if(waitToPlace){
-				if(putAtTop(&currentPiece, matrix, 2*(int)frame[TO_GO]) ){
+				if(putAtTop(&currentPiece, matrix, 2*(int)frame[TO_GO], hardcore) ){
 					waitToPlace = SDL_FALSE;
 				}
 				else if(!linesInCompletion(matrixFill, frameLaser, frameCompleteLine)){
