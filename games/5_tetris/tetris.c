@@ -2237,12 +2237,12 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 				}
 			}
 			else if(thread){
-				afficherLoading(renderer, textures[T_LOADING], JAUGE_COLOR, 0, 0, frame_anim_loading++, BASE_WINDOW_W , BASE_WINDOW_H );
+				afficherLoading(renderer, textures[T_LOADING], JAUGE_COLOR, 0, 0, frame_anim_loading++, BASE_WINDOW_W , BASE_WINDOW_H, BASE_WINDOW_W );
 			}
 
 			if(frameRetour){
 
-				afficherRetour(renderer, textures[T_LOADING],fonts[T_FONT_COMBO], JAUGE_COLOR, 0, 0, frameRetour, BASE_WINDOW_W , BASE_WINDOW_H );
+				afficherRetour(renderer, textures[T_LOADING],fonts[T_FONT_COMBO], JAUGE_COLOR, 0, 0, frameRetour, BASE_WINDOW_W , BASE_WINDOW_H, BASE_WINDOW_W );
 				if(frameRetour >0)
 					frameRetour--;
 				else
