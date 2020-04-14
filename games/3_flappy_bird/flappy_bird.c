@@ -5,8 +5,11 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 
+#include "../../include/communFunctions.h"
 #include "../../include/libWeb.h"
 #include "../../include/hashage.h"
+
+#include"../../define/define.h"
 //native resolution
 #define WINDOW_L 1820.
 #define WINDOW_H 1024.
@@ -33,6 +36,8 @@ const SDL_Rect HIGH_SCORE = {0,0,512,512};
 const SDL_Rect SCOREBOARD = {0,0,113,57};
 const SDL_Rect MEDALS = {0,0,22,22};
 #define COMPENSATITION_HITBOX_DOWN 20
+
+const SDL_Color COLOR_LOADING = {0x22,0xf4,0x57};
 
 // PARAMETRE BUFFER OBSTACLE
 #define PRELOAD_POS_OBSTACLE 8
@@ -228,7 +233,7 @@ int afficherMeilleurScore(SDL_Renderer* renderer,SDL_Texture *texture_highscore,
 ///
 /// \return void
 /////////////////////////////////////////////////////
-int afficherTout(SDL_Renderer * renderer, SDL_Point emplacementPersonnage, pilonne *pilonne ,int score,int varAnimationPersonnage,int varAnimationSol, int cible, double angle ,SDL_Texture *texture_background, SDL_Texture *texture_pipes, SDL_Texture *texture_birds, SDL_Texture *texture_medals, SDL_Texture *texture_scoreBoard, SDL_Texture *texture_sol, SDL_Texture *texture_chiffre, SDL_Texture* texture_highscore, int theme);
+int afficherTout(SDL_Renderer * renderer,SDL_Thread ** thread, TTF_Font* myFont, int *retour, int *frame_anim_loading, int *frameRetour, SDL_Texture* texture_loading,SDL_Point emplacementPersonnage, pilonne *pilonne ,int score,int varAnimationPersonnage,int varAnimationSol, int cible, double angle ,SDL_Texture *texture_background, SDL_Texture *texture_pipes, SDL_Texture *texture_birds, SDL_Texture *texture_medals, SDL_Texture *texture_scoreBoard, SDL_Texture *texture_sol, SDL_Texture *texture_chiffre, SDL_Texture* texture_highscore, int theme);
 
 
 /////////////////////////////////////////////////////
@@ -333,11 +338,19 @@ void updateVariableEnvironement(SDL_Point *emplacementPersonnage, int *upper, do
 
 
 
-
+extern int updateEnded;
 // primary func
 int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h, char *token , int hardcore)
 {
+	SDL_Init(SDL_INIT_EVERYTHING);
 
+	SDL_Thread *thread = NULL;
+	char buffer[10];
+	EnvoiScore envoiScore;
+	updateEnded = SDL_FALSE;
+	int retour = EXIT_FAILURE;
+	int frameRetour = 0;
+	int frame_anim_loading = 0;
 	///////////////////////////////////////////////////////
 	// INITALISATION DU RAND
 	srand(time(NULL));
@@ -378,9 +391,17 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 	SDL_Texture *texture_sol = LoadTextureWithErrorCode(renderer,DIR_SOL);
 	SDL_Texture *texture_chiffre = LoadTextureWithErrorCode(renderer,DIR_NUM);
 	SDL_Texture *texture_highscore = LoadTextureWithErrorCode(renderer,DIR_HIGHSCORE);
+	SDL_Texture *texture_loading = LoadTextureWithErrorCode(renderer,DIR_LOADING);
 	// GESTION ERREUR CHARGEMENT TEXTURE
-	if( !texture_background || !texture_pipes || !texture_birds || !texture_medals || !texture_scoreBoard || !texture_sol || !texture_chiffre || !texture_highscore)
+	if( !texture_background || !texture_pipes || !texture_birds || !texture_medals || !texture_scoreBoard || !texture_sol || !texture_chiffre || !texture_highscore || !texture_loading)
 		return IMAGE_ERROR_LOAD;
+
+
+	//police
+	TTF_Init();
+	TTF_Font * myFont = TTF_OpenFont("games/5_tetris/Fonts/zorque.ttf", OPEN_FONT_SIZE);
+	if(!myFont)
+		printf("Impossible d'ouvrir la police %s\n", TTF_GetError() );
 
 
 	//////////////////////////////////////////////////////////////////
@@ -449,7 +470,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// AFFICHAGE DU JEU
-	int exitCode = afficherTout(renderer, emplacementPersonnage , pilonne, score ,1 , 0, cible, angle ,
+	int exitCode = afficherTout(renderer, &thread, myFont, &retour, &frame_anim_loading, &frameRetour, texture_loading, emplacementPersonnage , pilonne, score ,1 , 0, cible, angle ,
 																										texture_background, texture_pipes,  texture_birds, texture_medals,   texture_scoreBoard, texture_sol, texture_chiffre,texture_highscore,hardcore);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -465,6 +486,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 	// DEBUT DU JEU
 	while(!end && !exitCode){
 
+		int sentScore = SDL_FALSE;
 		if( keystate[SDL_SCANCODE_ESCAPE])
 			end = SDL_TRUE;
 		//////////////////////////////////////////////////////////////////
@@ -485,8 +507,9 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 
 
 				// UPDATE AFFICHAGE
-				exitCode = afficherTout(renderer, emplacementPersonnage , pilonne, score ,varAnimationPersonnage , varAnimationSol, cible, angle ,
+				exitCode = afficherTout(renderer, &thread, myFont, &retour, &frame_anim_loading, &frameRetour, texture_loading, emplacementPersonnage , pilonne, score ,varAnimationPersonnage , varAnimationSol, cible, angle ,
 																																						texture_background,  texture_pipes, texture_birds, texture_medals,  texture_scoreBoard,  texture_sol, texture_chiffre, texture_highscore,hardcore);
+
 
 				// UPDATE DECORE
 				traitement = traitement_pilonne(pilonne,traitement,&score,  &score_hash, keys, score_wav);
@@ -517,7 +540,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 			emplacementPersonnage.y += (vitesseGraviter++) / (FPS/30);
 
 			// MISE A JOUR DE l"AFFICHAGE
-			exitCode = afficherTout(renderer, emplacementPersonnage , pilonne, score ,1 , 0 , cible , angle,
+			exitCode = afficherTout(renderer, &thread, myFont, &retour, &frame_anim_loading, &frameRetour, texture_loading, emplacementPersonnage , pilonne, score ,1 , 0 , cible , angle,
 																												texture_background,  texture_pipes,  texture_birds,   texture_medals,  texture_scoreBoard,  texture_sol,   texture_chiffre, texture_highscore , hardcore);
 
 			// SI LE PERSONNAGE A ATTENDRE LE SOL
@@ -525,17 +548,37 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 			{
 
 				// VERIFIER QUE LE SCORE N 'AS PAS ETAIT CHANGER
+				sentScore = SDL_TRUE;
 				if (  score_hash == hashage(score, keys) )
 				{
+					frame_anim_loading = 0;
+					//On atttend si jamais un envoi est en cours
+					if(thread){
+						SDL_WaitThread(thread, &retour);
+						if( retour == EXIT_FAILURE){
+							frameRetour = -2*FRAME_ANIM_RETOUR;
+						}
+						else{
+							 frameRetour = FRAME_ANIM_RETOUR;
+						}
+						thread = NULL;
+					}
+
+
 					// CONVERTIR SCORE EN TEXT
-					char buffer[10];
+
 					sprintf(buffer,"%d",score);
-					printf("ATTENDRE ENVI DU SCORE\n" );
-					/*if(hardcore)
-						updateScore("1",buffer,token);
+
+					if(hardcore)
+						envoiScore = (EnvoiScore){"1", buffer, token};
+					//updateScore("5",buffer,token);
 					else
-						updateScore("12",buffer,token);*/
-					//////////////////////////////////////////////////////////////////
+						envoiScore = (EnvoiScore){"12", buffer, token};
+					//updateScore("8",buffer,token);
+
+					printf("CONNEXION...\n" );
+
+					thread = SDL_CreateThread(  (int(*)(void*))updateScore, NULL, &envoiScore );
 				}
 
 
@@ -543,7 +586,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 				// AFFICHER SCORE ET MEDAIL ICI
 				// ON AUGMENTE LA TAILLE DU SCOREBOARD PAR 2
 				SDL_Rect positionScoreBoard= {WINDOW_L/4,WINDOW_H/4,SCOREBOARD.w * SCALE_TO_FIT * 2, SCOREBOARD.h*SCALE_TO_FIT * 2};
-				SDL_RenderCopy(renderer, texture_scoreBoard, NULL, &positionScoreBoard);
+
 
 				// ON AUGMENTE LA TAILLE DE LA MEDALS PAR 2
 				SDL_Rect positionMedals = {WINDOW_L/4 + 13 * SCALE_TO_FIT * 2 ,WINDOW_H/4 + 21 * SCALE_TO_FIT * 2,22*SCALE_TO_FIT * 2,22*SCALE_TO_FIT * 2};
@@ -563,17 +606,6 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 						choixMedalsAvecScore = 3;
 
 				SDL_Rect choisirMedals = {MEDALS.w * choixMedalsAvecScore , MEDALS.y, MEDALS.w, MEDALS.h};
-				SDL_RenderCopy(renderer, texture_medals, &choisirMedals, &positionMedals);
-				//////////////////////////////////////////////////////////////////
-
-
-				//////////////////////////////////////////////////////////////////
-				// AFFICHAGE DU BEST SCORE ET DE SON SCORE DANS L'AFFICHEUR
-				afficherScore(renderer, texture_chiffre, score , 2);
-				if( score > highscore)
-					highscore = score;
-				afficherScore(renderer, texture_chiffre, highscore , 3);
-				SDL_RenderPresent(renderer);
 				//////////////////////////////////////////////////////////////////
 
 				//////////////////////////////////////////////////////////////////
@@ -583,6 +615,28 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 				//////////////////////////////////////////////////////////////////
 				while( wait )
 				{
+
+					//////////////////////////////////////////////////////////////////
+
+
+					//////////////////////////////////////////////////////////////////
+					// AFFICHAGE DU BEST SCORE ET DE SON SCORE DANS L'AFFICHEUR
+					afficherScore(renderer, texture_chiffre, score , 2);
+					if( score > highscore)
+						highscore = score;
+					afficherScore(renderer, texture_chiffre, highscore , 3);
+					exitCode = afficherTout(renderer, &thread, myFont, &retour, &frame_anim_loading, &frameRetour, texture_loading, emplacementPersonnage , pilonne, score ,1 , 0, cible, angle , texture_background, texture_pipes,  texture_birds, texture_medals,   texture_scoreBoard, texture_sol, texture_chiffre,texture_highscore , hardcore);
+
+					SDL_RenderCopy(renderer, texture_scoreBoard, NULL, &positionScoreBoard);
+					SDL_RenderCopy(renderer, texture_medals, &choisirMedals, &positionMedals);
+					/*int frame_delay = SDL_GetTicks() - tempsDebutFrame;
+					if(frame_delay < FRAME_TIME)
+						SDL_Delay(FRAME_TIME - frame_delay );*/
+					SDL_RenderPresent(renderer);
+
+					//SDL_RenderClear(renderer);
+
+
 					SDL_Event ev;
 					while ( SDL_PollEvent(&ev) )
 					{
@@ -625,8 +679,10 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 
 								//////////////////////////////////////////////////////////////////
 								// TOUS AFFICHER
-								exitCode = afficherTout(renderer, emplacementPersonnage , pilonne, score ,1 , 0, cible, angle ,
-																																	texture_background, texture_pipes,  texture_birds, texture_medals,   texture_scoreBoard, texture_sol, texture_chiffre,texture_highscore , hardcore);
+
+								exitCode = afficherTout(renderer, &thread, myFont, &retour, &frame_anim_loading, &frameRetour, texture_loading, emplacementPersonnage , pilonne, score ,1 , 0, cible, angle ,
+
+																															texture_background, texture_pipes,  texture_birds, texture_medals,   texture_scoreBoard, texture_sol, texture_chiffre,texture_highscore , hardcore);
 								//////////////////////////////////////////////////////////////////
 								// ARRETER d'ATTENDRE
 								wait = 0;
@@ -888,7 +944,7 @@ int afficherScore(SDL_Renderer *renderer , SDL_Texture *texture_chiffre,int scor
 		if (error_code)
 			return error_code;
 
-		score /=10;
+		score /= 10;
 	}
 	return error_code;
 
@@ -911,12 +967,15 @@ int afficherMeilleurScore(SDL_Renderer* renderer,SDL_Texture *texture_highscore,
 
 
 
-int afficherTout(SDL_Renderer * renderer, SDL_Point emplacementPersonnage, pilonne *pilonne ,int score,int varAnimationPersonnage,int varAnimationSol, int cible, double angle ,SDL_Texture *texture_background, SDL_Texture *texture_pipes, SDL_Texture *texture_birds, SDL_Texture *texture_medals, SDL_Texture *texture_scoreBoard, SDL_Texture *texture_sol, SDL_Texture *texture_chiffre, SDL_Texture* texture_highscore, int theme)
+int afficherTout(SDL_Renderer * renderer,SDL_Thread ** thread, TTF_Font* myFont, int *retour, int *frame_anim_loading, int *frameRetour, SDL_Texture* texture_loading,SDL_Point emplacementPersonnage, pilonne *pilonne ,int score,int varAnimationPersonnage,int varAnimationSol, int cible, double angle ,SDL_Texture *texture_background, SDL_Texture *texture_pipes, SDL_Texture *texture_birds, SDL_Texture *texture_medals, SDL_Texture *texture_scoreBoard, SDL_Texture *texture_sol, SDL_Texture *texture_chiffre, SDL_Texture* texture_highscore, int theme)
 {
 
 	/////////////////////////////////////////////////////
 	// NETTOYAGE DE LA FENETRE PRECEDANTE
 	SDL_RenderClear(renderer);
+
+
+
 
 	/////////////////////////////////////////////////////
 	// AFFICHAGE DU FOND
@@ -948,6 +1007,31 @@ int afficherTout(SDL_Renderer * renderer, SDL_Point emplacementPersonnage, pilon
 	// AFFICHER MEILLEURE SCORE
 	if( afficherMeilleurScore(renderer,texture_highscore,score,6,cible ) )
 		return SDL_RENDER_ERROR_PRINT_HS;
+
+
+	if(*thread && updateEnded){
+		SDL_WaitThread(*thread, retour);
+		*thread = NULL;
+		if(*retour == EXIT_FAILURE){
+			*frameRetour = -2*FRAME_ANIM_RETOUR;
+		}
+		else{
+			 *frameRetour = FRAME_ANIM_RETOUR;
+		}
+	}
+	else if(*thread){
+		printf("afficher loading\n");
+		if(frame_anim_loading)
+			afficherLoading(renderer, texture_loading, COLOR_LOADING, 0, 15, (*frame_anim_loading)++);
+	}
+
+	if(*frameRetour){
+		afficherRetour(renderer, texture_loading , myFont  , COLOR_LOADING, 0, 15, *frameRetour);
+		if(*frameRetour >0)
+			(*frameRetour)--;
+		else
+			(*frameRetour)++;
+	}
 
 
 	/////////////////////////////////////////////////////
