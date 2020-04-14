@@ -61,94 +61,269 @@ void afficherPauseMenu(SDL_Renderer *renderer, SDL_Point mouseCoor, SDL_Texture 
 		dest.y += BOUTON_PAUSE_SIZE_H + ESPACEMENT_BOUTON_PAUSE;
 	}
 }
-void init_grille(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE]){
-	for(int i=0;i<TAILLE_GRILLE_LIGNE;i++)
-		for(int j=0;j<TAILLE_GRILLE_COLONNE;j++)
-			grille[i][j]=MASQUE;
 
-	int bombes=NB_BOMBES;
-	while(bombes!=0){
-		int x=rand()%TAILLE_GRILLE_LIGNE;
-		int y=rand()%TAILLE_GRILLE_COLONNE;
+
+int coor_valide(int x, int y){
+	if((x>=0)&&(x<TAILLE_GRILLE_LIGNE)&&(y>=0)&&(y<TAILLE_GRILLE_COLONNE))
+		return 1;
+	else return 0;
+}
+
+/*void drapeau(int grille, int x, int y){
+	if(grille[x][y]==MASQUE)
+		grille[x][y]=DRAPEAU;
+}*/
+
+int nb_bombes_autour(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
+
+	int nb_bombes_autour=0;
+	if(grille[x][y]==BOMBE)
+		return 0;
+	if((coor_valide(x-1, y-1))&&(grille[x-1][y-1]==BOMBE))
+		nb_bombes_autour++;
+	if((coor_valide(x-1, y))&&(grille[x-1][y]==BOMBE))
+		nb_bombes_autour++;
+	if((coor_valide(x-1, y+1))&&(grille[x-1][y+1]==BOMBE))
+		nb_bombes_autour++;
+	if((coor_valide(x, y-1))&&(grille[x][y-1]==BOMBE))
+		nb_bombes_autour++;
+	if((coor_valide(x, y+1))&&(grille[x][y+1]==BOMBE))
+		nb_bombes_autour++;
+	if((coor_valide(x+1, y-1))&&(grille[x+1][y-1]==BOMBE))
+		nb_bombes_autour++;
+	if((coor_valide(x+1, y))&&(grille[x+1][y]==BOMBE))
+		nb_bombes_autour++;
+	if((coor_valide(x+1, y+1))&&(grille[x+1][y+1]==BOMBE))
+		nb_bombes_autour++;
+
+	return nb_bombes_autour;
+}
+
+int danger_avec_libre_autour(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
+
+	if((coor_valide(x-1, y-1))&&(nb_bombes_autour(grille, x-1, y-1)==0))
+		return 1;
+	if((coor_valide(x-1, y))&&(nb_bombes_autour(grille, x-1, y)==0))
+		return 1;
+	if((coor_valide(x-1, y+1))&&(nb_bombes_autour(grille, x-1, y+1)==0))
+		return 1;
+	if((coor_valide(x, y-1))&&(nb_bombes_autour(grille, x, y-1)==0))
+		return 1;
+	if((coor_valide(x, y+1))&&(nb_bombes_autour(grille, x, y+1)==0))
+		return 1;
+	if((coor_valide(x+1, y-1))&&(nb_bombes_autour(grille, x+1, y-1)==0))
+		return 1;
+	if((coor_valide(x+1, y))&&(nb_bombes_autour(grille, x+1, y)==0))
+		return 1;
+	if((coor_valide(x+1, y+1))&&(nb_bombes_autour(grille, x+1, y+1)==0))
+		return 1;
+
+	else return 0;
+}
+
+void etat(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
+	if(coor_valide(x,y)){
 		if(grille[x][y]==MASQUE){
-			grille[x][y]=BOMBE;
+			if(nb_bombes_autour(grille, x, y)==0){
+				grille[x][y]=LIBRE;
+				etat(grille, x-1, y-1);
+				etat(grille, x-1, y);
+				etat(grille, x-1, y+1);
+				etat(grille, x, y-1);
+				etat(grille, x, y+1);
+				etat(grille, x+1, y-1);
+				etat(grille, x+1, y);
+				etat(grille, x+1, y+1);
+			}
+			else if(danger_avec_libre_autour(grille, x, y)){
+				grille[x][y]=DANGER_AVEC_LIBRE_AUTOUR;
+				if(nb_bombes_autour(grille, x-1, y-1)==0)
+					etat(grille, x-1, y-1);
+				if(nb_bombes_autour(grille, x-1, y)==0)
+					etat(grille, x-1, y);
+				if(nb_bombes_autour(grille, x-1, y+1)==0)
+					etat(grille, x-1, y+1);
+				if(nb_bombes_autour(grille, x, y-1)==0)
+					etat(grille, x, y-1);
+				if(nb_bombes_autour(grille, x, y+1)==0)
+					etat(grille, x, y+1);
+				if(nb_bombes_autour(grille, x+1, y-1)==0)
+					etat(grille, x+1, y-1);
+				if(nb_bombes_autour(grille, x+1, y)==0)
+					etat(grille, x+1, y);
+				if(nb_bombes_autour(grille, x+1, y+1)==0)
+					etat(grille, x+1, y+1);
+			}
+			else grille[x][y]=DANGER_SANS_LIBRE_AUTOUR;
+		}
+	}
+}
+void init_grille(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
+
+	int i, j;
+	int bombes=NOMBRE_BOMBES_GRILLE;
+
+	grille[x][y]=MASQUE;
+
+	if(coor_valide(x-1, y-1))
+		grille[x-1][y-1]=MASQUE;
+	if(coor_valide(x-1, y))
+		grille[x-1][y]=MASQUE;
+	if(coor_valide(x-1, y+1))
+		grille[x-1][y+1]=MASQUE;
+	if(coor_valide(x, y-1))
+		grille[x][y-1]=MASQUE;
+	if(coor_valide(x, y+1))
+		grille[x][y+1]=MASQUE;
+	if(coor_valide(x+1, y-1))
+		grille[x+1][y-1]=MASQUE;
+	if(coor_valide(x+1, y))
+		grille[x+1][y]=MASQUE;
+	if(coor_valide(x+1, y+1))
+		grille[x+1][y+1]=MASQUE;
+
+	while(bombes!=0){
+		i=rand()%TAILLE_GRILLE_LIGNE;
+		j=rand()%TAILLE_GRILLE_COLONNE;
+		if((grille[i][j]!=BOMBE)&&(grille[i][j]!=MASQUE)){
+			grille[i][j]=BOMBE;
 			bombes--;
 		}
 	}
-}
 
-void afficher_grille(SDL_Renderer *renderer, int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int click_bombe){
-	SDL_Rect case_dem={50,50,TAILLE_CASE,TAILLE_CASE};
-	SDL_SetRenderDrawColor(renderer,0,0,0,255);
-
-	for(int i=0;i<TAILLE_GRILLE_LIGNE;i++){
-		case_dem.x=50;
-		for(int j=0;j<TAILLE_GRILLE_COLONNE;j++){
-			if(grille[i][j]==BOMBE && click_bombe==0){
-				SDL_SetRenderDrawColor(renderer,89,89,89,255);
-				SDL_RenderFillRect(renderer, &case_dem);
+	for(i=0;i<TAILLE_GRILLE_LIGNE;i++){
+		for(j=0;j<TAILLE_GRILLE_COLONNE;j++){
+			if(grille[i][j]!=BOMBE){
+				grille[i][j]=MASQUE;
 			}
-			else if(grille[i][j]==BOMBE && click_bombe==1){
-				SDL_SetRenderDrawColor(renderer,255,0,0,255);
-				SDL_RenderFillRect(renderer, &case_dem);
-			}
-			else if(grille[i][j] == VIDE)
-			{
-				SDL_SetRenderDrawColor(renderer,255,255,255,255);
-				SDL_RenderFillRect(renderer, &case_dem);
-				SDL_SetRenderDrawColor(renderer,0,0,0,255);
-			}
-			else if(grille[i][j] == MASQUE){
-				SDL_SetRenderDrawColor(renderer, 89, 89, 89, 255);
-				SDL_RenderFillRect(renderer, &case_dem);
-			}
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-			SDL_RenderDrawRect(renderer, &case_dem);
-			case_dem.x+=TAILLE_CASE;
 		}
-		case_dem.y+=TAILLE_CASE;
+	}
+	etat(grille, x, y);
+}
+
+void afficher_grille(SDL_Renderer *renderer, int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int premier_click, int click_bombe, SDL_Texture * texture){
+
+	SDL_Rect case_dem={50,50,TAILLE_CASE,TAILLE_CASE};
+	//SDL_SetRenderDrawColor(renderer,0,0,0,255);
+
+	SDL_Rect src={0,0,54,54};
+
+	if(premier_click==0){
+		for(int i=0;i<TAILLE_GRILLE_LIGNE;i++){
+			case_dem.x=50;
+			for(int j=0;j<TAILLE_GRILLE_COLONNE;j++){
+				src.x=54*3; src.y=54;
+				SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					case_dem.x+=TAILLE_CASE;
+			}
+			case_dem.y+=TAILLE_CASE;
+		}
+	}
+	else{
+		for(int i=0;i<TAILLE_GRILLE_LIGNE;i++){
+			case_dem.x=50;
+			for(int j=0;j<TAILLE_GRILLE_COLONNE;j++){
+				if(grille[i][j]==BOMBE && click_bombe==0){
+					src.x=54*3; src.y=54;
+					SDL_RenderCopy(renderer, texture, &src, &case_dem);
+				}
+				else if(grille[i][j]==BOMBE && click_bombe==1){
+					src.x=54*5; src.y=54;
+					SDL_RenderCopy(renderer, texture, &src, &case_dem);
+				}
+				else if(grille[i][j] == LIBRE)
+				{
+					src.x=0; src.y=0;
+					SDL_RenderCopy(renderer, texture, &src, &case_dem);
+
+				}
+				else if(grille[i][j] == DANGER_AVEC_LIBRE_AUTOUR)
+				{
+					if(nb_bombes_autour(grille, i, j)==1){
+						src.x=54*3; src.y=0;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+					else if(nb_bombes_autour(grille, i, j)==2){
+						src.x=54*4; src.y=0;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+					else if(nb_bombes_autour(grille, i, j)==3){
+						src.x=54; src.y=54;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+					else if(nb_bombes_autour(grille, i, j)==4){
+						src.x=54*2; src.y=54;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+					else if(nb_bombes_autour(grille, i, j)==5){
+						src.x=54*4; src.y=54;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+					else if(nb_bombes_autour(grille, i, j)==6){
+						src.x=54*4; src.y=54*3;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+					else if(nb_bombes_autour(grille, i, j)==7){
+						src.x=54*3; src.y=54*3;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+					else if(nb_bombes_autour(grille, i, j)==1){
+						src.x=54; src.y=54*3;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+
+				}
+				else if(grille[i][j] == DANGER_SANS_LIBRE_AUTOUR)
+				{
+					if(nb_bombes_autour(grille, i, j)==1){
+						src.x=54*3; src.y=0;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+					else if(nb_bombes_autour(grille, i, j)==2){
+						src.x=54*4; src.y=0;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+					else if(nb_bombes_autour(grille, i, j)==3){
+						src.x=54; src.y=54;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+					else if(nb_bombes_autour(grille, i, j)==4){
+						src.x=54*2; src.y=54;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+					else if(nb_bombes_autour(grille, i, j)==5){
+						src.x=54*4; src.y=54;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+					else if(nb_bombes_autour(grille, i, j)==6){
+						src.x=54*4; src.y=54*3;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+					else if(nb_bombes_autour(grille, i, j)==7){
+						src.x=54*3; src.y=54*3;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+					else if(nb_bombes_autour(grille, i, j)==1){
+						src.x=54; src.y=54*3;
+						SDL_RenderCopy(renderer, texture, &src, &case_dem);
+					}
+
+				}
+				else if(grille[i][j]==DRAPEAU){
+					src.x=0; src.y=54*2;
+					SDL_RenderCopy(renderer, texture, &src, &case_dem);
+				}
+				else if(grille[i][j] == MASQUE){
+					src.x=54*3; src.y=54;
+					SDL_RenderCopy(renderer, texture, &src, &case_dem);
+				}
+				case_dem.x+=TAILLE_CASE;
+			}
+			case_dem.y+=TAILLE_CASE;
+		}
 	}
 }
 
-
-void click_vide(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
-	int nb_bombes=0;
-	if(grille[x-1][y-1]==BOMBE)
-		nb_bombes++;
-	if(grille[x-1][y]==BOMBE)
-		nb_bombes++;
-	if(grille[x-1][y+1]==BOMBE)
-		nb_bombes++;
-	if(grille[x][y-1]==BOMBE)
-		nb_bombes++;
-	if(grille[x][y+1]==BOMBE)
-		nb_bombes++;
-	if(grille[x+1][y-1]==BOMBE)
-		nb_bombes++;
-	if(grille[x+1][y]==BOMBE)
-		nb_bombes++;
-	if(grille[x+1][y+1]==BOMBE)
-		nb_bombes++;
-
-	if(nb_bombes!=0){
-		grille[x][y]=VIDE;
-	}
-
-	else if(nb_bombes==0){
-		grille[x][y]=VIDE;
-		click_vide(grille, x-1, y-1);
-		click_vide(grille, x-1, y);
-		click_vide(grille, x-1, y+1);
-		click_vide(grille, x, y-1);
-		click_vide(grille, x, y+1);
-		click_vide(grille, x+1, y-1);
-		click_vide(grille, x+1, y);
-		click_vide(grille, x+1, y+1);
-	}
-
-
-}
-// int launchSnake(SDL_Window *myWindow, SDL_Renderer* renderer, char *identifiant, char *token){
 int main(){
 /////////////////////
 /// MISE EN PLACE ///``
@@ -162,9 +337,12 @@ int main(){
 	SDL_Rect displayBounds;
 	SDL_GetDisplayBounds(0, &displayBounds);
 		SDL_Point maxWindowSize = maximizeWindow(displayBounds, &ratioWindowSize);
-	int jaiclique = SDL_FALSE;
-	int jairelache = SDL_FALSE;
+	int clique_gauche = SDL_FALSE;
+	int relache_gauche = SDL_FALSE;
+	int clique_droit = SDL_FALSE;
+	int relache_droit = SDL_FALSE;
 	int click_bombe = 0;
+	int premier_click=0;
 
 	float ratio_fen=(float)maxWindowSize.x/(PLAYGROUND_SIZE_W + 2 * HUD_W);
 	printf("ratio_fen -->%d %d %d %f\n",maxWindowSize.x, HUD_W, (PLAYGROUND_SIZE_W + 2 * HUD_W), ratio_fen);
@@ -190,7 +368,7 @@ int main(){
 
 
 
-	SDL_Window *myWindow = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, maxWindowSize.x ,maxWindowSize.y, WINDOW_FLAG);
+	SDL_Window *myWindow = SDL_CreateWindow("Démineur", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, maxWindowSize.x ,maxWindowSize.y, WINDOW_FLAG);
 	if( myWindow == NULL ){
 		printf("Erreur lors de la creation de la fenêtre : %s", SDL_GetError());
 		return EXIT_FAILURE;
@@ -203,6 +381,7 @@ int main(){
 		printf("Erreur lors de la creation d'un renderer : %s", SDL_GetError());
 		return EXIT_FAILURE;
 	}
+
 
 	//Views
 	SDL_Rect playgroundView = {HUD_W/ratioWindowSize, HUD_H/ratioWindowSize, PLAYGROUND_SIZE_W, PLAYGROUND_SIZE_H};
@@ -223,9 +402,10 @@ int main(){
 		return EXIT_FAILURE;
 	}
 
-	int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE];
-	init_grille(grille);
+	SDL_Texture * texture;
+	texture=IMG_LoadTexture(renderer, "demineur.png");
 
+	int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE];
 
 
 
@@ -238,11 +418,11 @@ int main(){
 /// BOUCLE DU JEU ///``
 /////////////////////
 
-	while( 1 ){
+	while( premier_click==0 ){
 
 		// Init input
 		SDL_GetMouseState(&(mouseCoor.x), &(mouseCoor.y));
-		jairelache = SDL_FALSE;
+		relache_gauche = SDL_FALSE;
 	////////////
 	// Events //`
 	////////////
@@ -256,26 +436,14 @@ int main(){
 
 				case SDL_MOUSEBUTTONDOWN:
 					if(event.button.button == SDL_BUTTON_LEFT){
-						jaiclique = SDL_TRUE;
+						clique_gauche = SDL_TRUE;
 					}break;
 
 				case SDL_MOUSEBUTTONUP:
-					if((event.button.button == SDL_BUTTON_LEFT)&&(jaiclique==SDL_TRUE)){
-						jairelache=SDL_TRUE;
+					if((event.button.button == SDL_BUTTON_LEFT)&&(clique_gauche==SDL_TRUE)){
+						relache_gauche=SDL_TRUE;
+						premier_click=1;
 					}break;
-
-
-				case SDL_KEYUP:
-					if ( event.key.keysym.sym == SDLK_ESCAPE )
-						rdyToPause = 1;
-					break;
-
-				case SDL_KEYDOWN:
-					if ( event.key.keysym.sym == SDLK_ESCAPE && rdyToPause ){
-						paused = !paused;
-						rdyToPause = 0;
-					}
-					break;
 			}
 		}
 
@@ -299,25 +467,143 @@ int main(){
 	// Draw //`
 	//////////
 
-	if(jairelache){
+	if(relache_gauche){
 		mouseCoor.x-=ratio_fen*HUD_W;
 		mouseCoor.y-=ratio_fen*HUD_H;
 		SDL_Point case_coor = {(int)(mouseCoor.x/(TAILLE_CASE*ratio_fen)), (int)(mouseCoor.y/(TAILLE_CASE*ratio_fen))};
 		SDL_Rect case_dem={case_coor.x*TAILLE_CASE,case_coor.y*TAILLE_CASE,TAILLE_CASE,TAILLE_CASE};
 		SDL_SetRenderDrawColor(renderer,255,0,0,255);
 		SDL_RenderFillRect(renderer, &case_dem);
-
-		if(grille[case_coor.y-1][case_coor.x-1] == BOMBE){
-			click_bombe=1;
-		}
-		else if(grille[case_coor.y-1][case_coor.x-1] == MASQUE){
-			click_vide(grille, case_coor.y-1, case_coor.x-1);
-		}
-		printf("x-->%d    y-->%d \n", mouseCoor.x,mouseCoor.y);
+		case_coor.y--;case_coor.x--;
+		init_grille(grille, case_coor.y, case_coor.x);
+		etat(grille, case_coor.y, case_coor.x);
 	}
 
 
-	afficher_grille(renderer,grille, click_bombe);
+	afficher_grille(renderer,grille, premier_click, click_bombe, texture);
+
+		//hud
+		SDL_RenderSetScale(renderer, 1, 1);
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_RenderSetViewport(renderer, &hudView);
+		SDL_RenderCopy(renderer, hudTexture, &hudView, &hudDraw);
+		SDL_RenderSetViewport(renderer, &playgroundView);
+
+		//afficher
+		SDL_RenderSetScale(renderer, 1. / ratioWindowSize, 1. / ratioWindowSize);
+		SDL_RenderPresent(renderer);
+
+
+	////////////////
+	// Next frame //`
+	////////////////
+
+
+		//regulateFPS
+		currentTime = SDL_GetTicks();
+		while( currentTime - lastTime < FRAME_TIME )
+			currentTime = SDL_GetTicks();
+
+		if( currentTime - lastTime > FRAME_TIME )
+			printf(" TIME FRAME : %d\n", currentTime - lastTime);
+
+		lastTime = currentTime;
+
+		// On efface
+		SDL_SetRenderDrawColor(renderer, 0, 40, 200, 255);
+		SDL_RenderClear(renderer);
+	}
+
+	while( 1 ){
+
+		// Init input
+		SDL_GetMouseState(&(mouseCoor.x), &(mouseCoor.y));
+		relache_gauche = SDL_FALSE;
+		relache_droit = SDL_FALSE;
+	////////////
+	// Events //`
+	////////////
+		SDL_Event event;
+		while( SDL_PollEvent(&event) ){
+			switch( event.type ){
+				case SDL_QUIT:
+					// fermer
+					return 0;
+					break;
+
+				case SDL_MOUSEBUTTONDOWN:
+					if(event.button.button == SDL_BUTTON_LEFT){
+						clique_gauche = SDL_TRUE;
+					}
+					else if(event.button.button==SDL_BUTTON_RIGHT){
+						clique_droit= SDL_TRUE;
+					}break;
+
+				case SDL_MOUSEBUTTONUP:
+					if((event.button.button == SDL_BUTTON_LEFT)&&(clique_gauche==SDL_TRUE)){
+						relache_gauche=SDL_TRUE;
+						premier_click=1;
+					}
+					else if((event.button.button == SDL_BUTTON_RIGHT)&&(clique_droit==SDL_TRUE)){
+						relache_droit=SDL_TRUE;
+					}break;
+			}
+		}
+
+
+	////////////////////////////
+	// Handle Keyboard inputs //`
+	////////////////////////////
+		SDL_PumpEvents();
+
+	//////////////
+	// Gameplay //`
+	//////////////
+
+
+	///////////////////
+	// Check hitboxs //`
+	///////////////////
+
+
+	//////////
+	// Draw //`
+	//////////
+
+	if(relache_gauche){
+		mouseCoor.x-=ratio_fen*HUD_W;
+		mouseCoor.y-=ratio_fen*HUD_H;
+		SDL_Point case_coor = {(int)(mouseCoor.x/(TAILLE_CASE*ratio_fen)), (int)(mouseCoor.y/(TAILLE_CASE*ratio_fen))};
+		SDL_Rect case_dem={case_coor.x*TAILLE_CASE,case_coor.y*TAILLE_CASE,TAILLE_CASE,TAILLE_CASE};
+		SDL_SetRenderDrawColor(renderer,255,0,0,255);
+		SDL_RenderFillRect(renderer, &case_dem);
+		case_coor.x--;
+		case_coor.y--;
+		if(grille[case_coor.y][case_coor.x] == BOMBE)
+			click_bombe=1;
+		else{
+			etat(grille, case_coor.y, case_coor.x);
+		}
+	}
+	if(relache_droit){
+		mouseCoor.x-=ratio_fen*HUD_W;
+		mouseCoor.y-=ratio_fen*HUD_H;
+		SDL_Point case_coor = {(int)(mouseCoor.x/(TAILLE_CASE*ratio_fen)), (int)(mouseCoor.y/(TAILLE_CASE*ratio_fen))};
+		SDL_Rect case_dem={case_coor.x*TAILLE_CASE,case_coor.y*TAILLE_CASE,TAILLE_CASE,TAILLE_CASE};
+		SDL_SetRenderDrawColor(renderer,255,0,0,255);
+		SDL_RenderFillRect(renderer, &case_dem);
+		case_coor.x--;
+		case_coor.y--;
+		//if(grille[case_coor.y][case_coor.x]==MASQUE||((grille[case_coor.y][case_coor.x]==BOMBE)&&(click_bombe==0))){
+
+		//}
+
+	}
+		/*if(grille[case_coor.y-1][case_coor.x-1] == BOMBE){
+			click_bombe=1;*/
+
+
+	afficher_grille(renderer,grille, premier_click, click_bombe, texture);
 
 		//hud
 		SDL_RenderSetScale(renderer, 1, 1);
