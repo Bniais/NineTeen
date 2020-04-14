@@ -636,12 +636,12 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 					}
 					else if(thread){
 						printf("afficher loading\n");
-						afficherLoading(renderer, texture_loading, COLOR_LOADING, 0, 15, frame_anim_loading++);
+						afficherLoading(renderer, texture_loading, COLOR_LOADING, 0, 0, frame_anim_loading++, WINDOW_L  , WINDOW_H );
 					}
 
 					if(frameRetour){
 
-						afficherRetour(renderer, texture_loading , myFont  , COLOR_LOADING, 0, 15, frameRetour);
+						afficherRetour(renderer, texture_loading , myFont  , COLOR_LOADING, 0, 0, frameRetour, WINDOW_L  , WINDOW_H );
 						if(frameRetour >0)
 							frameRetour--;
 						else
@@ -1041,11 +1041,11 @@ int afficherTout(SDL_Renderer * renderer,SDL_Thread ** thread, TTF_Font* myFont,
 	else if(*thread){
 		printf("afficher loading\n");
 		if(frame_anim_loading)
-			afficherLoading(renderer, texture_loading, COLOR_LOADING, 0, 15, (*frame_anim_loading)++);
+			afficherLoading(renderer, texture_loading, COLOR_LOADING, 0, 0, (*frame_anim_loading)++, WINDOW_L  , WINDOW_H);
 	}
 
 	if(*frameRetour){
-		afficherRetour(renderer, texture_loading , myFont  , COLOR_LOADING, 0, 15, *frameRetour);
+		afficherRetour(renderer, texture_loading , myFont  , COLOR_LOADING, 0, 0, *frameRetour, WINDOW_L  , WINDOW_H);
 		if(*frameRetour >0)
 			(*frameRetour)--;
 		else
