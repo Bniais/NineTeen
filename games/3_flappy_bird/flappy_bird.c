@@ -486,7 +486,6 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 	// DEBUT DU JEU
 	while(!end && !exitCode){
 
-		int sentScore = SDL_FALSE;
 		if( keystate[SDL_SCANCODE_ESCAPE])
 			end = SDL_TRUE;
 		//////////////////////////////////////////////////////////////////
@@ -548,7 +547,6 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 			{
 
 				// VERIFIER QUE LE SCORE N 'AS PAS ETAIT CHANGER
-				sentScore = SDL_TRUE;
 				if (  score_hash == hashage(score, keys) )
 				{
 					frame_anim_loading = 0;
@@ -586,7 +584,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 				// AFFICHER SCORE ET MEDAIL ICI
 				// ON AUGMENTE LA TAILLE DU SCOREBOARD PAR 2
 				SDL_Rect positionScoreBoard= {WINDOW_L/4,WINDOW_H/4,SCOREBOARD.w * SCALE_TO_FIT * 2, SCOREBOARD.h*SCALE_TO_FIT * 2};
-
+				SDL_RenderCopy(renderer, texture_scoreBoard, NULL, &positionScoreBoard);
 
 				// ON AUGMENTE LA TAILLE DE LA MEDALS PAR 2
 				SDL_Rect positionMedals = {WINDOW_L/4 + 13 * SCALE_TO_FIT * 2 ,WINDOW_H/4 + 21 * SCALE_TO_FIT * 2,22*SCALE_TO_FIT * 2,22*SCALE_TO_FIT * 2};
@@ -605,7 +603,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 				else if(score < 4 )
 						choixMedalsAvecScore = 3;
 
-				SDL_Rect choisirMedals = {MEDALS.w * choixMedalsAvecScore , MEDALS.y, MEDALS.w, MEDALS.h};
+
 				//////////////////////////////////////////////////////////////////
 
 				//////////////////////////////////////////////////////////////////
@@ -615,7 +613,8 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 				//////////////////////////////////////////////////////////////////
 				while( wait )
 				{
-
+					SDL_Rect choisirMedals = {MEDALS.w * choixMedalsAvecScore , MEDALS.y, MEDALS.w, MEDALS.h};
+					SDL_RenderCopy(renderer, texture_medals, &choisirMedals, &positionMedals);
 					//////////////////////////////////////////////////////////////////
 
 
@@ -625,18 +624,33 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 					if( score > highscore)
 						highscore = score;
 					afficherScore(renderer, texture_chiffre, highscore , 3);
-					exitCode = afficherTout(renderer, &thread, myFont, &retour, &frame_anim_loading, &frameRetour, texture_loading, emplacementPersonnage , pilonne, score ,1 , 0, cible, angle , texture_background, texture_pipes,  texture_birds, texture_medals,   texture_scoreBoard, texture_sol, texture_chiffre,texture_highscore , hardcore);
+					if(thread && updateEnded){
+						SDL_WaitThread(thread, &retour);
+						thread = NULL;
+						if(retour == EXIT_FAILURE){
+							frameRetour = -2*FRAME_ANIM_RETOUR;
+						}
+						else{
+							 frameRetour = FRAME_ANIM_RETOUR;
+						}
+					}
+					else if(thread){
+						printf("afficher loading\n");
+						afficherLoading(renderer, texture_loading, COLOR_LOADING, 0, 15, frame_anim_loading++);
+					}
 
-					SDL_RenderCopy(renderer, texture_scoreBoard, NULL, &positionScoreBoard);
-					SDL_RenderCopy(renderer, texture_medals, &choisirMedals, &positionMedals);
-					/*int frame_delay = SDL_GetTicks() - tempsDebutFrame;
+					if(frameRetour){
+
+						afficherRetour(renderer, texture_loading , myFont  , COLOR_LOADING, 0, 15, frameRetour);
+						if(frameRetour >0)
+							frameRetour--;
+						else
+							frameRetour++;
+					}
+					int frame_delay = SDL_GetTicks() - tempsDebutFrame;
 					if(frame_delay < FRAME_TIME)
-						SDL_Delay(FRAME_TIME - frame_delay );*/
+						SDL_Delay(FRAME_TIME - frame_delay );
 					SDL_RenderPresent(renderer);
-
-					//SDL_RenderClear(renderer);
-
-
 					SDL_Event ev;
 					while ( SDL_PollEvent(&ev) )
 					{
@@ -728,6 +742,11 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 	}
 
 
+	if(thread){
+		printf("wait final\n" );
+		SDL_WaitThread(thread, NULL);
+		thread = NULL;
+	}
 	//////////////////////////////////////////////////////////////////
 	// LIBERER MEMOIRE ALLOUER NON NECESSAIRE
 	Mix_FreeChunk(flap_wav);

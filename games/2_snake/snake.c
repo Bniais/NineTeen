@@ -895,7 +895,7 @@ static void afficherScore(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Sc
 
 }
 
-static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeBody, Score ** scoreAffichage, Mix_Chunk ** sound, SDL_Texture * textures[NB_SNAKE_TEXTURES], TTF_Font * fonts[NB_SNAKE_FONTS], SDL_Thread* thread){
+static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeBody, Score ** scoreAffichage, Mix_Chunk ** sound, SDL_Texture * textures[NB_SNAKE_TEXTURES], TTF_Font * fonts[NB_SNAKE_FONTS], SDL_Thread** thread){
 	if(*fruits){
 		free(*fruits);
 		*fruits = NULL;
@@ -934,10 +934,10 @@ static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeB
 			fonts[i] = NULL;
 		}
 
-	/*if(thread){
-		SDL_WaitThread(thread, NULL);
-		thread = NULL;
-	}*/
+	if(*thread){
+		SDL_WaitThread(*thread, NULL);
+		*thread = NULL;
+	}
 }
 
 extern int updateEnded;
@@ -1092,7 +1092,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 			while( SDL_PollEvent(&event) ){
 				switch( event.type ){
 					case SDL_QUIT:
-						myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, thread );
+						myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
 						return 0;// fermer
 					case SDL_KEYUP:
 						if( event.key.keysym.sym == SDLK_SPACE)
@@ -1110,7 +1110,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 				break; //replay
 
 			if(keystate[SDL_SCANCODE_ESCAPE]){
-				myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, thread );
+				myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
 				return 0;
 			}
 
@@ -1188,7 +1188,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 						fruit[i].hitbox = NO_HIT;
 						if(!eat_fruit(&snakeBody, &snakeSize, &fruit, &nbFruits, fruit[i], &speedSnake, &score, &nbFruitEaten, &frameJaugeAnim, pastBody, &bonus, &deadBodies, &nbDeadBodies, &nbPotion, &poisoned, &scoreAffichage, &nbScoreAffichage, &frameAcce, flap_wav, &score_hash, keys, hardcore)){
-							myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, thread );
+							myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
 							return HACKED;
 						}
 
@@ -1215,7 +1215,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 					if(!eat_fruit(&snakeBody, &snakeSize, &fruit, &nbFruits, bonus, &speedSnake, &score, &nbFruitEaten, &frameJaugeAnim, pastBody, &bonus, &deadBodies, &nbDeadBodies, &nbPotion, &poisoned, &scoreAffichage, &nbScoreAffichage, &frameAcce, flap_wav, &score_hash, keys, hardcore))
 					{
-						myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, thread );
+						myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
 						return HACKED;
 					}
 
@@ -1245,12 +1245,10 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 				if (  score_hash == hashage(score.score, keys) )
 				{
 					frame_anim_loading = 0;
-					updateEnded = 0;
-
 					//On atttend si jamais un envoi est en cours
 					if(thread){
                         SDL_WaitThread(thread, &retour);
-                        if( retour != EXIT_FAILURE){
+                        if( retour == EXIT_FAILURE){
                             frameRetour = -2*FRAME_ANIM_RETOUR;
                         }
                         else{
@@ -1277,7 +1275,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 				}
 				else{
-					myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, thread );
+					myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
 					return HACKED;
 				}
 
@@ -1330,7 +1328,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
    			if(thread && updateEnded){
    				SDL_WaitThread(thread, &retour);
    				thread = NULL;
-				if(retour != EXIT_FAILURE){
+				if(retour == EXIT_FAILURE){
 					frameRetour = -2*FRAME_ANIM_RETOUR;
 				}
 				else{
@@ -1398,7 +1396,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 								score.frameToDest = FRAME_SCORE_ANIM;
 								if(!changeProtectedVar(&score_hash, &(score.score), score.score + scoreFruit, keys))
 								{
-									myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, thread );
+									myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
 									return HACKED;
 								}
 

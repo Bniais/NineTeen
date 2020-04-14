@@ -5,6 +5,8 @@
 *\version 1.0
 *\date 03/04/2020
 */
+
+#include "../../include/communFunctions.h"
 #include "../../define/define.h"
 #include "../../include/hashage.h"
 #include "../../include/libWeb.h"
@@ -1784,7 +1786,7 @@ void moveDeadPiece(DeadPiece *deadPiece){
 	deadPiece->rota += deadPiece->rotaSpeed;
 }
 
-void myFrees(Piece * currentPiece, Piece * nextPiece, DeadPiece ** deadPieces, SDL_Texture * textures[NB_TETRIS_TEXTURES], TTF_Font * fonts[NB_TETRIS_FONTS]){
+void myFrees(Piece * currentPiece, Piece * nextPiece, DeadPiece ** deadPieces, SDL_Texture * textures[NB_TETRIS_TEXTURES], TTF_Font * fonts[NB_TETRIS_FONTS], SDL_Thread ** thread){
 	if(currentPiece->grille){
 		free(currentPiece->grille);
 		currentPiece->grille = NULL;
@@ -1812,9 +1814,15 @@ void myFrees(Piece * currentPiece, Piece * nextPiece, DeadPiece ** deadPieces, S
 			fonts[i] = NULL;
 		}
 
+	if(*thread){
+		SDL_WaitThread(*thread, NULL);
+		*thread = NULL;
+	}
 }
 
 
+
+extern int updateEnded;
 /**
 *\fn int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *token,int hardcore)
 *\brief La fonction principale : Lance et fait tourner le jeu tetris
@@ -1830,6 +1838,16 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 // MISE EN PLACE   //``
 /////////////////////
 	myInit();
+
+	SDL_Thread *thread = NULL;
+	char buffer[10];
+	EnvoiScore envoiScore;
+	updateEnded = SDL_FALSE;
+	int retour = EXIT_FAILURE;
+	int frameRetour = 0;
+	int frame_anim_loading = 0;
+
+
 	SDL_Texture* textures[NB_TETRIS_TEXTURES];
 	//Textures
 	for(int i=0; i< NB_TETRIS_TEXTURES; i++){
@@ -1953,7 +1971,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 	 // // // // // // //
 
 		while( 1 ){
-
+			int sentScore = SDL_FALSE;
 			// Init input
 			SDL_GetMouseState(&(mouseCoor.x), &(mouseCoor.y));
 			accelerate = NO_ACCELERATE;
@@ -1969,7 +1987,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 				switch( event.type ){
 					case SDL_QUIT:
 						// fermer
-						myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
+						myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts, &thread);
 						return 0;
 						break;
 
@@ -2012,7 +2030,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			}
 
 			if( keystate[SDL_SCANCODE_ESCAPE] ){
-				myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
+				myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts, &thread);
 				return 0;
 			}
 
@@ -2057,7 +2075,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 							savePiece(currentPiece, matrix);
 							clearIntTab(bonusActivate, NB_BONUSES);
 							if(!checkLines(matrix, frameCompleteLine, bonusActivate, SDL_TRUE, scoreAdd, &score, &score_hash, keys)){
-								myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
+								myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts,&thread);
 								printf("U HACKER\n" );
 								return HACKED;
 							}
@@ -2079,24 +2097,40 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 									waitToPlace = SDL_TRUE;
 								else{
 									deathAnimInit(&gameOver, &deadPieces, &nbDeadPieces, matrix);
-									if (  score_hash == hashage(score.score, keys) )
-									{
-										// CONVERTIR SCORE EN TEXT
-										char buffer[10];
-										sprintf(buffer,"%d",score.score);
-										printf("ATTENDRE ENVI DU SCORE\n" );
-										/*if(hardcore)
-											updateScore("2",buffer,token);
-										else
-											updateScore("11",buffer,token);*/
-										printf("SCORE ENVOYER\n" );
-										//////////////////////////////////////////////////////////////////
-									}
-									else{
-										myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
-										return HACKED;
-									}
+									if(!sentScore){
+										sentScore = SDL_TRUE;
+										if (  score_hash == hashage(score.score, keys) )
+										{
+											frame_anim_loading = 0;
+											//On atttend si jamais un envoi est en cours
+											if(thread){
+												printf("waiting for trhad 1\n" );
+												SDL_WaitThread(thread, &retour);
+												if( retour == EXIT_FAILURE){
+													frameRetour = -2*FRAME_ANIM_RETOUR;
+												}
+												else{
+													 frameRetour = FRAME_ANIM_RETOUR;
+												}
+												thread = NULL;
+											}
 
+
+											// CONVERTIR SCORE EN TEXT
+
+											sprintf(buffer,"%d",score.score);
+
+											if(hardcore)
+												envoiScore = (EnvoiScore){"2", buffer, token};
+											//updateScore("2",buffer,token);
+											else
+												envoiScore = (EnvoiScore){"11", buffer, token};
+											//updateScore("11",buffer,token);
+
+											printf("CONNEXION...\n" );
+											thread = SDL_CreateThread(  (int(*)(void*))updateScore, NULL, &envoiScore );
+										}
+									}
 								}
 							}
 						}
@@ -2112,23 +2146,42 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 				else if(!linesInCompletion(matrixFill, frameLaser, frameCompleteLine)){
 					waitToPlace = SDL_FALSE;
 					deathAnimInit(&gameOver, &deadPieces, &nbDeadPieces, matrix);
-					if (  score_hash == hashage(score.score, keys) )
-					{
-						// CONVERTIR SCORE EN TEXT
-						char buffer[10];
-						sprintf(buffer,"%d",score.score);
-						printf("ATTENDRE ENVI DU SCORE\n" );
-						/*if(hardcore)
-							updateScore("2",buffer,token);
-						else
-							updateScore("11",buffer,token);*/
-						printf("SCORE ENVOYER\n" );
-						//////////////////////////////////////////////////////////////////
+
+					if(!sentScore){
+						sentScore = SDL_TRUE;
+						if (  score_hash == hashage(score.score, keys) )
+						{
+							frame_anim_loading = 0;
+							//On atttend si jamais un envoi est en cours
+							if(thread){
+								printf("waiting for trhad 2\n" );
+								SDL_WaitThread(thread, &retour);
+								if( retour == EXIT_FAILURE){
+									frameRetour = -2*FRAME_ANIM_RETOUR;
+								}
+								else{
+									 frameRetour = FRAME_ANIM_RETOUR;
+								}
+								thread = NULL;
+							}
+
+
+							// CONVERTIR SCORE EN TEXT
+
+							sprintf(buffer,"%d",score.score);
+
+							if(hardcore)
+								envoiScore = (EnvoiScore){"2", buffer, token};
+							//updateScore("5",buffer,token);
+							else
+								envoiScore = (EnvoiScore){"11", buffer, token};
+							//updateScore("8",buffer,token);
+
+							printf("CONNEXION...\n" );
+							thread = SDL_CreateThread(  (int(*)(void*))updateScore, NULL, &envoiScore );
+						}
 					}
-					else{
-						myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
-						return HACKED;
-					}
+
 
 					//break;
 				}
@@ -2165,6 +2218,31 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			for(int i=0; i<nbDeadPieces; i++)
 				afficherDeadPiece(renderer, deadPieces[i], textures[T_BRICKS], textures[T_BONUS]);
 
+			//drawretour
+			if(thread && updateEnded){
+				printf("waiting for trhad 3\n" );
+				SDL_WaitThread(thread, &retour);
+				thread = NULL;
+				if(retour == EXIT_FAILURE){
+					frameRetour = -2*FRAME_ANIM_RETOUR;
+				}
+				else{
+					 frameRetour = FRAME_ANIM_RETOUR;
+				}
+			}
+			else if(thread){
+				afficherLoading(renderer, textures[T_LOADING], JAUGE_COLOR, 0, 0, frame_anim_loading++);
+			}
+
+			if(frameRetour){
+
+				afficherRetour(renderer, textures[T_LOADING],fonts[T_FONT_COMBO], JAUGE_COLOR, 0, 0, frameRetour);
+				if(frameRetour >0)
+					frameRetour--;
+				else
+					frameRetour++;
+			}
+
 			//hud
 			SDL_RenderSetScale(renderer, 1, 1);
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -2195,7 +2273,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			if(!updateFrames(frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, scoreAffichage, scoreAdd, &score, &frameDestJauge, frameTotalSpeed, &frameTotalShow, &score_hash, keys))
 			{
 				printf("U HACKER\n" );
-				myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts);
+				myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts, &thread);
 				return HACKED;
 			}
 

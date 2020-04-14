@@ -10,7 +10,7 @@
 const SDL_Rect SRC_LOADING = {0,0,222,222};
 const SDL_Color COLOR_ERROR_LOADING = {0xfb,0x17,0x17};
 
-const int ALPHA[2*FRAME_ANIM_RETOUR] = { 10, 30, 55, 70, 100, 140, 170, 200, 220, 225, 230, 230, 230, 230, 230, 230,230, 230, 230, 230, 230,230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 225,220,200,170,140,100,70,55,30,10};
+const int ALPHA[2*(int)FRAME_ANIM_RETOUR] = { 10, 30, 55, 70, 100, 140, 170, 200, 220, 225, 230, 230, 230, 230, 230, 230,230, 230, 230, 230, 230,230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 225,220,200,170,140,100,70,55,30,10};
 
 void afficherLoading(SDL_Renderer * renderer, SDL_Texture * loadingTexture, SDL_Color color, int shiftX, int shiftY, int frameAnim){
 	if(frameAnim){
@@ -47,7 +47,7 @@ void afficherRetour(SDL_Renderer * renderer, SDL_Texture * loadingTexture,TTF_Fo
 			SDL_SetTextureColorMod(loadingTexture, color.r, color.g, color.b);
 
 		int frameAlpha = -abs(abs(fLogo)-FRAME_ANIM_RETOUR/2) + FRAME_ANIM_RETOUR/2;
-		SDL_SetTextureAlphaMod(loadingTexture, 100+120*frameAlpha/(FRAME_ANIM_RETOUR/2));
+		SDL_SetTextureAlphaMod(loadingTexture, 10+220*frameAlpha/(FRAME_ANIM_RETOUR/2));
 		SDL_Rect dest = {w - 3/2. * LOADING_SIZE + shiftX , h - 3/2. * LOADING_SIZE + shiftY, LOADING_SIZE, LOADING_SIZE};
 
 		SDL_RenderCopy(renderer, loadingTexture, &src, &dest);
@@ -68,8 +68,7 @@ void afficherRetour(SDL_Renderer * renderer, SDL_Texture * loadingTexture,TTF_Fo
 		//centrer
 		dest.x = PLAYGROUND_SIZE_W/2 - dest.w/2;
 		dest.y = PLAYGROUND_SIZE_H/3 - dest.h/2;
-		printf("%d : ", -frameAnim-1);
-		printf(" %d\n", ALPHA[-frameAnim-1]);
+
 		SDL_SetTextureAlphaMod(Message, ALPHA[-frameAnim-1]);
 		SDL_RenderCopy(renderer, Message, NULL, &dest);
 		SDL_FreeSurface(surfaceMessage);

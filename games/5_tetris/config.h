@@ -170,8 +170,8 @@ Vector2f BASE_DEAD_SPEED = {-7, 3};
 
 
 //textures and animations
-#define NB_TETRIS_TEXTURES 8
-typedef enum{T_LASER_ANIM, T_BRICKS, T_BONUS, T_HUD_GRILLE, T_CHIFFRE, T_SPEED_JAUGE, T_TURN, T_FLECHE}T_TEXTURES;
+#define NB_TETRIS_TEXTURES 9
+typedef enum{T_LASER_ANIM, T_BRICKS, T_BONUS, T_HUD_GRILLE, T_CHIFFRE, T_SPEED_JAUGE, T_TURN, T_FLECHE, T_LOADING}T_TEXTURES;
 
 
 char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
@@ -182,7 +182,8 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 	"./games/5_tetris/Textures/chiffre.png",
 	"./games/5_tetris/Textures/speedJauge.png",
 	"./games/5_tetris/Textures/turn.png",
-	"./games/5_tetris/Textures/fleche.png"
+	"./games/5_tetris/Textures/fleche.png",
+	DIR_LOADING
 };
 
 //to test
