@@ -226,7 +226,7 @@ void printAll(SDL_Renderer *renderer, SDL_Texture* background,SDL_Texture* loadi
 
 	SDL_RenderCopy(renderer, background, NULL, NULL);
 
-	afficherLoading(renderer, loading, cyan, 0, 0 ,frame_anims[ANIM_LOADING], BASE_WINDOW_W, BASE_WINDOW_H, BASE_WINDOW_W);
+	afficherLoading(renderer, loading, cyan, 0, 0 ,frame_anims[ANIM_LOADING], LARGUEUR, HAUTEUR, BASE_WINDOW_W);
 
 	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
 	SDL_RenderFillRect(renderer,&targetUIView);

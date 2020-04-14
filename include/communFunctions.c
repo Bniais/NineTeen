@@ -4,7 +4,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "communFunctions.h"
 #include "../define/define.h"
-#define LOADING_SIZE 46
+#define LOADING_SIZE 54
 #define LOADING_ANGLE_PER_FRAME (360/60)
 #define SIZE_ECHEC 62.
 const SDL_Rect SRC_LOADING = {0,0,222,222};
