@@ -7,9 +7,23 @@
 		if($message != "")
 		{
 			$message = $link->real_escape_string($message);
-			$resultat = $link->query("INSERT INTO nineteen_tickets (statut,message) VALUES (0,'$message') ");
+			$yourIP = getClientIP();
+			$resultat = $link->query("INSERT INTO nineteen_tickets (statut,message,ip) VALUES (0,'$message','$yourIP') ");
 		}
 	}
+
+
+function getClientIP(){
+ if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)){
+	return  $_SERVER["HTTP_X_FORWARDED_FOR"];
+ }else if (array_key_exists('REMOTE_ADDR', $_SERVER)) {
+	return $_SERVER["REMOTE_ADDR"];
+ }else if (array_key_exists('HTTP_CLIENT_IP', $_SERVER)) {
+	return $_SERVER["HTTP_CLIENT_IP"];
+ }
+
+ return '';
+}
 
 ?>
 
@@ -77,7 +91,7 @@
 				<br>
 				<br>
 				<hr>
-				<h2>Version actuelle : 0.1.4b</h2>
+				<h2>Version actuelle :  <?php include("checkVersion.php"); echo $versionActuel ?></h2>
 			</div>
 			<div class= "jeu" style="margin-left: 2%; float:left; width:30vw;">
 				<h1>Note de mise à jour</h1>
