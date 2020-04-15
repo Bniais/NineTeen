@@ -400,7 +400,8 @@ void afficher_laser(SDL_Renderer * renderer, SDL_Texture * laser_texture, Vaiss 
 		(*missiles)[*nb_missiles-1-i].y=vaisseau->y+DISTANCE_CANON*sin(vaisseau->angle);
 		(*missiles)[*nb_missiles-1-i].angle=vaisseau->angle+angle_tir_multiple[vaisseau->nb_tir-1][i];
 		(*missiles)[*nb_missiles-1-i].target_angle=(*missiles)[*nb_missiles-1-i].angle;
-		(*missiles)[*nb_missiles-1-i].frame=DUREE_MISSILE;
+		(*missiles)[*nb_missiles-1-i].frame= DUREE_MISSILE_BASE * DUREE_MISSILES[vaisseau->missile_id];
+		printf("%d \n", (*missiles)[*nb_missiles-1-i].frame );
 		(*missiles)[*nb_missiles-1-i].vitesse=vaisseau->vitesse_missile * VITESSE_MISSILES[vaisseau->missile_id];
 		(*missiles)[*nb_missiles-1-i].degat=vaisseau->degat_missile  * DEGAT_MISSILES[vaisseau->missile_id];
 	}
@@ -409,54 +410,92 @@ void afficher_laser(SDL_Renderer * renderer, SDL_Texture * laser_texture, Vaiss 
 
 }
 float calculer_angle(float x1, float y1, float x2, float y2){
-	return atan((y2-y1)/(x2-x1));
+	//printf("angle : %f \n", atan((y1-y2)/(x2-x1)));
+	return atan2((y2-y1) , (x2-x1));
+
+	//cah toa
 
 }
-int asteroid_plus_proche( Asteroid * asteroides, int nb_asteroid, Missile missile){
+
+
+float basePi(float angle){
+	while(angle > PI)
+		angle -= 2 * PI;
+	while(angle < - PI)
+		angle += 2*PI;
+
+	return angle;
+}
+
+float base360(float angle){
+	return (angle * 360 / (2*PI));
+}
+
+int asteroid_plus_proche(SDL_Renderer * renderer, Asteroid * asteroides, int nb_asteroid, Missile missile, float * best_angle_between){
+
 	int i;
-	float x;
 	float dist,min_dist=9999;
-	float angle,angle_min=9999;
+	float angle_min=9999;
 	int imin_asteroid = -1;
-	for (i=0;i<nb_asteroid;i++){
-		x=missile.x-asteroides[i].x;
-		if(x*sin(missile.angle-CHAMP_VISION_TELEGUIDE)> missile.y && x*sin(missile.angle+CHAMP_VISION_TELEGUIDE)< missile.y){
-			dist = dist_2f(asteroides[i].x,asteroides[i].y,missile.x, missile.y);
-			if(dist < min_dist){
-				min_dist= dist;
-				imin_asteroid=i;
+	float angle_between;
+
+
+	//printf("angle between : %f \n", basePi(missile.angle - calculer_angle(asteroides[0].x,asteroides[0].y,missile.x, missile.y)));
+
+	for(int shiftH = -1;shiftH <=1; shiftH++){
+		for(int shiftW = -1; shiftW <=1; shiftW++){
+
+			for (i=0;i<nb_asteroid;i++){
+				angle_between = basePi(calculer_angle(missile.x+ shiftW * PLAYGROUND_SIZE_W, missile.y+ shiftH * PLAYGROUND_SIZE_H, asteroides[i].x,asteroides[i].y) - missile.angle);
+				if(abs(angle_between) < CHAMP_VISION_TELEGUIDE ){
+					dist = dist_2f(asteroides[i].x,asteroides[i].y,missile.x+ shiftW * PLAYGROUND_SIZE_W, missile.y+ shiftH * PLAYGROUND_SIZE_H);
+					if(dist < min_dist){
+						min_dist= dist;
+						imin_asteroid=i;
+						*best_angle_between = angle_between;
+					}
+				}
 			}
+
+			if(imin_asteroid==-1){
+				for(i=0;i<nb_asteroid;i++){
+					angle_between = basePi(calculer_angle(missile.x+ shiftW * PLAYGROUND_SIZE_W, missile.y+ shiftH * PLAYGROUND_SIZE_H, asteroides[i].x,asteroides[i].y) - missile.angle);
+					if(abs(angle_between) < abs(angle_min)){
+						angle_min=angle_between;
+						imin_asteroid=i;
+						*best_angle_between = angle_between;
+					}
+				}
+			}
+
 		}
 	}
-	if(imin_asteroid==-1){
-		for(i=0;i<nb_asteroid;i++){
-			angle=calculer_angle(asteroides[i].x,asteroides[i].y,missile.x, missile.y);
-			if(angle < angle_min){
-				angle_min=angle;
-				imin_asteroid=i;
-			}
-		}
-	}
+
+
+
+
 	return imin_asteroid;
 }
 
-void mouvement_tir(Missile * shot, Asteroid * asteroides, int nb_asteroid){
+int signOf( float f){
+	return (f > 0) ? 1 : ((f < 0 )? -1 : 0);
+}
+
+void mouvement_tir(SDL_Renderer *renderer,Missile * shot, Asteroid * asteroides, int nb_asteroid){
 	int i;
-	float angle;
-	if(shot->id == SHOT_ZIGZAG)
+	float angle_between;
+
+	if(shot->id == SHOT_ZIGZAG){
 		shot->target_angle += randSign() * ((rand()%(int)(PRECISION_RAND_FLOAT*INTERVALLE_ZIGZAG_ANGLE)) / PRECISION_RAND_FLOAT + BASE_ZIGZAG_ANGLE);
+		shot->angle += (shot->target_angle - shot->angle )/FRAME_TO_REACH_ANGLE;
+	}
 	else if(shot->id == SHOT_TELEGUIDE && nb_asteroid){
-		i=asteroid_plus_proche(asteroides,nb_asteroid,*shot);
-		angle = calculer_angle(asteroides[i].x, asteroides[i].y, shot->x, shot->y);
-		if( angle > 0){
-			shot->angle+= (angle>ANGLE_TELEGUIDE? ANGLE_TELEGUIDE:angle);
-		}
-		else if(angle < 0) {
-			shot->angle-= (-angle>ANGLE_TELEGUIDE? ANGLE_TELEGUIDE:angle);
-		}
+		i=asteroid_plus_proche(renderer, asteroides,nb_asteroid,*shot, &angle_between);
+		if(i!=-1)
+			shot->angle += fabs(angle_between)>ANGLE_TELEGUIDE ? signOf(angle_between) * ANGLE_TELEGUIDE : angle_between;
 	}
 
-	shot->angle += (shot->target_angle - shot->angle )/FRAME_TO_REACH_ANGLE;
+
 
 	shot->x+= shot->vitesse*cos(shot->angle);
 	shot->y+= shot->vitesse*sin(shot->angle);
@@ -627,9 +666,13 @@ void afficher_texture_asteroid(SDL_Renderer* renderer, SDL_Texture * textureAste
 	}
 }
 
-void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* textureAsteroid, SDL_Texture* textureFissure){
+void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* textureAsteroid, SDL_Texture* textureFissure, int aim){
 	SDL_Rect src = ASTE_SRC;
 
+	if(aim)
+		SDL_SetTextureColorMod(textureAsteroid, 255,0,0);
+	else
+		SDL_SetTextureColorMod(textureAsteroid, 255,255,255);
 	SDL_Rect asteroidRect={(int)asteroid.x-asteroid.taille, (int)asteroid.y-asteroid.taille,asteroid.taille*2,asteroid.taille*2};
 
 	int sizeAste = (roundf(asteroid.taille/(MAX_ASTEROID_SIZE/NB_TAILLE_ASTE)) - 1);
@@ -909,7 +952,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 	}
 
 	for(int i=0;i<nb_missiles; i++){
-		mouvement_tir(&missiles[i], asteroides, nb_asteroid);
+		mouvement_tir(renderer, &missiles[i], asteroides, nb_asteroid);
 
 	}
 
@@ -994,8 +1037,12 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 		rdyToReloadBomb = SDL_TRUE;
 	}
 
+	//int a = asteroid_plus_proche(renderer, asteroides, nb_asteroid, missiles[0], NULL);
 	for(int j=0;j<nb_asteroid;j++){
-		afficher_asteroid(asteroides[j],renderer, textures[T_ASTEROID], textures[T_FISSURE]);
+		/*if( j == a)
+			afficher_asteroid(asteroides[j],renderer, textures[T_ASTEROID], textures[T_FISSURE], 1);
+		else*/
+			afficher_asteroid(asteroides[j],renderer, textures[T_ASTEROID], textures[T_FISSURE], 0);
 	}
 		//hud
 		SDL_RenderSetScale(renderer, 1, 1);

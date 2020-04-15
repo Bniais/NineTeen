@@ -83,7 +83,7 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 #define INTERVALE_RAND_DIFFICULTE 0.3
 
 //missiles
-#define CHAMP_VISION_TELEGUIDE (PI/6)
+
 #define NB_MISSILES 4
 	//color
 	const SDL_Color GEM_COLORS[NB_MISSILES]={
@@ -105,12 +105,15 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 	#define INTERVALLE_ZIGZAG_ANGLE 0.05
 	#define FRAME_TO_REACH_ANGLE 4
 	// attributs teleguide
-	#define ANGLE_TELEGUIDE 0.2
+	#define ANGLE_TELEGUIDE 0.1
+	#define CHAMP_VISION_TELEGUIDE (PI/2)
 
 	// attributs laser
 	#define NB_LASER_BEAM 8
 	#define LASER_ACCEL 0.1
 
+
+	//attributs communs
 	#define DISTANCE_CANON 23
 
 	#define FREQUENCE_BASE (FRAMES_PER_SECOND/2)
@@ -123,6 +126,9 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 	const float DEGAT_MISSILES[NB_MISSILES] = {1, 1.5, 2, 0};
 
 	const int RAYON_MISSILES[NB_MISSILES] = {6, 10, 14, 0};
+
+	#define DUREE_MISSILE_BASE (2*FRAMES_PER_SECOND)
+	const float DUREE_MISSILES[NB_MISSILES] = {1, 0.9, 1.25, 0};
 
 
 	//texures missiles
@@ -144,7 +150,6 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 	const int MISSILES_SRC_RAYON[NB_MISSILES]={6, 15, 18,0};
 
 	//death missile
-	#define DUREE_MISSILE (2*FRAMES_PER_SECOND)
 	#define FRAME_MISSILE_DEATH 8
 	const int ALPHA_MISSILE[FRAME_MISSILE_DEATH]={10, 30, 60, 90, 140, 180, 215, 250};
 
