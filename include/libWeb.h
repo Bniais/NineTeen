@@ -45,17 +45,44 @@ int construire_requete(char **dest, char *email, char *password, char *key, char
 
 
 
+
+
+typedef struct{char *key; char *email; char *password; int retour;}ConnectStruct;
 /////////////////////////////////////////////////////
-/// \fn int connectWithUsername(char **key, char *email, char *password)
+/// \fn int connectWithUsername(char *key, char *email, char *password)
 /// \brief connexion avec nom utilisateur
 ///
-/// \param char **key Ecriture de la clé dans key
-/// \param char *email Email de connexion 
-/// \param char *password Mot de passe de connexion 
+/// \param char *key Ecriture de la clé dans key
+/// \param char *email Email de connexion
+/// \param char *password Mot de passe de connexion
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int connectWithUsername(char **key, char *email, char *password);
+int connectWithUsername(ConnectStruct connectStruct);
+
+/////////////////////////////////////////////////////
+/// \fn updateMeilleureScoreStruct(char *key,int *coins)
+/// \brief recuperer notre somme d'argent
+///
+/// \param char *key Ecriture de la clé dans key
+/// \param int *coins Valeur de retour de notre somme d'argent
+///
+/// \return EXIT_SUCCESS / EXIT_FAILURE
+/////////////////////////////////////////////////////
+int updateMeilleureScoreStruct(char *key,char *coins);
+
+/////////////////////////////////////////////////////
+/// \fn buyGamePass(char *key, char *gameID)
+/// \brief acheter un pass pour un jeu
+///
+/// \param char *key Ecriture de la clé dans key
+/// \param char *gameID numero du jeux
+///
+/// \return EXIT_SUCCESS / EXIT_FAILURE
+/////////////////////////////////////////////////////
+int buyGamePass(char *key, char *gameID);
+
+
 
 
 
@@ -70,7 +97,7 @@ int connectWithUsername(char **key, char *email, char *password);
 int connectWithKey(char *key);
 
 
-
+typedef struct{char *gameID; char *score; char *key;}EnvoiScore;
 /////////////////////////////////////////////////////
 /// \fn int updateScore(char *key, char *gameID, char *score)
 /// \brief update le score
@@ -81,7 +108,8 @@ int connectWithKey(char *key);
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int updateScore(char *gameID, char *score, char *key);
+int updateScore(EnvoiScore * envoiScore );
+
 
 /////////////////////////////////////////////////////
 /// \fn int ping()
@@ -90,3 +118,12 @@ int updateScore(char *gameID, char *score, char *key);
 /// \return DELAY MS
 /////////////////////////////////////////////////////
 int ping();
+
+
+/////////////////////////////////////////////////////
+/// \fn int checkVersionOnline(char message[])
+/// \brief permet de verifier la bonne version de l'utilisateur
+///
+/// \return DELAY MS
+/////////////////////////////////////////////////////
+int checkVersionOnline(char message[]);

@@ -1,7 +1,4 @@
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <SDL.h>
-#include "../define/define.h"
+
 // fonction principal
 
 
@@ -19,5 +16,8 @@ int apply_renderer_texture(SDL_Renderer* renderer , SDL_Texture * texture);
 
 void pauseClavier(Uint32 tempsMax);
 
-
 // compile .o commande : gcc -c launcher.c `sdl2-config --cflags --libs` -lSDL2_image
+
+#define NB_FILE 20
+char verifierFichier[NB_FILE][128]={"room/borne1.wav","room/borne2.wav","room/borne3.wav","room/walk.wav","room/sega.ttf","room/police.ttf","room/salle.obj","room/salle.mtl",
+                            "games/3_flappy_bird/Textures/tilset.png","games/3_flappy_bird/Textures/birds.png","games/3_flappy_bird/Textures/medals.png","games/3_flappy_bird/Textures/pipes.png","games/3_flappy_bird/Textures/scoreBoard.png","games/3_flappy_bird/Textures/backgrounds.png","games/3_flappy_bird/Textures/chiffre.png","games/3_flappy_bird/Textures/sol.png","games/3_flappy_bird/Textures/high_score.png","games/3_flappy_bird/Sounds/flap.wav","games/3_flappy_bird/Sounds/hurt.wav","games/3_flappy_bird/Sounds/score.wav"};

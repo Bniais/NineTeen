@@ -17,11 +17,11 @@
 // - Chance de "fruit géant" (*10 ptns, +grow *2 speed)
 // - Multiple fruits on board possible
 // - hud
-/ - resizable -> only optimized for left-barre medium-sized ubuntu :/
+// - resizable -> only optimized for left-barre medium-sized ubuntu :/
 // - anim death
- - menu final death
- - texture score et affichage (rework)
- - fullscreen
+ - menu final death(juste affichage message)
+ //- texture score et affichage (rework)
+ \\- fullscreen
 
 dans hud :
  - affichage jauge café
@@ -29,6 +29,13 @@ dans hud :
  - affichage score
  - affichage jauge progression
  - affichage jauge drunk
+
+
+//jauge smooth
+//potions when dont have + max potions + center draw
+score total
+
+
 
 
 // - pause
@@ -52,19 +59,13 @@ dans hud :
 // - Fix digérer decale all fruits (stop when body is normal)
 // - Fix head become small on digestion (cuz never reached case t==SIZE_PRE_RADIUS/2)
 // - Fix pastBody too small ((*body)[*size + i].x=(*body)[*size + i-1].x + (*body)[*size + i-1].x - (*body)[*size + i-2].x; (*body)[*size + i].y=(*body)[*size + i-1].y + (*body)[*size + i-1].y - (*body)[*size + i-2].y;)
- - Fix bomb -> digestion makes spawn at old place
+ ?- Fix bomb -> digestion makes spawn at old place
 
-
+affichage frutibarre
+affichage score total
+//affichage nbPotion
 
 
 modes de jeu :
-1easy (bomb cant kill)
-2hard ( + grow, + speed)
-3extreme (reduced vision)
-4survie (lot of spawns that kills (except if bombed) / enemy attacks)
-
-
-achievement :
-grosse tête
-poisoned too much
-die from poison/bomb
+// normal
+survie lot of spawns
