@@ -1,4 +1,4 @@
-#define VERSION_LOGICIEL "version=0.1.5b"
+#define VERSION_LOGICIEL "version=0.1.5b-dev"
 
 
 #include <stdio.h>
