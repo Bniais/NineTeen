@@ -1749,65 +1749,64 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					//////////////////////////////////////////////////////////
 					// AFFICHER LA SOURIS
 					SDL_ShowCursor(SDL_ENABLE);
-						///////////////////////////////////////////////////
-						// INIT AFFICHAGE DU MESSAGE
-						GL_InitialiserParametre(WinWidth,WinHeight,camera);
-						SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
-						MessageQuitterRoom();
-						SDL_GL_SwapWindow(Window);
+					///////////////////////////////////////////////////
+					// INIT AFFICHAGE DU MESSAGE
+					GL_InitialiserParametre(WinWidth,WinHeight,camera);
+					SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
+					MessageQuitterRoom();
+					SDL_GL_SwapWindow(Window);
 
-						///////////////////////////////////////////////////
-						// VIDER LA LISTE DES EVENEMENTS
-						do
-      			{
-         				SDL_WaitEvent(&Event);
-      			}
-      			while (Event.key.keysym.sym != SDLK_ESCAPE);
+					///////////////////////////////////////////////////
+					// VIDER LA LISTE DES EVENEMENTS
+					do
+	      			{
+	         				SDL_WaitEvent(&Event);
+	      			}while (Event.key.keysym.sym != SDLK_ESCAPE);
 
 
-						///////////////////////////////////////////////////
-						// DECISION PRISE
-						int decision = 1;
-						while(decision)
+					///////////////////////////////////////////////////
+					// DECISION PRISE
+					int decision = 1;
+					while(decision)
+					{
+						while (SDL_PollEvent(&Event))
 						{
-							while (SDL_PollEvent(&Event))
-							{
-								if (Event.type == SDL_KEYDOWN) {
-									switch (Event.key.keysym.sym)
-									{
-										case SDLK_ESCAPE:
-											decision = 0;
-											printf("Commande annuler\n");
-											break;
-										case SDLK_q:
-											decision = 0;
-											printf("Vous quittez\n");
-											*Running = 0;
-											break;
-										case SDLK_d:
-											decision = 0;
-											printf("Vous vous deconnecter\n");
-											FILE *fp = fopen(DIR_TOKEN_FILE,"w");
-											fclose(fp);
-											*Running = 0;
-											break;
-										default:break;
-									}
+							if (Event.type == SDL_KEYDOWN) {
+								switch (Event.key.keysym.sym)
+								{
+									case SDLK_ESCAPE:
+										decision = 0;
+										printf("Commande annuler\n");
+										break;
+									case SDLK_q:
+										decision = 0;
+										printf("Vous quittez\n");
+										*Running = 0;
+										break;
+									case SDLK_d:
+										decision = 0;
+										printf("Vous vous deconnecter\n");
+										FILE *fp = fopen(DIR_TOKEN_FILE,"w");
+										fclose(fp);
+										*Running = 0;
+										break;
+									default:break;
 								}
 							}
 						}
+					}
+					//////////////////////////////////////////////////////////
+					// ON DESACTIVER L"AFFICHAGE DE LA SOURIS
+					if(*Running != 0)
+					{
 						//////////////////////////////////////////////////////////
-						// ON DESACTIVER L"AFFICHAGE DE LA SOURIS
-						if(*Running != 0)
-						{
-							//////////////////////////////////////////////////////////
-							// CACHER LA SOURIS
-							SDL_ShowCursor(SDL_DISABLE);
-							///////////////////////////////////////////////////
-							// RECENTRAGE DE CAMERA
-							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-														///////////////////////////////////////////////////
-						}
+						// CACHER LA SOURIS
+						SDL_ShowCursor(SDL_DISABLE);
+						///////////////////////////////////////////////////
+						// RECENTRAGE DE CAMERA
+						SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+													///////////////////////////////////////////////////
+					}
 				}
 
 				///////////////////////////////////////////////////
