@@ -1880,16 +1880,16 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							///////////////////////////////////////////////////
 							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
 							SDL_DestroyRenderer(pRenderer);
-						//	SDL_GL_DeleteContext(*Context);
+							SDL_GL_DeleteContext(*Context);
 							///////////////////////////////////////////////////
-							//*Context = SDL_GL_CreateContext(Window);
+							*Context = SDL_GL_CreateContext(Window);
 							///////////////////////////////////////////////////
 							// REMISE A ZERO DE LA SCENE
-						//	*scene_list = 0;
+							*scene_list = 0;
 							// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
 							while(SDL_PollEvent(&Event));
 							// AFFICHAGE DE LA SCENE
-						//	SDL_GL_AppliquerScene(scene,&camera,scene_list,FPS);
+							SDL_GL_AppliquerScene(scene,&camera,scene_list,FPS);
 							// ANIMATION DE RETOUR SUR MACHINE
 							animationLancerMachine(cible[machine-1],camera,*scene_list,Window);
 							// VIDER POLL EVENEMENT
