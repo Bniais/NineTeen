@@ -53,7 +53,7 @@
 #define VITESSE_DEPLACEMENT_DEBOUT 0.09F
 #define VITESSE_DEPLACEMENT_ACCROUPI 0.035F
 #define SENSIBILITE_CAMERA 0.08F
-#define SENSIBILITE_CAMERA_SOURIS 200.0F
+#define SENSIBILITE_CAMERA_SOURIS 0.01F
 #define HAUTEUR_CAMERA_DEBOUT 3.5F
 #define HAUTEUR_CAMERA_ACCROUPI 2.7F
 #define MAX_Y_AXE_CIBLE 2.8F
@@ -1237,17 +1237,24 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 
 	///////////////////////////////////////////////////
 	// MOUVEMENT CAMERA SUR X ET Z
+
+
 	////////////////////////////
 	// RECUPERER POSITION SOURIS
 	SDL_PumpEvents();
 	int mouseX,mouseY;
-	SDL_GetMouseState(&mouseX, &mouseY);///////////////////////
-	// APPLIQUER A LA CAMERA
-	camera->angle = (mouseX/-SENSIBILITE_CAMERA_SOURIS);
-
+	SDL_GetMouseState(&mouseX, &mouseY);
 	// RECUPERER TAILLE ECRAN
 	SDL_Rect bounds;
 	SDL_GetDisplayBounds(0, &bounds);
+
+	///////////////////////////////////////////////////
+	// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
+	camera->angle -= ( (mouseX  + (bounds.w-WinWidth) /2) - ((WinWidth/2) + (bounds.w-WinWidth) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
+	///////////////////////////////////////////////////
+	// RECENTRAGE DE CAMERA
+	SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,mouseY + (bounds.h-WinHeight) /2);
+	///////////////////////////////////////////////////
 
 	// REDUIT L'ECART D ANGLE A UN ANGLE IDENTIQUE
 	// COMPRIS DANS UN INTERVALE
@@ -1264,9 +1271,6 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 	{
 		camera->angle += _SENSIBILITE_CAMERA;
 		///////////////////////////////////////////////////
-		// APPLIQUER LA MODIFICATION A LA SOURIS
-		mouseX -= _SENSIBILITE_CAMERA*SENSIBILITE_CAMERA_SOURIS;
-		SDL_WarpMouseGlobal(mouseX + (bounds.w-WinWidth) /2  ,mouseY + (bounds.h-WinHeight) /2);
 	}
 
 	///////////////////////////////////////////////////
@@ -1274,9 +1278,7 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 	if( keystate[SDL_SCANCODE_RIGHT] )
 	{
 		camera->angle -= _SENSIBILITE_CAMERA;
-		// APPLIQUER LA MODIFICATION A LA SOURIS
-		mouseX += _SENSIBILITE_CAMERA*SENSIBILITE_CAMERA_SOURIS;
-		SDL_WarpMouseGlobal(mouseX + (bounds.w-WinWidth) /2  ,mouseY + (bounds.h-WinHeight) /2);
+		///////////////////////////////////////////////////
 	}
 
 
@@ -1386,7 +1388,7 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 
 
 
-
+/*
 	// RECENTRE LA SOURIS
 	if(mouseX <= WinWidth/2 - M_PI*SENSIBILITE_CAMERA_SOURIS)
 	{
@@ -1395,7 +1397,7 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 	if(mouseX >= WinWidth/2 + M_PI*SENSIBILITE_CAMERA_SOURIS)
 	{
 		SDL_WarpMouseGlobal(mouseX - 2*M_PI*SENSIBILITE_CAMERA_SOURIS + (bounds.w-WinWidth) /2 ,mouseY + (bounds.h-WinHeight) /2);
-	}
+	}*/
 
 
 
