@@ -1266,7 +1266,13 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 	///////////////////////////////////////////////////
 	// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
 	camera->angle -= ( (mouseX  + (bounds.w-WinWidth) /2) - ((WinWidth/2) + (bounds.w-WinWidth) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
-	camera->cible_py -= ( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
+
+	///////////////////////////////////////////////////
+	// VERIFIER QU"ON NE VAS PAS DEPASSER LA LIMITE FIXER
+	if(camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) < MAX_Y_AXE_CIBLE && camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) > -MAX_Y_AXE_CIBLE)
+		// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
+		camera->cible_py -= ( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
+
 	///////////////////////////////////////////////////
 	// RECENTRAGE DE CAMERA
 	SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
