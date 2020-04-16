@@ -1772,25 +1772,27 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						{
 							while (SDL_PollEvent(&Event))
 							{
-								switch (Event.key.keysym.sym)
-								{
-									case SDLK_ESCAPE:
-										decision = 0;
-										printf("Commande annuler\n");
-										break;
-									case SDLK_q:
-										decision = 0;
-										printf("Vous quittez\n");
-										*Running = 0;
-										break;
-									case SDLK_d:
-										decision = 0;
-										printf("Vous vous deconnecter\n");
-										FILE *fp = fopen(DIR_TOKEN_FILE,"w");
-										fclose(fp);
-										*Running = 0;
-										break;
-									default:break;
+								if (Event.type == SDL_KEYDOWN) {
+									switch (Event.key.keysym.sym)
+									{
+										case SDLK_ESCAPE:
+											decision = 0;
+											printf("Commande annuler\n");
+											break;
+										case SDLK_q:
+											decision = 0;
+											printf("Vous quittez\n");
+											*Running = 0;
+											break;
+										case SDLK_d:
+											decision = 0;
+											printf("Vous vous deconnecter\n");
+											FILE *fp = fopen(DIR_TOKEN_FILE,"w");
+											fclose(fp);
+											*Running = 0;
+											break;
+										default:break;
+									}
 								}
 							}
 						}
