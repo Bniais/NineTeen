@@ -308,7 +308,7 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible);
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void mouvementCamera(struct Camera_s *camera, const float IPS);
+void mouvementCamera(SDL_Window * window, struct Camera_s *camera, const float IPS);
 
 
 /////////////////////////////////////////////////////
@@ -321,7 +321,7 @@ void mouvementCamera(struct Camera_s *camera, const float IPS);
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list, const float IPS);
+void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list, const float IPS);
 
 
 /////////////////////////////////////////////////////
@@ -447,12 +447,11 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	// EVENT SOURIS INIT
 	//////////////////////////////////////////////////////////
 	// CACHER LA SOURIS
-	SDL_ShowCursor(SDL_DISABLE);
+	//SDL_ShowCursor(SDL_DISABLE);
 	//////////////////////////////////////////////////////////
 	// POSITIONNER LA SOURIS AU CENTRE
 	SDL_GetDisplayBounds(0, &bounds);
 	///////////////////////////////////////////////////
-	SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
 	//////////////////////////////////////////////////////////
 
 
@@ -573,7 +572,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	float _IPS = FPS;
 	//////////////////////////////////////////////////////////
 
-
+	SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 
 	while (Running)
 	{
@@ -601,7 +600,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 		//////////////////////////////////////////////////////////
 		// CHARGER LA SCENE
-		SDL_GL_AppliquerScene(scene,&camera,&scene_list,_IPS);
+		SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
 		//////////////////////////////////////////////////////////
 
 
@@ -1015,7 +1014,7 @@ void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int 
 
 
 
-void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list,const float IPS)
+void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list,const float IPS)
 {
 	////////////////////////////////////////////////////
 	// REGLE COULEUR DE FOND NETTOIE LE DERNIERE AFFICHAGE
@@ -1029,7 +1028,7 @@ void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera
 
 	////////////////////////////////////////////////////
 	// GERER LES MOUVEMENT DE CAMERA
-	mouvementCamera(camera,60.0);
+	mouvementCamera(Window, camera,60.0);
 
 	////////////////////////////////////////////////////
 	// SI LE RENDU DE LA SCENE N'EST PAS FAIT LE FAIRE
@@ -1224,7 +1223,7 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 /* ---------------------------------------------------------------------------- */
 
 
-void mouvementCamera(struct Camera_s *camera, const float IPS)
+void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float IPS)
 {
 	///////////////////////////////////////////////////
 	// REGLAGE EN FONCTION DES FPS FIXER
@@ -1276,8 +1275,8 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 
 	///////////////////////////////////////////////////
 	// RECENTRAGE DE CAMERA
-	SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
-	///////////////////////////////////////////////////
+	SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+		///////////////////////////////////////////////////
 
 	// REDUIT L'ECART D ANGLE A UN ANGLE IDENTIQUE
 	// COMPRIS DANS UN INTERVALE
@@ -1753,7 +1752,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						///////////////////////////////////////////////////
 						// INIT AFFICHAGE DU MESSAGE
 						GL_InitialiserParametre(WinWidth,WinHeight,camera);
-						SDL_GL_AppliquerScene(scene,&camera,scene_list,FPS);
+						SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
 						MessageQuitterRoom();
 						SDL_GL_SwapWindow(Window);
 
@@ -1804,8 +1803,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							SDL_ShowCursor(SDL_DISABLE);
 							///////////////////////////////////////////////////
 							// RECENTRAGE DE CAMERA
-							SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
-							///////////////////////////////////////////////////
+							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+														///////////////////////////////////////////////////
 						}
 				}
 
@@ -1831,8 +1830,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 
 							//centrer souris
-							SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
-
+							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 							///////////////////////////////////////////////////
 							// CASE POUR CHAQUE MACHINE
 							// AVEC UPDATE DU SCORE A L ISSUS
@@ -1879,8 +1877,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							}
 
 							//centrer souris
-							SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
-
+							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 							///////////////////////////////////////////////////
 							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
 							SDL_DestroyRenderer(pRenderer);
@@ -1893,7 +1890,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
 							while(SDL_PollEvent(&Event));
 							// AFFICHAGE DE LA SCENE
-							SDL_GL_AppliquerScene(scene,&camera,scene_list,FPS);
+							SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
 							// ANIMATION DE RETOUR SUR MACHINE
 							animationLancerMachine(cible[machine-1],camera,*scene_list,Window);
 							// VIDER POLL EVENEMENT
@@ -1902,7 +1899,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							///////////////////////////////////////////////////
 							// RECENTRAGE DE CAMERA
-							SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
+							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 							///////////////////////////////////////////////////
 						}
 					}
