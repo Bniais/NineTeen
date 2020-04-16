@@ -447,7 +447,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	// EVENT SOURIS INIT
 	//////////////////////////////////////////////////////////
 	// CACHER LA SOURIS
-	//SDL_ShowCursor(SDL_DISABLE);
+	SDL_ShowCursor(SDL_DISABLE);
 	//////////////////////////////////////////////////////////
 	// POSITIONNER LA SOURIS AU CENTRE
 	SDL_GetDisplayBounds(0, &bounds);
