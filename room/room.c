@@ -1736,6 +1736,7 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 
 void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context)
 {
+
 	///////////////////////////////////////////////////
 	// GESTION EVENEMENT
 	SDL_Event Event;
@@ -1743,13 +1744,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 	{
 		///////////////////////////////////////////////////
 		// EVENEMENT APPUI TOUCHE
-		if (Event.type == SDL_KEYDOWN)
+		if (Event.type == SDL_KEYDOWN || Event.type == SDL_MOUSEBUTTONDOWN)
 		{
-			switch (Event.key.keysym.sym)
-			{
 				///////////////////////////////////////////////////
 				// TOUCHE ESPACE METTRE FIN AU JEUX
-				case SDLK_ESCAPE:
+				if(Event.key.keysym.sym == SDLK_ESCAPE)
 				{
 					//////////////////////////////////////////////////////////
 					// AFFICHER LA SOURIS
@@ -1813,11 +1812,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
 							///////////////////////////////////////////////////
 						}
-						break;
 				}
+
 				///////////////////////////////////////////////////
-				// TOUCHE E ENTRER DANS UN JEUX
-				case SDLK_e:
+				// TOUCHE E ENTRER DANS UN JEUX OU CLIQUE GAUCHE
+				if(Event.key.keysym.sym == SDLK_e || Event.type == SDL_MOUSEBUTTONDOWN)
 				{
 						///////////////////////////////////////////////////
 						// VERIFIER SI ON EST PROCHES D UNE MACHINE
@@ -1881,16 +1880,16 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							///////////////////////////////////////////////////
 							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
 							SDL_DestroyRenderer(pRenderer);
-							SDL_GL_DeleteContext(*Context);
+						//	SDL_GL_DeleteContext(*Context);
 							///////////////////////////////////////////////////
-							*Context = SDL_GL_CreateContext(Window);
+							//*Context = SDL_GL_CreateContext(Window);
 							///////////////////////////////////////////////////
 							// REMISE A ZERO DE LA SCENE
-							*scene_list = 0;
+						//	*scene_list = 0;
 							// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
 							while(SDL_PollEvent(&Event));
 							// AFFICHAGE DE LA SCENE
-							SDL_GL_AppliquerScene(scene,&camera,scene_list,FPS);
+						//	SDL_GL_AppliquerScene(scene,&camera,scene_list,FPS);
 							// ANIMATION DE RETOUR SUR MACHINE
 							animationLancerMachine(cible[machine-1],camera,*scene_list,Window);
 							// VIDER POLL EVENEMENT
@@ -1905,11 +1904,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							///////////////////////////////////////////////////
 						}
 					}
-					break;
 
 				///////////////////////////////////////////////////
 				// TOUCHE C CE METTRE A CROUPI
-				case SDLK_c:
+				if(Event.key.keysym.sym == SDLK_c)
+				{
 					///////////////////////////////////////////////////
 					// MET LE JOUEUR A CROUPI ET REDUIT CA VITESSE DE DEPLACEMENT
 					if(VITESSE_DEPLACEMENT == VITESSE_DEPLACEMENT_DEBOUT )
@@ -1922,14 +1921,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 						VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
 					}
-
-					break;
-
-				///////////////////////////////////////////////////
-				// DEFAULT
-				default:
-					break;
-			}
+				}
 		}
 
 		///////////////////////////////////////////////////
