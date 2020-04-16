@@ -1250,14 +1250,17 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 	while( camera->angle < 0)
 		camera->angle += 2*M_PI;
 
+    SDL_Rect bounds;
+    SDL_GetDisplayBounds(0, &bounds);
+
 	// RECENTRE LA SOURIS
 	if(mouseX <= WinWidth/2 - M_PI*100)
 	{
-		SDL_WarpMouseGlobal(mouseX + 2*M_PI*100 + 173 ,mouseY);
+		SDL_WarpMouseGlobal(mouseX + 2*M_PI*100 + (bounds.w-WinWidth) /2  ,mouseY + (bounds.h-WinHeight) /2);
 	}
 	if(mouseX >= WinWidth/2 + M_PI*100)
 	{
-		SDL_WarpMouseGlobal(mouseX - 2*M_PI*100 + 173 ,mouseY);
+		SDL_WarpMouseGlobal(mouseX - 2*M_PI*100 + (bounds.w-WinWidth) /2 ,mouseY + (bounds.h-WinHeight) /2);
 	}
 
 /*	if(mouseX <= WinWidth/2 - M_PI*100)
@@ -1270,7 +1273,7 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 	}*/
 
 	// centrage de la camera
-	/*
+
 	// APUI FLECHE GAUCHE
 	if( keystate[SDL_SCANCODE_LEFT] )
 	{
@@ -1291,7 +1294,7 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 		// PERMET DE REMETRE A VALEUR COMPRISE ENTRE 0 et 2*M_PI L'ANGLE CAMERA
 		if( camera->angle < 0)
 			camera->angle += 2*M_PI;
-	} */
+	}
 //	camera->cible_py = (mouseY/-100.0);
 
 
