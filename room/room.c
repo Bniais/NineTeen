@@ -1211,7 +1211,6 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 
 void mouvementCamera(struct Camera_s *camera, const float IPS)
 {
-
 	///////////////////////////////////////////////////
 	// REGLAGE EN FONCTION DES FPS FIXER
 	// VALEUR BASER SUR 60 FPS DE BASE
@@ -1237,7 +1236,41 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 
 	///////////////////////////////////////////////////
 	// MOUVEMENT CAMERA SUR X ET Z
-	///////////////////////////////////////////////////
+	////////////////////////////
+	SDL_PumpEvents();
+	int mouseX,mouseY;
+	SDL_GetMouseState(&mouseX, &mouseY);///////////////////////
+	camera->angle = (mouseX/-100.0);
+	//printf("CONVERSION X = %d END X = %f\n",mouseX,camera->angle );
+
+	// REDUIT L'ECART D ANGLE A UN ANGLE IDENTIQUE
+	// COMPRIS DANS UN INTERVALE
+	while( camera->angle > 2 * M_PI)
+		camera->angle -= 2*M_PI;
+	while( camera->angle < 0)
+		camera->angle += 2*M_PI;
+
+	// RECENTRE LA SOURIS
+	if(mouseX <= WinWidth/2 - M_PI*100)
+	{
+		SDL_WarpMouseGlobal(mouseX + 2*M_PI*100 + 173 ,mouseY);
+	}
+	if(mouseX >= WinWidth/2 + M_PI*100)
+	{
+		SDL_WarpMouseGlobal(mouseX - 2*M_PI*100 + 173 ,mouseY);
+	}
+
+/*	if(mouseX <= WinWidth/2 - M_PI*100)
+	{
+		SDL_WarpMouseGlobal(mouseX,mouseY);
+	}
+	if(mouseX >= WinWidth/2 + M_PI*100)
+	{
+		SDL_WarpMouseGlobal(mouseX,mouseY);
+	}*/
+
+	// centrage de la camera
+	/*
 	// APUI FLECHE GAUCHE
 	if( keystate[SDL_SCANCODE_LEFT] )
 	{
@@ -1258,7 +1291,10 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 		// PERMET DE REMETRE A VALEUR COMPRISE ENTRE 0 et 2*M_PI L'ANGLE CAMERA
 		if( camera->angle < 0)
 			camera->angle += 2*M_PI;
-	}
+	} */
+//	camera->cible_py = (mouseY/-100.0);
+
+
 
 	///////////////////////////////////////////////////
 	// APUI FLECHE HAUT
@@ -1350,6 +1386,7 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 		}
 
 	}
+
 
 
 
