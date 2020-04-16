@@ -443,6 +443,9 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene)
 {
 	//////////////////////////////////////////////////////////
+	// CACHER LA SOURIS
+	SDL_ShowCursor(SDL_DISABLE);
+	//////////////////////////////////////////////////////////
 	// RECUPERER C'EST VALEUR DES PARAMS A L'AVENIR
 	windowMaxSize();
 	//////////////////////////////////////////////////////////
@@ -1726,6 +1729,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 				// TOUCHE ESPACE METTRE FIN AU JEUX
 				case SDLK_ESCAPE:
 				{
+					//////////////////////////////////////////////////////////
+					// AFFICHER LA SOURIS
+					SDL_ShowCursor(SDL_ENABLE);
 						///////////////////////////////////////////////////
 						// INIT AFFICHAGE DU MESSAGE
 						GL_InitialiserParametre(WinWidth,WinHeight,camera);
@@ -1771,6 +1777,12 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								}
 							}
 						}
+						//////////////////////////////////////////////////////////
+						// ON DESACTIVER L"AFFICHAGE DE LA SOURIS
+						if(*Running != 0)
+							//////////////////////////////////////////////////////////
+							// CACHER LA SOURIS
+							SDL_ShowCursor(SDL_DISABLE);
 						break;
 				}
 				///////////////////////////////////////////////////
