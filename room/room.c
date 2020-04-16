@@ -1742,186 +1742,209 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 		// EVENEMENT APPUI TOUCHE
 		if (Event.type == SDL_KEYDOWN || Event.type == SDL_MOUSEBUTTONDOWN)
 		{
+			///////////////////////////////////////////////////
+			// TOUCHE ESPACE METTRE FIN AU JEUX
+			if(Event.key.keysym.sym == SDLK_ESCAPE)
+			{
+
+				//////////////////////////////////////////////////////////
+				// AFFICHER LA SOURIS
+				SDL_ShowCursor(SDL_ENABLE);
 				///////////////////////////////////////////////////
-				// TOUCHE ESPACE METTRE FIN AU JEUX
-				if(Event.key.keysym.sym == SDLK_ESCAPE)
-				{
-					//////////////////////////////////////////////////////////
-					// AFFICHER LA SOURIS
-					SDL_ShowCursor(SDL_ENABLE);
-					///////////////////////////////////////////////////
-					// INIT AFFICHAGE DU MESSAGE
-					GL_InitialiserParametre(WinWidth,WinHeight,camera);
-					SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
-					MessageQuitterRoom();
-					SDL_GL_SwapWindow(Window);
+				// INIT AFFICHAGE DU MESSAGE
+				GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
-					///////////////////////////////////////////////////
-					// VIDER LA LISTE DES EVENEMENTS
-					do
-	      			{
-	         				SDL_WaitEvent(&Event);
-	      			}while (Event.key.keysym.sym != SDLK_ESCAPE);
-
-
-					///////////////////////////////////////////////////
-					// DECISION PRISE
-					int decision = 1;
-					while(decision)
-					{
-						while (SDL_PollEvent(&Event))
-						{
-							if (Event.type == SDL_KEYDOWN) {
-								switch (Event.key.keysym.sym)
-								{
-									case SDLK_ESCAPE:
-										decision = 0;
-										printf("Commande annuler\n");
-										break;
-									case SDLK_q:
-										decision = 0;
-										printf("Vous quittez\n");
-										*Running = 0;
-										break;
-									case SDLK_d:
-										decision = 0;
-										printf("Vous vous deconnecter\n");
-										FILE *fp = fopen(DIR_TOKEN_FILE,"w");
-										fclose(fp);
-										*Running = 0;
-										break;
-									default:break;
-								}
-							}
-						}
-					}
-					//////////////////////////////////////////////////////////
-					// ON DESACTIVER L"AFFICHAGE DE LA SOURIS
-					if(*Running != 0)
-					{
-						//////////////////////////////////////////////////////////
-						// CACHER LA SOURIS
-						SDL_ShowCursor(SDL_DISABLE);
-						///////////////////////////////////////////////////
-						// RECENTRAGE DE CAMERA
-						SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-													///////////////////////////////////////////////////
-					}
-				}
+				SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
+				MessageQuitterRoom();
+				SDL_GL_SwapWindow(Window);
 
 				///////////////////////////////////////////////////
-				// TOUCHE E ENTRER DANS UN JEUX OU CLIQUE GAUCHE
-				if(Event.key.keysym.sym == SDLK_e || Event.type == SDL_MOUSEBUTTONDOWN)
+				// VIDER LA LISTE DES EVENEMENTS
+				do
+      			{
+     				SDL_WaitEvent(&Event);
+      			}while (Event.key.keysym.sym != SDLK_ESCAPE);
+
+
+				///////////////////////////////////////////////////
+				// DECISION PRISE
+				int decision = 1;
+				while(decision)
 				{
-						///////////////////////////////////////////////////
-						// VERIFIER SI ON EST PROCHES D UNE MACHINE
-						// RENVOIE LE CODE DE LA MACHINE
-						int machine = detecterMachine(camera.px, camera.pz, camera.angle);
-						if ( machine)
-						{
-
-							//SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
-
-							///////////////////////////////////////////////////
-							// ANIMATION CENTRAGE SUR MACHINE
-							animationLancerMachine(camera,cible[machine-1],*scene_list,Window);
-
-							///////////////////////////////////////////////////
-							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
-							SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
-
-							//centrer souris
-							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-							///////////////////////////////////////////////////
-							// CASE POUR CHAQUE MACHINE
-							// AVEC UPDATE DU SCORE A L ISSUS
-							switch (machine) {
-								case 1:
-									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1));
-									updateMeilleureScore(meilleureScore,token);
-								break;
-								case 2:
-									tetris( pRenderer ,meilleureScore[TETRIS_HARD].scoreJoueurActuel, 1920./WinWidth,token,1);
-									updateMeilleureScore(meilleureScore,token);
+					while (SDL_PollEvent(&Event))
+					{
+						if (Event.type == SDL_KEYDOWN) {
+							switch (Event.key.keysym.sym)
+							{
+								case SDLK_ESCAPE:
+									decision = 0;
+									printf("Commande annuler\n");
 									break;
-								case 3:
-									asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].scoreJoueurActuel, 1920./WinWidth,token,1);
-									updateMeilleureScore(meilleureScore,token);
+								case SDLK_q:
+									decision = 0;
+									printf("Vous quittez\n");
+									*Running = 0;
 									break;
-								case 4: SDL_Delay(500);break;
-								case 5:
-									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel, WinWidth/1920.,token,1);
-									updateMeilleureScore(meilleureScore,token);
-								case 6: SDL_Delay(500);break;
-								case 7: SDL_Delay(500);break;
-								case 8:
-									snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel, WinWidth/1920.,token,0);
-									updateMeilleureScore(meilleureScore,token);
-								case 9: SDL_Delay(500);break;
-								case 10:
-									asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
-									updateMeilleureScore(meilleureScore,token);
+								case SDLK_d:
+									decision = 0;
+									printf("Vous vous deconnecter\n");
+									FILE *fp = fopen(DIR_TOKEN_FILE,"w");
+									fclose(fp);
+									*Running = 0;
 									break;
-								case 11: {
-									tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
-									updateMeilleureScore(meilleureScore,token);
-									break;
-								}break;
-								case 12:
-									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0));
-									updateMeilleureScore(meilleureScore,token);
-									break;
-								case 13: SDL_Delay(500);break;
-								case 14: SDL_Delay(500);break;
-								case 15: SDL_Delay(500);break;
 								default:break;
 							}
-
-							//centrer souris
-							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-							///////////////////////////////////////////////////
-							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
-							SDL_DestroyRenderer(pRenderer);
-							SDL_GL_DeleteContext(*Context);
-							///////////////////////////////////////////////////
-							*Context = SDL_GL_CreateContext(Window);
-							///////////////////////////////////////////////////
-							// REMISE A ZERO DE LA SCENE
-							*scene_list = 0;
-							// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
-							while(SDL_PollEvent(&Event));
-							// AFFICHAGE DE LA SCENE
-							SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
-							// ANIMATION DE RETOUR SUR MACHINE
-							animationLancerMachine(cible[machine-1],camera,*scene_list,Window);
-							// VIDER POLL EVENEMENT
-							while(SDL_PollEvent(&Event));
-
-
-							///////////////////////////////////////////////////
-							// RECENTRAGE DE CAMERA
-							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-							///////////////////////////////////////////////////
 						}
 					}
-
-				///////////////////////////////////////////////////
-				// TOUCHE C CE METTRE A CROUPI
-				if(Event.key.keysym.sym == SDLK_c)
-				{
-					///////////////////////////////////////////////////
-					// MET LE JOUEUR A CROUPI ET REDUIT CA VITESSE DE DEPLACEMENT
-					if(VITESSE_DEPLACEMENT == VITESSE_DEPLACEMENT_DEBOUT )
-					{
-						HAUTEUR_CAMERA = HAUTEUR_CAMERA_ACCROUPI;
-						VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_ACCROUPI;
-					}
-					else
-					{
-						HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
-						VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
-					}
 				}
+
+				//////////////////////////////////////////////////////////
+				// ON DESACTIVER L"AFFICHAGE DE LA SOURIS
+				if(*Running != 0)
+				{
+					//////////////////////////////////////////////////////////
+					// CACHER LA SOURIS
+					SDL_ShowCursor(SDL_DISABLE);
+					///////////////////////////////////////////////////
+					// RECENTRAGE DE CAMERA
+					SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+					///////////////////////////////////////////////////
+				}
+
+			}
+
+			///////////////////////////////////////////////////
+			// TOUCHE E ENTRER DANS UN JEUX OU CLIQUE GAUCHE
+			if(Event.key.keysym.sym == SDLK_e || Event.type == SDL_MOUSEBUTTONDOWN)
+			{
+				///////////////////////////////////////////////////
+				// VERIFIER SI ON EST PROCHES D UNE MACHINE
+				// RENVOIE LE CODE DE LA MACHINE
+				int machine = detecterMachine(camera.px, camera.pz, camera.angle);
+				if ( machine)
+				{
+
+					//SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
+
+					///////////////////////////////////////////////////
+					// ANIMATION CENTRAGE SUR MACHINE
+					animationLancerMachine(camera,cible[machine-1],*scene_list,Window);
+
+					///////////////////////////////////////////////////
+					// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
+					SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+
+					//centrer souris
+					SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+					///////////////////////////////////////////////////
+					// CASE POUR CHAQUE MACHINE
+					// AVEC UPDATE DU SCORE A L ISSUS
+					switch (machine) {
+						case 1:
+							printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1));
+							updateMeilleureScore(meilleureScore,token);
+							break;
+
+						case 2:
+							tetris( pRenderer ,meilleureScore[TETRIS_HARD].scoreJoueurActuel, 1920./WinWidth,token,1);
+							updateMeilleureScore(meilleureScore,token);
+							break;
+
+						case 3:
+							asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].scoreJoueurActuel, 1920./WinWidth,token,1);
+							updateMeilleureScore(meilleureScore,token);
+							break;
+
+						case 4:
+							SDL_Delay(500);
+							break;
+
+						case 5:
+							snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel, WinWidth/1920.,token,1);
+							updateMeilleureScore(meilleureScore,token);
+							break;
+						case 6:
+							SDL_Delay(500);
+							break;
+						case 7:
+							SDL_Delay(500);
+							break;
+						case 8:
+							snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel, WinWidth/1920.,token,0);
+							updateMeilleureScore(meilleureScore,token);
+						case 9:
+							SDL_Delay(500);
+							break;
+						case 10:
+							asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
+							updateMeilleureScore(meilleureScore,token);
+							break;
+						case 11: {
+							tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
+							updateMeilleureScore(meilleureScore,token);
+							break;
+						}break;
+						case 12:
+							printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0));
+							updateMeilleureScore(meilleureScore,token);
+							break;
+						case 13:
+							SDL_Delay(500);
+							break;
+						case 14:
+							SDL_Delay(500);
+							break;
+						case 15:
+							SDL_Delay(500);
+							break;
+						default:break;
+					}
+
+					//centrer souris
+					SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+					///////////////////////////////////////////////////
+					// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
+					SDL_DestroyRenderer(pRenderer);
+					SDL_GL_DeleteContext(*Context);
+					///////////////////////////////////////////////////
+					*Context = SDL_GL_CreateContext(Window);
+					///////////////////////////////////////////////////
+					// REMISE A ZERO DE LA SCENE
+					*scene_list = 0;
+					// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
+					while(SDL_PollEvent(&Event));
+					// AFFICHAGE DE LA SCENE
+					SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
+					// ANIMATION DE RETOUR SUR MACHINE
+					animationLancerMachine(cible[machine-1],camera,*scene_list,Window);
+					// VIDER POLL EVENEMENT
+					while(SDL_PollEvent(&Event));
+
+
+					///////////////////////////////////////////////////
+					// RECENTRAGE DE CAMERA
+					SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+					///////////////////////////////////////////////////
+				}
+			}
+
+			///////////////////////////////////////////////////
+			// TOUCHE C CE METTRE A CROUPI
+			if(Event.key.keysym.sym == SDLK_c)
+			{
+				///////////////////////////////////////////////////
+				// MET LE JOUEUR A CROUPI ET REDUIT CA VITESSE DE DEPLACEMENT
+				if(VITESSE_DEPLACEMENT == VITESSE_DEPLACEMENT_DEBOUT )
+				{
+					HAUTEUR_CAMERA = HAUTEUR_CAMERA_ACCROUPI;
+					VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_ACCROUPI;
+				}
+				else
+				{
+					HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
+					VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
+				}
+			}
 		}
 
 		///////////////////////////////////////////////////
@@ -1930,9 +1953,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 			*Running = 0;
 
 	}
-
-
-
 }
 
 
@@ -1945,14 +1965,14 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 	////////////////////////////////////////////////
 	// DESACTIVER LES LUMIERE
 	glDisable(GL_LIGHTING);
-  glLoadIdentity();
+	glLoadIdentity();
 
 	////////////////////////////////////////////////
 	// PRECISION SUR LA FENETRE
-  gluOrtho2D(0, WinWidth, 0, WinHeight);
+	gluOrtho2D(0, WinWidth, 0, WinHeight);
 	// MOD PROJECTION
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
 
 	////////////////////////////////////////////////
 	// DESACTIVATION DU TEST D ARRIERE PLAN
@@ -1961,21 +1981,21 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 
 	////////////////////////////////////////////////
 	// BLEND
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// INIT LOAD TEXTURE
-  GLuint texture;
-  glGenTextures(1, &texture);
-  glBindTexture(GL_TEXTURE_2D, texture);
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 
 	////////////////////////////////////////////////
 	// CREATION TEXTURE AVEC LE TEXT EN SDL
-  SDL_Surface * sFont = TTF_RenderText_Blended(font, message, color);
+	SDL_Surface * sFont = TTF_RenderText_Blended(font, message, color);
 
 	////////////////////////////////////////////////
 	// PARAMETRE 2D
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	// CONVERTION TEXTURE IMAGE
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sFont->w, sFont->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sFont->w, sFont->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
 
 	////////////////////////////////////////////////
 	// SI PARAMS X A -1 ON CENTRE LE TEXT SUR X
@@ -1988,20 +2008,20 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 
 	////////////////////////////////////////////////
 	// DEBUT DU RENDU
-  glBegin(GL_QUADS);
-  {
-    glTexCoord2f(0,0); glVertex2f(x, y);
-    glTexCoord2f(1,0); glVertex2f(x + sFont->w, y);
-    glTexCoord2f(1,-1); glVertex2f(x + sFont->w, y + sFont->h);
-    glTexCoord2f(0,-1); glVertex2f(x, y + sFont->h);
-  }
-  glEnd();
+	glBegin(GL_QUADS);
+	{
+		glTexCoord2f(0,0); glVertex2f(x, y);
+		glTexCoord2f(1,0); glVertex2f(x + sFont->w, y);
+		glTexCoord2f(1,-1); glVertex2f(x + sFont->w, y + sFont->h);
+		glTexCoord2f(0,-1); glVertex2f(x, y + sFont->h);
+	}
+	glEnd();
 	////////////////////////////////////////////////
 
 	////////////////////////////////////////////////
 	// DESTRUCTUIN DES ELLEMENTS CREE
-  glDeleteTextures(1, &texture);
-  SDL_FreeSurface(sFont);
+	glDeleteTextures(1, &texture);
+	SDL_FreeSurface(sFont);
 
 	////////////////////////////////////////////////
 	// RECUPERATION DE LA MATRICE AVANT MODIF
