@@ -13,11 +13,11 @@
 	#include <GL/gl.h>
 	#include <GL/glu.h>
 	#include <GL/glut.h>
-  #define M_PI 3.1415
+	#define M_PI 3.1415
 #endif
 
 #ifdef _WIN32
-    #include<glew.h>
+	#include<glew.h>
 #endif
 
 #include <SDL2/SDL.h>
@@ -109,9 +109,9 @@ enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINE
 
 
 #ifdef _WIN32
-  #define DIR_TOKEN_FILE "C:\\Windows\\Temp\\.Nineteen"
+	#define DIR_TOKEN_FILE "C:\\Windows\\Temp\\.Nineteen"
 #else
-  #define DIR_TOKEN_FILE "/tmp/.Nineteen"
+	#define DIR_TOKEN_FILE "/tmp/.Nineteen"
 #endif
 
 
@@ -683,31 +683,6 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void InitMeilleureScore(struct MeilleureScore_s str[])
 {
 	////////////////////////////////////////////////////////////////
@@ -760,44 +735,44 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 	///////////////////////////////////////////////////////////
 	// PARSING DANS LA CHAINE DE DONNER RECU
 	int temp1,temp2;
-	sscanf(reponse,"%d %d / %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &str[0].score,&temp1,&temp2,
-																																str[FLAPPY_HARD].nomJoueur,&str[FLAPPY_HARD].score,
-																																str[TETRIS_HARD].nomJoueur,&str[TETRIS_HARD].score,
-																																str[ASTEROID_HARD].nomJoueur,&str[ASTEROID_HARD].score,
-																																str[PACMAN_HARD].nomJoueur,&str[PACMAN_HARD].score,
-																																str[SNAKE_HARD].nomJoueur,&str[SNAKE_HARD].score,
-																																str[DEMINEUR_HARD].nomJoueur,&str[DEMINEUR_HARD].score,
-																																str[DEMINEUR_EASY].nomJoueur,&str[DEMINEUR_EASY].score,
-																																str[SNAKE_EASY].nomJoueur,&str[SNAKE_EASY].score,
-																																str[PACMAN_EASY].nomJoueur,&str[PACMAN_EASY].score,
-																																str[ASTEROID_EASY].nomJoueur,&str[ASTEROID_EASY].score,
-																																str[TETRIS_EASY].nomJoueur,&str[TETRIS_EASY].score,
-																																str[FLAPPY_EASY].nomJoueur,&str[FLAPPY_EASY].score,
-																																str[13].nomJoueur,&str[13].score,
-																																str[14].nomJoueur,&str[14].score,
-																																str[15].nomJoueur,&str[15].score,
-																																&str[1].scoreJoueurActuel,
-																																&str[2].scoreJoueurActuel,
-																																&str[3].scoreJoueurActuel,
-																																&str[4].scoreJoueurActuel,
-																																&str[5].scoreJoueurActuel,
-																																&str[6].scoreJoueurActuel,
-																																&str[7].scoreJoueurActuel,
-																																&str[8].scoreJoueurActuel,
-																																&str[9].scoreJoueurActuel,
-																																&str[10].scoreJoueurActuel,
-																																&str[11].scoreJoueurActuel,
-																																&str[12].scoreJoueurActuel,
-																																&str[13].scoreJoueurActuel,
-																																&str[14].scoreJoueurActuel,
-																																&str[15].scoreJoueurActuel
+	sscanf(reponse,"%d %d / %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
+		&str[0].score,&temp1,&temp2,
+		str[FLAPPY_HARD].nomJoueur,&str[FLAPPY_HARD].score,
+		str[TETRIS_HARD].nomJoueur,&str[TETRIS_HARD].score,
+		str[ASTEROID_HARD].nomJoueur,&str[ASTEROID_HARD].score,
+		str[PACMAN_HARD].nomJoueur,&str[PACMAN_HARD].score,
+		str[SNAKE_HARD].nomJoueur,&str[SNAKE_HARD].score,
+		str[DEMINEUR_HARD].nomJoueur,&str[DEMINEUR_HARD].score,
+		str[DEMINEUR_EASY].nomJoueur,&str[DEMINEUR_EASY].score,
+		str[SNAKE_EASY].nomJoueur,&str[SNAKE_EASY].score,
+		str[PACMAN_EASY].nomJoueur,&str[PACMAN_EASY].score,
+		str[ASTEROID_EASY].nomJoueur,&str[ASTEROID_EASY].score,
+		str[TETRIS_EASY].nomJoueur,&str[TETRIS_EASY].score,
+		str[FLAPPY_EASY].nomJoueur,&str[FLAPPY_EASY].score,
+		str[13].nomJoueur,&str[13].score,
+		str[14].nomJoueur,&str[14].score,
+		str[15].nomJoueur,&str[15].score,
+		&str[1].scoreJoueurActuel,
+		&str[2].scoreJoueurActuel,
+		&str[3].scoreJoueurActuel,
+		&str[4].scoreJoueurActuel,
+		&str[5].scoreJoueurActuel,
+		&str[6].scoreJoueurActuel,
+		&str[7].scoreJoueurActuel,
+		&str[8].scoreJoueurActuel,
+		&str[9].scoreJoueurActuel,
+		&str[10].scoreJoueurActuel,
+		&str[11].scoreJoueurActuel,
+		&str[12].scoreJoueurActuel,
+		&str[13].scoreJoueurActuel,
+		&str[14].scoreJoueurActuel,
+		&str[15].scoreJoueurActuel
+	);
 
-																															);
-
-		///////////////////////////////////////////////////////////
-		// REMPLISSAGE DE L'EMPLACEMENT 0 PAR MEILLEURE SCORE ET CLASSEMENT DU JOUEUR
-		sprintf(str[0].nomJeux,"SCORE : %d",str[0].score);
-		sprintf(str[0].nomJoueur,"CLASSEMENT : %d / %d",temp1,temp2);
+	///////////////////////////////////////////////////////////
+	// REMPLISSAGE DE L'EMPLACEMENT 0 PAR MEILLEURE SCORE ET CLASSEMENT DU JOUEUR
+	sprintf(str[0].nomJeux,"SCORE : %d",str[0].score);
+	sprintf(str[0].nomJoueur,"CLASSEMENT : %d / %d",temp1,temp2);
 
 }
 
@@ -805,14 +780,14 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 
 void mixerInit()
 {
-		// REGLER VOLUME DES PISTES AUDIO
-		Mix_Volume(0,0);
-		Mix_Volume(1,0);
-		Mix_Volume(2,0);
-		Mix_Volume(3,SON_PAS);
-		Mix_Volume(4,MIX_MAX_VOLUME/5);
-		Mix_Volume(5,MIX_MAX_VOLUME/5);
-		Mix_Volume(6,MIX_MAX_VOLUME/5);
+	// REGLER VOLUME DES PISTES AUDIO
+	Mix_Volume(0,0);
+	Mix_Volume(1,0);
+	Mix_Volume(2,0);
+	Mix_Volume(3,SON_PAS);
+	Mix_Volume(4,MIX_MAX_VOLUME/5);
+	Mix_Volume(5,MIX_MAX_VOLUME/5);
+	Mix_Volume(6,MIX_MAX_VOLUME/5);
 }
 
 
@@ -1092,7 +1067,7 @@ void GL_InitialiserParametre(int width, int height, struct Camera_s camera)
 
 	// ACTIVATION DES TEXTURES 2D
 	glEnable(GL_TEXTURE_2D);
-  glEnable(GL_BLEND);
+	glEnable(GL_BLEND);
 	// CHARGEMENT DE LA MATRICE
 	glLoadIdentity();
 }
@@ -1276,7 +1251,7 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 	///////////////////////////////////////////////////
 	// RECENTRAGE DE CAMERA
 	SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-		///////////////////////////////////////////////////
+	///////////////////////////////////////////////////
 
 	// REDUIT L'ECART D ANGLE A UN ANGLE IDENTIQUE
 	// COMPRIS DANS UN INTERVALE
@@ -1425,10 +1400,9 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 
 
 	// MISE A JOURS DE LA POSITION DE LA CAMERA
-	gluLookAt(camera->px                   ,camera->py    ,camera->pz                  ,
+	gluLookAt(camera->px                    ,camera->py                       ,camera->pz,
 			  camera->px+sin(camera->angle) ,camera->py + camera->cible_py    , camera->pz+cos(camera->angle),
-			  0.0
-			               ,1.0         ,0.0)                        ;
+			  0.0                           ,1.0                              ,0.0);
 }
 
 int detectionEnvironnement(float x,float y)
@@ -1704,9 +1678,9 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 
 
 		// CHARGEMENT DE LA MATRICE
-	  glLoadIdentity();
+		glLoadIdentity();
 		// RESOULTION POUR AFFICHAGE 2D
-	  gluOrtho2D(0, WinWidth, 0, WinHeight);
+		gluOrtho2D(0, WinWidth, 0, WinHeight);
 		// INIT GL PARAMS
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
@@ -1716,10 +1690,9 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 		glLoadIdentity();
 
 		// MISE A JOURS DE LA CAMERA
-		gluLookAt(camera.px                   ,camera.py    ,camera.pz                  ,
+		gluLookAt(camera.px                   ,camera.py                      ,camera.pz,
 				  camera.px+sin(camera.angle) ,camera.py + camera.cible_py    , camera.pz+cos(camera.angle),
-				  0.0
-				               ,1.0         ,0.0)                        ;
+				  0.0						  ,1.0        				      ,0.0);
 
 		// APPEL LIST SCENE
 		glCallList(scene_list);
@@ -1780,11 +1753,13 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									decision = 0;
 									printf("Commande annuler\n");
 									break;
+
 								case SDLK_q:
 									decision = 0;
 									printf("Vous quittez\n");
 									*Running = 0;
 									break;
+
 								case SDLK_d:
 									decision = 0;
 									printf("Vous vous deconnecter\n");
@@ -1792,7 +1767,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									fclose(fp);
 									*Running = 0;
 									break;
-								default:break;
+
+								default:
+									break;
 							}
 						}
 					}
@@ -1810,7 +1787,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 					///////////////////////////////////////////////////
 				}
-
 			}
 
 			///////////////////////////////////////////////////
@@ -1863,41 +1839,53 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel, WinWidth/1920.,token,1);
 							updateMeilleureScore(meilleureScore,token);
 							break;
+
 						case 6:
 							SDL_Delay(500);
 							break;
+
 						case 7:
 							SDL_Delay(500);
 							break;
+
 						case 8:
 							snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel, WinWidth/1920.,token,0);
 							updateMeilleureScore(meilleureScore,token);
+							break;
+
 						case 9:
 							SDL_Delay(500);
 							break;
+
 						case 10:
 							asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
 							updateMeilleureScore(meilleureScore,token);
 							break;
-						case 11: {
+
+						case 11:
 							tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
 							updateMeilleureScore(meilleureScore,token);
 							break;
-						}break;
+
 						case 12:
 							printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0));
 							updateMeilleureScore(meilleureScore,token);
 							break;
+
 						case 13:
 							SDL_Delay(500);
 							break;
+
 						case 14:
 							SDL_Delay(500);
 							break;
+
 						case 15:
 							SDL_Delay(500);
 							break;
-						default:break;
+
+						default:
+							break;
 					}
 
 					//centrer souris
