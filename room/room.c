@@ -1259,7 +1259,11 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 	SDL_PumpEvents();
 	int mouseX,mouseY;
 	SDL_GetMouseState(&mouseX, &mouseY);
+
+	///////////////////////////////////////////////////
 	// RECUPERER TAILLE ECRAN
+	// CELA PERMET DE COMPENSER LA DIFFERENCE ENTRE POSITION SOURIS ET PLACEMENT GLOBAL DE LA SOURIS
+	// AFIN DEVITER DE PASSER EN PARAMETRE WINDOW
 	SDL_Rect bounds;
 	SDL_GetDisplayBounds(0, &bounds);
 
