@@ -1802,9 +1802,17 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						//////////////////////////////////////////////////////////
 						// ON DESACTIVER L"AFFICHAGE DE LA SOURIS
 						if(*Running != 0)
+						{
 							//////////////////////////////////////////////////////////
 							// CACHER LA SOURIS
 							SDL_ShowCursor(SDL_DISABLE);
+							///////////////////////////////////////////////////
+							// RECENTRAGE DE CAMERA
+							SDL_Rect bounds;
+							SDL_GetDisplayBounds(0, &bounds);
+							SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
+							///////////////////////////////////////////////////
+						}
 						break;
 				}
 				///////////////////////////////////////////////////
@@ -1887,6 +1895,14 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							animationLancerMachine(cible[machine-1],camera,*scene_list,Window);
 							// VIDER POLL EVENEMENT
 							while(SDL_PollEvent(&Event));
+
+
+							///////////////////////////////////////////////////
+							// RECENTRAGE DE CAMERA
+							SDL_Rect bounds;
+							SDL_GetDisplayBounds(0, &bounds);
+							SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
+							///////////////////////////////////////////////////
 						}
 					}
 					break;
@@ -1922,6 +1938,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 			*Running = 0;
 
 	}
+
+
 
 }
 
