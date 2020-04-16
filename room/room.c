@@ -81,7 +81,7 @@ float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 #define RATIO_WINDOW_SCREEN 0.93
 static int WinWidth = 1280;
 static int WinHeight = 720;
-
+SDL_Rect bounds;
 
 //////////////////////////////////////////////////
 // FIXER NOMBRE FPS MAX
@@ -450,7 +450,6 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	SDL_ShowCursor(SDL_DISABLE);
 	//////////////////////////////////////////////////////////
 	// POSITIONNER LA SOURIS AU CENTRE
-	SDL_Rect bounds;
 	SDL_GetDisplayBounds(0, &bounds);
 	///////////////////////////////////////////////////
 	SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
@@ -1264,8 +1263,6 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 	// RECUPERER TAILLE ECRAN
 	// CELA PERMET DE COMPENSER LA DIFFERENCE ENTRE POSITION SOURIS ET PLACEMENT GLOBAL DE LA SOURIS
 	// AFIN DEVITER DE PASSER EN PARAMETRE WINDOW
-	SDL_Rect bounds;
-	SDL_GetDisplayBounds(0, &bounds);
 
 	///////////////////////////////////////////////////
 	// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
@@ -1807,8 +1804,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							SDL_ShowCursor(SDL_DISABLE);
 							///////////////////////////////////////////////////
 							// RECENTRAGE DE CAMERA
-							SDL_Rect bounds;
-							SDL_GetDisplayBounds(0, &bounds);
 							SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
 							///////////////////////////////////////////////////
 						}
@@ -1824,6 +1819,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						int machine = detecterMachine(camera.px, camera.pz, camera.angle);
 						if ( machine)
 						{
+
+							//SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
+
 							///////////////////////////////////////////////////
 							// ANIMATION CENTRAGE SUR MACHINE
 							animationLancerMachine(camera,cible[machine-1],*scene_list,Window);
@@ -1831,6 +1829,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							///////////////////////////////////////////////////
 							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
 							SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+
+							//centrer souris
+							SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
 
 							///////////////////////////////////////////////////
 							// CASE POUR CHAQUE MACHINE
@@ -1877,6 +1878,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								default:break;
 							}
 
+							//centrer souris
+							SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
+
 							///////////////////////////////////////////////////
 							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
 							SDL_DestroyRenderer(pRenderer);
@@ -1898,8 +1902,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							///////////////////////////////////////////////////
 							// RECENTRAGE DE CAMERA
-							SDL_Rect bounds;
-							SDL_GetDisplayBounds(0, &bounds);
 							SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
 							///////////////////////////////////////////////////
 						}
