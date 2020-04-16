@@ -53,7 +53,7 @@
 #define VITESSE_DEPLACEMENT_DEBOUT 0.09F
 #define VITESSE_DEPLACEMENT_ACCROUPI 0.035F
 #define SENSIBILITE_CAMERA 0.08F
-#define SENSIBILITE_CAMERA_SOURIS 0.01F
+#define SENSIBILITE_CAMERA_SOURIS 0.003F
 #define HAUTEUR_CAMERA_DEBOUT 3.5F
 #define HAUTEUR_CAMERA_ACCROUPI 2.7F
 #define MAX_Y_AXE_CIBLE 2.8F
@@ -1251,9 +1251,10 @@ void mouvementCamera(struct Camera_s *camera, const float IPS)
 	///////////////////////////////////////////////////
 	// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
 	camera->angle -= ( (mouseX  + (bounds.w-WinWidth) /2) - ((WinWidth/2) + (bounds.w-WinWidth) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
+	camera->cible_py -= ( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
 	///////////////////////////////////////////////////
 	// RECENTRAGE DE CAMERA
-	SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,mouseY + (bounds.h-WinHeight) /2);
+	SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
 	///////////////////////////////////////////////////
 
 	// REDUIT L'ECART D ANGLE A UN ANGLE IDENTIQUE
