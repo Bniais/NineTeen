@@ -442,9 +442,21 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 
 int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene)
 {
+
+	//////////////////////////////////////////////////////////
+	// EVENT SOURIS INIT
 	//////////////////////////////////////////////////////////
 	// CACHER LA SOURIS
 	SDL_ShowCursor(SDL_DISABLE);
+	//////////////////////////////////////////////////////////
+	// POSITIONNER LA SOURIS AU CENTRE
+	SDL_Rect bounds;
+	SDL_GetDisplayBounds(0, &bounds);
+	///////////////////////////////////////////////////
+	SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
+	//////////////////////////////////////////////////////////
+
+
 	//////////////////////////////////////////////////////////
 	// RECUPERER C'EST VALEUR DES PARAMS A L'AVENIR
 	windowMaxSize();
