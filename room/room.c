@@ -571,8 +571,11 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	int afficherMessage = 0;
 	float _IPS = FPS;
 	//////////////////////////////////////////////////////////
-	if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
-		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+
+	#ifndef __linux__
+		if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
+			SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+	#endif
 
 	while (Running)
 	{
@@ -1238,30 +1241,33 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 	// CELA PERMET DE COMPENSER LA DIFFERENCE ENTRE POSITION SOURIS ET PLACEMENT GLOBAL DE LA SOURIS
 	// AFIN DEVITER DE PASSER EN PARAMETRE WINDOW
 
-	///////////////////////////////////////////////////
-	// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
-	camera->angle -= ( (mouseX  + (bounds.w-WinWidth) /2) - ((WinWidth/2) + (bounds.w-WinWidth) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
-
-	///////////////////////////////////////////////////
-	// VERIFIER QU"ON NE VAS PAS DEPASSER LA LIMITE FIXER
-	if(camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) < MAX_Y_AXE_CIBLE && camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) > -MAX_Y_AXE_CIBLE)
+	#ifndef __linux__
+		///////////////////////////////////////////////////
 		// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
-		camera->cible_py -= ( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
+		camera->angle -= ( (mouseX  + (bounds.w-WinWidth) /2) - ((WinWidth/2) + (bounds.w-WinWidth) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
 
-	///////////////////////////////////////////////////
-	// RECENTRAGE DE CAMERA
-	if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
-		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-	///////////////////////////////////////////////////
+		///////////////////////////////////////////////////
+		// VERIFIER QU"ON NE VAS PAS DEPASSER LA LIMITE FIXER
+		if(camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) < MAX_Y_AXE_CIBLE && camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) > -MAX_Y_AXE_CIBLE)
+			// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
+			camera->cible_py -= ( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
 
-	// REDUIT L'ECART D ANGLE A UN ANGLE IDENTIQUE
-	// COMPRIS DANS UN INTERVALE
-	while( camera->angle > 2 * M_PI)
-		camera->angle -= 2*M_PI;
-	while( camera->angle < 0)
-		camera->angle += 2*M_PI;
+		///////////////////////////////////////////////////
+		// RECENTRAGE DE CAMERA
 
+		if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
+			SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 
+		///////////////////////////////////////////////////
+
+		// REDUIT L'ECART D ANGLE A UN ANGLE IDENTIQUE
+		// COMPRIS DANS UN INTERVALE
+		while( camera->angle > 2 * M_PI)
+			camera->angle -= 2*M_PI;
+		while( camera->angle < 0)
+			camera->angle += 2*M_PI;
+
+	#endif
 
 
 	// APUI FLECHE GAUCHE
@@ -1776,19 +1782,21 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					}
 				}
 
-				//////////////////////////////////////////////////////////
-				// ON DESACTIVER L"AFFICHAGE DE LA SOURIS
-				if(*Running != 0)
-				{
+				#ifndef __linux__
 					//////////////////////////////////////////////////////////
-					// CACHER LA SOURIS
-					SDL_ShowCursor(SDL_DISABLE);
-					///////////////////////////////////////////////////
-					// RECENTRAGE DE CAMERA
-					if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
-						SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-					///////////////////////////////////////////////////
-				}
+					// ON DESACTIVER L"AFFICHAGE DE LA SOURIS
+					if(*Running != 0)
+					{
+						//////////////////////////////////////////////////////////
+						// CACHER LA SOURIS
+						SDL_ShowCursor(SDL_DISABLE);
+						///////////////////////////////////////////////////
+						// RECENTRAGE DE CAMERA
+						if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
+							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+						///////////////////////////////////////////////////
+					}
+				#endif
 			}
 
 			///////////////////////////////////////////////////
@@ -1812,9 +1820,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
 					SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 
-					//centrer souris
-					if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
-						SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+					#ifndef __linux__
+						//centrer souris
+						if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
+							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+					#endif
 					///////////////////////////////////////////////////
 					// CASE POUR CHAQUE MACHINE
 					// AVEC UPDATE DU SCORE A L ISSUS
@@ -1891,9 +1901,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							break;
 					}
 
-					//centrer souris
-					if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
-						SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+					#ifndef __linux__
+						//centrer souris
+						if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
+							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+					#endif
 					///////////////////////////////////////////////////
 					// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
 					SDL_DestroyRenderer(pRenderer);
@@ -1912,12 +1924,13 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					// VIDER POLL EVENEMENT
 					while(SDL_PollEvent(&Event));
 
-
-					///////////////////////////////////////////////////
-					// RECENTRAGE DE CAMERA
-					if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
-						SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-					///////////////////////////////////////////////////
+					#ifndef __linux__
+						///////////////////////////////////////////////////
+						// RECENTRAGE DE CAMERA
+						if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
+							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+						///////////////////////////////////////////////////
+					#endif
 				}
 			}
 
