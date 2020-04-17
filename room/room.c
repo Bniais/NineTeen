@@ -571,11 +571,12 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	int afficherMessage = 0;
 	float _IPS = FPS;
 	//////////////////////////////////////////////////////////
-	
+
 	#ifndef __linux__
 		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 	#endif
 
+	int frame = 0;
 	while (Running)
 	{
 		int delayLancementFrame = SDL_GetTicks();
@@ -602,7 +603,8 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 		//////////////////////////////////////////////////////////
 		// CHARGER LA SCENE
-		SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
+		if(frame)
+			SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
 		//////////////////////////////////////////////////////////
 
 
@@ -639,7 +641,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		// ATTENDRE 1000 MS POUR MESSAGE CLIGNOTANT
 		attendreXsecondeMessage(&compterSeconde, &afficherMessage,1000, _IPS);
 		//////////////////////////////////////////////////////////
-
+		frame++;
 	}
 
 
