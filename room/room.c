@@ -95,7 +95,7 @@ SDL_Color Text_rouge = {255,0,0};
 
 // lier au son
 #define NB_INDICE_PORTER 2
-#define MAX_VOLUME_ARCADE 70
+#define MAX_VOLUME_ARCADE 60
 
 // STATIC VAR FOR CAMERA
 struct Camera_s
@@ -230,7 +230,7 @@ float distancePoint(float xa, float ya, float xb, float yb);
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter,float angleJoueur);
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter,float angleJoueur, int maxVolume);
 
 
 /////////////////////////////////////////////////////
@@ -571,8 +571,8 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	int afficherMessage = 0;
 	float _IPS = FPS;
 	//////////////////////////////////////////////////////////
-SDL_CaptureMouse(SDL_TRUE);
-	SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+	if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
+		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 
 	while (Running)
 	{
@@ -581,11 +581,11 @@ SDL_CaptureMouse(SDL_TRUE);
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
 		// MUSIQUE LOT MACHINE GAUCHE
-		reglageVolume(0,-5.0,11.0,camera.px,camera.pz,10.0,camera.angle);
+		reglageVolume(0,-5.0,11.0,camera.px,camera.pz,10.0,camera.angle, MAX_VOLUME_ARCADE);
 		// MUSIQUE LOT MACHINE DROITE
-		reglageVolume(1,5.0,11.0,camera.px,camera.pz,10.0,camera.angle);
+		reglageVolume(1,5.0,11.0,camera.px,camera.pz,10.0,camera.angle, MAX_VOLUME_ARCADE);
 		// MUSIQUE MACHINE SEUL
-		reglageVolume(2,0.0,0.0,camera.px,camera.pz,10.0,camera.angle);
+		reglageVolume(2,0.0,0.0,camera.px,camera.pz,10.0,camera.angle, MAX_VOLUME_ARCADE);
 		//////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////
@@ -910,11 +910,11 @@ float calculAngle(float xa, float ya,      float xb, float yb,       float xc, f
 	return (2*M_PI) - angleRad;
 }
 
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur)
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur, int maxVolume)
 {
 	////////////////////////////////////////////////////
 	// FIX VOLUME MAX PAR DEFAULT
-	float volume = MIX_MAX_VOLUME;
+	float volume = maxVolume;
 	// CALCUL DISTANCE SOURCE SONOR
 	float distance = distancePoint(xa,ya,xb,yb);
 	////////////////////////////////////////////////////
@@ -1250,7 +1250,8 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 
 	///////////////////////////////////////////////////
 	// RECENTRAGE DE CAMERA
-	SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+	if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
+		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 	///////////////////////////////////////////////////
 
 	// REDUIT L'ECART D ANGLE A UN ANGLE IDENTIQUE
@@ -1784,7 +1785,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					SDL_ShowCursor(SDL_DISABLE);
 					///////////////////////////////////////////////////
 					// RECENTRAGE DE CAMERA
-					SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+					if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
+						SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 					///////////////////////////////////////////////////
 				}
 			}
@@ -1811,7 +1813,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 
 					//centrer souris
-					SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+					if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
+						SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 					///////////////////////////////////////////////////
 					// CASE POUR CHAQUE MACHINE
 					// AVEC UPDATE DU SCORE A L ISSUS
@@ -1889,7 +1892,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					}
 
 					//centrer souris
-					SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+					if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
+						SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 					///////////////////////////////////////////////////
 					// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
 					SDL_DestroyRenderer(pRenderer);
@@ -1911,7 +1915,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 					///////////////////////////////////////////////////
 					// RECENTRAGE DE CAMERA
-					SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+					if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
+						SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 					///////////////////////////////////////////////////
 				}
 			}
