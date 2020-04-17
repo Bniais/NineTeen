@@ -571,7 +571,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	int afficherMessage = 0;
 	float _IPS = FPS;
 	//////////////////////////////////////////////////////////
-
+SDL_CaptureMouse(SDL_TRUE);
 	SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 
 	while (Running)
@@ -715,9 +715,9 @@ void InitMeilleureScore(struct MeilleureScore_s str[])
 	strcpy(str[FLAPPY_EASY].nomJeux,"FLAPPY   BIRD");
 
 
-	strcpy(str[13].nomJeux,"COMMING   SOON");
-	strcpy(str[14].nomJeux,"COMMING   SOON");
-	strcpy(str[15].nomJeux,"COMMING   SOON");
+	strcpy(str[13].nomJeux,"COMING   SOON");
+	strcpy(str[14].nomJeux,"COMING   SOON");
+	strcpy(str[15].nomJeux,"COMING   SOON");
 }
 
 
