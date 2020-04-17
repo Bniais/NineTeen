@@ -110,7 +110,7 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 
 	// attributs laser
 	#define NB_LASER_BEAM 8
-	#define LASER_ACCEL 0.1
+	#define LASER_ACCEL 0.05
 
 
 	//attributs communs
@@ -123,7 +123,7 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 	const float VITESSE_MISSILES[NB_MISSILES] = {1, 1.25, 1, 0};
 
 	#define BASE_DEGAT_MISSILE 1
-	const float DEGAT_MISSILES[NB_MISSILES] = {1, 1.5, 2, 0};
+	const float DEGAT_MISSILES[NB_MISSILES] = {1, 1.5, 2, 4./30};
 
 	const int RAYON_MISSILES[NB_MISSILES] = {6, 10, 14, 0};
 
