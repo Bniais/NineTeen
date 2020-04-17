@@ -571,10 +571,9 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	int afficherMessage = 0;
 	float _IPS = FPS;
 	//////////////////////////////////////////////////////////
-
+	
 	#ifndef __linux__
-		if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
-			SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 	#endif
 
 	while (Running)
@@ -1242,31 +1241,32 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 	// AFIN DEVITER DE PASSER EN PARAMETRE WINDOW
 
 	#ifndef __linux__
-		///////////////////////////////////////////////////
-		// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
-		camera->angle -= ( (mouseX  + (bounds.w-WinWidth) /2) - ((WinWidth/2) + (bounds.w-WinWidth) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
-
-		///////////////////////////////////////////////////
-		// VERIFIER QU"ON NE VAS PAS DEPASSER LA LIMITE FIXER
-		if(camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) < MAX_Y_AXE_CIBLE && camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) > -MAX_Y_AXE_CIBLE)
+		if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS){
+			///////////////////////////////////////////////////
 			// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
-			camera->cible_py -= ( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
+			camera->angle -= ( (mouseX  + (bounds.w-WinWidth) /2) - ((WinWidth/2) + (bounds.w-WinWidth) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
 
-		///////////////////////////////////////////////////
-		// RECENTRAGE DE CAMERA
+			///////////////////////////////////////////////////
+			// VERIFIER QU"ON NE VAS PAS DEPASSER LA LIMITE FIXER
+			if(camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) < MAX_Y_AXE_CIBLE && camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) > -MAX_Y_AXE_CIBLE)
+				// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
+				camera->cible_py -= ( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
 
-		if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
-			SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+			///////////////////////////////////////////////////
+			// RECENTRAGE DE CAMERA
 
-		///////////////////////////////////////////////////
 
-		// REDUIT L'ECART D ANGLE A UN ANGLE IDENTIQUE
-		// COMPRIS DANS UN INTERVALE
-		while( camera->angle > 2 * M_PI)
-			camera->angle -= 2*M_PI;
-		while( camera->angle < 0)
-			camera->angle += 2*M_PI;
+				SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 
+			///////////////////////////////////////////////////
+
+			// REDUIT L'ECART D ANGLE A UN ANGLE IDENTIQUE
+			// COMPRIS DANS UN INTERVALE
+			while( camera->angle > 2 * M_PI)
+				camera->angle -= 2*M_PI;
+			while( camera->angle < 0)
+				camera->angle += 2*M_PI;
+		}
 	#endif
 
 
@@ -1925,11 +1925,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					while(SDL_PollEvent(&Event));
 
 					#ifndef __linux__
-						///////////////////////////////////////////////////
-						// RECENTRAGE DE CAMERA
-						if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
-							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-						///////////////////////////////////////////////////
+                    ///////////////////////////////////////////////////
+                    // RECENTRAGE DE CAMERA
+                    if (SDL_GetWindowFlags(Window) & SDL_WINDOW_MOUSE_FOCUS)
+                        SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+                    ///////////////////////////////////////////////////
 					#endif
 				}
 			}
