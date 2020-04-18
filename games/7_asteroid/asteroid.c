@@ -302,6 +302,7 @@ void asteroid_cpy(Asteroid * asteroid_src, Asteroid * asteroid_dest){
 	asteroid_dest->difficulte_pere = asteroid_src->difficulte_pere;
 	asteroid_dest->pv_max = asteroid_src->pv_max;
 	asteroid_dest->bonus = asteroid_src->bonus;
+	asteroid_dest->frame_hit = asteroid_src->frame_hit;
 }
 
 int randSign(){
@@ -316,6 +317,7 @@ void detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid
 
     if((*asteroides)[i_asteroid].taille>TAILLE_MIN_SPLIT && !touche_bouclier && bonus != BOMBE_NUCLEAIRE){
 
+		(*asteroides)[i_asteroid].frame_hit = 0;
         (*asteroides)[i_asteroid].taille/=2;
         (*asteroides)[i_asteroid].angle= angleMissile + PI/2;
 		(*asteroides)[i_asteroid].pv_max /= 2;
@@ -724,6 +726,7 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 	(*asteroides)[*nb_asteroid-1].difficulte=difficulte;
 	(*asteroides)[*nb_asteroid-1].difficulte_pere = (*asteroides)[*nb_asteroid-1].difficulte;
 	(*asteroides)[*nb_asteroid-1].angle_rota=rand()%(int)(2*PI*100);
+	(*asteroides)[*nb_asteroid-1].frame_hit = 0;
 
 	if(difficulte >= 1+1/PRECISION_RAND_FLOAT){
 			ratio_pv=1+(rand()%(int)((difficulte-1)*PRECISION_RAND_FLOAT))/PRECISION_RAND_FLOAT;
@@ -778,7 +781,7 @@ void afficher_texture_asteroid(SDL_Renderer* renderer, SDL_Texture * textureAste
 	if(asteroid.bonus != NO_BONUS){
 		SDL_RenderFillRect(renderer, &bonusRect);
 	}
-	if(srcFissure.y>=0){
+	if(!asteroid.frame_hit && srcFissure.y>=0){
 
 		SDL_RenderCopyEx(renderer, textureFissure, &srcFissure, &dest, asteroid.angle_rota, NULL, SDL_FLIP_NONE);
 	}
@@ -799,11 +802,16 @@ void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* 
 
 	src.x = ASTE_SRC.w * sizeAste;
 
+	if(asteroid.frame_hit)
+		src.x += NB_TAILLE_ASTE*ASTE_SRC.w;
+
+
 	SDL_Rect srcFissure = src;
 	int fissure = (int)(((float)(asteroid.pv_max - asteroid.pv) / asteroid.pv_max) * (NB_FISSURES+1) ) - 1;
 	if(sizeAste < 0)
 		sizeAste = 0;
 	srcFissure.y = fissure * ASTE_SRC.h;
+
 
 	int skinAste = (int)((asteroid.difficulte_pere-START_DIFFICULTE)/(MAX_DIFF/NB_ASTE_TEXTURES));
 	if(skinAste < 0)
@@ -1081,10 +1089,16 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 		collision_mur(&vaisseau.x,&vaisseau.y, RAYON_VAISS);
 		for(int i=0;i<nb_asteroid;i++){
 			collision_mur(&asteroides[i].x,&asteroides[i].y,asteroides[i].taille);
-
+			int aste_dead = 0;
 			int i_missile=asteroid_touche(asteroides[i],missiles,nb_missiles);
 			if(i_missile!=-1){
 				asteroides[i].pv-=missiles[i_missile].degat;
+				asteroides[i].frame_hit = FRAME_HIT_ANIM;
+
+				if(asteroides[i].pv<=0){
+					detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_FALSE, &point, &nbBombeNucleaire, missiles[i_missile].angle);
+					aste_dead = 1;
+				}
 
 				decaler_gauche_m(missiles, nb_missiles, i_missile);
 				(nb_missiles)--;
@@ -1092,17 +1106,17 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 						missiles=realloc(missiles,sizeof(Missile)*(nb_missiles));
 				}
 
-				if(asteroides[i].pv<=0){
-					detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_FALSE, &point, &nbBombeNucleaire, missiles[i_missile].angle);
+				if(aste_dead)
 					break;
-				}
 
 			}
 
 			//hitbox laser
 			if(vaisseau.missile_id == SHOT_LASER && keystate[SDL_SCANCODE_SPACE]){
-				if( laser_touche(asteroides[i], vaisseau) )
+				if( laser_touche(asteroides[i], vaisseau) ){
 					asteroides[i].pv -= DEGAT_MISSILES[SHOT_LASER] * (vaisseau.degat_missile + (vaisseau.nb_tir-1));
+					asteroides[i].frame_hit = FRAME_HIT_ANIM;
+				}
 
 				if(asteroides[i].pv<=0){
 					detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_FALSE, &point, &nbBombeNucleaire, vaisseau.angle);
@@ -1183,6 +1197,9 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 	////////////////
 	// Next frame //`
 	////////////////
+		for(int i=0; i<nb_asteroid; i++)
+			if(asteroides[i].frame_hit)
+				asteroides[i].frame_hit--;
 		rotateAsteroides(asteroides, nb_asteroid);
 		update_frame(&missiles,&nb_missiles,&vaisseau,&frame,&frame_apparition_asteroid,&vitesse_spawn,&frame_2asteroid);
 		difficulte+=RATIO_DIFFICULTE_AUGMENT;

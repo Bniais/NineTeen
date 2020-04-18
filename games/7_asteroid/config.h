@@ -24,7 +24,7 @@ char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
 typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier;int missile_id; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust;}Vaiss;
 
 
-typedef struct{float x; float y; float angle; float taille; int bonus; float pv; float pv_max; float vitesse; float difficulte; float difficulte_pere; float angle_rota; float vitesse_rota;}Asteroid;
+typedef struct{float x; float y; float angle; float taille; int bonus; float pv; float pv_max; float vitesse; float difficulte; float difficulte_pere; float angle_rota; float vitesse_rota; int frame_hit;}Asteroid;
 
 #define PRECISION_RAND_FLOAT 100.
 
@@ -81,6 +81,8 @@ SDL_Point coord_spawn[3]={{0,0},{0,(PLAYGROUND_SIZE_H/2)},{(PLAYGROUND_SIZE_W/2)
 const int DIAMETRE_ASTE[NB_TAILLE_ASTE] = {32,48};
 SDL_Rect ASTE_SRC = {0,0,48,48};
 #define INTERVALE_RAND_DIFFICULTE 0.3
+
+#define FRAME_HIT_ANIM 2
 
 //missiles
 
