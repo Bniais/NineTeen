@@ -3,8 +3,8 @@
 /////////////////
 #include "../../define/define.h"
 //textures
-#define NB_ASTEROID_TEXTURES 9
-typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD, T_ASTEROID, T_FISSURE, T_BULLET, T_LASER}TEXTURES;
+#define NB_ASTEROID_TEXTURES 11
+typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD, T_ASTEROID, T_FISSURE, T_BULLET, T_LASER, T_EXPLO_MISSILE, T_EXPLO_ASTEROID}TEXTURES;
 
 
 char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
@@ -16,15 +16,27 @@ char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
 	"games/7_asteroid/Textures/asteroid.png",
 	"games/7_asteroid/Textures/fissure.png",
 	"games/7_asteroid/Textures/bullet.png",
-	"games/7_asteroid/Textures/laser_beam.png"
+	"games/7_asteroid/Textures/laser_beam.png",
+	"games/7_asteroid/Textures/explo.png",
+	"games/7_asteroid/Textures/explo2.png"
 };
 
 
 
 typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier;int missile_id; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust;}Vaiss;
 
-
 typedef struct{float x; float y; float angle; float taille; int bonus; float pv; float pv_max; float vitesse; float difficulte; float difficulte_pere; float angle_rota; float vitesse_rota; int frame_hit;}Asteroid;
+
+typedef struct{float x; float y; int frame; int taille; int id;}Explosion;
+
+#define NB_EXPLOSIONS 2
+typedef enum{EXPLO_MISSILE, EXPLO_ASTE}EXPLOSIONS;
+
+const int  FRAME_EXPLOSIONS[NB_EXPLOSIONS] = {12, 20};
+const int  NB_ANIM_EXPLOSIONS[NB_EXPLOSIONS] = {6, 10};
+
+const SDL_Rect EXPLO_SRCS[NB_EXPLOSIONS] = {{0,0, 374, 374} , {0,0, 312, 312}};
+#define RATIO_ASTEROID_EXPLO_SIZE 1.2
 
 #define PRECISION_RAND_FLOAT 100.
 
@@ -113,13 +125,13 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 	// attributs laser
 	#define NB_LASER_BEAM 8
 	#define LASER_ACCEL 0.05
-
+	#define BASE_TAILLE_EXPLOSION 40
 
 	//attributs communs
 	#define DISTANCE_CANON 23
 
 	#define FREQUENCE_BASE (FRAMES_PER_SECOND/2)
-	const float FREQUENCE_MISSILES[NB_MISSILES] = {1, 0.66, 1, 0};
+	const float FREQUENCE_MISSILES[NB_MISSILES] = {1, 0.66, 1.33, 0};
 
 	#define BASE_VITESSE_MISSILE 15
 	const float VITESSE_MISSILES[NB_MISSILES] = {1, 1.25, 1, 0};
@@ -129,8 +141,10 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 
 	const int RAYON_MISSILES[NB_MISSILES] = {6, 10, 14, 0};
 
+	const float TAILLE_EXPLOSIONS[NB_MISSILES] = {0.9, 1.1, 1.3, 0};
+
 	#define DUREE_MISSILE_BASE (2*FRAMES_PER_SECOND)
-	const float DUREE_MISSILES[NB_MISSILES] = {1, 0.9, 1.25, 0};
+	const float DUREE_MISSILES[NB_MISSILES] = {1, 0.9, 1.5, 0};
 
 
 	//texures missiles
