@@ -813,11 +813,11 @@ void mouvement_asteroid(Asteroid* asteroid){
 
 }
 
-void afficher_texture_asteroid(SDL_Renderer* renderer, SDL_Texture * textureAsteroid, SDL_Texture* textureFissure, SDL_Rect src, SDL_Rect dest, SDL_Rect bonusRect, SDL_Rect srcFissure, Asteroid asteroid){
+void afficher_texture_asteroid(SDL_Renderer* renderer, SDL_Texture * textureAsteroid, SDL_Texture* textureFissure,SDL_Texture* textureBonus, SDL_Rect src, SDL_Rect dest, SDL_Rect srcFissure, Asteroid asteroid){
 
 	SDL_RenderCopyEx(renderer, textureAsteroid, &src, &dest, asteroid.angle_rota, NULL, SDL_FLIP_NONE);
 	if(asteroid.bonus != NO_BONUS){
-		SDL_RenderFillRect(renderer, &bonusRect);
+		SDL_RenderCopyEx(renderer, textureBonus, &ASTE_SRC, &dest, asteroid.angle_rota, NULL, SDL_FLIP_NONE);
 	}
 	if( srcFissure.y>=0){
 
@@ -826,7 +826,7 @@ void afficher_texture_asteroid(SDL_Renderer* renderer, SDL_Texture * textureAste
 
 }
 
-void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* textureAsteroid, SDL_Texture* textureFissure){
+void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* textureAsteroid, SDL_Texture* textureFissure, SDL_Texture* textureBonus){
 	SDL_Rect src = ASTE_SRC;
 
 	SDL_Rect asteroidRect={(int)asteroid.x-asteroid.taille, (int)asteroid.y-asteroid.taille,asteroid.taille*2,asteroid.taille*2};
@@ -859,55 +859,43 @@ void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* 
 	src.y = ASTE_SRC.h * skinAste;
 
 
-	SDL_SetRenderDrawColor(renderer, 255, 150, 80, 255);
-	SDL_Rect bonusRect = asteroidRect;
-	bonusRect.x += bonusRect.w/2 - bonusRect.w/4;
-	bonusRect.y += bonusRect.h/2- bonusRect.h/4;
-	bonusRect.w /=2;
-	bonusRect.h /=2;
-
-	afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, src, asteroidRect, bonusRect, srcFissure, asteroid);
+	afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, src, asteroidRect, srcFissure, asteroid);
 
 	//Dessiner bonus est différent quand bord de l'écran car on ne peut pas déssiner en desous de 0 -> à faire
 	if(asteroidRect.x+asteroid.taille*2>PLAYGROUND_SIZE_W || asteroidRect.x<0){
 		if(asteroidRect.x<0){
 			asteroidRect.x+=PLAYGROUND_SIZE_W;
-			bonusRect.x +=PLAYGROUND_SIZE_W;
 		}
 		else{
 			asteroidRect.x-=PLAYGROUND_SIZE_W;
-			bonusRect.x-=PLAYGROUND_SIZE_W;
 		}
-		afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, src, asteroidRect, bonusRect, srcFissure, asteroid);
+		afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, src, asteroidRect, srcFissure, asteroid);
 	}
 
 
 	if(asteroidRect.y+asteroid.taille*2>PLAYGROUND_SIZE_H || asteroidRect.y<0){
 		if(asteroidRect.y<0){
 			asteroidRect.y+=PLAYGROUND_SIZE_H;
-			bonusRect.y+=PLAYGROUND_SIZE_H;
 		}
 		else {
 			asteroidRect.y-=PLAYGROUND_SIZE_H;
-			bonusRect.y-=PLAYGROUND_SIZE_H;
 		}
 
-		afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, src, asteroidRect, bonusRect, srcFissure, asteroid);
+		afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, src, asteroidRect, srcFissure, asteroid);
+
+		if(asteroidRect.x+asteroid.taille*2>PLAYGROUND_SIZE_W || asteroidRect.x<0){
+			if(asteroidRect.x<0){
+				asteroidRect.x+=PLAYGROUND_SIZE_W;
+			}
+			else{
+				asteroidRect.x-=PLAYGROUND_SIZE_W;
+			}
+			afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, src, asteroidRect, srcFissure, asteroid);
+		}
 	}
-
-	if(asteroidRect.x+asteroid.taille*2>PLAYGROUND_SIZE_W || asteroidRect.x<0){
-		if(asteroidRect.x<0){
-			asteroidRect.x+=PLAYGROUND_SIZE_W;
-			bonusRect.x+=PLAYGROUND_SIZE_W;
-		}
-		else{
-			asteroidRect.x-=PLAYGROUND_SIZE_W;
-			bonusRect.x+=PLAYGROUND_SIZE_W;
-		}
-		afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, src, asteroidRect, bonusRect, srcFissure, asteroid);
-	}
-
 }
+
+
 
 int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char *token, int hardcore){
 
@@ -1243,7 +1231,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 
 		//int a = asteroid_plus_proche(renderer, asteroides, nb_asteroid, missiles[0], NULL);
 		for(int j=0;j<nb_asteroid;j++){
-			afficher_asteroid(asteroides[j],renderer, textures[T_ASTEROID], textures[T_FISSURE]);
+			afficher_asteroid(asteroides[j],renderer, textures[T_ASTEROID], textures[T_FISSURE], textures[T_BONUS]);
 		}
 
 		for(int i=0; i<nb_explosions; i++){

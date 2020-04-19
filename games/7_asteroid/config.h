@@ -3,8 +3,8 @@
 /////////////////
 #include "../../define/define.h"
 //textures
-#define NB_ASTEROID_TEXTURES 11
-typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD, T_ASTEROID, T_FISSURE, T_BULLET, T_LASER, T_EXPLO_MISSILE, T_EXPLO_ASTEROID}TEXTURES;
+#define NB_ASTEROID_TEXTURES 12
+typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD, T_ASTEROID, T_FISSURE,T_BONUS, T_BULLET, T_LASER, T_EXPLO_MISSILE, T_EXPLO_ASTEROID}TEXTURES;
 
 
 char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
@@ -15,6 +15,7 @@ char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
 	"games/7_asteroid/Textures/hud.png",
 	"games/7_asteroid/Textures/asteroid.png",
 	"games/7_asteroid/Textures/fissure.png",
+	"games/7_asteroid/Textures/bonus.png",
 	"games/7_asteroid/Textures/bullet.png",
 	"games/7_asteroid/Textures/laser_beam.png",
 	"games/7_asteroid/Textures/explo.png",
