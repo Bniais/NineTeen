@@ -67,7 +67,7 @@ void recoit_bonus(int id_bonus, Vaiss * vaisseau, int *nbBombeNucleaire, int *po
 
 		case DEGAT:
 			if(vaisseau->degat_missile<DEGAT_MISSILE_MAX){
-				(vaisseau->degat_missile)++;
+				(vaisseau->degat_missile) += DEGAT_ADD;
 			}
 			break;
 
@@ -88,7 +88,7 @@ void recoit_bonus(int id_bonus, Vaiss * vaisseau, int *nbBombeNucleaire, int *po
 			break;
 
 		default:
-			munitions[id_bonus - NB_BONUS +1] = 1;
+			munitions[id_bonus - NB_BONUS +1] += AMMO_GRANT;
 			break;
 
 	}
@@ -336,13 +336,57 @@ int getFirstNullText(TextBonus textsBonus[MAX_TEXT_BONUS]){
 	return minI;
 }
 
+
+
+int isObtainable(int id_bonus, Vaiss vaisseau, float munitions[NB_MISSILES]){
+	if(id_bonus >= NB_BONUS)
+		return (munitions[id_bonus - NB_BONUS +1] <= MAX_RATIO_AMMO_OBTAINABLE);
+	else
+		switch(id_bonus){
+			case TIR_MULTIPLE :
+				return (vaisseau.nb_tir < NB_TIR_MAX);
+
+		    case BOUCLIER :
+				return (!vaisseau.bouclier);
+
+		    case VITESSE_DE_TIR:
+				return (vaisseau.temps_recharge > FREQUENCE_MISSILE_MIN);
+
+		    case BONUS_VITESSE_MISSILE :
+				return (vaisseau.vitesse_missile<VITESSE_MISSILE_MAX);
+
+			case DEGAT:
+				return (vaisseau.degat_missile<DEGAT_MISSILE_MAX);
+
+			default :
+				return SDL_TRUE;
+		}
+}
+
+int get_bonus(Vaiss vaisseau, float munitions[NB_MISSILES]){
+	int chanceTotal = 0;
+	int i;
+	for(i=0; i<NB_BONUS + NB_MISSILES -1; i++)
+		if(isObtainable(i, vaisseau, munitions))
+			chanceTotal += CHANCE_BONUS[i];
+
+	int proba = rand()%chanceTotal + 1;
+
+	for(i=0; i<NB_BONUS  + NB_MISSILES -1 && proba > 0; i++)
+		if(isObtainable(i, vaisseau, munitions))
+			proba -= CHANCE_BONUS[i];
+
+	return i-1;
+
+}
+
 void detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid,Vaiss * vaisseau,int touche_bouclier, int * point, int* nbBombeNucleaire, float angleMissile, TextBonus bonusTexts[MAX_TEXT_BONUS], float munitions[NB_MISSILES]){
 
     int bonus = (*asteroides)[i_asteroid].bonus;
-    (*asteroides)[i_asteroid].bonus = NO_BONUS;
+    (*asteroides)[i_asteroid].bonus = SDL_FALSE;
 
 
-    if((*asteroides)[i_asteroid].taille>TAILLE_MIN_SPLIT && !touche_bouclier && bonus != BOMBE_NUCLEAIRE){
+    if((*asteroides)[i_asteroid].taille>TAILLE_MIN_SPLIT && (*asteroides)[i_asteroid].difficulte * pow((*asteroides)[i_asteroid].taille,2)  > DIFFICULTE_MIN_SPLIT * pow(MAX_ASTEROID_SIZE,2) && !touche_bouclier && bonus != BOMBE_NUCLEAIRE ){
 
 		(*asteroides)[i_asteroid].frame_hit = 0;
         (*asteroides)[i_asteroid].taille/=2;
@@ -375,10 +419,11 @@ void detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid
         }
     }
 
-    if(bonus != NO_BONUS){
-		recoit_bonus(bonus,vaisseau,nbBombeNucleaire,point, munitions);
+    if(bonus){
+		int id_bonus = get_bonus(*vaisseau, munitions);
+		recoit_bonus(id_bonus,vaisseau,nbBombeNucleaire,point, munitions);
 		int iText= getFirstNullText(bonusTexts);
-		bonusTexts[iText].id = bonus;
+		bonusTexts[iText].id = id_bonus;
 		bonusTexts[iText].frame = FRAME_SHOW_BONUS_TEXT;
 	}
 
@@ -756,7 +801,7 @@ void update_frame(Missile ** missiles, int * nb_missiles, Vaiss * vaisseau, long
 	(*frame)++;
 	(*frame_apparition_asteroid)--;
 	if(*vitesse_spawn > VITESSE_SPAWN_MIN){
-		(*vitesse_spawn)-= ACCELERATION_SPAWN;
+		(*vitesse_spawn)-= ACCELERATION_SPAWN ;
 	}
 	if(*frame_2asteroid){
 		(*frame_2asteroid)--;
@@ -783,50 +828,8 @@ void afficher_tir( SDL_Renderer * renderer, Missile shot, SDL_Texture * missileT
 	SDL_RenderFillRect(renderer,&missileRect);*/
 }
 
-int isObtainable(int id_bonus, Vaiss vaisseau, float munitions[NB_MISSILES]){
-	if(id_bonus >= NB_BONUS)
-		return (munitions[id_bonus - NB_BONUS +1] <= MAX_RATIO_AMMO_OBTAINABLE);
-	else
-		switch(id_bonus){
-			case TIR_MULTIPLE :
-				return (vaisseau.nb_tir < NB_TIR_MAX);
-
-		    case BOUCLIER :
-				return (!vaisseau.bouclier);
-
-		    case VITESSE_DE_TIR:
-				return (vaisseau.temps_recharge > FREQUENCE_MISSILE_MIN);
-
-		    case BONUS_VITESSE_MISSILE :
-				return (vaisseau.vitesse_missile<VITESSE_MISSILE_MAX);
-
-			case DEGAT:
-				return (vaisseau.degat_missile<DEGAT_MISSILE_MAX);
-
-			default :
-				return SDL_TRUE;
-		}
-}
 
 //ASTEROID
-int get_bonus(Vaiss vaisseau, float munitions[NB_MISSILES]){
-	int chanceTotal = 0;
-	int i;
-	for(i=0; i<NB_BONUS + NB_MISSILES -1; i++)
-		if(isObtainable(i, vaisseau, munitions))
-			chanceTotal += CHANCE_BONUS[i];
-
-	int proba = rand()%chanceTotal + 1;
-
-	for(i=0; i<NB_BONUS  + NB_MISSILES -1 && proba > 0; i++)
-		if(isObtainable(i, vaisseau, munitions))
-			proba -= CHANCE_BONUS[i];
-
-	return i-1;
-
-}
-
-
 void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, float difficulte, float munitions[NB_MISSILES]){
 	difficulte *= 1 + randSign() * rand()%(int)(PRECISION_RAND_FLOAT *INTERVALE_RAND_DIFFICULTE)/(float)PRECISION_RAND_FLOAT;
 	int id_coord;
@@ -864,9 +867,10 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 	}
 
 	if(rand()%PROBA_BONUS==0){
-		(*asteroides)[*nb_asteroid-1].bonus=get_bonus(vaisseau, munitions);
+		(*asteroides)[*nb_asteroid-1].bonus=SDL_TRUE;
 	}
-	else (*asteroides)[*nb_asteroid-1].bonus=NO_BONUS;
+	else
+		(*asteroides)[*nb_asteroid-1].bonus=SDL_FALSE;
 
 	do{
 
@@ -897,7 +901,7 @@ void afficher_texture_asteroid(SDL_Renderer* renderer, SDL_Texture * textureAste
 	}
 
 
-	if(asteroid.bonus != NO_BONUS){
+	if(asteroid.bonus){
 		SDL_RenderCopyEx(renderer, textureBonus, &ASTE_SRC, &dest, asteroid.angle_rota, NULL, SDL_FLIP_NONE);
 	}
 	if( srcFissure.y>=0){
@@ -1058,7 +1062,7 @@ void afficherRoue(SDL_Renderer * renderer, SDL_Texture * textureRoue, float rati
 	src.y = src.w;
 	for(int i=0; i< NB_ROUE_EMPLACEMENTS; i++){
 		src.x = 0;
-		float ammo = munitions[i] * NB_ARROUND_JAUGES;
+		float ammo = (i>=NB_MISSILES? 0 : munitions[i]) * NB_ARROUND_JAUGES;
 		float ratioColor;
 		for(int j=0; j<NB_ARROUND_JAUGES; j++){
 			if(ammo>=1)
@@ -1067,7 +1071,9 @@ void afficherRoue(SDL_Renderer * renderer, SDL_Texture * textureRoue, float rati
 				ratioColor = MIN_RATIO_COLOR;
 			else
 				ratioColor = MIN_RATIO_COLOR + (1-MIN_RATIO_COLOR) * ammo;
-			SDL_SetTextureColorMod(textureRoue, GEM_COLORS[i].r * ratioColor, GEM_COLORS[i].g * ratioColor, GEM_COLORS[i].b * ratioColor);
+
+			SDL_Color currentColor = i>=NB_MISSILES? (SDL_Color){0,0,0} : GEM_COLORS[i];
+			SDL_SetTextureColorMod(textureRoue, currentColor.r * ratioColor, currentColor.g * ratioColor, currentColor.b * ratioColor);
 			SDL_RenderCopyEx(renderer,textureRoue, &src, &dest, roue.rota + (360./NB_ROUE_EMPLACEMENTS) * i, NULL, SDL_FLIP_NONE);
 			src.x += src.w;
 
@@ -1368,7 +1374,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 			//hitbox laser
 			if(vaisseau.missile_id == SHOT_LASER && keystate[SDL_SCANCODE_SPACE] && munitions[vaisseau.missile_id]){
 				if( laser_touche(asteroides[i], vaisseau) ){
-					asteroides[i].pv -= DEGAT_MISSILES[SHOT_LASER] * (vaisseau.degat_missile + (vaisseau.nb_tir-1) + (vaisseau.vitesse_missile/(float)BASE_VITESSE_MISSILE - 1) + (vaisseau.temps_recharge/(float)FREQUENCE_BASE -1));
+					asteroides[i].pv -= DEGAT_MISSILES[SHOT_LASER] * (vaisseau.degat_missile + RATIO_DMG_UP_LASER*((vaisseau.nb_tir/(float)BASE_DEGAT_MISSILE - 1) + (vaisseau.vitesse_missile/(float)BASE_VITESSE_MISSILE - 1) + (vaisseau.temps_recharge/(float)FREQUENCE_BASE -1)));
 					asteroides[i].frame_hit = FRAME_HIT_ANIM;
 
 					if(asteroides[i].frozen >=2)
@@ -1553,7 +1559,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 
 		rotateAsteroides(asteroides, nb_asteroid);
 		update_frame(&missiles,&nb_missiles,&vaisseau,&frame,&frame_apparition_asteroid,&vitesse_spawn,&frame_2asteroid);
-		difficulte+=RATIO_DIFFICULTE_AUGMENT;
+		difficulte+=RATIO_DIFFICULTE_AUGMENT + difficulte * RATIO_DIFFICULTE_AUGMENT_MULTI;
 		//regulateFPS
 		currentTime = SDL_GetTicks();
 		while( currentTime - lastTime < FRAME_TIME )

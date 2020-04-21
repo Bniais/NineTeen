@@ -85,9 +85,9 @@ const float RATIO_ACCEL[NB_FRAME_THRUST+1] = {0, 0.3, 0.6, 1, 1, 1};
 
 #define DIST_2ASTEROID 30
 #define DIST_VAISSEAU_ASTEROID 300
-#define FRAME_APPARITION_ASTEROID (10* FRAMES_PER_SECOND)
-#define VITESSE_SPAWN_INIT (FRAMES_PER_SECOND*10)
-#define VITESSE_SPAWN_MIN (FRAMES_PER_SECOND*5)
+#define FRAME_APPARITION_ASTEROID (18* FRAMES_PER_SECOND)
+#define VITESSE_SPAWN_INIT (FRAMES_PER_SECOND*12)
+#define VITESSE_SPAWN_MIN (FRAMES_PER_SECOND*8)
 #define ACCELERATION_SPAWN 0.03
 #define FRAME_2ASTEROID (FRAMES_PER_SECOND/2)
 #define PV_BASE 1
@@ -98,7 +98,9 @@ SDL_Point coord_spawn[3]={{0,0},{0,(PLAYGROUND_SIZE_H/2)},{(PLAYGROUND_SIZE_W/2)
 #define TAILLE_MIN_ASTEROID 18
 #define VITESSE_MAX_ASTEROID 18
 #define START_DIFFICULTE 1.5
+#define DIFFICULTE_MIN_SPLIT 5
 #define RATIO_DIFFICULTE_AUGMENT 0.004
+#define RATIO_DIFFICULTE_AUGMENT_MULTI 0.0001
 #define MAX_VITESSE_ROTA 14
 
 #define NB_ASTE_TEXTURES 6
@@ -159,6 +161,7 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 	#define NB_LASER_BEAM 8
 	#define LASER_ACCEL 0.05
 	#define BASE_TAILLE_EXPLOSION 40
+	#define RATIO_DMG_UP_LASER 0.7
 
 	//attributs glace
 	#define DEAD_FROZEN -999
@@ -173,7 +176,7 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 	#define BASE_VITESSE_MISSILE 15
 	const float VITESSE_MISSILES[NB_MISSILES] = {1, 1.25, 1, 1.33, 0};
 
-	#define BASE_DEGAT_MISSILE 1
+	#define BASE_DEGAT_MISSILE 1.5
 	const float DEGAT_MISSILES[NB_MISSILES] = {1, 1.5, 2, 0, 4./30};
 
 	const int RAYON_MISSILES[NB_MISSILES] = {6, 10, 14, 10, 0};
@@ -184,10 +187,11 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 	const float DUREE_MISSILES[NB_MISSILES] = {1, 0.9, 1.5, 1, 0};
 
 
-	const float MUNITIONS_USAGE[NB_MISSILES] = {0, 0.005, 0.01, 0.01, 1./(15*30)};
-											  //INF / 200 / 100 / 100 / 15s
+	const float MUNITIONS_USAGE[NB_MISSILES] = {0, 0.01, 0.0334, 0.02, 1./(20*30)};
+											  //INF / 100 / 33 /  50/ 20s
 
-    #define MAX_RATIO_AMMO_OBTAINABLE 0.1
+    #define MAX_RATIO_AMMO_OBTAINABLE 0.5
+	#define AMMO_GRANT 0.5
 
 	//texures missiles
 	#define MISSILE_CUT 56
@@ -225,7 +229,7 @@ static const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
 #define NB_BONUS 9
 #define NO_BONUS -1
 #define PROBA_BONUS 3
-#define NB_TIR_MAX 5
+#define NB_TIR_MAX 3
 #define NB_BONUS_POINT 3
 int BONUS_POINT[NB_BONUS_POINT]={15,50,100};
 typedef enum{
@@ -270,21 +274,22 @@ typedef struct {int id; int frame;}TextBonus;
 const SDL_Color BONUS_TEXT_COLOR = {0xa7,0x96,0xff};
 static const int ALPHA_BONUS[FRAME_SHOW_BONUS_TEXT] = { 40, 80, 160, 200, 235,   255, 255, 255, 255, 255,	 255, 255, 255, 255, 255,	 255, 255, 255, 255, 255,   245, 235, 225, 215, 205,   180, 150, 110, 80, 40 };
 
-int CHANCE_BONUS[NB_BONUS + NB_MISSILES - 1]={1,3,1,2,1,1,8,5,2, 3,3,3,3};
+int CHANCE_BONUS[NB_BONUS + NB_MISSILES - 1]={1,3,1,3,3,1,9,6,3, 3,3,3,3};
 
 float angle_tir_multiple[NB_TIR_MAX][NB_TIR_MAX]={
-  {0,0,0,0,0},
-  {-PI/25,PI/25,0,0,0},
-  {-PI/15,0,PI/15,0,0},
-  {-PI/10,-PI/25,PI/10,PI/25,0},
-  {-PI/8,-PI/15,PI/15,PI/8,0}
+  {0,0,0},//,0,0},
+  {-PI/25,PI/25,0},//,0,0},
+  {-PI/15,0,PI/15}//,0,0},
+ // {-PI/10,-PI/25,PI/10,PI/25,0},
+  //{-PI/8,-PI/15,PI/15,PI/8,0}
 };
 
 #define BONUS_ACCELERATION_MISSILE 1.7
 #define VITESSE_MISSILE_MAX (2*BASE_VITESSE_MISSILE)
 #define BONUS_FREQUENCE_MISSILE 1.5
 #define FREQUENCE_MISSILE_MIN (FRAMES_PER_SECOND/8)
-#define DEGAT_MISSILE_MAX 5
+#define DEGAT_MISSILE_MAX 6
+#define DEGAT_ADD 0.75
 #define FRAME_BOMBE_NUCLEAIRE (FRAMES_PER_SECOND*1.5)
 
 
