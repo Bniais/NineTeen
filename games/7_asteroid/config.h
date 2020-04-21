@@ -114,7 +114,7 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 #define FRAME_HIT_ANIM 2
 
 //ammo
-#define NB_ROUE_EMPLACEMENTS 6
+#define NB_ROUE_EMPLACEMENTS 5
 SDL_Rect SRC_ROUE = {0,0,622,622};
 SDL_Rect ROUE_DIM = {0,0,80,80};
 #define NB_ARROUND_JAUGES 4
@@ -137,7 +137,7 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 	const SDL_Color GEM_COLORS[NB_MISSILES]={
 		{250,35,35},
 		{0xfa,0xa6,0x32},
-		{0x8e,0x8c,0x92},
+		{0x71,0xb5,0x45},
 		{0x68,0xcf,0xf1},
 		{0xb0,0x6c,0xd0}
 	};
@@ -171,10 +171,10 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 	#define DISTANCE_CANON 23
 
 	#define FREQUENCE_BASE (FRAMES_PER_SECOND/2)
-	const float FREQUENCE_MISSILES[NB_MISSILES] = {1, 0.5, 1.5, 1, 0};
+	const float FREQUENCE_MISSILES[NB_MISSILES] = {1, 0.66, 1.66, 1.25, 0};
 
 	#define BASE_VITESSE_MISSILE 15
-	const float VITESSE_MISSILES[NB_MISSILES] = {1, 1.25, 1, 1.33, 0};
+	const float VITESSE_MISSILES[NB_MISSILES] = {1, 1.1, 1, 1.25, 0};
 
 	#define BASE_DEGAT_MISSILE 1.5
 	const float DEGAT_MISSILES[NB_MISSILES] = {1, 1.5, 2, 0, 4./30};
@@ -287,7 +287,7 @@ float angle_tir_multiple[NB_TIR_MAX][NB_TIR_MAX]={
 #define BONUS_ACCELERATION_MISSILE 1.7
 #define VITESSE_MISSILE_MAX (2*BASE_VITESSE_MISSILE)
 #define BONUS_FREQUENCE_MISSILE 1.5
-#define FREQUENCE_MISSILE_MIN (FRAMES_PER_SECOND/8)
+#define FREQUENCE_MISSILE_MIN (FRAMES_PER_SECOND/6.)
 #define DEGAT_MISSILE_MAX 6
 #define DEGAT_ADD 0.75
 #define FRAME_BOMBE_NUCLEAIRE (FRAMES_PER_SECOND*1.5)

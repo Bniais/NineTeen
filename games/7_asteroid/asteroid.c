@@ -1555,8 +1555,6 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 			jauge.ammo += (munitions[vaisseau.missile_id] - jauge.ammo) / jauge.frameAmmo;
 		}
 
-
-
 		rotateAsteroides(asteroides, nb_asteroid);
 		update_frame(&missiles,&nb_missiles,&vaisseau,&frame,&frame_apparition_asteroid,&vitesse_spawn,&frame_2asteroid);
 		difficulte+=RATIO_DIFFICULTE_AUGMENT + difficulte * RATIO_DIFFICULTE_AUGMENT_MULTI;
