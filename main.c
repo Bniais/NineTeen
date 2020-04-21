@@ -731,10 +731,10 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
 
 int main(int argc, char *argv[])
 {
-    #ifdef _WIN32
+    /*#ifdef _WIN32
        HWND hWnd = GetConsoleWindow();
        ShowWindow( hWnd, SW_HIDE );
-    #endif // _WIN32
+    #endif // _WIN32*/
 
   if ( checkVersion(VERSION_LOGICIEL) == EXIT_SUCCESS)
   {
