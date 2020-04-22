@@ -2261,14 +2261,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 
 
-							#ifdef __APPLE__
-								// REMISE A ZERO DE LA SCENE
-								*scene_list = 0;
-								// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
-								while(SDL_PollEvent(&Event));
-								// AFFICHAGE DE LA SCENE
-								SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-							#else
+							#ifdef __linux__
 								detruireTexture();
 
 								SDL_GL_DeleteContext(*Context);
@@ -2283,6 +2276,13 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 								// RECHARGEMENT DES IMAGES
 								aiLoadTexture(DIR_OBJ_LOAD,scene);
+							#else
+								// REMISE A ZERO DE LA SCENE
+								*scene_list = 0;
+								// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
+								while(SDL_PollEvent(&Event));
+								// AFFICHAGE DE LA SCENE
+								SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 							#endif
 
 
