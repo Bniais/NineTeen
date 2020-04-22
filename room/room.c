@@ -5,7 +5,7 @@
 #include <stdio.h>
 #ifdef __APPLE__
 	#define GL_SILENCE_DEPRECATION
-	#include <OpenGL/gl.h>
+	#include <OpenGL/gl3.h>
 	#include <OpenGL/OpenGL.h>
 	#include <GLUT/glut.h>
 #endif
@@ -13,11 +13,11 @@
 	#include <GL/gl.h>
 	#include <GL/glu.h>
 	#include <GL/glut.h>
-	#define M_PI 3.1415
+  #define M_PI 3.1415
 #endif
 
 #ifdef _WIN32
-	#include<glew.h>
+    #include<glew.h>
 #endif
 
 #include <SDL2/SDL.h>
@@ -25,9 +25,14 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #include <math.h>
+#include <assert.h>
 
 // LOCAL LIBRARY
 #include "import.h" // YOU NEED ASSIMP LIB FOR import.h (README.dm)
+static GLuint * _textures =  NULL, * _vaos = NULL, *_buffers = NULL , *_counts = NULL,_nbTextures = 0, _nbMeshes = 0;
+
+
+
 #include "room.h"
 #include "../include/libWeb.h"
 #include "../games/2_snake/snake.h"
@@ -95,7 +100,7 @@ SDL_Color Text_rouge = {255,0,0};
 
 // lier au son
 #define NB_INDICE_PORTER 2
-#define MAX_VOLUME_ARCADE 60
+#define MAX_VOLUME_ARCADE 70
 
 // STATIC VAR FOR CAMERA
 struct Camera_s
@@ -109,9 +114,9 @@ enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINE
 
 
 #ifdef _WIN32
-	#define DIR_TOKEN_FILE "C:\\Windows\\Temp\\.Nineteen"
+  #define DIR_TOKEN_FILE "C:\\Windows\\Temp\\.Nineteen"
 #else
-	#define DIR_TOKEN_FILE "/tmp/.Nineteen"
+  #define DIR_TOKEN_FILE "/tmp/.Nineteen"
 #endif
 
 
@@ -230,7 +235,7 @@ float distancePoint(float xa, float ya, float xb, float yb);
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter,float angleJoueur, int maxVolume);
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter,float angleJoueur);
 
 
 /////////////////////////////////////////////////////
@@ -440,10 +445,356 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 
 
 
-int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene)
+
+
+
+char * pathOf(const char * path) {
+	int spos = -1;
+	char * tmp, * ptr;
+	tmp = malloc((strlen(path) + 1) * sizeof * tmp); assert(tmp); strcpy(tmp, path); //strdup(path);
+	ptr = tmp;
+	while(*ptr) {
+		if(*ptr == '/' || *ptr == '\\')
+			spos = ptr - tmp;
+		++ptr;
+	}
+	tmp[spos >= 0 ? spos : 0] = 0;
+	return tmp;
+}
+
+
+
+static int sceneNbMeshes(const struct aiScene *sc, const struct aiNode* nd, int subtotal) {
+  int n = 0;
+  subtotal += nd->mNumMeshes;
+  for(n = 0; n < nd->mNumChildren; ++n)
+    subtotal += sceneNbMeshes(sc, nd->mChildren[n], 0);
+  return subtotal;
+}
+
+static void sceneMkVAOs(const struct aiScene *sc, const struct aiNode* nd, GLuint * ivao ) {
+  int i, j, comp;
+  unsigned int n = 0;
+  static int temp = 0;
+
+  temp++;
+
+  for (; n < nd->mNumMeshes; ++n) {
+    GLfloat * vertices = NULL;
+    GLuint  * indices  = NULL;
+    const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
+    comp  = mesh->mVertices ? 3 : 0;
+    comp += mesh->mNormals ? 3 : 0;
+    comp += mesh->mTextureCoords[0] ? 2 : 0;
+    if(!comp) continue;
+
+    glBindVertexArray(_vaos[*ivao]);
+    glBindBuffer(GL_ARRAY_BUFFER, _buffers[2 * (*ivao)]);
+
+    vertices = malloc(comp * mesh->mNumVertices * sizeof *vertices);
+    assert(vertices);
+    i = 0;
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(2);
+    if(mesh->mVertices) {
+      glEnableVertexAttribArray(0);
+      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
+      for(j = 0; j < mesh->mNumVertices; ++j) {
+	vertices[i++] = mesh->mVertices[j].x;
+	vertices[i++] = mesh->mVertices[j].y;
+	vertices[i++] = mesh->mVertices[j].z;
+      }
+    }
+    if(mesh->mNormals) {
+
+      glEnableVertexAttribArray(1);
+      glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
+      for(j = 0; j < mesh->mNumVertices; ++j) {
+	vertices[i++] = mesh->mNormals[j].x;
+	vertices[i++] = mesh->mNormals[j].y;
+	vertices[i++] = mesh->mNormals[j].z;
+      }
+    }
+    if(mesh->mTextureCoords[0]) {
+
+      glEnableVertexAttribArray(2);
+      glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
+      for(j = 0; j < mesh->mNumVertices; ++j) {
+	vertices[i++] = mesh->mTextureCoords[0][j].x;
+	vertices[i++] = mesh->mTextureCoords[0][j].y;
+      }
+    }
+    glBufferData(GL_ARRAY_BUFFER, (i * sizeof *vertices), vertices, GL_STATIC_DRAW);
+    free(vertices);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _buffers[2 * (*ivao) + 1]);
+    if(mesh->mFaces) {
+      indices = malloc(3 * mesh->mNumFaces * sizeof *indices);
+      assert(indices);
+      for(i = 0, j = 0; j < mesh->mNumFaces; ++j) {
+	assert(mesh->mFaces[j].mNumIndices < 4);
+	if(mesh->mFaces[j].mNumIndices != 3) continue;
+	indices[i++] = mesh->mFaces[j].mIndices[0];
+	indices[i++] = mesh->mFaces[j].mIndices[1];
+	indices[i++] = mesh->mFaces[j].mIndices[2];
+      }
+      glBufferData(GL_ELEMENT_ARRAY_BUFFER, i * sizeof *indices, indices, GL_STATIC_DRAW);
+      _counts[*ivao] = i;
+      free(indices);
+    }
+    glBindVertexArray(0);
+    (*ivao)++;
+  }
+  for (n = 0; n < nd->mNumChildren; ++n) {
+    sceneMkVAOs(sc, nd->mChildren[n], ivao);
+  }
+}
+
+
+
+void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene)
+{
+  int i = 0;
+	GLuint ivao = 0;
+
+
+  _textures = malloc( (_nbTextures = _scene->mNumMaterials) * sizeof *_textures);
+  assert(_textures);
+
+  glGenTextures(_nbTextures, _textures);
+
+  for (i = 0; i < _scene->mNumMaterials ; i++) {
+
+    const struct aiMaterial* pMaterial = _scene->mMaterials[i];
+       if (aiGetMaterialTextureCount(pMaterial, aiTextureType_DIFFUSE) > 0) {
+         struct aiString tfname;
+         char * dir = pathOf(filename), buf[BUFSIZ];
+         if (aiGetMaterialTexture(pMaterial, aiTextureType_DIFFUSE, 0, &tfname, NULL, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
+           SDL_Surface * t;
+           snprintf(buf, sizeof buf, "%s/%s", dir, tfname.data);
+					 printf("%s\n",tfname.data );
+           if(!(t = IMG_Load(buf))) {
+            fprintf(stderr, "Probleme de chargement de textures %s\n", buf);
+            fprintf(stderr, "\tNouvel essai avec %s\n", tfname.data);
+            if(!(t = IMG_Load(tfname.data)))
+						{
+							fprintf(stderr, "Probleme de chargement de textures %s\n", tfname.data); continue;
+            }
+						printf("texture dans i = %d\n",i );
+            glBindTexture(GL_TEXTURE_2D, _textures[i]);
+	          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
+	          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
+            #ifdef __APPLE__
+	           glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_BGR : GL_BGRA, GL_UNSIGNED_BYTE, t->pixels);
+            #else
+	           glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, t->pixels);
+            #endif
+
+	          SDL_FreeSurface(t);
+
+          }
+					printf("texture dans i = %d\n",i );
+					glBindTexture(GL_TEXTURE_2D, _textures[i]);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
+					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
+					#ifdef __APPLE__
+					 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, GL_RGB, GL_UNSIGNED_BYTE, t->pixels);
+					#else
+					 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, t->pixels);
+					#endif
+					SDL_FreeSurface(t);
+
+         }
+
+       }
+
+  }
+
+	_nbMeshes = sceneNbMeshes(_scene, _scene->mRootNode, 0);
+	_vaos = malloc(_nbMeshes * sizeof *_vaos);
+	assert(_vaos);
+	glGenVertexArrays(_nbMeshes, _vaos);
+	_buffers =  malloc(2 * _nbMeshes * sizeof *_buffers);
+	assert(_buffers);
+	glGenBuffers(2 * _nbMeshes,_buffers);
+	_counts = calloc(_nbMeshes, sizeof *_counts);
+	assert(_counts);
+	sceneMkVAOs(_scene, _scene->mRootNode, &ivao);
+
+}
+
+
+
+
+
+void aiDessinerImage(const struct aiScene *sc, const struct aiNode* nd, GLuint * ivao)
+{
+	glEnable(GL_TEXTURE_2D);
+	unsigned int n = 0,i,t;
+	struct aiMatrix4x4 m = nd->mTransformation;
+
+
+	/* update transform */
+	aiTransposeMatrix4(&m);
+	glPushMatrix();
+	glMultMatrixf((float*)&m);
+
+	/* draw all meshes assigned to this node */
+	for (; n < nd->mNumMeshes; ++n) {
+		const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
+
+		// BLIND DE LA TEXTURE SI BESOIN
+		if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0) {
+			glBindTexture(GL_TEXTURE_2D, _textures[mesh->mMaterialIndex]);
+		}
+		if(_counts[*ivao]) {
+
+			glBindVertexArray(_vaos[*ivao]);
+			aiAppliquerCouleur(sc->mMaterials[mesh->mMaterialIndex]);
+
+			for (t = 0; t < mesh->mNumFaces; ++t) {
+				const C_STRUCT aiFace* face = &mesh->mFaces[t];
+				GLenum face_mode;
+
+
+					switch(face->mNumIndices) {
+						case 1: face_mode = GL_POINTS; break;
+						case 2: face_mode = GL_LINES; break;
+						case 3: face_mode = GL_TRIANGLES; break;
+						default: face_mode = GL_POLYGON; break;
+					}
+
+					if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0) {
+						glBindTexture(GL_TEXTURE_2D, _textures[mesh->mMaterialIndex]);
+					}
+
+					glBegin(face_mode);
+					for(i = 0; i < face->mNumIndices; i++) {
+
+						int index = face->mIndices[i];
+
+						if(mesh->mColors[0] != NULL)
+						{
+							glColor4fv((GLfloat*)&mesh->mColors[0][index]);
+						}
+						if(mesh->mNormals != NULL)
+						{
+							glNormal3fv(&mesh->mNormals[index].x);
+						}
+
+
+						if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0) {
+							glTexCoord2f(mesh->mTextureCoords[0][index].x, 1- mesh->mTextureCoords[0][index].y);
+						}
+
+						glVertex3fv(&mesh->mVertices[index].x);
+
+					}
+					glEnd();
+
+
+			}
+		}
+
+		(*ivao)++;
+	}
+
+	for (n = 0; n < nd->mNumChildren; ++n) {
+		aiDessinerImage(sc, nd->mChildren[n],ivao);
+	}
+
+	glPopMatrix();
+
+}
+
+
+void detruireTexture()
 {
 
+  if(_counts) {
+    free(_counts);
+    _counts = NULL;
+  }
+  if(_textures) {
+    glDeleteTextures(_nbTextures, _textures);
+    free(_textures);
+    _textures = NULL;
+  }
+  if(_vaos) {
+    glDeleteVertexArrays(_nbMeshes, _vaos);
+    free(_vaos);
+    _vaos = NULL;
+  }
+  if(_buffers) {
+    glDeleteBuffers(2 * _nbMeshes, _buffers);
+    free(_buffers);
+    _buffers = NULL;
+  }
+}
+void GLlightMode()
+{
+	glEnable(GL_LIGHTING);	// Active l'éclairage
+	glEnable(GL_LIGHT0);	// Allume la lumière n°1
+	glEnable(GL_LIGHT1);	// Allume la lumière n°1
+	//glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+	// COULEUR DES LAMPES
+	/////////////////////
+	//
+	GLfloat ambiant1[] = { 1.0, 0.917 , 0.173 , 1.0 };
+	GLfloat diffuse[] = { 1.0, 1.0 , 1.0 , 1.0 };
+	GLfloat specular[] = { 1.0, 1.0 , 1.0 , 1.0 };
 
+
+	GLfloat position1[]={-9.3 , 5.4 , 0.0 , 1.0 };
+	GLfloat spot_direction1[]={ 0.0 , -1.0 , 0.0 };
+
+	GLfloat position2[]={3.4 , 4.2 , -4.8 , 1.0 };
+	GLfloat spot_direction2[]={ 0.0 , 0.0 , -1.0 };
+
+
+	glLightfv(GL_LIGHT0  , GL_AMBIENT, ambiant1);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, position1);
+
+
+	GLfloat ambiant2[] = { 0.89, 0.33 , 0.27 , 1.0 };
+	glLightfv(GL_LIGHT1  , GL_AMBIENT, ambiant1);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, specular);
+	glLightfv(GL_LIGHT1, GL_POSITION, position2);
+
+
+	// ATENUATION
+
+
+	glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.0);
+	glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.01);
+	glLightf(GL_LIGHT1 , GL_QUADRATIC_ATTENUATION, 0.1);
+
+	glLightf(GL_LIGHT0 , GL_SPOT_CUTOFF, 90.0);
+	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction1);
+	glLightf(GL_LIGHT0 , GL_SPOT_EXPONENT, 2.0);
+
+	glLightf(GL_LIGHT0 , GL_SPOT_CUTOFF, 90.0);
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction2);
+	glLightf(GL_LIGHT0 , GL_SPOT_EXPONENT, 2.0);
+}
+
+
+
+
+int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene)
+{
+	//////////////////////////////////////////////////////////
+	// EVENT SOURIS INIT
+	//////////////////////////////////////////////////////////
+	// CACHER LA SOURIS
+	SDL_ShowCursor(SDL_DISABLE);
 	//////////////////////////////////////////////////////////
 	// POSITIONNER LA SOURIS AU CENTRE
 	SDL_GetDisplayBounds(0, &bounds);
@@ -531,6 +882,20 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 
 	//////////////////////////////////////////////////////////
+	// ACTIVATION DE L"ANTI aliasing
+	if (SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 ) == -1)
+		printf("impossible d'initialiser SDL_GL_MULTISAMPLEBUFFERS à 1\n" );
+	else
+	{
+		if (SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 6 ) == -1)
+				printf("impossible d'initialiser SDL_GL_MULTISAMPLESAMPLES sur 6 buffers\n");
+		else
+			printf("Anti aliasing demarre\n");
+
+	}
+
+
+	//////////////////////////////////////////////////////////
 	//
 	/*WinWidth = 2304;
 	WinHeight = 1296;*/
@@ -568,32 +933,27 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	float _IPS = FPS;
 	//////////////////////////////////////////////////////////
 
-	#ifndef __linux__
-		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-	#endif
+	SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 
+	glLoadIdentity();
+	GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
-
-	int frame = 0;
+	aiLoadTexture(DIR_OBJ_LOAD,scene);
 	while (Running)
 	{
+		glLoadIdentity();
+		GL_InitialiserParametre(WinWidth,WinHeight,camera);
+
 		int delayLancementFrame = SDL_GetTicks();
-		//////////////////////////////////////////////////////////
-		// EVENT SOURIS INIT
-		//////////////////////////////////////////////////////////
-		// CACHER LA SOURIS
-		if (SDL_GetWindowFlags(Window) & SDL_WINDOW_INPUT_FOCUS)
-			SDL_ShowCursor(SDL_DISABLE);
-		else
-			SDL_ShowCursor(SDL_ENABLE);
+
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
 		// MUSIQUE LOT MACHINE GAUCHE
-		reglageVolume(0,-5.0,11.0,camera.px,camera.pz,10.0,camera.angle, MAX_VOLUME_ARCADE);
+		reglageVolume(0,-5.0,11.0,camera.px,camera.pz,10.0,camera.angle);
 		// MUSIQUE LOT MACHINE DROITE
-		reglageVolume(1,5.0,11.0,camera.px,camera.pz,10.0,camera.angle, MAX_VOLUME_ARCADE);
+		reglageVolume(1,5.0,11.0,camera.px,camera.pz,10.0,camera.angle);
 		// MUSIQUE MACHINE SEUL
-		reglageVolume(2,0.0,0.0,camera.px,camera.pz,10.0,camera.angle, MAX_VOLUME_ARCADE);
+		reglageVolume(2,0.0,0.0,camera.px,camera.pz,10.0,camera.angle);
 		//////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////
@@ -604,20 +964,24 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		//////////////////////////////////////////////////////////
 		// OpenGL
 		//////////////////////////////////////////////////////////
-		// APPLIQUER PARAMETRE D'ORIGINE OPENGL
-		GL_InitialiserParametre(WinWidth,WinHeight,camera);
+		// REGLAGE LUMIERE
+		//
+
 		//////////////////////////////////////////////////////////
 		// CHARGER LA SCENE
-		if(frame)
-			SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
-		//////////////////////////////////////////////////////////
+		SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
 
+		//GL_InitialiserParametre(WinWidth,WinHeight,camera);
+		//////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////
 		// OpemGL Text
 		//////////////////////////////////////////////////////////
 		// AFFICHER CLASSEMENT / SCORE EN HAUT A GAUCHE
 		AfficherText(sega,meilleureScore[0].nomJeux,Text_rouge,WinWidth/30,WinHeight - WinWidth/30);
+
+
+
 		AfficherText(sega,meilleureScore[0].nomJoueur,Text_rouge,WinWidth/30,WinHeight - WinWidth/15);
 		//////////////////////////////////////////////////////////
 		// AFFICHAGE MESSAGE A PROXIMITER DES MACHINES
@@ -635,7 +999,6 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		//////////////////////////////////////////////////////////
 		// APPLIQUER MODIF SUR LA VUE
 		SDL_GL_SwapWindow(Window);
-
 		//////////////////////////////////////////////////////////
 		// LIMITER LES FRAMES A CONST FPS
 		limiterFrame(delayLancementFrame,&_IPS);
@@ -646,7 +1009,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		// ATTENDRE 1000 MS POUR MESSAGE CLIGNOTANT
 		attendreXsecondeMessage(&compterSeconde, &afficherMessage,1000, _IPS);
 		//////////////////////////////////////////////////////////
-		frame++;
+
 	}
 
 
@@ -662,11 +1025,40 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	TTF_CloseFont(font);
 	TTF_CloseFont(sega);
 	//////////////////////////////////////////////////////////
+	// DESTRUCTION DES EMPLACEMENTS TEXTURES
+	detruireTexture();
+	//////////////////////////////////////////////////////////
 	// LIBERATION DU CONTEXT
 	SDL_GL_DeleteContext(Context);
+
 	//////////////////////////////////////////////////////////
 	return EXIT_SUCCESS;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -724,9 +1116,9 @@ void InitMeilleureScore(struct MeilleureScore_s str[])
 	strcpy(str[FLAPPY_EASY].nomJeux,"FLAPPY   BIRD");
 
 
-	strcpy(str[13].nomJeux,"COMING   SOON");
-	strcpy(str[14].nomJeux,"COMING   SOON");
-	strcpy(str[15].nomJeux,"COMING   SOON");
+	strcpy(str[13].nomJeux,"COMMING   SOON");
+	strcpy(str[14].nomJeux,"COMMING   SOON");
+	strcpy(str[15].nomJeux,"COMMING   SOON");
 }
 
 
@@ -744,44 +1136,44 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 	///////////////////////////////////////////////////////////
 	// PARSING DANS LA CHAINE DE DONNER RECU
 	int temp1,temp2;
-	sscanf(reponse,"%d %d / %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
-		&str[0].score,&temp1,&temp2,
-		str[FLAPPY_HARD].nomJoueur,&str[FLAPPY_HARD].score,
-		str[TETRIS_HARD].nomJoueur,&str[TETRIS_HARD].score,
-		str[ASTEROID_HARD].nomJoueur,&str[ASTEROID_HARD].score,
-		str[PACMAN_HARD].nomJoueur,&str[PACMAN_HARD].score,
-		str[SNAKE_HARD].nomJoueur,&str[SNAKE_HARD].score,
-		str[DEMINEUR_HARD].nomJoueur,&str[DEMINEUR_HARD].score,
-		str[DEMINEUR_EASY].nomJoueur,&str[DEMINEUR_EASY].score,
-		str[SNAKE_EASY].nomJoueur,&str[SNAKE_EASY].score,
-		str[PACMAN_EASY].nomJoueur,&str[PACMAN_EASY].score,
-		str[ASTEROID_EASY].nomJoueur,&str[ASTEROID_EASY].score,
-		str[TETRIS_EASY].nomJoueur,&str[TETRIS_EASY].score,
-		str[FLAPPY_EASY].nomJoueur,&str[FLAPPY_EASY].score,
-		str[13].nomJoueur,&str[13].score,
-		str[14].nomJoueur,&str[14].score,
-		str[15].nomJoueur,&str[15].score,
-		&str[1].scoreJoueurActuel,
-		&str[2].scoreJoueurActuel,
-		&str[3].scoreJoueurActuel,
-		&str[4].scoreJoueurActuel,
-		&str[5].scoreJoueurActuel,
-		&str[6].scoreJoueurActuel,
-		&str[7].scoreJoueurActuel,
-		&str[8].scoreJoueurActuel,
-		&str[9].scoreJoueurActuel,
-		&str[10].scoreJoueurActuel,
-		&str[11].scoreJoueurActuel,
-		&str[12].scoreJoueurActuel,
-		&str[13].scoreJoueurActuel,
-		&str[14].scoreJoueurActuel,
-		&str[15].scoreJoueurActuel
-	);
+	sscanf(reponse,"%d %d / %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &str[0].score,&temp1,&temp2,
+																																str[FLAPPY_HARD].nomJoueur,&str[FLAPPY_HARD].score,
+																																str[TETRIS_HARD].nomJoueur,&str[TETRIS_HARD].score,
+																																str[ASTEROID_HARD].nomJoueur,&str[ASTEROID_HARD].score,
+																																str[PACMAN_HARD].nomJoueur,&str[PACMAN_HARD].score,
+																																str[SNAKE_HARD].nomJoueur,&str[SNAKE_HARD].score,
+																																str[DEMINEUR_HARD].nomJoueur,&str[DEMINEUR_HARD].score,
+																																str[DEMINEUR_EASY].nomJoueur,&str[DEMINEUR_EASY].score,
+																																str[SNAKE_EASY].nomJoueur,&str[SNAKE_EASY].score,
+																																str[PACMAN_EASY].nomJoueur,&str[PACMAN_EASY].score,
+																																str[ASTEROID_EASY].nomJoueur,&str[ASTEROID_EASY].score,
+																																str[TETRIS_EASY].nomJoueur,&str[TETRIS_EASY].score,
+																																str[FLAPPY_EASY].nomJoueur,&str[FLAPPY_EASY].score,
+																																str[13].nomJoueur,&str[13].score,
+																																str[14].nomJoueur,&str[14].score,
+																																str[15].nomJoueur,&str[15].score,
+																																&str[1].scoreJoueurActuel,
+																																&str[2].scoreJoueurActuel,
+																																&str[3].scoreJoueurActuel,
+																																&str[4].scoreJoueurActuel,
+																																&str[5].scoreJoueurActuel,
+																																&str[6].scoreJoueurActuel,
+																																&str[7].scoreJoueurActuel,
+																																&str[8].scoreJoueurActuel,
+																																&str[9].scoreJoueurActuel,
+																																&str[10].scoreJoueurActuel,
+																																&str[11].scoreJoueurActuel,
+																																&str[12].scoreJoueurActuel,
+																																&str[13].scoreJoueurActuel,
+																																&str[14].scoreJoueurActuel,
+																																&str[15].scoreJoueurActuel
 
-	///////////////////////////////////////////////////////////
-	// REMPLISSAGE DE L'EMPLACEMENT 0 PAR MEILLEURE SCORE ET CLASSEMENT DU JOUEUR
-	sprintf(str[0].nomJeux,"SCORE : %d",str[0].score);
-	sprintf(str[0].nomJoueur,"CLASSEMENT : %d / %d",temp1,temp2);
+																															);
+
+		///////////////////////////////////////////////////////////
+		// REMPLISSAGE DE L'EMPLACEMENT 0 PAR MEILLEURE SCORE ET CLASSEMENT DU JOUEUR
+		sprintf(str[0].nomJeux,"SCORE : %d",str[0].score);
+		sprintf(str[0].nomJoueur,"CLASSEMENT : %d / %d",temp1,temp2);
 
 }
 
@@ -789,14 +1181,14 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 
 void mixerInit()
 {
-	// REGLER VOLUME DES PISTES AUDIO
-	Mix_Volume(0,0);
-	Mix_Volume(1,0);
-	Mix_Volume(2,0);
-	Mix_Volume(3,SON_PAS);
-	Mix_Volume(4,MIX_MAX_VOLUME/5);
-	Mix_Volume(5,MIX_MAX_VOLUME/5);
-	Mix_Volume(6,MIX_MAX_VOLUME/5);
+		// REGLER VOLUME DES PISTES AUDIO
+		Mix_Volume(0,0);
+		Mix_Volume(1,0);
+		Mix_Volume(2,0);
+		Mix_Volume(3,SON_PAS);
+		Mix_Volume(4,MIX_MAX_VOLUME/5);
+		Mix_Volume(5,MIX_MAX_VOLUME/5);
+		Mix_Volume(6,MIX_MAX_VOLUME/5);
 }
 
 
@@ -919,11 +1311,11 @@ float calculAngle(float xa, float ya,      float xb, float yb,       float xc, f
 	return (2*M_PI) - angleRad;
 }
 
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur, int maxVolume)
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur)
 {
 	////////////////////////////////////////////////////
 	// FIX VOLUME MAX PAR DEFAULT
-	float volume = maxVolume;
+	float volume = MIX_MAX_VOLUME;
 	// CALCUL DISTANCE SOURCE SONOR
 	float distance = distancePoint(xa,ya,xb,yb);
 	////////////////////////////////////////////////////
@@ -1020,7 +1412,8 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 		// FIXER LA SCENE A 1
 		*scene_list = glGenLists(1);
 		glNewList(*scene_list, GL_COMPILE);
-		aiDessinerScene(scene, scene->mRootNode);
+		GLuint ivao = 0;
+		aiDessinerImage(scene, scene->mRootNode,&ivao);
 		glEndList();
 	}
 
@@ -1247,34 +1640,29 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 	// CELA PERMET DE COMPENSER LA DIFFERENCE ENTRE POSITION SOURIS ET PLACEMENT GLOBAL DE LA SOURIS
 	// AFIN DEVITER DE PASSER EN PARAMETRE WINDOW
 
-	#ifndef __linux__
-		if (SDL_GetWindowFlags(Window) & SDL_WINDOW_INPUT_FOCUS){
-			///////////////////////////////////////////////////
-			// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
-			camera->angle -= ( (mouseX  + (bounds.w-WinWidth) /2) - ((WinWidth/2) + (bounds.w-WinWidth) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
+	///////////////////////////////////////////////////
+	// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
+	camera->angle -= ( (mouseX  + (bounds.w-WinWidth) /2) - ((WinWidth/2) + (bounds.w-WinWidth) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
 
-			///////////////////////////////////////////////////
-			// VERIFIER QU"ON NE VAS PAS DEPASSER LA LIMITE FIXER
-			if(camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) < MAX_Y_AXE_CIBLE && camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) > -MAX_Y_AXE_CIBLE)
-				// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
-				camera->cible_py -= ( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
+	///////////////////////////////////////////////////
+	// VERIFIER QU"ON NE VAS PAS DEPASSER LA LIMITE FIXER
+	if(camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) < MAX_Y_AXE_CIBLE && camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) > -MAX_Y_AXE_CIBLE)
+		// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
+		camera->cible_py -= ( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
 
-			///////////////////////////////////////////////////
-			// RECENTRAGE DE CAMERA
+	///////////////////////////////////////////////////
+	// RECENTRAGE DE CAMERA
+	SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+		///////////////////////////////////////////////////
+
+	// REDUIT L'ECART D ANGLE A UN ANGLE IDENTIQUE
+	// COMPRIS DANS UN INTERVALE
+	while( camera->angle > 2 * M_PI)
+		camera->angle -= 2*M_PI;
+	while( camera->angle < 0)
+		camera->angle += 2*M_PI;
 
 
-				SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-
-			///////////////////////////////////////////////////
-
-			// REDUIT L'ECART D ANGLE A UN ANGLE IDENTIQUE
-			// COMPRIS DANS UN INTERVALE
-			while( camera->angle > 2 * M_PI)
-				camera->angle -= 2*M_PI;
-			while( camera->angle < 0)
-				camera->angle += 2*M_PI;
-		}
-	#endif
 
 
 	// APUI FLECHE GAUCHE
@@ -1414,9 +1802,10 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 
 
 	// MISE A JOURS DE LA POSITION DE LA CAMERA
-	gluLookAt(camera->px                    ,camera->py                       ,camera->pz,
+	gluLookAt(camera->px                   ,camera->py    ,camera->pz                  ,
 			  camera->px+sin(camera->angle) ,camera->py + camera->cible_py    , camera->pz+cos(camera->angle),
-			  0.0                           ,1.0                              ,0.0);
+			  0.0
+			               ,1.0         ,0.0)                        ;
 }
 
 int detectionEnvironnement(float x,float y)
@@ -1652,6 +2041,7 @@ void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Fo
 
 void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window)
 {
+
 	// FIXER DUREE ANIMATION
 	float DUREE_ANIM = 60.0F;
 
@@ -1682,6 +2072,7 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 	int i = 0;
 	while( i++ < DUREE_ANIM)
 	{
+		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 		////////////////////////////////////////////////////////////
 		// INCREMENTATION
 		camera.px += x;
@@ -1692,9 +2083,9 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 
 
 		// CHARGEMENT DE LA MATRICE
-		glLoadIdentity();
+	  glLoadIdentity();
 		// RESOULTION POUR AFFICHAGE 2D
-		gluOrtho2D(0, WinWidth, 0, WinHeight);
+	  gluOrtho2D(0, WinWidth, 0, WinHeight);
 		// INIT GL PARAMS
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
@@ -1704,9 +2095,10 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 		glLoadIdentity();
 
 		// MISE A JOURS DE LA CAMERA
-		gluLookAt(camera.px                   ,camera.py                      ,camera.pz,
+		gluLookAt(camera.px                   ,camera.py    ,camera.pz                  ,
 				  camera.px+sin(camera.angle) ,camera.py + camera.cible_py    , camera.pz+cos(camera.angle),
-				  0.0						  ,1.0        				      ,0.0);
+				  0.0
+				               ,1.0         ,0.0)                        ;
 
 		// APPEL LIST SCENE
 		glCallList(scene_list);
@@ -1714,6 +2106,7 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 		SDL_GL_SwapWindow(Window);
 
 	}
+
 
 }
 
@@ -1729,235 +2122,201 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 		// EVENEMENT APPUI TOUCHE
 		if (Event.type == SDL_KEYDOWN || Event.type == SDL_MOUSEBUTTONDOWN)
 		{
-			///////////////////////////////////////////////////
-			// TOUCHE ESPACE METTRE FIN AU JEUX
-			if(Event.key.keysym.sym == SDLK_ESCAPE)
-			{
-
-				//////////////////////////////////////////////////////////
-				// AFFICHER LA SOURIS
-				SDL_ShowCursor(SDL_ENABLE);
 				///////////////////////////////////////////////////
-				// INIT AFFICHAGE DU MESSAGE
-				GL_InitialiserParametre(WinWidth,WinHeight,camera);
-
-				SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
-				MessageQuitterRoom();
-				SDL_GL_SwapWindow(Window);
-
-				///////////////////////////////////////////////////
-				// VIDER LA LISTE DES EVENEMENTS
-				do
-      			{
-     				SDL_WaitEvent(&Event);
-      			}while (Event.key.keysym.sym != SDLK_ESCAPE);
-
-
-				///////////////////////////////////////////////////
-				// DECISION PRISE
-				int decision = 1;
-				while(decision)
+				// TOUCHE ESPACE METTRE FIN AU JEUX
+				if(Event.key.keysym.sym == SDLK_ESCAPE)
 				{
-					while (SDL_PollEvent(&Event))
-					{
-						if (Event.type == SDL_KEYDOWN) {
-							switch (Event.key.keysym.sym)
+					//////////////////////////////////////////////////////////
+					// AFFICHER LA SOURIS
+					SDL_ShowCursor(SDL_ENABLE);
+						///////////////////////////////////////////////////
+						// INIT AFFICHAGE DU MESSAGE
+						GL_InitialiserParametre(WinWidth,WinHeight,camera);
+						SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
+						MessageQuitterRoom();
+						SDL_GL_SwapWindow(Window);
+
+						///////////////////////////////////////////////////
+						// VIDER LA LISTE DES EVENEMENTS
+						do
+      			{
+         				SDL_WaitEvent(&Event);
+      			}
+      			while (Event.key.keysym.sym != SDLK_ESCAPE);
+
+
+						///////////////////////////////////////////////////
+						// DECISION PRISE
+						int decision = 1;
+						while(decision)
+						{
+							while (SDL_PollEvent(&Event))
 							{
-								case SDLK_ESCAPE:
-									decision = 0;
-									printf("Commande annuler\n");
-									break;
-
-								case SDLK_q:
-									decision = 0;
-									printf("Vous quittez\n");
-									*Running = 0;
-									break;
-
-								case SDLK_d:
-									decision = 0;
-									printf("Vous vous deconnecter\n");
-									FILE *fp = fopen(DIR_TOKEN_FILE,"w");
-									fclose(fp);
-									*Running = 0;
-									break;
-
-								default:
-									break;
+								if (Event.type == SDL_KEYDOWN) {
+									switch (Event.key.keysym.sym)
+									{
+										case SDLK_ESCAPE:
+											decision = 0;
+											printf("Commande annuler\n");
+											break;
+										case SDLK_q:
+											decision = 0;
+											printf("Vous quittez\n");
+											*Running = 0;
+											break;
+										case SDLK_d:
+											decision = 0;
+											printf("Vous vous deconnecter\n");
+											FILE *fp = fopen(DIR_TOKEN_FILE,"w");
+											fclose(fp);
+											*Running = 0;
+											break;
+										default:break;
+									}
+								}
 							}
 						}
-					}
-				}
-
-				#ifndef __linux__
-					//////////////////////////////////////////////////////////
-					// ON DESACTIVER L"AFFICHAGE DE LA SOURIS
-					if(*Running != 0)
-					{
 						//////////////////////////////////////////////////////////
-						// CACHER LA SOURIS
-						SDL_ShowCursor(SDL_DISABLE);
-						///////////////////////////////////////////////////
-						// RECENTRAGE DE CAMERA
-						if (SDL_GetWindowFlags(Window) & SDL_WINDOW_INPUT_FOCUS)
+						// ON DESACTIVER L"AFFICHAGE DE LA SOURIS
+						if(*Running != 0)
+						{
+							//////////////////////////////////////////////////////////
+							// CACHER LA SOURIS
+							SDL_ShowCursor(SDL_DISABLE);
+							///////////////////////////////////////////////////
+							// RECENTRAGE DE CAMERA
 							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-						///////////////////////////////////////////////////
-					}
-				#endif
-			}
+														///////////////////////////////////////////////////
+						}
+				}
 
-			///////////////////////////////////////////////////
-			// TOUCHE E ENTRER DANS UN JEUX OU CLIQUE GAUCHE
-			if(Event.key.keysym.sym == SDLK_e || Event.type == SDL_MOUSEBUTTONDOWN)
-			{
 				///////////////////////////////////////////////////
-				// VERIFIER SI ON EST PROCHES D UNE MACHINE
-				// RENVOIE LE CODE DE LA MACHINE
-				int machine = detecterMachine(camera.px, camera.pz, camera.angle);
-				if ( machine)
+				// TOUCHE E ENTRER DANS UN JEUX OU CLIQUE GAUCHE
+				if(Event.key.keysym.sym == SDLK_e || Event.type == SDL_MOUSEBUTTONDOWN)
 				{
+						///////////////////////////////////////////////////
+						// VERIFIER SI ON EST PROCHES D UNE MACHINE
+						// RENVOIE LE CODE DE LA MACHINE
+						int machine = detecterMachine(camera.px, camera.pz, camera.angle);
+						if ( machine)
+						{
 
-					//SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
+							//SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
 
-					///////////////////////////////////////////////////
-					// ANIMATION CENTRAGE SUR MACHINE
-					animationLancerMachine(camera,cible[machine-1],*scene_list,Window);
+							///////////////////////////////////////////////////
+							// ANIMATION CENTRAGE SUR MACHINE
+							animationLancerMachine(camera,cible[machine-1],*scene_list,Window);
 
-					///////////////////////////////////////////////////
-					// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
-					SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+							///////////////////////////////////////////////////
+							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
+							SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 
-					#ifndef __linux__
-						//centrer souris
-						if (SDL_GetWindowFlags(Window) & SDL_WINDOW_INPUT_FOCUS)
-							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-					#endif
-					///////////////////////////////////////////////////
-					// CASE POUR CHAQUE MACHINE
-					// AVEC UPDATE DU SCORE A L ISSUS
-					switch (machine) {
-						case 1:
-							printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1));
-							updateMeilleureScore(meilleureScore,token);
-							break;
+							///////////////////////////////////////////////////
+							// CASE POUR CHAQUE MACHINE
+							// AVEC UPDATE DU SCORE A L ISSUS
+							switch (machine) {
+								case 1:
+									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1));
+									updateMeilleureScore(meilleureScore,token);
+								break;
+								case 2:
+									tetris( pRenderer ,meilleureScore[TETRIS_HARD].scoreJoueurActuel, 1920./WinWidth,token,1);
+									updateMeilleureScore(meilleureScore,token);
+									break;
+								case 3:
+									asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].scoreJoueurActuel, 1920./WinWidth,token,1);
+									updateMeilleureScore(meilleureScore,token);
+									break;
+								case 4: SDL_Delay(500);break;
+								case 5:
+									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel, WinWidth/1920.,token,1);
+									updateMeilleureScore(meilleureScore,token);
+								case 6: SDL_Delay(500);break;
+								case 7: SDL_Delay(500);break;
+								case 8:
+									snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel, WinWidth/1920.,token,0);
+									updateMeilleureScore(meilleureScore,token);
+								case 9: SDL_Delay(500);break;
+								case 10:
+									asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
+									updateMeilleureScore(meilleureScore,token);
+									break;
+								case 11: {
+									tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
+									updateMeilleureScore(meilleureScore,token);
+									break;
+								}break;
+								case 12:
+									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0));
+									updateMeilleureScore(meilleureScore,token);
+									break;
+								case 13: SDL_Delay(500);break;
+								case 14: SDL_Delay(500);break;
+								case 15: SDL_Delay(500);break;
+								default:break;
+							}
 
-						case 2:
-							tetris( pRenderer ,meilleureScore[TETRIS_HARD].scoreJoueurActuel, 1920./WinWidth,token,1);
-							updateMeilleureScore(meilleureScore,token);
-							break;
+							///////////////////////////////////////////////////
+							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
+							SDL_DestroyRenderer(pRenderer);
 
-						case 3:
-							asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].scoreJoueurActuel, 1920./WinWidth,token,1);
-							updateMeilleureScore(meilleureScore,token);
-							break;
 
-						case 4:
-							SDL_Delay(500);
-							break;
 
-						case 5:
-							snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel, WinWidth/1920.,token,1);
-							updateMeilleureScore(meilleureScore,token);
-							break;
+							#ifdef __APPLE__
+								// REMISE A ZERO DE LA SCENE
+								*scene_list = 0;
+								// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
+								while(SDL_PollEvent(&Event));
+								// AFFICHAGE DE LA SCENE
+								SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+							#else
+								detruireTexture();
 
-						case 6:
-							SDL_Delay(500);
-							break;
+								SDL_GL_DeleteContext(*Context);
+								///////////////////////////////////////////////////
+								*Context = SDL_GL_CreateContext(Window);
+								///////////////////////////////////////////////////
+								// REMISE A ZERO DE LA SCENE
+								*scene_list = 0;
+								// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
+								while(SDL_PollEvent(&Event));
+								// AFFICHAGE DE LA SCENE
+								SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+								// RECHARGEMENT DES IMAGES
+								aiLoadTexture(DIR_OBJ_LOAD,scene);
+							#endif
 
-						case 7:
-							SDL_Delay(500);
-							break;
 
-						case 8:
-							snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel, WinWidth/1920.,token,0);
-							updateMeilleureScore(meilleureScore,token);
-							break;
 
-						case 9:
-							SDL_Delay(500);
-							break;
+							SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
+							// ANIMATION DE RETOUR SUR MACHINE
+							animationLancerMachine(cible[machine-1],camera,*scene_list,Window);
+							// VIDER POLL EVENEMENT
+							while(SDL_PollEvent(&Event));
 
-						case 10:
-							asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
-							updateMeilleureScore(meilleureScore,token);
-							break;
 
-						case 11:
-							tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
-							updateMeilleureScore(meilleureScore,token);
-							break;
-
-						case 12:
-							printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0));
-							updateMeilleureScore(meilleureScore,token);
-							break;
-
-						case 13:
-							SDL_Delay(500);
-							break;
-
-						case 14:
-							SDL_Delay(500);
-							break;
-
-						case 15:
-							SDL_Delay(500);
-							break;
-
-						default:
-							break;
+						}
 					}
 
-					#ifndef __linux__
-						//centrer souris
-						if (SDL_GetWindowFlags(Window) & SDL_WINDOW_INPUT_FOCUS)
-							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-					#endif
-					///////////////////////////////////////////////////
-					// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
-					SDL_DestroyRenderer(pRenderer);
-					SDL_GL_DeleteContext(*Context);
-					///////////////////////////////////////////////////
-					*Context = SDL_GL_CreateContext(Window);
-					///////////////////////////////////////////////////
-					// REMISE A ZERO DE LA SCENE
-					*scene_list = 0;
-					// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
-					while(SDL_PollEvent(&Event));
-					// AFFICHAGE DE LA SCENE
-					SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
-					// ANIMATION DE RETOUR SUR MACHINE
-					animationLancerMachine(cible[machine-1],camera,*scene_list,Window);
-					// VIDER POLL EVENEMENT
-					while(SDL_PollEvent(&Event));
 
-					#ifndef __linux__
-                    ///////////////////////////////////////////////////
-                    // RECENTRAGE DE CAMERA
-                    if (SDL_GetWindowFlags(Window) & SDL_WINDOW_INPUT_FOCUS)
-                        SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-                    ///////////////////////////////////////////////////
-					#endif
-				}
-			}
 
-			///////////////////////////////////////////////////
-			// TOUCHE C CE METTRE A CROUPI
-			if(Event.key.keysym.sym == SDLK_c)
-			{
 				///////////////////////////////////////////////////
-				// MET LE JOUEUR A CROUPI ET REDUIT CA VITESSE DE DEPLACEMENT
-				if(VITESSE_DEPLACEMENT == VITESSE_DEPLACEMENT_DEBOUT )
+				// TOUCHE C CE METTRE A CROUPI
+				if(Event.key.keysym.sym == SDLK_c)
 				{
-					HAUTEUR_CAMERA = HAUTEUR_CAMERA_ACCROUPI;
-					VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_ACCROUPI;
+					///////////////////////////////////////////////////
+					// MET LE JOUEUR A CROUPI ET REDUIT CA VITESSE DE DEPLACEMENT
+					if(VITESSE_DEPLACEMENT == VITESSE_DEPLACEMENT_DEBOUT )
+					{
+						HAUTEUR_CAMERA = HAUTEUR_CAMERA_ACCROUPI;
+						VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_ACCROUPI;
+					}
+					else
+					{
+						HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
+						VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
+					}
 				}
-				else
-				{
-					HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
-					VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
-				}
-			}
 		}
 
 		///////////////////////////////////////////////////
@@ -1966,6 +2325,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 			*Running = 0;
 
 	}
+
+
+
 }
 
 
@@ -1978,14 +2340,14 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 	////////////////////////////////////////////////
 	// DESACTIVER LES LUMIERE
 	glDisable(GL_LIGHTING);
-	glLoadIdentity();
+  glLoadIdentity();
 
 	////////////////////////////////////////////////
 	// PRECISION SUR LA FENETRE
-	gluOrtho2D(0, WinWidth, 0, WinHeight);
+  gluOrtho2D(0, WinWidth, 0, WinHeight);
 	// MOD PROJECTION
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
 
 	////////////////////////////////////////////////
 	// DESACTIVATION DU TEST D ARRIERE PLAN
@@ -1994,21 +2356,21 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 
 	////////////////////////////////////////////////
 	// BLEND
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	// INIT LOAD TEXTURE
-	GLuint texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
+  GLuint texture;
+  glGenTextures(1, &texture);
+  glBindTexture(GL_TEXTURE_2D, texture);
 
 	////////////////////////////////////////////////
 	// CREATION TEXTURE AVEC LE TEXT EN SDL
-	SDL_Surface * sFont = TTF_RenderText_Blended(font, message, color);
+  SDL_Surface * sFont = TTF_RenderText_Blended(font, message, color);
 
 	////////////////////////////////////////////////
 	// PARAMETRE 2D
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	// CONVERTION TEXTURE IMAGE
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sFont->w, sFont->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sFont->w, sFont->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
 
 	////////////////////////////////////////////////
 	// SI PARAMS X A -1 ON CENTRE LE TEXT SUR X
@@ -2021,20 +2383,20 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 
 	////////////////////////////////////////////////
 	// DEBUT DU RENDU
-	glBegin(GL_QUADS);
-	{
-		glTexCoord2f(0,0); glVertex2f(x, y);
-		glTexCoord2f(1,0); glVertex2f(x + sFont->w, y);
-		glTexCoord2f(1,-1); glVertex2f(x + sFont->w, y + sFont->h);
-		glTexCoord2f(0,-1); glVertex2f(x, y + sFont->h);
-	}
-	glEnd();
+  glBegin(GL_QUADS);
+  {
+    glTexCoord2f(0,0); glVertex2f(x, y);
+    glTexCoord2f(1,0); glVertex2f(x + sFont->w, y);
+    glTexCoord2f(1,-1); glVertex2f(x + sFont->w, y + sFont->h);
+    glTexCoord2f(0,-1); glVertex2f(x, y + sFont->h);
+  }
+  glEnd();
 	////////////////////////////////////////////////
 
 	////////////////////////////////////////////////
 	// DESTRUCTUIN DES ELLEMENTS CREE
-	glDeleteTextures(1, &texture);
-	SDL_FreeSurface(sFont);
+  glDeleteTextures(1, &texture);
+  SDL_FreeSurface(sFont);
 
 	////////////////////////////////////////////////
 	// RECUPERATION DE LA MATRICE AVANT MODIF
@@ -2125,69 +2487,3 @@ void MessageQuitterRoom()
 	glPopMatrix();
 	glLoadIdentity();
 }
-
-/*
-
-	void assimpInit(const char *filename) {
-		int i;
-		GLuint ivao = 0;
-
-		// chargement du fichier //
-		if ( chargementModel(filename) != 0){
-			fprintf(stderr, "Erreur lors du chargement du fichier %s\n", filename);
-		}
-
-		if(getenv("MODEL_IS_BROKEN"))
-			glFrontFace(GL_CW);
-
-		_textures = malloc((_nbTextures = scene->mNumMaterials) * sizeof *_textures);
-		assert(_textures);
-
-		glGenTextures(_nbTextures, _textures);
-
-			for (i = 0; i < scene->mNumMaterials ; i++) {
-				const struct aiMaterial* pMaterial = scene->mMaterials[i];
-				if (aiGetMaterialTextureCount(pMaterial, aiTextureType_DIFFUSE) > 0) {
-					struct aiString tfname;
-					char * dir = pathOf(filename), buf[BUFSIZ];
-					if (aiGetMaterialTexture(pMaterial, aiTextureType_DIFFUSE, 0, &tfname, NULL, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
-						SDL_Surface * t;
-						snprintf(buf, sizeof buf, "%s/%s", dir, tfname.data);
-						printf("Chargement de %s\n",tfname.data);
-						if(!(t = IMG_Load(buf))) {
-			 				fprintf(stderr, "Probleme de chargement de textures %s\n", buf);
-			  				fprintf(stderr, "\tNouvel essai avec %s\n", tfname.data);
-			  				if(!(t = IMG_Load(tfname.data)))
-							{
-								fprintf(stderr, "Probleme de chargement de textures %s\n", tfname.data); continue;
-							}
-						}
-
-						glBindTexture(GL_TEXTURE_2D, _textures[i]);
-						glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-						glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-						glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-						glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-						#ifdef __APPLE__
-							glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_BGR : GL_BGRA, GL_UNSIGNED_BYTE, t->pixels);
-						#else
-							glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, t->pixels);
-						#endif
-							SDL_FreeSurface(t);
-					}
-				}
-			}
-
-			_nbMeshes= sceneNbMeshes(scene, scene->mRootNode, 0);
-			_vaos = malloc(_nbMeshes * sizeof *_vaos);
-			assert(_vaos);
-		//	glGenVertexArrays(_nbMeshes, _vaos);
-			_buffers = malloc(2 * _nbMeshes * sizeof *_buffers);
-			assert(_buffers);
-			glGenBuffers(2 * _nbMeshes, _buffers);
-			_counts = calloc(_nbMeshes, sizeof *_counts);
-			assert(_counts);
-		//	sceneMkVAOs(scene, scene->mRootNode, &ivao);
-			rendu_Model(scene, scene->mRootNode);
-	}
-*/
