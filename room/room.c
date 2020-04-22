@@ -488,61 +488,70 @@ static void sceneMkVAOs(const struct aiScene *sc, const struct aiNode* nd, GLuin
     comp += mesh->mTextureCoords[0] ? 2 : 0;
     if(!comp) continue;
 
-    glBindVertexArray(_vaos[*ivao]);
-    glBindBuffer(GL_ARRAY_BUFFER, _buffers[2 * (*ivao)]);
+  //  glBindVertexArray(_vaos[*ivao]);
+  //  glBindBuffer(GL_ARRAY_BUFFER, _buffers[2 * (*ivao)]);
 
     vertices = malloc(comp * mesh->mNumVertices * sizeof *vertices);
     assert(vertices);
     i = 0;
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(2);
+  //  glDisableVertexAttribArray(0);
+  //  glDisableVertexAttribArray(1);
+  //  glDisableVertexAttribArray(2);
+
     if(mesh->mVertices) {
-      glEnableVertexAttribArray(0);
-      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
+    //  glEnableVertexAttribArray(0);
+    //  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
       for(j = 0; j < mesh->mNumVertices; ++j) {
-	vertices[i++] = mesh->mVertices[j].x;
-	vertices[i++] = mesh->mVertices[j].y;
-	vertices[i++] = mesh->mVertices[j].z;
+				vertices[i++] = mesh->mVertices[j].x;
+				vertices[i++] = mesh->mVertices[j].y;
+				vertices[i++] = mesh->mVertices[j].z;
       }
+
     }
     if(mesh->mNormals) {
 
-      glEnableVertexAttribArray(1);
-      glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
+    //  glEnableVertexAttribArray(1);
+    //  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
       for(j = 0; j < mesh->mNumVertices; ++j) {
-	vertices[i++] = mesh->mNormals[j].x;
-	vertices[i++] = mesh->mNormals[j].y;
-	vertices[i++] = mesh->mNormals[j].z;
+				vertices[i++] = mesh->mNormals[j].x;
+				vertices[i++] = mesh->mNormals[j].y;
+				vertices[i++] = mesh->mNormals[j].z;
       }
+
     }
+
     if(mesh->mTextureCoords[0]) {
 
-      glEnableVertexAttribArray(2);
-      glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
+    //  glEnableVertexAttribArray(2);
+    //  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
       for(j = 0; j < mesh->mNumVertices; ++j) {
-	vertices[i++] = mesh->mTextureCoords[0][j].x;
-	vertices[i++] = mesh->mTextureCoords[0][j].y;
+				vertices[i++] = mesh->mTextureCoords[0][j].x;
+				vertices[i++] = mesh->mTextureCoords[0][j].y;
       }
+
     }
-    glBufferData(GL_ARRAY_BUFFER, (i * sizeof *vertices), vertices, GL_STATIC_DRAW);
+
+
+  //  glBufferData(GL_ARRAY_BUFFER, (i * sizeof *vertices), vertices, GL_STATIC_DRAW);
+
     free(vertices);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _buffers[2 * (*ivao) + 1]);
+//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _buffers[2 * (*ivao) + 1]);
     if(mesh->mFaces) {
       indices = malloc(3 * mesh->mNumFaces * sizeof *indices);
       assert(indices);
       for(i = 0, j = 0; j < mesh->mNumFaces; ++j) {
-	assert(mesh->mFaces[j].mNumIndices < 4);
-	if(mesh->mFaces[j].mNumIndices != 3) continue;
-	indices[i++] = mesh->mFaces[j].mIndices[0];
-	indices[i++] = mesh->mFaces[j].mIndices[1];
-	indices[i++] = mesh->mFaces[j].mIndices[2];
+				assert(mesh->mFaces[j].mNumIndices < 4);
+				if(mesh->mFaces[j].mNumIndices != 3) continue;
+				indices[i++] = mesh->mFaces[j].mIndices[0];
+				indices[i++] = mesh->mFaces[j].mIndices[1];
+				indices[i++] = mesh->mFaces[j].mIndices[2];
       }
-      glBufferData(GL_ELEMENT_ARRAY_BUFFER, i * sizeof *indices, indices, GL_STATIC_DRAW);
+
+    //  glBufferData(GL_ELEMENT_ARRAY_BUFFER, i * sizeof *indices, indices, GL_STATIC_DRAW);
       _counts[*ivao] = i;
       free(indices);
     }
-    glBindVertexArray(0);
+  //  glBindVertexArray(0);
     (*ivao)++;
   }
   for (n = 0; n < nd->mNumChildren; ++n) {
@@ -617,10 +626,11 @@ void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene)
 	_nbMeshes = sceneNbMeshes(_scene, _scene->mRootNode, 0);
 	_vaos = malloc(_nbMeshes * sizeof *_vaos);
 	assert(_vaos);
-	glGenVertexArrays(_nbMeshes, _vaos);
+//	glGenVertexArrays(_nbMeshes, _vaos);
 	_buffers =  malloc(2 * _nbMeshes * sizeof *_buffers);
 	assert(_buffers);
-	glGenBuffers(2 * _nbMeshes,_buffers);
+
+//	glGenBuffers(2 * _nbMeshes,_buffers);
 	_counts = calloc(_nbMeshes, sizeof *_counts);
 	assert(_counts);
 	sceneMkVAOs(_scene, _scene->mRootNode, &ivao);
@@ -646,20 +656,18 @@ void aiDessinerImage(const struct aiScene *sc, const struct aiNode* nd, GLuint *
 	/* draw all meshes assigned to this node */
 	for (; n < nd->mNumMeshes; ++n) {
 		const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
-
 		// BLIND DE LA TEXTURE SI BESOIN
 		if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0) {
 			glBindTexture(GL_TEXTURE_2D, _textures[mesh->mMaterialIndex]);
 		}
 		if(_counts[*ivao]) {
 
-			glBindVertexArray(_vaos[*ivao]);
+		//	glBindVertexArray(_vaos[*ivao]);
 			aiAppliquerCouleur(sc->mMaterials[mesh->mMaterialIndex]);
 
 			for (t = 0; t < mesh->mNumFaces; ++t) {
 				const C_STRUCT aiFace* face = &mesh->mFaces[t];
 				GLenum face_mode;
-
 
 					switch(face->mNumIndices) {
 						case 1: face_mode = GL_POINTS; break;
@@ -667,6 +675,7 @@ void aiDessinerImage(const struct aiScene *sc, const struct aiNode* nd, GLuint *
 						case 3: face_mode = GL_TRIANGLES; break;
 						default: face_mode = GL_POLYGON; break;
 					}
+
 
 					if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0) {
 						glBindTexture(GL_TEXTURE_2D, _textures[mesh->mMaterialIndex]);
@@ -702,6 +711,7 @@ void aiDessinerImage(const struct aiScene *sc, const struct aiNode* nd, GLuint *
 
 		(*ivao)++;
 	}
+
 
 	for (n = 0; n < nd->mNumChildren; ++n) {
 		aiDessinerImage(sc, nd->mChildren[n],ivao);
@@ -881,24 +891,8 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 
 
-	//////////////////////////////////////////////////////////
-	// ACTIVATION DE L"ANTI aliasing
-	if (SDL_GL_SetAttribute( SDL_GL_MULTISAMPLEBUFFERS, 1 ) == -1)
-		printf("impossible d'initialiser SDL_GL_MULTISAMPLEBUFFERS à 1\n" );
-	else
-	{
-		if (SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 6 ) == -1)
-				printf("impossible d'initialiser SDL_GL_MULTISAMPLESAMPLES sur 6 buffers\n");
-		else
-			printf("Anti aliasing demarre\n");
-
-	}
 
 
-	//////////////////////////////////////////////////////////
-	//
-	/*WinWidth = 2304;
-	WinHeight = 1296;*/
 	Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL );
 	//////////////////////////////////////////////////////////
 	// VERIFIER EXISTANCE DE LA FENETRE ET CREATION CONTEXT
@@ -939,10 +933,14 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
 	aiLoadTexture(DIR_OBJ_LOAD,scene);
+
+
+
 	while (Running)
 	{
 		glLoadIdentity();
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
+
 
 		int delayLancementFrame = SDL_GetTicks();
 
@@ -1408,6 +1406,7 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 
 	////////////////////////////////////////////////////
 	// SI LE RENDU DE LA SCENE N'EST PAS FAIT LE FAIRE
+
 	if(*scene_list == 0) {
 		// FIXER LA SCENE A 1
 		*scene_list = glGenLists(1);
