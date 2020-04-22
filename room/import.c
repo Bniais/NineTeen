@@ -92,59 +92,6 @@ int aiImportModel (const char* path,const C_STRUCT aiScene **scene)
 }
 
 
-void aiDessinerScene (const C_STRUCT aiScene *sc, const C_STRUCT aiNode* nd)
-{
-	unsigned int i;
-	unsigned int n = 0, t;
-	C_STRUCT aiMatrix4x4 m = nd->mTransformation;
-
-	/* update transform */
-	aiTransposeMatrix4(&m);
-	glPushMatrix();
-	glMultMatrixf((float*)&m);
-
-	/* draw all meshes assigned to this node */
-	for (; n < nd->mNumMeshes; ++n) {
-		const C_STRUCT aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
-
-		aiAppliquerCouleur(sc->mMaterials[mesh->mMaterialIndex]); // COLOR TEXTURE
-
-			for (t = 0; t < mesh->mNumFaces; ++t) {
-				const C_STRUCT aiFace* face = &mesh->mFaces[t];
-				GLenum face_mode;
-
-				switch(face->mNumIndices) {
-					case 1: face_mode = GL_POINTS; break;
-					case 2: face_mode = GL_LINES; break;
-					case 3: face_mode = GL_TRIANGLES; break;
-
-					default: face_mode = GL_POLYGON; break;
-			}
-
-			glBegin(face_mode);
-
-			for(i = 0; i < face->mNumIndices; i++) {
-				int index = face->mIndices[i];
-				if(mesh->mColors[0] != NULL)
-					glColor4fv((GLfloat*)&mesh->mColors[0][index]);
-				if(mesh->mNormals != NULL)
-					glNormal3fv(&mesh->mNormals[index].x);
-				glVertex3fv(&mesh->mVertices[index].x);
-			}
-
-			glEnd();
-		}
-
-	}
-
-
-	for (n = 0; n < nd->mNumChildren; ++n) {
-		aiDessinerScene(sc, nd->mChildren[n]);
-	}
-
-	glPopMatrix();
-}
-
 
 void aiAppliquerCouleur(const C_STRUCT aiMaterial *mtl)
 {
@@ -156,6 +103,7 @@ void aiAppliquerCouleur(const C_STRUCT aiMaterial *mtl)
 	C_STRUCT aiColor4D specular;
 	C_STRUCT aiColor4D ambient;
 	C_STRUCT aiColor4D emission;
+  C_STRUCT aiColor4D transparence;
 	ai_real shininess, strength;
 	int two_sided;
 	int wireframe;
@@ -180,6 +128,11 @@ void aiAppliquerCouleur(const C_STRUCT aiMaterial *mtl)
 	if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_EMISSIVE, &emission))
 		color4_to_float4(&emission, c);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, c);
+
+  set_float4(c, 0.0f, 0.0f, 0.0f, 1.0f);
+	if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_TRANSPARENT, &transparence))
+		color4_to_float4(&transparence, c);
+
 
 
 	max = 1;
