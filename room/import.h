@@ -19,3 +19,5 @@
 int aiImportModel (const char* path,const C_STRUCT aiScene **scene);
 
 void aiDessinerScene (const C_STRUCT aiScene *sc, const C_STRUCT aiNode* nd);
+
+void aiAppliquerCouleur(const C_STRUCT aiMaterial *mtl);
