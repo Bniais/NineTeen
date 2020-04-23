@@ -893,7 +893,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 
 
-	Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL );
+	Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP  );
 	//////////////////////////////////////////////////////////
 	// VERIFIER EXISTANCE DE LA FENETRE ET CREATION CONTEXT
 	if( !Window)
@@ -933,7 +933,6 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
 	aiLoadTexture(DIR_OBJ_LOAD,scene);
-
 
 
 	while (Running)
@@ -1194,37 +1193,37 @@ void mixerInit()
 
 int windowMaxSize()
 {
-	/////////////////////////////////////////////////////
-	// CREATION VARIABLE
-	SDL_Rect dm;
+    /////////////////////////////////////////////////////
+    // CREATION VARIABLE
+    SDL_Rect dm;
 
-	/////////////////////////////////////////////////////
-	// RECUPRATION DE LA TAILLE D'ECRAN SI CA ECHOU ON RECUPERER L'ERREUR
-	if (SDL_GetDisplayUsableBounds(0,&dm) != 0)
-	{
-		SDL_Log("SDL_GetDisplayUsableBounds failed: %s", SDL_GetError());
-		return EXIT_FAILURE;
-	}
+    /////////////////////////////////////////////////////
+    // RECUPRATION DE LA TAILLE D'ECRAN SI CA ECHOU ON RECUPERER L'ERREUR
+    if (SDL_GetDisplayBounds(0,&dm) != 0)
+    {
+        SDL_Log("SDL_GetDisplayUsableBounds failed: %s", SDL_GetError());
+        return EXIT_FAILURE;
+    }
 
-	dm.w *= RATIO_WINDOW_SCREEN;
-	dm.h *= RATIO_WINDOW_SCREEN;
+    //dm.w *= RATIO_WINDOW_SCREEN;
+    //dm.h *= RATIO_WINDOW_SCREEN;
 
-	/////////////////////////////////////////////////////
-	// ON APPLIQUE A NOTRE VARIABLE GLOBALE
-	if((float)dm.w/dm.h > 16/9.){
-		dm.w = 16 * dm.h / 9.;
-	}
-	else if((float)dm.w/dm.h < 16/9.){
-		dm.h = 9 * dm.w / 16.;
-	}
+    /////////////////////////////////////////////////////
+    // ON APPLIQUE A NOTRE VARIABLE GLOBALE
+    if((float)dm.w/dm.h > 16/9.){
+        dm.w = 16 * dm.h / 9.;
+    }
+    else if((float)dm.w/dm.h < 16/9.){
+        dm.h = 9 * dm.w / 16.;
+    }
 
-	WinWidth = dm.w;
-	WinHeight = dm.h;
+    WinWidth = dm.w;
+    WinHeight = dm.h;
 
 
-	printf("SIZE : %d %d\n", WinWidth, WinHeight);
+    printf("SIZE : %d %d\n", WinWidth, WinHeight);
 
-	return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
 
 
@@ -2257,11 +2256,13 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							///////////////////////////////////////////////////
 							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
+
 							SDL_DestroyRenderer(pRenderer);
 
 
 
 							#ifdef __linux__
+
 								detruireTexture();
 
 								SDL_GL_DeleteContext(*Context);
@@ -2276,13 +2277,16 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 								// RECHARGEMENT DES IMAGES
 								aiLoadTexture(DIR_OBJ_LOAD,scene);
+
 							#else
+
 								// REMISE A ZERO DE LA SCENE
 								*scene_list = 0;
 								// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
 								while(SDL_PollEvent(&Event));
 								// AFFICHAGE DE LA SCENE
 								SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+
 							#endif
 
 
