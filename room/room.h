@@ -6,6 +6,7 @@ typedef struct MeilleureScore_s
 	char nomJoueur[30];
 	int score;
 	int scoreJoueurActuel;
+	float multiplicator;
 }MeilleureScore_t;
 
 int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window,const C_STRUCT aiScene* scene);

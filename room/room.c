@@ -1133,7 +1133,7 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 	///////////////////////////////////////////////////////////
 	// PARSING DANS LA CHAINE DE DONNER RECU
 	int temp1,temp2;
-	sscanf(reponse,"%d %d / %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &str[0].score,&temp1,&temp2,
+	sscanf(reponse,"%d %d / %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f", &str[0].score,&temp1,&temp2,
 																																str[FLAPPY_HARD].nomJoueur,&str[FLAPPY_HARD].score,
 																																str[TETRIS_HARD].nomJoueur,&str[TETRIS_HARD].score,
 																																str[ASTEROID_HARD].nomJoueur,&str[ASTEROID_HARD].score,
@@ -1163,9 +1163,24 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 																																&str[12].scoreJoueurActuel,
 																																&str[13].scoreJoueurActuel,
 																																&str[14].scoreJoueurActuel,
-																																&str[15].scoreJoueurActuel
-
+																																&str[15].scoreJoueurActuel,
+																																&str[1].multiplicator,
+																																&str[2].multiplicator,
+																																&str[3].multiplicator,
+																																&str[4].multiplicator,
+																																&str[5].multiplicator,
+																																&str[6].multiplicator,
+																																&str[7].multiplicator,
+																																&str[8].multiplicator,
+																																&str[9].multiplicator,
+																																&str[10].multiplicator,
+																																&str[11].multiplicator,
+																																&str[12].multiplicator,
+																																&str[13].multiplicator,
+																																&str[14].multiplicator,
+																																&str[15].multiplicator
 																															);
+
 
 		///////////////////////////////////////////////////////////
 		// REMPLISSAGE DE L'EMPLACEMENT 0 PAR MEILLEURE SCORE ET CLASSEMENT DU JOUEUR
@@ -2015,6 +2030,7 @@ void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Fo
 	{
 		////////////////////////////////////////////////
 		SDL_Color white = {255,255,255};
+		SDL_Color yellow = {255,255,0};
 		// BUFFER POUR LE MESSAGE DES RECORDS
 		char message[60];
 		// CONCATENATION DES SCORES ET NOM DES JOUEUR DANS UNE MEME CHAINE
@@ -2027,6 +2043,11 @@ void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Fo
 		sprintf(message, "RECORD  PERSO  :   %d",str[detection].scoreJoueurActuel);
 		// AFFICHER RECORD PERSONNEL
 		AfficherText(font,message,white,-1,WinHeight*0.9);
+
+		// CONCATENATION MULTIPLICATEURS
+		sprintf(message, "MULTIPLICATEUR  :   x%.2f   (  %d  )",str[detection].multiplicator, (int)(str[detection].scoreJoueurActuel*str[detection].multiplicator) );
+		// AFFICHER MULTIPLICATEURS
+		AfficherText(font,message,yellow,-1,WinHeight*0.85);
 
 		////////////////////////////////////////////////
 		// AFFICHAGE CLIGNOTANT
@@ -2256,7 +2277,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							///////////////////////////////////////////////////
 							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
-
 							SDL_DestroyRenderer(pRenderer);
 
 
