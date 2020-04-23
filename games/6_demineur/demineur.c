@@ -52,31 +52,26 @@ int coor_valide(int x, int y){
 	else return 0;
 }
 
-/*void drapeau(int grille, int x, int y){
-	if(grille[x][y]==MASQUE)
-		grille[x][y]=DRAPEAU;
-}*/
-
 int nb_bombes_autour(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
 
 	int nb_bombes_autour=0;
 	if(grille[x][y]==BOMBE)
-		return 0;
-	if((coor_valide(x-1, y-1))&&(grille[x-1][y-1]==BOMBE))
+		return -1;
+	if((coor_valide(x-1, y-1))&&((grille[x-1][y-1]==BOMBE)||(grille[x-1][y-1]==DRAPEAU_AVEC_BOMBES)))
 		nb_bombes_autour++;
-	if((coor_valide(x-1, y))&&(grille[x-1][y]==BOMBE))
+	if((coor_valide(x-1, y))&&((grille[x-1][y]==BOMBE)||(grille[x-1][y]==DRAPEAU_AVEC_BOMBES)))
 		nb_bombes_autour++;
-	if((coor_valide(x-1, y+1))&&(grille[x-1][y+1]==BOMBE))
+	if((coor_valide(x-1, y+1))&&((grille[x-1][y+1]==BOMBE)||(grille[x-1][y+1]==DRAPEAU_AVEC_BOMBES)))
 		nb_bombes_autour++;
-	if((coor_valide(x, y-1))&&(grille[x][y-1]==BOMBE))
+	if((coor_valide(x, y-1))&&((grille[x][y-1]==BOMBE)||(grille[x][y-1]==DRAPEAU_AVEC_BOMBES)))
 		nb_bombes_autour++;
-	if((coor_valide(x, y+1))&&(grille[x][y+1]==BOMBE))
+	if((coor_valide(x, y+1))&&((grille[x][y+1]==BOMBE)||(grille[x][y+1]==DRAPEAU_AVEC_BOMBES)))
 		nb_bombes_autour++;
-	if((coor_valide(x+1, y-1))&&(grille[x+1][y-1]==BOMBE))
+	if((coor_valide(x+1, y-1))&&((grille[x+1][y-1]==BOMBE)||(grille[x+1][y-1]==DRAPEAU_AVEC_BOMBES)))
 		nb_bombes_autour++;
-	if((coor_valide(x+1, y))&&(grille[x+1][y]==BOMBE))
+	if((coor_valide(x+1, y))&&((grille[x+1][y]==BOMBE)||(grille[x+1][y]==DRAPEAU_AVEC_BOMBES)))
 		nb_bombes_autour++;
-	if((coor_valide(x+1, y+1))&&(grille[x+1][y+1]==BOMBE))
+	if((coor_valide(x+1, y+1))&&((grille[x+1][y+1]==BOMBE)||(grille[x+1][y+1]==DRAPEAU_AVEC_BOMBES)))
 		nb_bombes_autour++;
 
 	return nb_bombes_autour;
@@ -106,7 +101,8 @@ int danger_avec_libre_autour(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLON
 
 void etat(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
 	if(coor_valide(x,y)){
-		if(grille[x][y]==MASQUE){
+		if((grille[x][y]==MASQUE)||(grille[x][y]==DRAPEAU_SANS_BOMBES))
+		{
 			if(nb_bombes_autour(grille, x, y)==0){
 				grille[x][y]=LIBRE;
 				etat(grille, x-1, y-1);
@@ -141,10 +137,18 @@ void etat(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
 		}
 	}
 }
+
 void init_grille(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
 
 	int i, j;
 	int bombes=NOMBRE_BOMBES_GRILLE;
+	printf("nb bombes : %d", bombes);
+
+	for(i=0;i<TAILLE_GRILLE_LIGNE;i++){
+		for(j=0;j<TAILLE_GRILLE_COLONNE;j++){
+				grille[i][j]=-1;
+		}
+	}
 
 	grille[x][y]=MASQUE;
 
@@ -165,12 +169,12 @@ void init_grille(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, 
 	if(coor_valide(x+1, y+1))
 		grille[x+1][y+1]=MASQUE;
 
-	while(bombes!=0){
+	while(bombes>0){
 		i=rand()%TAILLE_GRILLE_LIGNE;
 		j=rand()%TAILLE_GRILLE_COLONNE;
 		if((grille[i][j]!=BOMBE)&&(grille[i][j]!=MASQUE)){
 			grille[i][j]=BOMBE;
-			bombes--;
+			--bombes;
 		}
 	}
 
@@ -182,6 +186,33 @@ void init_grille(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, 
 		}
 	}
 	etat(grille, x, y);
+}
+
+int fin_jeu(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE]){
+	int i, j;
+	for(i=0; i<TAILLE_GRILLE_LIGNE; i++){
+		for(j=0; j<TAILLE_GRILLE_COLONNE; j++){
+			if((grille[i][j]==MASQUE)||(grille[i][j]==DRAPEAU_SANS_BOMBES))
+				return 0;
+		}
+	}
+	return 1;
+}
+
+void afficher_texte(SDL_Renderer * renderer, char *message, TTF_Font * police, int x, int y)
+{
+	SDL_Color couleur={255, 255, 255, 255};
+
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(police, message, couleur);
+	SDL_Texture* textureMessage = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+	SDL_Rect dest={x,y,0,0};
+	SDL_QueryTexture(textureMessage,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+
+  SDL_RenderCopy(renderer, textureMessage, NULL, &dest);
+
+  SDL_FreeSurface(surfaceMessage);
+  SDL_DestroyTexture(textureMessage);
+
 }
 
 void afficher_grille(SDL_Renderer *renderer, int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int premier_click, int click_bombe, SDL_Texture * texture){
@@ -250,7 +281,7 @@ void afficher_grille(SDL_Renderer *renderer, int grille[TAILLE_GRILLE_LIGNE][TAI
 						src.x=54*3; src.y=54*3;
 						SDL_RenderCopy(renderer, texture, &src, &case_dem);
 					}
-					else if(nb_bombes_autour(grille, i, j)==1){
+					else if(nb_bombes_autour(grille, i, j)==8){
 						src.x=54; src.y=54*3;
 						SDL_RenderCopy(renderer, texture, &src, &case_dem);
 					}
@@ -286,13 +317,23 @@ void afficher_grille(SDL_Renderer *renderer, int grille[TAILLE_GRILLE_LIGNE][TAI
 						src.x=54*3; src.y=54*3;
 						SDL_RenderCopy(renderer, texture, &src, &case_dem);
 					}
-					else if(nb_bombes_autour(grille, i, j)==1){
+					else if(nb_bombes_autour(grille, i, j)==8){
 						src.x=54; src.y=54*3;
 						SDL_RenderCopy(renderer, texture, &src, &case_dem);
 					}
 
 				}
-				else if(grille[i][j]==DRAPEAU){
+				else if((grille[i][j]==DRAPEAU_AVEC_BOMBES)&&(click_bombe==0))
+				{
+					src.x=0; src.y=54*2;
+					SDL_RenderCopy(renderer, texture, &src, &case_dem);
+				}
+				else if((grille[i][j]==DRAPEAU_AVEC_BOMBES)&&(click_bombe==1))
+				{
+					src.x=54*5; src.y=54;
+					SDL_RenderCopy(renderer, texture, &src, &case_dem);
+				}
+				else if(grille[i][j]==DRAPEAU_SANS_BOMBES){
 					src.x=0; src.y=54*2;
 					SDL_RenderCopy(renderer, texture, &src, &case_dem);
 				}
@@ -316,22 +357,27 @@ int main(){
 	////////////
 	/// Vars ///`
 	////////////
+	char message[30];
 	float ratioWindowSize = 1;
 	SDL_Rect displayBounds;
 	SDL_GetDisplayBounds(0, &displayBounds);
-		SDL_Point maxWindowSize = maximizeWindow(displayBounds, &ratioWindowSize);
+	SDL_Point maxWindowSize = maximizeWindow(displayBounds, &ratioWindowSize);
 	int clique_gauche = SDL_FALSE;
 	int relache_gauche = SDL_FALSE;
 	int clique_droit = SDL_FALSE;
 	int relache_droit = SDL_FALSE;
 	int click_bombe = 0;
 	int premier_click=0;
-
+	TTF_Font * police=NULL;
+	int temps_final=0;
+	police = TTF_OpenFont("FLATS.ttf", 40);
 	float ratio_fen=(float)maxWindowSize.x/(PLAYGROUND_SIZE_W + 2 * HUD_W);
 	printf("ratio_fen -->%d %d %d %f\n",maxWindowSize.x, HUD_W, (PLAYGROUND_SIZE_W + 2 * HUD_W), ratio_fen);
 	//Keyboard
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
-
+	int temps_jeu=0;
+	int tempo;
+	int minutes, secondes;
 	//Time
 	unsigned int lastTime = 0, currentTime;
 
@@ -462,8 +508,9 @@ int main(){
 		etat(grille, case_coor.y, case_coor.x);
 	}
 
-
-	afficher_grille(renderer,grille, premier_click, click_bombe, texture);
+		afficher_texte(renderer, "Temps jeu", police, 1350, 50);
+		afficher_texte(renderer, "0 sec", police, 1400, 100);
+		afficher_grille(renderer,grille, premier_click, click_bombe, texture);
 
 		//hud
 		SDL_RenderSetScale(renderer, 1, 1);
@@ -495,9 +542,13 @@ int main(){
 		// On efface
 		SDL_SetRenderDrawColor(renderer, 0, 40, 200, 255);
 		SDL_RenderClear(renderer);
+
 	}
 
-	while( 1 ){
+	tempo=SDL_GetTicks();
+
+	while((!fin_jeu(grille))&&(click_bombe==0))
+	{
 
 		// Init input
 		SDL_GetMouseState(&(mouseCoor.x), &(mouseCoor.y));
@@ -525,7 +576,7 @@ int main(){
 				case SDL_MOUSEBUTTONUP:
 					if((event.button.button == SDL_BUTTON_LEFT)&&(clique_gauche==SDL_TRUE)){
 						relache_gauche=SDL_TRUE;
-						premier_click=1;
+						//premier_click=1;
 					}
 					else if((event.button.button == SDL_BUTTON_RIGHT)&&(clique_droit==SDL_TRUE)){
 						relache_droit=SDL_TRUE;
@@ -562,8 +613,9 @@ int main(){
 		SDL_RenderFillRect(renderer, &case_dem);
 		case_coor.x--;
 		case_coor.y--;
-		if(grille[case_coor.y][case_coor.x] == BOMBE)
+		if((grille[case_coor.y][case_coor.x] == BOMBE)||(grille[case_coor.y][case_coor.x]==DRAPEAU_AVEC_BOMBES)){
 			click_bombe=1;
+		}
 		else{
 			etat(grille, case_coor.y, case_coor.x);
 		}
@@ -577,18 +629,113 @@ int main(){
 		SDL_RenderFillRect(renderer, &case_dem);
 		case_coor.x--;
 		case_coor.y--;
-		//if(grille[case_coor.y][case_coor.x]==MASQUE||((grille[case_coor.y][case_coor.x]==BOMBE)&&(click_bombe==0))){
-
-		//}
+		if(grille[case_coor.y][case_coor.x]==MASQUE){
+			grille[case_coor.y][case_coor.x]=DRAPEAU_SANS_BOMBES;
+		}
+		else if ((grille[case_coor.y][case_coor.x]==BOMBE)&&(click_bombe==0)){
+			grille[case_coor.y][case_coor.x]=DRAPEAU_AVEC_BOMBES;
+		}
 
 	}
-		/*if(grille[case_coor.y-1][case_coor.x-1] == BOMBE){
-			click_bombe=1;*/
 
 
-	afficher_grille(renderer,grille, premier_click, click_bombe, texture);
 
+		temps_jeu=(SDL_GetTicks()-tempo)/1000;
+		afficher_texte(renderer, "Temps jeu", police, 1350, 50);
+
+		if(temps_jeu<60)
+		{
+			sprintf(message, "%d sec", temps_jeu);
+			afficher_texte(renderer, message, police, 1400, 100);
+		}
+
+		else if(temps_jeu>=60)
+		{
+			minutes=temps_jeu/60;
+			secondes=temps_jeu%60;
+			sprintf(message, "%d min %d sec", minutes, secondes);
+			afficher_texte(renderer, message, police, 1350, 100);
+		}
+
+		afficher_grille(renderer,grille, premier_click, click_bombe, texture);
 		//hud
+		SDL_RenderSetScale(renderer, 1, 1);
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_RenderSetViewport(renderer, &hudView);
+		SDL_RenderCopy(renderer, hudTexture, &hudView, &hudDraw);
+		SDL_RenderSetViewport(renderer, &playgroundView);
+
+		//afficher
+		SDL_RenderSetScale(renderer, 1. / ratioWindowSize, 1. / ratioWindowSize);
+		SDL_RenderPresent(renderer);
+
+
+	////////////////
+	// Next frame //`
+	////////////////
+
+
+		//regulateFPS
+		currentTime = SDL_GetTicks();
+		while( currentTime - lastTime < FRAME_TIME )
+			currentTime = SDL_GetTicks();
+
+		if( currentTime - lastTime > FRAME_TIME )
+			printf(" TIME FRAME : %d\n", currentTime - lastTime);
+
+		lastTime = currentTime;
+
+		// On efface
+		SDL_SetRenderDrawColor(renderer, 0, 40, 200, 255);
+		SDL_RenderClear(renderer);
+
+	}
+
+	temps_final=temps_jeu;
+
+	while(1)
+	{
+		SDL_Event event;
+		while( SDL_PollEvent(&event) ){
+			switch( event.type ){
+				case SDL_QUIT:
+					// fermer
+					return 0;
+					break;
+			}
+		}
+
+
+	////////////////////////////
+	// Handle Keyboard inputs //`
+	////////////////////////////
+		SDL_PumpEvents();
+
+		if(fin_jeu(grille)){
+			afficher_grille(renderer,grille, premier_click, click_bombe, texture);
+			afficher_texte(renderer, "Temps jeu", police, 1350, 50);
+			if(temps_final<60)
+			{
+				sprintf(message, "%d sec", temps_final);
+				afficher_texte(renderer, message, police, 1350, 100);
+			}
+
+			else if(temps_final>=60)
+			{
+				minutes=temps_final/60;
+				secondes=temps_final%60;
+				sprintf(message, "%d min %d sec", minutes, secondes);
+				afficher_texte(renderer, message, police, 1350, 100);
+			}
+			afficher_texte(renderer, "Bravo", police, 1350, 150);
+		}
+
+		else if(click_bombe==1)
+		{
+			afficher_grille(renderer,grille, premier_click, click_bombe, texture);
+			afficher_texte(renderer, "Tu as perdu...", police, 1350, 50);
+		}
+
 		SDL_RenderSetScale(renderer, 1, 1);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderSetViewport(renderer, &hudView);
@@ -620,5 +767,12 @@ int main(){
 		SDL_RenderClear(renderer);
 	}
 	//printf("Waw t'es nul, %d\n", score);
+	TTF_CloseFont(police);
+	TTF_Quit();
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyTexture(hudTexture);
+	SDL_DestroyTexture(texture);
+	SDL_DestroyWindow(myWindow);
+	SDL_Quit();
 	return 0;
 }
