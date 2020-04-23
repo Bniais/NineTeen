@@ -87,7 +87,7 @@ float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 static int WinWidth = 1280;
 static int WinHeight = 720;
 SDL_Rect bounds;
-
+int optionFullScreen = 1;
 //////////////////////////////////////////////////
 // FIXER NOMBRE FPS MAX
 #define FPS 60
@@ -139,7 +139,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Windo
 /// \brief fonction qui charge fixe la taille max de la fenetre
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int windowMaxSize();
+int windowMaxSize(int optionFullScreen);
 
 
 /////////////////////////////////////////////////////
@@ -814,7 +814,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 	//////////////////////////////////////////////////////////
 	// RECUPERER C'EST VALEUR DES PARAMS A L'AVENIR
-	windowMaxSize();
+	windowMaxSize(optionFullScreen);
 	//////////////////////////////////////////////////////////
 
 
@@ -892,8 +892,11 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 
 
+	if(optionFullScreen)
+		Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP  );
+	else
+		Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL );
 
-	Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP  );
 	//////////////////////////////////////////////////////////
 	// VERIFIER EXISTANCE DE LA FENETRE ET CREATION CONTEXT
 	if( !Window)
@@ -1206,7 +1209,7 @@ void mixerInit()
 
 
 
-int windowMaxSize()
+int windowMaxSize(int optionFullScreen)
 {
     /////////////////////////////////////////////////////
     // CREATION VARIABLE
@@ -1214,14 +1217,27 @@ int windowMaxSize()
 
     /////////////////////////////////////////////////////
     // RECUPRATION DE LA TAILLE D'ECRAN SI CA ECHOU ON RECUPERER L'ERREUR
-    if (SDL_GetDisplayBounds(0,&dm) != 0)
-    {
-        SDL_Log("SDL_GetDisplayUsableBounds failed: %s", SDL_GetError());
-        return EXIT_FAILURE;
-    }
+	if(optionFullScreen){
+		if (SDL_GetDisplayBounds(0,&dm) != 0)
+	    {
+	        SDL_Log("SDL_GetDisplayUsableBounds failed: %s", SDL_GetError());
+	        return EXIT_FAILURE;
+	    }
+	}
+	else{
+		if (SDL_GetDisplayUsableBounds(0,&dm) != 0)
+	    {
+	        SDL_Log("SDL_GetDisplayUsableBounds failed: %s", SDL_GetError());
+	        return EXIT_FAILURE;
+	    }
+	}
 
-    //dm.w *= RATIO_WINDOW_SCREEN;
-    //dm.h *= RATIO_WINDOW_SCREEN;
+
+	if(!optionFullScreen){
+		dm.w *= RATIO_WINDOW_SCREEN;
+	    dm.h *= RATIO_WINDOW_SCREEN;
+	}
+
 
     /////////////////////////////////////////////////////
     // ON APPLIQUE A NOTRE VARIABLE GLOBALE
@@ -2132,6 +2148,7 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context)
 {
 
+
 	///////////////////////////////////////////////////
 	// GESTION EVENEMENT
 	SDL_Event Event;
@@ -2148,65 +2165,65 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					//////////////////////////////////////////////////////////
 					// AFFICHER LA SOURIS
 					SDL_ShowCursor(SDL_ENABLE);
-						///////////////////////////////////////////////////
-						// INIT AFFICHAGE DU MESSAGE
-						GL_InitialiserParametre(WinWidth,WinHeight,camera);
-						SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
-						MessageQuitterRoom();
-						SDL_GL_SwapWindow(Window);
+					///////////////////////////////////////////////////
+					// INIT AFFICHAGE DU MESSAGE
+					GL_InitialiserParametre(WinWidth,WinHeight,camera);
+					SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
+					MessageQuitterRoom();
+					SDL_GL_SwapWindow(Window);
 
-						///////////////////////////////////////////////////
-						// VIDER LA LISTE DES EVENEMENTS
-						do
-      			{
-         				SDL_WaitEvent(&Event);
-      			}
-      			while (Event.key.keysym.sym != SDLK_ESCAPE);
+					///////////////////////////////////////////////////
+					// VIDER LA LISTE DES EVENEMENTS
+					do
+		  			{
+		     				SDL_WaitEvent(&Event);
+		  			}
+		  			while (Event.key.keysym.sym != SDLK_ESCAPE);
 
 
-						///////////////////////////////////////////////////
-						// DECISION PRISE
-						int decision = 1;
-						while(decision)
+					///////////////////////////////////////////////////
+					// DECISION PRISE
+					int decision = 1;
+					while(decision)
+					{
+						while (SDL_PollEvent(&Event))
 						{
-							while (SDL_PollEvent(&Event))
-							{
-								if (Event.type == SDL_KEYDOWN) {
-									switch (Event.key.keysym.sym)
-									{
-										case SDLK_ESCAPE:
-											decision = 0;
-											printf("Commande annuler\n");
-											break;
-										case SDLK_q:
-											decision = 0;
-											printf("Vous quittez\n");
-											*Running = 0;
-											break;
-										case SDLK_d:
-											decision = 0;
-											printf("Vous vous deconnecter\n");
-											FILE *fp = fopen(DIR_TOKEN_FILE,"w");
-											fclose(fp);
-											*Running = 0;
-											break;
-										default:break;
-									}
+							if (Event.type == SDL_KEYDOWN) {
+								switch (Event.key.keysym.sym)
+								{
+									case SDLK_ESCAPE:
+										decision = 0;
+										printf("Commande annuler\n");
+										break;
+									case SDLK_q:
+										decision = 0;
+										printf("Vous quittez\n");
+										*Running = 0;
+										break;
+									case SDLK_d:
+										decision = 0;
+										printf("Vous vous deconnecter\n");
+										FILE *fp = fopen(DIR_TOKEN_FILE,"w");
+										fclose(fp);
+										*Running = 0;
+										break;
+									default:break;
 								}
 							}
 						}
+					}
+					//////////////////////////////////////////////////////////
+					// ON DESACTIVER L"AFFICHAGE DE LA SOURIS
+					if(*Running != 0)
+					{
 						//////////////////////////////////////////////////////////
-						// ON DESACTIVER L"AFFICHAGE DE LA SOURIS
-						if(*Running != 0)
-						{
-							//////////////////////////////////////////////////////////
-							// CACHER LA SOURIS
-							SDL_ShowCursor(SDL_DISABLE);
-							///////////////////////////////////////////////////
-							// RECENTRAGE DE CAMERA
-							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-														///////////////////////////////////////////////////
-						}
+						// CACHER LA SOURIS
+						SDL_ShowCursor(SDL_DISABLE);
+						///////////////////////////////////////////////////
+						// RECENTRAGE DE CAMERA
+						SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+													///////////////////////////////////////////////////
+					}
 				}
 
 				///////////////////////////////////////////////////
@@ -2226,10 +2243,17 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							// ANIMATION CENTRAGE SUR MACHINE
 							animationLancerMachine(camera,cible[machine-1],*scene_list,Window);
 
+
 							///////////////////////////////////////////////////
 							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
 							SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 
+							#ifdef _WIN32
+							if(optionFullScreen ){
+								SDL_MinimizeWindow(Window);
+								SDL_MaximizeWindow(Window);
+							}
+							#endif
 							///////////////////////////////////////////////////
 							// CASE POUR CHAQUE MACHINE
 							// AVEC UPDATE DU SCORE A L ISSUS
@@ -2277,6 +2301,14 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							///////////////////////////////////////////////////
 							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
+							#ifdef _WIN32
+							if(optionFullScreen ){
+								SDL_SetRenderDrawColor(pRenderer, 40,40,40,255);
+								SDL_RenderClear(pRenderer);
+								SDL_RenderPresent(pRenderer);
+							}
+							#endif
+
 							SDL_DestroyRenderer(pRenderer);
 
 
