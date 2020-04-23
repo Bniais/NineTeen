@@ -1,4 +1,4 @@
-#define VERSION_LOGICIEL "version=0.1.5b-dev"
+#define VERSION_LOGICIEL "version=0.1.6b-dev"
 
 
 #include <stdio.h>
@@ -88,18 +88,7 @@ int checkVersion(char version[])
 {
   if( checkVersionOnline(version) )
   {
-    #ifdef _WIN32
-      system("mshta vbscript:Execute(\"msgbox \"\"Une nouvelle version est disponible\"\":close\")");
-    #endif
-
-    #ifdef __APPLE__
-      system("osascript -e 'tell application (path to frontmost application as text) to display dialog \"Une nouvelle version est disponible\" buttons {\"QUITTER\"} with icon stop'");
-    #endif
-
-    #ifdef __linux
-      system("zenity --warning --text \"Une nouvelle version est disponible\"");
-    #endif
-
+    afficherMessageSysteme("Une nouvelle version est disponible");
     return EXIT_FAILURE;
   }
   return EXIT_SUCCESS;
