@@ -12,6 +12,32 @@ const SDL_Color COLOR_ERROR_LOADING = {0xfb,0x17,0x17};
 
 const int ALPHA[2*(int)FRAME_ANIM_RETOUR] = { 10, 30, 55, 70, 100, 140, 170, 200, 220, 225, 230, 230, 230, 230, 230, 230,230, 230, 230, 230, 230,230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 225,220,200,170,140,100,70,55,30,10};
 
+/////////////////////////////////////////////////////
+/// \fn afficherMessageSysteme(char message[])
+/// \brief affiche une popup systeme
+/// \param char message[] message a afficher a l'ecran
+/////////////////////////////////////////////////////
+void afficherMessageSysteme(char message[])
+{
+	#ifdef _WIN32
+		char commande[80 + strlen(message) ];
+		sprintf(commande, "mshta vbscript:Execute(\"msgbox \"\"%s\"\":close\") " , message);
+		system(commande);
+	#endif
+
+	#ifdef __APPLE__
+		char commande[160 + strlen(message) ];
+		sprintf(commande, "osascript -e 'tell application (path to frontmost application as text) to display dialog \"%s\" buttons {\"QUITTER\"} with icon stop'" , message);
+		system(commande);
+	#endif
+
+	#ifdef __linux
+		char commande[60 + strlen(message) ];
+		sprintf(commande, "zenity --warning --text \"%s\"" , message);
+		system(commande);
+	#endif
+}
+
 void afficherLoading(SDL_Renderer * renderer, SDL_Texture * loadingTexture, SDL_Color color, int shiftX, int shiftY, int frameAnim, int windowW, int windowH, int referenceW){
 
 	float ratioSize = (float)referenceW/BASE_WINDOW_W;
