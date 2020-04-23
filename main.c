@@ -1,4 +1,5 @@
 #define VERSION_LOGICIEL "version=0.1.6b-dev"
+#define VERSION "0.1.6b-dev"
 
 
 #include <stdio.h>
@@ -88,7 +89,7 @@ int checkVersion(char version[])
 {
   if( checkVersionOnline(version) )
   {
-    afficherMessageSysteme("Une nouvelle version est disponible");
+    afficherMessageSysteme("Une nouvelle version est disponible.\nVersion actuel : " VERSION);
     return EXIT_FAILURE;
   }
   return EXIT_SUCCESS;
