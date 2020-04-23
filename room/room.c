@@ -951,8 +951,63 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	#endif
 
 	SDL_RaiseWindow(Window);
+	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 	while (Running)
 	{
+
+		if( keystate[SDL_SCANCODE_O] && rdyToFullscreen){
+
+			printf("width before : %d\n", WinWidth);
+			if(SDL_GetWindowFlags(Window) & SDL_WINDOW_FULLSCREEN_DESKTOP){
+				optionFullScreen = 0;
+				SDL_GetDisplayBounds(0, &bounds);
+				windowMaxSize(optionFullScreen);
+				SDL_SetWindowFullscreen(Window, 0);
+
+				SDL_SetWindowSize(Window, WinWidth, WinHeight);
+				SDL_SetWindowPosition(Window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED );
+
+			}
+			else{
+				optionFullScreen = 1;
+				SDL_GetDisplayBounds(0, &bounds);
+				windowMaxSize(optionFullScreen);
+				SDL_SetWindowSize(Window, WinWidth, WinHeight);
+				SDL_SetWindowFullscreen(Window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+
+			}
+			rdyToFullscreen = 0;
+
+
+			printf("width after : %d\n", WinWidth);
+
+
+			TTF_CloseFont(font);
+			font = NULL;
+			font = TTF_OpenFont(DIR_FONT_POLICE, WinWidth/50);
+			if(!font)
+			{
+				printf("Erreur chargement font %s %s\n",TTF_GetError(), DIR_FONT_POLICE);
+				return EXIT_FAILURE;
+			}
+
+			printf(" sega before %p\n", sega);
+			TTF_CloseFont(sega);
+			sega = NULL;
+			sega = TTF_OpenFont(DIR_FONT_SEGA, WinWidth/50);
+			if(!sega)
+			{
+				printf("Erreur chargement font %s %s\n",TTF_GetError(),DIR_FONT_SEGA);
+				return EXIT_FAILURE;
+			}
+
+			printf(" sega after %p\n", sega);
+
+		}
+		else{
+			rdyToFullscreen = 1;
+		}
+
 		glLoadIdentity();
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
@@ -1750,28 +1805,6 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 				// VERIFIE SI ON A ATTEIND LA VALEUR MAX
 				if(camera->cible_py - _SENSIBILITE_CAMERA > -MAX_Y_AXE_CIBLE )
 					camera->cible_py -= _SENSIBILITE_CAMERA;
-
-
-
-	if( keystate[SDL_SCANCODE_O] && rdyToFullscreen){
-		if(SDL_GetWindowFlags(Window) & SDL_WINDOW_FULLSCREEN_DESKTOP){
-			optionFullScreen = 0;
-			windowMaxSize(optionFullScreen);
-			SDL_SetWindowSize(Window, WinWidth, WinHeight);
-			SDL_SetWindowFullscreen(Window, 0);
-			SDL_SetWindowPosition(Window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED );
-		}
-		else{
-			optionFullScreen = 1;
-			windowMaxSize(optionFullScreen);
-			SDL_SetWindowSize(Window, WinWidth, WinHeight);
-			SDL_SetWindowFullscreen(Window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-		}
-		rdyToFullscreen = 0;
-	}
-	else{
-		rdyToFullscreen = 1;
-	}
 
 
 	///////////////////////////////////////////////////
