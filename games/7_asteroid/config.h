@@ -3,10 +3,11 @@
 /////////////////
 #include "../../define/define.h"
 //textures
-#define NB_ASTEROID_TEXTURES 16
-typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD, T_ASTEROID, T_FISSURE, T_GLACE, T_BONUS, T_BULLET, T_LASER, T_ROUE,T_JAUGE, T_EXPLO_MISSILE, T_EXPLO_ASTEROID, T_EXPLO_GLACE}TEXTURES;
+#define NB_ASTEROID_TEXTURES 18
+typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD, T_ASTEROID, T_FISSURE, T_GLACE, T_BONUS, T_BULLET, T_LASER, T_ROUE, T_JAUGE, T_BOMB, T_BOMB_ICON, T_EXPLO_MISSILE, T_EXPLO_ASTEROID, T_EXPLO_GLACE}TEXTURES;
 
-int textureFloue[NB_ASTEROID_TEXTURES] = {0,1,1,0,0,0,0,0,1,0,1,1,0,0};
+int textureFloue[NB_ASTEROID_TEXTURES] =
+			{0		, 0	   , 0       , 0           , 0    , 0         , 0        , 0      , 1      , 0       , 1      , 1     , 1      , 0     , 0          , 0              , 0               , 0};
 char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
 	"games/7_asteroid/Textures/vaisseau.png",
 	"games/7_asteroid/Textures/gem.png",
@@ -21,6 +22,8 @@ char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
 	"games/7_asteroid/Textures/laser_beam.png",
 	"games/7_asteroid/Textures/roue.png",
 	"games/7_asteroid/Textures/jauge.png",
+	"games/7_asteroid/Textures/bomb.png",
+	"games/7_asteroid/Textures/bombIcon.png",
 	"games/7_asteroid/Textures/explo.png",
 	"games/7_asteroid/Textures/explo2.png",
 	"games/7_asteroid/Textures/explo3.png"
@@ -51,6 +54,9 @@ const int  FRAME_EXPLOSIONS[NB_EXPLOSIONS] = {12, 20, 20};
 const int  NB_ANIM_EXPLOSIONS[NB_EXPLOSIONS] = {6, 10, 6};
 
 const SDL_Rect EXPLO_SRCS[NB_EXPLOSIONS] = {{0,0, 374, 374} , {0,0, 312, 312}, {0,0,216,216}};
+const SDL_Rect SRC_BOMB = {0,0,960,540};
+
+
 #define RATIO_ASTEROID_EXPLO_SIZE 1.2
 
 #define PRECISION_RAND_FLOAT 100.
@@ -117,6 +123,7 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 #define NB_ROUE_EMPLACEMENTS 5
 SDL_Rect SRC_ROUE = {0,0,622,622};
 SDL_Rect ROUE_DIM = {0,0,80,80};
+SDL_Rect BOMB_ICON_DIM = {0,0, 71, 70};
 #define NB_ARROUND_JAUGES 4
 SDL_Color ROUE_COLOR = {40,40,40};
 #define MIN_RATIO_COLOR 0.3
@@ -171,20 +178,20 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 	#define DISTANCE_CANON 23
 
 	#define FREQUENCE_BASE (FRAMES_PER_SECOND/2)
-	const float FREQUENCE_MISSILES[NB_MISSILES] = {1, 0.66, 1.66, 1.25, 0};
+	const float FREQUENCE_MISSILES[NB_MISSILES] = {1, 0.6, 1.6, 1.33, 0};
 
 	#define BASE_VITESSE_MISSILE 15
-	const float VITESSE_MISSILES[NB_MISSILES] = {1, 1.1, 1, 1.25, 0};
+	const float VITESSE_MISSILES[NB_MISSILES] = {1, 1.3, 1, 1.2, 0};
 
 	#define BASE_DEGAT_MISSILE 1.5
-	const float DEGAT_MISSILES[NB_MISSILES] = {1, 1.5, 2, 0, 4./30};
+	const float DEGAT_MISSILES[NB_MISSILES] = {1, 1.5, 3, 0, 4./30};
 
 	const int RAYON_MISSILES[NB_MISSILES] = {6, 10, 14, 10, 0};
 
 	const float TAILLE_EXPLOSIONS[NB_MISSILES] = {0.9, 1.1, 1.3, 1, 0};
 
 	#define DUREE_MISSILE_BASE (2*FRAMES_PER_SECOND)
-	const float DUREE_MISSILES[NB_MISSILES] = {1, 0.9, 1.5, 1, 0};
+	const float DUREE_MISSILES[NB_MISSILES] = {1, 0.8, 1.7, 1, 0};
 
 
 	const float MUNITIONS_USAGE[NB_MISSILES] = {0, 0.01, 0.0334, 0.02, 1./(20*30)};
@@ -231,6 +238,7 @@ static const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
 #define PROBA_BONUS 3
 #define NB_TIR_MAX 3
 #define NB_BONUS_POINT 3
+#define MAX_BOMBE_NUCLEAIRE 1
 int BONUS_POINT[NB_BONUS_POINT]={15,50,100};
 typedef enum{
   PETIT,
@@ -286,12 +294,16 @@ float angle_tir_multiple[NB_TIR_MAX][NB_TIR_MAX]={
 
 #define BONUS_ACCELERATION_MISSILE 1.7
 #define VITESSE_MISSILE_MAX (2*BASE_VITESSE_MISSILE)
-#define BONUS_FREQUENCE_MISSILE 1.5
+#define BONUS_FREQUENCE_MISSILE 1.4
 #define FREQUENCE_MISSILE_MIN (FRAMES_PER_SECOND/6.)
 #define DEGAT_MISSILE_MAX 6
 #define DEGAT_ADD 0.75
 #define FRAME_BOMBE_NUCLEAIRE (FRAMES_PER_SECOND*1.5)
-
+#define FRAME_ANIM_BOMB 24
+#define NB_ANIM_BOMB 16
+#define FRAME_KILL_ASTERO_BOMB 15
+#define NB_ROW_BOMB 4
+#define NB_COL_BOMB 4
 
 //Score
 

@@ -635,6 +635,9 @@ int main(){
 		else if ((grille[case_coor.y][case_coor.x]==BOMBE)&&(click_bombe==0)){
 			grille[case_coor.y][case_coor.x]=DRAPEAU_AVEC_BOMBES;
 		}
+		else if ((grille[case_coor.y][case_coor.x]==DRAPEAU_AVEC_BOMBES)||(grille[case_coor.y][case_coor.x]==DRAPEAU_SANS_BOMBES)){
+			grille[case_coor.y][case_coor.x]=MASQUE;
+		}
 
 	}
 
