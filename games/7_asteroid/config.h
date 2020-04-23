@@ -29,7 +29,7 @@ char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
 	"games/7_asteroid/Textures/explo3.png"
 };
 
-static const SDL_Color HUD_COLOR = {0x40,0x40,0x40};
+static const SDL_Color HUD_COLOR = {0x2f,0x30,0x4f};
 
 #define NB_ASTEROID_FONTS 1
 typedef enum{FONT_BONUS}FONTS;

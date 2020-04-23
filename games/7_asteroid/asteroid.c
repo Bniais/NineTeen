@@ -1222,6 +1222,8 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 		}
 	}
 
+	SDL_SetTextureColorMod(textures[T_HUD], HUD_COLOR.r, HUD_COLOR.g, HUD_COLOR.b);
+
 	//Textures
 	TTF_Font* fonts[NB_ASTEROID_FONTS];
 	//Textures
