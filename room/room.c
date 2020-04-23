@@ -87,7 +87,8 @@ float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 static int WinWidth = 1280;
 static int WinHeight = 720;
 SDL_Rect bounds;
-int optionFullScreen = 0;
+int optionFullScreen = 1;
+int rdyToFullscreen = 1;
 //////////////////////////////////////////////////
 // FIXER NOMBRE FPS MAX
 #define FPS 60
@@ -894,6 +895,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP  );
 	else
 		Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL );
+
 
 	//////////////////////////////////////////////////////////
 	// VERIFIER EXISTANCE DE LA FENETRE ET CREATION CONTEXT
@@ -1750,6 +1752,26 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 					camera->cible_py -= _SENSIBILITE_CAMERA;
 
 
+
+	if( keystate[SDL_SCANCODE_O] && rdyToFullscreen){
+		if(SDL_GetWindowFlags(Window) & SDL_WINDOW_FULLSCREEN_DESKTOP){
+			optionFullScreen = 0;
+			windowMaxSize(optionFullScreen);
+			SDL_SetWindowSize(Window, WinWidth, WinHeight);
+			SDL_SetWindowFullscreen(Window, 0);
+			SDL_SetWindowPosition(Window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED );
+		}
+		else{
+			optionFullScreen = 1;
+			windowMaxSize(optionFullScreen);
+			SDL_SetWindowSize(Window, WinWidth, WinHeight);
+			SDL_SetWindowFullscreen(Window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		}
+		rdyToFullscreen = 0;
+	}
+	else{
+		rdyToFullscreen = 1;
+	}
 
 
 	///////////////////////////////////////////////////
