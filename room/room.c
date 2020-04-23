@@ -87,7 +87,7 @@ float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 static int WinWidth = 1280;
 static int WinHeight = 720;
 SDL_Rect bounds;
-int optionFullScreen = 1;
+int optionFullScreen = 0;
 //////////////////////////////////////////////////
 // FIXER NOMBRE FPS MAX
 #define FPS 60
@@ -802,9 +802,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 {
 	//////////////////////////////////////////////////////////
 	// EVENT SOURIS INIT
-	//////////////////////////////////////////////////////////
-	// CACHER LA SOURIS
-	SDL_ShowCursor(SDL_DISABLE);
+
 	//////////////////////////////////////////////////////////
 	// POSITIONNER LA SOURIS AU CENTRE
 	SDL_GetDisplayBounds(0, &bounds);
@@ -904,6 +902,9 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		printf("Impossible de cree la fenetre %s\n",SDL_GetError() );
 		return EXIT_FAILURE;
 	}
+
+
+
 	//////////////////////////////////////////////////////////
 	// CREATION DE L'ICON D'APPLICATION
 	SDL_Surface *favicon;
@@ -930,14 +931,24 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	float _IPS = FPS;
 	//////////////////////////////////////////////////////////
 
-	SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 
 	glLoadIdentity();
 	GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
 	aiLoadTexture(DIR_OBJ_LOAD,scene);
+	int frame = 0;
 
+	#ifndef __linux__
+		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+	#endif
 
+	//////////////////////////////////////////////////////////
+	// CACHER LA SOURIS
+	#ifndef __linux__
+		SDL_ShowCursor(SDL_DISABLE);
+	#endif
+
+	SDL_RaiseWindow(Window);
 	while (Running)
 	{
 		glLoadIdentity();
@@ -969,7 +980,8 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		//////////////////////////////////////////////////////////
 		// CHARGER LA SCENE
-		SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
+		if(frame)
+			SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
 
 		//GL_InitialiserParametre(WinWidth,WinHeight,camera);
 		//////////////////////////////////////////////////////////
@@ -1009,7 +1021,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		// ATTENDRE 1000 MS POUR MESSAGE CLIGNOTANT
 		attendreXsecondeMessage(&compterSeconde, &afficherMessage,1000, _IPS);
 		//////////////////////////////////////////////////////////
-
+		frame++;
 	}
 
 
@@ -1661,27 +1673,35 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 	////////////////////////////
 	// RECUPERER POSITION SOURIS
 	SDL_PumpEvents();
-	int mouseX,mouseY;
-	SDL_GetMouseState(&mouseX, &mouseY);
 
-	///////////////////////////////////////////////////
-	// RECUPERER TAILLE ECRAN
-	// CELA PERMET DE COMPENSER LA DIFFERENCE ENTRE POSITION SOURIS ET PLACEMENT GLOBAL DE LA SOURIS
-	// AFIN DEVITER DE PASSER EN PARAMETRE WINDOW
+	#ifndef __linux__
+	if (SDL_GetWindowFlags(Window) & (SDL_WINDOW_INPUT_FOCUS )){
+		int mouseX,mouseY;
 
-	///////////////////////////////////////////////////
-	// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
-	camera->angle -= ( (mouseX  + (bounds.w-WinWidth) /2) - ((WinWidth/2) + (bounds.w-WinWidth) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
+		SDL_GetMouseState(&mouseX, &mouseY);
 
-	///////////////////////////////////////////////////
-	// VERIFIER QU"ON NE VAS PAS DEPASSER LA LIMITE FIXER
-	if(camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) < MAX_Y_AXE_CIBLE && camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) > -MAX_Y_AXE_CIBLE)
+		///////////////////////////////////////////////////
+		// RECUPERER TAILLE ECRAN
+		// CELA PERMET DE COMPENSER LA DIFFERENCE ENTRE POSITION SOURIS ET PLACEMENT GLOBAL DE LA SOURIS
+		// AFIN DEVITER DE PASSER EN PARAMETRE WINDOW
+
+		///////////////////////////////////////////////////
 		// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
-		camera->cible_py -= ( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
+		camera->angle -= ( (mouseX  + (bounds.w-WinWidth) /2) - ((WinWidth/2) + (bounds.w-WinWidth) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
 
-	///////////////////////////////////////////////////
-	// RECENTRAGE DE CAMERA
-	SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+		///////////////////////////////////////////////////
+		// VERIFIER QU"ON NE VAS PAS DEPASSER LA LIMITE FIXER
+		if(camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) < MAX_Y_AXE_CIBLE && camera->cible_py - (( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS) > -MAX_Y_AXE_CIBLE)
+			// APPLIQUER LA DIFFERENCE DE DEPLACEMENT A LA CAMERA
+			camera->cible_py -= ( (mouseY  + (bounds.h-WinHeight) /2) - ((WinHeight/2) + (bounds.h-WinHeight) /2 ) )* SENSIBILITE_CAMERA_SOURIS;
+
+		///////////////////////////////////////////////////
+		// RECENTRAGE DE CAMERA
+
+		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+
+	}
+	#endif
 		///////////////////////////////////////////////////
 
 	// REDUIT L'ECART D ANGLE A UN ANGLE IDENTIQUE
@@ -2107,7 +2127,10 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 	int i = 0;
 	while( i++ < DUREE_ANIM)
 	{
-		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+		#ifndef __linux__
+		if (SDL_GetWindowFlags(Window) & (SDL_WINDOW_INPUT_FOCUS ))
+		  SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+		#endif
 		////////////////////////////////////////////////////////////
 		// INCREMENTATION
 		camera.px += x;
@@ -2165,10 +2188,13 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					//////////////////////////////////////////////////////////
 					// AFFICHER LA SOURIS
 					SDL_ShowCursor(SDL_ENABLE);
+
 					///////////////////////////////////////////////////
 					// INIT AFFICHAGE DU MESSAGE
 					GL_InitialiserParametre(WinWidth,WinHeight,camera);
+
 					SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
+
 					MessageQuitterRoom();
 					SDL_GL_SwapWindow(Window);
 
@@ -2212,18 +2238,24 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							}
 						}
 					}
+
 					//////////////////////////////////////////////////////////
 					// ON DESACTIVER L"AFFICHAGE DE LA SOURIS
 					if(*Running != 0)
 					{
 						//////////////////////////////////////////////////////////
 						// CACHER LA SOURIS
-						SDL_ShowCursor(SDL_DISABLE);
-						///////////////////////////////////////////////////
-						// RECENTRAGE DE CAMERA
-						SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+						#ifndef __linux__
+						if (SDL_GetWindowFlags(Window) & (SDL_WINDOW_INPUT_FOCUS ) ){
+						 	SDL_ShowCursor(SDL_DISABLE);
+							///////////////////////////////////////////////////
+							// RECENTRAGE DE CAMERA
+							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+						}
+						#endif
 													///////////////////////////////////////////////////
 					}
+
 				}
 
 				///////////////////////////////////////////////////
@@ -2326,7 +2358,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
 								while(SDL_PollEvent(&Event));
 								// AFFICHAGE DE LA SCENE
-								SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 								// RECHARGEMENT DES IMAGES
 								aiLoadTexture(DIR_OBJ_LOAD,scene);
 
@@ -2337,13 +2368,15 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
 								while(SDL_PollEvent(&Event));
 								// AFFICHAGE DE LA SCENE
-								SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+
+								if (SDL_GetWindowFlags(Window) & (SDL_WINDOW_INPUT_FOCUS ))
+									SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 
 							#endif
 
 
-
-							SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
+							static struct Camera_s camera2;
+							SDL_GL_AppliquerScene(Window, scene,&camera2,scene_list,FPS);
 							// ANIMATION DE RETOUR SUR MACHINE
 							animationLancerMachine(cible[machine-1],camera,*scene_list,Window);
 							// VIDER POLL EVENEMENT
