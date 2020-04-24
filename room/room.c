@@ -54,8 +54,8 @@ static GLuint * _textures =  NULL, * _vaos = NULL, *_buffers = NULL , *_counts =
 #define DIR_OBJ_LOAD "../room/salle.obj"
 // EMPLACEMENT FIHCIER NECESSAIRE
 
-#define VITESSE_DEPLACEMENT_COURIR 0.40F
-#define VITESSE_DEPLACEMENT_DEBOUT 0.09F
+#define VITESSE_DEPLACEMENT_COURIR 0.22F
+#define VITESSE_DEPLACEMENT_DEBOUT 0.13F
 #define VITESSE_DEPLACEMENT_ACCROUPI 0.035F
 #define SENSIBILITE_CAMERA 0.08F
 #define SENSIBILITE_CAMERA_SOURIS 0.003F
@@ -950,6 +950,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 			if( *statutPorteHomme != OUVERTE && *statutPorteHomme != OUVERTURE)
 			{
 				*statutPorteHomme = OUVERTURE;
+				*jouerSonPorteHomme = 1;
 			}
 		}break;
 	}
