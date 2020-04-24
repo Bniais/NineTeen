@@ -1354,7 +1354,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 			if(keystate[SDL_SCANCODE_ESCAPE]){
 				return 0;
 			}
-			else if(rdyToSpace && keystate[SDL_SCANCODE_SPACE]){
+			else if(done && rdyToSpace && keystate[SDL_SCANCODE_SPACE]){
 				break;
 			}
 
@@ -1457,7 +1457,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 					if(vaisseau.missile_id != SHOT_LASER){
 						tirer(&vaisseau,&missiles,&nb_missiles);
 					}
-					munitions[vaisseau.missile_id] -= MUNITIONS_USAGE[vaisseau.missile_id] * MUNITIONS_USAGE_MULTIPLE[vaisseau.nb_tir];
+					munitions[vaisseau.missile_id] -= MUNITIONS_USAGE[vaisseau.missile_id] * MUNITIONS_USAGE_MULTIPLE[vaisseau.nb_tir-1];
 					if(munitions[vaisseau.missile_id] <= 0){
 						munitions[vaisseau.missile_id] = 0;
 
