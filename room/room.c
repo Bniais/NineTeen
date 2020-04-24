@@ -868,7 +868,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 	{
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON TOILETTE FEMME
-		reglageVolume(6,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,4.0,camera.angle, MIX_MAX_VOLUME);
+		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,8.0,camera.angle, MIX_MAX_VOLUME);
 
 		toiletteFemme.x += 0.1;
 		if( toiletteFemme.x >= 23.0 )
@@ -883,7 +883,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 	{
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON TOILETTE FEMME
-		reglageVolume(6,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,4.0,camera.angle, MIX_MAX_VOLUME);
+		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, MIX_MAX_VOLUME);
 
 		toiletteHomme.x += 0.1;
 		if( toiletteHomme.x >= 23.0 )
