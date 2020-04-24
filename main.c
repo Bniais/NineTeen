@@ -769,7 +769,7 @@ int main(int argc, char *argv[])
     /////////////////////////////////////////////////////////////////
     // CHARGEMENT ICON
     // NOM PROBLEMATIQUE SI NON CHARGER ON APPLIQUE PAS SI NON CHARGER
-    if( ( favicon=IMG_Load("../assert/image/favicon.png") ) )
+    if( ( favicon=IMG_Load("../assets/image/favicon.png") ) )
       SDL_SetWindowIcon(window, favicon);
     else
       printf("Erreur chargement favicon\n");
