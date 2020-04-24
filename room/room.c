@@ -43,15 +43,15 @@ static GLuint * _textures =  NULL, * _vaos = NULL, *_buffers = NULL , *_counts =
 
 //
 // SON
-#define DIR_SON_ENIRONNEMENT_1 "room/borne1.wav"
-#define DIR_SON_ENIRONNEMENT_2 "room/borne2.wav"
-#define DIR_SON_ENIRONNEMENT_3 "room/borne3.wav"
-#define DIR_SON_ENIRONNEMENT_WALK "room/walk.wav"
+#define DIR_SON_ENIRONNEMENT_1 "../room/borne1.wav"
+#define DIR_SON_ENIRONNEMENT_2 "../room/borne2.wav"
+#define DIR_SON_ENIRONNEMENT_3 "../room/borne3.wav"
+#define DIR_SON_ENIRONNEMENT_WALK "../room/walk.wav"
 // POLICE
-#define DIR_FONT_SEGA "room/sega.ttf"
-#define DIR_FONT_POLICE "room/police.ttf"
+#define DIR_FONT_SEGA "../room/sega.ttf"
+#define DIR_FONT_POLICE "../room/police.ttf"
 //OBJS
-#define DIR_OBJ_LOAD "room/salle.obj"
+#define DIR_OBJ_LOAD "../room/salle.obj"
 // EMPLACEMENT FIHCIER NECESSAIRE
 
 #define VITESSE_DEPLACEMENT_COURIR 0.40F
@@ -917,7 +917,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 	// CREATION DE L'ICON D'APPLICATION
 	SDL_Surface *favicon;
-	if( ( favicon=IMG_Load("favicon.png") ) )
+	if( ( favicon=IMG_Load("../assets/image/favicon.png") ) )
 		SDL_SetWindowIcon(Window, favicon);
 	else
 		printf("Erreur chargement favicon\n");
@@ -2659,15 +2659,15 @@ void MessageQuitterRoom()
 	SDL_Surface *sImage = NULL;
 	if( WinWidth > 2000)
 	{
-		sImage = IMG_Load("room/exit@3.png");
+		sImage = IMG_Load("../room/exit@3.png");
 	}
 	else if ( WinWidth > 1300)
 	{
-		sImage = IMG_Load("room/exit@2.png");
+		sImage = IMG_Load("../room/exit@2.png");
 	}
 	else
 	{
-		sImage = IMG_Load("room/exit.png");
+		sImage = IMG_Load("../room/exit.png");
 	}
 
 	////////////////////////////////////////////////

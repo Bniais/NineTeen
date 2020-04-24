@@ -17,13 +17,13 @@ const Vector2f UNDEF = {-500, -500};
 typedef enum{S_BASKET, S_BACKGROUND, S_SNAKE, S_FRUITS, S_ANIM, S_HUD, S_CHIFFRE, S_LOADING}T_TEXTURES;
 
 char* DIR_TEXTURES_SNAKE[NB_SNAKE_TEXTURES] = {
-	"games/2_snake/Textures/basket.png",
-	"games/2_snake/Textures/backgroundSnake.png",
-	"games/2_snake/Textures/snake.png",
-	"games/2_snake/Textures/fruits.png",
-	"games/2_snake/Textures/anim.png",
-	"games/2_snake/Textures/hud.png",
-	"games/2_snake/Textures/chiffre.png",
+	"../games/2_snake/Textures/basket.png",
+	"../games/2_snake/Textures/backgroundSnake.png",
+	"../games/2_snake/Textures/snake.png",
+	"../games/2_snake/Textures/fruits.png",
+	"../games/2_snake/Textures/anim.png",
+	"../games/2_snake/Textures/hud.png",
+	"../games/2_snake/Textures/chiffre.png",
 	DIR_LOADING
 };
 
@@ -32,8 +32,8 @@ char* DIR_TEXTURES_SNAKE[NB_SNAKE_TEXTURES] = {
 typedef enum{S_BASE_FONT, S_FLAPPY}T_FONTS;
 
 char* DIR_FONTS_SNAKE[NB_SNAKE_FONTS] = {
-	"games/2_snake/Fonts/zorque.ttf",
-	"games/2_snake/Fonts/flappy.ttf"
+	"../games/2_snake/Fonts/zorque.ttf",
+	"../games/2_snake/Fonts/flappy.ttf"
 };
 
 //hud

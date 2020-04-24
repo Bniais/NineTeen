@@ -18,15 +18,15 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 
-#include "./include/textField.h"
-#include "./include/fullpath.h"
-#include "./include/communFunctions.h"
-#include "./include/libWeb.h"
-#include "./room/room.h"
+#include "include/textField.h"
+#include "include/fullpath.h"
+#include "include/communFunctions.h"
+#include "include/libWeb.h"
+#include "room/room.h"
 
 #include "define/define.h"
 
-#define DIR_OBJ_LOAD "room/salle.obj"
+#define DIR_OBJ_LOAD "../room/salle.obj"
 
 #include "launcher/launcher.h"
 
@@ -39,15 +39,15 @@
   #define DIR_TOKEN_FILE "/tmp/.Nineteen"
 #endif
 
-#define DIR_CONFIG_FILE "launcher/.config"
-#define DIR_MUSIC_FILE "assets/background.wav"
+#define DIR_CONFIG_FILE "../launcher/.config"
+#define DIR_MUSIC_FILE "../assets/background.wav"
 
-#define DIR_IMG_BACKGROUND "assets/image/launcher_no_font.png"
-#define DIR_ING_BACKGROUND_TXT "assets/image/launcher.png"
+#define DIR_IMG_BACKGROUND "../assets/image/launcher_no_font.png"
+#define DIR_ING_BACKGROUND_TXT "../assets/image/launcher.png"
 
 
-#define DIR_FONT_POLICE "assets/font/police.ttf"
-#define DIR_FONT_PASSWORD "assets/font/password.ttf"
+#define DIR_FONT_POLICE "../assets/font/police.ttf"
+#define DIR_FONT_PASSWORD "../assets/font/password.ttf"
 
 const SDL_Color rouge = {255,0,0};
 const	SDL_Color noir = {0,0,0};
@@ -767,7 +767,7 @@ int main(int argc, char *argv[])
     /////////////////////////////////////////////////////////////////
     // CHARGEMENT ICON
     // NOM PROBLEMATIQUE SI NON CHARGER ON APPLIQUE PAS SI NON CHARGER
-    if( ( favicon=IMG_Load("favicon.png") ) )
+    if( ( favicon=IMG_Load("../assert/image/favicon.png") ) )
       SDL_SetWindowIcon(window, favicon);
     else
       printf("Erreur chargement favicon\n");

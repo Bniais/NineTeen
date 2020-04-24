@@ -175,14 +175,14 @@ typedef enum{T_LASER_ANIM, T_BRICKS, T_BONUS, T_HUD_GRILLE, T_CHIFFRE, T_SPEED_J
 
 
 char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
-	"./games/5_tetris/Textures/laserAnim.png",
-	"./games/5_tetris/Textures/bricks.png",
-	"./games/5_tetris/Textures/bonus.png",
-	"./games/5_tetris/Textures/hud_grille.png",
-	"./games/5_tetris/Textures/chiffre.png",
-	"./games/5_tetris/Textures/speedJauge.png",
-	"./games/5_tetris/Textures/turn.png",
-	"./games/5_tetris/Textures/fleche.png",
+	"../games/5_tetris/Textures/laserAnim.png",
+	"../games/5_tetris/Textures/bricks.png",
+	"../games/5_tetris/Textures/bonus.png",
+	"../games/5_tetris/Textures/hud_grille.png",
+	"../games/5_tetris/Textures/chiffre.png",
+	"../games/5_tetris/Textures/speedJauge.png",
+	"../games/5_tetris/Textures/turn.png",
+	"../games/5_tetris/Textures/fleche.png",
 	DIR_LOADING
 };
 
@@ -302,7 +302,7 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 	typedef enum{T_FONT_COMBO}T_FONTS;
 
 	char* DIR_FONTS_TETRIS[NB_TETRIS_FONTS] = {
-		"./games/5_tetris/Fonts/zorque.ttf"
+		"../games/2_snake/Fonts/zorque.ttf"
 	};
 
 	//to test

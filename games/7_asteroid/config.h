@@ -9,24 +9,24 @@ typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD, T_ASTEROID, T_FISSUR
 int textureFloue[NB_ASTEROID_TEXTURES] =
 			{0		, 0	   , 0       , 0           , 0    , 0         , 0        , 0      , 1      , 0       , 1      , 1     , 1      , 0     , 0          , 0              , 0               , 0};
 char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
-	"games/7_asteroid/Textures/vaisseau.png",
-	"games/7_asteroid/Textures/gem.png",
-	"games/7_asteroid/Textures/thrust.png",
-	"games/7_asteroid/Textures/background.png",
-	"games/2_snake/Textures/hud.png",
-	"games/7_asteroid/Textures/asteroid.png",
-	"games/7_asteroid/Textures/fissure.png",
-	"games/7_asteroid/Textures/glace.png",
-	"games/7_asteroid/Textures/bonus.png",
-	"games/7_asteroid/Textures/bullet.png",
-	"games/7_asteroid/Textures/laser_beam.png",
-	"games/7_asteroid/Textures/roue.png",
-	"games/7_asteroid/Textures/jauge.png",
-	"games/7_asteroid/Textures/bomb.png",
-	"games/7_asteroid/Textures/bombIcon.png",
-	"games/7_asteroid/Textures/explo.png",
-	"games/7_asteroid/Textures/explo2.png",
-	"games/7_asteroid/Textures/explo3.png"
+	"../games/7_asteroid/Textures/vaisseau.png",
+	"../games/7_asteroid/Textures/gem.png",
+	"../games/7_asteroid/Textures/thrust.png",
+	"../games/7_asteroid/Textures/background.png",
+	"../games/2_snake/Textures/hud.png",
+	"../games/7_asteroid/Textures/asteroid.png",
+	"../games/7_asteroid/Textures/fissure.png",
+	"../games/7_asteroid/Textures/glace.png",
+	"../games/7_asteroid/Textures/bonus.png",
+	"../games/7_asteroid/Textures/bullet.png",
+	"../games/7_asteroid/Textures/laser_beam.png",
+	"../games/7_asteroid/Textures/roue.png",
+	"../games/7_asteroid/Textures/jauge.png",
+	"../games/7_asteroid/Textures/bomb.png",
+	"../games/7_asteroid/Textures/bombIcon.png",
+	"../games/7_asteroid/Textures/explo.png",
+	"../games/7_asteroid/Textures/explo2.png",
+	"../games/7_asteroid/Textures/explo3.png"
 };
 
 static const SDL_Color HUD_COLOR = {0x2f,0x30,0x4f};
@@ -36,7 +36,7 @@ typedef enum{FONT_BONUS}FONTS;
 
 
 char* DIR_FONTS_ASTEROID[NB_ASTEROID_FONTS] = {
-	"games/2_snake/Fonts/zorque.ttf"
+	"../games/2_snake/Fonts/zorque.ttf"
 };
 
 

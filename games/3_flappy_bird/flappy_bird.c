@@ -68,20 +68,20 @@ const int VITESSE_DEPLACEMENT_DECOR = 8 / (FPS/30); // vitesse de deplacement de
 #define BAN_CODE -666
 
 // ADRESS TEXTURE
-#define DIR_TILSET "games/3_flappy_bird/Textures/tilset.png"
-#define DIR_BIRDS "games/3_flappy_bird/Textures/birds.png"
-#define DIR_MEDALS "games/3_flappy_bird/Textures/medals.png"
-#define DIR_PIPES "games/3_flappy_bird/Textures/pipes.png"
-#define DIR_SCOREBOARD "games/3_flappy_bird/Textures/scoreBoard.png"
-#define DIR_BACKGROUND "games/3_flappy_bird/Textures/backgrounds.png"
-#define DIR_NUM "games/3_flappy_bird/Textures/chiffre.png"
-#define DIR_SOL "games/3_flappy_bird/Textures/sol.png"
-#define DIR_HIGHSCORE "games/3_flappy_bird/Textures/high_score.png"
+#define DIR_TILSET "../games/3_flappy_bird/Textures/tilset.png"
+#define DIR_BIRDS "../games/3_flappy_bird/Textures/birds.png"
+#define DIR_MEDALS "../games/3_flappy_bird/Textures/medals.png"
+#define DIR_PIPES "../games/3_flappy_bird/Textures/pipes.png"
+#define DIR_SCOREBOARD "../games/3_flappy_bird/Textures/scoreBoard.png"
+#define DIR_BACKGROUND "../games/3_flappy_bird/Textures/backgrounds.png"
+#define DIR_NUM "../games/3_flappy_bird/Textures/chiffre.png"
+#define DIR_SOL "../games/3_flappy_bird/Textures/sol.png"
+#define DIR_HIGHSCORE "../games/3_flappy_bird/Textures/high_score.png"
 
 // ADRESS SOUND
-#define DIR_FLAP_WAV "games/3_flappy_bird/Sounds/flap.wav"
-#define DIR_HURT_WAV "games/3_flappy_bird/Sounds/hurt.wav"
-#define DIR_SCORE_WAV "games/3_flappy_bird/Sounds/score.wav"
+#define DIR_FLAP_WAV "../games/3_flappy_bird/Sounds/flap.wav"
+#define DIR_HURT_WAV "../games/3_flappy_bird/Sounds/hurt.wav"
+#define DIR_SCORE_WAV "../games/3_flappy_bird/Sounds/score.wav"
 
 //LOCAL ERROR CODE
 #define IMAGE_ERROR_LOAD -101
