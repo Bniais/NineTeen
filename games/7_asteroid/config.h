@@ -13,7 +13,7 @@ char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
 	"games/7_asteroid/Textures/gem.png",
 	"games/7_asteroid/Textures/thrust.png",
 	"games/7_asteroid/Textures/background.png",
-	"games/7_asteroid/Textures/hud.png",
+	"games/2_snake/Textures/hud.png",
 	"games/7_asteroid/Textures/asteroid.png",
 	"games/7_asteroid/Textures/fissure.png",
 	"games/7_asteroid/Textures/glace.png",
@@ -29,7 +29,7 @@ char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
 	"games/7_asteroid/Textures/explo3.png"
 };
 
-static const SDL_Color HUD_COLOR = {0x40,0x40,0x40};
+static const SDL_Color HUD_COLOR = {0x2f,0x30,0x4f};
 
 #define NB_ASTEROID_FONTS 1
 typedef enum{FONT_BONUS}FONTS;
@@ -105,8 +105,8 @@ SDL_Point coord_spawn[3]={{0,0},{0,(PLAYGROUND_SIZE_H/2)},{(PLAYGROUND_SIZE_W/2)
 #define VITESSE_MAX_ASTEROID 18
 #define START_DIFFICULTE 1.5
 #define DIFFICULTE_MIN_SPLIT 5
-#define RATIO_DIFFICULTE_AUGMENT 0.004
-#define RATIO_DIFFICULTE_AUGMENT_MULTI 0.0001
+#define RATIO_DIFFICULTE_AUGMENT 0.0026
+#define RATIO_DIFFICULTE_AUGMENT_MULTI 0.00042
 #define MAX_VITESSE_ROTA 14
 
 #define NB_ASTE_TEXTURES 6
@@ -239,7 +239,7 @@ static const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
 #define NB_TIR_MAX 3
 #define NB_BONUS_POINT 3
 #define MAX_BOMBE_NUCLEAIRE 1
-int BONUS_POINT[NB_BONUS_POINT]={15,50,100};
+int BONUS_POINT[NB_BONUS_POINT]={500,1500,5000};
 typedef enum{
   PETIT,
   MOYEN,
@@ -265,7 +265,7 @@ char * TEXT_BONUS[NB_BONUS + NB_MISSILES - 1]= {
 	"Degat !",
 	"Bombe nucleaire !",
 	"+500 points !",
-	"+2500 points !",
+	"+1500 points !",
 	"+5000 points !",
 	"Munitions zigzag !",
 	"Munitions a tete chercheuse !",
@@ -282,7 +282,7 @@ typedef struct {int id; int frame;}TextBonus;
 const SDL_Color BONUS_TEXT_COLOR = {0xa7,0x96,0xff};
 static const int ALPHA_BONUS[FRAME_SHOW_BONUS_TEXT] = { 40, 80, 160, 200, 235,   255, 255, 255, 255, 255,	 255, 255, 255, 255, 255,	 255, 255, 255, 255, 255,   245, 235, 225, 215, 205,   180, 150, 110, 80, 40 };
 
-int CHANCE_BONUS[NB_BONUS + NB_MISSILES - 1]={1,3,1,3,3,1,9,6,3, 3,3,3,3};
+int CHANCE_BONUS[NB_BONUS + NB_MISSILES - 1]={1,3,1,3,2,1,10,4,1, 3,3,3,3};
 
 float angle_tir_multiple[NB_TIR_MAX][NB_TIR_MAX]={
   {0,0,0},//,0,0},
