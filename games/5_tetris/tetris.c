@@ -329,11 +329,12 @@ int almostRound( float f ){
 }
 
 /**
-*\fn int putAtTop(Piece *piece,  int matrix[GRILLE_W][GRILLE_H], int frameToGo)
+*\fn int putAtTop(Piece *piece,  int matrix[GRILLE_W][GRILLE_H], int frameToGo, int hardcore)
 *\brief Met une pièce en haut de la grille en vérifiant que c'est possible
 *\param piece La pièce à mettre en haut
 *\param matrix La grille
 *\param frameToGo Le nombre de frame avant que la pièce commence à tomber
+*\param hardcore Le mode de jeu
 *\return Vrai si la pièce a pu être placée, sinon faux
 */
 int putAtTop(Piece *piece,  int matrix[GRILLE_W][GRILLE_H], int frameToGo, int hardcore){
@@ -370,7 +371,7 @@ void putAtNextPiece(Piece *piece){
 }
 
 /**
-*\fn void drawPiece(SDL_Renderer *renderer, Piece piece, SDL_Texture* brickTexture, SDL_Texture *bonusTexture, int isNextPiece, int hardcore)
+*\fn void drawPiece(SDL_Renderer *renderer, Piece piece, SDL_Texture *brickTexture, SDL_Texture *bonusTexture, int isNextPiece, int hardcore)
 *\brief Dessine une pièce (en train de tomber ou à venir)
 *\param renderer Le renderer où dessiner
 *\param piece La pièce à dessiner
@@ -379,7 +380,7 @@ void putAtNextPiece(Piece *piece){
 *\param isNextPiece Indique si c'est une pièce à venir ou qui est en train de tomber
 *\param hardcore La difficulté de la partie
 */
-void drawPiece(SDL_Renderer *renderer, Piece piece, SDL_Texture* brickTexture, SDL_Texture *bonusTexture, int isNextPiece, int hardcore){
+void drawPiece(SDL_Renderer *renderer, Piece piece, SDL_Texture *brickTexture, SDL_Texture *bonusTexture, int isNextPiece, int hardcore){
 	int caseSize = CASE_SIZE;
 	SDL_Point shiftCenterNext={0,0};
 
@@ -704,13 +705,13 @@ int compareInt_i(const int * a,const int * b){
 }
 
 /**
-*\fn int compareInt(const void *a,const void* b)
+*\fn int compareInt(const void * a,const void * b)
 *\brief Fonction de comparaison inversée de deux entiers avec types adaptés pour qsort
 *\param a Le premier entier
 *\param b Le deuxième entier
 *\return Une valeur positive si a>b et négative si b>a
 */
-int compareInt(const void *a,const void* b){
+int compareInt(const void * a,const void * b){
 	return compareInt_i(a, b);
 }
 
@@ -837,7 +838,7 @@ int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H]
 }
 
 /**
-*\fn void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse, int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int* nextIsGiant)
+*\fn void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse, int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int *nextIsGiant)
 *\brief Effectue l'action d'un bonus
 *\param bonusId L'identifiant du bonus
 *\param frameLaser Les frames d'animation du bonus LASER
@@ -847,7 +848,7 @@ int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H]
 *\param matrixFill Les frames d'animation du bonus FILL
 *\param nextIsGiant Indique si la prochaine pièce est géante
 */
-void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse, int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int* nextIsGiant){
+void useBonus(int bonusId, int frameLaser[GRILLE_H], int *framePassed, int nbUse, int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int *nextIsGiant){
 	switch (bonusId) {
 		case FILL:
 			getFillPlaces(matrix, matrixFill, nbUse*NB_FILL);
@@ -1221,7 +1222,7 @@ int lineEmpty(int matrix[GRILLE_W][GRILLE_H], int line ){
 }
 
 /**
-*\fn void updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], Score * scoreAffichage, Score * scoreAdd, ScoreTotal* scoreTotal,int *frameDestJauge,long int frameTotalSpeed,long int * frameTotalShow)
+*\fn int updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], Score *scoreAffichage, Score *scoreAdd, ScoreTotal *scoreTotal,int *frameDestJauge,long int frameTotalSpeed,long int *frameTotalShow, long long *score_hash, long keys[4])
 *\brief Actualise toutes les animations et réagis lorsqu'elles arrivent à certains moments
 *\remark De nombreuses variables et choses différentes se passent dans cette fonction, mais pour beaucoup elles dépendent les unes des autres donc décomposer en fonction ne ferait qu'ajouter des appels lourds
 *\param frameLaser Les animations de LASER
@@ -1235,8 +1236,10 @@ int lineEmpty(int matrix[GRILLE_W][GRILLE_H], int line ){
 *\param frameDestJauge Les frames de l'animation de remplissage de la jauge
 *\param frameTotalSpeed Le nombre de frame total compabilisé avec bonus
 *\param frameTotalShow Le nombre de frame total qui tend vers frameTotalSpeed pour l'animation d'update score total
+*\param score_hash le score hashé
+*\param keys les clés de hashage
 */
-int updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], Score * scoreAffichage, Score * scoreAdd, ScoreTotal* scoreTotal,int *frameDestJauge,long int frameTotalSpeed,long int * frameTotalShow, long long * score_hash, long keys[4]){
+int updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], Score *scoreAffichage, Score *scoreAdd, ScoreTotal *scoreTotal,int *frameDestJauge,long int frameTotalSpeed,long int *frameTotalShow, long long *score_hash, long keys[4]){
 
 
 	if(scoreTotal->frameToDest){
@@ -1472,7 +1475,7 @@ void drawTotalScore(SDL_Renderer * renderer, TTF_Font *font, ScoreTotal score){
 }
 
 /**
-*\fn void drawHelpText(SDL_Renderer * renderer, TTF_Font *font, SDL_Texture * flecheTexture, SDL_Texture * turnTexture, SDL_Texture* bonusTexture, SDL_Texture* brickTexture)
+*\fn void drawHelpText(SDL_Renderer *renderer, TTF_Font *font, SDL_Texture *flecheTexture, SDL_Texture *turnTexture, SDL_Texture *bonusTexture, SDL_Texture *brickTexture)
 *\brief Affiche les commandes et explications des bonus
 *\param renderer Le renderer où afficher
 *\param font La police d'écriture
@@ -1481,7 +1484,7 @@ void drawTotalScore(SDL_Renderer * renderer, TTF_Font *font, ScoreTotal score){
 *\param bonusTexture La texture des bonus
 *\param brickTexture La texture des briques
 */
-void drawHelpText(SDL_Renderer * renderer, TTF_Font *font, SDL_Texture * flecheTexture, SDL_Texture * turnTexture, SDL_Texture* bonusTexture, SDL_Texture* brickTexture){
+void drawHelpText(SDL_Renderer *renderer, TTF_Font *font, SDL_Texture *flecheTexture, SDL_Texture *turnTexture, SDL_Texture *bonusTexture, SDL_Texture *brickTexture){
 
 	//bonus
 	for(int i=0; i<NB_BONUSES; i++){
@@ -1724,14 +1727,14 @@ void deathAnimInit(int *gameOver,DeadPiece **deadPieces,int *nbDeadPieces, int m
 }
 
 /**
-*\fn void afficherDeadPiece(SDL_Renderer *renderer, DeadPiece deadPiece, SDL_Texture* brickTexture, SDL_Texture* bonusTexture)
+*\fn void afficherDeadPiece(SDL_Renderer *renderer, DeadPiece deadPiece, SDL_Texture * brickTexture, SDL_Texture * bonusTexture)
 *\brief Affiche une pièce morte de l'animation de fin de partie
 *\param renderer Le renderer où afficher
 *\param deadPiece La pièce morte à afficher
 *\param brickTexture La texture des briques
 *\param bonusTexture La texture des bonus
 */
-void afficherDeadPiece(SDL_Renderer *renderer, DeadPiece deadPiece, SDL_Texture* brickTexture, SDL_Texture* bonusTexture){
+void afficherDeadPiece(SDL_Renderer *renderer, DeadPiece deadPiece, SDL_Texture * brickTexture, SDL_Texture * bonusTexture){
 
 	SDL_Rect src = BRICK_SRC;
 	SDL_Rect dest = BRICK_DEST;
@@ -1766,6 +1769,16 @@ void moveDeadPiece(DeadPiece *deadPiece){
 	deadPiece->rota += deadPiece->rotaSpeed;
 }
 
+/**
+*\fn void myFrees(Piece * currentPiece, Piece * nextPiece, DeadPiece ** deadPieces, SDL_Texture * textures[NB_TETRIS_TEXTURES], TTF_Font * fonts[NB_TETRIS_FONTS], SDL_Thread ** thread)
+*\brief Libère la mémoire
+*\param currentPiece La pièce actuelle
+*\param nextPiece La pièce à venir
+*\param deadPieces Les briques de l'animation de fin
+*\param textures Les textures
+*\param fonts Les polices
+*\param thread Le thread d'envoi de score
+*/
 void myFrees(Piece * currentPiece, Piece * nextPiece, DeadPiece ** deadPieces, SDL_Texture * textures[NB_TETRIS_TEXTURES], TTF_Font * fonts[NB_TETRIS_FONTS], SDL_Thread ** thread){
 	if(currentPiece->grille){
 		free(currentPiece->grille);
