@@ -1292,6 +1292,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 		int rdyToBomb = SDL_TRUE;
 		int rdyToReloadBomb = SDL_TRUE;
 		int rdyToTab = SDL_TRUE;
+		int rdyToSpace = SDL_TRUE;
 
 		//DIFFICULTE
 		float difficulte =START_DIFFICULTE;
@@ -1353,9 +1354,12 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 			if(keystate[SDL_SCANCODE_ESCAPE]){
 				return 0;
 			}
-			else if(done && keystate[SDL_SCANCODE_SPACE]){
+			else if(rdyToSpace && keystate[SDL_SCANCODE_SPACE]){
 				break;
 			}
+
+			if(!keystate[SDL_SCANCODE_SPACE])
+				rdyToSpace = SDL_TRUE;
 
 
 			if(keystate[SDL_SCANCODE_TAB] && rdyToTab){
@@ -1447,23 +1451,27 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 
 			move(&vaisseau,accelerate);
 
-			if(!done &&keystate[SDL_SCANCODE_SPACE] && vaisseau.frame_recharge == 0 && munitions[vaisseau.missile_id]){
-				if(vaisseau.missile_id != SHOT_LASER){
-					tirer(&vaisseau,&missiles,&nb_missiles);
+			if(keystate[SDL_SCANCODE_SPACE]){
+				rdyToSpace=SDL_FALSE;
+				if(!done && vaisseau.frame_recharge == 0 && munitions[vaisseau.missile_id]){
+					if(vaisseau.missile_id != SHOT_LASER){
+						tirer(&vaisseau,&missiles,&nb_missiles);
+					}
+					munitions[vaisseau.missile_id] -= MUNITIONS_USAGE[vaisseau.missile_id] * MUNITIONS_USAGE_MULTIPLE[vaisseau.nb_tir];
+					if(munitions[vaisseau.missile_id] <= 0){
+						munitions[vaisseau.missile_id] = 0;
+
+						roue.rota_dest -= (NB_MISSILES-vaisseau.missile_id + (NB_ROUE_EMPLACEMENTS-NB_MISSILES)) * 360./NB_ROUE_EMPLACEMENTS;
+						roue.frame = FRAME_ROTA_ROUE;
+						jauge.frame = FRAME_ROTA_ROUE;
+
+						vaisseau.missile_id = SHOT_NORMAL;
+					}
+
+					jauge.frameAmmo = FRAME_AMMO;
 				}
-				munitions[vaisseau.missile_id] -= MUNITIONS_USAGE[vaisseau.missile_id] * MUNITIONS_USAGE_MULTIPLE[vaisseau.nb_tir];
-				if(munitions[vaisseau.missile_id] <= 0){
-					munitions[vaisseau.missile_id] = 0;
-
-					roue.rota_dest -= (NB_MISSILES-vaisseau.missile_id + (NB_ROUE_EMPLACEMENTS-NB_MISSILES)) * 360./NB_ROUE_EMPLACEMENTS;
-					roue.frame = FRAME_ROTA_ROUE;
-					jauge.frame = FRAME_ROTA_ROUE;
-
-					vaisseau.missile_id = SHOT_NORMAL;
-				}
-
-				jauge.frameAmmo = FRAME_AMMO;
 			}
+
 
 
 
