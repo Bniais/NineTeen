@@ -18,5 +18,3 @@ typedef struct {float x; float y;} Vector2f;
 
 //font
 #define OPEN_FONT_SIZE 100
-
-//colors

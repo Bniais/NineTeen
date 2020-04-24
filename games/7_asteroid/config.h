@@ -2,12 +2,28 @@
 //ASTEROID CONFIGS//
 /////////////////
 #include "../../define/define.h"
+#include "../../include/hashage.h"
+#include "../../include/libWeb.h"
+#include "../../include/communFunctions.h"
+/**
+*\struct ScoreTotal
+*\brief Contient des informations sur le score total
+*/
+typedef struct {
+	int score; /*!< \brief Le score total stocké */
+	float scoreShow; /*!< \brief Le score total affiché (tend vers score)*/
+	int frameToDest; /*!< \brief Le nombre de frame avant que scoreShow arrive à score*/
+}ScoreTotal;
+const SDL_Color SCORE_COLOR = {0x44,0xdd,0xFF};
+#define FRAME_SCORE_ANIM 20
+
+
 //textures
-#define NB_ASTEROID_TEXTURES 18
-typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD, T_ASTEROID, T_FISSURE, T_GLACE, T_BONUS, T_BULLET, T_LASER, T_ROUE, T_JAUGE, T_BOMB, T_BOMB_ICON, T_EXPLO_MISSILE, T_EXPLO_ASTEROID, T_EXPLO_GLACE}TEXTURES;
+#define NB_ASTEROID_TEXTURES 19
+typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD, T_ASTEROID, T_FISSURE, T_GLACE, T_BONUS, T_BULLET, T_LASER, T_ROUE, T_JAUGE, T_BOMB, T_BOMB_ICON,T_LOADING, T_EXPLO_MISSILE, T_EXPLO_ASTEROID, T_EXPLO_GLACE}TEXTURES;
 
 int textureFloue[NB_ASTEROID_TEXTURES] =
-			{0		, 0	   , 0       , 0           , 0    , 0         , 0        , 0      , 1      , 0       , 1      , 1     , 1      , 0     , 0          , 0              , 0               , 0};
+			{0		, 0	   , 0       , 0           , 0    , 0         , 0        , 0      , 1      , 0       , 1      , 1     , 1      , 0     , 0          , 0       , 0              , 0               , 0};
 char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
 	"../games/7_asteroid/Textures/vaisseau.png",
 	"../games/7_asteroid/Textures/gem.png",
@@ -24,6 +40,7 @@ char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
 	"../games/7_asteroid/Textures/jauge.png",
 	"../games/7_asteroid/Textures/bomb.png",
 	"../games/7_asteroid/Textures/bombIcon.png",
+	DIR_LOADING,
 	"../games/7_asteroid/Textures/explo.png",
 	"../games/7_asteroid/Textures/explo2.png",
 	"../games/7_asteroid/Textures/explo3.png"
@@ -31,17 +48,18 @@ char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
 
 static const SDL_Color HUD_COLOR = {0x2f,0x30,0x4f};
 
-#define NB_ASTEROID_FONTS 1
-typedef enum{FONT_BONUS}FONTS;
+#define NB_ASTEROID_FONTS 2
+typedef enum{FONT_BONUS, FONT_SCORE}FONTS;
 
 
 char* DIR_FONTS_ASTEROID[NB_ASTEROID_FONTS] = {
-	"../games/2_snake/Fonts/zorque.ttf"
+	"../games/2_snake/Fonts/zorque.ttf",
+	"../games/2_snake/Fonts/Demonized.ttf"
 };
 
 
 
-typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier;int missile_id; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust;}Vaiss;
+typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier;int missile_id; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust; int frame_explo;}Vaiss;
 
 typedef struct{float x; float y; float angle; float taille; int bonus; float pv; float pv_max; float vitesse; float difficulte; float difficulte_pere; float angle_rota; float vitesse_rota; int frame_hit; int frozen;}Asteroid;
 
@@ -110,6 +128,9 @@ SDL_Point coord_spawn[3]={{0,0},{0,(PLAYGROUND_SIZE_H/2)},{(PLAYGROUND_SIZE_W/2)
 #define MAX_VITESSE_ROTA 14
 
 #define NB_ASTE_TEXTURES 6
+const int SCORE_ASTEROID[NB_ASTE_TEXTURES] = {50, 100, 200, 300, 400, 500};
+#define NB_TRANCHE_TAILLE 4
+const float MULTI_TAILLE_SCORE[NB_TRANCHE_TAILLE] = {0.2, 0.4, 0.8 ,1};
 #define NB_TAILLE_ASTE 2
 #define NB_FISSURES 2
 #define MAX_DIFF 40
@@ -168,7 +189,7 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 	#define NB_LASER_BEAM 8
 	#define LASER_ACCEL 0.05
 	#define BASE_TAILLE_EXPLOSION 40
-	#define RATIO_DMG_UP_LASER 0.7
+	#define RATIO_DMG_UP_LASER 0.9
 
 	//attributs glace
 	#define DEAD_FROZEN -999
@@ -184,7 +205,7 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 	const float VITESSE_MISSILES[NB_MISSILES] = {1, 1.3, 1, 1.2, 0};
 
 	#define BASE_DEGAT_MISSILE 1.5
-	const float DEGAT_MISSILES[NB_MISSILES] = {1, 1.5, 3, 0, 4./30};
+	const float DEGAT_MISSILES[NB_MISSILES] = {1, 1.25, 4, 0, 4./30};
 
 	const int RAYON_MISSILES[NB_MISSILES] = {6, 10, 14, 10, 0};
 
@@ -194,8 +215,9 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 	const float DUREE_MISSILES[NB_MISSILES] = {1, 0.8, 1.7, 1, 0};
 
 
-	const float MUNITIONS_USAGE[NB_MISSILES] = {0, 0.01, 0.0334, 0.02, 1./(20*30)};
+	const float MUNITIONS_USAGE[NB_MISSILES] = {0, 0.01, 0.0334, 0.02, 1./(15*30)};
 											  //INF / 100 / 33 /  50/ 20s
+
 
     #define MAX_RATIO_AMMO_OBTAINABLE 0.5
 	#define AMMO_GRANT 0.5
@@ -229,7 +251,8 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 #define FRAMES_PER_SECOND 30
 static const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
 
-
+//dead
+#define MIN_VITESSE_DRAW_REPLAY 4
 
 //Bonus
 
@@ -237,6 +260,7 @@ static const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
 #define NO_BONUS -1
 #define PROBA_BONUS 3
 #define NB_TIR_MAX 3
+const float MUNITIONS_USAGE_MULTIPLE[NB_TIR_MAX]={1,1.3,1.50};
 #define NB_BONUS_POINT 3
 #define MAX_BOMBE_NUCLEAIRE 1
 int BONUS_POINT[NB_BONUS_POINT]={500,1500,5000};

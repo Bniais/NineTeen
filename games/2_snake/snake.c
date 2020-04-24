@@ -541,30 +541,6 @@ static void drawQuit(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSi
 	SDL_DestroyTexture(Message);
 }
 
-/**
-*\fn void drawReplay(SDL_Renderer* renderer, TTF_Font* font)
-*\brief Affiche un texte invitant le joueur à rejouer
-*\param renderer Le renderer où afficher
-*\param font La police d'écriture
-*/
-static void drawReplay(SDL_Renderer* renderer, TTF_Font* font){
-	char * text = REPLAY;
-
-	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, WHITE);
-	SDL_Rect dest;
-	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-	SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
-	dest.w /= (OPEN_FONT_SIZE / SIZE_REPLAY);
-	dest.h /= (OPEN_FONT_SIZE / SIZE_REPLAY);
-
-	//centrer
-	dest.x = PLAYGROUND_SIZE_W/2 - dest.w/2;
-	dest.y = PLAYGROUND_SIZE_H/2 - dest.h/2;
-
-	SDL_RenderCopy(renderer, Message, NULL, &dest);
-	SDL_FreeSurface(surfaceMessage);
-	SDL_DestroyTexture(Message);
-}
 
 
 static void drawJauge(SDL_Renderer *renderer, SDL_Texture *basketTexture, float ratioWindowSize, float jaugeValue){

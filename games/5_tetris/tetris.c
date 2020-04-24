@@ -1562,32 +1562,6 @@ void drawQuit(SDL_Renderer* renderer, TTF_Font* font){
 	SDL_DestroyTexture(Message);
 }
 
-
-/**
-*\fn void drawReplay(SDL_Renderer* renderer, TTF_Font* font)
-*\brief Affiche un texte invitant le joueur à rejouer
-*\param renderer Le renderer où afficher
-*\param font La police d'écriture
-*/
-void drawReplay(SDL_Renderer* renderer, TTF_Font* font){
-	char * text = REPLAY;
-
-	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, WHITE);
-	SDL_Rect dest;
-	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-	SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
-	dest.w /= (OPEN_FONT_SIZE / SIZE_REPLAY);
-	dest.h /= (OPEN_FONT_SIZE / SIZE_REPLAY);
-
-	//centrer
-	dest.x = BASE_WINDOW_W/2 - dest.w/2;
-	dest.y = BASE_WINDOW_H/2 - dest.h/2;
-
-	SDL_RenderCopy(renderer, Message, NULL, &dest);
-	SDL_FreeSurface(surfaceMessage);
-	SDL_DestroyTexture(Message);
-}
-
 /**
 *\fn void drawCombo(SDL_Renderer *renderer, Score scoreAffichage, int line, TTF_Font *font )
 *\brief Determine les textes de combos et leurs attributs et les affiche

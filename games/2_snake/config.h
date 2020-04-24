@@ -9,7 +9,6 @@
 #define ACCELERATE_ENABLED 2
 #define HIT 1
 #define NO_HIT 0
-static const SDL_Color WHITE = {255,255,255};
 const SDL_Point ESPACE_DISPLAY_WINDOW = {67, 57};
 const Vector2f UNDEF = {-500, -500};
 //textures
@@ -43,7 +42,7 @@ char* DIR_FONTS_SNAKE[NB_SNAKE_FONTS] = {
 	#define SIZE_QUIT 28.
 
 	///replay
-	static char* REPLAY = "Appuyer sur Espace pour rejouer !";
+
 	#define RELAY_SNAKE_SIZE 15
 	#define SIZE_REPLAY 43.
 

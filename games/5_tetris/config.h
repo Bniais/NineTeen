@@ -9,7 +9,6 @@
 #include"pieces.h"
 
 //system
-static const SDL_Color WHITE = {255,255,255};
 const Vector2f UNDEFINED = {-500, -500};
 #define FRAMES_PER_SECOND 30
 
@@ -219,9 +218,8 @@ char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
 	#define SIZE_QUIT 28.
 
 	///replay
-	char* REPLAY = "Appuyer sur Espace pour rejouer !";
 	#define Y_START_REPLAY BASE_WINDOW_H
-	#define SIZE_REPLAY 43.
+
 
 
 	//helpText

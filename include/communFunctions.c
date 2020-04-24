@@ -106,3 +106,31 @@ void afficherRetour(SDL_Renderer * renderer, SDL_Texture * loadingTexture,TTF_Fo
 		SDL_DestroyTexture(Message);
 	}
 }
+
+char* REPLAY = "Appuyer sur Espace pour jouer !";
+#define SIZE_REPLAY 43.
+SDL_Color WHITE = {255,255,255,255};
+/**
+*\fn void drawReplay(SDL_Renderer* renderer, TTF_Font* font)
+*\brief Affiche un texte invitant le joueur à rejouer
+*\param renderer Le renderer où afficher
+*\param font La police d'écriture
+*/
+void drawReplay(SDL_Renderer* renderer, TTF_Font* font){
+	char * text = REPLAY;
+
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, WHITE);
+	SDL_Rect dest;
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+	SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+	dest.w /= (OPEN_FONT_SIZE / SIZE_REPLAY);
+	dest.h /= (OPEN_FONT_SIZE / SIZE_REPLAY);
+
+	//centrer
+	dest.x = PLAYGROUND_SIZE_W/2 - dest.w/2;
+	dest.y = PLAYGROUND_SIZE_H/2 - dest.h/2;
+
+	SDL_RenderCopy(renderer, Message, NULL, &dest);
+	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(Message);
+}
