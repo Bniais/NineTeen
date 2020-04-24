@@ -399,7 +399,7 @@ void MessageQuitterRoom();
 
 
 /////////////////////////////////////////////////////
-/// \fn void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context);
+/// \fn void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme,  int *jouerSonPorteHomme);
 /// \brief permet de lancer une machine de jeux comprend plusieur fonction annexe
 ///
 /// \param const C_STRUCT aiScene *scene permet de passer la scene a re afficher au retour de la machine
@@ -411,10 +411,12 @@ void MessageQuitterRoom();
 /// \param GLuint *scene_list liste des scenes
 /// \param SDL_Window *Window fenetre sdl/opengl
 /// \param SDL_GLContext *Context context sdl/opengl
+/// \param int *jouerSonPorteFemme
+/// \param int *jouerSonPorteHomme
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context);
+void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme,  int *jouerSonPorteHomme);
 
 
 /////////////////////////////////////////////////////
@@ -818,6 +820,145 @@ void GLlightMode()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera)
+{
+
+	//////////////////////////////////////////////////////////
+	///////// SI IL FAUT JOUER UN SON POUR LES FEMMES
+	if(*jouerSonPorteFemme == 1)
+	{
+		Mix_PlayChannel(3,sas_ouverture,0);
+		*jouerSonPorteFemme = 0;
+	}
+	if(*jouerSonPorteFemme == 2)
+	{
+		Mix_PlayChannel(3,sas_fermeture,0);
+		*jouerSonPorteFemme = 0;
+	}
+	//////////////////////////////////////////////////////////
+	///////// SI IL FAUT JOUER UN SON POUR LES HOMME
+	if(*jouerSonPorteHomme == 1)
+	{
+		Mix_PlayChannel(3,sas_ouverture,0);
+		*jouerSonPorteHomme = 0;
+	}
+	if(*jouerSonPorteHomme == 2)
+	{
+		Mix_PlayChannel(3,sas_fermeture,0);
+		*jouerSonPorteHomme = 0;
+	}
+
+
+	//////////////////////////////////////////////////////////
+	// GESTION DES STATUS DE CHAQUE PORTE
+	//////////////////////////////////////////////////////////
+	// PORTE EN COURS D OUVERTURE FEMME
+	if( *statutPorteFemme == OUVERTURE )
+	{
+		//////////////////////////////////////////////////////////
+		// REGLAGE SON TOILETTE FEMME
+		reglageVolume(3,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,4.0,camera.angle);
+
+		toiletteFemme.x += 0.1;
+		if( toiletteFemme.x >= 23.0 )
+		{
+			*statutPorteFemme = OUVERTE;
+			*toiletteFemmeOuverteDelai = SDL_GetTicks();
+		}
+	}
+	//////////////////////////////////////////////////////////
+	// PORTE EN COURS D OUVERTURE HOMME
+	if( *statutPorteHomme == OUVERTURE )
+	{
+		//////////////////////////////////////////////////////////
+		// REGLAGE SON TOILETTE FEMME
+		reglageVolume(3,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,4.0,camera.angle);
+
+		toiletteHomme.x += 0.1;
+		if( toiletteHomme.x >= 23.0 )
+		{
+			*statutPorteHomme = OUVERTE;
+			*toiletteHommeOuverteDelai = SDL_GetTicks();
+		}
+	}
+
+	//////////////////////////////////////////////////////////
+	// PORTE EN COURS DE FERMETURE FEMME
+	if( *statutPorteFemme == FERMETURE )
+	{
+			toiletteFemme.x -= 0.1;
+			if( toiletteFemme.x < 20.3 )
+				*statutPorteFemme = FERMER;
+	}
+	//////////////////////////////////////////////////////////
+	// PORTE EN COURS DE FERMETURE HOMME
+	if( *statutPorteHomme == FERMETURE )
+	{
+			toiletteHomme.x -= 0.1;
+			if( toiletteHomme.x < 20.3 )
+				*statutPorteHomme = FERMER;
+	}
+
+
+	//////////////////////////////////////////////////////////
+	// FERMETURE AUTOMATIQUE FEMME
+	if( *statutPorteFemme == OUVERTE )
+	{
+		if( ( *toiletteFemmeOuverteDelai + 3000) < SDL_GetTicks() )
+		{
+			*statutPorteFemme = FERMETURE;
+			*toiletteFemmeOuverteDelai = 0;
+			*jouerSonPorteFemme = 2;
+		}
+	}
+	//////////////////////////////////////////////////////////
+	// FERMETURE AUTOMATIQUE FEMME
+	if( *statutPorteHomme == OUVERTE )
+	{
+		if( ( *toiletteHommeOuverteDelai + 3000) < SDL_GetTicks() )
+		{
+			*statutPorteHomme = FERMETURE;
+			*toiletteHommeOuverteDelai = 0;
+			*jouerSonPorteHomme = 2;
+		}
+	}
+
+
+	//////////////////////////////////////////////////////////
+	// OUBERTURE INTERIEUR AUTOMATIQUE
+	int toilette = detecterOuvertureToilette(camera.px,camera.pz,camera.angle);
+	switch (toilette) {
+		case 3:{
+			if( *statutPorteFemme != OUVERTE && *statutPorteFemme != OUVERTURE)
+			{
+				*statutPorteFemme = OUVERTURE;
+				*jouerSonPorteFemme = 1;
+			}
+		}break;
+		case 4:{
+			if( *statutPorteHomme != OUVERTE && *statutPorteHomme != OUVERTURE)
+			{
+				*statutPorteHomme = OUVERTURE;
+			}
+		}break;
+	}
+}
+
+
+
+
+
 int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene)
 {
 	//////////////////////////////////////////////////////////
@@ -882,6 +1023,21 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_WALK);
 		return EXIT_FAILURE;
 	}
+
+	Mix_Chunk *sas_ouverture = Mix_LoadWAV("../room/SF-ouvport.wav");
+	if( !sas_ouverture )
+	{
+		printf("Erreur de chargement son %s\n","../room/SF-ouvport.wav");
+		return EXIT_FAILURE;
+	}
+	Mix_Chunk *sas_fermeture = Mix_LoadWAV("../room/SF-fermport.wav");
+	if( !sas_ouverture )
+	{
+		printf("Erreur de chargement son %s\n","../room/SF-fermport.wav");
+		return EXIT_FAILURE;
+	}
+	int jouerSonPorteFemme = 0;
+	int jouerSonPorteHomme = 0;
 	//////////////////////////////////////////////////////////
 	// LANCER LES MUSIQUE D'AMBIANCE //
 	Mix_PlayChannel(0 , music_01, -1);
@@ -992,6 +1148,9 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		reglageVolume(2,0.0,0.0,camera.px,camera.pz,10.0,camera.angle);
 		//////////////////////////////////////////////////////////
 
+
+
+
 		//////////////////////////////////////////////////////////
 		// JOUER SON BRUIT DE PAS QUAND C'EST NECESSAIRE
 		bruitagePas(&jouerSon,camera,3,music_walk);
@@ -1028,7 +1187,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		//////////////////////////////////////////////////////////
 		// LANCEMENT DES MACHINES
-		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context);
+		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme);
 		//////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////
@@ -1049,89 +1208,14 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 
 		//////////////////////////////////////////////////////////
+		/////////
+		/////////
+		/////////
+		//////////////////////////////////////////////////////////
 		// ANIMATION PORTE TOILETTES
-		if( statutPorteFemme == OUVERTURE )
-		{
-			toiletteFemme.x += 0.1;
-			if( toiletteFemme.x >= 23.0 )
-			{
-				statutPorteFemme = OUVERTE;
-				toiletteFemmeOuverteDelai = SDL_GetTicks();
-			}
-		}
-		if( statutPorteHomme == OUVERTURE )
-		{
-			toiletteHomme.x += 0.1;
-			if( toiletteHomme.x >= 23.0 )
-			{
-				statutPorteHomme = OUVERTE;
-				toiletteHommeOuverteDelai = SDL_GetTicks();
-			}
-		}
 
+		animationPorteToilette(&statutPorteFemme,&statutPorteHomme,&jouerSonPorteFemme,&jouerSonPorteHomme,&toiletteFemmeOuverteDelai,&toiletteHommeOuverteDelai ,sas_ouverture, sas_fermeture,camera);
 
-		if( statutPorteFemme == FERMETURE )
-		{
-			if(camera.px > toiletteFemme.x - 1.5 )
-			{
-				statutPorteFemme = OUVERTURE;
-			}
-			else
-			{
-				toiletteFemme.x -= 0.1;
-				if( toiletteFemme.x < 20.3 )
-					statutPorteFemme = FERMER;
-			}
-		}
-		if( statutPorteHomme == FERMETURE )
-		{
-			if(camera.px > toiletteHomme.x  - 1.5 && camera.pz > 0.9 && camera.pz < 1.4)
-			{
-				statutPorteFemme = OUVERTURE;
-			}
-			else
-			{
-				toiletteHomme.x -= 0.1;
-				if( toiletteHomme.x < 20.3 )
-					statutPorteHomme = FERMER;
-			}
-
-		}
-
-		//////////////////////////////////////
-		// FERMETURE AUTOMATIQUE
-		if( statutPorteFemme == OUVERTE )
-		{
-			if( (toiletteFemmeOuverteDelai + 3000) < SDL_GetTicks() )
-			{
-				statutPorteFemme = FERMETURE;
-				toiletteFemmeOuverteDelai = 0;
-			}
-		}
-		if( statutPorteHomme == OUVERTE )
-		{
-			if( (toiletteHommeOuverteDelai + 3000) < SDL_GetTicks() )
-			{
-				statutPorteHomme = FERMETURE;
-				toiletteHommeOuverteDelai = 0;
-			}
-		}
-
-		int toilette = detecterOuvertureToilette(camera.px,camera.pz,camera.angle);
-		switch (toilette) {
-			case 3:{
-				if(statutPorteFemme != OUVERTE && statutPorteFemme != OUVERTURE)
-				{
-					statutPorteFemme = OUVERTURE;
-				}
-			}break;
-			case 4:{
-				if(statutPorteHomme != OUVERTE && statutPorteHomme != OUVERTURE)
-				{
-					statutPorteHomme = OUVERTURE;
-				}
-			}break;
-		}
 
 
 	}
@@ -1144,6 +1228,8 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	Mix_FreeChunk(music_02 );
 	Mix_FreeChunk(music_03 );
 	Mix_FreeChunk(music_walk );
+	Mix_FreeChunk(sas_ouverture );
+	Mix_FreeChunk(sas_fermeture );
 	//////////////////////////////////////////////////////////
 	// LIBERATION DES POLICES
 	TTF_CloseFont(font);
@@ -1158,8 +1244,6 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 	return EXIT_SUCCESS;
 }
-
-
 
 
 
@@ -2372,7 +2456,7 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 
 }
 
-void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context)
+void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme , int *jouerSonPorteHomme)
 {
 
 
@@ -2598,11 +2682,17 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							switch (machine) {
 								case 1:{
 									if(!statutPorteFemme)
+									{
+										*jouerSonPorteFemme = 1;
 										statutPorteFemme = OUVERTURE;
+									}
 								}break;
 								case 2:{
 									if(!statutPorteHomme)
+									{
+										*jouerSonPorteHomme = 1;
 										statutPorteHomme = OUVERTURE;
+									}
 								}break;
 								default:break;
 							}
