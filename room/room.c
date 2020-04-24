@@ -870,11 +870,14 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 		// REGLAGE SON TOILETTE FEMME
 		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,8.0,camera.angle, MIX_MAX_VOLUME);
 
-		toiletteFemme.x += 0.1;
 		if( toiletteFemme.x >= 23.0 )
 		{
 			*statutPorteFemme = OUVERTE;
 			*toiletteFemmeOuverteDelai = SDL_GetTicks();
+		}
+		else
+		{
+			toiletteFemme.x += 0.1;
 		}
 	}
 	//////////////////////////////////////////////////////////
@@ -885,29 +888,66 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 		// REGLAGE SON TOILETTE FEMME
 		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, MIX_MAX_VOLUME);
 
-		toiletteHomme.x += 0.1;
+
 		if( toiletteHomme.x >= 23.0 )
 		{
 			*statutPorteHomme = OUVERTE;
 			*toiletteHommeOuverteDelai = SDL_GetTicks();
 		}
+		else
+		{
+			toiletteHomme.x += 0.1;
+		}
+
 	}
 
 	//////////////////////////////////////////////////////////
 	// PORTE EN COURS DE FERMETURE FEMME
 	if( *statutPorteFemme == FERMETURE )
 	{
-			toiletteFemme.x -= 0.1;
+		////////////////////////////////////////////////////////
+		// RE OUVRIR SI PASSAGE DEVANT LA PORTE DURANT LA FERMETURE
+		if(camera.px > 19.0 && camera.pz < 9.0 && camera.pz > 8.0)
+		{
+			printf("RE OUVRIR\n" );
+			*statutPorteFemme = OUVERTURE;
+			*toiletteFemmeOuverteDelai = 0;
+			*jouerSonPorteFemme = 1;
+		}
+		////////////////////////////////////////////////////////
+		// BOUCLE DE FERMETURE
+		else
+		{
 			if( toiletteFemme.x < 20.3 )
 				*statutPorteFemme = FERMER;
+			else
+				toiletteFemme.x -= 0.1;
+		}
+
 	}
 	//////////////////////////////////////////////////////////
 	// PORTE EN COURS DE FERMETURE HOMME
 	if( *statutPorteHomme == FERMETURE )
 	{
-			toiletteHomme.x -= 0.1;
+		////////////////////////////////////////////////////////
+		// RE OUVRIR SI PASSAGE DEVANT LA PORTE DURANT LA FERMETURE
+		if(camera.px > 19.0 && camera.pz < 1.5 && camera.pz > 0.4)
+		{
+			printf("RE OUVRIR\n" );
+			*statutPorteHomme = OUVERTURE;
+			*toiletteHommeOuverteDelai = 0;
+			*jouerSonPorteHomme = 1;
+		}
+		////////////////////////////////////////////////////////
+		// BOUCLE DE FERMETURE
+		else
+		{
 			if( toiletteHomme.x < 20.3 )
 				*statutPorteHomme = FERMER;
+			else
+				toiletteHomme.x -= 0.1;
+		}
+
 	}
 
 
@@ -2161,7 +2201,6 @@ int detectionEnvironnement(float x,float y)
 
 	///////////////////////////////////////////////////
 	// PORTE TOILETTE HOMME OBSTACLE
-	printf("toilette X = %f\n",toiletteHomme.x );
 	if( y < 1.4 && y > 0.4 && x > toiletteHomme.x - 2.2)
 		return 0;
 
@@ -2177,7 +2216,7 @@ int detectionEnvironnement(float x,float y)
 	if( x < -14.0 )
 		return 0;
 	// DROIT DE LA SALLE
-	if ( x > 24.1 )
+	if ( x > 22.8 )
 		return 0;
 	return 1;
 }
@@ -2185,24 +2224,23 @@ int detectionEnvironnement(float x,float y)
 
 int detecterOuvertureToilette(float x,float y,float angle)
 {
-	///////////////////////////////////////////////////
-	// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
-	if( angle > ( 3*M_PI/2 - ANGLE_DETECTION_MACHINE) && angle > ( 3*M_PI/2 - ANGLE_DETECTION_MACHINE) )
-	{
-		////////////////////////////////////////
-		// DETECTION TOILETTE FEMME
-		if( x > 18.9 && x < 20.2 && y > 8.5 && y < 10.5)
-		{
-			return 1;
-		}
-		////////////////////////////////////////
-		// DETECTION TOILETTE HOMME
-		if( x > 18.9 && x < 20.2 && y > -0.2 && y < 0.8)
-		{
-			return 2;
-		}
 
+	////////////////////////////////////////
+	// DETECTION TOILETTE FEMME
+	if( x > 18.9 && x < 21.8 && y > 8.5 && y < 10.5)
+	{
+		return 1;
 	}
+
+
+
+	////////////////////////////////////////
+	// DETECTION TOILETTE HOMME
+	if( x > 18.9 && x < 21.8 && y > -0.2 && y < 0.8)
+	{
+		return 2;
+	}
+
 
 	////////////////////////////////////////
 	// OUVERTURE AUTOMATIQUE FEMME
@@ -2216,8 +2254,6 @@ int detecterOuvertureToilette(float x,float y,float angle)
 	{
 		return 4;
 	}
-
-
 
 	return 0;
 }
@@ -2373,11 +2409,10 @@ void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Fo
 	detection = detecterOuvertureToilette(camera.px,camera.pz,camera.angle);
 	if(detection == 1 || detection == 2)
 	{
-		SDL_Color bleu = {0,0,255};
+		SDL_Color yellow = {230,50,50};
 		////////////////////////////////////////////////
 		// AFFICHAGE CLIGNOTANT
-		if(afficherMessage)
-				AfficherText(font,"APPUYER   SUR   E",bleu,-1,-1);
+			AfficherText(font,"APPUYER   SUR   E",yellow,-1,-1);
 	}
 }
 
