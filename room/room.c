@@ -54,7 +54,7 @@ static GLuint * _textures =  NULL, * _vaos = NULL, *_buffers = NULL , *_counts =
 #define DIR_OBJ_LOAD "room/salle.obj"
 // EMPLACEMENT FIHCIER NECESSAIRE
 
-#define VITESSE_DEPLACEMENT_COURIR 0.14F
+#define VITESSE_DEPLACEMENT_COURIR 0.40F
 #define VITESSE_DEPLACEMENT_DEBOUT 0.09F
 #define VITESSE_DEPLACEMENT_ACCROUPI 0.035F
 #define SENSIBILITE_CAMERA 0.08F
@@ -87,8 +87,7 @@ float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 static int WinWidth = 1280;
 static int WinHeight = 720;
 SDL_Rect bounds;
-int optionFullScreen = 1;
-int rdyToFullscreen = 1;
+int optionFullScreen = 0;
 //////////////////////////////////////////////////
 // FIXER NOMBRE FPS MAX
 #define FPS 60
@@ -109,7 +108,15 @@ struct Camera_s
 	float px,py,pz,cible_py,angle,ouverture;
 };
 
-
+struct GL_Quadf
+{
+	float x,y,z,largueur,epaisseur,hauteur;
+};
+//////////////////////////////////////////////////////////////////////////////////
+// struct toilette femme
+struct GL_Quadf toiletteFemme = {20.2  , 8.65 , 1.9 , 3. , 0.1 , 3.9};
+enum {FERMER,OUVERTE,FERMETURE,OUVERTURE};
+int statutPorteFemme = FERMER;
 
 enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINEUR_HARD,DEMINEUR_EASY,SNAKE_EASY,PACMAN_EASY,ASTEROID_EASY,TETRIS_EASY,FLAPPY_EASY};
 
@@ -938,7 +945,6 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
 	aiLoadTexture(DIR_OBJ_LOAD,scene);
-	int frame = 0;
 
 	#ifndef __linux__
 		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
@@ -951,62 +957,11 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	#endif
 
 	SDL_RaiseWindow(Window);
-	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+
+	int toiletteFemmeOuverteDelai = 0;
+
 	while (Running)
 	{
-
-		if( keystate[SDL_SCANCODE_O] && rdyToFullscreen){
-
-			printf("width before : %d\n", WinWidth);
-			if(SDL_GetWindowFlags(Window) & SDL_WINDOW_FULLSCREEN_DESKTOP){
-				optionFullScreen = 0;
-				SDL_GetDisplayBounds(0, &bounds);
-				windowMaxSize(optionFullScreen);
-				SDL_SetWindowFullscreen(Window, 0);
-
-				SDL_SetWindowSize(Window, WinWidth, WinHeight);
-				SDL_SetWindowPosition(Window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED );
-
-			}
-			else{
-				optionFullScreen = 1;
-				SDL_GetDisplayBounds(0, &bounds);
-				windowMaxSize(optionFullScreen);
-				SDL_SetWindowSize(Window, WinWidth, WinHeight);
-				SDL_SetWindowFullscreen(Window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-
-			}
-			rdyToFullscreen = 0;
-
-
-			printf("width after : %d\n", WinWidth);
-
-
-			TTF_CloseFont(font);
-			font = NULL;
-			font = TTF_OpenFont(DIR_FONT_POLICE, WinWidth/50);
-			if(!font)
-			{
-				printf("Erreur chargement font %s %s\n",TTF_GetError(), DIR_FONT_POLICE);
-				return EXIT_FAILURE;
-			}
-
-			printf(" sega before %p\n", sega);
-			TTF_CloseFont(sega);
-			sega = NULL;
-			sega = TTF_OpenFont(DIR_FONT_SEGA, WinWidth/50);
-			if(!sega)
-			{
-				printf("Erreur chargement font %s %s\n",TTF_GetError(),DIR_FONT_SEGA);
-				return EXIT_FAILURE;
-			}
-
-			printf(" sega after %p\n", sega);
-
-		}
-		else{
-			rdyToFullscreen = 1;
-		}
 
 		glLoadIdentity();
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
@@ -1037,8 +992,8 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		//////////////////////////////////////////////////////////
 		// CHARGER LA SCENE
-		if(frame)
-			SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
+
+		SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
 
 		//GL_InitialiserParametre(WinWidth,WinHeight,camera);
 		//////////////////////////////////////////////////////////
@@ -1078,7 +1033,39 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		// ATTENDRE 1000 MS POUR MESSAGE CLIGNOTANT
 		attendreXsecondeMessage(&compterSeconde, &afficherMessage,1000, _IPS);
 		//////////////////////////////////////////////////////////
-		frame++;
+
+
+		//////////////////////////////////////////////////////////
+		// ANIMATION PORTE TOILETTES
+		if( statutPorteFemme == OUVERTURE )
+		{
+			toiletteFemme.x += 0.1;
+			if( toiletteFemme.x >= 23.0 )
+			{
+				statutPorteFemme = OUVERTE;
+				toiletteFemmeOuverteDelai = SDL_GetTicks();
+			}
+		}
+
+
+		if( statutPorteFemme == FERMETURE )
+		{
+			toiletteFemme.x -= 0.1;
+			if( toiletteFemme.x < 20.3 )
+				statutPorteFemme = FERMER;
+		}
+
+		//////////////////////////////////////
+		// FERMETURE AUTOMATIQUE
+		if( statutPorteFemme == OUVERTE )
+		{
+			if( (toiletteFemmeOuverteDelai + 3000) < SDL_GetTicks() )
+			{
+				statutPorteFemme = FERMETURE;
+				toiletteFemmeOuverteDelai = 0;
+			}
+		}
+
 	}
 
 
@@ -1485,7 +1472,42 @@ void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int 
 	}
 }
 
+void GlDessinerQuad(struct GL_Quadf quad)
+{
+	glBegin(GL_QUADS);
 
+		glVertex3f( quad.x + quad.largueur - (quad.largueur/2.0) ,  quad.z  + quad.hauteur   - (quad.hauteur/2.0) , quad.y + quad.epaisseur  - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x + quad.largueur - (quad.largueur/2.0) ,  quad.z  + quad.hauteur   - (quad.hauteur/2.0) , quad.y                   - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x                 - (quad.largueur/2.0) ,  quad.z  + quad.hauteur   - (quad.hauteur/2.0) , quad.y                   - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x                 - (quad.largueur/2.0) ,  quad.z  + quad.hauteur   - (quad.hauteur/2.0) , quad.y + quad.epaisseur  - (quad.epaisseur/2.0) );
+
+		glVertex3f( quad.x + quad.largueur - (quad.largueur/2.0) ,  quad.z                   - (quad.hauteur/2.0) , quad.y  + quad.epaisseur - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x + quad.largueur - (quad.largueur/2.0) ,  quad.z                   - (quad.hauteur/2.0) , quad.y                   - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x + quad.largueur - (quad.largueur/2.0) ,  quad.z  + quad.hauteur   - (quad.hauteur/2.0) , quad.y                   - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x + quad.largueur - (quad.largueur/2.0) ,  quad.z  + quad.hauteur   - (quad.hauteur/2.0) , quad.y + quad.epaisseur  - (quad.epaisseur/2.0) );
+
+		glVertex3f( quad.x                 - (quad.largueur/2.0) ,  quad.z                   - (quad.hauteur/2.0) , quad.y  + quad.epaisseur - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x                 - (quad.largueur/2.0) ,  quad.z                   - (quad.hauteur/2.0) , quad.y                   - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x + quad.largueur - (quad.largueur/2.0) ,  quad.z                   - (quad.hauteur/2.0) , quad.y                   - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x + quad.largueur - (quad.largueur/2.0) ,  quad.z                   - (quad.hauteur/2.0) , quad.y + quad.epaisseur  - (quad.epaisseur/2.0) );
+
+		glVertex3f( quad.x                 - (quad.largueur/2.0) ,  quad.z  + quad.hauteur   - (quad.hauteur/2.0) , quad.y  + quad.epaisseur - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x                 - (quad.largueur/2.0) ,  quad.z  + quad.hauteur   - (quad.hauteur/2.0) , quad.y                   - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x                 - (quad.largueur/2.0) ,  quad.z                   - (quad.hauteur/2.0) , quad.y                   - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x                 - (quad.largueur/2.0) ,  quad.z                   - (quad.hauteur/2.0) , quad.y  + quad.epaisseur - (quad.epaisseur/2.0) );
+
+		glVertex3f( quad.x + quad.largueur - (quad.largueur/2.0) ,  quad.z  + quad.hauteur   - (quad.hauteur/2.0) , quad.y                   - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x + quad.largueur - (quad.largueur/2.0) ,  quad.z                   - (quad.hauteur/2.0) , quad.y                   - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x                 - (quad.largueur/2.0) ,  quad.z                   - (quad.hauteur/2.0) , quad.y                   - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x                 - (quad.largueur/2.0) ,  quad.z  + quad.hauteur   - (quad.hauteur/2.0) , quad.y                   - (quad.epaisseur/2.0) );
+
+		glVertex3f( quad.x + quad.largueur - (quad.largueur/2.0) ,  quad.z                   - (quad.hauteur/2.0) , quad.y + quad.epaisseur  - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x + quad.largueur - (quad.largueur/2.0) ,  quad.z  + quad.hauteur   - (quad.hauteur/2.0) , quad.y + quad.epaisseur  - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x                 - (quad.largueur/2.0) ,  quad.z  + quad.hauteur   - (quad.hauteur/2.0) , quad.y + quad.epaisseur  - (quad.epaisseur/2.0) );
+		glVertex3f( quad.x                 - (quad.largueur/2.0) ,  quad.z                   - (quad.hauteur/2.0) , quad.y + quad.epaisseur  - (quad.epaisseur/2.0) );
+
+		glEnd();
+}
 
 void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list,const float IPS)
 {
@@ -1505,6 +1527,7 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 
 	////////////////////////////////////////////////////
 	// SI LE RENDU DE LA SCENE N'EST PAS FAIT LE FAIRE
+	GlDessinerQuad(toiletteFemme);
 
 	if(*scene_list == 0) {
 		// FIXER LA SCENE A 1
@@ -1770,7 +1793,6 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 
 
 
-
 	// APUI FLECHE GAUCHE
 	if( keystate[SDL_SCANCODE_LEFT] )
 	{
@@ -1998,6 +2020,31 @@ int detectionEnvironnement(float x,float y)
 }
 
 
+int detecterOuvertureToilette(float x,float y,float angle)
+{
+	///////////////////////////////////////////////////
+	// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
+	if( angle > ( 3*M_PI/2 - ANGLE_DETECTION_MACHINE) && angle > ( 3*M_PI/2 - ANGLE_DETECTION_MACHINE) )
+	{
+		////////////////////////////////////////
+		// DETECTION TOILETTE FEMME
+		if( x > 18.9 && x < 20.2 && y > 8.5 && y < 10.5)
+		{
+			return 1;
+		}
+		////////////////////////////////////////
+		// DETECTION TOILETTE HOMME
+		if( x > 18.9 && x < 20.2 && y > -0.2 && y < 0.8)
+		{
+			return 2;
+		}
+
+	}
+
+
+
+	return 0;
+}
 
 int detecterMachine(float x,float y,float angle)
 {
@@ -2145,6 +2192,16 @@ void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Fo
 		if(afficherMessage)
 				AfficherText(font,"APPUYER   SUR   E",white,-1,-1);
 
+	}
+
+	detection = detecterOuvertureToilette(camera.px,camera.pz,camera.angle);
+	if(detection)
+	{
+		SDL_Color bleu = {0,0,255};
+		////////////////////////////////////////////////
+		// AFFICHAGE CLIGNOTANT
+		if(afficherMessage)
+				AfficherText(font,"APPUYER   SUR   E",bleu,-1,-1);
 	}
 }
 
@@ -2438,6 +2495,24 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							while(SDL_PollEvent(&Event));
 
 
+						}
+
+
+						////////////////////////////////////////////////////////////////////
+						// OUVRIR / FERMER LES TOILETTE
+						machine = detecterOuvertureToilette(camera.px,camera.pz,camera.angle);
+						if(machine)
+						{
+							switch (machine) {
+								case 1:{
+									if(!statutPorteFemme)
+										statutPorteFemme = OUVERTURE;
+								}break;
+								case 2:{
+									printf("OUVRIR TOILETTE HOMME\n");
+								}break;
+								default:break;
+							}
 						}
 					}
 
