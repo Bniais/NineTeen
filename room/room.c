@@ -258,7 +258,7 @@ float distancePoint(float xa, float ya, float xb, float yb);
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter,float angleJoueur);
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter,float angleJoueur, int max_volume);
 
 
 /////////////////////////////////////////////////////
@@ -868,7 +868,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 	{
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON TOILETTE FEMME
-		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,4.0,camera.angle);
+		reglageVolume(6,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,4.0,camera.angle, MIX_MAX_VOLUME);
 
 		toiletteFemme.x += 0.1;
 		if( toiletteFemme.x >= 23.0 )
@@ -883,7 +883,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 	{
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON TOILETTE FEMME
-		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,4.0,camera.angle);
+		reglageVolume(6,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,4.0,camera.angle, MIX_MAX_VOLUME);
 
 		toiletteHomme.x += 0.1;
 		if( toiletteHomme.x >= 23.0 )
@@ -1117,11 +1117,8 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 	#ifndef __linux__
 		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-	#endif
-
-	//////////////////////////////////////////////////////////
-	// CACHER LA SOURIS
-	#ifndef __linux__
+		//////////////////////////////////////////////////////////
+		// CACHER LA SOURIS
 		SDL_ShowCursor(SDL_DISABLE);
 	#endif
 
@@ -1142,11 +1139,11 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
 		// MUSIQUE LOT MACHINE GAUCHE
-		reglageVolume(0,-5.0,11.0,camera.px,camera.pz,10.0,camera.angle);
+		reglageVolume(0,-5.0,11.0,camera.px,camera.pz,10.0,camera.angle, MAX_VOLUME_ARCADE);
 		// MUSIQUE LOT MACHINE DROITE
-		reglageVolume(1,5.0,11.0,camera.px,camera.pz,10.0,camera.angle);
+		reglageVolume(1,5.0,11.0,camera.px,camera.pz,10.0,camera.angle, MAX_VOLUME_ARCADE);
 		// MUSIQUE MACHINE SEUL
-		reglageVolume(2,0.0,0.0,camera.px,camera.pz,10.0,camera.angle);
+		reglageVolume(2,0.0,0.0,camera.px,camera.pz,10.0,camera.angle, MAX_VOLUME_ARCADE);
 		//////////////////////////////////////////////////////////
 
 
@@ -1548,11 +1545,11 @@ float calculAngle(float xa, float ya,      float xb, float yb,       float xc, f
 	return (2*M_PI) - angleRad;
 }
 
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur)
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur, int max_volume)
 {
 	////////////////////////////////////////////////////
 	// FIX VOLUME MAX PAR DEFAULT
-	float volume = MIX_MAX_VOLUME;
+	float volume = max_volume;
 	// CALCUL DISTANCE SOURCE SONOR
 	float distance = distancePoint(xa,ya,xb,yb);
 	////////////////////////////////////////////////////
