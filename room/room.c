@@ -115,8 +115,11 @@ struct GL_Quadf
 //////////////////////////////////////////////////////////////////////////////////
 // struct toilette femme
 struct GL_Quadf toiletteFemme = {20.2  , 8.65 , 1.9 , 3. , 0.1 , 3.9};
+struct GL_Quadf toiletteHomme = {20.2  , 1.05 , 1.9 , 3. , 0.1 , 3.9};
+
 enum {FERMER,OUVERTE,FERMETURE,OUVERTURE};
 int statutPorteFemme = FERMER;
+int statutPorteHomme = FERMER;
 
 enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINEUR_HARD,DEMINEUR_EASY,SNAKE_EASY,PACMAN_EASY,ASTEROID_EASY,TETRIS_EASY,FLAPPY_EASY};
 
@@ -192,6 +195,18 @@ int attendreXsecondeMessage(int *compterSeconde, int *afficherMessage,const int 
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
 int detectionEnvironnement(float x,float y);
+
+/////////////////////////////////////////////////////
+/// \fn int detecterOuvertureToilette(float x,float y,float angle)
+/// \brief detection des toilettes h/f
+///
+/// \param float x coordonner x
+/// \param float y coordonner y
+/// \param float angle angle
+///
+/// \return TRUE/FALSE
+/////////////////////////////////////////////////////
+int detecterOuvertureToilette(float x,float y,float angle);
 
 
 /////////////////////////////////////////////////////
@@ -589,7 +604,6 @@ void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene)
          if (aiGetMaterialTexture(pMaterial, aiTextureType_DIFFUSE, 0, &tfname, NULL, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
            SDL_Surface * t;
            snprintf(buf, sizeof buf, "%s/%s", dir, tfname.data);
-					 printf("%s\n",tfname.data );
            if(!(t = IMG_Load(buf))) {
             fprintf(stderr, "Probleme de chargement de textures %s\n", buf);
             fprintf(stderr, "\tNouvel essai avec %s\n", tfname.data);
@@ -597,7 +611,6 @@ void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene)
 						{
 							fprintf(stderr, "Probleme de chargement de textures %s\n", tfname.data); continue;
             }
-						printf("texture dans i = %d\n",i );
             glBindTexture(GL_TEXTURE_2D, _textures[i]);
 	          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -612,7 +625,6 @@ void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene)
 	          SDL_FreeSurface(t);
 
           }
-					printf("texture dans i = %d\n",i );
 					glBindTexture(GL_TEXTURE_2D, _textures[i]);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -959,6 +971,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	SDL_RaiseWindow(Window);
 
 	int toiletteFemmeOuverteDelai = 0;
+	int toiletteHommeOuverteDelai = 0;
 
 	while (Running)
 	{
@@ -1046,13 +1059,43 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 				toiletteFemmeOuverteDelai = SDL_GetTicks();
 			}
 		}
+		if( statutPorteHomme == OUVERTURE )
+		{
+			toiletteHomme.x += 0.1;
+			if( toiletteHomme.x >= 23.0 )
+			{
+				statutPorteHomme = OUVERTE;
+				toiletteHommeOuverteDelai = SDL_GetTicks();
+			}
+		}
 
 
 		if( statutPorteFemme == FERMETURE )
 		{
-			toiletteFemme.x -= 0.1;
-			if( toiletteFemme.x < 20.3 )
-				statutPorteFemme = FERMER;
+			if(camera.px > toiletteFemme.x - 1.5 )
+			{
+				statutPorteFemme = OUVERTURE;
+			}
+			else
+			{
+				toiletteFemme.x -= 0.1;
+				if( toiletteFemme.x < 20.3 )
+					statutPorteFemme = FERMER;
+			}
+		}
+		if( statutPorteHomme == FERMETURE )
+		{
+			if(camera.px > toiletteHomme.x  - 1.5 && camera.pz > 0.9 && camera.pz < 1.4)
+			{
+				statutPorteFemme = OUVERTURE;
+			}
+			else
+			{
+				toiletteHomme.x -= 0.1;
+				if( toiletteHomme.x < 20.3 )
+					statutPorteHomme = FERMER;
+			}
+
 		}
 
 		//////////////////////////////////////
@@ -1065,6 +1108,31 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 				toiletteFemmeOuverteDelai = 0;
 			}
 		}
+		if( statutPorteHomme == OUVERTE )
+		{
+			if( (toiletteHommeOuverteDelai + 3000) < SDL_GetTicks() )
+			{
+				statutPorteHomme = FERMETURE;
+				toiletteHommeOuverteDelai = 0;
+			}
+		}
+
+		int toilette = detecterOuvertureToilette(camera.px,camera.pz,camera.angle);
+		switch (toilette) {
+			case 3:{
+				if(statutPorteFemme != OUVERTE && statutPorteFemme != OUVERTURE)
+				{
+					statutPorteFemme = OUVERTURE;
+				}
+			}break;
+			case 4:{
+				if(statutPorteHomme != OUVERTE && statutPorteHomme != OUVERTURE)
+				{
+					statutPorteHomme = OUVERTURE;
+				}
+			}break;
+		}
+
 
 	}
 
@@ -1528,6 +1596,7 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 	////////////////////////////////////////////////////
 	// SI LE RENDU DE LA SCENE N'EST PAS FAIT LE FAIRE
 	GlDessinerQuad(toiletteFemme);
+	GlDessinerQuad(toiletteHomme);
 
 	if(*scene_list == 0) {
 		// FIXER LA SCENE A 1
@@ -1988,12 +2057,12 @@ int detectionEnvironnement(float x,float y)
 
 	///////////////////////////////////////////////////
 	// DIMESION SALLE DES TOILETTE
-	if(x > 15.0 && (  y < -2.0 || y > 12.0  )  )
+	if(x > 15.0 && (  y < -2.6 || y > 12.0  )  )
 		return 0;
 
 	///////////////////////////////////////////////////
 	// SEPARATION ENTRE TOILETTE
-	if( x > 21.0 && x < 22.0 && y < 9.0 && y > 0.5)
+	if( x > 21.0 && y < 9.0 && y > 0.5)
 		return 0;
 
 	///////////////////////////////////////////////////
@@ -2001,6 +2070,16 @@ int detectionEnvironnement(float x,float y)
 	if( x > 18.0 && y > 4.5 && y < 5.5)
 		return 0;
 
+	///////////////////////////////////////////////////
+	// PORTE TOILETTE FEMME OBSTACLE
+	printf("camera.x = %f camera.z = %f\n",x,y );
+	if( y < 9.1 && y > 8.2 && x > toiletteFemme.x - 1.2)
+		return 0;
+
+	///////////////////////////////////////////////////
+	// PORTE TOILETTE FEMME OBSTACLE
+	if( y < 1.4 && y > 0.4 && x > toiletteHomme.x - 1.2)
+		return 0;
 
 	///////////////////////////////////////////////////
 	// DIMESION SALLE DE BASE
@@ -2014,7 +2093,7 @@ int detectionEnvironnement(float x,float y)
 	if( x < -14.0 )
 		return 0;
 	// DROIT DE LA SALLE
-	if ( x > 23.5 )
+	if ( x > 24.1 )
 		return 0;
 	return 1;
 }
@@ -2039,6 +2118,19 @@ int detecterOuvertureToilette(float x,float y,float angle)
 			return 2;
 		}
 
+	}
+
+	////////////////////////////////////////
+	// OUVERTURE AUTOMATIQUE FEMME
+	if( x > 19.0 & x < 21.0 && y > 7.5 && y < 8.2)
+	{
+		return 3;
+	}
+	////////////////////////////////////////
+	// OUVERTURE AUTOMATIQUE HOMME
+	if( x > 19.0 & x < 21.0 && y > 1.0 && y < 2.0)
+	{
+		return 4;
 	}
 
 
@@ -2195,7 +2287,7 @@ void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Fo
 	}
 
 	detection = detecterOuvertureToilette(camera.px,camera.pz,camera.angle);
-	if(detection)
+	if(detection == 1 || detection == 2)
 	{
 		SDL_Color bleu = {0,0,255};
 		////////////////////////////////////////////////
@@ -2509,7 +2601,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 										statutPorteFemme = OUVERTURE;
 								}break;
 								case 2:{
-									printf("OUVRIR TOILETTE HOMME\n");
+									if(!statutPorteHomme)
+										statutPorteHomme = OUVERTURE;
 								}break;
 								default:break;
 							}
