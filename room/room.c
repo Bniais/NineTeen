@@ -838,24 +838,24 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 	///////// SI IL FAUT JOUER UN SON POUR LES FEMMES
 	if(*jouerSonPorteFemme == 1)
 	{
-		Mix_PlayChannel(3,sas_ouverture,0);
+		Mix_PlayChannel(4,sas_ouverture,0);
 		*jouerSonPorteFemme = 0;
 	}
 	if(*jouerSonPorteFemme == 2)
 	{
-		Mix_PlayChannel(3,sas_fermeture,0);
+		Mix_PlayChannel(4,sas_fermeture,0);
 		*jouerSonPorteFemme = 0;
 	}
 	//////////////////////////////////////////////////////////
 	///////// SI IL FAUT JOUER UN SON POUR LES HOMME
 	if(*jouerSonPorteHomme == 1)
 	{
-		Mix_PlayChannel(3,sas_ouverture,0);
+		Mix_PlayChannel(4,sas_ouverture,0);
 		*jouerSonPorteHomme = 0;
 	}
 	if(*jouerSonPorteHomme == 2)
 	{
-		Mix_PlayChannel(3,sas_fermeture,0);
+		Mix_PlayChannel(4,sas_fermeture,0);
 		*jouerSonPorteHomme = 0;
 	}
 
@@ -868,7 +868,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 	{
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON TOILETTE FEMME
-		reglageVolume(3,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,4.0,camera.angle);
+		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,4.0,camera.angle);
 
 		toiletteFemme.x += 0.1;
 		if( toiletteFemme.x >= 23.0 )
@@ -883,7 +883,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 	{
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON TOILETTE FEMME
-		reglageVolume(3,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,4.0,camera.angle);
+		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,4.0,camera.angle);
 
 		toiletteHomme.x += 0.1;
 		if( toiletteHomme.x >= 23.0 )
@@ -2158,12 +2158,13 @@ int detectionEnvironnement(float x,float y)
 	///////////////////////////////////////////////////
 	// PORTE TOILETTE FEMME OBSTACLE
 	printf("camera.x = %f camera.z = %f\n",x,y );
-	if( y < 9.1 && y > 8.2 && x > toiletteFemme.x - 1.2)
+	if( y < 9.1 && y > 8.2 && x > toiletteFemme.x - 2.2)
 		return 0;
 
 	///////////////////////////////////////////////////
-	// PORTE TOILETTE FEMME OBSTACLE
-	if( y < 1.4 && y > 0.4 && x > toiletteHomme.x - 1.2)
+	// PORTE TOILETTE HOMME OBSTACLE
+	printf("toilette X = %f\n",toiletteHomme.x );
+	if( y < 1.4 && y > 0.4 && x > toiletteHomme.x - 2.2)
 		return 0;
 
 	///////////////////////////////////////////////////
@@ -2207,13 +2208,13 @@ int detecterOuvertureToilette(float x,float y,float angle)
 
 	////////////////////////////////////////
 	// OUVERTURE AUTOMATIQUE FEMME
-	if( x > 19.0 & x < 21.0 && y > 7.5 && y < 8.2)
+	if( x > 19.0 && x < 21.0 && y > 7.5 && y < 8.2)
 	{
 		return 3;
 	}
 	////////////////////////////////////////
 	// OUVERTURE AUTOMATIQUE HOMME
-	if( x > 19.0 & x < 21.0 && y > 1.0 && y < 2.0)
+	if( x > 19.0 && x < 21.0 && y > 1.0 && y < 2.0)
 	{
 		return 4;
 	}
