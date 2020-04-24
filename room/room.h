@@ -9,6 +9,6 @@ typedef struct MeilleureScore_s
 	float multiplicator;
 }MeilleureScore_t;
 
-int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window,const C_STRUCT aiScene* scene);
+int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen );
 void InitMeilleureScore(struct MeilleureScore_s str[]);
 void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);

@@ -141,7 +141,7 @@ enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINE
 /// \param const C_STRUCT aiScene* scene scene charger
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene );
+int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen );
 
 
 
@@ -960,8 +960,9 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 
 
 
-int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene)
+int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, int optFullScreen)
 {
+	optionFullScreen = optFullScreen;
 	//////////////////////////////////////////////////////////
 	// EVENT SOURIS INIT
 

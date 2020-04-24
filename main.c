@@ -281,7 +281,7 @@ void ouvrirUrlRegistration()
 
 }
 
-void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
+void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], int * fullscreen)
 {
 	//////////////////////////////////////////
 	// INIT CHAINE DE CONCATENATION DU PATH
@@ -436,6 +436,7 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 				}
 				else if ( TF_ClickIn( targetConnect , mouse) )
 				{
+					*fullscreen = 1;
 					if(thread == NULL){
 						frame_anims[ANIM_LOADING] = 0;
 						connectEnded = 0;
@@ -682,7 +683,7 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 
 
-int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[])
+int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[], int * fullscreen)
 {
 	Mix_Music *musique = Mix_LoadMUS(DIR_MUSIC_FILE);
 	if (musique == NULL)
@@ -694,7 +695,8 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	if ( !dejaConneceter(token) )
 	{
-		connexion(renderer,token, tokenCpy, path);
+		*fullscreen = 0;
+		connexion(renderer,token, tokenCpy, path, fullscreen);
 		sauvegarderToken(token);
   	}
 
@@ -782,14 +784,15 @@ int main(int argc, char *argv[])
     struct MeilleureScore_s meilleureScore[16];
     /////////////////////////////////////////////////////////////////
     // APPEL DU LAUNCHER
-    if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath) == EXIT_SUCCESS)
+	int fullscreen=1;
+    if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath, &fullscreen) == EXIT_SUCCESS)
     {
       printf("lancement room\n" );
       SDL_DestroyRenderer(renderer);
       SDL_DestroyWindow(window);
       /////////////////////////////////////////////////////////////////
       // APPEL DE LA ROOM
-      printf("ROOM : %d\n",room(token,meilleureScore,window,scene) );
+      printf("ROOM : %d\n",room(token,meilleureScore,window,scene, fullscreen) );
     }
 
 
