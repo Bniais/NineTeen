@@ -29,7 +29,7 @@
 
 // LOCAL LIBRARY
 #include "import.h" // YOU NEED ASSIMP LIB FOR import.h (README.dm)
-static GLuint * _textures =  NULL, * _vaos = NULL, *_buffers = NULL , *_counts = NULL,_nbTextures = 0, _nbMeshes = 0;
+static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0, _nbMeshes = 0;
 
 
 
@@ -646,11 +646,9 @@ void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene)
   }
 
 	_nbMeshes = sceneNbMeshes(_scene, _scene->mRootNode, 0);
-	_vaos = malloc(_nbMeshes * sizeof *_vaos);
-	assert(_vaos);
+//	_vaos = malloc(_nbMeshes * sizeof *_vaos);
+//	assert(_vaos);
 //	glGenVertexArrays(_nbMeshes, _vaos);
-	_buffers =  malloc(2 * _nbMeshes * sizeof *_buffers);
-	assert(_buffers);
 
 //	glGenBuffers(2 * _nbMeshes,_buffers);
 	_counts = calloc(_nbMeshes, sizeof *_counts);
@@ -755,16 +753,6 @@ void detruireTexture()
     glDeleteTextures(_nbTextures, _textures);
     free(_textures);
     _textures = NULL;
-  }
-  if(_vaos) {
-    glDeleteVertexArrays(_nbMeshes, _vaos);
-    free(_vaos);
-    _vaos = NULL;
-  }
-  if(_buffers) {
-    glDeleteBuffers(2 * _nbMeshes, _buffers);
-    free(_buffers);
-    _buffers = NULL;
   }
 }
 void GLlightMode()
