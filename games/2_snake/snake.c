@@ -158,7 +158,7 @@ void turnLeft(double *angle){
 
 
 /**
-*\fn void turnLeft(double *angle)
+*\fn void turnRight(double *angle)
 *\brief Tourne le serpent vers la droite
 *\param angle La direction du serpent
 */
@@ -231,7 +231,7 @@ void shiftRefresh(Vector2f pastBody[REMIND_BODY], int nbDecale){
 
 
 /**
-*\fn int addBody(SnakePart **snake, size_t *size, Vector2f pastBody[REMIND_BODY], int speed, float *radiusRestant)
+*\fn int addBody(SnakePart **snake, size_t *size, Vector2f pastBody[REMIND_BODY], float *radiusRestant)
 *\brief Ajoute des parties de corps au serpent
 *\param snake Le tableau de parties de corps
 *\param size La taille du serpent
@@ -425,7 +425,7 @@ static int tooCloseFromWall(Vector2f point, int dist){
 
 
 /**
-*\fn int tooCloseFromHead(SnakePart head, Fruit fruit)
+*\fn int tooCloseFromCorner(Fruit fruit)
 *\brief Détermine si un fruit est trop proche d'un coin pour pouvoir apparaître
 *\param fruit Un fruit
 *\return Vrai si il est trop proche, sinon faux
@@ -439,7 +439,7 @@ int tooCloseFromCorner(Fruit fruit){
 
 
 /**
-*\fn int tooCloseFromHead(SnakePart head, Fruit fruit)
+*\fn int tooCloseFromFruit(Fruit* fruitRang, int rang, Fruit* fruitSearch, int nbFruitSearch)
 *\brief Détermine si un fruit est trop d'un autre ou d'un bonus pour pouvoir apparaître
 *\param fruitRang Le tableau de fruit
 *\param rang Le rang du fruit
@@ -921,6 +921,7 @@ int scoreSize(Fruit fruit){
 *\param nbFruits Le nombre de fruits
 *\param fruit Le fruit à manger
 *\param speed La vitesse du serpent
+*\param score Le score total
 *\param nbFruitEaten Le nombre de fruits mangés
 *\param frameJaugeAnim Le nombre de frame pour l'animation de jauge
 *\param pastBody Les anciennes positions du serpent
