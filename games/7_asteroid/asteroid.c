@@ -1260,8 +1260,8 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 		//VAISSEAU
 	 	Vaiss vaisseau=
 		{
-			500, //coord x
-			500, //coord y
+			PLAYGROUND_SIZE_W/2, //coord x
+			PLAYGROUND_SIZE_H/2, //coord y
 			BASE_ANGLE,
 			0, // frame recharge
 			FREQUENCE_BASE, // temps recharge
