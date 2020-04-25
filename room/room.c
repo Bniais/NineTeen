@@ -498,32 +498,32 @@ static int sceneNbMeshes(const struct aiScene *sc, const struct aiNode* nd, int 
 }
 
 static void sceneMkVAOs(const struct aiScene *sc, const struct aiNode* nd, GLuint * ivao ) {
-  int i, j, comp;
+  int i, j; //comp;
   unsigned int n = 0;
-  static int temp = 0;
+  //static int temp = 0;
 
-  temp++;
+  //temp++;
 
   for (; n < nd->mNumMeshes; ++n) {
     GLfloat * vertices = NULL;
     GLuint  * indices  = NULL;
     const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
-    comp  = mesh->mVertices ? 3 : 0;
-    comp += mesh->mNormals ? 3 : 0;
-    comp += mesh->mTextureCoords[0] ? 2 : 0;
-    if(!comp) continue;
+  //  comp  = mesh->mVertices ? 3 : 0;
+  //  comp += mesh->mNormals ? 3 : 0;
+  //  comp += mesh->mTextureCoords[0] ? 2 : 0;
+  //  if(!comp) continue;
 
   //  glBindVertexArray(_vaos[*ivao]);
   //  glBindBuffer(GL_ARRAY_BUFFER, _buffers[2 * (*ivao)]);
 
-    vertices = malloc(comp * mesh->mNumVertices * sizeof *vertices);
-    assert(vertices);
-    i = 0;
+  //  vertices = malloc(comp * mesh->mNumVertices * sizeof *vertices);
+  //  assert(vertices);
+  //  i = 0;
   //  glDisableVertexAttribArray(0);
   //  glDisableVertexAttribArray(1);
   //  glDisableVertexAttribArray(2);
 
-    if(mesh->mVertices) {
+/*    if(mesh->mVertices) {
     //  glEnableVertexAttribArray(0);
     //  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
       for(j = 0; j < mesh->mNumVertices; ++j) {
@@ -532,8 +532,8 @@ static void sceneMkVAOs(const struct aiScene *sc, const struct aiNode* nd, GLuin
 				vertices[i++] = mesh->mVertices[j].z;
       }
 
-    }
-    if(mesh->mNormals) {
+    }*/
+/*    if(mesh->mNormals) {
 
     //  glEnableVertexAttribArray(1);
     //  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
@@ -543,10 +543,9 @@ static void sceneMkVAOs(const struct aiScene *sc, const struct aiNode* nd, GLuin
 				vertices[i++] = mesh->mNormals[j].z;
       }
 
-    }
+    } */
 
-    if(mesh->mTextureCoords[0]) {
-
+/*
     //  glEnableVertexAttribArray(2);
     //  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
       for(j = 0; j < mesh->mNumVertices; ++j) {
@@ -554,12 +553,12 @@ static void sceneMkVAOs(const struct aiScene *sc, const struct aiNode* nd, GLuin
 				vertices[i++] = mesh->mTextureCoords[0][j].y;
       }
 
-    }
+    } */
 
 
   //  glBufferData(GL_ARRAY_BUFFER, (i * sizeof *vertices), vertices, GL_STATIC_DRAW);
 
-    free(vertices);
+//    free(vertices);
 //    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _buffers[2 * (*ivao) + 1]);
     if(mesh->mFaces) {
       indices = malloc(3 * mesh->mNumFaces * sizeof *indices);
@@ -629,9 +628,9 @@ void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene)
           }
 					glBindTexture(GL_TEXTURE_2D, _textures[i]);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
+				//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
+				//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
 					#ifdef __APPLE__
 					 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, GL_RGB, GL_UNSIGNED_BYTE, t->pixels);
 					#else
@@ -755,6 +754,7 @@ void detruireTexture()
     _textures = NULL;
   }
 }
+
 void GLlightMode()
 {
 	glEnable(GL_LIGHTING);	// Active l'éclairage
