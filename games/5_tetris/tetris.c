@@ -1315,24 +1315,6 @@ int updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int 
 }
 
 /**
-*\fn int len_num(int n)
-*\brief Determine le nombre de chiffre d'un nombre
-*\param n Le nombre
-*\return Le nombre de chiffre que contient le nombre
-*/
-int len_num(int n)
-{
-	int count=1;
-
-	while(n >= 10){
-		n /=10;
-		count++;
-	}
-
-	return count;
-}
-
-/**
 *\fn void afficherScores(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score scoreAffichage, int iScore)
 *\brief Affiche les animations de score d'une ligne
 *\param renderer Le renderer
@@ -1346,7 +1328,7 @@ void afficherScores(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score sc
 		int len, size;
 		SDL_Rect src, dest;
 
-		len = len_num(scoreAffichage.score);
+		len = lenNum(scoreAffichage.score);
 		src = SCORE_SRC;
 		size = SIZE_SCORE;
 
@@ -1542,27 +1524,6 @@ void drawHelpText(SDL_Renderer *renderer, TTF_Font *font, SDL_Texture *flecheTex
 	SDL_RenderCopy(renderer, turnTexture, &TURN_SRC, &TURN_DEST[0]);
 	SDL_RenderCopyEx(renderer, turnTexture, &TURN_SRC, &TURN_DEST[1], 0, NULL, SDL_FLIP_HORIZONTAL);
 
-}
-
-/**
-*\fn void drawQuit(SDL_Renderer* renderer, TTF_Font* font)
-*\brief Affiche la commande pour quitter le jeu
-*\param renderer Le renderer où afficher
-*\param font La police d'écriture
-*/
-void drawQuit(SDL_Renderer* renderer, TTF_Font* font){
-	char * text = QUIT;
-
-	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, JAUGE_COLOR);
-	SDL_Rect dest = QUIT_DEST;
-	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-	SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
-	dest.w /= (OPEN_FONT_SIZE / SIZE_QUIT);
-	dest.h /= (OPEN_FONT_SIZE / SIZE_QUIT);
-
-	SDL_RenderCopy(renderer, Message, NULL, &dest);
-	SDL_FreeSurface(surfaceMessage);
-	SDL_DestroyTexture(Message);
 }
 
 /**
@@ -1827,9 +1788,9 @@ extern int updateEnded;
 *\return 0 en cas de retour normal
 */
 int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *token, int hardcore){
-/////////////////////
+// // // // // // //
 // MISE EN PLACE   //``
-/////////////////////
+// // // // // // //
 	myInit();
 
 	SDL_Thread *thread = NULL;
@@ -1866,9 +1827,9 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 	int quit = SDL_FALSE;
 	while(!quit){
 
-		////////////
+   		 // // // //
 		// Vars   //`
-		////////////
+		 // // // //
 		int gameOver = SDL_FALSE;
 		//move
 		int accelerate = NO_ACCELERATE;
@@ -2196,7 +2157,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			drawPiece(renderer, nextPiece, textures[T_BRICKS], textures[T_BONUS], SDL_TRUE, hardcore);
 			drawLaser(renderer, frameLaser, textures[T_LASER_ANIM]);
 			drawFill(renderer, matrixFill,textures[T_BRICKS]);
-			drawQuit(renderer, fonts[T_FONT_COMBO]);
+			drawQuit(renderer, fonts[T_FONT_COMBO], 1, JAUGE_COLOR);
 			if(nbDeadPieces && deadPieces[0].y > Y_START_REPLAY)
 				drawReplay(renderer, fonts[T_FONT_COMBO]);
 

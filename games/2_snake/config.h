@@ -36,10 +36,7 @@ char* DIR_FONTS_SNAKE[NB_SNAKE_FONTS] = {
 };
 
 //hud
-	//quit
-	static char * QUIT = "Echap";
-	static SDL_Rect QUIT_DEST = {10,10,0,0};
-	#define SIZE_QUIT 28.
+
 
 	///replay
 

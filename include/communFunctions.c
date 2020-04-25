@@ -134,3 +134,38 @@ void drawReplay(SDL_Renderer* renderer, TTF_Font* font){
 	SDL_FreeSurface(surfaceMessage);
 	SDL_DestroyTexture(Message);
 }
+
+//quit
+static char * QUIT = "Echap";
+static SDL_Rect QUIT_DEST = {10,10,0,0};
+#define SIZE_QUIT 28.
+void drawQuit(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL_Color color){
+	char * text = QUIT;
+
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, color);
+	SDL_Rect dest = QUIT_DEST;
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+	SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+	dest.w /= (OPEN_FONT_SIZE / SIZE_QUIT);
+	dest.h /= (OPEN_FONT_SIZE / SIZE_QUIT);
+	dest.w *= ratioWindowSize;
+	dest.h *= ratioWindowSize;
+	dest.x *= ratioWindowSize;
+	dest.y *= ratioWindowSize;
+
+	SDL_RenderCopy(renderer, Message, NULL, &dest);
+	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(Message);
+}
+
+int lenNum(int n)
+{
+	int count=1;
+
+	while(n >= 10){
+		n /=10;
+		count++;
+	}
+
+	return count;
+}
