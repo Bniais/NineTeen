@@ -1165,6 +1165,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
 
+
 		int delayLancementFrame = SDL_GetTicks();
 
 		//////////////////////////////////////////////////////////
@@ -1708,8 +1709,8 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 
 	////////////////////////////////////////////////////
 	// SI LE RENDU DE LA SCENE N'EST PAS FAIT LE FAIRE
-//	GlDessinerQuad(toiletteFemme);
-//	GlDessinerQuad(toiletteHomme);
+	GlDessinerQuad(toiletteFemme);
+	GlDessinerQuad(toiletteHomme);
 
 	if(*scene_list == 0) {
 		// FIXER LA SCENE A 1
@@ -1762,7 +1763,7 @@ void GL_InitialiserParametre(int width, int height, struct Camera_s camera)
 	///////////////////////////////////////////////////
 	// REGALGES DU NIVEAU DE PERSPECTIVE
 	// REGLAGES DE LA DISTANCE DE VUE MIN MAX
-	gluPerspective(camera.ouverture,(float)(width)/(float)(height),0.2,500);
+	gluPerspective(camera.ouverture,(float)(width)/(float)(height),0.2,200);
 
 	////////////////////////////////////////////////////
 	// ACTIVATION DU MODE MODEL VIEW
