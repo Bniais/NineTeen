@@ -2089,7 +2089,7 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 	///////////////////////////////////////////////////
 	// ON VERIFIE SI ON EST SUR LE BLOQUE SUR ELEVER CENTRAL
 	// SI C'EST LE CAS ON AUGMENTE LA HAUTEUR DE LA CAMERA
-	if (camera->px <= 4 && camera->px >= -4 && camera->pz <= 4 && camera->pz >= -4)
+	if (camera->px <= 2.1 && camera->px >= -3.0 && camera->pz <= 3.5 && camera->pz >= -3.5)
 		camera->py = 0.6F + HAUTEUR_CAMERA;
 	else
 		camera->py = HAUTEUR_CAMERA;
@@ -2160,9 +2160,24 @@ int detectionEnvironnement(float x,float y)
 		return 0;
 
 	///////////////////////////////////////////////////
-	// MACHINE VOITURE
-	if ( x >= 4.0 && x <= 10.0 && y <= 3.6 && y >= - 3.6)
+	// SEPRATION CANAPER / SALLE
+	if( x > 2.5 && x < 4.45 && y < 5.6)
 		return 0;
+
+	///////////////////////////////////////////////////
+	// HITOBX CANAPER 1
+	if( x > 4.4 && x < 11.0 && y < 4.2 && y > 0.9)
+		return 0;
+
+	///////////////////////////////////////////////////
+	// HITOBX CANAPER 2
+	if( x > 4.4 && x < 7.2 && y < 0.9)
+			return 0;
+
+	///////////////////////////////////////////////////
+	// HITOBX TABLE CANAPER
+	if( x > 7.7 && x < 11.0 && y < 0.2 && y > -3.05)
+			return 0;
 
 	///////////////////////////////////////////////////
 	// BILLARD
