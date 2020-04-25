@@ -676,9 +676,10 @@ void aiDessinerImage(const struct aiScene *sc, const struct aiNode* nd, GLuint *
 	for (; n < nd->mNumMeshes; ++n) {
 		const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
 		// BLIND DE LA TEXTURE SI BESOIN
-		if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0) {
+
+	//	if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0) {
 			glBindTexture(GL_TEXTURE_2D, _textures[mesh->mMaterialIndex]);
-		}
+	//	}
 		if(_counts[*ivao]) {
 
 		//	glBindVertexArray(_vaos[*ivao]);
@@ -705,9 +706,12 @@ void aiDessinerImage(const struct aiScene *sc, const struct aiNode* nd, GLuint *
 
 						int index = face->mIndices[i];
 
+						if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0) {
+							glTexCoord2f(mesh->mTextureCoords[0][index].x, 1- mesh->mTextureCoords[0][index].y);
+						}
 						if(mesh->mColors[0] != NULL)
 						{
-							glColor4fv((GLfloat*)&mesh->mColors[0][index]);
+						//	glColor4fv((GLfloat*)&mesh->mColors[0][index]);
 						}
 						if(mesh->mNormals != NULL)
 						{
@@ -715,9 +719,7 @@ void aiDessinerImage(const struct aiScene *sc, const struct aiNode* nd, GLuint *
 						}
 
 
-						if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0) {
-							glTexCoord2f(mesh->mTextureCoords[0][index].x, 1- mesh->mTextureCoords[0][index].y);
-						}
+
 
 						glVertex3fv(&mesh->mVertices[index].x);
 
@@ -1706,8 +1708,8 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 
 	////////////////////////////////////////////////////
 	// SI LE RENDU DE LA SCENE N'EST PAS FAIT LE FAIRE
-	GlDessinerQuad(toiletteFemme);
-	GlDessinerQuad(toiletteHomme);
+//	GlDessinerQuad(toiletteFemme);
+//	GlDessinerQuad(toiletteHomme);
 
 	if(*scene_list == 0) {
 		// FIXER LA SCENE A 1
