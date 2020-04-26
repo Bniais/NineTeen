@@ -77,7 +77,7 @@ float HAUTEUR_PERSONNAGE = HAUTEUR_CAMERA_DEBOUT;
 
 
 
-#define MIN_INTENSITE 70 // INTENSITE SON STEREO
+#define MIN_INTENSITE 150 // INTENSITE SON STEREO
 
 float VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
 float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
@@ -1192,15 +1192,15 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
-		// MUSIQUE LOT MACHINE GAUCHE
+		// MUSIQUE BAR
 		if(!Mix_Paused(0))
-			reglageVolume(0,-2.0,19.4,camera.px,camera.pz,35.0  - ( (!Mix_Paused(1) + !Mix_Paused(2)) * 13  ) ,camera.angle, MAX_VOLUME_ARCADE - ( (!Mix_Paused(1) + !Mix_Paused(2)) * 7  )    );
-		// MUSIQUE LOT MACHINE DROITE
+			reglageVolume(0,-2.0,19.4,camera.px,camera.pz,35.0  - 1.5 - ( (!Mix_Paused(1) + !Mix_Paused(2)) * 10  ) ,camera.angle, MAX_VOLUME_ARCADE  - ( (!Mix_Paused(1) + !Mix_Paused(2)) * 7  )    );
+		// MUSIQUE TABLE
 		if(!Mix_Paused(1))
-			reglageVolume(1,10.0,0.2,camera.px,camera.pz,35.0   - ( (!Mix_Paused(0) + !Mix_Paused(2)) * 13  ) ,camera.angle, MAX_VOLUME_ARCADE - ( (!Mix_Paused(0) + !Mix_Paused(2)) * 7  ) );
-		// MUSIQUE MACHINE SEUL
+			reglageVolume(1,10.0,0.2,camera.px,camera.pz,35.0 +1.5  - ( (!Mix_Paused(0) + !Mix_Paused(2)) * 10  ) ,camera.angle, MAX_VOLUME_ARCADE - ( (!Mix_Paused(0) + !Mix_Paused(2)) * 7  ) );
+		// MUSIQUE BILLARD
 		if(!Mix_Paused(2))
-			reglageVolume(2,-11.5,2.6,camera.px,camera.pz,35.0   - ( (!Mix_Paused(0) + !Mix_Paused(1)) * 13  ) ,camera.angle, MAX_VOLUME_ARCADE - ( (!Mix_Paused(0) + !Mix_Paused(1)) * 7  ) );
+			reglageVolume(2,-11.5,2.6,camera.px,camera.pz,35.0 +1.25   - ( (!Mix_Paused(0) + !Mix_Paused(1)) * 10  ) ,camera.angle, MAX_VOLUME_ARCADE - ( (!Mix_Paused(0) + !Mix_Paused(1)) * 7  ) );
 		//////////////////////////////////////////////////////////
 
 
