@@ -873,7 +873,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 	{
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON TOILETTE FEMME
-		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,8.0,camera.angle, MIX_MAX_VOLUME);
+		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,8.0,camera.angle, 70);
 
 		if( toiletteFemme.x >= 23.0 )
 		{
@@ -890,8 +890,8 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 	if( *statutPorteHomme == OUVERTURE )
 	{
 		//////////////////////////////////////////////////////////
-		// REGLAGE SON TOILETTE FEMME
-		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, MIX_MAX_VOLUME);
+		// REGLAGE SON TOILETTE HOMME
+		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, 70);
 
 
 		if( toiletteHomme.x >= 23.0 )
@@ -910,6 +910,9 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 	// PORTE EN COURS DE FERMETURE FEMME
 	if( *statutPorteFemme == FERMETURE )
 	{
+		//////////////////////////////////////////////////////////
+		// REGLAGE SON TOILETTE FEMME
+		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,8.0,camera.angle, 70);
 		////////////////////////////////////////////////////////
 		// RE OUVRIR SI PASSAGE DEVANT LA PORTE DURANT LA FERMETURE
 		if(camera.px > 19.0 && camera.pz < 9.0 && camera.pz > 8.0)
@@ -937,6 +940,9 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 	// PORTE EN COURS DE FERMETURE HOMME
 	if( *statutPorteHomme == FERMETURE )
 	{
+		//////////////////////////////////////////////////////////
+		// REGLAGE SON TOILETTE HOMME
+		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, 70);
 		////////////////////////////////////////////////////////
 		// RE OUVRIR SI PASSAGE DEVANT LA PORTE DURANT LA FERMETURE
 		if(camera.px > 19.0 && camera.pz < 1.5 && camera.pz > 0.4)
