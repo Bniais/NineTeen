@@ -1193,6 +1193,10 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		//
 
 		//////////////////////////////////////////////////////////
+		// LANCEMENT DES MACHINES
+		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme);
+		//////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////
 		// CHARGER LA SCENE
 
 		SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
@@ -1215,10 +1219,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		//////////////////////////////////////////////////////////
 
 
-		//////////////////////////////////////////////////////////
-		// LANCEMENT DES MACHINES
-		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme);
-		//////////////////////////////////////////////////////////
+
 
 		//////////////////////////////////////////////////////////
 		// OpenGL
