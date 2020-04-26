@@ -196,6 +196,20 @@ int attendreXsecondeMessage(int *compterSeconde, int *afficherMessage,const int 
 /////////////////////////////////////////////////////
 int detectionEnvironnement(float x,float y);
 
+
+/////////////////////////////////////////////////////
+/// \fn int detecterRadio(float x,float y,float angle)
+/// \brief detection radio a proximite
+///
+/// \param float x coordonner x
+/// \param float y coordonner y
+/// \param float angle angle
+///
+/// \return TRUE/FALSE
+/////////////////////////////////////////////////////
+int detecterRadio(float x,float y,float angle);
+
+
 /////////////////////////////////////////////////////
 /// \fn int detecterOuvertureToilette(float x,float y,float angle)
 /// \brief detection des toilettes h/f
@@ -1171,13 +1185,15 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
 		// MUSIQUE LOT MACHINE GAUCHE
-		reglageVolume(0,-5.0,11.0,camera.px,camera.pz,10.0,camera.angle, MAX_VOLUME_ARCADE);
+		if(!Mix_Paused(0))
+			reglageVolume(0,-5.0,11.0,camera.px,camera.pz,18.0,camera.angle, MAX_VOLUME_ARCADE*2);
 		// MUSIQUE LOT MACHINE DROITE
-		reglageVolume(1,5.0,11.0,camera.px,camera.pz,10.0,camera.angle, MAX_VOLUME_ARCADE);
+		if(!Mix_Paused(1))
+			reglageVolume(1,5.0,11.0,camera.px,camera.pz,18.0,camera.angle, MAX_VOLUME_ARCADE*2);
 		// MUSIQUE MACHINE SEUL
-		reglageVolume(2,0.0,0.0,camera.px,camera.pz,10.0,camera.angle, MAX_VOLUME_ARCADE);
+		if(!Mix_Paused(2))
+			reglageVolume(2,0.0,0.0,camera.px,camera.pz,18.0,camera.angle, MAX_VOLUME_ARCADE*2);
 		//////////////////////////////////////////////////////////
-
 
 
 
@@ -2148,7 +2164,7 @@ int detectionEnvironnement(float x,float y)
 
 	///////////////////////////////////////////////////
 	// ACCUEIL NINETEEN
-	if( x <= 5.0 && x >= -5.0 && y >= 20.0)
+	if( x <= 6.0 && x >= -6.0 && y >= 19.5)
 		return 0;
 
 	///////////////////////////////////////////////////
@@ -2249,6 +2265,41 @@ int detectionEnvironnement(float x,float y)
 	return 1;
 }
 
+
+int detecterRadio(float x,float y,float angle)
+{
+
+	///////////////////////////////////////////////////
+	// DETECTER D'UN ANGLE FACE A LA RADIO
+	if( ( angle > ( 2*M_PI - (ANGLE_DETECTION_MACHINE) ) && angle <= 2*M_PI  ) ||    (    angle >= 0 && angle < 0 + (ANGLE_DETECTION_MACHINE)   )   )
+	{
+		////////////////////////////////////////
+		// DETECTION RADIO MUSIC 1
+		if( x > -6.6 && x < -4.4 && y > 19.0 && y < 19.55)
+		{
+			return 1;
+		}
+
+		////////////////////////////////////////
+		// DETECTION RADIO MUSIC 2
+		if( x < 6.6 && x > 4.4 && y > 19.0 && y < 19.55)
+		{
+			return 2;
+		}
+	}
+
+	///////////////////////////////////////////////////
+	// DETECTER D'UN ANGLE FACE A LA RADIO
+	if(angle > 3*M_PI/2 - (ANGLE_DETECTION_MACHINE) && angle < 3*M_PI/2 + (ANGLE_DETECTION_MACHINE))
+	{
+		////////////////////////////////////////
+		// DETECTION RADIO MUSIC 3
+		if(x > -5.0 && x < -4.0 && y < 2.0  && y > -1.0)
+			return 3;
+	}
+
+	return 0;
+}
 
 int detecterOuvertureToilette(float x,float y,float angle)
 {
@@ -2401,14 +2452,14 @@ int detecterMachine(float x,float y,float angle)
 
 void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Font *font,int afficherMessage)
 {
+	SDL_Color white = {255,255,255};
+	SDL_Color yellow = {255,255,0};
 	///////////////////////////////////////////////////////////////////
 	// RETOURNE LE CODE DE LA MACHINE DETECTER 0 SI NON DETECTER
 	int detection = detecterMachine(camera.px, camera.pz,camera.angle);
 	if(detection)
 	{
-		////////////////////////////////////////////////
-		SDL_Color white = {255,255,255};
-		SDL_Color yellow = {255,255,0};
+
 		// BUFFER POUR LE MESSAGE DES RECORDS
 		char message[60];
 		// CONCATENATION DES SCORES ET NOM DES JOUEUR DANS UNE MEME CHAINE
@@ -2434,13 +2485,34 @@ void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Fo
 
 	}
 
+	////////////////////////////////////////////////
+	// MESSAGE OUVERTURE PORTE TOILETTE
 	detection = detecterOuvertureToilette(camera.px,camera.pz,camera.angle);
 	if(detection == 1 || detection == 2)
 	{
 		SDL_Color yellow = {230,50,50};
 		////////////////////////////////////////////////
 		// AFFICHAGE CLIGNOTANT
-			AfficherText(font,"APPUYER   SUR   E",yellow,-1,-1);
+		AfficherText(font,"APPUYER   SUR   E",yellow,-1,-1);
+	}
+
+
+	////////////////////////////////////////////////
+	// MESSAGE STATUT SON DANS LA SALLE
+	detection = detecterRadio(camera.px,camera.pz,camera.angle);
+	if(detection)
+	{
+		////////////////////////////////////////////////
+		// AFFICHAGE CLIGNOTANT
+		if(afficherMessage)
+			AfficherText(font,"APPUYER   SUR   E",white,-1,-1);
+
+		////////////////////////////////////////////////
+		// STATUT RADIO
+		if( Mix_Paused(detection - 1) )
+			AfficherText(font,"MUSIC : OFF",white,-1,WinHeight*0.4);
+		else
+			AfficherText(font,"MUSIC : ON",white,-1,WinHeight*0.4);
 	}
 }
 
@@ -2760,6 +2832,19 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								default:break;
 							}
 						}
+
+						////////////////////////////////////////////////////////////////////
+						// COUPER LANCER MUSIQUE
+						machine = detecterRadio(camera.px,camera.pz,camera.angle);
+						if(machine)
+						{
+							printf("RESULTAT MIX PLAYING = %d\n",Mix_Paused(machine - 1) );
+							if(Mix_Paused(machine - 1) )
+								Mix_Resume(machine - 1);
+							else
+								Mix_Pause(machine - 1);
+						}
+
 					}
 
 
