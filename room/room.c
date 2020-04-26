@@ -427,24 +427,26 @@ void MessageQuitterRoom();
 /// \param SDL_GLContext *Context context sdl/opengl
 /// \param int *jouerSonPorteFemme
 /// \param int *jouerSonPorteHomme
+/// \param float _IPS
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme,  int *jouerSonPorteHomme);
+void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme,  int *jouerSonPorteHomme, float _IPS);
 
 
 /////////////////////////////////////////////////////
-/// \fn void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window)
+/// \fn void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window, float _IPS)
 /// \brief permet d'animer le lancement et retour des machines
 ///
 /// \param struct Camera_s camera camera de depart
 /// \param struct Camera_s cible camera de fin
 /// \param GLuint scene_list scene
 /// \param SDL_Window *Window vue d'affichae
+/// \param float _IPS image / s
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window);
+void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window, float _IPS);
 
 
 
@@ -1224,7 +1226,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		//////////////////////////////////////////////////////////
 		// LANCEMENT DES MACHINES
-		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme);
+		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme, _IPS);
 		//////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////
 		// CHARGER LA SCENE
@@ -2253,7 +2255,6 @@ int detectionEnvironnement(float x,float y)
 
 	///////////////////////////////////////////////////
 	// PORTE TOILETTE FEMME OBSTACLE
-	printf("camera.x = %f camera.z = %f\n",x,y );
 	if( y < 9.1 && y > 8.2 && x > toiletteFemme.x - 2.2)
 		return 0;
 
@@ -2531,11 +2532,11 @@ void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Fo
 }
 
 
-void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window)
+void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window, float _IPS)
 {
 
 	// FIXER DUREE ANIMATION
-	float DUREE_ANIM = 60.0F;
+	float DUREE_ANIM = 60.0F * (_IPS / 60.0 );
 
 	////////////////////////////////////////////////////////////
 	// CALCUL DES DIFFERENTE VALEUR A INCREMENTER
@@ -2605,7 +2606,7 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 
 }
 
-void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme , int *jouerSonPorteHomme)
+void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme , int *jouerSonPorteHomme, float _IPS)
 {
 
 
@@ -2710,7 +2711,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							///////////////////////////////////////////////////
 							// ANIMATION CENTRAGE SUR MACHINE
-							animationLancerMachine(camera,cible[machine-1],*scene_list,Window);
+							animationLancerMachine(camera,cible[machine-1],*scene_list,Window, _IPS);
 
 
 							///////////////////////////////////////////////////
@@ -2815,7 +2816,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							static struct Camera_s camera2;
 							SDL_GL_AppliquerScene(Window, scene,&camera2,scene_list,FPS);
 							// ANIMATION DE RETOUR SUR MACHINE
-							animationLancerMachine(cible[machine-1],camera,*scene_list,Window);
+							animationLancerMachine(cible[machine-1],camera,*scene_list,Window, _IPS);
 							// VIDER POLL EVENEMENT
 							while(SDL_PollEvent(&Event));
 
