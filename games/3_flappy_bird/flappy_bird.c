@@ -43,7 +43,7 @@ const SDL_Color COLOR_LOADING = {0x22,0xf4,0x57};
 #define PRELOAD_POS_OBSTACLE 8
 
 // PARAMETRES POUR GESTION DES OBSTACLES
-#define DISTANCE_BETWEEN_OBSTACLE 50
+int DISTANCE_BETWEEN_OBSTACLE = 49;
 int DISTANCE_UNDER_OBSTACLE = 100; // difficulte max en distance d'obstacle
 #define NB_POS_OBSTACLE 5
 #define TRANCHE_POS_OBSTACLE 550 // largeur sur Y des positions possible des portes de passages des pilonnes
@@ -65,7 +65,7 @@ const int VITESSE_DEPLACEMENT_DECOR = 8 / (FPS/30); // vitesse de deplacement de
 #define ANGLE_DOWN 90
 #define ANGLE_VITESSE 8
 
-#define BAN_CODE -666
+#define BAN_CODE 123
 
 // ADRESS TEXTURE
 #define DIR_TILSET "../games/3_flappy_bird/Textures/tilset.png"
@@ -359,9 +359,15 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 
 	///////////////////////////////////////////////////////
 	// mise a jour variable pour difficulte hardcore
-	if(hardcore)
+	if( hardcore == 1 )
 	{
 		DISTANCE_UNDER_OBSTACLE = 80;
+		DISTANCE_BETWEEN_OBSTACLE = 48;
+	}
+	else
+	{
+		DISTANCE_UNDER_OBSTACLE = 100;
+		DISTANCE_BETWEEN_OBSTACLE = 51;
 	}
 	///////////////////////////////////////////////////////
 
