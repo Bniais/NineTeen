@@ -65,7 +65,7 @@ static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0, _nbMeshes = 
 const float ANGLE_DETECTION_MACHINE = M_PI/6;
 
 #define START_PX -13.0F //AXE X
-#define START_PY 3.5F // hauteur CAMERA
+#define START_PY 3.64F // hauteur CAMERA
 #define START_PZ 7.0F // AXE Y
 #define START_CIBLE_Y 0.0F // REGARDE SUR AXE HAUTEUR
 #define START_CIBLE_X M_PI/2// REGARDE SUR AXE X
@@ -1164,7 +1164,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		glLoadIdentity();
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
-
+	//	GLlightMode();
 
 		int delayLancementFrame = SDL_GetTicks();
 
@@ -1797,98 +1797,98 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	// PLACEMENT DES CAMERA FIX SUR LES MACHINES
 	cible[FLAPPY_HARD-1].px = -6.56;
 	cible[FLAPPY_HARD-1].pz = 12.9;
-	cible[FLAPPY_HARD-1].py = 3.45;
+	cible[FLAPPY_HARD-1].py = 3.59;
 	cible[FLAPPY_HARD-1].cible_py = -.34;
 	cible[FLAPPY_HARD-1].angle = M_PI;
 	cible[FLAPPY_HARD-1].ouverture =70;
 
 	cible[TETRIS_HARD-1].px = -4.62;
 	cible[TETRIS_HARD-1].pz = 12.85;
-	cible[TETRIS_HARD-1].py = 3.45;
+	cible[TETRIS_HARD-1].py = 3.59;
 	cible[TETRIS_HARD-1].cible_py = -.34;
 	cible[TETRIS_HARD-1].angle = M_PI;
 	cible[TETRIS_HARD-1].ouverture =70;
 
 	cible[ASTEROID_HARD-1].px = -2.68;
 	cible[ASTEROID_HARD-1].pz = 12.85;
-	cible[ASTEROID_HARD-1].py = 3.45;
+	cible[ASTEROID_HARD-1].py = 3.59;
 	cible[ASTEROID_HARD-1].cible_py = -.34;
 	cible[ASTEROID_HARD-1].angle = M_PI;
 	cible[ASTEROID_HARD-1].ouverture =70;
 
 	cible[PACMAN_HARD-1].px = -6.56;
 	cible[PACMAN_HARD-1].pz = 9.25;
-	cible[PACMAN_HARD-1].py = 3.45;
+	cible[PACMAN_HARD-1].py = 3.59;
 	cible[PACMAN_HARD-1].cible_py = -.34;
 	cible[PACMAN_HARD-1].angle = 0.0;
 	cible[PACMAN_HARD-1].ouverture =70;
 
 	cible[SNAKE_HARD-1].px = -4.62;
 	cible[SNAKE_HARD-1].pz = 9.25;
-	cible[SNAKE_HARD-1].py = 3.45;
+	cible[SNAKE_HARD-1].py = 3.59;
 	cible[SNAKE_HARD-1].cible_py = -.34;
 	cible[SNAKE_HARD-1].angle = 0;
 	cible[SNAKE_HARD-1].ouverture =70;
 
 	cible[DEMINEUR_HARD-1].px = -2.68;
 	cible[DEMINEUR_HARD-1].pz = 9.25;
-	cible[DEMINEUR_HARD-1].py = 3.45;
+	cible[DEMINEUR_HARD-1].py = 3.59;
 	cible[DEMINEUR_HARD-1].cible_py = -.34;
 	cible[DEMINEUR_HARD-1].angle = 0;
 	cible[DEMINEUR_HARD-1].ouverture =70;
 
 	cible[DEMINEUR_EASY-1].px = 2.68;
 	cible[DEMINEUR_EASY-1].pz = 12.85;
-	cible[DEMINEUR_EASY-1].py = 3.45;
+	cible[DEMINEUR_EASY-1].py = 3.59;
 	cible[DEMINEUR_EASY-1].cible_py = -.34;
 	cible[DEMINEUR_EASY-1].angle = M_PI;
 	cible[DEMINEUR_EASY-1].ouverture =70;
 
 	cible[SNAKE_EASY-1].px = 4.62;
 	cible[SNAKE_EASY-1].pz = 12.85;
-	cible[SNAKE_EASY-1].py = 3.45;
+	cible[SNAKE_EASY-1].py = 3.59;
 	cible[SNAKE_EASY-1].cible_py = -.34;
 	cible[SNAKE_EASY-1].angle = M_PI;
 	cible[SNAKE_EASY-1].ouverture =70;
 
 	cible[PACMAN_EASY-1].px = 6.56;
 	cible[PACMAN_EASY-1].pz = 12.85;
-	cible[PACMAN_EASY-1].py = 3.45;
+	cible[PACMAN_EASY-1].py = 3.59;
 	cible[PACMAN_EASY-1].cible_py = -.34;
 	cible[PACMAN_EASY-1].angle = M_PI;
 	cible[PACMAN_EASY-1].ouverture =70;
 
 	cible[ASTEROID_EASY-1].px = 2.71;
 	cible[ASTEROID_EASY-1].pz = 9.25;
-	cible[ASTEROID_EASY-1].py = 3.45;
+	cible[ASTEROID_EASY-1].py = 3.59;
 	cible[ASTEROID_EASY-1].cible_py = -.34;
 	cible[ASTEROID_EASY-1].angle = 0.0;
 	cible[ASTEROID_EASY-1].ouverture =70;
 
 	cible[TETRIS_EASY-1].px = 4.65;
 	cible[TETRIS_EASY-1].pz = 9.25;
-	cible[TETRIS_EASY-1].py = 3.45;
+	cible[TETRIS_EASY-1].py = 3.59;
 	cible[TETRIS_EASY-1].cible_py = -.34;
 	cible[TETRIS_EASY-1].angle = 0;
 	cible[TETRIS_EASY-1].ouverture =70;
 
 	cible[FLAPPY_EASY-1].px = 6.59;
  	cible[FLAPPY_EASY-1].pz = 9.25;
- 	cible[FLAPPY_EASY-1].py = 3.45;
+ 	cible[FLAPPY_EASY-1].py = 3.59;
  	cible[FLAPPY_EASY-1].cible_py = -.34;
 	cible[FLAPPY_EASY-1].angle = 0;
 	cible[FLAPPY_EASY-1].ouverture =70;
 
 	cible[12].px = -13.10;
 	cible[12].pz = 10.50;
-	cible[12].py = 3.45;
+	cible[12].py = 3.59;
 	cible[12].cible_py = -.34;
 	cible[12].angle = 3*M_PI/2;
 	cible[12].ouverture =70;
 
 	cible[13].px = -13.10;
 	cible[13].pz = 12.44;
-	cible[13].py = 3.45;
+	cible[13].py = 3.59;
 	cible[13].cible_py = -.34;
 	cible[13].angle = 3*M_PI/2;
 	cible[13].ouverture =70;
@@ -2620,7 +2620,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							// AVEC UPDATE DU SCORE A L ISSUS
 							switch (machine) {
 								case 1:
-									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1));
+									flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1);
 									updateMeilleureScore(meilleureScore,token);
 								break;
 								case 2:
@@ -2651,7 +2651,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									break;
 								}break;
 								case 12:
-									printf( "\nEXIT CODE = %d\n" , flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0));
+									flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 13: SDL_Delay(500);break;
