@@ -100,7 +100,7 @@ SDL_Color Text_rouge = {255,0,0};
 
 // lier au son
 #define NB_INDICE_PORTER 2
-#define MAX_VOLUME_ARCADE 70
+#define MAX_VOLUME_ARCADE 100
 
 // STATIC VAR FOR CAMERA
 struct Camera_s
@@ -839,7 +839,6 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 {
 	// ANIMATION FAITE POUR 50 _FPS
 	float variateurFPSanimation = (25.0/IPS) * 0.1;
-	printf("VARIATEUR = %f\n",variateurFPSanimation );
 	//////////////////////////////////////////////////////////
 	///////// SI IL FAUT JOUER UN SON POUR LES FEMMES
 	if(*jouerSonPorteFemme == 1)
@@ -1194,14 +1193,15 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
 		// MUSIQUE LOT MACHINE GAUCHE
+		printf("MIX 0 = %d MIX 1 + %d MIX 2 = %d\n",!Mix_Paused(0),!Mix_Paused(1), !Mix_Paused(2) );
 		if(!Mix_Paused(0))
-			reglageVolume(0,-5.0,11.0,camera.px,camera.pz,18.0,camera.angle, MAX_VOLUME_ARCADE*2);
+			reglageVolume(0,-5.2,19.5,camera.px,camera.pz,35.0  - ( (!Mix_Paused(1) + !Mix_Paused(2)) * 10  ) ,camera.angle, MAX_VOLUME_ARCADE - ( (!Mix_Paused(1) + !Mix_Paused(2)) * 10  )    );
 		// MUSIQUE LOT MACHINE DROITE
 		if(!Mix_Paused(1))
-			reglageVolume(1,5.0,11.0,camera.px,camera.pz,18.0,camera.angle, MAX_VOLUME_ARCADE*2);
+			reglageVolume(1,5.2,19.5,camera.px,camera.pz,35.0   - ( (!Mix_Paused(0) + !Mix_Paused(2)) * 10  ) ,camera.angle, MAX_VOLUME_ARCADE - ( (!Mix_Paused(0) + !Mix_Paused(2)) * 10  ) );
 		// MUSIQUE MACHINE SEUL
 		if(!Mix_Paused(2))
-			reglageVolume(2,0.0,0.0,camera.px,camera.pz,18.0,camera.angle, MAX_VOLUME_ARCADE*2);
+			reglageVolume(2,-5.0,0.6,camera.px,camera.pz,35.0   - ( (!Mix_Paused(0) + !Mix_Paused(1)) * 10  ) ,camera.angle, MAX_VOLUME_ARCADE - ( (!Mix_Paused(0) + !Mix_Paused(1)) * 10  ) );
 		//////////////////////////////////////////////////////////
 
 
