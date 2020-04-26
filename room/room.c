@@ -835,9 +835,11 @@ void GLlightMode()
 
 
 
-void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera)
+void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera, float IPS)
 {
-
+	// ANIMATION FAITE POUR 50 _FPS
+	float variateurFPSanimation = (25.0/IPS) * 0.1;
+	printf("VARIATEUR = %f\n",variateurFPSanimation );
 	//////////////////////////////////////////////////////////
 	///////// SI IL FAUT JOUER UN SON POUR LES FEMMES
 	if(*jouerSonPorteFemme == 1)
@@ -881,7 +883,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 		}
 		else
 		{
-			toiletteFemme.x += 0.1;
+			toiletteFemme.x += variateurFPSanimation;
 		}
 	}
 	//////////////////////////////////////////////////////////
@@ -900,7 +902,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 		}
 		else
 		{
-			toiletteHomme.x += 0.1;
+			toiletteHomme.x += variateurFPSanimation;
 		}
 
 	}
@@ -923,9 +925,12 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 		else
 		{
 			if( toiletteFemme.x < 20.3 )
+			{
+				toiletteFemme.x = 20.2;
 				*statutPorteFemme = FERMER;
+			}
 			else
-				toiletteFemme.x -= 0.1;
+				toiletteFemme.x -= variateurFPSanimation;
 		}
 
 	}
@@ -947,9 +952,13 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 		else
 		{
 			if( toiletteHomme.x < 20.3 )
+			{
+				toiletteHomme.x = 20.2;
 				*statutPorteHomme = FERMER;
+			}
+
 			else
-				toiletteHomme.x -= 0.1;
+				toiletteHomme.x -= variateurFPSanimation;
 		}
 
 	}
@@ -1261,7 +1270,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		//////////////////////////////////////////////////////////
 		// ANIMATION PORTE TOILETTES
 
-		animationPorteToilette(&statutPorteFemme,&statutPorteHomme,&jouerSonPorteFemme,&jouerSonPorteHomme,&toiletteFemmeOuverteDelai,&toiletteHommeOuverteDelai ,sas_ouverture, sas_fermeture,camera);
+		animationPorteToilette(&statutPorteFemme,&statutPorteHomme,&jouerSonPorteFemme,&jouerSonPorteHomme,&toiletteFemmeOuverteDelai,&toiletteHommeOuverteDelai ,sas_ouverture, sas_fermeture,camera, _IPS);
 
 
 
