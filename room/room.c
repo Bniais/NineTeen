@@ -2283,26 +2283,26 @@ int detecterRadio(float x,float y,float angle)
 	{
 		////////////////////////////////////////
 		// DETECTION RADIO MUSIC 1
-		if( x > -6.6 && x < -4.4 && y > 19.0 && y < 19.55)
+		if( x > -2.3 && x < -1.2 && y > 19.0 && y < 19.55)
 		{
 			return 1;
 		}
+	}
 
-		////////////////////////////////////////
-		// DETECTION RADIO MUSIC 2
-		if( x < 6.6 && x > 4.4 && y > 19.0 && y < 19.55)
-		{
-			return 2;
-		}
+	////////////////////////////////////////
+	// DETECTION RADIO MUSIC 2
+	if( x < 11.6 && x > 11.0 && y > -1.0 && y < 0.0)
+	{
+		return 2;
 	}
 
 	///////////////////////////////////////////////////
 	// DETECTER D'UN ANGLE FACE A LA RADIO
-	if(angle > 3*M_PI/2 - (ANGLE_DETECTION_MACHINE) && angle < 3*M_PI/2 + (ANGLE_DETECTION_MACHINE))
+	if(angle > M_PI - (ANGLE_DETECTION_MACHINE) && angle < M_PI + (ANGLE_DETECTION_MACHINE) )
 	{
 		////////////////////////////////////////
 		// DETECTION RADIO MUSIC 3
-		if(x > -5.0 && x < -4.0 && y < 2.0  && y > -1.0)
+		if(x > -12.5 && x < -11.5 && y < 3.0  && y > 2.4)
 			return 3;
 	}
 
