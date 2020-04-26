@@ -505,7 +505,7 @@ static void sceneMkVAOs(const struct aiScene *sc, const struct aiNode* nd, GLuin
   //temp++;
 
   for (; n < nd->mNumMeshes; ++n) {
-    GLfloat * vertices = NULL;
+   // GLfloat * vertices = NULL;
     GLuint  * indices  = NULL;
     const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
   //  comp  = mesh->mVertices ? 3 : 0;
@@ -784,7 +784,7 @@ void GLlightMode()
 	glLightfv(GL_LIGHT0, GL_POSITION, position1);
 
 
-	GLfloat ambiant2[] = { 0.89, 0.33 , 0.27 , 1.0 };
+	//GLfloat ambiant2[] = { 0.89, 0.33 , 0.27 , 1.0 };
 	glLightfv(GL_LIGHT1  , GL_AMBIENT, ambiant1);
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse);
 	glLightfv(GL_LIGHT1, GL_SPECULAR, specular);
@@ -1153,14 +1153,14 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		SDL_ShowCursor(SDL_DISABLE);
 	#endif
 
-	SDL_RaiseWindow(Window);
+	//SDL_RaiseWindow(Window);
 
 	int toiletteFemmeOuverteDelai = 0;
 	int toiletteHommeOuverteDelai = 0;
 
 	while (Running)
 	{
-
+        //SDL_RaiseWindow(Window);
 		glLoadIdentity();
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
@@ -1793,110 +1793,123 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	camera->ouverture = START_OUVERTURE;
 
 
+
+
 	///////////////////////////////////////////////////
 	// PLACEMENT DES CAMERA FIX SUR LES MACHINES
-	cible[FLAPPY_HARD-1].px = -6.56;
-	cible[FLAPPY_HARD-1].pz = 12.9;
-	cible[FLAPPY_HARD-1].py = 3.59;
-	cible[FLAPPY_HARD-1].cible_py = -.34;
+
+
+	cible[FLAPPY_HARD-1].px = -6.562877;
+	cible[FLAPPY_HARD-1].pz = 12.924735;
+	cible[FLAPPY_HARD-1].py = 3.609998;
+	cible[FLAPPY_HARD-1].cible_py = -0.332000;
 	cible[FLAPPY_HARD-1].angle = M_PI;
 	cible[FLAPPY_HARD-1].ouverture =70;
 
-	cible[TETRIS_HARD-1].px = -4.62;
-	cible[TETRIS_HARD-1].pz = 12.85;
-	cible[TETRIS_HARD-1].py = 3.59;
-	cible[TETRIS_HARD-1].cible_py = -.34;
+	cible[TETRIS_HARD-1].px = -4.612497;
+	cible[TETRIS_HARD-1].pz = 12.926734;
+	cible[TETRIS_HARD-1].py = 3.609998;
+	cible[TETRIS_HARD-1].cible_py = -.329500;
 	cible[TETRIS_HARD-1].angle = M_PI;
 	cible[TETRIS_HARD-1].ouverture =70;
 
-	cible[ASTEROID_HARD-1].px = -2.68;
-	cible[ASTEROID_HARD-1].pz = 12.85;
-	cible[ASTEROID_HARD-1].py = 3.59;
-	cible[ASTEROID_HARD-1].cible_py = -.34;
+	cible[ASTEROID_HARD-1].px = -2.680496;
+	cible[ASTEROID_HARD-1].pz = 12.924740;
+	cible[ASTEROID_HARD-1].py = 3.611998;
+	cible[ASTEROID_HARD-1].cible_py = -.332000;
 	cible[ASTEROID_HARD-1].angle = M_PI;
 	cible[ASTEROID_HARD-1].ouverture =70;
 
+
+
 	cible[PACMAN_HARD-1].px = -6.56;
-	cible[PACMAN_HARD-1].pz = 9.25;
-	cible[PACMAN_HARD-1].py = 3.59;
-	cible[PACMAN_HARD-1].cible_py = -.34;
+	cible[PACMAN_HARD-1].pz = 9.189630;
+	cible[PACMAN_HARD-1].py = 3.609998;
+	cible[PACMAN_HARD-1].cible_py = -.332000;
 	cible[PACMAN_HARD-1].angle = 0.0;
 	cible[PACMAN_HARD-1].ouverture =70;
 
-	cible[SNAKE_HARD-1].px = -4.62;
-	cible[SNAKE_HARD-1].pz = 9.25;
-	cible[SNAKE_HARD-1].py = 3.59;
-	cible[SNAKE_HARD-1].cible_py = -.34;
+	cible[SNAKE_HARD-1].px = -4.626522;
+	cible[SNAKE_HARD-1].pz = 9.189630;
+	cible[SNAKE_HARD-1].py = 3.609998;
+	cible[SNAKE_HARD-1].cible_py = -.332000;
 	cible[SNAKE_HARD-1].angle = 0;
 	cible[SNAKE_HARD-1].ouverture =70;
 
 	cible[DEMINEUR_HARD-1].px = -2.68;
-	cible[DEMINEUR_HARD-1].pz = 9.25;
-	cible[DEMINEUR_HARD-1].py = 3.59;
-	cible[DEMINEUR_HARD-1].cible_py = -.34;
+	cible[DEMINEUR_HARD-1].pz = 9.189630;
+	cible[DEMINEUR_HARD-1].py = 3.609998;
+	cible[DEMINEUR_HARD-1].cible_py = -.332000;
 	cible[DEMINEUR_HARD-1].angle = 0;
 	cible[DEMINEUR_HARD-1].ouverture =70;
 
+
+
+	// // // // //
+
 	cible[DEMINEUR_EASY-1].px = 2.68;
-	cible[DEMINEUR_EASY-1].pz = 12.85;
-	cible[DEMINEUR_EASY-1].py = 3.59;
-	cible[DEMINEUR_EASY-1].cible_py = -.34;
+	cible[DEMINEUR_EASY-1].pz = 12.924735;
+	cible[DEMINEUR_EASY-1].py = 3.609998;
+	cible[DEMINEUR_EASY-1].cible_py = -.332000;
 	cible[DEMINEUR_EASY-1].angle = M_PI;
 	cible[DEMINEUR_EASY-1].ouverture =70;
 
-	cible[SNAKE_EASY-1].px = 4.62;
-	cible[SNAKE_EASY-1].pz = 12.85;
-	cible[SNAKE_EASY-1].py = 3.59;
-	cible[SNAKE_EASY-1].cible_py = -.34;
+	cible[SNAKE_EASY-1].px = 4.651513;
+	cible[SNAKE_EASY-1].pz = 12.924240;
+	cible[SNAKE_EASY-1].py = 3.614998;
+	cible[SNAKE_EASY-1].cible_py = -.331000;
 	cible[SNAKE_EASY-1].angle = M_PI;
 	cible[SNAKE_EASY-1].ouverture =70;
 
 	cible[PACMAN_EASY-1].px = 6.56;
-	cible[PACMAN_EASY-1].pz = 12.85;
-	cible[PACMAN_EASY-1].py = 3.59;
-	cible[PACMAN_EASY-1].cible_py = -.34;
+	cible[PACMAN_EASY-1].pz = 12.924735;
+	cible[PACMAN_EASY-1].py = 3.609998;
+	cible[PACMAN_EASY-1].cible_py = -.332000;
 	cible[PACMAN_EASY-1].angle = M_PI;
 	cible[PACMAN_EASY-1].ouverture =70;
 
-	cible[ASTEROID_EASY-1].px = 2.71;
-	cible[ASTEROID_EASY-1].pz = 9.25;
-	cible[ASTEROID_EASY-1].py = 3.59;
-	cible[ASTEROID_EASY-1].cible_py = -.34;
+
+
+	cible[ASTEROID_EASY-1].px = 2.707498;
+	cible[ASTEROID_EASY-1].pz = 9.192631;
+	cible[ASTEROID_EASY-1].py = 3.608998;
+	cible[ASTEROID_EASY-1].cible_py = -.329500;
 	cible[ASTEROID_EASY-1].angle = 0.0;
 	cible[ASTEROID_EASY-1].ouverture =70;
 
-	cible[TETRIS_EASY-1].px = 4.65;
-	cible[TETRIS_EASY-1].pz = 9.25;
-	cible[TETRIS_EASY-1].py = 3.59;
-	cible[TETRIS_EASY-1].cible_py = -.34;
+	cible[TETRIS_EASY-1].px = 4.637994;
+	cible[TETRIS_EASY-1].pz = 9.192131;
+	cible[TETRIS_EASY-1].py = 3.608998;
+	cible[TETRIS_EASY-1].cible_py = -.326500;
 	cible[TETRIS_EASY-1].angle = 0;
 	cible[TETRIS_EASY-1].ouverture =70;
 
 	cible[FLAPPY_EASY-1].px = 6.59;
- 	cible[FLAPPY_EASY-1].pz = 9.25;
- 	cible[FLAPPY_EASY-1].py = 3.59;
- 	cible[FLAPPY_EASY-1].cible_py = -.34;
+ 	cible[FLAPPY_EASY-1].pz = 9.195626;
+ 	cible[FLAPPY_EASY-1].py = 3.606998;
+ 	cible[FLAPPY_EASY-1].cible_py = -.330000;
 	cible[FLAPPY_EASY-1].angle = 0;
 	cible[FLAPPY_EASY-1].ouverture =70;
 
+
 	cible[12].px = -13.10;
 	cible[12].pz = 10.50;
-	cible[12].py = 3.59;
-	cible[12].cible_py = -.34;
+	cible[12].py = 3.609998;
+	cible[12].cible_py = -.332000;
 	cible[12].angle = 3*M_PI/2;
 	cible[12].ouverture =70;
 
 	cible[13].px = -13.10;
 	cible[13].pz = 12.44;
-	cible[13].py = 3.59;
-	cible[13].cible_py = -.34;
+	cible[13].py = 3.609998;
+	cible[13].cible_py = -.332000;
 	cible[13].angle = 3*M_PI/2;
 	cible[13].ouverture =70;
 
 	cible[14].px = 0.0;
 	cible[14].pz = 0.82;
-	cible[14].py = 4.05;
-	cible[14].cible_py = -.34;
+	cible[14].py = 3.609998 + 0.3F;
+	cible[14].cible_py = -.332000;
 	cible[14].angle = M_PI;
 	cible[14].ouverture =70;
 }
@@ -1914,10 +1927,11 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 
 
 
-	float _SENSIBILITE_CAMERA = SENSIBILITE_CAMERA * (IPS/FPS);
-	float _VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT * (IPS/FPS);
+	//float _SENSIBILITE_CAMERA = 0.0005;//SENSIBILITE_CAMERA * (IPS/FPS);
+	//float _VITESSE_DEPLACEMENT = 0.0005;//VITESSE_DEPLACEMENT * (IPS/FPS);
 
-
+    float _SENSIBILITE_CAMERA =SENSIBILITE_CAMERA * (IPS/FPS);
+	float _VITESSE_DEPLACEMENT =VITESSE_DEPLACEMENT * (IPS/FPS);
 	///////////////////////////////////////////////////
 	// INITALISATION D'UN EVENEMENT SDL
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
@@ -1940,7 +1954,7 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 	#ifndef __linux__
 	if (SDL_GetWindowFlags(Window) & (SDL_WINDOW_INPUT_FOCUS )){
 		int mouseX,mouseY;
-
+        SDL_RaiseWindow(Window);
 		SDL_GetMouseState(&mouseX, &mouseY);
 
 		///////////////////////////////////////////////////
@@ -2074,6 +2088,7 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 		if(  detectionEnvironnement(  camera->px - _VITESSE_DEPLACEMENT *sin(camera->angle + M_PI/2),
 									 								camera->pz - _VITESSE_DEPLACEMENT *cos(camera->angle + M_PI/2)		  )		)
 		{
+
 			///////////////////////////////////////////////////
 			// CONDITION VERIFIER ON DEPLACE X ET Y EN FONCTION DE L'ANGLE
 			// ON VAS A DROITE
@@ -2084,6 +2099,12 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 	}
 
 
+    /*printf(" x%f  z%f  y%f  a%f o%f\n\n",camera->px,
+	camera->pz,
+	camera->py ,
+	camera->cible_py,
+	camera->angle ,
+	camera->ouverture );*/
 
 
 	///////////////////////////////////////////////////
@@ -2096,8 +2117,8 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 
 
 
-/*
-	// RECENTRE LA SOURIS
+
+	/*// RECENTRE LA SOURIS
 	if(mouseX <= WinWidth/2 - M_PI*SENSIBILITE_CAMERA_SOURIS)
 	{
 		SDL_WarpMouseGlobal(mouseX + 2*M_PI*SENSIBILITE_CAMERA_SOURIS + (bounds.w-WinWidth) /2  ,mouseY + (bounds.h-WinHeight) /2);
