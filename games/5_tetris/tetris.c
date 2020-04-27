@@ -30,13 +30,6 @@
 *\brief Initialise l'environement SDL, TTF et rand
 */
 void myInit(){
-	// SDL Init
-	SDL_Init(SDL_INIT_EVERYTHING);
-	TTF_Init();
-
-	//textures
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-
 	//rand
 	srand(time(NULL));
 }
