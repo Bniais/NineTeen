@@ -84,7 +84,7 @@ float VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
 float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 
 
-#define RATIO_WINDOW_SCREEN 0.93
+#define RATIO_WINDOW_SCREEN 0.95
 static int WinWidth = 1280;
 static int WinHeight = 720;
 SDL_Rect bounds;
@@ -202,7 +202,7 @@ int loadGameTexture(int * id_jeu){
 /// \param const C_STRUCT aiScene* scene scene charger
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen );
+int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize );
 
 
 
@@ -1081,7 +1081,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 
 
 
-int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, int optFullScreen)
+int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize)
 {
 	optionFullScreen = optFullScreen;
 	//////////////////////////////////////////////////////////
@@ -1191,8 +1191,18 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 	if(optionFullScreen)
 		Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP  );
-	else
+	else{
+
+		int ww, wh;
+		SDL_Rect usablebounds;
+		SDL_GetDisplayUsableBounds(0, &usablebounds);
+
 		Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL );
+		SDL_GetWindowPosition(Window, &ww, &wh);
+		SDL_SetWindowPosition(Window, ww - (bounds.w -(usablebounds.w+ borderSize.y + borderSize.h))/2, wh - (bounds.h -(usablebounds.h+ borderSize.x + borderSize.w))/2 );
+	}
+
+
 
 
 	//////////////////////////////////////////////////////////
@@ -2802,29 +2812,29 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									updateMeilleureScore(meilleureScore,token);
 								break;
 								case 2:
-									tetris( pRenderer ,meilleureScore[TETRIS_HARD].scoreJoueurActuel, 1920./WinWidth,token,1, textures);
+									tetris( pRenderer ,meilleureScore[TETRIS_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 3:
-									asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].scoreJoueurActuel, 1920./WinWidth,token,1, textures);
+									asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 4: SDL_Delay(500);break;
 								case 5:
-									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel, WinWidth/1920.,token,1, textures);
+									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
 								case 6: SDL_Delay(500);break;
 								case 7: SDL_Delay(500);break;
 								case 8:
-									snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel, WinWidth/1920.,token,0, textures);
+									snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
 								case 9: SDL_Delay(500);break;
 								case 10:
-									asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel, 1920./WinWidth,token,0, textures);
+									asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 11: {
-									tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel, 1920./WinWidth,token,0, textures);
+									tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								}break;

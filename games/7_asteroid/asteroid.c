@@ -1227,11 +1227,20 @@ static void drawHelpText(SDL_Renderer *renderer, SDL_Texture *flecheTexture){
 }
 
 extern int updateEnded;
-int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char *token, int hardcore, SDL_Texture ** textures){
+int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight, char *token, int hardcore, SDL_Texture ** textures, int fullscreen){
+
 /////////////////////
 /// MISE EN PLACE ///``
 /////////////////////
 	asteroidInit();
+
+	float ratioWindowSize = (float)WinWidth/BASE_WINDOW_W;
+
+	SDL_Rect playgroundView = {HUD_W*ratioWindowSize, HUD_H*ratioWindowSize, PLAYGROUND_SIZE_W*ratioWindowSize, PLAYGROUND_SIZE_H*ratioWindowSize};
+	SDL_RenderSetViewport(renderer, &playgroundView);
+	SDL_RenderSetScale(renderer, ratioWindowSize, ratioWindowSize);
+	SDL_SetRenderDrawColor(renderer, 3, 22, 34, 255);
+	SDL_RenderClear(renderer);
 	////////////
 	/// Vars ///`
 	////////////
@@ -1331,9 +1340,6 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 		//DIFFICULTE
 		float difficulte =START_DIFFICULTE;
 
-		//Views
-		SDL_Rect playgroundView = {HUD_W/ratioWindowSize, HUD_H/ratioWindowSize, PLAYGROUND_SIZE_W/ratioWindowSize, PLAYGROUND_SIZE_H/ratioWindowSize};
-
 		//mouse
 		SDL_Point mouseCoor;
 
@@ -1357,7 +1363,9 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 		/// Initialize vars ///`
 		///////////////////////
 		initText(textsBonus);
-        SDL_RenderSetViewport(renderer, &playgroundView);
+
+		if(fullscreen)
+        	SDL_RenderSetViewport(renderer, &playgroundView);
 	/////////////////////
 	/// BOUCLE DU JEU ///``
 	/////////////////////
@@ -1797,12 +1805,12 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 			SDL_RenderSetViewport(renderer, NULL);
 			SDL_RenderCopy(renderer, textures[A_HUD], NULL, NULL);
 
-			afficherJauge(renderer, textures[A_JAUGE], 1./ ratioWindowSize, jauge);
-			afficherRoue(renderer,textures[A_ROUE], 1. / ratioWindowSize, munitions, roue, vaisseau.missile_id, jauge.color );
+			afficherJauge(renderer, textures[A_JAUGE], ratioWindowSize, jauge);
+			afficherRoue(renderer,textures[A_ROUE], ratioWindowSize, munitions, roue, vaisseau.missile_id, jauge.color );
 
-			afficherBombIcon(renderer,textures[A_BOMB_ICON], nbBombeNucleaire, 1. / ratioWindowSize);
+			afficherBombIcon(renderer,textures[A_BOMB_ICON], nbBombeNucleaire, ratioWindowSize);
 
-			afficherScoreTotal(renderer, fonts[FONT_SCORE], score.scoreShow, 1. /ratioWindowSize);
+			afficherScoreTotal(renderer, fonts[FONT_SCORE], score.scoreShow, ratioWindowSize);
 
 			if(thread && updateEnded){
 				SDL_WaitThread(thread, &retour);
@@ -1815,12 +1823,12 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 				}
 			}
 			else if(thread){
-				afficherLoading(renderer, textures[A_LOADING], SCORE_COLOR, 0, 0, frame_anim_loading++, w , h, BASE_WINDOW_W/ratioWindowSize);
+				afficherLoading(renderer, textures[A_LOADING], SCORE_COLOR, 0, 0, frame_anim_loading++, w , h, BASE_WINDOW_W*ratioWindowSize);
 			}
 
 			if(frameRetour){
 
-				afficherRetour(renderer, textures[A_LOADING],fonts[FONT_SCORE], SCORE_COLOR, 0, 0, frameRetour, w, h, BASE_WINDOW_W/ratioWindowSize);
+				afficherRetour(renderer, textures[A_LOADING],fonts[FONT_SCORE], SCORE_COLOR, 0, 0, frameRetour, w, h, BASE_WINDOW_W*ratioWindowSize);
 				if(frameRetour >0)
 					frameRetour--;
 				else
@@ -1834,7 +1842,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 			SDL_RenderPresent(renderer);
 
 			SDL_RenderSetViewport(renderer, &playgroundView);
-			SDL_RenderSetScale(renderer, 1. / ratioWindowSize, 1. / ratioWindowSize);
+			SDL_RenderSetScale(renderer, ratioWindowSize, ratioWindowSize);
 		////////////////
 		// Next frame //`
 		////////////////

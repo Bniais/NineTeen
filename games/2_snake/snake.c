@@ -1176,11 +1176,18 @@ extern int updateEnded; /** < Changée dans le thread pour savoir s'il est finit
 *\param token Le token pour l'envoi des scores
 *\param hardcore  Le difficulté du jeu
 */
-int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *token, int hardcore, SDL_Texture ** textures){
+int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, char *token, int hardcore, SDL_Texture ** textures){
 /////////////////////
 /// MISE EN PLACE ///``
 /////////////////////
 	snakeInit();
+
+	float ratioWindowSize = (float)WinWidth/BASE_WINDOW_W;
+	SDL_Rect playgroundView = {HUD_W*ratioWindowSize, HUD_H*ratioWindowSize, PLAYGROUND_SIZE_W*ratioWindowSize, PLAYGROUND_SIZE_H*ratioWindowSize};
+	SDL_RenderSetViewport(renderer, &playgroundView);
+	SDL_RenderSetScale(renderer, ratioWindowSize, ratioWindowSize);
+	SDL_SetRenderDrawColor(renderer, HUD_COLOR.r, HUD_COLOR.g, HUD_COLOR.b, 255);
+	SDL_RenderClear(renderer);
 
 	//dimwindow
 	int w, h;
@@ -1227,6 +1234,8 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 	Vector2f pastBody[REMIND_BODY];
 	SnakePart *deadBodies = NULL;
 	size_t nbDeadBodies = 0;
+
+
 
 	int firstframe = SDL_TRUE;
 	while(1){
@@ -1294,7 +1303,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 		int frameJaugeAnim = 0;
 		int frameDead = 0;
 
-		SDL_Rect playgroundView = {HUD_W*ratioWindowSize, HUD_H*ratioWindowSize, PLAYGROUND_SIZE_W*ratioWindowSize, PLAYGROUND_SIZE_H*ratioWindowSize};
+
 
 		//mouse
 		SDL_Point mouseCoor;
@@ -1306,7 +1315,6 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 		if(!firstframe)
 			spawnFruit(snakeBody[SIZE_PRE_RADIUS], &fruit[0], 0, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0);
 
-        SDL_RenderSetViewport(renderer, &playgroundView);
 		/////////////////////
 		/// BOUCLE DU JEU ///``
 		/////////////////////
@@ -1514,12 +1522,6 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 					return HACKED;
 				}
 
-			}
-
-			if(done){
-				for(int i=0; i<nbFruits; i++)
-					if(fruit[i].frame < (hardcore? RATIO_TTL_HARDCORE : 1 ) * BLINK_FRAMES[0])
-						fruit[i].frame = (hardcore? RATIO_TTL_HARDCORE : 1 ) * BLINK_FRAMES[0];
 			}
 
 			if(frameDead == SHOW_HELP_FRAME)

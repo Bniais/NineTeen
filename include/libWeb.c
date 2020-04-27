@@ -445,26 +445,27 @@ int updateScore(EnvoiScore * envoiScore )
 	updateEnded = 0;
 	char *request;
 	char *response;
-	if ( !construire_requete(&request, NULL, NULL, envoiScore->key, envoiScore->gameID, envoiScore->score) )
-	{
-		if ( !envoyez_requet(&response,URL_UPDATE_SCORE,request) )
+	int attempt =0;
+	do{
+		if ( !construire_requete(&request, NULL, NULL, envoiScore->key, envoiScore->gameID, envoiScore->score) )
 		{
-			if ( !strcmp(response, "SUCCESS") )
+			if ( !envoyez_requet(&response,URL_UPDATE_SCORE,request) )
 			{
 				printf("%s\n",response);
-				free(request);
-				request = NULL;
-				free(response);
-				response = NULL;
-				updateEnded = 1;
-				return EXIT_SUCCESS;
-			}
-			printf("%s\n",response );
-			free(response);
-			response = NULL;
+				if(!strcmp(response, "SUCCESS")){
 
+					free(request);
+					request = NULL;
+					free(response);
+					response = NULL;
+					updateEnded = 1;
+					return EXIT_SUCCESS;
+				}
+
+			}
 		}
-	}
+
+	}while(attempt++ < 5 && strcmp(response, "SUCCESS"));
 	free(request);
 	request = NULL;
 	updateEnded = 1;

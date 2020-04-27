@@ -1780,11 +1780,21 @@ extern int updateEnded;
 *\param hardcore Le niveau de difficulté du jeu
 *\return 0 en cas de retour normal
 */
-int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *token, int hardcore, SDL_Texture ** textures){
+int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, char *token, int hardcore, SDL_Texture ** textures){
+
+
 // // // // // // //
 // MISE EN PLACE   //``
 // // // // // // //
 	myInit();
+
+	float ratioWindowSize = (float)WinWidth/BASE_WINDOW_W;
+
+	/*SDL_Rect playgroundView = {HUD_W*ratioWindowSize, HUD_H*ratioWindowSize, PLAYGROUND_SIZE_W*ratioWindowSize, PLAYGROUND_SIZE_H*ratioWindowSize};
+	SDL_RenderSetViewport(renderer, &playgroundView);*/
+	SDL_RenderSetScale(renderer, ratioWindowSize, ratioWindowSize);
+	SDL_SetRenderDrawColor(renderer, BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, 255);
+	SDL_RenderClear(renderer);
 
 	SDL_Thread *thread = NULL;
 	char buffer[10];
@@ -1805,7 +1815,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 		}
 	}
 
-
+	SDL_RenderSetScale(renderer, ratioWindowSize, ratioWindowSize);
 	int firstframe = SDL_TRUE;
 	int quit = SDL_FALSE;
 	while(!quit){
@@ -2191,16 +2201,6 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 					frameRetour++;
 			}
 
-			//hud
-			SDL_RenderSetScale(renderer, 1, 1);
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
-			/*SDL_RenderSetViewport(renderer, &hudView);
-			SDL_RenderCopy(renderer, hudTexture, &hudView, &hudDraw);
-			SDL_RenderSetViewport(renderer, &playgroundView);*/
-
-			//afficher
-			SDL_RenderSetScale(renderer, 1. / ratioWindowSize, 1. / ratioWindowSize);
 			SDL_RenderPresent(renderer);
 
 
