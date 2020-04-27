@@ -1182,6 +1182,29 @@ void afficherBombIcon(SDL_Renderer * renderer, SDL_Texture * textureBombIcon, in
 	SDL_RenderCopy(renderer, textureBombIcon, NULL, &dest);
 }
 
+void myFrees(Missile ** missiles, Asteroid ** asteroides, Explosion ** explosions, TTF_Font ** fonts, Thread ** thread){
+
+	if(*missiles)
+		free(*missiles);
+
+	if(*asteroides)
+		free(*asteroides);
+
+	if(*explosions)
+		free(*explosions);
+
+	for(int i=0; i<NB_ASTEROID_FONTS; i++)
+		if(fonts[i]){
+			TTF_CloseFont(fonts[i]);
+			fonts[i] = NULL;
+		}
+
+	if(*thread){
+		SDL_WaitThread(*thread, NULL);
+		*thread = NULL;
+	}
+}
+
 extern int updateEnded;
 int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char *token, int hardcore, SDL_Texture ** textures){
 /////////////////////
@@ -1337,7 +1360,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 			SDL_PumpEvents();
 
 			if(keystate[SDL_SCANCODE_ESCAPE]){
-				//myfrees();
+				myfrees(&missiles, &asteroides, &explosions, fonts, &thread);
 				SDL_RenderSetViewport(renderer, NULL);
 				return 0;
 			}
@@ -1538,7 +1561,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 							retour = detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_FALSE, &score, &nbBombeNucleaire, angle_touche, textsBonus, munitions, keys, &score_hash);
 
 						if(retour == HACKED){
-							//myfrees();
+							myfrees(&missiles, &asteroides, &explosions, fonts, &thread);
 							SDL_RenderSetViewport(renderer, NULL);
 							return HACKED;
 						}
@@ -1551,7 +1574,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 				if(vaisseau.bouclier){
 					vaisseau.bouclier=0;
 					if( detruire_asteroid(&asteroides,&nb_asteroid,i_touche, &vaisseau,SDL_TRUE,&score, &nbBombeNucleaire, vaisseau.angle, textsBonus, munitions, keys, &score_hash) == HACKED){
-						//myfrees();
+						myfrees(&missiles, &asteroides, &explosions, fonts, &thread);
 						SDL_RenderSetViewport(renderer, NULL);
 						return HACKED;
 					}
@@ -1591,7 +1614,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 						vaisseau.frame_explo = FRAME_EXPLOSIONS[EXPLO_ASTE];
 					}
 					else{
-						//myfrees();
+						myfrees(&missiles, &asteroides, &explosions, fonts, &thread);
 						SDL_RenderSetViewport(renderer, NULL);
 						return HACKED;
 					}
@@ -1655,7 +1678,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 			if(frameAnimBomb){
 				if(FRAME_ANIM_BOMB - frameAnimBomb == FRAME_KILL_ASTERO_BOMB)
 					if(useNuclear(&asteroides, &nb_asteroid, &explosions, &nb_explosions, &score, keys, &score_hash) == HACKED){
-						//myfrees();
+						myfrees(&missiles, &asteroides, &explosions, fonts, &thread);
 						SDL_RenderSetViewport(renderer, NULL);
 						return HACKED;
 					}
