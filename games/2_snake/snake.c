@@ -1114,7 +1114,7 @@ static void drawScore(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score 
 *\param fonts Le tableau de polices
 *\param thread Le thread
 */
-static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeBody, Score ** scoreAffichage, Mix_Chunk ** sound, SDL_Texture * textures[NB_SNAKE_TEXTURES], TTF_Font * fonts[NB_SNAKE_FONTS], SDL_Thread** thread){
+static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeBody, Score ** scoreAffichage, Mix_Chunk ** sound, TTF_Font * fonts[NB_SNAKE_FONTS], SDL_Thread** thread){
 	if(*fruits){
 		free(*fruits);
 		*fruits = NULL;
@@ -1137,13 +1137,6 @@ static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeB
 
 	if(*sound)
 		Mix_FreeChunk(*sound);
-
-	for(int i=0; i<NB_SNAKE_TEXTURES; i++){
-		if(textures[i]){
-			SDL_DestroyTexture(textures[i]);
-			textures[i] = NULL;
-		}
-	}
 
 	for(int i=0; i<NB_SNAKE_FONTS; i++){
 		if(fonts[i]){
@@ -1168,7 +1161,7 @@ extern int updateEnded; /** < Changée dans le thread pour savoir s'il est finit
 *\param token Le token pour l'envoi des scores
 *\param hardcore  Le difficulté du jeu
 */
-int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *token, int hardcore){
+int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *token, int hardcore, SDL_Texture **textures){
 /////////////////////
 /// MISE EN PLACE ///``
 /////////////////////
@@ -1188,14 +1181,6 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 	int frame_anim_loading = 0;
 
 	//Textures
-	SDL_Texture* textures[NB_SNAKE_TEXTURES];
-	for(int i=0; i< NB_SNAKE_TEXTURES; i++){
-		 textures[i] = IMG_LoadTexture(renderer, DIR_TEXTURES_SNAKE[i]);
-		 if( textures[i] == NULL ){
-			printf("Erreur lors de la creation de texture %s", SDL_GetError());
-			return EXIT_FAILURE;
-		}
-	}
 	SDL_SetTextureColorMod(textures[S_HUD], HUD_COLOR.r, HUD_COLOR.g, HUD_COLOR.b);
 
 	//Fonts
@@ -1318,7 +1303,8 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 			while( SDL_PollEvent(&event) ){
 				switch( event.type ){
 					case SDL_QUIT:
-						myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
+						SDL_RenderSetViewport(renderer, NULL);
+						myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, fonts, &thread );
 						return 0;// fermer
 					case SDL_KEYUP:
 						if( event.key.keysym.sym == SDLK_SPACE)
@@ -1336,7 +1322,8 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 				break; //replay
 
 			if(keystate[SDL_SCANCODE_ESCAPE]){
-				myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
+				SDL_RenderSetViewport(renderer, NULL);
+				myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, fonts, &thread );
 				return 0;
 			}
 
@@ -1409,7 +1396,8 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 					if( fruit[i].hitbox == HIT ){
 						fruit[i].hitbox = NO_HIT;
 						if(!eatFruit(&snakeBody, &snakeSize, &fruit, &nbFruits, fruit[i], &speedSnake, &score, &nbFruitEaten, &frameJaugeAnim, pastBody, &bonus, &deadBodies, &nbDeadBodies, &nbPotion, &poisoned, &scoreAffichage, &nbScoreAffichage, &frameAcce, flap_wav, &score_hash, keys, hardcore)){
-							myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
+							SDL_RenderSetViewport(renderer, NULL);
+							myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, fonts, &thread );
 							return HACKED;
 						}
 
@@ -1430,7 +1418,8 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 					if(!eatFruit(&snakeBody, &snakeSize, &fruit, &nbFruits, bonus, &speedSnake, &score, &nbFruitEaten, &frameJaugeAnim, pastBody, &bonus, &deadBodies, &nbDeadBodies, &nbPotion, &poisoned, &scoreAffichage, &nbScoreAffichage, &frameAcce, flap_wav, &score_hash, keys, hardcore))
 					{
-						myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
+						SDL_RenderSetViewport(renderer, NULL);
+						myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, fonts, &thread );
 						return HACKED;
 					}
 
@@ -1483,7 +1472,8 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 					thread = SDL_CreateThread(  (int(*)(void*))updateScore, NULL, &envoiScore );
 				}
 				else{
-					myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
+					SDL_RenderSetViewport(renderer, NULL);
+					myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, fonts, &thread );
 					return HACKED;
 				}
 
@@ -1601,7 +1591,8 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 							score.frameToDest = FRAME_SCORE_ANIM;
 							if(!changeProtectedVar(&score_hash, &(score.score), score.score + scoreFruit, keys))
 							{
-								myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
+								SDL_RenderSetViewport(renderer, NULL);
+								myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, fonts, &thread );
 								return HACKED;
 							}
 

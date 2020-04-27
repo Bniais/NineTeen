@@ -83,7 +83,7 @@ float VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
 float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 
 
-#define RATIO_WINDOW_SCREEN 0.93
+#define RATIO_WINDOW_SCREEN 0.94
 static int WinWidth = 1280;
 static int WinHeight = 720;
 SDL_Rect bounds;
@@ -141,7 +141,7 @@ enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINE
 /// \param const C_STRUCT aiScene* scene scene charger
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen );
+int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen, SDL_Renderer * pRenderer, SDL_Texture * textures[NB_GAMES][NB_MAX_TEXTURES] );
 
 
 
@@ -431,7 +431,7 @@ void MessageQuitterRoom();
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme,  int *jouerSonPorteHomme, float _IPS);
+void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme,  int *jouerSonPorteHomme, float _IPS, SDL_Renderer * pRenderer, SDL_Texture * textures[NB_GAMES][NB_MAX_TEXTURES]);
 
 
 /////////////////////////////////////////////////////
@@ -1020,7 +1020,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 
 
 
-int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, int optFullScreen)
+int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, int optFullScreen, SDL_Renderer * pRenderer, SDL_Texture * textures[NB_GAMES][NB_MAX_TEXTURES])
 {
 	optionFullScreen = optFullScreen;
 	//////////////////////////////////////////////////////////
@@ -1036,6 +1036,13 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 	// RECUPERER C'EST VALEUR DES PARAMS A L'AVENIR
 	windowMaxSize(optionFullScreen);
+    SDL_SetWindowSize(Window, WinWidth, WinHeight);
+    SDL_SetWindowPosition(Window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED );
+
+    if(optFullScreen){
+        SDL_SetWindowFullscreen(Window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+    }
+
 	//////////////////////////////////////////////////////////
 
 
@@ -1126,21 +1133,19 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 
 
-
-
-	if(optionFullScreen)
+	/*if(optionFullScreen)
 		Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP  );
 	else
-		Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL );
+		Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL );*/
 
 
 	//////////////////////////////////////////////////////////
 	// VERIFIER EXISTANCE DE LA FENETRE ET CREATION CONTEXT
-	if( !Window)
+	/*if( !Window)
 	{
 		printf("Impossible de cree la fenetre %s\n",SDL_GetError() );
 		return EXIT_FAILURE;
-	}
+	}*/
 
 
 
@@ -1226,7 +1231,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		//////////////////////////////////////////////////////////
 		// LANCEMENT DES MACHINES
-		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme, _IPS);
+		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme, _IPS, pRenderer, textures);
 		//////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////
 		// CHARGER LA SCENE
@@ -1402,7 +1407,8 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 
 	///////////////////////////////////////////////////////////
 	// RECUPERATION DU SCORE JUSQU'A REUSSITE
-	while( updateMeilleureScoreStruct(token,reponse) == EXIT_FAILURE );
+	int attempts = 0;
+	while( updateMeilleureScoreStruct(token,reponse) == EXIT_FAILURE && attempts++ < MAX_ATTEMPTS);
 
 	///////////////////////////////////////////////////////////
 	// PARSING DANS LA CHAINE DE DONNER RECU
@@ -2606,7 +2612,7 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 
 }
 
-void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme , int *jouerSonPorteHomme, float _IPS)
+void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme , int *jouerSonPorteHomme, float _IPS, SDL_Renderer * pRenderer, SDL_Texture * textures[NB_GAMES][NB_MAX_TEXTURES])
 {
 
 
@@ -2708,6 +2714,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						{
 
 							//SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
+							//SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, );
+
 
 							///////////////////////////////////////////////////
 							// ANIMATION CENTRAGE SUR MACHINE
@@ -2716,7 +2724,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							///////////////////////////////////////////////////
 							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
-							SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 
 							#ifdef _WIN32
 							if(optionFullScreen ){
@@ -2729,38 +2736,38 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							// AVEC UPDATE DU SCORE A L ISSUS
 							switch (machine) {
 								case 1:
-									flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1);
+									flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures[TEXTURE_FLAPPY]);
 									updateMeilleureScore(meilleureScore,token);
 								break;
 								case 2:
-									tetris( pRenderer ,meilleureScore[TETRIS_HARD].scoreJoueurActuel, 1920./WinWidth,token,1);
+									tetris( pRenderer ,meilleureScore[TETRIS_HARD].scoreJoueurActuel, 1920./WinWidth,token,1,textures[TEXTURE_TETRIS]);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 3:
-									asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].scoreJoueurActuel, 1920./WinWidth,token,1);
+									asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].scoreJoueurActuel, 1920./WinWidth,token,1,textures[TEXTURE_ASTEROID]);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 4: SDL_Delay(500);break;
 								case 5:
-									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel, WinWidth/1920.,token,1);
+									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel, WinWidth/1920.,token,1,textures[TEXTURE_SNAKE]);
 									updateMeilleureScore(meilleureScore,token);
 								case 6: SDL_Delay(500);break;
 								case 7: SDL_Delay(500);break;
 								case 8:
-									snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel, WinWidth/1920.,token,0);
+									snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel, WinWidth/1920.,token,0,textures[TEXTURE_SNAKE]);
 									updateMeilleureScore(meilleureScore,token);
 								case 9: SDL_Delay(500);break;
 								case 10:
-									asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
+									asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel, 1920./WinWidth,token,0,textures[TEXTURE_ASTEROID]);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 11: {
-									tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
+									tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel, 1920./WinWidth,token,0, textures[TEXTURE_TETRIS]);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								}break;
 								case 12:
-									flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0);
+									flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures[TEXTURE_FLAPPY]);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 13: SDL_Delay(500);break;
@@ -2779,10 +2786,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							}
 							#endif
 
-							SDL_DestroyRenderer(pRenderer);
-
-
-
 							#ifdef __linux__
 
 								detruireTexture();
@@ -2798,7 +2801,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								// AFFICHAGE DE LA SCENE
 								// RECHARGEMENT DES IMAGES
 								aiLoadTexture(DIR_OBJ_LOAD,scene);
-
 							#else
 
 								// REMISE A ZERO DE LA SCENE

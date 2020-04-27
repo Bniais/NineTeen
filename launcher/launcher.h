@@ -18,8 +18,8 @@ void pauseClavier(Uint32 tempsMax);
 
 // compile .o commande : gcc -c launcher.c `sdl2-config --cflags --libs` -lSDL2_image
 
-#define NB_FILE 55
-char verifierFichier[NB_FILE][128]={
+//#define NB_FILE 55
+/*char verifierFichier[NB_FILE][128]={
 
 	"../room/borne1.wav",
 	"../room/borne2.wav",
@@ -81,4 +81,4 @@ char verifierFichier[NB_FILE][128]={
 	"../games/7_asteroid/Textures/thrust.png",
 	"../games/7_asteroid/Textures/vaisseau.png"
 
-};
+};*/

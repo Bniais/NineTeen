@@ -10,42 +10,15 @@
 *\brief Contient des informations sur le score total
 */
 typedef struct {
-	int score; /*!< \brief Le score total stockÃ© */
-	float scoreShow; /*!< \brief Le score total affichÃ© (tend vers score)*/
-	int frameToDest; /*!< \brief Le nombre de frame avant que scoreShow arrive Ã  score*/
+	int score; /*!< \brief Le score total stocké */
+	float scoreShow; /*!< \brief Le score total affiché (tend vers score)*/
+	int frameToDest; /*!< \brief Le nombre de frame avant que scoreShow arrive à score*/
 }ScoreTotal;
 const SDL_Color SCORE_COLOR = {0x44,0xdd,0xFF};
 #define FRAME_SCORE_ANIM 20
 
 
 //textures
-#define NB_ASTEROID_TEXTURES 19
-typedef enum{T_VAISS, T_GEM, T_THRUST, T_BACKGROUND, T_HUD, T_ASTEROID, T_FISSURE, T_GLACE, T_BONUS, T_BULLET, T_LASER, T_ROUE, T_JAUGE, T_BOMB, T_BOMB_ICON,T_LOADING, T_EXPLO_MISSILE, T_EXPLO_ASTEROID, T_EXPLO_GLACE}TEXTURES;
-
-int textureFloue[NB_ASTEROID_TEXTURES] =
-			{0		, 0	   , 0       , 0           , 0    , 0         , 0        , 0      , 1      , 0       , 1      , 1     , 1      , 0     , 0          , 0       , 0              , 0               , 0};
-char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
-	"../games/7_asteroid/Textures/vaisseau.png",
-	"../games/7_asteroid/Textures/gem.png",
-	"../games/7_asteroid/Textures/thrust.png",
-	"../games/7_asteroid/Textures/background.png",
-	"../games/2_snake/Textures/hud.png",
-	"../games/7_asteroid/Textures/asteroid.png",
-	"../games/7_asteroid/Textures/fissure.png",
-	"../games/7_asteroid/Textures/glace.png",
-	"../games/7_asteroid/Textures/bonus.png",
-	"../games/7_asteroid/Textures/bullet.png",
-	"../games/7_asteroid/Textures/laser_beam.png",
-	"../games/7_asteroid/Textures/roue.png",
-	"../games/7_asteroid/Textures/jauge.png",
-	"../games/7_asteroid/Textures/bomb.png",
-	"../games/7_asteroid/Textures/bombIcon.png",
-	DIR_LOADING,
-	"../games/7_asteroid/Textures/explo.png",
-	"../games/7_asteroid/Textures/explo2.png",
-	"../games/7_asteroid/Textures/explo3.png"
-};
-
 static const SDL_Color HUD_COLOR = {0x2f,0x30,0x4f};
 
 #define NB_ASTEROID_FONTS 2
@@ -106,7 +79,7 @@ const float RATIO_ACCEL[NB_FRAME_THRUST+1] = {0, 0.3, 0.6, 1, 1, 1};
 
 
 //asteroid
-
+#define INIT_FRAME_SPAWN 20
 #define DIST_2ASTEROID 30
 #define DIST_VAISSEAU_ASTEROID 300
 #define FRAME_APPARITION_ASTEROID (16* FRAMES_PER_SECOND)
