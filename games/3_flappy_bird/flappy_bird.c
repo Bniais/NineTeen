@@ -381,7 +381,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 
 	//police
 	TTF_Init();
-	TTF_Font * myFont = TTF_OpenFont("games/5_tetris/Fonts/zorque.ttf", OPEN_FONT_SIZE);
+	TTF_Font * myFont = TTF_OpenFont("../games/2_snake/Fonts/zorque.ttf", OPEN_FONT_SIZE);
 	if(!myFont)
 		printf("Impossible d'ouvrir la police %s\n", TTF_GetError() );
 
@@ -455,6 +455,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 	int exitCode = afficherTout(renderer, &thread, myFont, &retour, &frame_anim_loading, &frameRetour, textures[F_LOADING], emplacementPersonnage , pilonne, score ,1 , 0, cible, angle ,
 																										textures[F_BACKGROUND],  textures[F_PIPES], textures[F_BIRDS], textures[F_MEDALS],  textures[F_SCOREBOARD],  textures[F_SOL], textures[F_CHIFFRE], textures[F_HIGHSCORE],hardcore);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	drawReplay(renderer, myFont,0.57, BASE_WINDOW_W,BASE_WINDOW_H);
 	SDL_RenderPresent(renderer);
 	//////////////////////////////////////////////////////////////////
 	// ATTENDRE APPUI TOUCHE ESPACE + JOUER PREMIER SON + PREMIER SAUT
@@ -600,6 +601,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 					// AFFICHER SCORE ET MEDAIL ICI
 					// ON AUGMENTE LA TAILLE DU SCOREBOARD PAR 2
 					SDL_Rect positionScoreBoard= {WINDOW_L/4,WINDOW_H/4,SCOREBOARD.w * SCALE_TO_FIT * 2, SCOREBOARD.h*SCALE_TO_FIT * 2};
+					drawReplay(renderer, myFont,0.57, WINDOW_L,WINDOW_H);
 					SDL_RenderCopy(renderer, textures[F_SCOREBOARD], NULL, &positionScoreBoard);
 
 

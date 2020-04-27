@@ -375,6 +375,8 @@ int updateMeilleureScoreStruct(char *key,char *retour)
 		if ( !envoyez_requet(&response,URL_GET_COINS,request) )
 		{
 			printf("%s\n",response );
+			if(strlen(response) <= 4)
+				return EXIT_FAILURE;
 			strcpy(retour,response);
 			free(request);
 			request = NULL;

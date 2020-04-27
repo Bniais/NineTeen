@@ -116,7 +116,7 @@ SDL_Color WHITE = {255,255,255,255};
 *\param renderer Le renderer où afficher
 *\param font La police d'écriture
 */
-void drawReplay(SDL_Renderer* renderer, TTF_Font* font){
+void drawReplay(SDL_Renderer* renderer, TTF_Font* font, float posY, int viewW, int viewH){
 	char * text = REPLAY;
 
 	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, WHITE);
@@ -127,8 +127,8 @@ void drawReplay(SDL_Renderer* renderer, TTF_Font* font){
 	dest.h /= (OPEN_FONT_SIZE / SIZE_REPLAY);
 
 	//centrer
-	dest.x = PLAYGROUND_SIZE_W/2 - dest.w/2;
-	dest.y = PLAYGROUND_SIZE_H/2 - dest.h/2;
+	dest.x = viewW/2 - dest.w/2;
+	dest.y = (viewH/2 - dest.h)*(1-posY);
 
 	SDL_RenderCopy(renderer, Message, NULL, &dest);
 	SDL_FreeSurface(surfaceMessage);

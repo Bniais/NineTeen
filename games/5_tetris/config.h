@@ -52,13 +52,13 @@ char* DIR_FONTS_TETRIS[NB_TETRIS_FONTS] = {
 	#define TIME_START (FRAMES_PER_SECOND*60)
 	enum{LATERAL, DOWN, TO_GO, STOP};
 	float GROW_RATE[NB_FRAMES] = {0.9999, 0.99976, 0.9999, 0.99988};
-	float FRAME_START[NB_FRAMES] = {10, 13, 15 ,18};
+	float FRAME_START[NB_FRAMES] = {6, 13, 15 ,18};
 	float FRAME_MIN[NB_FRAMES] =   {4 ,  1,  8, 15};
-	float FRAME_MAX[NB_FRAMES] =   {12, 20, 18, 20};
+	float FRAME_MAX[NB_FRAMES] =   {8, 20, 18, 20};
 
 
 //Bonus
-#define PROBA_BONUS 5
+#define PROBA_BONUS 6
 #define NB_BONUSES 7
 enum{NO_BONUS, FILL, LASER, MULTI_POINT, FLAT_POINT, SLOW, SPEED, GIANT};
 #define BONUS_TRI 10 //pour stocker bonus et id dans matrice et deadPiece
@@ -198,7 +198,7 @@ SDL_Rect QUIT_DEST = {20,20,0,0};
 #define SIZE_QUIT 28.
 
 ///replay
-#define Y_START_REPLAY BASE_WINDOW_H
+#define Y_START_REPLAY (2*BASE_WINDOW_H/3)
 
 
 

@@ -672,6 +672,14 @@ void drawFruit(SDL_Renderer *renderer, SDL_Texture *fruitTexture, SDL_Texture *s
 	}
 }
 
+static void drawHelpText(SDL_Renderer *renderer, SDL_Texture *flecheTexture){
+
+	//direction
+	SDL_SetTextureColorMod(flecheTexture, HUD_COLOR.r, HUD_COLOR.g, HUD_COLOR.b);
+	SDL_RenderCopyEx(renderer, flecheTexture, &FLECHE_SRC, &FLECHE_DEST[0], 90, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(renderer, flecheTexture, &FLECHE_SRC, &FLECHE_DEST[1], 0, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(renderer, flecheTexture, &FLECHE_SRC, &FLECHE_DEST[2], 0, NULL, SDL_FLIP_HORIZONTAL);
+}
 
 /**
 *\fn void drawPotions(SDL_Renderer* renderer, int nbPotion, SDL_Texture * fruitTexture, float ratioWindowSize)
@@ -1220,7 +1228,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 	SnakePart *deadBodies = NULL;
 	size_t nbDeadBodies = 0;
 
-
+	int firstframe = SDL_TRUE;
 	while(1){
 		////////////
 		/// Vars ///`
@@ -1232,6 +1240,10 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 		//Time
 		unsigned int lastTime = 0, currentTime;
 		int rdyToSpace = SDL_TRUE;
+		int rdyToUp = SDL_FALSE;
+		int rdyToLeft = SDL_FALSE;
+		int rdyToRight = SDL_FALSE;
+
 
 		//Quantities of things gotten
 		int nbPotion = 0;
@@ -1280,6 +1292,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 		Score *scoreAffichage = malloc(sizeof(Score));
 		size_t nbScoreAffichage = 0;
 		int frameJaugeAnim = 0;
+		int frameDead = 0;
 
 		SDL_Rect playgroundView = {HUD_W*ratioWindowSize, HUD_H*ratioWindowSize, PLAYGROUND_SIZE_W*ratioWindowSize, PLAYGROUND_SIZE_H*ratioWindowSize};
 
@@ -1290,7 +1303,8 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 		bonus = (Fruit){UNDEF.x, UNDEF.y, 0, 0, NO_HIT, FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1) + NB_FRAME_DEATH_FRUIT + 1};
 
 		//Fruit
-		spawnFruit(snakeBody[SIZE_PRE_RADIUS], &fruit[0], 0, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0);
+		if(!firstframe)
+			spawnFruit(snakeBody[SIZE_PRE_RADIUS], &fruit[0], 0, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0);
 
         SDL_RenderSetViewport(renderer, &playgroundView);
 		/////////////////////
@@ -1298,6 +1312,13 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 		/////////////////////
 		int done = 0, dead = 0;
 		while( 1 ){
+			if(firstframe){
+				firstframe = SDL_FALSE;
+				dead = 1;
+				done = 1;
+				sentScore = SDL_TRUE,
+				frameDead = SHOW_HELP_FRAME+1;
+			}
 			// Init input
 			turn = NO_TURN;
 			accelerate = ACCELERATE_DISABLED;
@@ -1312,11 +1333,6 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 					case SDL_QUIT:
 						myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
 						return 0;// fermer
-					case SDL_KEYUP:
-						if( event.key.keysym.sym == SDLK_SPACE)
-							rdyToSpace = SDL_TRUE;
-						break;
-
 				}
 			}
 
@@ -1324,13 +1340,32 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 		// Handle Keyboard inputs //`
 		////////////////////////////
 			SDL_PumpEvents();
-			if( keystate[SDL_SCANCODE_SPACE] && done && rdyToSpace)
-				break; //replay
 
 			if(keystate[SDL_SCANCODE_ESCAPE]){
 				myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
 				return 0;
 			}
+			else if(done && ( ( rdyToSpace && keystate[SDL_SCANCODE_SPACE] ) || ( frameDead > SHOW_HELP_FRAME && ((rdyToUp && keystate[SDL_SCANCODE_UP]) || ( rdyToLeft && keystate[SDL_SCANCODE_LEFT] ) || ( rdyToRight && keystate[SDL_SCANCODE_RIGHT] ) ) ) ) ){
+				break;
+			}
+
+			if(!keystate[SDL_SCANCODE_SPACE])
+				rdyToSpace = SDL_TRUE;
+
+			if(!keystate[SDL_SCANCODE_UP])
+				rdyToUp = SDL_TRUE;
+			else
+				rdyToUp = SDL_FALSE;
+
+			if(!keystate[SDL_SCANCODE_RIGHT])
+				rdyToRight = SDL_TRUE;
+			else
+				rdyToRight = SDL_FALSE;
+
+			if(!keystate[SDL_SCANCODE_LEFT])
+				rdyToLeft = SDL_TRUE;
+			else
+				rdyToLeft = SDL_FALSE;
 
 			if( keystate[SDL_SCANCODE_LEFT] )
 				turn = LEFT;
@@ -1481,13 +1516,21 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 
 			}
 
+			if(done){
+				for(int i=0; i<nbFruits; i++)
+					if(fruit[i].frame < (hardcore? RATIO_TTL_HARDCORE : 1 ) * BLINK_FRAMES[0])
+						fruit[i].frame = (hardcore? RATIO_TTL_HARDCORE : 1 ) * BLINK_FRAMES[0];
+			}
+
+			if(frameDead == SHOW_HELP_FRAME)
+				initBody(&snakeSize, &snakeBody);
 		//////////
 		// Draw //`
 		//////////
 			SDL_RenderCopy(renderer, textures[S_BACKGROUND], NULL, NULL);
 
 			//Snake
-			if( !dead )
+			if( !dead || frameDead > SHOW_HELP_FRAME )
 				drawBody(renderer, textures[S_SNAKE], snakeBody, snakeSize, frameUnkillable);
 
 			//Dead bodies
@@ -1507,8 +1550,10 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 				drawFruit(renderer, textures[S_FRUITS], textures[S_ANIM], bonus, hardcore);
 
 
-			if(done && snakeSize < (SIZE_PRE_RADIUS + RELAY_SNAKE_SIZE))
-				drawReplay(renderer, fonts[S_BASE_FONT]);
+			if(frameDead >= SHOW_HELP_FRAME){
+				drawReplay(renderer, fonts[S_BASE_FONT], 0.7, PLAYGROUND_SIZE_W,PLAYGROUND_SIZE_H);
+				drawHelpText(renderer, textures[S_ARROW]);
+			}
 
 
 			//hud
@@ -1556,6 +1601,8 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 		////////////////
 		// Next frame //`
 		////////////////
+			if(dead)
+				frameDead++;
 
 			//deadBodies timeout
 			for( int i = 0; i<nbDeadBodies; i++ ){

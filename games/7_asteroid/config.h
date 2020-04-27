@@ -18,11 +18,6 @@ const SDL_Color SCORE_COLOR = {0x44,0xdd,0xFF};
 #define FRAME_SCORE_ANIM 20
 
 
-//textures
-#define NB_ASTEROID_TEXTURES 19
-
-
-
 static const SDL_Color HUD_COLOR = {0x2f,0x30,0x4f};
 
 #define NB_ASTEROID_FONTS 2
@@ -36,7 +31,7 @@ char* DIR_FONTS_ASTEROID[NB_ASTEROID_FONTS] = {
 
 
 
-typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier;int missile_id; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust; int frame_explo;}Vaiss;
+typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier;int missile_id; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust; long frame_explo;}Vaiss;
 
 typedef struct{float x; float y; float angle; float taille; int bonus; float pv; float pv_max; float vitesse; float difficulte; float difficulte_pere; float angle_rota; float vitesse_rota; int frame_hit; int frozen;}Asteroid;
 
@@ -67,6 +62,7 @@ typedef enum{
 }dir_turn;
 #define RAYON_VAISS 25
 #define DECELERATION 1.015
+#define BONUS_DEAD_DECELERATION 0.05
 #define TURN_AMMOUNT 0.13
 #define VITESSE 10
 #define ACCEL 0.45
@@ -83,7 +79,7 @@ const float RATIO_ACCEL[NB_FRAME_THRUST+1] = {0, 0.3, 0.6, 1, 1, 1};
 
 
 //asteroid
-
+#define FRAME_INIT_SPAWN 20
 #define DIST_2ASTEROID 30
 #define DIST_VAISSEAU_ASTEROID 300
 #define FRAME_APPARITION_ASTEROID (16* FRAMES_PER_SECOND)
@@ -100,8 +96,8 @@ SDL_Point coord_spawn[3]={{0,0},{0,(PLAYGROUND_SIZE_H/2)},{(PLAYGROUND_SIZE_W/2)
 #define VITESSE_MAX_ASTEROID 22
 #define START_DIFFICULTE 1.01
 #define DIFFICULTE_MIN_SPLIT 5
-#define RATIO_DIFFICULTE_AUGMENT 0.0024
-#define RATIO_DIFFICULTE_AUGMENT_MULTI 0.00028
+#define RATIO_DIFFICULTE_AUGMENT 0.0027
+#define RATIO_DIFFICULTE_AUGMENT_MULTI 0.00033
 #define MAX_VITESSE_ROTA 15
 
 #define NB_ASTE_TEXTURES 6
@@ -176,28 +172,28 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 	#define DISTANCE_CANON 23
 
 	#define FREQUENCE_BASE (FRAMES_PER_SECOND/2)
-	const float FREQUENCE_MISSILES[NB_MISSILES] = {1, 0.6, 1.5, 1.33, 0};
+	const float FREQUENCE_MISSILES[NB_MISSILES] = {1, 0.66, 1.6, 1.33, 0};
 
 	#define BASE_VITESSE_MISSILE 15
 	const float VITESSE_MISSILES[NB_MISSILES] = {1.2, 1.4, 1, 1.3, 0};
 
 	#define BASE_DEGAT_MISSILE 1.5
-	const float DEGAT_MISSILES[NB_MISSILES] = {1.5, 2, 4, 0, 10./30};
+	const float DEGAT_MISSILES[NB_MISSILES] = {1.3, 1.6, 3.6, 0, 12./30};
 
 	const int RAYON_MISSILES[NB_MISSILES] = {6, 10, 14, 10, 0};
 
 	const float TAILLE_EXPLOSIONS[NB_MISSILES] = {0.9, 1.1, 1.3, 1, 0};
 
 	#define DUREE_MISSILE_BASE (2*FRAMES_PER_SECOND)
-	const float DUREE_MISSILES[NB_MISSILES] = {1, 0.8, 1.7, 1, 0};
+	const float DUREE_MISSILES[NB_MISSILES] = {0.9, 0.7, 1.6, 1, 0};
 
 
-	const float MUNITIONS_USAGE[NB_MISSILES] = {0, 0.01, 0.0334, 0.02, 1./(16*30)};
+	const float MUNITIONS_USAGE[NB_MISSILES] = {0, 0.01, 0.0334, 0.02, 1./(14*30)};
 											  //INF / 100 / 33 /  50/ 16s
 
 
     #define MAX_RATIO_AMMO_OBTAINABLE 0.5
-	#define AMMO_GRANT 0.5
+	#define AMMO_GRANT 0.33
 
 	//texures missiles
 	#define MISSILE_CUT 56
@@ -229,7 +225,20 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 static const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
 
 //dead
-#define MIN_VITESSE_DRAW_REPLAY 4
+#define FRAME_SHOW_HELP -50
+#define FRAME_DESTROY_ASTE -30
+
+//help
+static SDL_Rect FLECHE_SRC = {0,0, 500, 435};
+static SDL_Rect FLECHE_DEST[6] = {
+	{PLAYGROUND_SIZE_W/2 - 50/2,  PLAYGROUND_SIZE_H/2 - RAYON_VAISS -50 -4,50,30},
+	{PLAYGROUND_SIZE_W/2 - 50 -10 - RAYON_VAISS,  PLAYGROUND_SIZE_H/2 -30/2,50,30},
+	{PLAYGROUND_SIZE_W/2 + 10 + RAYON_VAISS,  PLAYGROUND_SIZE_H/2- 30/2,50,30},
+	{10,720,40,20},
+	{26,736,40,20},
+	{10,834,56,38}
+};
+
 
 //Bonus
 
@@ -283,7 +292,7 @@ typedef struct {int id; int frame;}TextBonus;
 const SDL_Color BONUS_TEXT_COLOR = {0xa7,0x96,0xff};
 static const int ALPHA_BONUS[FRAME_SHOW_BONUS_TEXT] = { 40, 80, 160, 200, 235,   255, 255, 255, 255, 255,	 255, 255, 255, 255, 255,	 255, 255, 255, 255, 255,   245, 235, 225, 215, 205,   180, 150, 110, 80, 40 };
 
-int CHANCE_BONUS[NB_BONUS + NB_MISSILES - 1]={1,3,1,3,4,1,10,4,1, 3,3,3,3};
+int CHANCE_BONUS[NB_BONUS + NB_MISSILES - 1]={1,3,1,3,4,1,10,6,2,4,4,4,4};
 
 float angle_tir_multiple[NB_TIR_MAX][NB_TIR_MAX]={
   {0,0,0},//,0,0},

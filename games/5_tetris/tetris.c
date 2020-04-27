@@ -1806,7 +1806,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 	}
 
 
-
+	int firstframe = SDL_TRUE;
 	int quit = SDL_FALSE;
 	while(!quit){
 
@@ -1842,8 +1842,6 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 		float distances[NB_DISTANCES];
 
 
-
-
 		updateDistances(frame, distances, &framePassed, &frameDestJauge, &frameTotalSpeed);
 
 		//Bonuses
@@ -1874,7 +1872,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			frameCompleteLine[i] = -1;
 
 		//death
-		DeadPiece *deadPieces = NULL;
+		DeadPiece *deadPieces = malloc(sizeof(DeadPiece));
 		int nbDeadPieces = 0;
 
 		//Keyboard
@@ -1908,6 +1906,14 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 	 // // // // // // //
 
 		while( 1 ){
+			if(firstframe){
+				nbDeadPieces=1 ;
+				deadPieces[0].y = BASE_WINDOW_H + 50;
+				gameOver = SDL_TRUE;
+				firstframe=SDL_FALSE;
+				nextPiece.x = UNDEFINED.x;
+				currentPiece.x = UNDEFINED.x;
+			}
 			int sentScore = SDL_FALSE;
 			// Init input
 			SDL_GetMouseState(&(mouseCoor.x), &(mouseCoor.y));
@@ -2033,6 +2039,8 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 								if(linesInCompletion(matrixFill, frameLaser, frameCompleteLine))
 									waitToPlace = SDL_TRUE;
 								else{
+									nextPiece.x=UNDEFINED.x;
+									frameTotalSpeed = TIME_START;
 									deathAnimInit(&gameOver, &deadPieces, &nbDeadPieces, matrix);
 									if(!sentScore){
 										sentScore = SDL_TRUE;
@@ -2082,6 +2090,9 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 				}
 				else if(!linesInCompletion(matrixFill, frameLaser, frameCompleteLine)){
 					waitToPlace = SDL_FALSE;
+					nextPiece.x=UNDEFINED.x;
+					nextPiece.x=UNDEFINED.x;
+					frameTotalSpeed = TIME_START;
 					deathAnimInit(&gameOver, &deadPieces, &nbDeadPieces, matrix);
 
 					if(!sentScore){
@@ -2142,7 +2153,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 			drawFill(renderer, matrixFill,textures[T_BRICKS]);
 			drawQuit(renderer, fonts[T_FONT_COMBO], 1, JAUGE_COLOR);
 			if(nbDeadPieces && deadPieces[0].y > Y_START_REPLAY)
-				drawReplay(renderer, fonts[T_FONT_COMBO]);
+				drawReplay(renderer, fonts[T_FONT_COMBO],0.57, BASE_WINDOW_W,BASE_WINDOW_H);
 
 			//SDL_RenderFillRect(renderer, &SCORE_TOTAL_DEST);
 			drawTotalScore(renderer,fonts[T_FONT_COMBO], score);
