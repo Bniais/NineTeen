@@ -100,8 +100,8 @@ SDL_Point coord_spawn[3]={{0,0},{0,(PLAYGROUND_SIZE_H/2)},{(PLAYGROUND_SIZE_W/2)
 #define VITESSE_MAX_ASTEROID 22
 #define START_DIFFICULTE 1.01
 #define DIFFICULTE_MIN_SPLIT 5
-#define RATIO_DIFFICULTE_AUGMENT 0.0033
-#define RATIO_DIFFICULTE_AUGMENT_MULTI 0.00033
+#define RATIO_DIFFICULTE_AUGMENT 0.0024
+#define RATIO_DIFFICULTE_AUGMENT_MULTI 0.00028
 #define MAX_VITESSE_ROTA 15
 
 #define NB_ASTE_TEXTURES 6
@@ -176,13 +176,13 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 	#define DISTANCE_CANON 23
 
 	#define FREQUENCE_BASE (FRAMES_PER_SECOND/2)
-	const float FREQUENCE_MISSILES[NB_MISSILES] = {1, 0.6, 1.6, 1.33, 0};
+	const float FREQUENCE_MISSILES[NB_MISSILES] = {1, 0.6, 1.5, 1.33, 0};
 
 	#define BASE_VITESSE_MISSILE 15
-	const float VITESSE_MISSILES[NB_MISSILES] = {1, 1.3, 1, 1.2, 0};
+	const float VITESSE_MISSILES[NB_MISSILES] = {1.2, 1.4, 1, 1.3, 0};
 
 	#define BASE_DEGAT_MISSILE 1.5
-	const float DEGAT_MISSILES[NB_MISSILES] = {1, 1.25, 4, 0, 4./30};
+	const float DEGAT_MISSILES[NB_MISSILES] = {1.5, 2, 4, 0, 10./30};
 
 	const int RAYON_MISSILES[NB_MISSILES] = {6, 10, 14, 10, 0};
 
@@ -192,8 +192,8 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 	const float DUREE_MISSILES[NB_MISSILES] = {1, 0.8, 1.7, 1, 0};
 
 
-	const float MUNITIONS_USAGE[NB_MISSILES] = {0, 0.01, 0.0334, 0.02, 1./(15*30)};
-											  //INF / 100 / 33 /  50/ 20s
+	const float MUNITIONS_USAGE[NB_MISSILES] = {0, 0.01, 0.0334, 0.02, 1./(16*30)};
+											  //INF / 100 / 33 /  50/ 16s
 
 
     #define MAX_RATIO_AMMO_OBTAINABLE 0.5
@@ -283,7 +283,7 @@ typedef struct {int id; int frame;}TextBonus;
 const SDL_Color BONUS_TEXT_COLOR = {0xa7,0x96,0xff};
 static const int ALPHA_BONUS[FRAME_SHOW_BONUS_TEXT] = { 40, 80, 160, 200, 235,   255, 255, 255, 255, 255,	 255, 255, 255, 255, 255,	 255, 255, 255, 255, 255,   245, 235, 225, 215, 205,   180, 150, 110, 80, 40 };
 
-int CHANCE_BONUS[NB_BONUS + NB_MISSILES - 1]={1,3,1,3,2,1,10,4,1, 3,3,3,3};
+int CHANCE_BONUS[NB_BONUS + NB_MISSILES - 1]={1,3,1,3,4,1,10,4,1, 3,3,3,3};
 
 float angle_tir_multiple[NB_TIR_MAX][NB_TIR_MAX]={
   {0,0,0},//,0,0},
