@@ -18,7 +18,7 @@ void pauseClavier(Uint32 tempsMax);
 
 // compile .o commande : gcc -c launcher.c `sdl2-config --cflags --libs` -lSDL2_image
 
-#define NB_FILE 55
+#define NB_FILE 54
 char verifierFichier[NB_FILE][128]={
 
 	"../room/borne1.wav",
@@ -30,7 +30,6 @@ char verifierFichier[NB_FILE][128]={
 	"../room/salle.obj",
 	"../room/salle.mtl",
 
-	"../games/3_flappy_bird/Textures/tilset.png",
 	"../games/3_flappy_bird/Textures/birds.png",
 	"../games/3_flappy_bird/Textures/medals.png",
 	"../games/3_flappy_bird/Textures/pipes.png",
