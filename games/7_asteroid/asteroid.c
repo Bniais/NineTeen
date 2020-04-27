@@ -1348,8 +1348,6 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 			SDL_PumpEvents();
 
 			if(keystate[SDL_SCANCODE_ESCAPE]){
-				//myfrees();
-				SDL_RenderSetViewport(renderer, NULL);
 				return 0;
 			}
 			else if(done && rdyToSpace && keystate[SDL_SCANCODE_SPACE]){
@@ -1547,8 +1545,6 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 							retour = detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_FALSE, &score, &nbBombeNucleaire, angle_touche, textsBonus, munitions, keys, &score_hash);
 
 						if(retour == HACKED){
-							//myfrees();
-							SDL_RenderSetViewport(renderer, NULL);
 							return HACKED;
 						}
 					}
@@ -1560,8 +1556,6 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 				if(vaisseau.bouclier){
 					vaisseau.bouclier=0;
 					if( detruire_asteroid(&asteroides,&nb_asteroid,i_touche, &vaisseau,SDL_TRUE,&score, &nbBombeNucleaire, vaisseau.angle, textsBonus, munitions, keys, &score_hash) == HACKED){
-						//myfrees();
-						SDL_RenderSetViewport(renderer, NULL);
 						return HACKED;
 					}
 				}
@@ -1600,8 +1594,6 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 						vaisseau.frame_explo = FRAME_EXPLOSIONS[EXPLO_ASTE];
 					}
 					else{
-						//myfrees();
-						SDL_RenderSetViewport(renderer, NULL);
 						return HACKED;
 					}
 
@@ -1660,8 +1652,6 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 			if(frameAnimBomb){
 				if(FRAME_ANIM_BOMB - frameAnimBomb == FRAME_KILL_ASTERO_BOMB)
 					if(useNuclear(&asteroides, &nb_asteroid, &explosions, &nb_explosions, &score, keys, &score_hash) == HACKED){
-						//myfrees();
-						SDL_RenderSetViewport(renderer, NULL);
 						return HACKED;
 					}
 
