@@ -1756,12 +1756,12 @@ void myFrees(Piece * currentPiece, Piece * nextPiece, DeadPiece ** deadPieces, S
 		*deadPieces = NULL;
 	}
 
-	for(int i=0; i<NB_TETRIS_TEXTURES; i++)
+	/*for(int i=0; i<NB_TETRIS_TEXTURES; i++)
 		if(textures[i]){
 			SDL_DestroyTexture(textures[i]);
 			textures[i] = NULL;
 		}
-
+	*/
 	for(int i=0; i<NB_TETRIS_FONTS; i++)
 		if(fonts[i]){
 			TTF_CloseFont(fonts[i]);
@@ -1787,7 +1787,7 @@ extern int updateEnded;
 *\param hardcore Le niveau de difficulté du jeu
 *\return 0 en cas de retour normal
 */
-int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *token, int hardcore){
+int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *token, int hardcore, SDL_Texture ** textures){
 // // // // // // //
 // MISE EN PLACE   //``
 // // // // // // //
@@ -1801,16 +1801,6 @@ int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize, char *
 	int frameRetour = 0;
 	int frame_anim_loading = 0;
 
-
-	SDL_Texture* textures[NB_TETRIS_TEXTURES];
-	//Textures
-	for(int i=0; i< NB_TETRIS_TEXTURES; i++){
-		 textures[i] = IMG_LoadTexture(renderer, DIR_TEXTURES_TETRIS[i]);
-		 if( textures[i] == NULL ){
-			printf("Erreur lors de la creation de texture %s", SDL_GetError());
-			return EXIT_FAILURE;
-		}
-	}
 
 	//Fonts
 	TTF_Font* fonts[NB_TETRIS_FONTS];

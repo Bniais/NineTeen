@@ -1168,7 +1168,7 @@ extern int updateEnded; /** < Changée dans le thread pour savoir s'il est finit
 *\param token Le token pour l'envoi des scores
 *\param hardcore  Le difficulté du jeu
 */
-int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *token, int hardcore){
+int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *token, int hardcore, SDL_Texture ** textures){
 /////////////////////
 /// MISE EN PLACE ///``
 /////////////////////
@@ -1188,14 +1188,6 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 	int frame_anim_loading = 0;
 
 	//Textures
-	SDL_Texture* textures[NB_SNAKE_TEXTURES];
-	for(int i=0; i< NB_SNAKE_TEXTURES; i++){
-		 textures[i] = IMG_LoadTexture(renderer, DIR_TEXTURES_SNAKE[i]);
-		 if( textures[i] == NULL ){
-			printf("Erreur lors de la creation de texture %s", SDL_GetError());
-			return EXIT_FAILURE;
-		}
-	}
 	SDL_SetTextureColorMod(textures[S_HUD], HUD_COLOR.r, HUD_COLOR.g, HUD_COLOR.b);
 
 	//Fonts

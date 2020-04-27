@@ -34,6 +34,7 @@ static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0, _nbMeshes = 
 
 
 #include "room.h"
+#include "../define/define.h"
 #include "../include/libWeb.h"
 #include "../games/2_snake/snake.h"
 #include "../games/3_flappy_bird/flappy_bird.h"
@@ -129,6 +130,125 @@ enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINE
 #else
   #define DIR_TOKEN_FILE "/tmp/.Nineteen"
 #endif
+
+const char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
+    "../games/7_asteroid/Textures/vaisseau.png",
+    "../games/7_asteroid/Textures/gem.png",
+    "../games/7_asteroid/Textures/thrust.png",
+    "../games/7_asteroid/Textures/background.png",
+    "../games/2_snake/Textures/hud.png",
+    "../games/7_asteroid/Textures/asteroid.png",
+    "../games/7_asteroid/Textures/fissure.png",
+    "../games/7_asteroid/Textures/glace.png",
+    "../games/7_asteroid/Textures/bonus.png",
+    "../games/7_asteroid/Textures/bullet.png",
+    "../games/7_asteroid/Textures/laser_beam.png",
+    "../games/7_asteroid/Textures/roue.png",
+    "../games/7_asteroid/Textures/jauge.png",
+    "../games/7_asteroid/Textures/bomb.png",
+    "../games/7_asteroid/Textures/bombIcon.png",
+    DIR_LOADING,
+    "../games/7_asteroid/Textures/explo.png",
+    "../games/7_asteroid/Textures/explo2.png",
+    "../games/7_asteroid/Textures/explo3.png"
+};
+const int textureFloue[NB_ASTEROID_TEXTURES] = {0		, 0	   , 0       , 0           , 0    , 0         , 0        , 0      , 1      , 0       , 1      , 1     , 1      , 0     , 0          , 0       , 0              , 0               , 0};
+
+
+//texture
+const char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
+	"../games/5_tetris/Textures/laserAnim.png",
+	"../games/5_tetris/Textures/bricks.png",
+	"../games/5_tetris/Textures/bonus.png",
+	"../games/5_tetris/Textures/hud_grille.png",
+	"../games/5_tetris/Textures/chiffre.png",
+	"../games/5_tetris/Textures/speedJauge.png",
+	"../games/5_tetris/Textures/turn.png",
+	"../games/5_tetris/Textures/fleche.png",
+	DIR_LOADING
+};
+
+
+const char* DIR_TEXTURES_SNAKE[NB_SNAKE_TEXTURES] = {
+	"../games/2_snake/Textures/basket.png",
+	"../games/2_snake/Textures/backgroundSnake.png",
+	"../games/2_snake/Textures/snake.png",
+	"../games/2_snake/Textures/fruits.png",
+	"../games/2_snake/Textures/anim.png",
+	"../games/2_snake/Textures/hud.png",
+	"../games/2_snake/Textures/chiffre.png",
+	DIR_LOADING
+};
+
+const char* DIR_TEXTURES_FLAPPY[NB_FLAPPY_TEXTURES]={
+	"../games/3_flappy_bird/Textures/backgrounds.png",
+	"../games/3_flappy_bird/Textures/pipes.png",
+	"../games/3_flappy_bird/Textures/birds.png",
+	"../games/3_flappy_bird/Textures/medals.png",
+	"../games/3_flappy_bird/Textures/scoreBoard.png",
+	"../games/3_flappy_bird/Textures/sol.png",
+	"../games/3_flappy_bird/Textures/chiffre.png",
+	"../games/3_flappy_bird/Textures/high_score.png",
+	DIR_LOADING
+};
+SDL_Renderer * pRenderer;
+SDL_Texture * textures[NB_MAX_TEXTURES];
+int loadGameTexture(int * id_jeu){
+	    //asteroid
+		switch(*id_jeu){
+			case ASTEROID_EASY:
+            case ASTEROID_HARD:
+				for(int i=0; i< NB_ASTEROID_TEXTURES; i++){
+                        int textureFloue[NB_ASTEROID_TEXTURES] ={0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
+
+					if(textureFloue[i])
+						SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");
+					else
+						SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+
+					textures[i] = IMG_LoadTexture(pRenderer, DIR_TEXTURES_ASTEROID[i]);
+					if( textures[i] == NULL ){
+						printf("Erreur lors de la creation de texture %s", SDL_GetError());
+						return SDL_FALSE;
+					}
+				}
+				break;
+
+			case FLAPPY_EASY:
+            case FLAPPY_HARD:
+				for(int i=0; i< NB_FLAPPY_TEXTURES; i++){
+					 textures[i] = IMG_LoadTexture(pRenderer, DIR_TEXTURES_FLAPPY[i]);
+					 if( textures[i] == NULL ){
+						printf("Erreur lors de la creation de texture %s", SDL_GetError());
+						return SDL_FALSE;
+					}
+				}
+				break;
+
+			case SNAKE_EASY:
+            case SNAKE_HARD:
+				for(int i=0; i< NB_SNAKE_TEXTURES; i++){
+					 textures[i] = IMG_LoadTexture(pRenderer, DIR_TEXTURES_SNAKE[i]);
+					 if( textures[i] == NULL ){
+						printf("Erreur lors de la creation de texture %s", SDL_GetError());
+						return SDL_FALSE;
+					}
+				}
+				break;
+
+			case TETRIS_EASY:
+            case TETRIS_HARD:
+				for(int i=0; i< NB_TETRIS_TEXTURES; i++){
+					 textures[i] = IMG_LoadTexture(pRenderer, DIR_TEXTURES_TETRIS[i]);
+					 if( textures[i] == NULL ){
+						printf("Erreur lors de la creation de texture %s", SDL_GetError());
+						return SDL_FALSE;
+					}
+				}
+				break;
+		}
+		return SDL_TRUE;
+}
 
 
 /////////////////////////////////////////////////////
@@ -2710,13 +2830,21 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							//SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
 
 							///////////////////////////////////////////////////
+							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
+							pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+							SDL_Thread *thread = SDL_CreateThread(  (int(*)(void*))loadGameTexture, "Charger_textures_jeu", &machine);
+							///////////////////////////////////////////////////
 							// ANIMATION CENTRAGE SUR MACHINE
 							animationLancerMachine(camera,cible[machine-1],*scene_list,Window, _IPS);
 
+							int retourThread = SDL_FALSE;
 
-							///////////////////////////////////////////////////
-							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
-							SDL_Renderer *pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+                            SDL_WaitThread(thread, &retourThread);
+
+							if(!retourThread){
+								printf("couldnt load texture, abort game\n");
+								return;
+							}
 
 							#ifdef _WIN32
 							if(optionFullScreen ){
@@ -2729,38 +2857,38 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							// AVEC UPDATE DU SCORE A L ISSUS
 							switch (machine) {
 								case 1:
-									flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1);
+									flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
 								break;
 								case 2:
-									tetris( pRenderer ,meilleureScore[TETRIS_HARD].scoreJoueurActuel, 1920./WinWidth,token,1);
+									tetris( pRenderer ,meilleureScore[TETRIS_HARD].scoreJoueurActuel, 1920./WinWidth,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 3:
-									asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].scoreJoueurActuel, 1920./WinWidth,token,1);
+									asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].scoreJoueurActuel, 1920./WinWidth,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 4: SDL_Delay(500);break;
 								case 5:
-									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel, WinWidth/1920.,token,1);
+									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel, WinWidth/1920.,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
 								case 6: SDL_Delay(500);break;
 								case 7: SDL_Delay(500);break;
 								case 8:
-									snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel, WinWidth/1920.,token,0);
+									snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel, WinWidth/1920.,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
 								case 9: SDL_Delay(500);break;
 								case 10:
-									asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
+									asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel, 1920./WinWidth,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 11: {
-									tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel, 1920./WinWidth,token,0);
+									tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel, 1920./WinWidth,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								}break;
 								case 12:
-									flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0);
+									flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
 								case 13: SDL_Delay(500);break;
