@@ -1,7 +1,7 @@
 #define VERSION_LOGICIEL "version=0.1.5b-dev"
 #define VERSION "0.1.5b-dev"
 
-
+//Use GPU
   __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
   __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 
@@ -440,7 +440,7 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], 
 				}
 				else if ( TF_ClickIn( targetConnect , mouse) )
 				{
-					*fullscreen = 1;
+					*fullscreen = 0;
 					if(thread == NULL){
 						frame_anims[ANIM_LOADING] = 0;
 						connectEnded = 0;
@@ -791,12 +791,14 @@ int main(int argc, char *argv[])
 	int fullscreen=0;
     if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath, &fullscreen) == EXIT_SUCCESS)
     {
+	  SDL_Rect borderSize;
+	  SDL_GetWindowBordersSize(window,&borderSize.x,&borderSize.y,&borderSize.w,&borderSize.h);//t l b r
       printf("lancement room\n" );
       SDL_DestroyRenderer(renderer);
       SDL_DestroyWindow(window);
       /////////////////////////////////////////////////////////////////
       // APPEL DE LA ROOM
-      printf("ROOM : %d\n",room(token,meilleureScore,window,scene, fullscreen) );
+      printf("ROOM : %d\n",room(token,meilleureScore,window,scene, fullscreen, borderSize) );
     }
 
 
