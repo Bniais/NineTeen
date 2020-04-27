@@ -1,10 +1,10 @@
 #define VERSION_LOGICIEL "version=0.1.5b-dev"
 #define VERSION "0.1.5b-dev"
 
-#ifdef _WIN32
+
   __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
   __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
-#endif
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,7 +28,7 @@
 #include "include/libWeb.h"
 #include "room/room.h"
 
-//#include "define/define.h"
+#include "define/define.h"
 
 #define DIR_OBJ_LOAD "../room/salle.obj"
 
@@ -84,68 +84,6 @@ const int RATIO_CLICK[FRAME_ANIM_MAX] = {-5, -20, -50, -55, -30};
 
 
 
-
-//Textures to load
-const char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
-    "../games/7_asteroid/Textures/vaisseau.png",
-    "../games/7_asteroid/Textures/gem.png",
-    "../games/7_asteroid/Textures/thrust.png",
-    "../games/7_asteroid/Textures/background.png",
-    "../games/2_snake/Textures/hud.png",
-    "../games/7_asteroid/Textures/asteroid.png",
-    "../games/7_asteroid/Textures/fissure.png",
-    "../games/7_asteroid/Textures/glace.png",
-    "../games/7_asteroid/Textures/bonus.png",
-    "../games/7_asteroid/Textures/bullet.png",
-    "../games/7_asteroid/Textures/laser_beam.png",
-    "../games/7_asteroid/Textures/roue.png",
-    "../games/7_asteroid/Textures/jauge.png",
-    "../games/7_asteroid/Textures/bomb.png",
-    "../games/7_asteroid/Textures/bombIcon.png",
-    DIR_LOADING,
-    "../games/7_asteroid/Textures/explo.png",
-    "../games/7_asteroid/Textures/explo2.png",
-    "../games/7_asteroid/Textures/explo3.png"
-};
-const int textureFloue[NB_ASTEROID_TEXTURES] = {0		, 0	   , 0       , 0           , 0    , 0         , 0        , 0      , 1      , 0       , 1      , 1     , 1      , 0     , 0          , 0       , 0              , 0               , 0};
-
-
-//texture
-const char* DIR_TEXTURES_TETRIS[NB_TETRIS_TEXTURES] = {
-	"../games/5_tetris/Textures/laserAnim.png",
-	"../games/5_tetris/Textures/bricks.png",
-	"../games/5_tetris/Textures/bonus.png",
-	"../games/5_tetris/Textures/hud_grille.png",
-	"../games/5_tetris/Textures/chiffre.png",
-	"../games/5_tetris/Textures/speedJauge.png",
-	"../games/5_tetris/Textures/turn.png",
-	"../games/5_tetris/Textures/fleche.png",
-	DIR_LOADING
-};
-
-
-const char* DIR_TEXTURES_SNAKE[NB_SNAKE_TEXTURES] = {
-	"../games/2_snake/Textures/basket.png",
-	"../games/2_snake/Textures/backgroundSnake.png",
-	"../games/2_snake/Textures/snake.png",
-	"../games/2_snake/Textures/fruits.png",
-	"../games/2_snake/Textures/anim.png",
-	"../games/2_snake/Textures/hud.png",
-	"../games/2_snake/Textures/chiffre.png",
-	DIR_LOADING
-};
-
-const char* DIR_TEXTURES_FLAPPY[NB_FLAPPY_TEXTURES]={
-	"../games/3_flappy_bird/Textures/backgrounds.png",
-	"../games/3_flappy_bird/Textures/pipes.png",
-	"../games/3_flappy_bird/Textures/birds.png",
-	"../games/3_flappy_bird/Textures/medals.png",
-	"../games/3_flappy_bird/Textures/scoreBoard.png",
-	"../games/3_flappy_bird/Textures/sol.png",
-	"../games/3_flappy_bird/Textures/chiffre.png",
-	"../games/3_flappy_bird/Textures/high_score.png",
-	DIR_LOADING
-};
 
 //Le thread qui sera utiliser
 SDL_Thread *thread = NULL;
@@ -643,20 +581,13 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], 
 	TTF_CloseFont(ttf_pwd);
 }
 
-void afficherLoadingBar(SDL_Renderer *renderer, SDL_Texture * background, SDL_Rect chargement, SDL_Rect chargementAff)
-{
-	SDL_RenderClear(renderer);
-	SDL_RenderCopy(renderer, background, NULL, NULL);
-	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
-	SDL_RenderFillRect(renderer,&chargement);
-	SDL_SetRenderDrawColor(renderer, blanc.r , blanc.g, blanc.b,200);
-	SDL_RenderFillRect(renderer,&chargementAff);
-	SDL_RenderPresent(renderer);
-}
 
-int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene,char path[], SDL_Texture * textures[NB_GAMES][NB_MAX_TEXTURES] )
+
+int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene,char path[] )
 {
 	char concatenation[128]="";
+
+
 
 
 	SDL_RenderClear(renderer);
@@ -679,77 +610,67 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 
 	SDL_Rect chargementAff = {LARGUEUR*0.05,HAUTEUR*0.85,0,HAUTEUR*0.08};
-	int nbFile = NB_ASTEROID_TEXTURES + NB_TETRIS_TEXTURES + NB_SNAKE_TEXTURES + NB_FLAPPY_TEXTURES+ 2;
-	int progression = LARGUEUR*0.90 / (nbFile);
+	int progression = LARGUEUR*0.90 / (NB_FILE+1);
 
-    //Textures jeux :
 
-    //asteroid
-	for(int i=0; i< NB_ASTEROID_TEXTURES; i++){
-		if(textureFloue[i])
-			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");
-		else
-			SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
-
-		textures[TEXTURE_ASTEROID][i] = IMG_LoadTexture(renderer, DIR_TEXTURES_ASTEROID[i]);
-		if( textures[TEXTURE_ASTEROID][i] == NULL ){
-			printf("Erreur lors de la creation de texture %s", SDL_GetError());
+	for(int i = 0 ; i < NB_FILE ; i++)
+	{
+		strcpy(concatenation,path);
+		strcat(concatenation,verifierFichier[i]);
+		FILE *fp = fopen(concatenation,"r");
+		if(!fp)
+		{
+			printf("Fichier %s introuvable \n",concatenation );
 			return SDL_FALSE;
 		}
-		chargementAff.w += progression;
-		afficherLoadingBar(renderer, background, chargement, chargementAff);
-	}
-
-	//tetris
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
-	for(int i=0; i< NB_TETRIS_TEXTURES; i++){
-		 textures[TEXTURE_TETRIS][i] = IMG_LoadTexture(renderer, DIR_TEXTURES_TETRIS[i]);
-		 if( textures[TEXTURE_TETRIS][i] == NULL ){
-			printf("Erreur lors de la creation de texture %s", SDL_GetError());
-			return EXIT_FAILURE;
+		else
+		{
+			fclose(fp);
 		}
 
+
+		SDL_RenderClear(renderer);
+		SDL_RenderCopy(renderer, background, NULL, NULL);
+
+		SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
+		SDL_RenderFillRect(renderer,&chargement);
+
+
+
 		chargementAff.w += progression;
-		afficherLoadingBar(renderer, background, chargement, chargementAff);
+		SDL_SetRenderDrawColor(renderer, blanc.r , blanc.g, blanc.b,200);
+		SDL_RenderFillRect(renderer,&chargementAff);
+
+
+		SDL_RenderPresent(renderer);
 	}
 
-	//snake
-	for(int i=0; i< NB_SNAKE_TEXTURES; i++){
-		 textures[TEXTURE_SNAKE][i] = IMG_LoadTexture(renderer, DIR_TEXTURES_SNAKE[i]);
-		 if( textures[TEXTURE_SNAKE][i] == NULL ){
-			printf("Erreur lors de la creation de texture %s", SDL_GetError());
-			return EXIT_FAILURE;
-		}
-		chargementAff.w += progression;
-		afficherLoadingBar(renderer, background, chargement, chargementAff);
-	}
-
-	//flappy
-	for(int i=0; i< NB_FLAPPY_TEXTURES; i++){
-		 textures[TEXTURE_FLAPPY][i] = IMG_LoadTexture(renderer, DIR_TEXTURES_FLAPPY[i]);
-		 if( textures[TEXTURE_FLAPPY][i] == NULL ){
-			printf("Erreur lors de la creation de texture %s", SDL_GetError());
-			return EXIT_FAILURE;
-		}
-		chargementAff.w += progression;
-		afficherLoadingBar(renderer, background, chargement, chargementAff);
-	}
-
-	//aiLoadTexture(DIR_OBJ_LOAD,*scene);
 
 	InitMeilleureScore(meilleureScore);
 	updateMeilleureScore(meilleureScore,token);
 
 
+	SDL_RenderClear(renderer);
+	SDL_RenderCopy(renderer, background, NULL, NULL);
+	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
+	SDL_RenderFillRect(renderer,&chargement);
 	chargementAff.w += progression;
-	afficherLoadingBar(renderer, background, chargement, chargementAff);
+	SDL_SetRenderDrawColor(renderer, blanc.r , blanc.g, blanc.b,200);
+	SDL_RenderFillRect(renderer,&chargementAff);
+	SDL_RenderPresent(renderer);
 
 	strcpy(concatenation,path);
 	strcat(concatenation,DIR_OBJ_LOAD);
 	aiImportModel(concatenation,scene);
 
+	SDL_RenderClear(renderer);
+	SDL_RenderCopy(renderer, background, NULL, NULL);
+	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
+	SDL_RenderFillRect(renderer,&chargement);
 	chargementAff.w = LARGUEUR*0.90;
-	afficherLoadingBar(renderer, background, chargement, chargementAff);
+	SDL_SetRenderDrawColor(renderer, blanc.r , blanc.g, blanc.b,200);
+	SDL_RenderFillRect(renderer,&chargementAff);
+	SDL_RenderPresent(renderer);
 
 
 	SDL_DestroyTexture(background);
@@ -766,7 +687,7 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 
 
-int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[], int * fullscreen, SDL_Texture * textures[NB_GAMES][NB_MAX_TEXTURES])
+int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[], int * fullscreen)
 {
 	Mix_Music *musique = Mix_LoadMUS(DIR_MUSIC_FILE);
 	if (musique == NULL)
@@ -783,7 +704,10 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
 		sauvegarderToken(token);
   	}
 
-	if( !chargementFichier(renderer,meilleureScore,token,scene,path, textures) )
+
+
+
+	if( !chargementFichier(renderer,meilleureScore,token,scene,path) )
 	{
 		Mix_HaltMusic();
 		Mix_FreeMusic(musique);
@@ -845,7 +769,7 @@ int main(int argc, char *argv[])
     SDL_Surface* favicon;
     /////////////////////////////////////////////////////////////////
     // CREATION WINDOWS ET RENDERER ET FAVICON
-    window = SDL_CreateWindow("Nineteen | Launcher", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,LARGUEUR,HAUTEUR, SDL_WINDOW_OPENGL  );
+    window = SDL_CreateWindow("Nineteen | Launcher", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,LARGUEUR,HAUTEUR, 0  );
     /////////////////////////////////////////////////////////////////
     // CHARGEMENT ICON
     // NOM PROBLEMATIQUE SI NON CHARGER ON APPLIQUE PAS SI NON CHARGER
@@ -856,7 +780,7 @@ int main(int argc, char *argv[])
     SDL_FreeSurface(favicon);
     /////////////////////////////////////////////////////////////////
     // CREATION DU RENDU
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
 
     /////////////////////////////////////////////////////////////////
@@ -864,14 +788,15 @@ int main(int argc, char *argv[])
     struct MeilleureScore_s meilleureScore[16];
     /////////////////////////////////////////////////////////////////
     // APPEL DU LAUNCHER
-    SDL_Texture * textures[NB_GAMES][NB_MAX_TEXTURES];
 	int fullscreen=0;
-    if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath, &fullscreen, textures) == EXIT_SUCCESS)
+    if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath, &fullscreen) == EXIT_SUCCESS)
     {
-        printf("lancement room\n" );
-        /////////////////////////////////////////////////////////////////
-        // APPEL DE LA ROOM
-        printf("ROOM : %d\n",room(token,meilleureScore,window,scene, fullscreen, renderer, textures) );
+      printf("lancement room\n" );
+      SDL_DestroyRenderer(renderer);
+      SDL_DestroyWindow(window);
+      /////////////////////////////////////////////////////////////////
+      // APPEL DE LA ROOM
+      printf("ROOM : %d\n",room(token,meilleureScore,window,scene, fullscreen) );
     }
 
 

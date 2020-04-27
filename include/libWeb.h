@@ -14,7 +14,7 @@
 #define ERR_REQUIERED_FIELD -1
 #define ERR_SQL_FAILED -2
 #define ERR_INCORRECT_ID_PW -3
-#define MAX_ATTEMPTS 5
+
 /////////////////////////////////////////////////////
 /// \fn int envoyez_requet(char **response, char *url, char *request)
 /// \brief Envoi une requet et ecrit la reponse dans **response
