@@ -2,6 +2,10 @@
 #define VERSION "0.1.5b-dev"
 
 
+  __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
+  __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "SDL2/SDL_thread.h"
@@ -784,7 +788,7 @@ int main(int argc, char *argv[])
     struct MeilleureScore_s meilleureScore[16];
     /////////////////////////////////////////////////////////////////
     // APPEL DU LAUNCHER
-	int fullscreen=1;
+	int fullscreen=0;
     if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath, &fullscreen) == EXIT_SUCCESS)
     {
       printf("lancement room\n" );
