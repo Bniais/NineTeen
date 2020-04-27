@@ -1292,7 +1292,7 @@ int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *to
 		//Fruit
 		spawnFruit(snakeBody[SIZE_PRE_RADIUS], &fruit[0], 0, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0);
 
-
+        SDL_RenderSetViewport(renderer, &playgroundView);
 		/////////////////////
 		/// BOUCLE DU JEU ///``
 		/////////////////////

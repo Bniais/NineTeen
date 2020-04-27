@@ -2846,12 +2846,12 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								return;
 							}
 
-							#ifdef _WIN32
+							/*#ifdef _WIN32
 							if(optionFullScreen ){
 								SDL_MinimizeWindow(Window);
 								SDL_MaximizeWindow(Window);
 							}
-							#endif
+							#endif*/
 							///////////////////////////////////////////////////
 							// CASE POUR CHAQUE MACHINE
 							// AVEC UPDATE DU SCORE A L ISSUS
@@ -2899,13 +2899,13 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							///////////////////////////////////////////////////
 							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
-							#ifdef _WIN32
+							/*#ifdef _WIN32
 							if(optionFullScreen ){
 								SDL_SetRenderDrawColor(pRenderer, 40,40,40,255);
 								SDL_RenderClear(pRenderer);
 								SDL_RenderPresent(pRenderer);
 							}
-							#endif
+							#endif*/
 
 							SDL_DestroyRenderer(pRenderer);
 

@@ -1331,7 +1331,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, float ratioWindowSize, char
 		/// Initialize vars ///`
 		///////////////////////
 		initText(textsBonus);
-
+        SDL_RenderSetViewport(renderer, &playgroundView);
 	/////////////////////
 	/// BOUCLE DU JEU ///``
 	/////////////////////
