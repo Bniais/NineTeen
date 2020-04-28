@@ -6,14 +6,16 @@
 const SDL_Rect EMPLACEMENT_HUD = {0,0,1716,158};
 const SDL_Rect EMPLCEMENT_CELLULE = {0,162,1610,112};
 const SDL_Rect EMPLACEMENT_CHAMPS = {0,398,612,102};
-const SDL_Rect EMPLACEMENT_RECHERCHE = {260,281,100,102};
-const SDL_Rect EMPLACEMENT_LIST = {390,281,100,102};
+const SDL_Rect EMPLACEMENT_RECHERCHE = {258,281,102,102};
+const SDL_Rect EMPLACEMENT_LIST = {387,281,102,102};
 const SDL_Rect EMPLACEMENT_BG_LIST = {0,520,604,620};
+const SDL_Rect EMPLACEMENT_EASY = {0,280,102,102};
+const SDL_Rect EMPLACEMENT_HARD = {130,280,102,102};
 
 
 #include "../../include/libWeb.h"
 
-#define LIMITE_FPS 240
+#define LIMITE_FPS 60
 const float FRAME_TIME_LEADERBOARD = 1000.0/LIMITE_FPS*1.f;
 
 #define NATIF_W 1280
@@ -46,7 +48,15 @@ const SDL_Color BACKGROUND_C = {10, 24, 40};
 #define LIST_SCOLL_ELEMENT 2
 #define TEXT_FIELD_USERNAME 3
 #define SEARCH_PLAYER 4
+#define CHANGER_DIFFICULTER 5
 ///////////////////////////////////////////////
+SDL_Rect boutonHardEasy = {NATIF_W*0.398, HUD_SIZE * 0.15, HUD_SIZE*0.6, HUD_SIZE*0.6 + NATIF_H * 0.015};
+SDL_Point boutonPosition_OFF = {NATIF_W*0.398,HUD_SIZE * 0.15};
+SDL_Point boutonPosition_ON = {NATIF_W*0.44, HUD_SIZE * 0.15};
+
+enum {EASY,HARD,OFF,OFF_EASY,OFF_HARD};
+
+int statutBoutonEASY_HARD = OFF;
 
 struct classement
 {
@@ -356,12 +366,6 @@ void afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police ,
 
 	SDL_RenderCopy(renderer, texture, &EMPLACEMENT_HUD, &hudBackground);
 
-	//SDL_SetRenderDrawColor(renderer, BACKGROUND_C.r, BACKGROUND_C.g, BACKGROUND_C.b, 255);
-	//SDL_RenderFillRect(renderer, &hudBackground);
-
-//	SDL_Rect hud = {NATIF_W*0.0, NATIF_H * 0.0 ,NATIF_W*1.0 , HUD_SIZE - HUD_SIZE/10};
-//	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 170);
-//	SDL_RenderFillRect(renderer, &hud);
 
 
 
@@ -373,19 +377,23 @@ void afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police ,
 	SDL_Rect rechercheJoueur = {NATIF_W*0.55, HUD_SIZE * 0.15, NATIF_W*0.35, HUD_SIZE*0.6 + NATIF_H * 0.015};
 	SDL_RenderCopy(renderer,texture,&EMPLACEMENT_CHAMPS,&rechercheJoueur);
 
-//	SDL_SetRenderDrawColor(renderer, 155, 155, 155, 255);
-//	SDL_RenderFillRect(renderer, &rechercheJoueur);
 	////////////////////////////////////////////
 	// LANCER RECHERCHE
-	SDL_Rect lancerRecherche = {NATIF_W*0.90, HUD_SIZE * 0.15, HUD_SIZE*0.6, HUD_SIZE*0.6 + NATIF_H * 0.015};
+	SDL_Rect lancerRecherche = {NATIF_W*0.897, HUD_SIZE * 0.15, HUD_SIZE*0.6, HUD_SIZE*0.6 + NATIF_H * 0.015};
 	SDL_RenderCopy(renderer,texture,&EMPLACEMENT_RECHERCHE,&lancerRecherche);
-	//SDL_SetRenderDrawColor(renderer, 100, 100, 255, 255);
-	//SDL_RenderFillRect(renderer, &lancerRecherche);
+
 	// ECRIRE RECHERCHE ACTUEL
 	if(strlen(recherche) < 1)
 		ecrireText(renderer,police, "Rechercher", noirC, rechercheJoueur.x + rechercheJoueur.w/2, rechercheJoueur.y + rechercheJoueur.h/2 + NATIF_H*0.01 , 0.8 , 0);
 	else
 		ecrireText(renderer,police, recherche, noirCOLOR, rechercheJoueur.x + rechercheJoueur.w/2, rechercheJoueur.y + rechercheJoueur.h/2 + NATIF_H*0.01 , 0.8 , 0);
+
+
+	// BOUTON EASY/HARD
+	if(statutBoutonEASY_HARD == EASY || statutBoutonEASY_HARD == OFF_EASY)
+		SDL_RenderCopy(renderer,texture,&EMPLACEMENT_EASY,&boutonHardEasy);
+	else if (statutBoutonEASY_HARD == HARD || statutBoutonEASY_HARD == OFF_HARD)
+		SDL_RenderCopy(renderer,texture,&EMPLACEMENT_HARD,&boutonHardEasy);
 
 
 	////////////////////////////////////////////
@@ -395,8 +403,7 @@ void afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police ,
 	{
 		SDL_Rect listDeroulante = {NATIF_W*0.05 , HUD_SIZE * 0.15, NATIF_W*0.35, HUD_SIZE*4.2 + NATIF_H * 0.015};
 		SDL_RenderCopy(renderer,texture,&EMPLACEMENT_BG_LIST,&listDeroulante);
-		//SDL_SetRenderDrawColor(renderer, 65, 146, 220, 255);
-		//SDL_RenderFillRect(renderer, &listDeroulante);
+
 
 
 		int sauterValeurActuellementAffichier = 0;
@@ -410,15 +417,16 @@ void afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police ,
 	// LISTE AFFICHEUR
 	SDL_Rect listSelection = {NATIF_W*0.05 , HUD_SIZE * 0.15, NATIF_W*0.35, HUD_SIZE*0.6 + NATIF_H * 0.015};
 	SDL_RenderCopy(renderer,texture,&EMPLACEMENT_CHAMPS,&listSelection);
-	//SDL_SetRenderDrawColor(renderer, 155, 155, 155, 255);
-	//SDL_RenderFillRect(renderer, &listSelection);
+
 	// AFFICHER LISTE
-	SDL_Rect ouvrirListeSelection = {NATIF_W*0.05 + listSelection.w, HUD_SIZE * 0.15, HUD_SIZE*0.6, HUD_SIZE*0.6 + NATIF_H*0.015};
+	SDL_Rect ouvrirListeSelection = {NATIF_W*0.047 + listSelection.w, HUD_SIZE * 0.15, HUD_SIZE*0.6, HUD_SIZE*0.6 + NATIF_H*0.015};
 	SDL_RenderCopy(renderer,texture,&EMPLACEMENT_LIST,&ouvrirListeSelection);
-	//SDL_SetRenderDrawColor(renderer, 195, 195, 255, 255);
-	//SDL_RenderFillRect(renderer, &ouvrirListeSelection);
+
 	// ECRIRE SELECTION ACTUEL
-	ecrireText(renderer,police, (char*)nomList[selectionScrollingList], noirCOLOR, listSelection.x + listSelection.w/2, listSelection.y + listSelection.h/2 + NATIF_H*0.01 , 0.8 , 0);
+	if(selectionScrollingList < 7)
+		ecrireText(renderer,police, (char*)nomList[selectionScrollingList], noirCOLOR, listSelection.x + listSelection.w/2, listSelection.y + listSelection.h/2 + NATIF_H*0.01 , 0.8 , 0);
+	else
+		ecrireText(renderer,police, (char*)nomList[(12-selectionScrollingList) + 1], noirCOLOR, listSelection.x + listSelection.w/2, listSelection.y + listSelection.h/2 + NATIF_H*0.01 , 0.8 , 0);
 
 }
 
@@ -436,6 +444,8 @@ int interactionInterface(int x,int y, int _SELECTION, int scrollPositionList, in
 		if( x > ouvrirListeSelection.x && x < ouvrirListeSelection.x + ouvrirListeSelection.w && y > ouvrirListeSelection.y && y < ouvrirListeSelection.h + ouvrirListeSelection.y)
 		{
 			printf("OUVRIR SELECTION\n" );
+			if(_SELECTION == LIST_SCROLL)
+				return LIST_SCOLL_ELEMENT;
 			return LIST_SCROLL;
 		}
 
@@ -475,9 +485,43 @@ int interactionInterface(int x,int y, int _SELECTION, int scrollPositionList, in
 				AFFICHER_PLUS = 0;
 				chargementDonner(*selectionScrollingList, "", 0,15,donner[*selectionScrollingList]);
 
+				if(*selectionScrollingList)
+				{
+					if(statutBoutonEASY_HARD == OFF)
+					{
+						if(*selectionScrollingList <= 6)
+							statutBoutonEASY_HARD = HARD;
+						else
+							statutBoutonEASY_HARD = EASY;
+					}
+				}
+				else
+				{
+					printf("selectionScrollingList = %d\n",*selectionScrollingList );
+					if(statutBoutonEASY_HARD != OFF)
+					{
+						statutBoutonEASY_HARD = OFF;
+					}
+
+				}
+
 			}
 
 			return LIST_SCOLL_ELEMENT;
+		}
+		else if (x > boutonHardEasy.x && x < boutonHardEasy.x + boutonHardEasy.w && y > boutonHardEasy.y && y < boutonHardEasy.h + boutonHardEasy.y)
+		{
+			if(statutBoutonEASY_HARD == EASY)
+			{
+				statutBoutonEASY_HARD = OFF_EASY;
+			}
+
+			else if(statutBoutonEASY_HARD == HARD)
+			{
+				statutBoutonEASY_HARD = OFF_HARD;
+			}
+
+			return CHANGER_DIFFICULTER;
 		}
 		else
 		{
@@ -584,6 +628,57 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
 		SDL_SetRenderDrawColor(renderer, BACKGROUND_C.r, BACKGROUND_C.g, BACKGROUND_C.b, 255);
     SDL_RenderPresent(renderer);
+
+
+		// CALCUL NOUVELLE POSITION BOUTON EASY/HARD
+
+		switch (statutBoutonEASY_HARD) {
+			case OFF:{
+				if(boutonHardEasy.x > boutonPosition_OFF.x)
+					boutonHardEasy.x -= ( (boutonPosition_ON.x - boutonPosition_OFF.x)/10 ) * (60/_IPS); // RETIRER UNE VALEUR D ANIMATION
+				else if (boutonHardEasy.x != boutonPosition_OFF.x)
+					boutonHardEasy.x = boutonPosition_OFF.x;
+			};break;
+			case OFF_EASY:{
+				if(boutonHardEasy.x > boutonPosition_OFF.x)
+					boutonHardEasy.x -= ( (boutonPosition_ON.x - boutonPosition_OFF.x)/10 ) * (60/_IPS); // RETIRER UNE VALEUR D ANIMATION
+				else if (boutonHardEasy.x != boutonPosition_OFF.x)
+					boutonHardEasy.x = boutonPosition_OFF.x;
+				else
+				{
+					selectionScrollingList = 13 - selectionScrollingList;
+					AFFICHER_PLUS = 0;
+					chargementDonner(selectionScrollingList, "", 0,15,donner[selectionScrollingList]);
+					statutBoutonEASY_HARD = HARD;
+				}
+
+			};break;
+			case EASY:{
+				if(boutonHardEasy.x < boutonPosition_ON.x)
+					boutonHardEasy.x += ( (boutonPosition_ON.x - boutonPosition_OFF.x)/10 ) * (60/_IPS); // RETIRER UNE VALEUR D ANIMATION
+				else if (boutonHardEasy.x != boutonPosition_OFF.x)
+					boutonHardEasy.x = boutonPosition_ON.x;
+			};break;
+			case OFF_HARD:{
+				if(boutonHardEasy.x > boutonPosition_OFF.x)
+					boutonHardEasy.x -= ( (boutonPosition_ON.x - boutonPosition_OFF.x)/10 ) * (60/_IPS); // RETIRER UNE VALEUR D ANIMATION
+				else if (boutonHardEasy.x != boutonPosition_OFF.x)
+					boutonHardEasy.x = boutonPosition_OFF.x;
+				else
+				{
+					selectionScrollingList =  (12-selectionScrollingList) + 1;
+					AFFICHER_PLUS = 0;
+					chargementDonner(selectionScrollingList, "", 0,15,donner[selectionScrollingList]);
+					statutBoutonEASY_HARD = EASY;
+				}
+			};break;
+			case HARD:{
+				if(boutonHardEasy.x < boutonPosition_ON.x)
+					boutonHardEasy.x += ( (boutonPosition_ON.x - boutonPosition_OFF.x)/10 ) * (60/_IPS); // RETIRER UNE VALEUR D ANIMATION
+				else if (boutonHardEasy.x != boutonPosition_OFF.x)
+					boutonHardEasy.x = boutonPosition_ON.x;
+			};break;
+		}
     //////////////////////////////////////////
     //END CODE
     //////////////////////////////////////////
@@ -594,7 +689,6 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
 
   }
-	printf("JE SUIS LA\n" );
   /////////////////////////////////////////////////
   // DESTRUCTION
   TTF_CloseFont(police);
@@ -617,4 +711,5 @@ int main()
   SDL_DestroyWindow(window);
   TTF_Quit();
 
-} */
+}
+*/
