@@ -444,7 +444,7 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight)
 	// AJOUT ALPHA MODE
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
-	struct classement donner[32];
+	struct classement donner[64];
 
   chargementDonner(0, "", 0, donner);
 
@@ -529,7 +529,7 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight)
 
 
   }
-
+	printf("JE SUIS LA\n" );
   /////////////////////////////////////////////////
   // DESTRUCTION
   TTF_CloseFont(police);
