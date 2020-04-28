@@ -7,7 +7,7 @@
 #define WESNOTH_EXPORT __attribute__((visibility("default")))
 #endif
 
-WESNOTH_EXPORT unsigned long NvOptimusEnablement = 0x00000000;
+WESNOTH_EXPORT unsigned long NvOptimusEnablement = 0x00000001;
 WESNOTH_EXPORT int AmdPowerXpressRequestHighPerformance = 1;
 
 #include <stdio.h>
