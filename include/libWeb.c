@@ -25,6 +25,7 @@ typedef struct{char *gameID; char *score; char *key;}EnvoiScore;
 #define URL_GET_COINS "https://nineteen.recognizer.fr/coins.php"
 #define URL_BUY_GAMEPASS "https://nineteen.recognizer.fr/buygamepass.php"
 #define URL_CHECK_VERSION "https://nineteen.recognizer.fr/checkVersion.php"
+#define URL_LEADERBOARD "https://nineteen.recognizer.fr/leaderboard.php"
 
 
 
@@ -174,7 +175,7 @@ void securePass(char secure[])
 }
 
 /////////////////////////////////////////////////////
-/// \fn int construire_requete(char *dest, char *email, char *password, char *key)
+/// \fn int construire_requete(char *dest, char *email, char *password, char *key, char *gameID, char *score, char *offset)
 /// \brief Permet de crée une requet dans *dest
 ///
 /// \param char *dest Ecriture de la requet
@@ -183,10 +184,11 @@ void securePass(char secure[])
 /// \param char *key Key de connexion (Optionnal)
 /// \param char *gameID id du jeux (Optional)
 /// \param char *score score (Optional)
+/// \param char *offset limit recherche score (Optional)
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int construire_requete(char **dest, char *username, char *password, char *key, char *gameID, char *score)
+int construire_requete(char **dest, char *username, char *password, char *key, char *gameID, char *score, char *offset)
 {
 	int lenght; // longueur de la chaine malloc
 
@@ -250,6 +252,29 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 			return EXIT_SUCCESS;
 
 	}
+	else if( !key && !password && !score && offset)
+	{
+		lenght = 0;
+		if(username)
+		{
+			lenght += strlen(username) + 1 + 10; //&username=
+		}
+		if(gameID)
+		{
+			lenght += strlen(gameID) + 1 + 9; // &gameID=
+		}
+		if(offset)
+		{
+			lenght += strlen(offset) + 1 + 9; // &offset=
+		}
+
+		*dest = malloc(sizeof(char) * lenght );
+		if(*dest == NULL) { printf("Failed malloc"); return EXIT_FAILURE; }
+
+		strcpy(*dest,"");
+		sprintf(*dest,"gameID=%s&username=%s&offset=%s",gameID,username,offset);
+			return EXIT_SUCCESS;
+	}
 	else
 	{
 		printf("ERROR: construire_requete() Vérifiez les parametres d'entrer\n");
@@ -275,7 +300,7 @@ int connectWithUsername(ConnectStruct * connectStruct)
 {
 	char *request;
 	char *response;
-	if ( !construire_requete(&request, connectStruct->email, connectStruct->password, NULL, NULL, NULL) )
+	if ( !construire_requete(&request, connectStruct->email, connectStruct->password, NULL, NULL, NULL, NULL) )
 	{
 		if ( !envoyez_requet(&response,URL_CONNECT_EMAIL,request) )
 		{
@@ -333,7 +358,7 @@ int connectWithKey(char *key)
 {
 	char *request;
 	char *response;
-	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL) )
+	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL, NULL) )
 	{
 		if ( !envoyez_requet(&response,URL_CONNECT_KEY,request) )
 		{
@@ -370,7 +395,7 @@ int updateMeilleureScoreStruct(char *key,char *retour)
 	printf("getcoin\n");
 	char *request;
 	char *response;
-	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL) )
+	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL, NULL) )
 	{
 		if ( !envoyez_requet(&response,URL_GET_COINS,request) )
 		{
@@ -383,6 +408,44 @@ int updateMeilleureScoreStruct(char *key,char *retour)
 			free(response);
 			response = NULL;
 			printf("getcoine\n");
+			return EXIT_SUCCESS;
+		}
+	}
+	free(request);
+	request = NULL;
+	return EXIT_FAILURE;
+}
+
+
+/////////////////////////////////////////////////////
+/// \fn int getLeaderboard(char *gameID,char *username, char *offset,char *retour)
+/// \brief recupere le classement des joueurs
+///
+/// \param char *gameID
+/// \param char *username
+/// \param char *offset
+/// \param char *retour
+///
+/// \return EXIT_SUCCESS / EXIT_FAILURE
+/////////////////////////////////////////////////////
+int getLeaderboard(char *gameID,char *username, char *offset,char *retour)
+{
+
+	char *request;
+	char *response;
+	if ( !construire_requete(&request, username, NULL, NULL, gameID, NULL, offset) )
+	{
+		printf("%s\n",request );
+		if ( !envoyez_requet(&response,URL_LEADERBOARD,request) )
+		{
+			printf("%s\n",response );
+			if(strlen(response) <= 2)
+				return EXIT_FAILURE;
+			strcpy(retour,response);
+			free(request);
+			request = NULL;
+			free(response);
+			response = NULL;
 			return EXIT_SUCCESS;
 		}
 	}
@@ -406,7 +469,7 @@ int buyGamePass(char *key, char *gameID)
 {
 	char *request;
 	char *response;
-	if ( !construire_requete(&request, NULL, NULL, key, gameID, NULL) )
+	if ( !construire_requete(&request, NULL, NULL, key, gameID, NULL, NULL) )
 	{
 		if ( !envoyez_requet(&response,URL_BUY_GAMEPASS,request) )
 		{
@@ -447,7 +510,7 @@ int updateScore(EnvoiScore * envoiScore )
 	char *response;
 	int attempt =0;
 	do{
-		if ( !construire_requete(&request, NULL, NULL, envoiScore->key, envoiScore->gameID, envoiScore->score) )
+		if ( !construire_requete(&request, NULL, NULL, envoiScore->key, envoiScore->gameID, envoiScore->score, NULL) )
 		{
 			if ( !envoyez_requet(&response,URL_UPDATE_SCORE,request) )
 			{
