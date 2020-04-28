@@ -1,10 +1,14 @@
 #define VERSION_LOGICIEL "version=0.1.5b-dev"
 #define VERSION "0.1.5b-dev"
 
-//Use GPU
-  __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
-  __declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+#ifdef _WIN32
+#define WESNOTH_EXPORT __declspec(dllexport)
+#elif defined __APPLE__
+#define WESNOTH_EXPORT __attribute__((visibility("default")))
+#endif
 
+WESNOTH_EXPORT unsigned long NvOptimusEnablement = 0x00000000;
+WESNOTH_EXPORT int AmdPowerXpressRequestHighPerformance = 1;
 
 #include <stdio.h>
 #include <stdlib.h>
