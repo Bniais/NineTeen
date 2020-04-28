@@ -1532,6 +1532,7 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 		// REMPLISSAGE DE L'EMPLACEMENT 0 PAR MEILLEURE SCORE ET CLASSEMENT DU JOUEUR
 		sprintf(str[0].nomJeux,"SCORE : %d",str[0].score);
 		sprintf(str[0].nomJoueur,"CLASSEMENT : %d / %d",temp1,temp2);
+		str[0].multiplicator = temp2; // STOCKER NB JOOUEUR ICI
 
 }
 
@@ -2867,7 +2868,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								case 15: SDL_Delay(500);break;
 								case 16:
 									SDL_ShowCursor(SDL_TRUE);
-									leaderboard(pRenderer,WinWidth,WinHeight);
+									leaderboard(pRenderer,WinWidth,WinHeight,meilleureScore[0].multiplicator);
 									SDL_ShowCursor(SDL_FALSE);
 								break;
 								default:break;
