@@ -162,10 +162,14 @@ void securePass(char secure[])
 	char *t_server;
 	envoyez_requet(&t_server, URL_TIMESTAMP, "");
 
+
+
 	int year,mon,day,hour,min,sec;
 	sscanf(t_server, " %d %d %d %d %d %d",&year , &mon , &day, &hour , &min, &sec);
 
+
 	char temp[MD5_SIZE*2];
+
 	//printf("HEURE A l'ENVOI DE LA REQUET %d-%02d-%02d %02d  %02d  %d\n",year , mon, day, hour , min, sec);
 	sprintf(temp, "%d-%02d-%02d JDlaliljasnc329832 %02d 0 %02d D(ancIjaa) %d", year  , mon , day, hour , min, sec);
 	md5Hash(temp, secure);
@@ -188,18 +192,17 @@ void securePass(char secure[])
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int construire_requete(char **dest, char *username, char *password, char *key, char *gameID, char *score, char *offset)
+int construire_requete(char **dest, char *username, char *password, char *key, char *gameID, char *score, char *offset, char *limite)
 {
 	int lenght; // longueur de la chaine malloc
 
-	// secure request
-	char secure[MD5_SIZE];
-	securePass(secure);
-	// end
 	if( key && !username && !password && !gameID && !score)
 	{
+		// secure request
+		char secure[MD5_SIZE];
+		securePass(secure);
 		// requet connexion avec key
-		lenght = strlen(key) + 1 + 12 + 32; // 12 = "key= &secure="
+		lenght = strlen(key) + 1 + 12 + 32 ; // 12 = "key= &secure="
 
 		*dest = malloc( sizeof(char) * lenght );
 		if(*dest == NULL) { printf("Failed malloc"); return EXIT_FAILURE; }
@@ -212,6 +215,9 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 	}
 	else if( !key && username && password && !gameID && !score)
 	{
+		// secure request
+		char secure[MD5_SIZE];
+		securePass(secure);
 		// requet connexion avec email/password
 
 		lenght = strlen(username) + 1 + strlen(password) + 1 + 25 + 32; // 17 = "username= &pwd= &secure"
@@ -227,6 +233,9 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 	}
 	else if( key && !username && !password && gameID && score)
 	{
+		// secure request
+		char secure[MD5_SIZE];
+		securePass(secure);
 		// requet update your score
 		lenght = strlen(gameID) + 1 + strlen(score) + 1 + strlen(key) + 1 + 29 + 32; // 29 = "gameID= & score= &key= &secure"
 		*dest = malloc( sizeof(char) * lenght );
@@ -240,6 +249,9 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 	}
 	else if ( key && !username && !password && gameID && !score )
 	{
+		// secure request
+		char secure[MD5_SIZE];
+		securePass(secure);
 		// requet bug game passe
 		lenght = strlen(gameID) + 1 + strlen(key) + 1 + 24 + 32; // 24 = "gameID= &key= &secure"
 		*dest = malloc( sizeof(char) * lenght );
@@ -252,7 +264,7 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 			return EXIT_SUCCESS;
 
 	}
-	else if( !key && !password && !score && offset)
+	else if( !key && !password && !score && offset && limite)
 	{
 		lenght = 0;
 		if(username)
@@ -267,12 +279,16 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 		{
 			lenght += strlen(offset) + 1 + 9; // &offset=
 		}
+		if(limite)
+		{
+			lenght += strlen(offset) + 1 + 9; // &limite=
+		}
 
 		*dest = malloc(sizeof(char) * lenght );
 		if(*dest == NULL) { printf("Failed malloc"); return EXIT_FAILURE; }
 
 		strcpy(*dest,"");
-		sprintf(*dest,"gameID=%s&username=%s&offset=%s",gameID,username,offset);
+		sprintf(*dest,"gameID=%s&username=%s&offset=%s&limite=%s",gameID,username,offset,limite);
 			return EXIT_SUCCESS;
 	}
 	else
@@ -300,7 +316,7 @@ int connectWithUsername(ConnectStruct * connectStruct)
 {
 	char *request;
 	char *response;
-	if ( !construire_requete(&request, connectStruct->email, connectStruct->password, NULL, NULL, NULL, NULL) )
+	if ( !construire_requete(&request, connectStruct->email, connectStruct->password, NULL, NULL, NULL, NULL, NULL) )
 	{
 		if ( !envoyez_requet(&response,URL_CONNECT_EMAIL,request) )
 		{
@@ -358,7 +374,7 @@ int connectWithKey(char *key)
 {
 	char *request;
 	char *response;
-	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL, NULL) )
+	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL, NULL, NULL) )
 	{
 		if ( !envoyez_requet(&response,URL_CONNECT_KEY,request) )
 		{
@@ -395,7 +411,7 @@ int updateMeilleureScoreStruct(char *key,char *retour)
 	printf("getcoin\n");
 	char *request;
 	char *response;
-	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL, NULL) )
+	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL, NULL,NULL) )
 	{
 		if ( !envoyez_requet(&response,URL_GET_COINS,request) )
 		{
@@ -418,7 +434,7 @@ int updateMeilleureScoreStruct(char *key,char *retour)
 
 
 /////////////////////////////////////////////////////
-/// \fn int getLeaderboard(char *gameID,char *username, char *offset,char *retour)
+/// \fn int getLeaderboard(char *gameID,char *username, char *offset,char *limite ,char *retour)
 /// \brief recupere le classement des joueurs
 ///
 /// \param char *gameID
@@ -428,18 +444,19 @@ int updateMeilleureScoreStruct(char *key,char *retour)
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int getLeaderboard(char *gameID,char *username, char *offset,char *retour)
+int getLeaderboard(char *gameID,char *username, char *offset,char *limite, char *retour)
 {
 
 	char *request;
 	char *response;
-	if ( !construire_requete(&request, username, NULL, NULL, gameID, NULL, offset) )
+	if ( !construire_requete(&request, username, NULL, NULL, gameID, NULL, offset,limite) )
 	{
+
 		printf("%s\n",request );
 		if ( !envoyez_requet(&response,URL_LEADERBOARD,request) )
 		{
 			printf("%s\n",response );
-			if(strlen(response) <= 2)
+			if(strlen(response) <= 1)
 				return EXIT_FAILURE;
 			strcpy(retour,response);
 			free(request);
@@ -469,7 +486,7 @@ int buyGamePass(char *key, char *gameID)
 {
 	char *request;
 	char *response;
-	if ( !construire_requete(&request, NULL, NULL, key, gameID, NULL, NULL) )
+	if ( !construire_requete(&request, NULL, NULL, key, gameID, NULL, NULL,NULL) )
 	{
 		if ( !envoyez_requet(&response,URL_BUY_GAMEPASS,request) )
 		{
@@ -510,7 +527,7 @@ int updateScore(EnvoiScore * envoiScore )
 	char *response;
 	int attempt =0;
 	do{
-		if ( !construire_requete(&request, NULL, NULL, envoiScore->key, envoiScore->gameID, envoiScore->score, NULL) )
+		if ( !construire_requete(&request, NULL, NULL, envoiScore->key, envoiScore->gameID, envoiScore->score, NULL , NULL) )
 		{
 			if ( !envoyez_requet(&response,URL_UPDATE_SCORE,request) )
 			{

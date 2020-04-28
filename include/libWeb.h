@@ -29,7 +29,7 @@ int envoyez_requet(char **response, char *url, char *request);
 
 
 /////////////////////////////////////////////////////
-/// \fn int construire_requete(char *dest, char *email, char *password, char *key, char *gameID, char *score, char *offset)
+/// \fn int construire_requete(char *dest, char *email, char *password, char *key, char *gameID, char *score, char *offset, char *limite)
 /// \brief Permet de crée une requet dans *dest
 ///
 /// \param char *dest Ecriture de la requet
@@ -42,7 +42,7 @@ int envoyez_requet(char **response, char *url, char *request);
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int construire_requete(char **dest, char *email, char *password, char *key, char *gameID, char *score, char *offset);
+//int construire_requete(char **dest, char *email, char *password, char *key, char *gameID, char *score, char *offset, char *limite);
 
 
 
@@ -85,7 +85,7 @@ int buyGamePass(char *key, char *gameID);
 
 
 /////////////////////////////////////////////////////
-/// \fn int getLeaderboard(char *gameID,char *username, char *offset,char *retour)
+/// \fn int getLeaderboard(char *gameID,char *username, char *offset, char *limite, char *retour)
 /// \brief recupere le classement des joueurs
 ///
 /// \param char *gameID
@@ -95,7 +95,7 @@ int buyGamePass(char *key, char *gameID);
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int getLeaderboard(char *gameID,char *username, char *offset,char *retour);
+int getLeaderboard(char *gameID,char *username, char *offset,char *limite, char *retour);
 
 
 /////////////////////////////////////////////////////
