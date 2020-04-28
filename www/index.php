@@ -12,14 +12,14 @@
 			$scoreRecherche[16];
 			$classmentRecherche[16];
 
-			if ( $resultat = $link->query("SELECT SUM(score) AS total FROM nineteen_scores NATURAL JOIN nineteen_players WHERE username = '$nomRecherche' GROUP BY userId ORDER BY total DESC LIMIT 3") )
+			if ( $resultat = $link->query("SELECT FLOOR( SUM( score * multiplicator ) ) AS total FROM nineteen_scores NATURAL JOIN nineteen_players NATURAL JOIN nineteen_multiplicators WHERE username = '$nomRecherche' GROUP BY userId ORDER BY total DESC LIMIT 3") )
 				{
 					while ($row = $resultat->fetch_assoc() ) {
 						$scoreRecherche[0] =  $row["total"];
 					}
 
 
-					if( $resultat = $link->query("SELECT COUNT(*) FROM (SELECT username, SUM(score) AS total FROM nineteen_scores NATURAL JOIN nineteen_players GROUP BY userId ) AS s WHERE s.total > $scoreRecherche[0]") )
+					if( $resultat = $link->query("SELECT COUNT(*) FROM (SELECT username, FLOOR( SUM( score * multiplicator ) ) AS total FROM nineteen_scores NATURAL JOIN nineteen_players NATURAL JOIN nineteen_multiplicators GROUP BY userId ) AS s WHERE s.total > $scoreRecherche[0]") )
 					{
 
 						while ($row = $resultat->fetch_assoc() ) {
@@ -27,6 +27,7 @@
 						}
 
 					}
+					$scoreRecherche[0] = number_format( $scoreRecherche[0] , 0, ',', ' ');
 				}
 
 
