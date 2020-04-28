@@ -40,6 +40,7 @@ static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0, _nbMeshes = 
 #include "../games/3_flappy_bird/flappy_bird.h"
 #include "../games/5_tetris/tetris.h"
 #include "../games/7_asteroid/asteroid.h"
+#include "leaderboard/leaderboard.h"
 // END INCLUDE
 
 //
@@ -1110,7 +1111,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 	//////////////////////////////////////////////////////////
 	// INITIALISATION CAMERA / CIBLE SUR MACHINE /
-	static struct Camera_s camera,cible[15],jouerSon;
+	static struct Camera_s camera,cible[16],jouerSon;
 	InitCamera(&camera,cible);
 	jouerSon = camera;
 	//////////////////////////////////////////////////////////
@@ -2016,6 +2017,13 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	cible[14].cible_py = -.332000;
 	cible[14].angle = M_PI;
 	cible[14].ouverture =70;
+
+	cible[15].px = 0.040;
+	cible[15].pz = 19.53;
+	cible[15].py = 3.648998;
+	cible[15].cible_py = -.144400;
+	cible[15].angle = 0.0;
+	cible[15].ouverture =70;
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -2531,6 +2539,18 @@ int detecterMachine(float x,float y,float angle)
 		if(angle > M_PI - (ANGLE_DETECTION_MACHINE) && angle < M_PI + (ANGLE_DETECTION_MACHINE) )
 			return 15;
 
+	//////////////////////////////////////////////////
+	// DETECTER ORDINATEUR
+	if( x > -1.0 && x < 1.0 && y > 18.5 && y < 19.5)
+	{
+		///////////////////////////////////////////////////
+		// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
+		if( ( angle > ( 2*M_PI - (ANGLE_DETECTION_MACHINE) ) && angle <= 2*M_PI  ) ||    (    angle >= 0 && angle < 0 + (ANGLE_DETECTION_MACHINE)   )   )
+		{
+			return 16;
+		}
+	}
+
 
 
 	return 0;
@@ -2845,6 +2865,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								case 13: SDL_Delay(500);break;
 								case 14: SDL_Delay(500);break;
 								case 15: SDL_Delay(500);break;
+								case 16:
+									SDL_ShowCursor(SDL_TRUE);
+									leaderboard(pRenderer,WinWidth,WinHeight);
+									SDL_ShowCursor(SDL_FALSE);
+								break;
 								default:break;
 							}
 

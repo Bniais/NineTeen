@@ -2,17 +2,21 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
+#include "../../include/libWeb.h"
 
 #define LIMITE_FPS 240
-const float FRAME_TIME = 1000.0/LIMITE_FPS*1.f;
+const float FRAME_TIME_LEADERBOARD = 1000.0/LIMITE_FPS*1.f;
 
 #define NATIF_W 1280
 #define NATIF_H 720
+float inverseRatio = 1.f;
 
 
 #define NOMBRE_CELLULE_FENETRE 10
-#define PRELOAD_CELLULE_MAX 30
+#define PRELOAD_CELLULE_MAX 15
 #define NOMBRE_CELLULE_LIST_SCROLL 6
+
+int AFFICHER_PLUS = 1;
 
 const int HUD_SIZE = NATIF_W * 0.085;
 const SDL_Color BACKGROUND_C = {254, 254, 226};
@@ -27,28 +31,71 @@ const SDL_Color BACKGROUND_C = {254, 254, 226};
 #define SEARCH_PLAYER 4
 ///////////////////////////////////////////////
 
+struct classement
+{
+	int score;
+	char username[32];
+};
+
 #define NOMBRE_ELEMENT_LIST 7
 const char nomList[NOMBRE_ELEMENT_LIST][30]={"GLOBAL","FLAPPY BIRD","TETRIS","ASTEROID","PACMAN","SNAKE","DEMINEUR"};
 
-SDL_Color noir = {0,0,0};
+SDL_Color noirCOLOR = {0,0,0};
 SDL_Color noirC = {50,50,50};
 
-void limiterFrame(const float delayLancementFrame,float *_IPS)
+
+void chargementDonner(int gameID, char *username, int offset, struct classement donner[])
+{
+	//////////////////////////////////
+	// CAST
+	char _gameID[5];
+	sprintf(_gameID,"%d",gameID);
+
+	char _offset[5];
+	sprintf(_offset,"%d",offset);
+
+	char *retour = malloc(sizeof(char) * 2048);
+	if(!retour)
+		printf("Erreur allocation\n" );
+	while ( getLeaderboard(_gameID,username,_offset,retour) != EXIT_SUCCESS );
+
+	sscanf(retour,"%s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d %s %d ", donner[0 + offset].username,&donner[0 + offset].score,
+																																																							donner[1 + offset].username,&donner[1 + offset].score,
+																																																							donner[2 + offset].username,&donner[2 + offset].score,
+																																																							donner[3 + offset].username,&donner[3 + offset].score,
+																																																							donner[4 + offset].username,&donner[4 + offset].score,
+																																																							donner[5 + offset].username,&donner[5 + offset].score,
+																																																							donner[6 + offset].username,&donner[6 + offset].score,
+																																																							donner[7 + offset].username,&donner[7 + offset].score,
+																																																							donner[8 + offset].username,&donner[8 + offset].score,
+																																																							donner[9 + offset].username,&donner[9 + offset].score,
+																																																							donner[10 + offset].username,&donner[10 + offset].score,
+																																																							donner[11 + offset].username,&donner[11 + offset].score,
+																																																							donner[12 + offset].username,&donner[12 + offset].score,
+																																																							donner[13 + offset].username,&donner[13 + offset].score,
+																																																							donner[14 + offset].username,&donner[14 + offset].score
+																																																						);
+	free(retour);
+}
+
+
+
+void _limiterFrame(const float delayLancementFrame,float *_IPS)
 {
 	float delayFrame = SDL_GetTicks() - delayLancementFrame;
 	// MISE A JOURS DU NOMBRE DE FPS
 	*_IPS = 1000.0/delayFrame;
 	// ATTENDRE SI NECESSAIRE POUR LIMITER A 60 FPS
-	if(delayFrame < FRAME_TIME)
+	if(delayFrame < FRAME_TIME_LEADERBOARD)
 	{
-		SDL_Delay(FRAME_TIME - delayFrame );
+		SDL_Delay(FRAME_TIME_LEADERBOARD - delayFrame );
 		// MAJ IPS APRES ATTENTE
-		*_IPS = 1000.0/ ( delayFrame + (FRAME_TIME - delayFrame) );
+		*_IPS = 1000.0/ ( delayFrame + (FRAME_TIME_LEADERBOARD - delayFrame) );
 	}
 
 }
 
-void scrollEvent(int *halt, int *xMouse, int *yMouse, int *scrollPositionWindow, int *scrollPositionList, int *_SELECTION, char rechercher[])
+void scrollEvent(int *halt, int *xMouse, int *yMouse, int *scrollPositionWindow, int *scrollPositionList, int *_SELECTION, char rechercher[], struct classement donner[], int selectionScrollingList)
 {
 
   SDL_Event event;
@@ -68,6 +115,8 @@ void scrollEvent(int *halt, int *xMouse, int *yMouse, int *scrollPositionWindow,
 			// RECUPERER POSITION SOURIS POUR SAVOIR OU SCROLL SI LES DEUX VUE SCROLL SON OUVERTE
 			int x,y;
 			SDL_GetMouseState(&x,&y);
+			x *= inverseRatio;
+			y *= inverseRatio;
 			SDL_Rect listDeroulante = {NATIF_W*0.05 , HUD_SIZE * 0.15, NATIF_W*0.35, HUD_SIZE*4.2};
 
 			if(*_SELECTION != LIST_SCROLL || !(x > listDeroulante.x && x < listDeroulante.x + listDeroulante.w && y > listDeroulante.y && y < listDeroulante.h + listDeroulante.y))
@@ -79,6 +128,30 @@ void scrollEvent(int *halt, int *xMouse, int *yMouse, int *scrollPositionWindow,
 				// DEPASSEMENT HAUT
 				if(*scrollPositionWindow > 0)
 					*scrollPositionWindow = 0;
+
+				if( *_SELECTION == SEARCH_PLAYER)
+				{
+					if (*scrollPositionWindow < -(int)(  (NATIF_H/10) * (PRELOAD_CELLULE_MAX - NOMBRE_CELLULE_FENETRE  + 1) + HUD_SIZE ) )
+					{
+						*scrollPositionWindow = -(int)(  (NATIF_H/10) * (PRELOAD_CELLULE_MAX - NOMBRE_CELLULE_FENETRE  +1 ) + HUD_SIZE );
+						printf("NOUVEAU = %d\n",PRELOAD_CELLULE_MAX*AFFICHER_PLUS );
+						//chargementDonner(selectionScrollingList, "", PRELOAD_CELLULE_MAX*AFFICHER_PLUS,donner);
+						AFFICHER_PLUS += 1;
+					}
+
+				}
+				else
+				{
+					if (*scrollPositionWindow < -(int)(  (NATIF_H/10) * ( (PRELOAD_CELLULE_MAX * AFFICHER_PLUS) - NOMBRE_CELLULE_FENETRE  ) + HUD_SIZE ) ) // -1 POUR SELECTION ACTUEL
+					{
+						*scrollPositionWindow = -(int)(  (NATIF_H/10) * ( (PRELOAD_CELLULE_MAX * AFFICHER_PLUS) - NOMBRE_CELLULE_FENETRE  ) + HUD_SIZE );
+						chargementDonner(selectionScrollingList, "", PRELOAD_CELLULE_MAX*AFFICHER_PLUS,donner);
+						printf("NOUVEAU = %d\n",PRELOAD_CELLULE_MAX );
+						AFFICHER_PLUS += 1;
+					}
+
+				}
+
 			}
 			else
 			{
@@ -98,6 +171,8 @@ void scrollEvent(int *halt, int *xMouse, int *yMouse, int *scrollPositionWindow,
 		if(event.type == SDL_MOUSEBUTTONUP)
 		{
 			SDL_GetMouseState(xMouse,yMouse);
+			*xMouse *= inverseRatio;
+			*yMouse *= inverseRatio;
 		}
 
 		if(*_SELECTION == TEXT_FIELD_USERNAME)
@@ -117,6 +192,9 @@ void scrollEvent(int *halt, int *xMouse, int *yMouse, int *scrollPositionWindow,
 						if(strlen(rechercher) > 0)
 						{
 							*_SELECTION = SEARCH_PLAYER;
+
+							// REPLACER VUE A 0
+							*scrollPositionWindow = 0;
 							printf("LANCER RECHERCHE\n" );
 						}
 
@@ -179,10 +257,13 @@ void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color c
 
 
 
-void afficherCellule(SDL_Renderer *renderer, int cellulePosition, char *username , char *score, TTF_Font * police, int decallageY, int estRecherche)
+void afficherCellule(SDL_Renderer *renderer, int cellulePosition, char *username , int score, TTF_Font * police, int decallageY, int estRecherche)
 {
 	SDL_Rect cellule = {NATIF_W*0.03, (NATIF_H/10) * cellulePosition + decallageY,NATIF_W*0.94 , NATIF_H * 0.09 };
 	char classement[8];
+
+	char _score[12];
+	sprintf(_score,"%d",score);
 
 	if(estRecherche == 1)
 	{
@@ -202,12 +283,12 @@ void afficherCellule(SDL_Renderer *renderer, int cellulePosition, char *username
 	}
 
 	SDL_RenderFillRect(renderer, &cellule);
-	SDL_Color noir = {0,0,0};
 
 
-	ecrireText(renderer,police, classement, noir, NATIF_W*0.08, (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY , 0.5 , 0);
-	ecrireText(renderer,police, username, noir,-1, (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY , 0.5 , 0);
-	ecrireText(renderer,police, score, noir, NATIF_W*0.9 , (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY, 0.5 , 0);
+
+	ecrireText(renderer,police, classement, noirCOLOR, NATIF_W*0.08, (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY , 0.5 , 0);
+	ecrireText(renderer,police, username, noirCOLOR,-1, (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY , 0.5 , 0);
+	ecrireText(renderer,police, _score, noirCOLOR, NATIF_W*0.9 , (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY, 0.5 , 0);
 
 }
 
@@ -219,7 +300,7 @@ void afficherCelluleScrollView(SDL_Renderer *renderer, int cellulePosition, char
 	SDL_RenderFillRect(renderer, &cellule);
 	SDL_Color noir = {0,0,0};
 
-	ecrireText(renderer,police, text, noir, NATIF_W*0.05 + (cellule.w/2), cellule.y  + (HUD_SIZE*0.6)/2 + NATIF_H*0.01 , 1.0 , 1);
+	ecrireText(renderer,police, text, noirCOLOR, NATIF_W*0.05 + (cellule.w/2), cellule.y  + (HUD_SIZE*0.6)/2 + NATIF_H*0.01 , 1.0 , 1);
 }
 
 
@@ -252,7 +333,7 @@ void afficherHUD(SDL_Renderer *renderer, TTF_Font *police , char *recherche, int
 	if(strlen(recherche) < 1)
 		ecrireText(renderer,police, "Rechercher", noirC, rechercheJoueur.x + rechercheJoueur.w/2, rechercheJoueur.y + rechercheJoueur.h/2 + NATIF_H*0.01 , 1.0 , 0);
 	else
-		ecrireText(renderer,police, recherche, noir, rechercheJoueur.x + rechercheJoueur.w/2, rechercheJoueur.y + rechercheJoueur.h/2 + NATIF_H*0.01 , 1.0 , 0);
+		ecrireText(renderer,police, recherche, noirCOLOR, rechercheJoueur.x + rechercheJoueur.w/2, rechercheJoueur.y + rechercheJoueur.h/2 + NATIF_H*0.01 , 1.0 , 0);
 
 
 	////////////////////////////////////////////
@@ -282,13 +363,13 @@ void afficherHUD(SDL_Renderer *renderer, TTF_Font *police , char *recherche, int
 	SDL_SetRenderDrawColor(renderer, 195, 195, 255, 255);
 	SDL_RenderFillRect(renderer, &ouvrirListeSelection);
 	// ECRIRE SELECTION ACTUEL
-	ecrireText(renderer,police, (char*)nomList[selectionScrollingList], noir, listSelection.x + listSelection.w/2, listSelection.y + listSelection.h/2 + NATIF_H*0.01 , 1.0 , 0);
+	ecrireText(renderer,police, (char*)nomList[selectionScrollingList], noirCOLOR, listSelection.x + listSelection.w/2, listSelection.y + listSelection.h/2 + NATIF_H*0.01 , 1.0 , 0);
 
 }
 
 
 
-int interactionInterface(int x,int y, int _SELECTION, int scrollPositionList, int *selectionScrollingList){
+int interactionInterface(int x,int y, int _SELECTION, int scrollPositionList, int *selectionScrollingList, int *scrollPositionWindow, struct classement donner[]){
 
 	SDL_Rect ouvrirListeSelection = {NATIF_W*0.05 + NATIF_W*0.35, HUD_SIZE * 0.15, HUD_SIZE*0.6, HUD_SIZE*0.6};
 	SDL_Rect lancerRecherche = {NATIF_W*0.90, HUD_SIZE * 0.15, HUD_SIZE*0.6, HUD_SIZE*0.6};
@@ -306,6 +387,7 @@ int interactionInterface(int x,int y, int _SELECTION, int scrollPositionList, in
 		else if( x > lancerRecherche.x && x < lancerRecherche.x + lancerRecherche.w && y > lancerRecherche.y && y < lancerRecherche.h + lancerRecherche.y)
 		{
 			printf("RECHERCHER JOUEUR\n" );
+			*scrollPositionWindow = 0;
 			return SEARCH_PLAYER;
 		}
 
@@ -332,7 +414,9 @@ int interactionInterface(int x,int y, int _SELECTION, int scrollPositionList, in
 				if(*selectionScrollingList <= ElementSelection)
 					*selectionScrollingList = ElementSelection + 1;
 				else
-				*selectionScrollingList = ElementSelection ;
+					*selectionScrollingList = ElementSelection ;
+
+					chargementDonner(*selectionScrollingList, "", 0,donner);
 
 			}
 
@@ -349,19 +433,30 @@ int interactionInterface(int x,int y, int _SELECTION, int scrollPositionList, in
 	return _SELECTION;
 }
 
-
-int leaderboard(SDL_Renderer *renderer)
+int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight)
 {
+	printf("JE SUIS LA\n" );
+	float ratioWindowSize = (float)WinWeidth/(float)NATIF_W;
+	inverseRatio = (float)NATIF_W/(float)WinWeidth;
+	printf("RATIO UP = %f DOWN = %f\n",ratioWindowSize,inverseRatio );
+	SDL_RenderSetScale(renderer, ratioWindowSize, ratioWindowSize);
 	/////////////////////////////////////////////////
 	// AJOUT ALPHA MODE
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
+	struct classement donner[32];
+
+  chargementDonner(0, "", 0, donner);
 
   /////////////////////////////////////////////////
   // CHARGEMENT ELEMENT
-  TTF_Font *police = TTF_OpenFont("../neon.ttf" , NATIF_W*0.05);
+  TTF_Font *police = TTF_OpenFont("../room/neon.ttf" , NATIF_W*0.05);
   if(!police)
-    printf("Erreur chargement\n" );
+	{
+		printf("Erreur chargement police\n" );
+		return EXIT_FAILURE;
+	}
+
 
 
   /////////////////////////////////////////////////
@@ -375,6 +470,11 @@ int leaderboard(SDL_Renderer *renderer)
 
 	char rechercher[32]="";
 
+
+	////////////////////////////////////////////////
+	// CHARGER GLOBAL
+
+
   while(!halt)
   {
     /////////////////////////////////////////////////
@@ -387,9 +487,9 @@ int leaderboard(SDL_Renderer *renderer)
 
 		//////////////////////////////////////////
 		// SAVOIR SI ON SCROLL SUR LIST OU VUE
-		scrollEvent(&halt,&xMouse,&yMouse,&scrollPositionWindow,&scrollPositionList, &_SELECTION, rechercher );
+		scrollEvent(&halt,&xMouse,&yMouse,&scrollPositionWindow,&scrollPositionList, &_SELECTION, rechercher, donner, selectionScrollingList );
 
-		_SELECTION = interactionInterface(xMouse,yMouse,_SELECTION,scrollPositionList,&selectionScrollingList);
+		_SELECTION = interactionInterface(xMouse,yMouse,_SELECTION,scrollPositionList,&selectionScrollingList, &scrollPositionWindow, donner);
 
 
     //////////////////////////////////////////
@@ -398,14 +498,14 @@ int leaderboard(SDL_Renderer *renderer)
 
 		if(_SELECTION == SEARCH_PLAYER)
 		{
-			afficherCellule(renderer,0 ,rechercher,"1",police,scrollPositionWindow + HUD_SIZE,1);
-			for(int i = 0;  i< PRELOAD_CELLULE_MAX ; i++)
-				afficherCellule(renderer,i + 1,"USERNAME","1",police,scrollPositionWindow + HUD_SIZE,2);
+			afficherCellule(renderer,0 ,rechercher,1,police,scrollPositionWindow + HUD_SIZE,1);
+			for(int i = 0;  i< PRELOAD_CELLULE_MAX * AFFICHER_PLUS ; i++)
+				afficherCellule(renderer,i + 1,donner[i].username,donner[i].score,police,scrollPositionWindow + HUD_SIZE,2);
 		}
 		else
 		{
-			for(int i = 0;  i< PRELOAD_CELLULE_MAX ; i++)
-				afficherCellule(renderer,i,"USERNAME","1",police,scrollPositionWindow + HUD_SIZE,0);
+			for(int i = 0;  i< PRELOAD_CELLULE_MAX * AFFICHER_PLUS ; i++)
+				afficherCellule(renderer,i,donner[i].username,donner[i].score,police,scrollPositionWindow + HUD_SIZE,0);
 		}
 
 
@@ -425,7 +525,7 @@ int leaderboard(SDL_Renderer *renderer)
 
     /////////////////////////////////////////////////
     // LIMITER LE NOMBRE DE FRAME A X FPS
-    limiterFrame(lancementFrameTime,&_IPS);
+    _limiterFrame(lancementFrameTime,&_IPS);
 
 
   }
@@ -434,24 +534,22 @@ int leaderboard(SDL_Renderer *renderer)
   // DESTRUCTION
   TTF_CloseFont(police);
   /////////////////////////////////////////////////
-
   return 0;
 }
 
-
+/*
 int main()
 {
   TTF_Init();
-
-  SDL_Window *window = SDL_CreateWindow("Nineteen | Launcher", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,NATIF_W,NATIF_H, SDL_WINDOW_OPENGL  );
+  SDL_Window *window = SDL_CreateWindow("Nineteen | Launcher", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,1920,1080, SDL_WINDOW_OPENGL  );
   SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 
   SDL_Event Event;
   while(SDL_PollEvent(&Event));
-  leaderboard(renderer);
+  leaderboard(renderer,1920,1080);
 
   SDL_DestroyRenderer(renderer);
   SDL_DestroyWindow(window);
   TTF_Quit();
 
-}
+}*/
