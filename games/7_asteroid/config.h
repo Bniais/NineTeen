@@ -23,12 +23,24 @@ static const SDL_Color HUD_COLOR = {0x2f,0x30,0x4f};
 #define NB_ASTEROID_FONTS 2
 typedef enum{FONT_BONUS, FONT_SCORE}FONTS;
 
-
 char* DIR_FONTS_ASTEROID[NB_ASTEROID_FONTS] = {
 	"../games/2_snake/Fonts/zorque.ttf",
 	"../games/2_snake/Fonts/Demonized.ttf"
 };
 
+
+#define NB_ASTEROID_SOUNDS 5
+typedef enum{SOUND_SHOOT, SOUND_SHOOT_ZIGZAG , SOUND_SHOOT_TELEGUIDE, SOUND_SHOOT_GLACE, SOUND_LASER_BEAM}SOUNDS;
+
+char* DIR_SOUNDS_ASTEROID[NB_ASTEROID_SOUNDS] = {
+	"../games/7_asteroid/Sound/shoot1.wav",
+	"../games/7_asteroid/Sound/shoot2.wav",
+	"../games/7_asteroid/Sound/shoot3.wav",
+	"../games/7_asteroid/Sound/shoot4.wav",
+	"../games/7_asteroid/Sound/laser_beam.wav"
+};
+
+int SOUND_VOLUMES[NB_ASTEROID_SOUNDS] = {30,110,17,25,50};
 
 
 typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier;int missile_id; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust; long frame_explo;}Vaiss;

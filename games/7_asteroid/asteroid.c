@@ -7,9 +7,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
-//#include <SDL_ttf.h>
-//#include <SDL_mixer.h>
-//#include <SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,10 +17,9 @@
 void asteroidInit(){
 
 	// SDL Init
-	SDL_Init(SDL_INIT_EVERYTHING);
-	TTF_Init();
+	Mix_Volume(5, 40);//shoot
 
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 	/*//audio
 
 	if( Mix_OpenAudio( MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 1, 1024 ) == -1 )
@@ -657,6 +654,8 @@ void afficher_explosion(SDL_Renderer * renderer,Explosion explosion, SDL_Texture
 
 void afficher_laser(SDL_Renderer * renderer, SDL_Texture * laser_texture, Vaiss vaisseau, int frame, Asteroid asteroid){
 
+
+
 	SDL_Rect laser_src={0,MISSILE_SRC[SHOT_LASER].y,MISSILE_SRC[SHOT_LASER].x,MISSILE_SRC[SHOT_LASER].y};
 
 	if(frame != 0)
@@ -714,7 +713,9 @@ void afficher_text_bonus(SDL_Renderer * renderer, TextBonus textBonus[MAX_TEXT_B
 
 
 //MISSILE
- void tirer(Vaiss * vaisseau, Missile ** missiles, int * nb_missiles){
+ void tirer(Vaiss * vaisseau, Missile ** missiles, int * nb_missiles, Mix_Chunk * shootSound){
+
+	Mix_PlayChannel( 5, shootSound,0);
 
 	*nb_missiles+=vaisseau->nb_tir;
 	(*missiles) = realloc(*missiles,*nb_missiles * sizeof(Missile));
@@ -1259,15 +1260,27 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 	SDL_SetTextureColorMod(textures[A_HUD], HUD_COLOR.r, HUD_COLOR.g, HUD_COLOR.b);
 
 
-	//Textures
+	//fonts
 	TTF_Font* fonts[NB_ASTEROID_FONTS];
-	//Textures
+
 	for(int i=0; i< NB_ASTEROID_FONTS; i++){
 		 fonts[i] = TTF_OpenFont(DIR_FONTS_ASTEROID[i], OPEN_FONT_SIZE);
 		 if( fonts[i] == NULL ){
 			printf("Erreur lors de la creation de font %s", TTF_GetError());
 			return EXIT_FAILURE;
 		}
+	}
+
+	//Sounds
+	Mix_Chunk* sounds[NB_ASTEROID_SOUNDS];
+
+	for(int i=0; i< NB_ASTEROID_SOUNDS; i++){
+		 sounds[i] = Mix_LoadWAV(DIR_SOUNDS_ASTEROID[i]);
+		 if( sounds[i] == NULL ){
+			printf("Erreur lors de la creation de son %s", Mix_GetError());
+			return EXIT_FAILURE;
+		}
+		Mix_VolumeChunk(sounds[i], SOUND_VOLUMES[i]);
 	}
 
 	//Keyboard
@@ -1321,7 +1334,8 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		//MISSILES
 
 		int nb_missiles=0;
-		float munitions[NB_MISSILES] = {1,0,0,0,0};
+		//float munitions[NB_MISSILES] = {1,0,0,0,0};
+		float munitions[NB_MISSILES] = {1,1,1,1,1};
 
 		//ASTEROID
 
@@ -1344,7 +1358,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		SDL_Point mouseCoor;
 
 
-
+        int laserSoundOn = SDL_FALSE;
 		int nb_explosions = 0;
 
 
@@ -1515,10 +1529,17 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 			move(&vaisseau,accelerate);
 
 			if(keystate[SDL_SCANCODE_SPACE]){
-				rdyToSpace=SDL_FALSE;
+
 				if(!done && vaisseau.frame_recharge == 0 && munitions[vaisseau.missile_id]){
 					if(vaisseau.missile_id != SHOT_LASER){
-						tirer(&vaisseau,&missiles,&nb_missiles);
+						tirer(&vaisseau,&missiles,&nb_missiles, sounds[SOUND_SHOOT + vaisseau.missile_id]);
+					}
+					else{
+						if(!laserSoundOn){
+							laserSoundOn = SDL_TRUE;
+							Mix_PlayChannel(5, sounds[SOUND_LASER_BEAM],-1);
+						}
+
 					}
 					munitions[vaisseau.missile_id] -= MUNITIONS_USAGE[vaisseau.missile_id] * MUNITIONS_USAGE_MULTIPLE[vaisseau.nb_tir-1];
 					if(munitions[vaisseau.missile_id] <= 0){
@@ -1533,9 +1554,13 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 
 					jauge.frameAmmo = FRAME_AMMO;
 				}
+				rdyToSpace=SDL_FALSE;
 			}
 
-
+			if(laserSoundOn && (!keystate[SDL_SCANCODE_SPACE] || vaisseau.missile_id != SHOT_LASER)){
+				laserSoundOn = SDL_FALSE;
+				Mix_HaltChannel(5);
+			}
 
 
 			for(int i=0;i<nb_missiles; i++){
