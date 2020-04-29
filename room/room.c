@@ -1264,9 +1264,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	int toiletteHommeOuverteDelai = 0;
 
 
-	SDL_Event Ev;
-	while(SDL_PollEvent(&Ev));
-	
+
 	while (Running)
 	{
         //SDL_RaiseWindow(Window);
@@ -2267,7 +2265,10 @@ int detectionEnvironnement(float x,float y)
 
 	///////////////////////////////////////////////////
 	// ACCUEIL NINETEEN
-	if( x <= 6.0 && x >= -6.0 && y >= 19.5)
+	if( x <= 6.0 && x >= -6.0 && y >= 19.5 && y < 25.0)
+		return 0;
+	// MUR DERRIERE LE BAR NINETEEN
+	if(x > -9.0 && x < 9.0 && y > 24.0)
 		return 0;
 
 	///////////////////////////////////////////////////
@@ -2287,8 +2288,17 @@ int detectionEnvironnement(float x,float y)
 
 	///////////////////////////////////////////////////
 	// FUNTION POUR MUR AVEC ANGLE A PROXIMITER DE NINETEEN
-	if(  y >= 14.0 &&  (    ( x >= -0.4736842105*y + 19.36842105  ) || (  x <= -(-0.4736842105*y + 19.36842105))    )   )
+	// MUR DE DROITE NE PAS TOUCHER
+	if(  y >= 14.0 &&  (  x <= -(-0.4736842105*y + 19.36842105))       )
 		return 0;
+
+
+	printf("X = %f && Y = %f\n",x,y );
+	// OUVERTURE DE LA PORTE + RAJOUTER CONTRAINTE PAS BLOQUER DE L'AUTRE COTER
+	// MUR DE GAUCHE SI TU DELETE PLUS DE CONTRAINTE TU PEUX TE DEPLACER COMMME TU VEUX A GAUCHE
+	if( ( (y>= 14.0 && y<= 18.8) || (y > 20.0) ) && ( x >= -0.4736842105*y + 19.36842105  )    )
+		return 0;
+
 
 	///////////////////////////////////////////////////
 	// OUVERTURE ENTRE POUR ALLER DANS LA SALLE TOILETTE
@@ -2350,13 +2360,14 @@ int detectionEnvironnement(float x,float y)
 	if( y < 1.4 && y > 0.4 && x > toiletteHomme.x - 2.2)
 		return 0;
 
+
 	///////////////////////////////////////////////////
 	// DIMESION SALLE DE BASE
 	// HAUT DE LA SALLE
 	if( y < -4.5 )
 		return 0;
 	// BAS DE LA SALLE
-	if( y > 23.5 )
+	if( y > 35.5 )
 		return 0;
 	// GAUCHE DE LA SALLE
 	if( x < -14.0 )
