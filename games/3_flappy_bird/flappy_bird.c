@@ -1096,7 +1096,7 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 			traitement = 0;
 			// UPDATE SCORE AVEC SECURITER
 			if(changeProtectedVar(score_hash, score, (*score)+1, keys))
-				Mix_PlayChannel( 5, score_wav,0);
+				Mix_PlayChannel( 6, score_wav,0);
 				// LE JOUEUR EST REPORTER
 		/*else
 				ban commands*/
@@ -1114,7 +1114,7 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 			traitement = 1;
 			// UPDATE SCORE AVEC SECURITER
 			if(changeProtectedVar(score_hash, score, (*score)+1, keys))
-				Mix_PlayChannel( 5, score_wav,0);
+				Mix_PlayChannel( 6, score_wav,0);
 				// LE JOUEUR EST REPORTER
 			/*else
 				ban commands*/
@@ -1132,7 +1132,7 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 			traitement = 2;
 			// UPDATE SCORE AVEC SECURITER
 			if(changeProtectedVar(score_hash, score, (*score)+1, keys))
-				Mix_PlayChannel( 5, score_wav,0);
+				Mix_PlayChannel( 6, score_wav,0);
 				// LE JOUEUR EST REPORTER
 			/*else
 				ban commands*/
@@ -1152,7 +1152,7 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 			traitement = 3;
 			// UPDATE SCORE AVEC SECURITER
 			if( changeProtectedVar(score_hash, score, (*score)+1, keys) )
-				Mix_PlayChannel( 5, score_wav,0);
+				Mix_PlayChannel( 6, score_wav,0);
 				// LE JOUEUR EST REPORTER
 			/*else
 				ban commands*/
@@ -1234,7 +1234,7 @@ int collision(pilonne *pilonne, SDL_Point emplacementPersonnage, Mix_Chunk *hurt
 	/////////////////////////////////////////////////////
 	// JOUER UN SON SI COLLISION
 	if (collision_detecter)
-		Mix_PlayChannel( 6, hurt_wav,0);
+		Mix_PlayChannel( 7, hurt_wav,0);
 
 	return collision_detecter;
 }
@@ -1274,7 +1274,7 @@ int attendreAvantDepart(Mix_Chunk *flap_wav, int* rdyToSpace)
 
 			if(*rdyToSpace && spacebar.type == SDL_KEYDOWN && spacebar.key.keysym.sym == SDLK_SPACE ){
 				// jouer le son de saut //
-				Mix_PlayChannel( 4, flap_wav,0);
+				Mix_PlayChannel( 5, flap_wav,0);
 				*rdyToSpace = SDL_FALSE;
 				return SDL_TRUE;
 			}
@@ -1307,7 +1307,7 @@ int evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_wa
 			{
 				if(*rdyToSpace){
 					// JOUER SON DU SAUT
-					Mix_PlayChannel( 4, flap_wav,0);
+					Mix_PlayChannel( 5, flap_wav,0);
 					// AJOUTER UN SAUT
 					*upper = UPPER_STEP;
 					// REMETTRE A 0 LA BOUCLE ET LA VITESSE DE GRAVITER
