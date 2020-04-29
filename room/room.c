@@ -2043,8 +2043,8 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 	//float _SENSIBILITE_CAMERA = 0.0005;//SENSIBILITE_CAMERA * (IPS/FPS);
 	//float _VITESSE_DEPLACEMENT = 0.0005;//VITESSE_DEPLACEMENT * (IPS/FPS);
 
-    float _SENSIBILITE_CAMERA =SENSIBILITE_CAMERA * (IPS/FPS);
-	float _VITESSE_DEPLACEMENT =VITESSE_DEPLACEMENT * (IPS/FPS);
+    float _SENSIBILITE_CAMERA =SENSIBILITE_CAMERA * (FPS/IPS);
+	float _VITESSE_DEPLACEMENT =VITESSE_DEPLACEMENT * (FPS/IPS);
 	///////////////////////////////////////////////////
 	// INITALISATION D'UN EVENEMENT SDL
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
