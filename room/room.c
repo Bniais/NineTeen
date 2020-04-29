@@ -56,8 +56,8 @@ static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0, _nbMeshes = 
 #define DIR_OBJ_LOAD "../room/salle.obj"
 // EMPLACEMENT FIHCIER NECESSAIRE
 
-#define VITESSE_DEPLACEMENT_COURIR 0.22F
-#define VITESSE_DEPLACEMENT_DEBOUT 0.13F
+#define VITESSE_DEPLACEMENT_COURIR 0.14F
+#define VITESSE_DEPLACEMENT_DEBOUT 0.08F
 #define VITESSE_DEPLACEMENT_ACCROUPI 0.035F
 #define SENSIBILITE_CAMERA 0.08F
 #define SENSIBILITE_CAMERA_SOURIS 0.003F
@@ -65,6 +65,7 @@ static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0, _nbMeshes = 
 #define HAUTEUR_CAMERA_ACCROUPI 2.7F
 #define MAX_Y_AXE_CIBLE 2.8F
 const float ANGLE_DETECTION_MACHINE = M_PI/6;
+#define SON_PAS_DISTANCE 2.2F
 
 #define START_PX -13.0F //AXE X
 #define START_PY 3.64F // hauteur CAMERA
@@ -1750,7 +1751,7 @@ void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int 
 {
 	////////////////////////////////////////////////////
 	// CALCUL LA DISTANCE ENTRE LA DERNIERE POSITION ET CELLE ACTUELLE
-	if ( distancePoint(dernierePosition->px,dernierePosition->pz, camera.px, camera.pz) > 1.6F )
+	if ( distancePoint(dernierePosition->px,dernierePosition->pz, camera.px, camera.pz) > SON_PAS_DISTANCE )
 	{
 		////////////////////////////////////////////////////
 		// SI ON A PARCOURU 1.6M ON JOUE UN SONS
@@ -1811,7 +1812,7 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 
 	////////////////////////////////////////////////////
 	// GERER LES MOUVEMENT DE CAMERA
-	mouvementCamera(Window, camera,60.0);
+	mouvementCamera(Window, camera,IPS);
 
 	////////////////////////////////////////////////////
 	// SI LE RENDU DE LA SCENE N'EST PAS FAIT LE FAIRE
@@ -2053,7 +2054,7 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 	//DETECTER LA COURSE A PIED
 	if( keystate[SDL_SCANCODE_LSHIFT] )
 	{
-		_VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_COURIR * (IPS/FPS);
+		_VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_COURIR * (FPS/IPS);
 	}
 
 	///////////////////////////////////////////////////
