@@ -1601,16 +1601,17 @@ void drawJauge(SDL_Renderer * renderer, SDL_Texture * jaugeTexture, long int fra
 		ratioVitesse = 0;
 
 	SDL_Rect jauge = JAUGE_SPEED_DEST;
-	jauge.y--; //Pour eviter les débordements quand la fenetre est redimensionnées
-	jauge.h-=2;
+	jauge.y++; //Pour eviter les débordements quand la fenetre est redimensionnées
+	jauge.h--;
 
 	//Dessine l'arrière plan
 	SDL_SetRenderDrawColor(renderer, JAUGE_COLOR_BACKGROUND.r, JAUGE_COLOR_BACKGROUND.g, JAUGE_COLOR_BACKGROUND.b, 255);
 	SDL_RenderFillRect(renderer, &jauge);
-
+	jauge.y--;
 	//Dessiner le taux de vitesse dans la jauge
 	jauge.h *= ratioVitesse;
 	jauge.y += JAUGE_SPEED_DEST.h - jauge.h;
+	jauge.y--;
 	SDL_SetRenderDrawColor(renderer, JAUGE_COLOR.r, JAUGE_COLOR.g, JAUGE_COLOR.b, 255);
 	SDL_RenderFillRect(renderer, &jauge);
 
