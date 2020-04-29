@@ -1085,6 +1085,8 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 
 int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize)
 {
+
+
 	optionFullScreen = optFullScreen;
 	//////////////////////////////////////////////////////////
 	// EVENT SOURIS INIT
@@ -1261,6 +1263,10 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	int toiletteFemmeOuverteDelai = 0;
 	int toiletteHommeOuverteDelai = 0;
 
+
+	SDL_Event Ev;
+	while(SDL_PollEvent(&Ev));
+	
 	while (Running)
 	{
         //SDL_RaiseWindow(Window);
@@ -2727,6 +2733,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 					///////////////////////////////////////////////////
 					// INIT AFFICHAGE DU MESSAGE
+					SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+					SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
+
 					MessageQuitterRoom();
 					SDL_GL_SwapWindow(Window);
 
@@ -2744,6 +2753,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					int decision = 1;
 					while(decision)
 					{
+
 						while (SDL_PollEvent(&Event))
 						{
 							if (Event.type == SDL_KEYDOWN) {
@@ -2752,8 +2762,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									case SDLK_ESCAPE:
 										decision = 0;
 										printf("Commande annuler\n");
-										animationLancerMachine(camera,camera,*scene_list,Window, _IPS,1.0);
-										SDL_GL_SwapWindow(Window);
+
 										break;
 									case SDLK_q:
 										decision = 0;
