@@ -23,6 +23,22 @@ char* DIR_FONTS_TETRIS[NB_TETRIS_FONTS] = {
 	"../games/2_snake/Fonts/zorque.ttf"
 };
 
+//sound
+#define NB_TETRIS_SOUNDS 6
+enum{SOUND_LINE, SOUND_ROTATE,SOUND_CANT_ROTATE, SOUND_HIT , SOUND_LASER, SOUND_GAMEOVER};
+
+char* DIR_SOUNDS_TETRIS[NB_TETRIS_SOUNDS] = {
+	"../games/5_tetris/Sound/line.wav",
+	"../games/5_tetris/Sound/rotate.wav",
+	"../games/5_tetris/Sound/cantRotate.wav",
+	"../games/5_tetris/Sound/hit.wav",
+	"../games/5_tetris/Sound/laser.wav",
+	"../games/5_tetris/Sound/gameOver.wav"
+
+};
+
+static int SOUND_VOLUMES[NB_TETRIS_SOUNDS] = {70,128,80,55,113,100};
+
 //Grille
 #define CASE_SIZE 38.
 #define BONUS_SIZE 20.

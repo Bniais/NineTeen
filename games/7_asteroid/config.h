@@ -29,8 +29,8 @@ char* DIR_FONTS_ASTEROID[NB_ASTEROID_FONTS] = {
 };
 
 
-#define NB_ASTEROID_SOUNDS 11
-typedef enum{SOUND_SHOOT, SOUND_SHOOT_ZIGZAG , SOUND_SHOOT_TELEGUIDE, SOUND_SHOOT_GLACE, SOUND_LASER_BEAM, SOUND_BONUS, SOUND_HIT, SOUND_ICE_EXPLO, SOUND_EXPLO, BIG_EXPLO, SOUND_THRUST}SOUNDS;
+#define NB_ASTEROID_SOUNDS 12
+typedef enum{SOUND_SHOOT, SOUND_SHOOT_ZIGZAG , SOUND_SHOOT_TELEGUIDE, SOUND_SHOOT_GLACE, SOUND_LASER_BEAM, SOUND_BONUS, SOUND_HIT, SOUND_ICE_EXPLO, SOUND_EXPLO, BIG_EXPLO, SOUND_THRUST, SOUND_GAMEOVER}SOUNDS;
 
 char* DIR_SOUNDS_ASTEROID[NB_ASTEROID_SOUNDS] = {
 	"../games/7_asteroid/Sound/shoot1.wav",
@@ -43,13 +43,14 @@ char* DIR_SOUNDS_ASTEROID[NB_ASTEROID_SOUNDS] = {
 	"../games/7_asteroid/Sound/ice_explo.wav",
 	"../games/7_asteroid/Sound/explo.wav",
 	"../games/7_asteroid/Sound/BIG_EXPLO.wav",
-	"../games/7_asteroid/Sound/thrust.wav"
+	"../games/7_asteroid/Sound/thrust.wav",
+	"../games/5_tetris/Sound/gameOver.wav"
 
 };
 #define TIME_FADE_IN 400
 #define TIME_FADE_OUT 400
 #define NB_CHANNEL_EXPLOSION 3
-static int SOUND_VOLUMES[NB_ASTEROID_SOUNDS] = {30,110,17,85,25, 128, 12,50, 115,128, 100};
+static int SOUND_VOLUMES[NB_ASTEROID_SOUNDS] = {30,110,17,85,25, 128, 12,50, 115,128, 100, 100};
 enum{THRUST_UP, THRUST_LEFT, THRUST_RIGHT};
 
 typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier;int missile_id; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust; long frame_explo;}Vaiss;
@@ -213,8 +214,8 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 											  //INF / 100 / 33 /  50/ 16s
 
 
-    #define MAX_RATIO_AMMO_OBTAINABLE 0.5
-	#define AMMO_GRANT 0.33
+    #define MAX_RATIO_AMMO_OBTAINABLE (0.7)
+	#define AMMO_GRANT (1./3)
 
 	//texures missiles
 	#define MISSILE_CUT 56

@@ -23,8 +23,8 @@ char* DIR_FONTS_SNAKE[NB_SNAKE_FONTS] = {
 };
 
 //sound
-#define NB_SNAKE_SOUNDS 6
-enum{SOUND_RAINBOW, SOUND_BOMB, SOUND_SLOW , SOUND_GET, SOUND_APPEAR, SOUND_DISAPEAR};
+#define NB_SNAKE_SOUNDS 7
+enum{SOUND_RAINBOW, SOUND_BOMB, SOUND_SLOW , SOUND_GET, SOUND_APPEAR, SOUND_DISAPEAR, SOUND_GAMEOVER};
 
 char* DIR_SOUNDS_SNAKE[NB_SNAKE_SOUNDS] = {
 	"../games/2_snake/Sound/rainbow.wav",
@@ -32,11 +32,12 @@ char* DIR_SOUNDS_SNAKE[NB_SNAKE_SOUNDS] = {
 	"../games/2_snake/Sound/slow.wav",
 	"../games/2_snake/Sound/get.wav",
 	"../games/2_snake/Sound/appear.wav",
-	"../games/2_snake/Sound/disapear.wav"
+	"../games/2_snake/Sound/disapear.wav",
+	"../games/5_tetris/Sound/gameOver.wav"
 
 };
 
-static int SOUND_VOLUMES[NB_SNAKE_SOUNDS] = {70,128,80,55,13, 18};
+static int SOUND_VOLUMES[NB_SNAKE_SOUNDS] = {70,128,80,55,13, 18,100};
 
 //hud
 
