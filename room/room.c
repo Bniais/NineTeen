@@ -498,7 +498,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 
 /////////////////////////////////////////////////////
-/// \fn void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window, float _IPS)
+/// \fn void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window, float _IPS,float imgAnim)
 /// \brief permet d'animer le lancement et retour des machines
 ///
 /// \param struct Camera_s camera camera de depart
@@ -509,7 +509,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window, float _IPS);
+void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window, float _IPS, float imgAnim);
 
 
 
@@ -2630,11 +2630,11 @@ void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Fo
 }
 
 
-void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window, float _IPS)
+void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window, float _IPS, float imgAnim)
 {
 
 	// FIXER DUREE ANIMATION
-	float DUREE_ANIM = 60.0F * (_IPS / 60.0 );
+	float DUREE_ANIM = imgAnim * (_IPS / FPS );
 
 	////////////////////////////////////////////////////////////
 	// CALCUL DES DIFFERENTE VALEUR A INCREMENTER
@@ -2752,6 +2752,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									case SDLK_ESCAPE:
 										decision = 0;
 										printf("Commande annuler\n");
+										animationLancerMachine(camera,camera,*scene_list,Window, _IPS,1.0);
+										SDL_GL_SwapWindow(Window);
 										break;
 									case SDLK_q:
 										decision = 0;
@@ -2809,7 +2811,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							SDL_Thread *thread = SDL_CreateThread(  (int(*)(void*))loadGameTexture, "Charger_textures_jeu", &machine);
 							///////////////////////////////////////////////////
 							// ANIMATION CENTRAGE SUR MACHINE
-							animationLancerMachine(camera,cible[machine-1],*scene_list,Window, _IPS);
+							animationLancerMachine(camera,cible[machine-1],*scene_list,Window, _IPS,60.0);
 
 							int retourThread = SDL_FALSE;
 
@@ -2910,7 +2912,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							static struct Camera_s camera2;
 							SDL_GL_AppliquerScene(Window, scene,&camera2,scene_list,FPS);
 							// ANIMATION DE RETOUR SUR MACHINE
-							animationLancerMachine(cible[machine-1],camera,*scene_list,Window, _IPS);
+							animationLancerMachine(cible[machine-1],camera,*scene_list,Window, _IPS,60.0);
 							// VIDER POLL EVENEMENT
 							while(SDL_PollEvent(&Event));
 
