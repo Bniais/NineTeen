@@ -748,7 +748,10 @@ int main(int argc, char *argv[])
     Mix_Init(MIX_INIT_MP3);
     if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) //Initialisation de l'API Mixer
       printf("%s", Mix_GetError());
-
+	// allocate 16 mixing channels
+	printf("nb channels before allocate :%d\n",Mix_AllocateChannels(-1) );
+	Mix_AllocateChannels(16);
+	printf("nb channels after allocate :%d\n",Mix_AllocateChannels(-1) );
     /////////////////////////////////////////////////////////////////
     // RECUPERER TAILLE ECRAN
     SDL_DisplayMode DM;
@@ -792,7 +795,7 @@ int main(int argc, char *argv[])
     struct MeilleureScore_s meilleureScore[16];
     /////////////////////////////////////////////////////////////////
     // APPEL DU LAUNCHER
-	int fullscreen=0;
+	int fullscreen=1;
     if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath, &fullscreen) == EXIT_SUCCESS)
     {
 	  SDL_Rect borderSize;
