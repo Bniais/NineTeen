@@ -2268,7 +2268,7 @@ int detectionEnvironnement(float x,float y)
 	if( x <= 6.0 && x >= -6.0 && y >= 19.5 && y < 25.0)
 		return 0;
 	// MUR DERRIERE LE BAR NINETEEN
-	if(x > -9.0 && x < 9.0 && y > 24.0)
+	if(x > -9.0 && x < 9.0 && y > 23.8 && y < 24.5)
 		return 0;
 
 	///////////////////////////////////////////////////
@@ -2295,10 +2295,13 @@ int detectionEnvironnement(float x,float y)
 
 	printf("X = %f && Y = %f\n",x,y );
 	// OUVERTURE DE LA PORTE + RAJOUTER CONTRAINTE PAS BLOQUER DE L'AUTRE COTER
-	// MUR DE GAUCHE SI TU DELETE PLUS DE CONTRAINTE TU PEUX TE DEPLACER COMMME TU VEUX A GAUCHE
-	if( ( (y>= 14.0 && y<= 18.8) || (y > 20.0) ) && ( x >= -0.4736842105*y + 19.36842105  )    )
+	// MUR COULOIR 1
+	if( ( (y>= 14.0 && y<= 18.8) || (y > 20.0) ) && ( x >= -0.4736842105*y + 19.36842105  )  &&  ( x <= -0.4736842105*y + 21.16842105  ) )
 		return 0;
+	// MUR COULOIR 2
 
+	if( y > 20.0 && y < 34.0 && ( x >= -0.4736842105*y + 24.06842105  ))
+		return 0;
 
 	///////////////////////////////////////////////////
 	// OUVERTURE ENTRE POUR ALLER DANS LA SALLE TOILETTE
