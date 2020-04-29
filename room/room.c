@@ -2564,7 +2564,7 @@ void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Fo
 	///////////////////////////////////////////////////////////////////
 	// RETOURNE LE CODE DE LA MACHINE DETECTER 0 SI NON DETECTER
 	int detection = detecterMachine(camera.px, camera.pz,camera.angle);
-	if(detection)
+	if(detection > 0 && detection != 16)
 	{
 
 		// BUFFER POUR LE MESSAGE DES RECORDS
@@ -2590,6 +2590,11 @@ void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Fo
 		if(afficherMessage)
 				AfficherText(font,"APPUYER   SUR   E",white,-1,-1);
 
+	}
+	if(detection == 16)
+	{
+		if(afficherMessage)
+				AfficherText(font,"APPUYER   SUR   E",white,-1,-1);
 	}
 
 	////////////////////////////////////////////////
