@@ -809,16 +809,16 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
 	/////////////////////////////////////////////////
 	// CHARGEMENT ELEMENT
-	SDL_Texture *texture = IMG_LoadTexture(renderer,"room/leaderboard/tilset.png");
+	SDL_Texture *texture = IMG_LoadTexture(renderer,"../room/leaderboard/tilset.png");
 	if(!texture)
 	{
 		printf("leaderboard.c -> leaderboard() : IMG_LoadTexture : tilset.png\n" );
 		return EXIT_FAILURE;
 	}
-  TTF_Font *police = TTF_OpenFont("room/neon.ttf" , NATIF_W*0.05);
+  TTF_Font *police = TTF_OpenFont("../room/neon.ttf" , NATIF_W*0.05);
   if(!police)
 	{
-		printf("leaderboard.c -> leaderboard() : TTF_OpenFont : tilset.png\n" );
+		printf("leaderboard.c -> leaderboard() : TTF_OpenFont : neon.ttf\n" );
 		return EXIT_FAILURE;
 	}
 	/////////////////////////////////////////////////
