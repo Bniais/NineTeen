@@ -2727,10 +2727,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 					///////////////////////////////////////////////////
 					// INIT AFFICHAGE DU MESSAGE
-					GL_InitialiserParametre(WinWidth,WinHeight,camera);
-
-					SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
-
 					MessageQuitterRoom();
 					SDL_GL_SwapWindow(Window);
 
@@ -2824,12 +2820,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								return;
 							}
 
-							/*#ifdef _WIN32
-							if(optionFullScreen ){
-								SDL_MinimizeWindow(Window);
-								SDL_MaximizeWindow(Window);
-							}
-							#endif*/
+
 							///////////////////////////////////////////////////
 							// CASE POUR CHAQUE MACHINE
 							// AVEC UPDATE DU SCORE A L ISSUS
@@ -2882,14 +2873,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							///////////////////////////////////////////////////
 							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
-							/*#ifdef _WIN32
-							if(optionFullScreen ){
-								SDL_SetRenderDrawColor(pRenderer, 40,40,40,255);
-								SDL_RenderClear(pRenderer);
-								SDL_RenderPresent(pRenderer);
-							}
-							#endif*/
-
 							SDL_DestroyRenderer(pRenderer);
 
 
