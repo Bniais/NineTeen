@@ -24,9 +24,9 @@ void asteroidInit(){
 	for(int i = 9; i < 9+NB_CHANNEL_EXPLOSION; i++)
 		Mix_Volume(i, 50);//explo
 
-	Mix_Volume(9+NB_CHANNEL_EXPLOSION, 17);//thrust principal
-	Mix_Volume(9+NB_CHANNEL_EXPLOSION+1, 10);//thrust gauche
-	Mix_Volume(9+NB_CHANNEL_EXPLOSION+2, 10);//thrust droite
+	Mix_Volume(9+NB_CHANNEL_EXPLOSION, 0);//thrust principal
+	Mix_Volume(9+NB_CHANNEL_EXPLOSION+1, 0);//thrust gauche
+	Mix_Volume(9+NB_CHANNEL_EXPLOSION+2, 1);//thrust droite
 	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 	/*//audio
 
@@ -39,7 +39,7 @@ void asteroidInit(){
 
 //BONUS
 
-int useNuclear( Asteroid ** asteroides, int * nb_asteroid, Explosion ** explosions, int * nb_explosions, ScoreTotal * score, long keys[4], long long * score_hash, int done){
+int useNuclear( Asteroid ** asteroides, int * nb_asteroid, Explosion ** explosions, int * nb_explosions, ScoreTotal * score, long keys[4], long long * score_hash, int done, Mix_Chunk * exploSound){
 
 	int skinAste;
 
@@ -60,6 +60,14 @@ int useNuclear( Asteroid ** asteroides, int * nb_asteroid, Explosion ** explosio
 			score->frameToDest = FRAME_SCORE_ANIM;
 		}
 
+		int channel=Mix_GroupAvailable(1);
+		if (channel==-1) {
+			channel = Mix_GroupOldest(1);;
+			if (channel==-1)
+				channel = 8;
+		}
+
+		Mix_PlayChannel(channel, exploSound, 0);
 		(*explosions)[*nb_explosions - 1 - i].id = (*asteroides)[i].frozen >= 2 ? EXPLO_GLACE : EXPLO_ASTE;
 		(*explosions)[*nb_explosions - 1 - i].taille = 2*(*asteroides)[i].taille * RATIO_ASTEROID_EXPLO_SIZE;
 		(*explosions)[*nb_explosions - 1 - i].x = (*asteroides)[i].x - (*explosions)[*nb_explosions - 1 - i].taille/2;
@@ -1299,8 +1307,10 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 			printf("Erreur lors de la creation de son %s %s", DIR_SOUNDS_ASTEROID[i], Mix_GetError());
 			return EXIT_FAILURE;
 		}
-		Mix_VolumeChunk(sounds[i], SOUND_VOLUMES[i]);
 	}
+
+	for(int i=0; i<3; i++)
+		Mix_PlayChannel(9+NB_CHANNEL_EXPLOSION + i, sounds[SOUND_THRUST], -1);
 
 	if(Mix_GroupChannels(9,9+NB_CHANNEL_EXPLOSION-1,1) != NB_CHANNEL_EXPLOSION){
 		printf("couldnt group channels \n" );
@@ -1357,12 +1367,15 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		SDL_SetTextureAlphaMod(textures[A_THRUST], 255);
 		//MISSILES
 
+		//sound
+		for(int i=0; i<NB_ASTEROID_SOUNDS;i++)
+			Mix_VolumeChunk(sounds[i], SOUND_VOLUMES[i]);
+
 		int nb_missiles=0;
 		//float munitions[NB_MISSILES] = {1,0,0,0,0};
 		float munitions[NB_MISSILES] = {1,1,1,1,1};
 
 		//ASTEROID
-
 		int nb_asteroid=0;
 
 		//BONUS
@@ -1521,36 +1534,32 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 				}
 
 				//sound thrust
-				if(!thrustSound[THRUST_UP] && keystate[SDL_SCANCODE_UP]){
-					Mix_PlayChannel(9+NB_CHANNEL_EXPLOSION, sounds[SOUND_THRUST], -1);
-					thrustSound[THRUST_UP] = SDL_TRUE;
-				}
-				else if(thrustSound[THRUST_UP] && !keystate[SDL_SCANCODE_UP]){
-					Mix_HaltChannel(9+NB_CHANNEL_EXPLOSION);
-					thrustSound[THRUST_UP] = SDL_FALSE;
-				}
+				Mix_Volume(9+NB_CHANNEL_EXPLOSION, 7* RATIO_ACCEL[vaisseau.frame_thrust]);
+				Mix_Volume(9+NB_CHANNEL_EXPLOSION + 1, 5 * RATIO_TURN[vaisseau.frame_turn_left]);
+				Mix_Volume(9+NB_CHANNEL_EXPLOSION + 2, 5 * RATIO_TURN[vaisseau.frame_turn_right]);
 
-				if(!thrustSound[THRUST_LEFT] && keystate[SDL_SCANCODE_LEFT]){
-					Mix_PlayChannel(9+NB_CHANNEL_EXPLOSION+1, sounds[SOUND_THRUST], -1);
-					thrustSound[THRUST_LEFT] = SDL_TRUE;
+				if(!laserSoundOn && keystate[SDL_SCANCODE_SPACE] && vaisseau.missile_id == SHOT_LASER){
+					laserSoundOn = SDL_TRUE;
+					Mix_Volume(5,120);
+					Mix_PlayChannel(5, sounds[SOUND_LASER_BEAM],-1);//, TIME_FADE_IN);
 				}
-				else if(thrustSound[THRUST_LEFT] && !keystate[SDL_SCANCODE_LEFT]){
-					Mix_HaltChannel(9+NB_CHANNEL_EXPLOSION+1);
-					thrustSound[THRUST_LEFT] = SDL_FALSE;
+				if(laserSoundOn && (!keystate[SDL_SCANCODE_SPACE] || vaisseau.missile_id != SHOT_LASER)){
+					laserSoundOn = SDL_FALSE;
+					Mix_Volume(5,40);
+					Mix_HaltChannel(5);//, TIME_FADE_OUT);
 				}
+			}
+			else {
+				Mix_HaltChannel(5);
+				Mix_Volume(9+NB_CHANNEL_EXPLOSION, 0);
+				Mix_Volume(9+NB_CHANNEL_EXPLOSION + 1, 0);
+				Mix_Volume(9+NB_CHANNEL_EXPLOSION + 2, 0);
 			}
 
 
 
 
-			if(!thrustSound[THRUST_RIGHT] && keystate[SDL_SCANCODE_RIGHT]){
-				Mix_PlayChannel(9+NB_CHANNEL_EXPLOSION+2, sounds[SOUND_THRUST], -1);
-				thrustSound[THRUST_RIGHT] = SDL_TRUE;
-			}
-			else if(thrustSound[THRUST_RIGHT] && !keystate[SDL_SCANCODE_RIGHT]){
-				Mix_HaltChannel(9+NB_CHANNEL_EXPLOSION+2);
-				thrustSound[THRUST_RIGHT] = SDL_FALSE;
-			}
+
 
 		//////////////
 		// Gameplay //`
@@ -1587,13 +1596,6 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 					if(vaisseau.missile_id != SHOT_LASER){
 						tirer(&vaisseau,&missiles,&nb_missiles, sounds[SOUND_SHOOT + vaisseau.missile_id]);
 					}
-					else{
-						if(!laserSoundOn){
-							laserSoundOn = SDL_TRUE;
-							Mix_PlayChannel(5, sounds[SOUND_LASER_BEAM],-1);
-						}
-
-					}
 					munitions[vaisseau.missile_id] -= MUNITIONS_USAGE[vaisseau.missile_id] * MUNITIONS_USAGE_MULTIPLE[vaisseau.nb_tir-1];
 					if(munitions[vaisseau.missile_id] <= 0){
 						munitions[vaisseau.missile_id] = 0;
@@ -1610,10 +1612,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 				rdyToSpace=SDL_FALSE;
 			}
 
-			if(laserSoundOn && (!keystate[SDL_SCANCODE_SPACE] || vaisseau.missile_id != SHOT_LASER)){
-				laserSoundOn = SDL_FALSE;
-				Mix_HaltChannel(5);
-			}
+
 
 
 			for(int i=0;i<nb_missiles; i++){
@@ -1720,6 +1719,14 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 					}
 				}
 				else{
+					int channel=Mix_GroupAvailable(1);
+					if (channel==-1) {
+						channel = Mix_GroupOldest(1);;
+						if (channel==-1)
+							channel = 8;
+					}
+
+					Mix_PlayChannel(channel, sounds[SOUND_EXPLO], 0);
 					if(score_hash == hashage(score.score, keys)){
 
 						frame_anim_loading = 0;
@@ -1817,7 +1824,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 
 			if(frameAnimBomb){
 				if( FRAME_ANIM_BOMB - frameAnimBomb == FRAME_KILL_ASTERO_BOMB)
-					if(useNuclear(&asteroides, &nb_asteroid, &explosions, &nb_explosions, &score, keys, &score_hash, done) == HACKED){
+					if(useNuclear(&asteroides, &nb_asteroid, &explosions, &nb_explosions, &score, keys, &score_hash, done, sounds[SOUND_EXPLO]) == HACKED){
 						myFrees(&missiles, &asteroides, &explosions, fonts, &thread, sounds);
 						SDL_RenderSetViewport(renderer, NULL);
 						return HACKED;
@@ -1848,7 +1855,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 			}
 
 			if(vaisseau.frame_explo == FRAME_DESTROY_ASTE){
-				useNuclear(&asteroides, &nb_asteroid, &explosions, &nb_explosions, &score, keys, &score_hash, done);
+				useNuclear(&asteroides, &nb_asteroid, &explosions, &nb_explosions, &score, keys, &score_hash, done, sounds[SOUND_EXPLO]);
 			}
 
 			if(done && vaisseau.frame_explo-- == FRAME_SHOW_HELP ){
