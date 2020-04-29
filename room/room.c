@@ -1621,7 +1621,8 @@ void limiterFrame(const float delayLancementFrame,float *_IPS)
 {
 	float delayFrame = SDL_GetTicks() - delayLancementFrame;
 	// MISE A JOURS DU NOMBRE DE FPS
-	*_IPS = 1000.0/delayFrame;
+	if(1000.0/delayFrame > 1)
+		*_IPS = 1000.0/delayFrame;
 	// ATTENDRE SI NECESSAIRE POUR LIMITER A 60 FPS
 	if(delayFrame < FRAME_TIME)
 	{
