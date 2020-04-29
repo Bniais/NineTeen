@@ -1230,7 +1230,7 @@ static void myFrees(Missile ** missiles, Asteroid ** asteroides, Explosion ** ex
 	for(int i=0; i<NB_ASTEROID_SOUNDS; i++)
 		if(sounds[i]){
 			Mix_FreeChunk(sounds[i]);
-			fonts[i] = NULL;
+			sounds[i] = NULL;
 		}
 
 	if(*thread){

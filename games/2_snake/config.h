@@ -22,6 +22,22 @@ char* DIR_FONTS_SNAKE[NB_SNAKE_FONTS] = {
 	"../games/2_snake/Fonts/flappy.ttf"
 };
 
+//sound
+#define NB_SNAKE_SOUNDS 6
+enum{SOUND_RAINBOW, SOUND_BOMB, SOUND_SLOW , SOUND_GET, SOUND_APPEAR, SOUND_DISAPEAR};
+
+char* DIR_SOUNDS_SNAKE[NB_SNAKE_SOUNDS] = {
+	"../games/2_snake/Sound/rainbow.wav",
+	"../games/7_asteroid/Sound/explo.wav",
+	"../games/2_snake/Sound/slow.wav",
+	"../games/2_snake/Sound/get.wav",
+	"../games/2_snake/Sound/appear.wav",
+	"../games/2_snake/Sound/disapear.wav"
+
+};
+
+static int SOUND_VOLUMES[NB_SNAKE_SOUNDS] = {70,128,80,55,13, 18};
+
 //hud
 
 
@@ -221,10 +237,10 @@ const float FRUIT_PROPRIETES[NB_FRUITS + NB_BONUSES][NB_PROPRIETES]=
 {   0.08,    24,      3,    5000,      18,       47}, // gateau
 {   0.06,    26,      2,   10000,      16,       50}, // muffin op
 {      0,    24,      1,    5000,       3,       15}, // café
-{     -1,    28,     11,       0,       0,       0 }, // plume
-{      0,    28,     11,       0,       0,       0 }, // BOMBE
+{     -1,    28,     11,       0,       0,      4 }, // plume
+{      0,    28,     11,       0,       0,       4 }, // BOMBE
 {      0,    28,      7,       0,       0,       7 }, // coffre
-{      0,    28,      5,       0,       0,       20}, // ARC_EN_CIEL
+{      0,    28,      5,       0,       0,       0}, // ARC_EN_CIEL
 {      0,    28,      4,       0,       0,       25}, // potion hitbox
 {      0,    28,      2,       0,       0,       35}, // potion verte
 {      0,    28,      2,   30000,       0,       45} // potion jaune
