@@ -97,9 +97,10 @@ void snakeInit(){
 	}
 
 	// Settings
-	SDL_Init(SDL_INIT_EVERYTHING);
-	TTF_Init();
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+	Mix_Volume(5, 40);//appear
+	Mix_Volume(6, 128);//diseapear
+	Mix_Volume(7, 35);//get
+	Mix_Volume(8, 128);//bonus
 
 	//rand
 	srand(time(NULL));
@@ -469,7 +470,10 @@ int tooCloseFromFruit(Fruit* fruitRang, int rang, Fruit* fruitSearch, int nbFrui
 *\param spawnCondition La condition d'apparition ( naturelle, coffre...)
 *\param retardFrame Le nombre de frame avant que l'apparition du fruit commence
 */
-void spawnFruit(SnakePart head, Fruit *fruit, int rang, int nbFruits, float nbFruitEaten, Fruit *bonus, Vector2f spawn, int spawnCondition, int retardFrame){
+void spawnFruit(SnakePart head, Fruit *fruit, int rang, int nbFruits, float nbFruitEaten, Fruit *bonus, Vector2f spawn, int spawnCondition, int retardFrame, Mix_Chunk *soundAppear, int hardcore){
+	//if(!hardcore)
+		Mix_PlayChannel(6, soundAppear, 0);
+
 	fruit[rang].x = UNDEF.x;
 	fruit[rang].y = UNDEF.y;
 	fruit[rang].giant = 0;
@@ -947,9 +951,9 @@ int scoreSize(Fruit fruit){
 *\param hardcore La difficulté du jeu
 *\return Faux en cas de problème dans le hashage, sinon vrai
 */
-int eatFruit(SnakePart **snake, size_t *size, Fruit** fruitTab, size_t* nbFruits, Fruit fruit, float *speed, ScoreTotal *score, float *nbFruitEaten, int *frameJaugeAnim, Vector2f* pastBody, Fruit* bonus, SnakePart **deadBodies, size_t *nbDeadBodies, int* nbPotion, float* poisoned, Score** scoreAffichage, size_t* nbScoreAffichage, int *frameAcce, Mix_Chunk *flap_wav, long long *score_hash, long keys[4], int hardcore){
+int eatFruit(SnakePart **snake, size_t *size, Fruit** fruitTab, size_t* nbFruits, Fruit fruit, float *speed, ScoreTotal *score, float *nbFruitEaten, int *frameJaugeAnim, Vector2f* pastBody, Fruit* bonus, SnakePart **deadBodies, size_t *nbDeadBodies, int* nbPotion, float* poisoned, Score** scoreAffichage, size_t* nbScoreAffichage, int *frameAcce, Mix_Chunk ** sounds, long long *score_hash, long keys[4], int hardcore){
 
-	//Mix_PlayChannel(-1, flap_wav, 0);
+	Mix_PlayChannel(7, sounds[SOUND_GET], 0);
 
 	//manger
 	if( fruit.giant ){
@@ -1005,6 +1009,7 @@ int eatFruit(SnakePart **snake, size_t *size, Fruit** fruitTab, size_t* nbFruits
 	else if( fruit.id >= NB_FRUITS ){
 		switch ( fruit.id ) {
 			case BOMBE:
+				Mix_PlayChannel(8, sounds[SOUND_BOMB],0);
 				if(*size<MAX_BOMB_SIZE)
 					rmBody(snake, size, FLAT_RM_BOMB + RELATIVE_RM_BOMB * (*size - SIZE_PRE_RADIUS), pastBody, deadBodies, nbDeadBodies, 1, BOMB_TEXTURE_RATE, 0);
 				else
@@ -1013,6 +1018,7 @@ int eatFruit(SnakePart **snake, size_t *size, Fruit** fruitTab, size_t* nbFruits
 				break;
 
 			case PLUME:
+				Mix_PlayChannel(8, sounds[SOUND_SLOW],0);
 				*speed = *speed - RELATIVE_SLOW_FEATHER * (*speed - MIN_SPEED);
 				break;
 
@@ -1020,11 +1026,11 @@ int eatFruit(SnakePart **snake, size_t *size, Fruit** fruitTab, size_t* nbFruits
 				*fruitTab = realloc(*fruitTab, (*nbFruits + NB_SPAWN_COFFRE) * sizeof(Fruit));
 				*nbFruits += NB_SPAWN_COFFRE;
 				for( int i=0; i < NB_SPAWN_COFFRE; i++ )
-					spawnFruit((*snake)[SIZE_PRE_RADIUS], *fruitTab, *nbFruits - NB_SPAWN_COFFRE + i, *nbFruits - NB_SPAWN_COFFRE + 1 + i, *nbFruitEaten + CHEST_BOOST_FRUIT_EATEN, bonus, (Vector2f){fruit.x, fruit.y}, FROM_COFFRE, FRAME_RETARD_COFFRE);
+					spawnFruit((*snake)[SIZE_PRE_RADIUS], *fruitTab, *nbFruits - NB_SPAWN_COFFRE + i, *nbFruits - NB_SPAWN_COFFRE + 1 + i, *nbFruitEaten + CHEST_BOOST_FRUIT_EATEN, bonus, (Vector2f){fruit.x, fruit.y}, FROM_COFFRE, FRAME_RETARD_COFFRE, sounds[SOUND_APPEAR], hardcore);
 				break;
 
 			case ARC_EN_CIEL:
-
+				Mix_PlayChannel(8, sounds[SOUND_RAINBOW],0);
 				*fruitTab = realloc(*fruitTab, (*nbFruits + NB_SPAWN_ARC_EN_CIEL) * sizeof(Fruit));
 				*nbFruits += NB_SPAWN_ARC_EN_CIEL;
 
@@ -1055,7 +1061,7 @@ int eatFruit(SnakePart **snake, size_t *size, Fruit** fruitTab, size_t* nbFruits
 				float rangeAngle = angle - minAngle;
 
 				for( int i=0; i < NB_SPAWN_ARC_EN_CIEL; i++ ){
-					spawnFruit((*snake)[SIZE_PRE_RADIUS], *fruitTab, *nbFruits - NB_SPAWN_ARC_EN_CIEL + i, *nbFruits - NB_SPAWN_ARC_EN_CIEL + 1 + i, *nbFruitEaten + RAINBOW_BOOST_FRUIT_EATEN, bonus, (Vector2f){corner.x + cos(minAngle) * dist, corner.y + sin(minAngle) * dist}, FROM_RAINBOW, i * FRAME_RETARD_RAINBOW);
+					spawnFruit((*snake)[SIZE_PRE_RADIUS], *fruitTab, *nbFruits - NB_SPAWN_ARC_EN_CIEL + i, *nbFruits - NB_SPAWN_ARC_EN_CIEL + 1 + i, *nbFruitEaten + RAINBOW_BOOST_FRUIT_EATEN, bonus, (Vector2f){corner.x + cos(minAngle) * dist, corner.y + sin(minAngle) * dist}, FROM_RAINBOW, i * FRAME_RETARD_RAINBOW, sounds[SOUND_APPEAR], hardcore);
 					minAngle += rangeAngle / (NB_SPAWN_ARC_EN_CIEL - 1);
 				}
 				break;
@@ -1111,7 +1117,7 @@ static void drawScore(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score 
 }
 
 /**
-*\fn static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeBody, Score ** scoreAffichage, Mix_Chunk ** sound, SDL_Texture * textures[NB_SNAKE_TEXTURES], TTF_Font * fonts[NB_SNAKE_FONTS], SDL_Thread** thread)
+*\fn static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeBody, Score ** scoreAffichage, Mix_Chunk ** sounds, SDL_Texture * textures[NB_SNAKE_TEXTURES], TTF_Font * fonts[NB_SNAKE_FONTS], SDL_Thread** thread)
 *\brief Affiche un score de terrain
 *\param fruits Le tableau de fruits
 *\param deadBodies Le tableau de parties de serpent mortes
@@ -1122,7 +1128,7 @@ static void drawScore(SDL_Renderer *renderer , SDL_Texture *scoreTexture, Score 
 *\param fonts Le tableau de polices
 *\param thread Le thread
 */
-static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeBody, Score ** scoreAffichage, Mix_Chunk ** sound, SDL_Texture * textures[NB_SNAKE_TEXTURES], TTF_Font * fonts[NB_SNAKE_FONTS], SDL_Thread** thread){
+static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeBody, Score ** scoreAffichage, Mix_Chunk ** sounds, SDL_Texture * textures[NB_SNAKE_TEXTURES], TTF_Font * fonts[NB_SNAKE_FONTS], SDL_Thread** thread){
 	if(*fruits){
 		free(*fruits);
 		*fruits = NULL;
@@ -1143,8 +1149,12 @@ static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeB
 		*scoreAffichage = NULL;
 	}
 
-	if(*sound)
-		Mix_FreeChunk(*sound);
+	for(int i=0; i<NB_SNAKE_SOUNDS; i++){
+		if(sounds[i]){
+			Mix_FreeChunk(sounds[i]);
+			sounds[i] = NULL;
+		}
+	}
 
 	for(int i=0; i<NB_SNAKE_TEXTURES; i++){
 		if(textures[i]){
@@ -1216,11 +1226,15 @@ int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, ch
 	}
 
 	//audio
-	Mix_Chunk *flap_wav = NULL;
-	/*Mix_Chunk *flap_wav = Mix_LoadWAV( "WRONG/PATH" );
+	Mix_Chunk* sounds[NB_SNAKE_SOUNDS];
 
-	if( !flap_wav)
-		printf("Erreur chargement des sons: %s\n",Mix_GetError());*/
+	for(int i=0; i< NB_SNAKE_SOUNDS; i++){
+		 sounds[i] = Mix_LoadWAV(DIR_SOUNDS_SNAKE[i]);
+		 if( sounds[i] == NULL ){
+			printf("Erreur lors de la creation de son %s %s", DIR_SOUNDS_SNAKE[i], Mix_GetError());
+			return EXIT_FAILURE;
+		}
+	}
 
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 
@@ -1303,6 +1317,9 @@ int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, ch
 		int frameJaugeAnim = 0;
 		int frameDead = 0;
 
+		//sound
+		for(int i=0; i<NB_SNAKE_SOUNDS;i++)
+			Mix_VolumeChunk(sounds[i], SOUND_VOLUMES[i]);
 
 
 		//mouse
@@ -1313,7 +1330,7 @@ int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, ch
 
 		//Fruit
 		if(!firstframe)
-			spawnFruit(snakeBody[SIZE_PRE_RADIUS], &fruit[0], 0, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0);
+			spawnFruit(snakeBody[SIZE_PRE_RADIUS], &fruit[0], 0, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0, sounds[SOUND_APPEAR], hardcore);
 
 		/////////////////////
 		/// BOUCLE DU JEU ///``
@@ -1339,7 +1356,7 @@ int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, ch
 			while( SDL_PollEvent(&event) ){
 				switch( event.type ){
 					case SDL_QUIT:
-						myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
+						myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, sounds, textures, fonts, &thread );
 						return 0;// fermer
 				}
 			}
@@ -1350,7 +1367,7 @@ int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, ch
 			SDL_PumpEvents();
 
 			if(keystate[SDL_SCANCODE_ESCAPE]){
-				myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
+				myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, sounds, textures, fonts, &thread );
 				return 0;
 			}
 			else if(done && ( ( rdyToSpace && keystate[SDL_SCANCODE_SPACE] ) || ( frameDead > SHOW_HELP_FRAME && ((rdyToUp && keystate[SDL_SCANCODE_UP]) || ( rdyToLeft && keystate[SDL_SCANCODE_LEFT] ) || ( rdyToRight && keystate[SDL_SCANCODE_RIGHT] ) ) ) ) ){
@@ -1412,7 +1429,7 @@ int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, ch
 				//spawn more fruits
 				if( (hardcore && rand()%(int)(PRECISION_SPAWN*chance_spawn_hardcore) < PRECISION_SPAWN)  || rand() % (CHANCE_SPAWN_FRUIT * nbFruits) == 0 ){
 					fruit = realloc(fruit, sizeof(Fruit) * (++nbFruits));
-					spawnFruit(snakeBody[SIZE_PRE_RADIUS], fruit, nbFruits - 1, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0);
+					spawnFruit(snakeBody[SIZE_PRE_RADIUS], fruit, nbFruits - 1, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0, sounds[SOUND_APPEAR], hardcore);
 				}
 
 
@@ -1443,8 +1460,8 @@ int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, ch
 				for( int i = 0; i<nbFruits; i++ ){
 					if( fruit[i].hitbox == HIT ){
 						fruit[i].hitbox = NO_HIT;
-						if(!eatFruit(&snakeBody, &snakeSize, &fruit, &nbFruits, fruit[i], &speedSnake, &score, &nbFruitEaten, &frameJaugeAnim, pastBody, &bonus, &deadBodies, &nbDeadBodies, &nbPotion, &poisoned, &scoreAffichage, &nbScoreAffichage, &frameAcce, flap_wav, &score_hash, keys, hardcore)){
-							myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
+						if(!eatFruit(&snakeBody, &snakeSize, &fruit, &nbFruits, fruit[i], &speedSnake, &score, &nbFruitEaten, &frameJaugeAnim, pastBody, &bonus, &deadBodies, &nbDeadBodies, &nbPotion, &poisoned, &scoreAffichage, &nbScoreAffichage, &frameAcce, sounds, &score_hash, keys, hardcore)){
+							myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, sounds, textures, fonts, &thread );
 							return HACKED;
 						}
 
@@ -1452,7 +1469,7 @@ int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, ch
 							fruit[j] = fruit[j + 1];
 
 						if( nbFruits == 1 )
-							spawnFruit(snakeBody[SIZE_PRE_RADIUS], fruit, 0, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0);
+							spawnFruit(snakeBody[SIZE_PRE_RADIUS], fruit, 0, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0, sounds[SOUND_APPEAR], hardcore);
 						else
 							fruit = realloc(fruit, sizeof(Fruit) * (--nbFruits));
 					}
@@ -1463,9 +1480,9 @@ int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, ch
 
 					bonus.hitbox = NO_HIT;
 
-					if(!eatFruit(&snakeBody, &snakeSize, &fruit, &nbFruits, bonus, &speedSnake, &score, &nbFruitEaten, &frameJaugeAnim, pastBody, &bonus, &deadBodies, &nbDeadBodies, &nbPotion, &poisoned, &scoreAffichage, &nbScoreAffichage, &frameAcce, flap_wav, &score_hash, keys, hardcore))
+					if(!eatFruit(&snakeBody, &snakeSize, &fruit, &nbFruits, bonus, &speedSnake, &score, &nbFruitEaten, &frameJaugeAnim, pastBody, &bonus, &deadBodies, &nbDeadBodies, &nbPotion, &poisoned, &scoreAffichage, &nbScoreAffichage, &frameAcce, sounds, &score_hash, keys, hardcore))
 					{
-						myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
+						myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, sounds, textures, fonts, &thread );
 						return HACKED;
 					}
 
@@ -1518,7 +1535,7 @@ int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, ch
 					thread = SDL_CreateThread(  (int(*)(void*))updateScore, NULL, &envoiScore );
 				}
 				else{
-					myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
+					myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, sounds, textures, fonts, &thread );
 					return HACKED;
 				}
 
@@ -1642,7 +1659,7 @@ int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, ch
 							score.frameToDest = FRAME_SCORE_ANIM;
 							if(!changeProtectedVar(&score_hash, &(score.score), score.score + scoreFruit, keys))
 							{
-								myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, &flap_wav, textures, fonts, &thread );
+								myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, sounds, textures, fonts, &thread );
 								return HACKED;
 							}
 
@@ -1667,14 +1684,21 @@ int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, ch
 			for( int i = 0; i<nbFruits; i++ ){
 				fruit[i].frame++;
 
+				if(fruit[i].frame == FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1)){
+					Mix_PlayChannel(6, sounds[SOUND_DISAPEAR], 0);
+				}
+
 				if( fruit[i].frame > FRUIT_TTL * (hardcore ? RATIO_TTL_HARDCORE : 1) + NB_FRAME_DEATH_FRUIT ){
 					for( int j = i; j<nbFruits - 1; j++ )
 						fruit[j] = fruit[j + 1];
 
 					if( nbFruits == 1 && !done)
-						spawnFruit(snakeBody[SIZE_PRE_RADIUS], fruit, i, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0);
-					else if( !done )
+						spawnFruit(snakeBody[SIZE_PRE_RADIUS], fruit, i, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0, sounds[SOUND_APPEAR], hardcore);
+					else if( nbFruits != 1 ){
+
 						fruit = realloc(fruit, sizeof(Fruit) * (--nbFruits));
+					}
+
 				}
 			}
 

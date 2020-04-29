@@ -49,7 +49,7 @@ char* DIR_SOUNDS_ASTEROID[NB_ASTEROID_SOUNDS] = {
 #define TIME_FADE_IN 400
 #define TIME_FADE_OUT 400
 #define NB_CHANNEL_EXPLOSION 3
-int SOUND_VOLUMES[NB_ASTEROID_SOUNDS] = {30,110,17,85,25, 128, 12,50, 115,128, 100};
+static int SOUND_VOLUMES[NB_ASTEROID_SOUNDS] = {30,110,17,85,25, 128, 12,50, 115,128, 100};
 enum{THRUST_UP, THRUST_LEFT, THRUST_RIGHT};
 
 typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier;int missile_id; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust; long frame_explo;}Vaiss;
