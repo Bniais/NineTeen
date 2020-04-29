@@ -808,6 +808,13 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 	NOMBRE_JOUEUR_MAX = _MAX_JOUEUR;
 
 	/////////////////////////////////////////////////
+	// EFFACER EVENEMENT VENANT DE LA ROOM
+	SDL_Event Ev;
+	while (SDL_PollEvent(&Ev));
+	/////////////////////////////////////////////////
+
+	
+	/////////////////////////////////////////////////
 	// CHARGEMENT ELEMENT
 	SDL_Texture *texture = IMG_LoadTexture(renderer,"../room/leaderboard/tilset.png");
 	if(!texture)
