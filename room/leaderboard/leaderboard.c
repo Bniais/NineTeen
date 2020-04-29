@@ -41,8 +41,7 @@ const int HUD_SIZE = NATIF_W * 0.085;
 
 
 const SDL_Color BACKGROUND_C = {10, 24, 40};
-
-#define VITESSE_SCROLL 4.0
+const float VITESSE_SCROLL = 30.0;
 ///////////////////////////////////////////////
 // LES SELECTION
 #define SCREEN 0
@@ -379,8 +378,6 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, int *scrollPositionWi
 
 		/////////////////////////////////////////////////////
 		// SI SELECTION EST SUR CHAMPS DE TEXT
-		if(*_SELECTION == TEXT_FIELD_USERNAME)
-		{
 			switch (event.type)
 			{
 				/////////////////////////////////////////////////////
@@ -408,11 +405,10 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, int *scrollPositionWi
 
 					}
 
-				}break;
-				default:break;
-			}
-
+			}break;
+			default:break;
 		}
+
 
 
 
@@ -541,8 +537,6 @@ void afficherCelluleScrollView(SDL_Renderer *renderer, int cellulePosition, char
 	cellule.y += HUD_SIZE*0.15 ;
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderFillRect(renderer, &cellule);
-	SDL_Color noir = {0,0,0};
-
 	/////////////////////////////////////////////////////
 	// ECRIRE LE TEXT
 	ecrireText(renderer,police, text, noirCOLOR, NATIF_W*0.05 + (cellule.w/2), cellule.y  + (HUD_SIZE*0.6)/2 + NATIF_H*0.01 , 0.8 , 1);
@@ -815,13 +809,13 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
 	/////////////////////////////////////////////////
 	// CHARGEMENT ELEMENT
-	SDL_Texture *texture = IMG_LoadTexture(renderer,"tilset.png");
+	SDL_Texture *texture = IMG_LoadTexture(renderer,"room/leaderboard/tilset.png");
 	if(!texture)
 	{
 		printf("leaderboard.c -> leaderboard() : IMG_LoadTexture : tilset.png\n" );
 		return EXIT_FAILURE;
 	}
-  TTF_Font *police = TTF_OpenFont("../neon.ttf" , NATIF_W*0.05);
+  TTF_Font *police = TTF_OpenFont("room/neon.ttf" , NATIF_W*0.05);
   if(!police)
 	{
 		printf("leaderboard.c -> leaderboard() : TTF_OpenFont : tilset.png\n" );
@@ -913,8 +907,6 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 			printf("leaderboard.c -> leaderboard() : afficherHUD()" );
 			return EXIT_FAILURE;
 		}
-
-		SDL_Rect rechercheJoueur = {NATIF_W*0.55, HUD_SIZE * 0.15, NATIF_W*0.35, HUD_SIZE*0.6};
 
 
 
