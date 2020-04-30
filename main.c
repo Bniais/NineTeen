@@ -759,7 +759,11 @@ int main(int argc, char *argv[])
   // CHOIX DU MODE DE SORTIE POUR LES CODES
   // D'ERREUR
   if(MODE_DEV)
+  {
+    // FILE POINTE SUR LA SORTIE STANDARS
     EXT_FILE = stderr;
+    fprintf(EXT_FILE, "Version du logiciel %s\n",VERSION );
+  }
   else
   {
 
@@ -775,18 +779,50 @@ int main(int argc, char *argv[])
       // STOCKAGE DANS LES VARIABLES
       int year,mon,day,hour,min,sec;
       sscanf(t_server, "%d %d %d %d %d %d",&year , &mon , &day, &hour , &min, &sec);
+
+      // LIBERATION MEMOIRE
+      free(t_server);
+      t_server = NULL;
+
+
       // ALLOCATION
       if ( _malloc((void**)&nomFichier,sizeof(char),128,EXT_FILE,SDL_MESSAGEBOX_ERROR,"MALLOC","main.c : main() : malloc ",NULL) )
         return EXIT_FAILURE;
       sprintf(nomFichier,"/tmp/NineteenLog_%d-%02d-%02d_%02d-%02d-%d.log", year  , mon , day, hour , min, sec);
       EXT_FILE = fopen(nomFichier,"w");
+      // VERIFIER CREATION DU FICHIER
+
+      if(!EXT_FILE)
+      {
+        // REMISE SUR SORTI TERMINAL
+        EXT_FILE = stderr;
+        fprintf(EXT_FILE, "main.c : main() : Impossible de cree le fichier de log passage sur log terminal %s \n",nomFichier );
+      }
+
+      fprintf(EXT_FILE, "Nom du fichier %s\nVersion du logiciel %s\n",nomFichier,VERSION );
+      // LIBERATION MEMOIRE
+      free(nomFichier);
+      nomFichier = NULL;
     }
     else
     {
-      if ( _malloc(&nomFichier,sizeof(char),18,EXT_FILE,SDL_MESSAGEBOX_ERROR,"MALLOC","main.c : main() : malloc ",NULL) )
+      if ( _malloc((void**)&nomFichier,sizeof(char),18,EXT_FILE,SDL_MESSAGEBOX_ERROR,"MALLOC","main.c : main() : malloc ",NULL) )
         return EXIT_FAILURE;
       strcpy(nomFichier,"/tmp/NineteenLog_.log");
       EXT_FILE = fopen(nomFichier,"w");
+
+      // VERIFIER CREATION DU FICHIER
+      if(!EXT_FILE)
+      {
+        // REMISE SUR SORTI TERMINAL
+        EXT_FILE = stderr;
+        fprintf(EXT_FILE, "main.c : main() : Impossible de cree le fichier de log passage sur log terminal %s \n",nomFichier );
+      }
+
+      fprintf(EXT_FILE, "Nom du fichier %s\nVersion du logiciel %s",nomFichier,VERSION );
+      free(nomFichier);
+      nomFichier = NULL;
+
     }
 
   }
@@ -903,7 +939,6 @@ int main(int argc, char *argv[])
 	    SDL_Rect borderSize;
 	    if ( SDL_GetWindowBordersSize(window,&borderSize.x,&borderSize.y,&borderSize.w,&borderSize.h) )
       {
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur mineur.","SDL_GetWindowBordersSize()",window);
         fprintf(EXT_FILE,"main.c : main() : SDL_GetWindowBordersSize %s\n",SDL_GetError());
       }
       SDL_DestroyRenderer(renderer);
@@ -944,6 +979,7 @@ int main(int argc, char *argv[])
     // QUITTER SDL
     SDL_Quit();
 
+    // FERMETURE DU FICHIER DE LOG
     fclose(EXT_FILE);
   }
 

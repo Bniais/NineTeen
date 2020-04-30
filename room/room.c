@@ -78,11 +78,11 @@ static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0, _nbMeshes = 
 const float ANGLE_DETECTION_MACHINE = M_PI/6;
 #define SON_PAS_DISTANCE 2.2F
 
-#define START_PX -13.0F //AXE X
+#define START_PX 12.5F //AXE X
 #define START_PY 3.64F // hauteur CAMERA
-#define START_PZ 7.0F // AXE Y
+#define START_PZ 35.0F // AXE Y
 #define START_CIBLE_Y 0.0F // REGARDE SUR AXE HAUTEUR
-#define START_CIBLE_X M_PI/2// REGARDE SUR AXE X
+#define START_CIBLE_X M_PI// REGARDE SUR AXE X
 #define START_OUVERTURE 70.0F //OUVERTURE CAMERA
 
 
@@ -2303,10 +2303,15 @@ int detectionEnvironnement(float x,float y)
 
 	///////////////////////////////////////////////////
 	// FUNTION POUR MUR AVEC ANGLE A PROXIMITER DE NINETEEN
-	// MUR DE DROITE NE PAS TOUCHER
-	if(  y >= 14.0 &&  (    ( x >= -0.4736842105*y + 19.36842105  ) || (  x <= -(-0.4736842105*y + 19.36842105))    )   )
+	if(  y >= 14.0 &&  x <= -(-0.4736842105*y + 19.36842105)    )
 		return 0;
 
+	// MUR GAUCHE AVEC ANGLE COTER GAUCHE PORTE
+	if( y >= 14.0 && y < 17.5  && x >= -0.4736842105*y + 19.36842105  )
+		return 0;
+	// MUR GAUCHE AVEC ANGLE COTER DROIT PORTE
+	if( y >= 19.2  && x >= -0.4736842105*y + 19.36842105 && x < 11.3  )
+		return 0;
 	///////////////////////////////////////////////////
 	// LOT 12 MACHINE MILIEU DE SALLE
 	if( y >= 8.5 && y <= 13.5 && (  (x <= 8.0 && x >= 1.4) || (x > -8.0 && x <= -1.4)   )   )
@@ -2395,7 +2400,7 @@ int detectionEnvironnement(float x,float y)
 	if( y < -4.5 )
 		return 0;
 	// BAS DE LA SALLE
-	if( y > 35.5 )
+	if( y > 35.2 )
 		return 0;
 	// GAUCHE DE LA SALLE
 	if( x < -14.0 )
