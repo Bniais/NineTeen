@@ -26,7 +26,8 @@ void asteroidInit(){
 
 	Mix_Volume(9+NB_CHANNEL_EXPLOSION, 0);//thrust principal
 	Mix_Volume(9+NB_CHANNEL_EXPLOSION+1, 0);//thrust gauche
-	Mix_Volume(9+NB_CHANNEL_EXPLOSION+2, 1);//thrust droite
+	Mix_Volume(9+NB_CHANNEL_EXPLOSION+2, 0);//thrust droite
+	Mix_Volume(9+NB_CHANNEL_EXPLOSION+3, 128);//gameover
 	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 	/*//audio
 
@@ -1764,6 +1765,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 						thread = SDL_CreateThread(  (int(*)(void*))updateScore, NULL, &envoiScore );
 						done = 1;
 						vaisseau.frame_explo = FRAME_EXPLOSIONS[EXPLO_ASTE];
+						Mix_PlayChannel(9+NB_CHANNEL_EXPLOSION+3, sounds[SOUND_GAMEOVER],0);
 					}
 					else{
 						myFrees(&missiles, &asteroides, &explosions, fonts, &thread, sounds);

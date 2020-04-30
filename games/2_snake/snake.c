@@ -101,6 +101,7 @@ void snakeInit(){
 	Mix_Volume(6, 128);//diseapear
 	Mix_Volume(7, 35);//get
 	Mix_Volume(8, 128);//bonus
+	Mix_Volume(9, 128);//gameOver
 
 	//rand
 	srand(time(NULL));
@@ -1533,6 +1534,7 @@ int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, ch
 
 					printf("CONNEXION...\n" );
 					thread = SDL_CreateThread(  (int(*)(void*))updateScore, NULL, &envoiScore );
+					Mix_PlayChannel(9, sounds[SOUND_GAMEOVER],0);
 				}
 				else{
 					myFrees(&fruit, &snakeBody,&deadBodies, &scoreAffichage, sounds, textures, fonts, &thread );

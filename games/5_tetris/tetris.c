@@ -32,6 +32,13 @@
 void myInit(){
 	//rand
 	srand(time(NULL));
+	Mix_Volume(5, 10);//rotate
+	Mix_Volume(6, 30);//fill
+	Mix_Volume(7, 25);//hit
+	Mix_Volume(8, 30);//line
+	Mix_Volume(9, 30);//laser
+	Mix_Volume(10, 128);//gameover
+
 }
 
 /**
@@ -301,7 +308,7 @@ void getNewPiece(Piece *piece, int giant, int hardcore){
 
 	//handle bonus
 	if(rand()%PROBA_BONUS == 0)
-		piece->bonus = rand() % (NB_BONUSES+1);
+		piece->bonus = FILL;//rand() % (NB_BONUSES+1);
 	else
 		piece->bonus = NO_BONUS;
 
@@ -485,7 +492,7 @@ int tryShift(int shiftInit, int maxShift, Piece * piece, float * pieceCoor, int 
 *\param matrix La matrice pour vérifier les collisions
 *\param hardcore Indique si le mode de jeu est facile ou difficile
 */
-void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], int hardcore){
+void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], int hardcore, Mix_Chunk ** sounds){
 	if( rotateSens ){
 
 		int originalFirstCol = piece->firstCol,
@@ -574,6 +581,10 @@ void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], i
 			piece->rota -= rotateSens;
 			updateGrille(piece, hardcore);
 			getColRawInfos(piece);
+			Mix_PlayChannel(5, sounds[SOUND_CANT_ROTATE], 0);
+		}
+		else{
+			Mix_PlayChannel(5, sounds[SOUND_ROTATE], 0);
 		}
 	}
 }
@@ -776,7 +787,8 @@ int getBonusId(int n){
 *\param keys Les clés de hashage
 *\return Vrai si pas de problème, faux si problème dans le hashage
 */
-int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine, ScoreTotal *scoreTotal, long long *score_hash, long keys[4]){
+int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine, ScoreTotal *scoreTotal, long long *score_hash, long keys[4], Mix_Chunk * soundLine){
+	Mix_PlayChannel(8, soundLine,0);
 	int bonusGet = -1;
 	if( frameCompleteLine[line] == -1 ){
 		frameCompleteLine[line] = FRAME_COMPLETE_LINE;
@@ -930,10 +942,18 @@ void drawMatrix(SDL_Renderer *renderer, int matrix[GRILLE_W][GRILLE_H], int fram
 *\param frameLaser Les frames d'animation du bonus LASER
 *\param laserTexture La texture du laser
 */
-void drawLaser(SDL_Renderer *renderer, int frameLaser[GRILLE_H], SDL_Texture *laserTexture){
+void drawLaser(SDL_Renderer *renderer, int frameLaser[GRILLE_H], SDL_Texture *laserTexture, Mix_Chunk * soundLaser){
 	//laser
 	SDL_Rect anim = LASER_DIM;
 	SDL_Rect dest = LASER_DIM;
+
+	for(int i=0; i<GRILLE_H; i++){
+		if(frameLaser[i] == LASER_START_SHOOT){
+			Mix_PlayChannel(9, soundLaser,0);
+			break;
+		}
+	}
+
 	for(int i=0; i<GRILLE_H; i++){
 
 		if(frameLaser[i] >= 0){
@@ -1087,7 +1107,7 @@ void eraseLine(int matrix[GRILLE_W][GRILLE_H], int line, int matrixFill[GRILLE_W
 *\param keys Les clés de hashage
 *\return Vrai si pas de problème, faux si problème dans le hashage
 */
-int checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal, long long * score_hash, long keys[4]){
+int checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal, long long * score_hash, long keys[4], Mix_Chunk * soundLine){
 
 	int comboLine = 0; //Le nombre de ligne complétées cette frame
 	int j;
@@ -1096,7 +1116,7 @@ int checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], 
 	for(int i=0; i<GRILLE_H; i++){
 		for(j=0; j<GRILLE_W && matrix[j][i] != EMPTY; j++);
 		if(j == GRILLE_W){
-			if(!completeLine(matrix, frameCompleteLine, i, lastLine, bonusActivate, getBonus, scoreAdd, comboLine, scoreTotal, score_hash, keys))
+			if(!completeLine(matrix, frameCompleteLine, i, lastLine, bonusActivate, getBonus, scoreAdd, comboLine, scoreTotal, score_hash, keys, soundLine))
 				return SDL_FALSE;
 			if(getBonus){
 				lastLine = i;
@@ -1232,7 +1252,7 @@ int lineEmpty(int matrix[GRILLE_W][GRILLE_H], int line ){
 *\param score_hash le score hashé
 *\param keys les clés de hashage
 */
-int updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], Score *scoreAffichage, Score *scoreAdd, ScoreTotal *scoreTotal,int *frameDestJauge,long int frameTotalSpeed,long int *frameTotalShow, long long *score_hash, long keys[4]){
+int updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], Score *scoreAffichage, Score *scoreAdd, ScoreTotal *scoreTotal,int *frameDestJauge,long int frameTotalSpeed,long int *frameTotalShow, long long *score_hash, long keys[4], Mix_Chunk * soundLine, Mix_Chunk * soundFill){
 
 
 	if(scoreTotal->frameToDest){
@@ -1260,16 +1280,19 @@ int updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int 
 		if(frameCompleteLine[i] >= 0)
 			frameCompleteLine[i]--;
 
-		for(int j=0; j<GRILLE_W; j++)
+		for(int j=0; j<GRILLE_W; j++){
+			if(matrixFill[j][i] == FRAME_FILL)
+				Mix_PlayChannel(6, soundFill, 0);
 			if(matrixFill[j][i]){
 				matrixFill[j][i]--;
 				if(matrixFill[j][i] == 0){
 					matrix[j][i] = NB_PIECES;
-					if(!checkLines(matrix, frameCompleteLine, bonusActivate, SDL_FALSE, scoreAdd, scoreTotal, score_hash, keys))
+					if(!checkLines(matrix, frameCompleteLine, bonusActivate, SDL_FALSE, scoreAdd, scoreTotal, score_hash, keys, soundLine))
 						return SDL_FALSE;
 
 				}
 			}
+		}
 
 
 		//score
@@ -1816,6 +1839,17 @@ int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, 
 		}
 	}
 
+	//audio
+	Mix_Chunk* sounds[NB_TETRIS_SOUNDS];
+
+	for(int i=0; i< NB_TETRIS_SOUNDS; i++){
+		 sounds[i] = Mix_LoadWAV(DIR_SOUNDS_TETRIS[i]);
+		 if( sounds[i] == NULL ){
+			printf("Erreur lors de la creation de son %s %s", DIR_SOUNDS_TETRIS[i], Mix_GetError());
+			return EXIT_FAILURE;
+		}
+	}
+
 	SDL_RenderSetScale(renderer, ratioWindowSize, ratioWindowSize);
 	int firstframe = SDL_TRUE;
 	int quit = SDL_FALSE;
@@ -1888,6 +1922,10 @@ int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, 
 
 		//Keyboard
 		const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+
+		//sound
+		for(int i=0; i<NB_TETRIS_SOUNDS;i++)
+			Mix_VolumeChunk(sounds[i], SOUND_VOLUMES[i]);
 
 		//Time
 		unsigned int lastTime = 0, currentTime;
@@ -2010,7 +2048,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, 
 		// // // // //
 			if(!gameOver && !waitToPlace){
 				//rotate normal then left down right
-				rotatePiece(&currentPiece, rotate, matrix, hardcore);
+				rotatePiece(&currentPiece, rotate, matrix, hardcore, sounds);
 
 
 
@@ -2026,9 +2064,10 @@ int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, 
 						cantMoveSide = SDL_TRUE;
 						if(currentPiece.frameDir == 0){
 							//Piece is saved and remplaced
+							Mix_PlayChannel(7, sounds[SOUND_HIT], 0);
 							savePiece(currentPiece, matrix);
 							clearIntTab(bonusActivate, NB_BONUSES);
-							if(!checkLines(matrix, frameCompleteLine, bonusActivate, SDL_TRUE, scoreAdd, &score, &score_hash, keys)){
+							if(!checkLines(matrix, frameCompleteLine, bonusActivate, SDL_TRUE, scoreAdd, &score, &score_hash, keys,sounds[SOUND_LINE])){
 								myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts,&thread);
 								printf("U HACKER\n" );
 								return HACKED;
@@ -2085,6 +2124,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, 
 
 											printf("CONNEXION...\n" );
 											thread = SDL_CreateThread(  (int(*)(void*))updateScore, NULL, &envoiScore );
+											Mix_PlayChannel(10, sounds[SOUND_GAMEOVER],0);
 										}
 									}
 								}
@@ -2138,6 +2178,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, 
 
 							printf("CONNEXION...\n" );
 							thread = SDL_CreateThread(  (int(*)(void*))updateScore, NULL, &envoiScore );
+							Mix_PlayChannel(10, sounds[SOUND_GAMEOVER],0);
 						}
 					}
 
@@ -2160,7 +2201,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, 
 			drawMatrix(renderer, matrix, frameCompleteLine, currentPiece, textures[T_BRICKS], textures[T_BONUS]);
 			drawPiece(renderer, currentPiece, textures[T_BRICKS], textures[T_BONUS], SDL_FALSE, hardcore);
 			drawPiece(renderer, nextPiece, textures[T_BRICKS], textures[T_BONUS], SDL_TRUE, hardcore);
-			drawLaser(renderer, frameLaser, textures[T_LASER_ANIM]);
+			drawLaser(renderer, frameLaser, textures[T_LASER_ANIM], sounds[SOUND_LASER]);
 			drawFill(renderer, matrixFill,textures[T_BRICKS]);
 			drawQuit(renderer, fonts[T_FONT_COMBO], 1, JAUGE_COLOR);
 			if(nbDeadPieces && deadPieces[0].y > Y_START_REPLAY)
@@ -2219,7 +2260,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, 
 			//Actualise frames
 			framePassed++;
 			if(!gameOver)
-			if(!updateFrames(frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, scoreAffichage, scoreAdd, &score, &frameDestJauge, frameTotalSpeed, &frameTotalShow, &score_hash, keys))
+			if(!updateFrames(frameLaser, frameCompleteLine, matrix, matrixFill, bonusActivate, scoreAffichage, scoreAdd, &score, &frameDestJauge, frameTotalSpeed, &frameTotalShow, &score_hash, keys, sounds[SOUND_LINE], sounds[SOUND_HIT]))
 			{
 				printf("U HACKER\n" );
 				myFrees(&currentPiece, &nextPiece,  &deadPieces, textures, fonts, &thread);
