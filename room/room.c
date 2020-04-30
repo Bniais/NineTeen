@@ -9,7 +9,7 @@
 
 // EXTERNAL
 int EXT_MODE_DEV;
-FILE *fichier;
+FILE *EXT_FILE;
 
 
 #ifdef __APPLE__
