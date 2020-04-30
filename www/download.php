@@ -59,7 +59,7 @@ function getClientIP(){
 							else
 								echo "<a> <a style=\"margin-left: 10%;\">IN PROGRESS<a><br><br><a>";
 
-							echo  $row["message"];
+							echo  strip_tags( $row["message"] );
 							echo "</a><br><br>";
 							if($max == -1)
 								$max = $row["id"];
