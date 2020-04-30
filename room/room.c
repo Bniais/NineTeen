@@ -2772,9 +2772,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 					///////////////////////////////////////////////////
 					// INIT AFFICHAGE DU MESSAGE
-					SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 					SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
-
 					MessageQuitterRoom();
 					SDL_GL_SwapWindow(Window);
 
@@ -2801,7 +2799,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									case SDLK_ESCAPE:
 										decision = 0;
 										printf("Commande annuler\n");
-
+										FIRST_FRAME = 0;
+										SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
 										break;
 									case SDLK_q:
 										decision = 0;

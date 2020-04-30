@@ -13,8 +13,9 @@ WESNOTH_EXPORT int AmdPowerXpressRequestHighPerformance = 1;
 
 
 #include <stdio.h>
-extern int EXT_MODE_DEV = 17;
-extern FILE *fichier = NULL;
+#define MODE_DEV 0
+extern FILE *EXT_FILE;
+EXT_FILE = NULL;
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -636,7 +637,8 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 		FILE *fp = fopen(concatenation,"r");
 		if(!fp)
 		{
-			printf("Fichier %s introuvable \n",concatenation );
+      SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,concatenation,"Fichier introuvable, Merci de réinstaller le programme.",NULL);
+			fprintf(EXT_FILE,"main.c : chargementFichier() : %s introuvable \n",concatenation );
 			return SDL_FALSE;
 		}
 		else
@@ -706,27 +708,35 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[], int * fullscreen)
 {
 	Mix_Music *musique = Mix_LoadMUS(DIR_MUSIC_FILE);
-	if (musique == NULL)
-		printf("Impossible de charger musique dans %s\n", DIR_MUSIC_FILE );
+	if (!musique )
+  {
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Fichier introuvable",DIR_MUSIC_FILE,NULL);
+    fprintf(EXT_FILE,"main.c : launcher() : Mix_LoadMUS %s DIR : %s\n",SDL_GetError(),DIR_MUSIC_FILE);
+  }
 
 	Mix_Volume(0,MIX_MAX_VOLUME/2);
 	Mix_PlayMusic(musique, -1);
 
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
+	if( SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) )
+  {
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"SDL_SetRenderDrawBlendMode",SDL_GetError(),NULL);
+    fprintf(EXT_FILE,"main.c : launcher() : SDL_SetRenderDrawBlendMode %s\n",SDL_GetError());
+  }
+
 	if ( !dejaConneceter(token) )
 	{
 		*fullscreen = 0;
 		connexion(renderer,token, tokenCpy, path, fullscreen);
 		sauvegarderToken(token);
-  	}
-
-
+  }
 
 
 	if( !chargementFichier(renderer,meilleureScore,token,scene,path) )
 	{
 		Mix_HaltMusic();
 		Mix_FreeMusic(musique);
+    fprintf(EXT_FILE,"main.c : launcher() : chargementFichier EXIT FAILURE\n");
 		return EXIT_FAILURE;
 	}
 	else
@@ -735,7 +745,7 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
 		Mix_FreeMusic(musique);
 		return EXIT_SUCCESS;
 	}
-	printf("end room\n" );
+
 }
 
 
@@ -743,31 +753,76 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
 
 int main(int argc, char *argv[])
 {
-    /*#ifdef _WIN32
-       HWND hWnd = GetConsoleWindow();
-       ShowWindow( hWnd, SW_HIDE );
-    #endif // _WIN32*/
+
+
+
+
+  ////////////////////////////////////////////////////
+  // CHOIX DU MODE DE SORTIE POUR LES CODES
+  // D'ERREUR
+  if(MODE_DEV)
+    EXT_FILE = stderr;
+  else
+  {
+
+    ////////////////////////////////////
+    // CREATION D'UN FICHIER AVEC DATE DU JOUR ET HEURE
+    char *nomFichier = NULL;
+    ////////////////////////////////////
+    // RECUPRATION DATE ET HEURE DEPUIS LE SERVEUR
+    char *t_server;
+    if ( envoyez_requet(&t_server, "https://nineteen.recognizer.fr/include/timestamp.php", "") == EXIT_SUCCESS )
+    {
+      ////////////////////////////////////
+      // STOCKAGE DANS LES VARIABLES
+      int year,mon,day,hour,min,sec;
+      sscanf(t_server, "%d %d %d %d %d %d",&year , &mon , &day, &hour , &min, &sec);
+      // ALLOCATION
+      if ( _malloc((void**)&nomFichier,sizeof(char),128,EXT_FILE,SDL_MESSAGEBOX_ERROR,"MALLOC","main.c : main() : malloc ",NULL) )
+        return EXIT_FAILURE;
+      sprintf(nomFichier,"/tmp/NineteenLog_%d-%02d-%02d_%02d-%02d-%d.log", year  , mon , day, hour , min, sec);
+      EXT_FILE = fopen(nomFichier,"w");
+    }
+    else
+    {
+      if ( _malloc(&nomFichier,sizeof(char),18,EXT_FILE,SDL_MESSAGEBOX_ERROR,"MALLOC","main.c : main() : malloc ",NULL) )
+        return EXIT_FAILURE;
+      strcpy(nomFichier,"/tmp/NineteenLog_.log");
+      EXT_FILE = fopen(nomFichier,"w");
+    }
+
+  }
+
+
+
 
   if ( checkVersion(VERSION_LOGICIEL) == EXIT_SUCCESS)
   {
-    printf("REPERTOIRE D'EXECUTION %s\n",argv[0] );
+    fprintf(EXT_FILE,"main.c : main() : REPERTOIRE D'EXECUTION %s\n",argv[0] );
     char *addPath = fullPath(argv[0]);
-    printf("AJOUTER : %s\n",addPath);
+    fprintf(EXT_FILE,"main.c : main() : AJOUTER : %s\n",addPath);
     /////////////////////////////////////////////////////////////////
     // INIT SDL // TTF // MIXER
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
     Mix_Init(MIX_INIT_MP3);
     if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) //Initialisation de l'API Mixer
-      printf("%s", Mix_GetError());
-	// allocate 16 mixing channels
-	printf("nb channels before allocate :%d\n",Mix_AllocateChannels(-1) );
-	Mix_AllocateChannels(16);
-	printf("nb channels after allocate :%d\n",Mix_AllocateChannels(-1) );
+      fprintf(EXT_FILE,"main.c : main() : Mix FAILED INIT %s", Mix_GetError());
+
+
+	  /////////////////////////////////////////////////////////////////
+    // ALLOCATION CHANNEL
+	  Mix_AllocateChannels(16);
     /////////////////////////////////////////////////////////////////
     // RECUPERER TAILLE ECRAN
     SDL_DisplayMode DM;
-    SDL_GetCurrentDisplayMode(0, &DM);
+    if ( SDL_GetCurrentDisplayMode(0, &DM) )
+    {
+      SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal.","GetCurrentDisplayMode",NULL);
+      fprintf(EXT_FILE,"main.c : main() : GetCurrentDisplayMode %s\n",SDL_GetError() );
+      return EXIT_FAILURE;
+    }
+
     // APPLIQUER UN RATIO
     LARGUEUR = DM.w/1.78;
     HAUTEUR = LARGUEUR*0.66667;
@@ -775,49 +830,89 @@ int main(int argc, char *argv[])
     /////////////////////////////////////////////////////////////////
     // INIT VARIABLE TOKEN
     char *token = malloc(sizeof(char) * SIZE_SESSION + 1);
+    if(!token)
+    {
+      SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal.","malloc()",NULL);
+      fprintf(EXT_FILE,"main.c : main() : malloc token\n");
+      return EXIT_FAILURE;
+    }
+
     char *tokenCpy = malloc(sizeof(char) * SIZE_SESSION + 1);
+    if(!token)
+    {
+      SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal.","malloc()",NULL);
+      fprintf(EXT_FILE,"main.c : main() : malloc token copy\n");
+      return EXIT_FAILURE;
+    }
+    // COPIE DE TOKEN DANS TOKENCOPY
     tokenCpy=strcpy(tokenCpy, token);
+
     /////////////////////////////////////////////////////////////////
     // INIT VARIABLE QUI POINTE SUR LA SCENE
     const C_STRUCT aiScene* scene = NULL;
 
     /////////////////////////////////////////////////////////////////
-    // INIT FENETRE WINDOWS ET RENDERER
+    // INIT FENETRE WINDOWS ET RENDERER ET SURFACE
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
-    SDL_Surface* favicon;
+    SDL_Surface* favicon = NULL;
+
+
     /////////////////////////////////////////////////////////////////
     // CREATION WINDOWS ET RENDERER ET FAVICON
     window = SDL_CreateWindow("Nineteen | Launcher", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,LARGUEUR,HAUTEUR, 0  );
+    if(!window)
+    {
+      SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal.",SDL_GetError(),window);
+      fprintf(EXT_FILE,"main.c : main() : SDL_CreateWindow %s\n",SDL_GetError());
+      return EXIT_FAILURE;
+    }
     /////////////////////////////////////////////////////////////////
     // CHARGEMENT ICON
     // NOM PROBLEMATIQUE SI NON CHARGER ON APPLIQUE PAS SI NON CHARGER
     if( ( favicon=IMG_Load("../assets/image/favicon.png") ) )
+    {
       SDL_SetWindowIcon(window, favicon);
+      SDL_FreeSurface(favicon);
+    }
     else
-      printf("Erreur chargement favicon\n");
-    SDL_FreeSurface(favicon);
+    {
+      SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING,"../assets/image/favicon.png","Fichier introuvable",window);
+      fprintf(EXT_FILE,"main.c : main() : Erreur chargement favicon ../assets/image/favicon.png\n");
+    }
     /////////////////////////////////////////////////////////////////
     // CREATION DU RENDU
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-
+    if(!renderer)
+    {
+      SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal.",SDL_GetError(),window);
+      fprintf(EXT_FILE,"main.c : main() : SDL_CreateRenderer %s\n",SDL_GetError());
+      return EXIT_FAILURE;
+    }
 
     /////////////////////////////////////////////////////////////////
     // INIT STRUCTURE MEILLEURE_SCORE
     struct MeilleureScore_s meilleureScore[16];
     /////////////////////////////////////////////////////////////////
+	  int fullscreen=1;
     // APPEL DU LAUNCHER
-	int fullscreen=1;
+    /////////////////////////////////////////////////////////////////
     if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath, &fullscreen) == EXIT_SUCCESS)
     {
-	  SDL_Rect borderSize;
-	  SDL_GetWindowBordersSize(window,&borderSize.x,&borderSize.y,&borderSize.w,&borderSize.h);//t l b r
-      printf("lancement room\n" );
+
+      /////////////////////////////////////////////////////////////////
+      // RECUPERER LA TAILLE DE L'ECRAN
+	    SDL_Rect borderSize;
+	    if ( SDL_GetWindowBordersSize(window,&borderSize.x,&borderSize.y,&borderSize.w,&borderSize.h) )
+      {
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur mineur.","SDL_GetWindowBordersSize()",window);
+        fprintf(EXT_FILE,"main.c : main() : SDL_GetWindowBordersSize %s\n",SDL_GetError());
+      }
       SDL_DestroyRenderer(renderer);
       SDL_DestroyWindow(window);
       /////////////////////////////////////////////////////////////////
       // APPEL DE LA ROOM
-      printf("ROOM : %d\n",room(token,meilleureScore,window,scene, fullscreen, borderSize) );
+      room(token,meilleureScore,window,scene, fullscreen, borderSize);
     }
 
 
@@ -828,12 +923,15 @@ int main(int argc, char *argv[])
     aiReleaseImport(scene);
     // VIDER MEMOIRE TOKEN
     free(token);
+    token = NULL;
     free(tokenCpy);
+    tokenCpy = NULL;
     /////////////////////////////////////////////////////////////////
     // QUITTER TTF
     TTF_Quit();
     /////////////////////////////////////////////////////////////////
     // FERMER AUDIO
+    Mix_ChannelFinished(0);
     Mix_CloseAudio();
     /////////////////////////////////////////////////////////////////
     // QUITTER MIXER
@@ -847,6 +945,8 @@ int main(int argc, char *argv[])
     /////////////////////////////////////////////////////////////////
     // QUITTER SDL
     SDL_Quit();
+
+    fclose(EXT_FILE);
   }
 
 	return 0;

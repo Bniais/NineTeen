@@ -1,4 +1,5 @@
 #include <stdio.h>
+FILE *EXT_FILE;
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
@@ -41,8 +42,8 @@ char *completPathOf(char s[],int mode)
 
 	if(chaine[maxCopie-1] != '/')
 	{
-		chaine[maxCopie] = '/';
-		chaine[maxCopie + 1] = '\0';
+		chaine[maxCopie-2] = '/';
+		chaine[maxCopie-1] = '\0';
 	}
 	else
 		chaine[maxCopie] = '\0';
@@ -77,12 +78,12 @@ char *fullPath(char s[])
 		{
 			if(slash > 1)
 			{
-				printf("il faut remonter %d dossier\n",slash -1);
+				fprintf(EXT_FILE,"fullpath.c : fullePath() : il faut remonter %d dossier",slash -1);
 				path = completPathOf(s,2);
 			}
 			else
 			{
-				printf("ARBORESCENCE CORRECT");
+				fprintf(EXT_FILE,"fullpath.c : fullePath() : arborescence correct");
 				path = malloc(sizeof(char));
 				path[0] = '\0';
 			}
@@ -92,7 +93,7 @@ char *fullPath(char s[])
 		{
 			if(slash == 0)
 			{
-				printf("ARBORESCENCE CORRECT");
+				fprintf(EXT_FILE,"fullpath.c : fullePath() : arborescence correct");
 				path = malloc(sizeof(char));
 				path[0] = '\0';
 			}
@@ -104,7 +105,7 @@ char *fullPath(char s[])
 	{
 		if(slash == 0)
 		{
-			printf("ARBORESCENCE CORRECT");
+			fprintf(EXT_FILE,"fullpath.c : fullePath() : arborescence correct");
 			path = malloc(sizeof(char));
 			path[0] = '\0';
 		}
@@ -113,6 +114,7 @@ char *fullPath(char s[])
 			path = completPathOf(s,0);
 	}
 
+	fprintf(EXT_FILE,"fullpath.c : fullePath() : return value : %s\n",path );
 	return path;
 
 }

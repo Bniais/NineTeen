@@ -106,7 +106,7 @@ int envoyez_requet(char **response, char *url, char *request)
 {
 	struct string s;
 	init_string(&s);
-	CURL *curl;
+	CURL *curl = NULL;
 	CURLcode res;
 
 	/* get a curl handle */
@@ -146,6 +146,7 @@ int envoyez_requet(char **response, char *url, char *request)
 
 
 	}
+	fprintf(EXT_FILE, "libWeb.c : envoyez_requet() : curl_easy_init() failed: %s\n", curl_easy_strerror(res));
 	//nettoyage
 	curl_easy_cleanup(curl);
 	curl_global_cleanup();

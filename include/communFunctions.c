@@ -13,6 +13,32 @@ const SDL_Color COLOR_ERROR_LOADING = {0xfb,0x17,0x17};
 const int ALPHA[2*(int)FRAME_ANIM_RETOUR] = { 10, 30, 55, 70, 100, 140, 170, 200, 220, 225, 230, 230, 230, 230, 230, 230,230, 230, 230, 230, 230,230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 225,220,200,170,140,100,70,55,30,10};
 
 /////////////////////////////////////////////////////
+/// \fn int _malloc( void **ptr ,int type, int size , FILE *fp , Uint32 flags,const char* title, const char* message,SDL_Window* window )
+/// \brief permet de faire une allocation dynamqiue avec message d'erreur
+/// \param void **ptr element a allouer
+/// \param int type sizeof(type)
+/// \param FILE *fp pointeur sur element sorti erreur
+/// \param Uint32 flags flags message SDL
+/// \paran char *title if set NULL no message on SDL
+/// \param char *message message pour fprintf
+/// \param SDL_Window *window null si hors d'une fenetre
+///
+/// \return EXIT_SUCCESS/EXIT_FAILURE
+/////////////////////////////////////////////////////
+int _malloc( void **ptr ,int type, int size , FILE *fp , Uint32 flags,const char* title, const char* message,SDL_Window* window )
+{
+	*ptr = malloc(sizeof(type) * size);
+	if(!*ptr)
+	{
+		if(!title)
+			SDL_ShowSimpleMessageBox(flags,title,message,window);
+		fprintf(fp,"%s",message);
+		return EXIT_FAILURE;
+	}
+	return EXIT_SUCCESS;
+}
+
+/////////////////////////////////////////////////////
 /// \fn afficherMessageSysteme(char message[])
 /// \brief affiche une popup systeme
 /// \param char message[] message a afficher a l'ecran
