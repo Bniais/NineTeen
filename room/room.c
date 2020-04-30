@@ -1,8 +1,17 @@
 // CODERUNNER COMPILEFLAG
 // -std=c99 -framework OpenGL -framework GLUT -lassimp -lm -F/Library/Frameworks -framework SDL2
 
+
+
+
 // GLOBAL LIBRARY
 #include <stdio.h>
+
+// EXTERNAL
+int EXT_MODE_DEV;
+FILE *fichier;
+
+
 #ifdef __APPLE__
 	#define GL_SILENCE_DEPRECATION
 	#include <OpenGL/gl3.h>
@@ -42,6 +51,8 @@ static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0, _nbMeshes = 
 #include "../games/7_asteroid/asteroid.h"
 #include "leaderboard/leaderboard.h"
 // END INCLUDE
+
+
 
 //
 // SON
@@ -132,6 +143,11 @@ enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINE
 #else
   #define DIR_TOKEN_FILE "/tmp/.Nineteen"
 #endif
+
+
+
+int FIRST_FRAME = 0;
+
 
 #include "dir.h"
 SDL_Renderer * pRenderer;
@@ -1085,7 +1101,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 
 int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize)
 {
-
+	printf("VALEUR = %d\n",EXT_MODE_DEV );
 
 	optionFullScreen = optFullScreen;
 	//////////////////////////////////////////////////////////
@@ -1817,7 +1833,13 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 
 	////////////////////////////////////////////////////
 	// GERER LES MOUVEMENT DE CAMERA
-	mouvementCamera(Window, camera,IPS);
+	if(FIRST_FRAME == 0)
+	{
+		FIRST_FRAME = 1;
+		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+	}
+	else
+		mouvementCamera(Window, camera,IPS);
 
 	////////////////////////////////////////////////////
 	// SI LE RENDU DE LA SCENE N'EST PAS FAIT LE FAIRE
