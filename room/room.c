@@ -2782,8 +2782,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									case SDLK_d:
 										decision = 0;
 										printf("Vous vous deconnecter\n");
-										FILE *fp = fopen(DIR_TOKEN_FILE,"w");
-										fclose(fp);
+										remove(DIR_TOKEN_FILE);
 										*Running = 0;
 										break;
 									default:break;
