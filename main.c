@@ -12,6 +12,9 @@ WESNOTH_EXPORT int AmdPowerXpressRequestHighPerformance = 1;
 #endif
 
 
+#include <stdio.h>
+extern int EXT_MODE_DEV = 17;
+extern FILE *fichier = NULL;
 
 #include <stdio.h>
 #include <stdlib.h>
