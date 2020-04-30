@@ -1,4 +1,6 @@
 #include <stdio.h>
+FILE *EXT_FILE;
+
 #include <stdlib.h>
 #include <string.h>
 #include <curl/curl.h>
@@ -23,7 +25,6 @@ typedef struct{char *gameID; char *score; char *key;}EnvoiScore;
 #define URL_PING "https://nineteen.recognizer.fr/ping.php"
 #define URL_TIMESTAMP "https://nineteen.recognizer.fr/include/timestamp.php"
 #define URL_GET_COINS "https://nineteen.recognizer.fr/coins.php"
-#define URL_BUY_GAMEPASS "https://nineteen.recognizer.fr/buygamepass.php"
 #define URL_CHECK_VERSION "https://nineteen.recognizer.fr/checkVersion.php"
 #define URL_LEADERBOARD "https://nineteen.recognizer.fr/leaderboard.php"
 
@@ -48,7 +49,8 @@ void init_string(struct string *s) {
 	s->len = 0;
 	s->ptr = malloc(s->len+1);
 	if (s->ptr == NULL) {
-		fprintf(stderr, "malloc() failed\n");
+			fprintf(EXT_FILE, "libWeb.c : init_string() : malloc failed\n");
+
 		exit(EXIT_FAILURE);
 	}
 	s->ptr[0] = '\0';
@@ -60,7 +62,7 @@ size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s)
 	size_t new_len = s->len + size*nmemb;
 	s->ptr = realloc(s->ptr, new_len+1);
 	if (s->ptr == NULL) {
-		fprintf(stderr, "realloc() failed\n");
+			fprintf(EXT_FILE, "libWeb.c : writefunc() : realloc failed\n");
 		exit(EXIT_FAILURE);
 	}
 	memcpy(s->ptr+s->len, ptr, size*nmemb);
@@ -78,7 +80,7 @@ void md5Hash (char *string, char *hash)
     int i;
     char unsigned md5[MD5_DIGEST_LENGTH] = {0};
 
-    MD5((const unsigned char *)string, strlen(string), md5);
+     MD5((const unsigned char *)string, strlen(string), md5);
 
     for (i=0; i < MD5_DIGEST_LENGTH; i++) {
         sprintf(hash + 2*i, "%02x", md5[i]);
@@ -100,7 +102,6 @@ void md5Hash (char *string, char *hash)
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-
 int envoyez_requet(char **response, char *url, char *request)
 {
 	struct string s;
@@ -125,7 +126,8 @@ int envoyez_requet(char **response, char *url, char *request)
 		res = curl_easy_perform(curl);
 		if(res != CURLE_OK)
 		{
-			fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+				fprintf(EXT_FILE, "libWeb.c : envoyez_requet() : curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+
 		}
 		else
 		{
@@ -205,7 +207,10 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 		lenght = strlen(key) + 1 + 12 + 32 ; // 12 = "key= &secure="
 
 		*dest = malloc( sizeof(char) * lenght );
-		if(*dest == NULL) { printf("Failed malloc"); return EXIT_FAILURE; }
+		if(*dest == NULL) {
+			fprintf(EXT_FILE,"libWeb.c : construire_requete() : Failed malloc");
+			 return EXIT_FAILURE;
+		 }
 
 		// concatenation dans dest;
 		strcpy(*dest,"");
@@ -223,7 +228,10 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 		lenght = strlen(username) + 1 + strlen(password) + 1 + 25 + 32; // 17 = "username= &pwd= &secure"
 		*dest = malloc( sizeof(char) * lenght );
 
-		if(*dest == NULL) { printf("Failed malloc"); return EXIT_FAILURE; }
+		if(*dest == NULL) {
+			fprintf(EXT_FILE,"libWeb.c : construire_requete() : Failed malloc");
+			 return EXIT_FAILURE;
+		 }
 
 		// concatenation dans dest;
 		strcpy(*dest,"");
@@ -240,7 +248,10 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 		lenght = strlen(gameID) + 1 + strlen(score) + 1 + strlen(key) + 1 + 29 + 32; // 29 = "gameID= & score= &key= &secure"
 		*dest = malloc( sizeof(char) * lenght );
 
-		if(*dest == NULL) { printf("Failed malloc"); return EXIT_FAILURE; }
+		if(*dest == NULL) {
+			fprintf(EXT_FILE,"libWeb.c : construire_requete() : Failed malloc");
+			 return EXIT_FAILURE;
+		 }
 
 		// concatenation dans dest;
 		strcpy(*dest,"");
@@ -256,7 +267,10 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 		lenght = strlen(gameID) + 1 + strlen(key) + 1 + 24 + 32; // 24 = "gameID= &key= &secure"
 		*dest = malloc( sizeof(char) * lenght );
 
-		if(*dest == NULL) { printf("Failed malloc"); return EXIT_FAILURE; }
+		if(*dest == NULL) {
+			fprintf(EXT_FILE,"libWeb.c : construire_requete() : Failed malloc");
+			 return EXIT_FAILURE;
+		 }
 
 		// concatenation dans dest;
 		strcpy(*dest,"");
@@ -285,7 +299,10 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 		}
 
 		*dest = malloc(sizeof(char) * lenght );
-		if(*dest == NULL) { printf("Failed malloc"); return EXIT_FAILURE; }
+		if(*dest == NULL) {
+			fprintf(EXT_FILE,"libWeb.c : construire_requete() : Failed malloc");
+			 return EXIT_FAILURE;
+		 }
 
 		strcpy(*dest,"");
 		sprintf(*dest,"gameID=%s&username=%s&offset=%s&limite=%s",gameID,username,offset,limite);
@@ -293,7 +310,7 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 	}
 	else
 	{
-		printf("ERROR: construire_requete() Vérifiez les parametres d'entrer\n");
+		fprintf(EXT_FILE,"libWeb.c : construire_requete() : Vérifiez les parametres d'entrer\n");
 	}
 
 	return EXIT_FAILURE;
@@ -325,7 +342,6 @@ int connectWithUsername(ConnectStruct * connectStruct)
 
 			if ( strlen(response) >= 255  )
 			{
-				//key = malloc( sizeof(char) * strlen(response) + 1 );
 				strcpy(connectStruct->key,response);
 				free(response);
 				response = NULL;
@@ -334,21 +350,24 @@ int connectWithUsername(ConnectStruct * connectStruct)
 			}
 			else if ( !strcmp(response,"-5") )
 			{
+				fprintf(EXT_FILE, "libWeb.c : connectWithUsername() : erreur de synchronisation avec le serveur \n" );
+
 				free(response);
 				response = NULL;
-					connectEnded = 1;
+				connectEnded = 1;
 				return -5;
 			}
 			else if ( !strcmp(response,"-3") )
 			{
-				printf("Mauvais login/mdp\n" );
+				fprintf(EXT_FILE, "libWeb.c : connectWithUsername() : mdp/login incorrect \n" );
 				free(response);
 				response = NULL;
 					connectEnded = 1;
 				return -3;
 			}
 			else
-				printf("erreur connection : %s\n",response );
+				fprintf(EXT_FILE, "libWeb.c : connectWithUsername() : erreur de connexion inconnu %s \n",response );
+
 
 			free(response);
 			response = NULL;
@@ -356,7 +375,7 @@ int connectWithUsername(ConnectStruct * connectStruct)
 		}
 
 	}
-
+	fprintf(EXT_FILE,"libWeb.c : connectWithUsername() : Erreur construction requete\n");
 
 		connectEnded = 1;
 	return EXIT_FAILURE;
@@ -386,11 +405,14 @@ int connectWithKey(char *key)
 				response = NULL;
 				return EXIT_SUCCESS;
 			}
-			printf("%s\n",response );
+
+			fprintf(EXT_FILE,"libWeb.c : connectWithKey() : %s\n",response );
 			free(response);
 			response = NULL;
 		}
 	}
+
+	fprintf(EXT_FILE,"libWeb.c : connectWithKey() : Erreur construction requete\n");
 	free(request);
 	request = NULL;
 	return EXIT_FAILURE;
@@ -408,25 +430,27 @@ int connectWithKey(char *key)
 /////////////////////////////////////////////////////
 int updateMeilleureScoreStruct(char *key,char *retour)
 {
-	printf("getcoin\n");
 	char *request;
 	char *response;
 	if ( !construire_requete(&request, NULL, NULL, key, NULL, NULL, NULL,NULL) )
 	{
 		if ( !envoyez_requet(&response,URL_GET_COINS,request) )
 		{
-			printf("%s\n",response );
 			if(strlen(response) <= 4)
+			{
+				fprintf(EXT_FILE,"libWeb.c : updateMeilleureScoreStruct() : %s\n",response);
 				return EXIT_FAILURE;
+			}
+
 			strcpy(retour,response);
 			free(request);
 			request = NULL;
 			free(response);
 			response = NULL;
-			printf("getcoine\n");
 			return EXIT_SUCCESS;
 		}
 	}
+	fprintf(EXT_FILE,"libWeb.c : updateMeilleureScoreStruct() : Erreur construction requete\n");
 	free(request);
 	request = NULL;
 	return EXIT_FAILURE;
@@ -452,12 +476,13 @@ int getLeaderboard(char *gameID,char *username, char *offset,char *limite, char 
 	if ( !construire_requete(&request, username, NULL, NULL, gameID, NULL, offset,limite) )
 	{
 
-		printf("%s\n",request );
 		if ( !envoyez_requet(&response,URL_LEADERBOARD,request) )
 		{
-			printf("%s\n",response );
 			if(strlen(response) <= 1)
+			{
+				fprintf(EXT_FILE,"libWeb.c : getLeaderboard() : Erreur %s\n",response);
 				return EXIT_FAILURE;
+			}
 			strcpy(retour,response);
 			free(request);
 			request = NULL;
@@ -466,6 +491,8 @@ int getLeaderboard(char *gameID,char *username, char *offset,char *limite, char 
 			return EXIT_SUCCESS;
 		}
 	}
+
+	fprintf(EXT_FILE,"libWeb.c : getLeaderboard() : Erreur construction requete \n");
 	free(request);
 	request = NULL;
 	return EXIT_FAILURE;
@@ -473,40 +500,7 @@ int getLeaderboard(char *gameID,char *username, char *offset,char *limite, char 
 
 
 
-/////////////////////////////////////////////////////
-/// \fn buyGamePass(char *key, char *gameID)
-/// \brief acheter un pass pour un jeu
-///
-/// \param char *key Ecriture de la clé dans key
-/// \param char *gameID numero du jeux
-///
-/// \return EXIT_SUCCESS / EXIT_FAILURE
-/////////////////////////////////////////////////////
-int buyGamePass(char *key, char *gameID)
-{
-	char *request;
-	char *response;
-	if ( !construire_requete(&request, NULL, NULL, key, gameID, NULL, NULL,NULL) )
-	{
-		if ( !envoyez_requet(&response,URL_BUY_GAMEPASS,request) )
-		{
-			if ( !strcmp(response,"SUCCESS")  )
-			{
-				free(request);
-				request = NULL;
-				free(response);
-				response = NULL;
-				return EXIT_SUCCESS;
-			}
-			printf("%s\n",response );
-			free(response);
-			response = NULL;
-		}
-	}
-	free(request);
-	request = NULL;
-	return EXIT_FAILURE;
-}
+
 
 
 int updateEnded;
@@ -534,6 +528,8 @@ int updateScore(EnvoiScore * envoiScore )
 				printf("%s\n",response);
 				if(!strcmp(response, "SUCCESS")){
 
+					fprintf(EXT_FILE,"libWeb.c : updateScore() : Erreur envoi requete attempt : %d Message : %s\n",attempt,response);
+
 					free(request);
 					request = NULL;
 					free(response);
@@ -544,6 +540,8 @@ int updateScore(EnvoiScore * envoiScore )
 
 			}
 		}
+
+		fprintf(EXT_FILE,"libWeb.c : updateScore() : Erreur constriction requete attempt : %d \n",attempt);
 
 	}while(attempt++ < 5 && strcmp(response, "SUCCESS"));
 	free(request);
@@ -596,10 +594,13 @@ int checkVersionOnline(char message[])
 			response = NULL;
 			return EXIT_SUCCESS;
 		}
+		fprintf(EXT_FILE,"libWeb.c : checkVersionOnline() : erreur %s \n",response);
 		free(response);
 		response = NULL;
 		return EXIT_FAILURE;
 
 	}
+	fprintf(EXT_FILE,"libWeb.c : checkVersionOnline() : erreur envoi requete \n");
+
 	return EXIT_FAILURE;
 }

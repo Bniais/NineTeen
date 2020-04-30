@@ -72,16 +72,7 @@ int connectWithUsername(ConnectStruct connectStruct);
 /////////////////////////////////////////////////////
 int updateMeilleureScoreStruct(char *key,char *coins);
 
-/////////////////////////////////////////////////////
-/// \fn buyGamePass(char *key, char *gameID)
-/// \brief acheter un pass pour un jeu
-///
-/// \param char *key Ecriture de la clé dans key
-/// \param char *gameID numero du jeux
-///
-/// \return EXIT_SUCCESS / EXIT_FAILURE
-/////////////////////////////////////////////////////
-int buyGamePass(char *key, char *gameID);
+
 
 
 /////////////////////////////////////////////////////
