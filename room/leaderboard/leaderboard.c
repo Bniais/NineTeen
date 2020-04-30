@@ -1,5 +1,4 @@
 #include <stdio.h>
-int EXT_MODE_DEV;
 FILE *EXT_FILE;
 
 
@@ -142,9 +141,6 @@ int chargementDonner(int gameID, char *username, int offset,int limite, struct c
 	char *retour = malloc(sizeof(char) * 2048);
 	if(!retour)
 	{
-		if(EXT_MODE_DEV)
-			printf("leaderboard.c : chargementDonner() : malloc() \n" );
-		else
 			fprintf(EXT_FILE,"leaderboard.c : chargementDonner() : malloc() \n" );
 	}
 
@@ -518,10 +514,6 @@ int afficherCellule(SDL_Renderer *renderer,SDL_Texture *texture, int cellulePosi
 	SDL_Rect cellule = {NATIF_W*0.03, (NATIF_H/10) * cellulePosition + decallageY,NATIF_W*0.94 , NATIF_H * 0.09 + NATIF_H * 0.025 };
 	if( SDL_RenderCopy(renderer,texture,&EMPLCEMENT_CELLULE,&cellule) )
 	{
-
-		if(EXT_MODE_DEV)
-			printf("leaderboard : afficherCellule() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
-		else
 			fprintf(EXT_FILE,"leaderboard : afficherCellule() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 
 		return EXIT_FAILURE;
@@ -583,9 +575,6 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 	SDL_Rect hudBackground = {NATIF_W*0.0, NATIF_H * 0.0 ,NATIF_W*1.0 , HUD_SIZE + NATIF_H*0.025 };
 	if ( SDL_RenderCopy(renderer, texture, &EMPLACEMENT_HUD, &hudBackground) )
 	{
-		if(EXT_MODE_DEV)
-			printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
-		else
 			fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 
 		return EXIT_FAILURE;
@@ -598,9 +587,6 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 	SDL_Rect rechercheJoueur = {NATIF_W*0.55, HUD_SIZE * 0.15, NATIF_W*0.35, HUD_SIZE*0.6 + NATIF_H * 0.015};
 	if ( SDL_RenderCopy(renderer,texture,&EMPLACEMENT_CHAMPS,&rechercheJoueur) )
 	{
-		if(EXT_MODE_DEV)
-			printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
-		else
 			fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 
 		return EXIT_FAILURE;
@@ -611,9 +597,6 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 	SDL_Rect lancerRecherche = {NATIF_W*0.897, HUD_SIZE * 0.15, HUD_SIZE*0.6, HUD_SIZE*0.6 + NATIF_H * 0.015};
 	if ( SDL_RenderCopy(renderer,texture,&EMPLACEMENT_RECHERCHE,&lancerRecherche) )
 	{
-		if(EXT_MODE_DEV)
-			printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
-		else
 			fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 		return EXIT_FAILURE;
 	}
@@ -631,9 +614,6 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 	{
 		if( SDL_RenderCopy(renderer,texture,&EMPLACEMENT_EASY,&boutonHardEasy) )
 		{
-			if(EXT_MODE_DEV)
-				printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
-			else
 				fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 
 			return EXIT_FAILURE;
@@ -643,9 +623,6 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 	{
 		if ( SDL_RenderCopy(renderer,texture,&EMPLACEMENT_HARD,&boutonHardEasy) )
 		{
-			if(EXT_MODE_DEV)
-				printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
-			else
 				fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 
 			return EXIT_FAILURE;
@@ -661,9 +638,6 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 		SDL_Rect listDeroulante = {NATIF_W*0.05 , HUD_SIZE * 0.15, NATIF_W*0.35, HUD_SIZE*4.2 + NATIF_H * 0.015};
 		if ( SDL_RenderCopy(renderer,texture,&EMPLACEMENT_BG_LIST,&listDeroulante) )
 		{
-			if(EXT_MODE_DEV)
-				printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
-			else
 				fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 
 			return EXIT_FAILURE;
@@ -685,9 +659,6 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 	SDL_Rect listSelection = {NATIF_W*0.05 , HUD_SIZE * 0.15, NATIF_W*0.35, HUD_SIZE*0.6 + NATIF_H * 0.015};
 	if ( SDL_RenderCopy(renderer,texture,&EMPLACEMENT_CHAMPS,&listSelection) )
 	{
-		if(EXT_MODE_DEV)
-			printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
-		else
 			fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 
 		return EXIT_FAILURE;
@@ -697,9 +668,6 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 	SDL_Rect ouvrirListeSelection = {NATIF_W*0.047 + listSelection.w, HUD_SIZE * 0.15, HUD_SIZE*0.6, HUD_SIZE*0.6 + NATIF_H*0.015};
 	if ( SDL_RenderCopy(renderer,texture,&EMPLACEMENT_LIST,&ouvrirListeSelection) )
 	{
-		if(EXT_MODE_DEV)
-			printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
-		else
 			fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 
 		return EXIT_FAILURE;
@@ -879,9 +847,7 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 	SDL_Texture *texture = IMG_LoadTexture(renderer,"../room/leaderboard/tilset.png");
 	if(!texture)
 	{
-		if(EXT_MODE_DEV)
-			printf("leaderboard.c -> leaderboard() : IMG_LoadTexture : ../room/leaderboard/tilset.png\n" );
-		else
+
 			fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : IMG_LoadTexture : ../room/leaderboard/tilset.png\n" );
 
 		return EXIT_FAILURE;
@@ -889,9 +855,6 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
   TTF_Font *police = TTF_OpenFont("../room/neon.ttf" , NATIF_W*0.05);
   if(!police)
 	{
-		if(EXT_MODE_DEV)
-			printf("leaderboard.c -> leaderboard() : TTF_OpenFont : ../room/neon.ttf\n" );
-		else
 			fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : TTF_OpenFont : ../room/neon.ttf\n" );
 
 		return EXIT_FAILURE;
@@ -904,9 +867,6 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 	inverseRatio = (float)NATIF_W/(float)WinWeidth;
 	if ( SDL_RenderSetScale(renderer, ratioWindowSize, ratioWindowSize) )
 	{
-		if(EXT_MODE_DEV)
-			printf("leaderboard.c -> leaderboard() : SDL_RenderSetScale : %s\n",SDL_GetError() );
-		else
 			fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : SDL_RenderSetScale : %s\n",SDL_GetError() );
 
 		return EXIT_FAILURE;
@@ -916,9 +876,6 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 	// AJOUT ALPHA MODE
 	if ( SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) )
 	{
-		if(EXT_MODE_DEV)
-			printf("leaderboard.c -> leaderboard() : SDL_SetRenderDrawBlendMode : %s\n",SDL_GetError() );
-		else
 			fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : SDL_SetRenderDrawBlendMode : %s\n",SDL_GetError() );
 
 		return EXIT_FAILURE;
@@ -966,9 +923,6 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
     if( SDL_RenderClear(renderer) )
 		{
-			if(EXT_MODE_DEV)
-				printf("leaderboard.c -> leaderboard() : SDL_RenderClear : %s\n",SDL_GetError() );
-			else
 				fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : SDL_RenderClear : %s\n",SDL_GetError() );
 
 			return EXIT_FAILURE;
@@ -979,9 +933,6 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 		{
 			if( afficherCellule(renderer,texture,i,donner[selectionScrollingList][i],police,scrollPositionWindow + HUD_SIZE) != EXIT_SUCCESS)
 			{
-				if(EXT_MODE_DEV)
-					printf("leaderboard.c -> leaderboard() : afficherCellule()" );
-				else
 					fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : afficherCellule()" );
 
 				return EXIT_FAILURE;
@@ -995,9 +946,6 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
 		if ( afficherHUD(renderer,texture,police,rechercher,_SELECTION,scrollPositionList,selectionScrollingList) != EXIT_SUCCESS)
 		{
-			if(EXT_MODE_DEV)
-				printf("leaderboard.c -> leaderboard() : afficherHUD()" );
-			else
 				fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : afficherHUD()" );
 
 			return EXIT_FAILURE;
@@ -1007,9 +955,6 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
 		if ( SDL_SetRenderDrawColor(renderer, BACKGROUND_C.r, BACKGROUND_C.g, BACKGROUND_C.b, 255) )
 		{
-			if(EXT_MODE_DEV)
-				printf("leaderboard.c -> leaderboard() : SDL_SetRenderDrawColor : %s\n",SDL_GetError() );
-			else
 				fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : afficherHUD()" );
 
 			return EXIT_FAILURE;
