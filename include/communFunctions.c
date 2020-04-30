@@ -54,7 +54,6 @@ void afficherLoading(SDL_Renderer * renderer, SDL_Texture * loadingTexture, SDL_
 void afficherRetour(SDL_Renderer * renderer, SDL_Texture * loadingTexture,TTF_Font * font, SDL_Color color, int shiftX, int shiftY, int frameAnim, int windowW, int windowH, int referenceW){
 
 	float ratioSize = (float)referenceW/BASE_WINDOW_W;
-	printf("ar %f\n", ratioSize );
 	int fLogo= frameAnim;
 	if(fLogo < 0){
 		fLogo += FRAME_ANIM_RETOUR;
