@@ -15,7 +15,7 @@ WESNOTH_EXPORT int AmdPowerXpressRequestHighPerformance = 1;
 #include <stdio.h>
 #define MODE_DEV 0
 extern FILE *EXT_FILE;
-EXT_FILE = NULL;
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -753,9 +753,7 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
 
 int main(int argc, char *argv[])
 {
-
-
-
+	EXT_FILE = NULL;
 
   ////////////////////////////////////////////////////
   // CHOIX DU MODE DE SORTIE POUR LES CODES
