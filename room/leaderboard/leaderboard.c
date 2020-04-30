@@ -1,3 +1,8 @@
+#include <stdio.h>
+int EXT_MODE_DEV;
+FILE *EXT_FILE;
+
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -51,9 +56,11 @@ const float VITESSE_SCROLL = 30.0;
 #define SEARCH_PLAYER 4
 #define CHANGER_DIFFICULTER 5
 ///////////////////////////////////////////////
-SDL_Rect boutonHardEasy = {NATIF_W*0.398, HUD_SIZE * 0.15, HUD_SIZE*0.6, HUD_SIZE*0.6 + NATIF_H * 0.015};
-SDL_Point boutonPosition_OFF = {NATIF_W*0.398,HUD_SIZE * 0.15};
-SDL_Point boutonPosition_ON = {NATIF_W*0.44, HUD_SIZE * 0.15};
+SDL_Rect boutonHardEasy ;
+SDL_Point boutonPosition_OFF ;
+SDL_Point boutonPosition_ON ;
+
+
 
 enum {EASY,HARD,OFF,OFF_EASY,OFF_HARD};
 
@@ -134,7 +141,13 @@ int chargementDonner(int gameID, char *username, int offset,int limite, struct c
 	// ALLOCATION DE MEMOIRE
 	char *retour = malloc(sizeof(char) * 2048);
 	if(!retour)
-		printf("Erreur allocation fonction chargementDonner\n" );
+	{
+		if(EXT_MODE_DEV)
+			printf("leaderboard.c : chargementDonner() : malloc() \n" );
+		else
+			fprintf(EXT_FILE,"leaderboard.c : chargementDonner() : malloc() \n" );
+	}
+
 
 	/////////////////////////////////////////////////////
 	// RECHERCHER SI ON DEPASSE PAS LA LIMITE POSSIBLE DE CHARGEMENT DE JOUEUR
@@ -505,7 +518,12 @@ int afficherCellule(SDL_Renderer *renderer,SDL_Texture *texture, int cellulePosi
 	SDL_Rect cellule = {NATIF_W*0.03, (NATIF_H/10) * cellulePosition + decallageY,NATIF_W*0.94 , NATIF_H * 0.09 + NATIF_H * 0.025 };
 	if( SDL_RenderCopy(renderer,texture,&EMPLCEMENT_CELLULE,&cellule) )
 	{
-		printf("leaderboard : afficherCellule() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+
+		if(EXT_MODE_DEV)
+			printf("leaderboard : afficherCellule() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+		else
+			fprintf(EXT_FILE,"leaderboard : afficherCellule() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+
 		return EXIT_FAILURE;
 	}
 
@@ -565,7 +583,11 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 	SDL_Rect hudBackground = {NATIF_W*0.0, NATIF_H * 0.0 ,NATIF_W*1.0 , HUD_SIZE + NATIF_H*0.025 };
 	if ( SDL_RenderCopy(renderer, texture, &EMPLACEMENT_HUD, &hudBackground) )
 	{
-		printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+		if(EXT_MODE_DEV)
+			printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+		else
+			fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+
 		return EXIT_FAILURE;
 	}
 
@@ -576,7 +598,11 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 	SDL_Rect rechercheJoueur = {NATIF_W*0.55, HUD_SIZE * 0.15, NATIF_W*0.35, HUD_SIZE*0.6 + NATIF_H * 0.015};
 	if ( SDL_RenderCopy(renderer,texture,&EMPLACEMENT_CHAMPS,&rechercheJoueur) )
 	{
-		printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+		if(EXT_MODE_DEV)
+			printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+		else
+			fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+
 		return EXIT_FAILURE;
 	}
 
@@ -585,7 +611,10 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 	SDL_Rect lancerRecherche = {NATIF_W*0.897, HUD_SIZE * 0.15, HUD_SIZE*0.6, HUD_SIZE*0.6 + NATIF_H * 0.015};
 	if ( SDL_RenderCopy(renderer,texture,&EMPLACEMENT_RECHERCHE,&lancerRecherche) )
 	{
-		printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+		if(EXT_MODE_DEV)
+			printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+		else
+			fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 		return EXIT_FAILURE;
 	}
 
@@ -602,7 +631,11 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 	{
 		if( SDL_RenderCopy(renderer,texture,&EMPLACEMENT_EASY,&boutonHardEasy) )
 		{
-			printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+			if(EXT_MODE_DEV)
+				printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+			else
+				fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+
 			return EXIT_FAILURE;
 		}
 	}
@@ -610,7 +643,11 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 	{
 		if ( SDL_RenderCopy(renderer,texture,&EMPLACEMENT_HARD,&boutonHardEasy) )
 		{
-			printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+			if(EXT_MODE_DEV)
+				printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+			else
+				fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+
 			return EXIT_FAILURE;
 		}
 	}
@@ -624,7 +661,11 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 		SDL_Rect listDeroulante = {NATIF_W*0.05 , HUD_SIZE * 0.15, NATIF_W*0.35, HUD_SIZE*4.2 + NATIF_H * 0.015};
 		if ( SDL_RenderCopy(renderer,texture,&EMPLACEMENT_BG_LIST,&listDeroulante) )
 		{
-			printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+			if(EXT_MODE_DEV)
+				printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+			else
+				fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+
 			return EXIT_FAILURE;
 		}
 
@@ -644,7 +685,11 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 	SDL_Rect listSelection = {NATIF_W*0.05 , HUD_SIZE * 0.15, NATIF_W*0.35, HUD_SIZE*0.6 + NATIF_H * 0.015};
 	if ( SDL_RenderCopy(renderer,texture,&EMPLACEMENT_CHAMPS,&listSelection) )
 	{
-		printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+		if(EXT_MODE_DEV)
+			printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+		else
+			fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+
 		return EXIT_FAILURE;
 	}
 
@@ -652,7 +697,11 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 	SDL_Rect ouvrirListeSelection = {NATIF_W*0.047 + listSelection.w, HUD_SIZE * 0.15, HUD_SIZE*0.6, HUD_SIZE*0.6 + NATIF_H*0.015};
 	if ( SDL_RenderCopy(renderer,texture,&EMPLACEMENT_LIST,&ouvrirListeSelection) )
 	{
-		printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+		if(EXT_MODE_DEV)
+			printf("leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+		else
+			fprintf(EXT_FILE,"leaderboard : afficherHUD() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+
 		return EXIT_FAILURE;
 	}
 
@@ -806,6 +855,17 @@ int interactionInterface(int x,int y, int _SELECTION, int scrollPositionList, in
 int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_JOUEUR)
 {
 	NOMBRE_JOUEUR_MAX = _MAX_JOUEUR;
+	boutonHardEasy.x = NATIF_W*0.398;
+	boutonHardEasy.y = HUD_SIZE * 0.15;
+	boutonHardEasy.w =  HUD_SIZE*0.6;
+	boutonHardEasy.h =  HUD_SIZE*0.6 + NATIF_H * 0.015;
+
+	boutonPosition_OFF.x = NATIF_W*0.398;
+	boutonPosition_OFF.y = HUD_SIZE * 0.15;
+
+	boutonPosition_ON.x =  NATIF_W*0.44;
+	boutonPosition_ON.y = HUD_SIZE * 0.15;
+
 
 	/////////////////////////////////////////////////
 	// EFFACER EVENEMENT VENANT DE LA ROOM
@@ -813,19 +873,27 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 	while (SDL_PollEvent(&Ev));
 	/////////////////////////////////////////////////
 
-	
+
 	/////////////////////////////////////////////////
 	// CHARGEMENT ELEMENT
 	SDL_Texture *texture = IMG_LoadTexture(renderer,"../room/leaderboard/tilset.png");
 	if(!texture)
 	{
-		printf("leaderboard.c -> leaderboard() : IMG_LoadTexture : tilset.png\n" );
+		if(EXT_MODE_DEV)
+			printf("leaderboard.c -> leaderboard() : IMG_LoadTexture : ../room/leaderboard/tilset.png\n" );
+		else
+			fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : IMG_LoadTexture : ../room/leaderboard/tilset.png\n" );
+
 		return EXIT_FAILURE;
 	}
   TTF_Font *police = TTF_OpenFont("../room/neon.ttf" , NATIF_W*0.05);
   if(!police)
 	{
-		printf("leaderboard.c -> leaderboard() : TTF_OpenFont : neon.ttf\n" );
+		if(EXT_MODE_DEV)
+			printf("leaderboard.c -> leaderboard() : TTF_OpenFont : ../room/neon.ttf\n" );
+		else
+			fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : TTF_OpenFont : ../room/neon.ttf\n" );
+
 		return EXIT_FAILURE;
 	}
 	/////////////////////////////////////////////////
@@ -836,7 +904,11 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 	inverseRatio = (float)NATIF_W/(float)WinWeidth;
 	if ( SDL_RenderSetScale(renderer, ratioWindowSize, ratioWindowSize) )
 	{
-		printf("leaderboard.c -> leaderboard() : SDL_RenderSetScale : %s\n",SDL_GetError() );
+		if(EXT_MODE_DEV)
+			printf("leaderboard.c -> leaderboard() : SDL_RenderSetScale : %s\n",SDL_GetError() );
+		else
+			fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : SDL_RenderSetScale : %s\n",SDL_GetError() );
+
 		return EXIT_FAILURE;
 	}
 
@@ -844,7 +916,11 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 	// AJOUT ALPHA MODE
 	if ( SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) )
 	{
-		printf("leaderboard.c -> leaderboard() : SDL_SetRenderDrawBlendMode : %s\n",SDL_GetError() );
+		if(EXT_MODE_DEV)
+			printf("leaderboard.c -> leaderboard() : SDL_SetRenderDrawBlendMode : %s\n",SDL_GetError() );
+		else
+			fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : SDL_SetRenderDrawBlendMode : %s\n",SDL_GetError() );
+
 		return EXIT_FAILURE;
 	}
 
@@ -890,7 +966,11 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
     if( SDL_RenderClear(renderer) )
 		{
-			printf("leaderboard.c -> leaderboard() : SDL_RenderClear : %s\n",SDL_GetError() );
+			if(EXT_MODE_DEV)
+				printf("leaderboard.c -> leaderboard() : SDL_RenderClear : %s\n",SDL_GetError() );
+			else
+				fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : SDL_RenderClear : %s\n",SDL_GetError() );
+
 			return EXIT_FAILURE;
 		}
 
@@ -899,7 +979,11 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 		{
 			if( afficherCellule(renderer,texture,i,donner[selectionScrollingList][i],police,scrollPositionWindow + HUD_SIZE) != EXIT_SUCCESS)
 			{
-				printf("leaderboard.c -> leaderboard() : afficherCellule()" );
+				if(EXT_MODE_DEV)
+					printf("leaderboard.c -> leaderboard() : afficherCellule()" );
+				else
+					fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : afficherCellule()" );
+
 				return EXIT_FAILURE;
 			}
 
@@ -911,7 +995,11 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
 		if ( afficherHUD(renderer,texture,police,rechercher,_SELECTION,scrollPositionList,selectionScrollingList) != EXIT_SUCCESS)
 		{
-			printf("leaderboard.c -> leaderboard() : afficherHUD()" );
+			if(EXT_MODE_DEV)
+				printf("leaderboard.c -> leaderboard() : afficherHUD()" );
+			else
+				fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : afficherHUD()" );
+
 			return EXIT_FAILURE;
 		}
 
@@ -919,7 +1007,11 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
 		if ( SDL_SetRenderDrawColor(renderer, BACKGROUND_C.r, BACKGROUND_C.g, BACKGROUND_C.b, 255) )
 		{
-			printf("leaderboard.c -> leaderboard() : SDL_SetRenderDrawColor : %s\n",SDL_GetError() );
+			if(EXT_MODE_DEV)
+				printf("leaderboard.c -> leaderboard() : SDL_SetRenderDrawColor : %s\n",SDL_GetError() );
+			else
+				fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : afficherHUD()" );
+
 			return EXIT_FAILURE;
 		}
 
