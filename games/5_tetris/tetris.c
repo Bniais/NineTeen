@@ -308,7 +308,7 @@ void getNewPiece(Piece *piece, int giant, int hardcore){
 
 	//handle bonus
 	if(rand()%PROBA_BONUS == 0)
-		piece->bonus = FILL;//rand() % (NB_BONUSES+1);
+		piece->bonus = rand() % (NB_BONUSES+1);
 	else
 		piece->bonus = NO_BONUS;
 

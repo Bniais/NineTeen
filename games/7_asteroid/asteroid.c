@@ -1377,8 +1377,8 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 			Mix_VolumeChunk(sounds[i], SOUND_VOLUMES[i]);
 
 		int nb_missiles=0;
-		//float munitions[NB_MISSILES] = {1,0,0,0,0};
-		float munitions[NB_MISSILES] = {1,1,1,1,1};
+		float munitions[NB_MISSILES] = {1,0,0,0,0};
+		//float munitions[NB_MISSILES] = {1,1,1,1,1};
 
 		//ASTEROID
 		int nb_asteroid=0;
