@@ -41,7 +41,6 @@ void afficherMessageSysteme(char message[])
 void afficherLoading(SDL_Renderer * renderer, SDL_Texture * loadingTexture, SDL_Color color, int shiftX, int shiftY, int frameAnim, int windowW, int windowH, int referenceW){
 
 	float ratioSize = (float)referenceW/BASE_WINDOW_W;
-		printf("ar %f\n", ratioSize );
 	if(frameAnim){
 		SDL_SetTextureAlphaMod(loadingTexture, 255);
 		SDL_Rect dest = {windowW - 3/2. * ratioSize* LOADING_SIZE + shiftX* ratioSize , windowH - 3/2. * ratioSize* LOADING_SIZE + shiftY* ratioSize, ratioSize* LOADING_SIZE, ratioSize* LOADING_SIZE};
