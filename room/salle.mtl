@@ -1,5 +1,5 @@
 # Blender MTL File: 'salle.blend'
-# Material Count: 140
+# Material Count: 147
 
 newmtl BMD_CarPaint_0020
 Ns 96.078443
@@ -170,17 +170,6 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd leaderboard_font.jpg
-
-newmtl Matériau.013
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd porte_exterieur.jpg
 
 newmtl Matériau.035
 Ns 225.000000
@@ -1069,6 +1058,39 @@ d 1.000000
 illum 2
 map_Kd bois_noir.jpg
 
+newmtl porte_exterieur
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd porte_exterieur.jpg
+
+newmtl porte_exterieur.001
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd porte_exterieur.jpg
+
+newmtl porte_exterieur.002
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd porte_exterieur.jpg
+
 newmtl poster_1
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
@@ -1078,7 +1100,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd poster_1.png
+map_Kd poster_8.jpg
 
 newmtl poster_1.001
 Ns 225.000000
@@ -1111,7 +1133,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd poster_1.png
+map_Kd poster_5.jpg
 
 newmtl poster_1.004
 Ns 225.000000
@@ -1122,7 +1144,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd poster_4.jpg
+map_Kd poster_5.jpg
 
 newmtl poster_1.005
 Ns 225.000000
@@ -1190,7 +1212,40 @@ d 1.000000
 illum 2
 map_Kd poster_4.jpg
 
+newmtl poster_1.011
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd poster_5.jpg
+
+newmtl poster_1.012
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd poster_4.jpg
+
 newmtl poster_2
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd poster_6.jpg
+
+newmtl poster_2.001
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -1322,6 +1377,17 @@ d 1.000000
 illum 2
 map_Kd poutre.jpg
 
+newmtl poutre.010
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd poutre.jpg
+
 newmtl poutre.011
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
@@ -1334,6 +1400,17 @@ illum 2
 map_Kd poutre.jpg
 
 newmtl poutre.012
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd poutre.jpg
+
+newmtl poutre.013
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
