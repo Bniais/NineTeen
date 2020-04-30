@@ -2273,8 +2273,14 @@ int detectionEnvironnement(float x,float y)
 		return 0;
 
 	///////////////////////////////////////////////////
+	// FUNTION POUR MUR AVEC ANGLE A PROXIMITER DE NINETEEN
+	// MUR DE DROITE NE PAS TOUCHER
+	if(  y >= 14.0 &&  (    ( x >= -0.4736842105*y + 19.36842105  ) || (  x <= -(-0.4736842105*y + 19.36842105))    )   )
+		return 0;
+
+	///////////////////////////////////////////////////
 	// LOT 12 MACHINE MILIEU DE SALLE
-	if( y >= 8.5 && y <= 13.5 && (  (x <= 8.0 && x >= 1.5) || (x > -8.0 && x <= -1.5)   )   )
+	if( y >= 8.5 && y <= 13.5 && (  (x <= 8.0 && x >= 1.4) || (x > -8.0 && x <= -1.4)   )   )
 		return 0;
 
 	///////////////////////////////////////////////////
@@ -2287,22 +2293,11 @@ int detectionEnvironnement(float x,float y)
 	if( x >= -1.5 && x <= 1.5 && y >= -1.5 && y <= 1.5)
 		return 0;
 
-	///////////////////////////////////////////////////
-	// FUNTION POUR MUR AVEC ANGLE A PROXIMITER DE NINETEEN
-	// MUR DE DROITE NE PAS TOUCHER
-	if(  y >= 14.0 &&  (  x <= -(-0.4736842105*y + 19.36842105))       )
-		return 0;
+
 
 
 	printf("X = %f && Y = %f\n",x,y );
-	// OUVERTURE DE LA PORTE + RAJOUTER CONTRAINTE PAS BLOQUER DE L'AUTRE COTER
-	// MUR COULOIR 1
-	if( ( (y>= 14.0 && y<= 18.8) || (y > 20.0) ) && ( x >= -0.4736842105*y + 19.36842105  )  &&  ( x <= -0.4736842105*y + 21.16842105  ) )
-		return 0;
-	// MUR COULOIR 2
 
-	if( y > 20.0 && y < 34.0 && ( x >= -0.4736842105*y + 24.06842105  ))
-		return 0;
 
 	///////////////////////////////////////////////////
 	// OUVERTURE ENTRE POUR ALLER DANS LA SALLE TOILETTE
@@ -2460,7 +2455,7 @@ int detecterMachine(float x,float y,float angle)
 	// DETECTION MACHINE
 	///////////////////////////////////////////////////
 	// DETECTER RANGER 6 MACHINE A GAUCHE
-	if(x > -8.0 && x < -1.0 && y > 7.0 && y < 15.0)
+	if(x > -8.0 && x < -1.5 && y > 7.0 && y < 15.0)
 	{
 		///////////////////////////////////////////////////
 		// DETECTER SI RANGER NORD / SUD
@@ -2503,7 +2498,7 @@ int detecterMachine(float x,float y,float angle)
 
 	///////////////////////////////////////////////////
 	// DETECTER RANGER 6 MACHINE A DROITE
-	if(x < 8.0 && x > 1.0 && y > 7.0 && y < 15.0)
+	if(x < 8.0 && x > 1.5 && y > 7.0 && y < 15.0)
 	{
 		///////////////////////////////////////////////////
 		// DETECTER SI RANGER NORD / SUD
