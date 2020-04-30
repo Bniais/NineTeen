@@ -3,12 +3,15 @@
 
 #ifdef _WIN32
 #define WESNOTH_EXPORT __declspec(dllexport)
-#elif defined __APPLE__
-#define WESNOTH_EXPORT __attribute__((visibility("default")))
-#endif
-
 WESNOTH_EXPORT unsigned long NvOptimusEnablement = 0x00000001;
 WESNOTH_EXPORT int AmdPowerXpressRequestHighPerformance = 1;
+#elif defined __APPLE__
+#define WESNOTH_EXPORT __attribute__((visibility("default")))
+WESNOTH_EXPORT unsigned long NvOptimusEnablement = 0x00000001;
+WESNOTH_EXPORT int AmdPowerXpressRequestHighPerformance = 1;
+#endif
+
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -58,6 +61,7 @@ WESNOTH_EXPORT int AmdPowerXpressRequestHighPerformance = 1;
 #define DIR_FONT_PASSWORD "../assets/font/password.ttf"
 
 const SDL_Color rouge = {255,0,0};
+const SDL_Color rougeFoncer = {209,52,52};
 const	SDL_Color noir = {0,0,0};
 const	SDL_Color blanc = {255,255,255};
 const	SDL_Color blanc_foncer = {200,200,200};
@@ -209,18 +213,19 @@ void attendreEvenementAppuyer(int event)
     } while (attendre);
 }
 
-void printAll(SDL_Renderer *renderer, SDL_Texture* background,SDL_Texture* loading, TTF_Font *police,SDL_Rect targetId, SDL_Rect targetPwd, SDL_Rect targetConnect, SDL_Rect targetInscription, int frame_anims[NB_ANIM] )
+void printAll(SDL_Renderer *renderer, SDL_Texture* background,SDL_Texture* loading, TTF_Font *police,SDL_Rect targetId, SDL_Rect targetPwd, SDL_Rect targetConnect, SDL_Rect targetInscription, int frame_anims[NB_ANIM],int valeurRetour )
 {
-//	SDL_Rect targetId = { LARGUEUR/5.5 , HAUTEUR/3, LARGUEUR/1.7 , HAUTEUR/14};
+
 	SDL_Rect targetIdLabel = { LARGUEUR/6.5 , HAUTEUR/4 , LARGUEUR/1.7 , HAUTEUR/14};
 
-//	SDL_Rect targetPwd = { LARGUEUR/5.5 , HAUTEUR/1.9 , LARGUEUR/1.7 , HAUTEUR/14 };
+
 	SDL_Rect targetPwdLabel = { LARGUEUR/6.3 , HAUTEUR/2.3 , LARGUEUR/1.7 , HAUTEUR/14 };
 
-//	SDL_Rect targetConnect = { LARGUEUR/1.87, HAUTEUR/1.5 , LARGUEUR/4  , HAUTEUR/14};
-//	SDL_Rect targetInscription = {LARGUEUR/5, HAUTEUR/1.5, LARGUEUR/3.3 , HAUTEUR/14};
 
 	SDL_Rect targetUIView = {LARGUEUR/6.5,HAUTEUR/4.8, HAUTEUR,HAUTEUR/2};
+
+  SDL_Rect targetMessage = { LARGUEUR*0.19 , HAUTEUR*0.61, LARGUEUR*0.05 , HAUTEUR*0.05};
+
 
 	SDL_RenderCopy(renderer, background, NULL, NULL);
 
@@ -239,6 +244,10 @@ void printAll(SDL_Renderer *renderer, SDL_Texture* background,SDL_Texture* loadi
 	renduTextField(renderer,"Mot de passe",police,blanc_foncer,targetPwdLabel);
 
 
+  if(valeurRetour == -3 )
+    renduTextField(renderer,"Identifant/Mot de passe incorrect",police,rougeFoncer,targetMessage);
+  else if(valeurRetour == -5)
+    renduTextField(renderer,"Echec de synchronisation, try later",police,rougeFoncer,targetMessage);
 
 	//Change couleur boutons selon animation
 	SDL_Color vertDraw = vert;
@@ -334,7 +343,7 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], 
 	int frame = 0;
 	unsigned int lastTime = 0, currentTime;
 
-	printAll(renderer,background, loading, police, targetId, targetPwd, targetConnect, targetInscription,frame_anims);
+	printAll(renderer,background, loading, police, targetId, targetPwd, targetConnect, targetInscription,frame_anims,0);
 	SDL_RenderPresent(renderer);
 	int etatIdentifant = RESPONDER_TRUE;
 	int etatMotDePasse = RESPONDER_FALSE;
@@ -496,7 +505,7 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], 
 
 
 
-		printAll(renderer,background, loading, police, targetId, targetPwd, targetConnect, targetInscription, frame_anims);
+		printAll(renderer,background, loading, police, targetId, targetPwd, targetConnect, targetInscription, frame_anims,retour);
 
 
 		// permet de ne pas afficher une zone de text vide
