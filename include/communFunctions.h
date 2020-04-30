@@ -1,4 +1,5 @@
 #include <SDL2/SDL_ttf.h>
+#include <stdio.h>
 #define FRAME_ANIM_RETOUR 25.
 #define DIR_LOADING "../assets/texture/loading.png"
 void afficherLoading(SDL_Renderer * renderer, SDL_Texture * loadingTexture, SDL_Color color, int shiftX, int shiftY, int frameAnim, int windowW, int windowH, int referenceW);
@@ -23,7 +24,7 @@ void drawQuit(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
-int _malloc( void **ptr ,int type, int size , FILE *fp , Uint32 flags,const char* title, const char* message,SDL_Window* window );
+int _malloc( void **ptr ,int type, int size , FILE*fp , Uint32 flags,const char* title, const char* message,SDL_Window* window );
 
 /////////////////////////////////////////////////////
 /// \fn afficherMessageSysteme(char message[])

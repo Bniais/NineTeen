@@ -42,9 +42,9 @@ char* DIR_SOUNDS_ASTEROID[NB_ASTEROID_SOUNDS] = {
 	"../games/7_asteroid/Sound/hit.wav",
 	"../games/7_asteroid/Sound/ice_explo.wav",
 	"../games/7_asteroid/Sound/explo.wav",
-	"../games/7_asteroid/Sound/BIG_EXPLO.wav",
+	"../games/7_asteroid/Sound/big_explo.wav",
 	"../games/7_asteroid/Sound/thrust.wav",
-	"../games/5_tetris/Sound/gameOver.wav"
+	"../games/5_tetris/Sound/gameover.wav"
 
 };
 #define TIME_FADE_IN 400

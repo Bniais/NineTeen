@@ -33,7 +33,7 @@ char* DIR_SOUNDS_TETRIS[NB_TETRIS_SOUNDS] = {
 	"../games/5_tetris/Sound/cantRotate.wav",
 	"../games/5_tetris/Sound/hit.wav",
 	"../games/5_tetris/Sound/laser.wav",
-	"../games/5_tetris/Sound/gameOver.wav"
+	"../games/5_tetris/Sound/gameover.wav"
 
 };
 

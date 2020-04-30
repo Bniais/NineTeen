@@ -9,3 +9,6 @@ include/.DS_Store
 include/include.rar
 *.exe
 define/threadthings.txt
+Documentation/*
+games/7_asteroid/Sound/shootremplace.wav
+games/7_asteroid/Sound/glace2.wav

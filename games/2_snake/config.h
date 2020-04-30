@@ -33,7 +33,7 @@ char* DIR_SOUNDS_SNAKE[NB_SNAKE_SOUNDS] = {
 	"../games/2_snake/Sound/get.wav",
 	"../games/2_snake/Sound/appear.wav",
 	"../games/2_snake/Sound/disapear.wav",
-	"../games/5_tetris/Sound/gameOver.wav"
+	"../games/5_tetris/Sound/gameover.wav"
 
 };
 

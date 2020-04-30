@@ -2853,20 +2853,27 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							///////////////////////////////////////////////////
 							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
-							pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
-							SDL_Thread *thread = SDL_CreateThread(  (int(*)(void*))loadGameTexture, "Charger_textures_jeu", &machine);
+							#ifndef __linux__
+								pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+								SDL_Thread *thread = SDL_CreateThread(  (int(*)(void*))loadGameTexture, "Charger_textures_jeu", &machine);
+							#endif
 							///////////////////////////////////////////////////
 							// ANIMATION CENTRAGE SUR MACHINE
 							animationLancerMachine(camera,cible[machine-1],*scene_list,Window, _IPS,60.0);
 
-							int retourThread = SDL_FALSE;
+							#ifndef __linux
+								int retourThread = SDL_FALSE;
 
-                            SDL_WaitThread(thread, &retourThread);
+	                            SDL_WaitThread(thread, &retourThread);
 
-							if(!retourThread){
-								printf("couldnt load texture, abort game\n");
-								return;
-							}
+								if(!retourThread){
+									printf("couldnt load texture, abort game\n");
+									return;
+								}
+							#else
+								loadGameTexture(&machine);
+							#endif
+
 
 
 							///////////////////////////////////////////////////

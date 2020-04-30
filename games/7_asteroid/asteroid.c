@@ -1399,7 +1399,6 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		//mouse
 		SDL_Point mouseCoor;
 
-		int thrustSound[3] = {0,0,0};
         int laserSoundOn = SDL_FALSE;
 		int nb_explosions = 0;
 

@@ -1678,7 +1678,8 @@ int linesInCompletion(int matrixFill[GRILLE_W][GRILLE_H], int frameLaser[GRILLE_
 */
 void deathAnimInit(int *gameOver,DeadPiece **deadPieces,int *nbDeadPieces, int matrix[GRILLE_W][GRILLE_H]){
 
-	(*deadPieces) = malloc(GRILLE_W * GRILLE_H * sizeof(DeadPiece));
+	if(!deadPieces)
+		(*deadPieces) = malloc(GRILLE_W * GRILLE_H * sizeof(DeadPiece));
 	(*nbDeadPieces) = 0;
 
 	for(int col = 0; col<GRILLE_W; col++){
@@ -1828,6 +1829,8 @@ int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, 
 	int frameRetour = 0;
 	int frame_anim_loading = 0;
 
+	DeadPiece *deadPieces = malloc(GRILLE_W * GRILLE_H * sizeof(DeadPiece));
+
 
 	//Fonts
 	TTF_Font* fonts[NB_TETRIS_FONTS];
@@ -1917,7 +1920,6 @@ int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, 
 			frameCompleteLine[i] = -1;
 
 		//death
-		DeadPiece *deadPieces = malloc(sizeof(DeadPiece));
 		int nbDeadPieces = 0;
 
 		//Keyboard
@@ -1957,7 +1959,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, 
 		while( 1 ){
 			if(firstframe){
 				nbDeadPieces=1 ;
-				deadPieces[0].y = BASE_WINDOW_H + 50;
+				deadPieces[0].y = Y_START_REPLAY + 500;
 				gameOver = SDL_TRUE;
 				firstframe=SDL_FALSE;
 				nextPiece.x = UNDEFINED.x;
