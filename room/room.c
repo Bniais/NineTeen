@@ -1833,13 +1833,8 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 
 	////////////////////////////////////////////////////
 	// GERER LES MOUVEMENT DE CAMERA
-	if(FIRST_FRAME == 0)
-	{
-		FIRST_FRAME = 1;
-		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-	}
-	else
-		mouvementCamera(Window, camera,IPS);
+
+	mouvementCamera(Window, camera,IPS);
 
 	////////////////////////////////////////////////////
 	// SI LE RENDU DE LA SCENE N'EST PAS FAIT LE FAIRE
@@ -2093,7 +2088,11 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 	SDL_PumpEvents();
 
 	#ifndef __linux__
-	if (SDL_GetWindowFlags(Window) & (SDL_WINDOW_INPUT_FOCUS )){
+
+
+	// FIRST_FRAME
+	// PERMET DE BLOQUER LE MOUVEMENT DE LA SOURIS TEMPS QUE LA PREMIERE FRAME N EST PAS ATTEINTE
+	if ( ( SDL_GetWindowFlags(Window) & (SDL_WINDOW_INPUT_FOCUS ) )  && FIRST_FRAME   ){
 		int mouseX,mouseY;
         SDL_RaiseWindow(Window);
 		SDL_GetMouseState(&mouseX, &mouseY);
@@ -2119,6 +2118,14 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 
 	}
+	else if(!FIRST_FRAME)
+	{
+		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+		FIRST_FRAME = 1;
+	}
+
+
+
 	#endif
 		///////////////////////////////////////////////////
 
