@@ -954,23 +954,28 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 		if(rand()%PROBA_BONUS==0){
 			(*asteroides)[*nb_asteroid-1].bonus=SDL_TRUE;
 		}
-		else
+		else{
 			(*asteroides)[*nb_asteroid-1].bonus=SDL_FALSE;
-
+		}
 		do{
-
 			id_coord=rand()%4;
 			if(id_coord<2){
 				id_coord=1;
 			}
-		}
+			(*asteroides)[*nb_asteroid-1].x= coord_spawn[id_coord-1].x;
+			(*asteroides)[*nb_asteroid-1].y= coord_spawn[id_coord-1].y;
+		}	while(trop_pres(vaisseau.x,vaisseau.y,(*asteroides)[*nb_asteroid-1].x,(*asteroides)[*nb_asteroid-1].y,DIST_VAISSEAU_ASTEROID+RAYON_VAISS+(*asteroides)[*nb_asteroid-1].taille));
 	}
 	else{
+
 		(*asteroides)[*nb_asteroid-1].angle=PI;
 		(*asteroides)[*nb_asteroid-1].vitesse=VITESSE_BASE;
 		(*asteroides)[*nb_asteroid-1].difficulte=difficulte;
+		(*asteroides)[*nb_asteroid-1].difficulte_pere = (*asteroides)[*nb_asteroid-1].difficulte;
 		(*asteroides)[*nb_asteroid-1].angle_rota=rand()%(int)(2*PI*100);
-
+		(*asteroides)[*nb_asteroid-1].pv=PV_BASE;
+		(*asteroides)[*nb_asteroid-1].frame_hit = 0;
+		(*asteroides)[*nb_asteroid-1].frozen= 0;
 		(*asteroides)[*nb_asteroid-1].taille=rand()%MAX_ASTEROID_SIZE;
 
 		(*asteroides)[*nb_asteroid-1].vitesse_rota= randSign() * ((1+ MAX_ASTEROID_SIZE - (*asteroides)[*nb_asteroid-1].taille) / (float)(MAX_ASTEROID_SIZE - TAILLE_MIN_ASTEROID)) * (rand()%(int)(MAX_VITESSE_ROTA*PRECISION_RAND_FLOAT)/PRECISION_RAND_FLOAT) ;
@@ -979,12 +984,16 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 		if((*asteroides)[*nb_asteroid-1].vitesse > VITESSE_MAX_ASTEROID){
 			(*asteroides)[*nb_asteroid-1].vitesse= VITESSE_MAX_ASTEROID;
 		}
+
+		do{
+			id_coord=rand()%4;
+			if(id_coord<2){
+				id_coord=1;
+			}
+			(*asteroides)[*nb_asteroid-1].x= PLAYGROUND_SIZE_W;
+			(*asteroides)[*nb_asteroid-1].y= rand()%PLAYGROUND_SIZE_H;
+		}	while(trop_pres(vaisseau.x,vaisseau.y,(*asteroides)[*nb_asteroid-1].x,(*asteroides)[*nb_asteroid-1].y,DIST_VAISSEAU_ASTEROID+RAYON_VAISS+(*asteroides)[*nb_asteroid-1].taille));
 	}
-		(*asteroides)[*nb_asteroid-1].x= coord_spawn[id_coord-1].x;
-		(*asteroides)[*nb_asteroid-1].y= coord_spawn[id_coord-1].y;
-
-
-	}	while(trop_pres(vaisseau.x,vaisseau.y,(*asteroides)[*nb_asteroid-1].x,(*asteroides)[*nb_asteroid-1].y,DIST_VAISSEAU_ASTEROID+RAYON_VAISS+(*asteroides)[*nb_asteroid-1].taille));
 
 }
 void mouvement_asteroid(Asteroid* asteroid){
@@ -1278,7 +1287,7 @@ static void drawHelpText(SDL_Renderer *renderer, SDL_Texture *flecheTexture){
 }
 
 extern int updateEnded;
-int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight, char *token, int hardcore, SDL_Texture ** textures, int fullscreen, int hardcore){
+int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight, char *token, int hardcore, SDL_Texture ** textures, int fullscreen){
 
 /////////////////////
 /// MISE EN PLACE ///``
@@ -1295,6 +1304,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 	////////////
 	/// Vars ///`
 	////////////
+
 	int w, h;
 	SDL_GetRendererOutputSize(renderer, &w, &h);
 	//Le thread qui sera utiliser
@@ -1587,6 +1597,14 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		// Gameplay //`
 		//////////////
 
+		//hardcore
+		if(hardcore){
+			for(int i=0; i<=nb_asteroid;i++){
+					if(asteroides[i].x < 0){
+						detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_TRUE, &score, &nbBombeNucleaire, 0, textsBonus, munitions, keys, &score_hash, sounds[SOUND_BONUS], sounds[SOUND_ICE_EXPLO], done);
+					}
+			}
+		}
 			accelerate.x/=DECELERATION + BONUS_DEAD_DECELERATION*done;
 		    accelerate.y/=DECELERATION + BONUS_DEAD_DECELERATION*done;
 
@@ -1828,7 +1846,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 			}
 
 			if(!done && (frame_apparition_asteroid==0 || nb_asteroid <= (frame/FRAME_APPARITION_ASTEROID))&& frame_2asteroid == 0 ){
-				spawn_asteroid(vaisseau,&asteroides,&nb_asteroid,difficulte, munitions);
+				spawn_asteroid(vaisseau,&asteroides,&nb_asteroid,difficulte, munitions, hardcore);
 				frame_2asteroid=FRAME_2ASTEROID;
 				frame_apparition_asteroid=vitesse_spawn;
 				rdyToReloadBomb = SDL_TRUE;
