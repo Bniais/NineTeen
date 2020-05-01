@@ -450,6 +450,7 @@ int updateMeilleureScoreStruct(char *key,char *retour)
 			response = NULL;
 			return EXIT_SUCCESS;
 		}
+		fprintf(EXT_FILE,"libWeb.c : updateMeilleureScoreStruct() envoyez_requet() : EXIT_FAILURE request = %s rsponse = %s\n",request,response);
 	}
 	fprintf(EXT_FILE,"libWeb.c : updateMeilleureScoreStruct() : Erreur construction requete\n");
 	free(request);

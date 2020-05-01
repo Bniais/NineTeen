@@ -14,9 +14,13 @@ FILE *EXT_FILE;
 
 #ifdef __APPLE__
 	#define GL_SILENCE_DEPRECATION
-	#include <OpenGL/gl3.h>
+	#include <OpenGL/gl.h>
 	#include <OpenGL/OpenGL.h>
 	#include <GLUT/glut.h>
+	#include <OpenCL/cl.h>
+#include <OpenCL/cl_gl.h>
+#include <OpenCL/cl_gl_ext.h>
+#include <OpenCL/cl_ext.h>
 #endif
 #ifdef __linux
 	#include <GL/gl.h>
@@ -45,6 +49,7 @@ static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0, _nbMeshes = 
 #include "room.h"
 #include "../define/define.h"
 #include "../include/libWeb.h"
+#include "../include/communFunctions.h"
 #include "../games/2_snake/snake.h"
 #include "../games/3_flappy_bird/flappy_bird.h"
 #include "../games/5_tetris/tetris.h"
@@ -553,13 +558,14 @@ void InitMeilleureScore(struct MeilleureScore_s str[]);
 
 
 /////////////////////////////////////////////////////
-/// \fn void lleureScore(struct MeilleureScore_s str[] ,char *token)
+/// \fn int lleureScore(struct MeilleureScore_s str[] ,char *token)
 /// \brief Mes a jours les donnees liee au score de la structure meilleureScore
 ///
 /// \param struct MeilleureScore_s str[] tableau de donner
 ///
+/// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
-void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
+int updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 
 
 
@@ -1487,11 +1493,13 @@ void InitMeilleureScore(struct MeilleureScore_s str[])
 
 
 
-void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
+int updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 {
 	///////////////////////////////////////////////////////////
 	// INITALISATION D'UNE CHAINE POUR STOCKER LA REPONSE
-	char reponse[2048];
+	char *reponse = NULL;
+	if ( _malloc((void**)&reponse,sizeof(char),2048,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : updateMeilleureScore() : char*reponse ",NULL) )
+		return EXIT_FAILURE;
 
 	///////////////////////////////////////////////////////////
 	// RECUPERATION DU SCORE JUSQU'A REUSSITE
@@ -1554,7 +1562,8 @@ void updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 		sprintf(str[0].nomJeux,"SCORE : %d",str[0].score);
 		sprintf(str[0].nomJoueur,"CLASSEMENT : %d / %d",temp1,temp2);
 		str[0].multiplicator = temp2; // STOCKER NB JOOUEUR ICI
-
+		
+		return EXIT_SUCCESS;
 }
 
 
@@ -2303,15 +2312,21 @@ int detectionEnvironnement(float x,float y)
 
 	///////////////////////////////////////////////////
 	// FUNTION POUR MUR AVEC ANGLE A PROXIMITER DE NINETEEN
+	// CELUI DE DROITE FACE A LA MACHINE
 	if(  y >= 14.0 &&  x <= -(-0.4736842105*y + 19.36842105)    )
 		return 0;
 
-	// MUR GAUCHE AVEC ANGLE COTER GAUCHE PORTE
+	///////////////////////////////////////////////////
+	// FUNTION POUR MUR AVEC ANGLE A PROXIMITER DE NINETEEN
+	// CELUI DE GAUCHE FACE A LA MACHINE
+	///////////////////////////////////////////////////
+	// COTER GAUCHE PORTE
 	if( y >= 14.0 && y < 17.5  && x >= -0.4736842105*y + 19.36842105  )
 		return 0;
-	// MUR GAUCHE AVEC ANGLE COTER DROIT PORTE
+	// COTER DROIT PORTE
 	if( y >= 19.2  && x >= -0.4736842105*y + 19.36842105 && x < 11.3  )
 		return 0;
+
 	///////////////////////////////////////////////////
 	// LOT 12 MACHINE MILIEU DE SALLE
 	if( y >= 8.5 && y <= 13.5 && (  (x <= 8.0 && x >= 1.4) || (x > -8.0 && x <= -1.4)   )   )
@@ -2319,7 +2334,7 @@ int detectionEnvironnement(float x,float y)
 
 	///////////////////////////////////////////////////
 	// DOUBLE MACHINE A GAUCHE DE LA SALLE
-	if( x <= -12.5 && y <= 13.5 && y >= 9.0)
+	if( x <= -12.5 && y <= 13.72 && y >= 9.0)
 		return 0;
 
 	///////////////////////////////////////////////////
@@ -2520,11 +2535,11 @@ int detecterMachine(float x,float y,float angle)
 				///////////////////////////////////////////////////
 				// DETECTER PRECICEMENT LA MACHINE PARMIS LES 3
 				if( x < -5.7 )
-					return 4;
+					return 0; //4
 				else if ( x < -3.7)
 					return 5;
 				else
-					return 6;
+					return 0; //6
 			}
 		}
 	}
@@ -2543,11 +2558,11 @@ int detecterMachine(float x,float y,float angle)
 			if(angle > M_PI - (ANGLE_DETECTION_MACHINE) && angle < M_PI + (ANGLE_DETECTION_MACHINE) )
 			{
 				if( x < 3.4 )
-					return 7;
+					return 0; //7
 				else if ( x < 5.8)
 					return 8;
 				else
-					return 9;
+					return 0; //9
 			}
 		}
 		///////////////////////////////////////////////////
@@ -2577,9 +2592,9 @@ int detecterMachine(float x,float y,float angle)
 		if(angle > 3*M_PI/2 - (ANGLE_DETECTION_MACHINE) && angle < 3*M_PI/2 + (ANGLE_DETECTION_MACHINE))
 		{
 			if(y < 11.25)
-				return 13;
+				return 0; //13
 			else
-				return 14;
+				return 0; //14
 		}
 	}
 
@@ -2589,7 +2604,7 @@ int detecterMachine(float x,float y,float angle)
 		///////////////////////////////////////////////////
 		// DETECTER SI ON A UN ANGLE MAX DE 60 DEGRES
 		if(angle > M_PI - (ANGLE_DETECTION_MACHINE) && angle < M_PI + (ANGLE_DETECTION_MACHINE) )
-			return 15;
+			return 0; //15
 
 	//////////////////////////////////////////////////
 	// DETECTER ORDINATEUR

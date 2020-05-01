@@ -600,32 +600,61 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], 
 
 
 
-int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene,char path[] )
+int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene,char *path )
 {
-	char concatenation[128]="";
+
+  // NB ALLOC 2 //
+
+  //FIX ANIMATION AFFICHAGE MAC
+  // QUI NECESSITE UN EVENT
+  SDL_Event fixMac;
+  while ( SDL_PollEvent(&fixMac) );
+
+  //////////////////////////////////////
+  // NETTOYAGE DE LA FENETRE
+  SDL_RenderClear(renderer);
 
 
-
-
-	SDL_RenderClear(renderer);
-
-	//FIX ANIMATION AFFICHAGE MAC
-	SDL_Event fixMac;
-	while ( SDL_PollEvent(&fixMac) );
-
+  //////////////////////////////////////
+  // Initalisation des variables
+  char *concatenation = NULL;
+  if ( _malloc((void**)&concatenation,sizeof(char),128,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : chargementFichier() : char*concatenation ",NULL) )
+    return EXIT_FAILURE;
+  //////////////////////////////////////
+  // TEXTURE BACKGROUND
 	SDL_Texture* background = IMG_LoadTexture(renderer,DIR_ING_BACKGROUND_TXT);
 	if(!background)
-		printf("Fichier introuvable %s\n", DIR_ING_BACKGROUND_TXT);
-	SDL_RenderCopy(renderer, background, NULL, NULL);
+  {
+    fprintf(EXT_FILE,"main.c -> chargementFichier() : IMG_LoadTexture : %s\n",DIR_ING_BACKGROUND_TXT );
 
+    // NETTOYAGE MEMOIRE
+    free(concatenation);
+    concatenation=NULL;
+    return EXIT_FAILURE;
+  }
+	//////////////////////////////////////
 
-	//fond chargement
+  //////////////////////////////////////
+  // ERREUR RENDER COPY
+	if ( SDL_RenderCopy(renderer, background, NULL, NULL) )
+  {
+    fprintf(EXT_FILE,"main.c : chargementFichier() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+
+    //////////////////////////////////////
+    // NETTOYAGE MEMOIRE
+    SDL_DestroyTexture(background);
+    free(concatenation);
+    concatenation=NULL;
+    return EXIT_FAILURE;
+  }
+
+	//AFFICHER FOND BAR DE CHARGEMENT
 	SDL_Rect chargement = {LARGUEUR*0.05,HAUTEUR*0.85,LARGUEUR*0.90,HAUTEUR*0.08};
 	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
 	SDL_RenderFillRect(renderer,&chargement);
 	SDL_RenderPresent(renderer);
 
-
+  //INIT BAR DE CHARGEMENT
 	SDL_Rect chargementAff = {LARGUEUR*0.05,HAUTEUR*0.85,0,HAUTEUR*0.08};
 	int progression = LARGUEUR*0.90 / (NB_FILE+1);
 
@@ -639,48 +668,99 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 		{
       SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,concatenation,"Fichier introuvable, Merci de réinstaller le programme.",NULL);
 			fprintf(EXT_FILE,"main.c : chargementFichier() : %s introuvable \n",concatenation );
-			return SDL_FALSE;
+
+      //////////////////////////////////////
+      // NETTOYAGE DE LA MEMOIRE
+      SDL_DestroyTexture(background);
+      free(concatenation);
+      concatenation=NULL;
+			return EXIT_FAILURE;
 		}
 		else
 		{
 			fclose(fp);
 		}
 
-
+    //////////////////////////////////////
+    // MISE A JOUR DE L'AFFICHAGE //
 		SDL_RenderClear(renderer);
-		SDL_RenderCopy(renderer, background, NULL, NULL);
+		if ( SDL_RenderCopy(renderer, background, NULL, NULL) )
+    {
+      fprintf(EXT_FILE,"main.c : chargementFichier() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 
+      //////////////////////////////////////
+      // NETTOYAGE MEMOIRE
+      SDL_DestroyTexture(background);
+      free(concatenation);
+      concatenation=NULL;
+      return EXIT_FAILURE;
+    }
+    // BAR FOND CHARGEMENT
 		SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
 		SDL_RenderFillRect(renderer,&chargement);
-
-
-
+    // BAR DE CHARGEMENT
 		chargementAff.w += progression;
 		SDL_SetRenderDrawColor(renderer, blanc.r , blanc.g, blanc.b,200);
 		SDL_RenderFillRect(renderer,&chargementAff);
 
-
+    // AFFICHER LE TOUT
 		SDL_RenderPresent(renderer);
 	}
 
+  //////////////////////////////////////
+  // MSG LOG
+  fprintf(EXT_FILE,"main.c : chargementFichier() : tout les fichiers sont present\n");
+
 
 	InitMeilleureScore(meilleureScore);
-	updateMeilleureScore(meilleureScore,token);
+	if( updateMeilleureScore(meilleureScore,token) )
+  {
+    fprintf(EXT_FILE,"main.c : chargementFichier() : updateMeilleureScore() : EXIT_FAILURE \n");
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"SERVEUR","Une erreur est survenu lors de la communication avec le serveur",NULL);
+    //////////////////////////////////////
+    // NETTOYAGE MEMOIRE
+    SDL_DestroyTexture(background);
+    free(concatenation);
+    concatenation=NULL;
+    return EXIT_FAILURE;
+  }
 
+  //////////////////////////////////////
+  // MSG LOG
+  fprintf(EXT_FILE,"main.c : chargementFichier() : chargement structure score = OK\n");
 
+  //////////////////////////////////////
+  // NETTOYAGE FENETRE
 	SDL_RenderClear(renderer);
-	SDL_RenderCopy(renderer, background, NULL, NULL);
+  // BACKGROUND
+	if ( SDL_RenderCopy(renderer, background, NULL, NULL) )
+  {
+    fprintf(EXT_FILE,"main.c : chargementFichier() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+
+    //////////////////////////////////////
+    // NETTOYAGE MEMOIRE
+    SDL_DestroyTexture(background);
+    free(concatenation);
+    concatenation=NULL;
+    return EXIT_FAILURE;
+  }
+
+  // BAR CHARGEMENT
 	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
 	SDL_RenderFillRect(renderer,&chargement);
 	chargementAff.w += progression;
 	SDL_SetRenderDrawColor(renderer, blanc.r , blanc.g, blanc.b,200);
 	SDL_RenderFillRect(renderer,&chargementAff);
+
+  // AFFICHER LE TOUS
 	SDL_RenderPresent(renderer);
 
+  // IMPORTER OBJ
 	strcpy(concatenation,path);
 	strcat(concatenation,DIR_OBJ_LOAD);
 	aiImportModel(concatenation,scene);
 
+  // MISE A JOUR DE L'AFFICHAGE
 	SDL_RenderClear(renderer);
 	SDL_RenderCopy(renderer, background, NULL, NULL);
 	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
@@ -693,6 +773,11 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 	SDL_DestroyTexture(background);
 
+
+  // LIBERATION DE MEMOIRE
+  SDL_DestroyTexture(background);
+  free(concatenation);
+  concatenation = NULL;
 
 	return SDL_TRUE;
 }
@@ -713,7 +798,6 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Fichier introuvable",DIR_MUSIC_FILE,NULL);
     fprintf(EXT_FILE,"main.c : launcher() : Mix_LoadMUS %s DIR : %s\n",SDL_GetError(),DIR_MUSIC_FILE);
   }
-
 	Mix_Volume(0,MIX_MAX_VOLUME/2);
 	Mix_PlayMusic(musique, -1);
 
@@ -724,28 +808,35 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
     fprintf(EXT_FILE,"main.c : launcher() : SDL_SetRenderDrawBlendMode %s\n",SDL_GetError());
   }
 
+
 	if ( !dejaConneceter(token) )
 	{
+    fprintf(EXT_FILE,"main.c : launcher() : dejaConnecter : FALSE\n");
 		*fullscreen = 0;
 		connexion(renderer,token, tokenCpy, path, fullscreen);
 		sauvegarderToken(token);
   }
+  else
+  {
+    fprintf(EXT_FILE,"main.c : launcher() : dejaConnecter : TRUE\n");
+  }
 
+  // VALEUR DE RETOUR
+  int returnValue = EXIT_FAILURE;
 
 	if( !chargementFichier(renderer,meilleureScore,token,scene,path) )
-	{
-		Mix_HaltMusic();
-		Mix_FreeMusic(musique);
-    fprintf(EXT_FILE,"main.c : launcher() : chargementFichier EXIT FAILURE\n");
-		return EXIT_FAILURE;
-	}
+    fprintf(EXT_FILE,"main.c : launcher() : chargementFichier : EXIT FAILURE\n");
 	else
-	{
-		Mix_HaltMusic();
-		Mix_FreeMusic(musique);
-		return EXIT_SUCCESS;
-	}
+		returnValue = EXIT_SUCCESS;
 
+  ///////////////////////////////////////////
+  // COUPER MUSIQUE
+  Mix_HaltMusic();
+  ///////////////////////////////////////////
+  // LIBERATION DE LA MEMOIRE
+  Mix_FreeMusic(musique);
+
+  return returnValue;
 }
 
 
@@ -786,7 +877,7 @@ int main(int argc, char *argv[])
 
 
       // ALLOCATION
-      if ( _malloc((void**)&nomFichier,sizeof(char),128,EXT_FILE,SDL_MESSAGEBOX_ERROR,"MALLOC","main.c : main() : malloc ",NULL) )
+      if ( _malloc((void**)&nomFichier,sizeof(char),128,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : main() : char*nomFichier ",NULL) )
         return EXIT_FAILURE;
       sprintf(nomFichier,"/tmp/NineteenLog_%d-%02d-%02d_%02d-%02d-%d.log", year  , mon , day, hour , min, sec);
       EXT_FILE = fopen(nomFichier,"w");
@@ -806,7 +897,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-      if ( _malloc((void**)&nomFichier,sizeof(char),18,EXT_FILE,SDL_MESSAGEBOX_ERROR,"MALLOC","main.c : main() : malloc ",NULL) )
+      if ( _malloc((void**)&nomFichier,sizeof(char),18,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : main() : char*nomFichier ",NULL) )
         return EXIT_FAILURE;
       strcpy(nomFichier,"/tmp/NineteenLog_.log");
       EXT_FILE = fopen(nomFichier,"w");
@@ -829,7 +920,8 @@ int main(int argc, char *argv[])
 
 
 
-
+  /////////////////////////////////////////////////////////////////
+  // LANCER LE JEU SI ON A LA BONNE VERSION UNIQUEMENT
   if ( checkVersion(VERSION_LOGICIEL) == EXIT_SUCCESS)
   {
     fprintf(EXT_FILE,"main.c : main() : REPERTOIRE D'EXECUTION %s\n",argv[0] );
@@ -863,21 +955,11 @@ int main(int argc, char *argv[])
 
     /////////////////////////////////////////////////////////////////
     // INIT VARIABLE TOKEN
-    char *token = malloc(sizeof(char) * SIZE_SESSION + 1);
-    if(!token)
-    {
-      SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal.","malloc()",NULL);
-      fprintf(EXT_FILE,"main.c : main() : malloc token\n");
+    char *token=NULL,*tokenCpy=NULL;
+    if ( _malloc((void**)&token,sizeof(char),SIZE_SESSION + 1,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : main() : allocation char*token ",NULL) )
       return EXIT_FAILURE;
-    }
-
-    char *tokenCpy = malloc(sizeof(char) * SIZE_SESSION + 1);
-    if(!token)
-    {
-      SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal.","malloc()",NULL);
-      fprintf(EXT_FILE,"main.c : main() : malloc token copy\n");
+    if ( _malloc((void**)&tokenCpy,sizeof(char),SIZE_SESSION + 1,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : main() : allocation char*tokenCpy ",NULL) )
       return EXIT_FAILURE;
-    }
     // COPIE DE TOKEN DANS TOKENCOPY
     tokenCpy=strcpy(tokenCpy, token);
 
@@ -928,7 +1010,7 @@ int main(int argc, char *argv[])
     // INIT STRUCTURE MEILLEURE_SCORE
     struct MeilleureScore_s meilleureScore[16];
     /////////////////////////////////////////////////////////////////
-	  int fullscreen=1;
+	  int fullscreen=0;
     // APPEL DU LAUNCHER
     /////////////////////////////////////////////////////////////////
     if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath, &fullscreen) == EXIT_SUCCESS)
@@ -954,6 +1036,9 @@ int main(int argc, char *argv[])
     /////////////////////////////////////////////////////////////////
     // VIDER LA MEMOIRE DE LA SCENE
     aiReleaseImport(scene);
+    // VIDER MEMOIRE addPath
+    free(addPath);
+    addPath = NULL;
     // VIDER MEMOIRE TOKEN
     free(token);
     token = NULL;
@@ -978,10 +1063,10 @@ int main(int argc, char *argv[])
     /////////////////////////////////////////////////////////////////
     // QUITTER SDL
     SDL_Quit();
-
-    // FERMETURE DU FICHIER DE LOG
-    fclose(EXT_FILE);
   }
+
+  // FERMETURE DU FICHIER DE LOG
+  fclose(EXT_FILE);
 
 	return 0;
 }
