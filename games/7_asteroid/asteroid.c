@@ -913,55 +913,73 @@ void afficher_tir( SDL_Renderer * renderer, Missile shot, SDL_Texture * missileT
 
 
 //ASTEROID
-void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, float difficulte, float munitions[NB_MISSILES]){
+void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, float difficulte, float munitions[NB_MISSILES], int hardcore){
 	difficulte *= 1 + randSign() * rand()%(int)(PRECISION_RAND_FLOAT *INTERVALE_RAND_DIFFICULTE)/(float)PRECISION_RAND_FLOAT;
 	int id_coord;
 	float ratio_pv;
 	(*nb_asteroid)++;
 	(*asteroides)=realloc((*asteroides),sizeof(Asteroid)*(*nb_asteroid));
-	(*asteroides)[*nb_asteroid-1].angle=(rand()%(int)PRECISION_RAND_FLOAT*2*PI)/PRECISION_RAND_FLOAT;
-	(*asteroides)[*nb_asteroid-1].pv=PV_BASE;
-	(*asteroides)[*nb_asteroid-1].vitesse=VITESSE_BASE;
-	(*asteroides)[*nb_asteroid-1].difficulte=difficulte;
-	(*asteroides)[*nb_asteroid-1].difficulte_pere = (*asteroides)[*nb_asteroid-1].difficulte;
-	(*asteroides)[*nb_asteroid-1].angle_rota=rand()%(int)(2*PI*100);
-	(*asteroides)[*nb_asteroid-1].frame_hit = 0;
-	(*asteroides)[*nb_asteroid-1].frozen= 0;
-
-	if(difficulte >= 1+1/PRECISION_RAND_FLOAT){
-			ratio_pv=1+(rand()%(int)((difficulte-1)*PRECISION_RAND_FLOAT))/PRECISION_RAND_FLOAT;
-	}
-	else ratio_pv = difficulte/2;
-
-	(*asteroides)[*nb_asteroid-1].pv*=ratio_pv;
-	(*asteroides)[*nb_asteroid-1].pv_max = (*asteroides)[*nb_asteroid-1].pv;
-
-	(*asteroides)[*nb_asteroid-1].taille=(ratio_pv/difficulte)*MAX_ASTEROID_SIZE;
-	if((*asteroides)[*nb_asteroid-1].taille < TAILLE_MIN_ASTEROID){
-		(*asteroides)[*nb_asteroid-1].taille=TAILLE_MIN_ASTEROID;
-	}
-
-	(*asteroides)[*nb_asteroid-1].vitesse_rota= randSign() * ((1+ MAX_ASTEROID_SIZE - (*asteroides)[*nb_asteroid-1].taille) / (float)(MAX_ASTEROID_SIZE - TAILLE_MIN_ASTEROID)) * (rand()%(int)(MAX_VITESSE_ROTA*PRECISION_RAND_FLOAT)/PRECISION_RAND_FLOAT) ;
+	if(!hardcore){
+		(*asteroides)[*nb_asteroid-1].angle=(rand()%(int)PRECISION_RAND_FLOAT*2*PI)/PRECISION_RAND_FLOAT;
+		(*asteroides)[*nb_asteroid-1].pv=PV_BASE;
+		(*asteroides)[*nb_asteroid-1].vitesse=VITESSE_BASE;
+		(*asteroides)[*nb_asteroid-1].difficulte=difficulte;
+		(*asteroides)[*nb_asteroid-1].difficulte_pere = (*asteroides)[*nb_asteroid-1].difficulte;
+		(*asteroides)[*nb_asteroid-1].angle_rota=rand()%(int)(2*PI*100);
+		(*asteroides)[*nb_asteroid-1].frame_hit = 0;
+		(*asteroides)[*nb_asteroid-1].frozen= 0;
 
 
-	(*asteroides)[*nb_asteroid-1].vitesse*=difficulte/ratio_pv;
-	if((*asteroides)[*nb_asteroid-1].vitesse > VITESSE_MAX_ASTEROID){
-		(*asteroides)[*nb_asteroid-1].vitesse= VITESSE_MAX_ASTEROID;
-	}
+		if(difficulte >= 1+1/PRECISION_RAND_FLOAT){
+				ratio_pv=1+(rand()%(int)((difficulte-1)*PRECISION_RAND_FLOAT))/PRECISION_RAND_FLOAT;
+		}
+		else ratio_pv = difficulte/2;
 
-	if(rand()%PROBA_BONUS==0){
-		(*asteroides)[*nb_asteroid-1].bonus=SDL_TRUE;
-	}
-	else
-		(*asteroides)[*nb_asteroid-1].bonus=SDL_FALSE;
+		(*asteroides)[*nb_asteroid-1].pv*=ratio_pv;
+		(*asteroides)[*nb_asteroid-1].pv_max = (*asteroides)[*nb_asteroid-1].pv;
 
-	do{
-
-		id_coord=rand()%4;
-		if(id_coord<2){
-			id_coord=1;
+		(*asteroides)[*nb_asteroid-1].taille=(ratio_pv/difficulte)*MAX_ASTEROID_SIZE;
+		if((*asteroides)[*nb_asteroid-1].taille < TAILLE_MIN_ASTEROID){
+			(*asteroides)[*nb_asteroid-1].taille=TAILLE_MIN_ASTEROID;
 		}
 
+		(*asteroides)[*nb_asteroid-1].vitesse_rota= randSign() * ((1+ MAX_ASTEROID_SIZE - (*asteroides)[*nb_asteroid-1].taille) / (float)(MAX_ASTEROID_SIZE - TAILLE_MIN_ASTEROID)) * (rand()%(int)(MAX_VITESSE_ROTA*PRECISION_RAND_FLOAT)/PRECISION_RAND_FLOAT) ;
+
+
+		(*asteroides)[*nb_asteroid-1].vitesse*=difficulte/ratio_pv;
+		if((*asteroides)[*nb_asteroid-1].vitesse > VITESSE_MAX_ASTEROID){
+			(*asteroides)[*nb_asteroid-1].vitesse= VITESSE_MAX_ASTEROID;
+		}
+
+		if(rand()%PROBA_BONUS==0){
+			(*asteroides)[*nb_asteroid-1].bonus=SDL_TRUE;
+		}
+		else
+			(*asteroides)[*nb_asteroid-1].bonus=SDL_FALSE;
+
+		do{
+
+			id_coord=rand()%4;
+			if(id_coord<2){
+				id_coord=1;
+			}
+		}
+	}
+	else{
+		(*asteroides)[*nb_asteroid-1].angle=PI;
+		(*asteroides)[*nb_asteroid-1].vitesse=VITESSE_BASE;
+		(*asteroides)[*nb_asteroid-1].difficulte=difficulte;
+		(*asteroides)[*nb_asteroid-1].angle_rota=rand()%(int)(2*PI*100);
+
+		(*asteroides)[*nb_asteroid-1].taille=rand()%MAX_ASTEROID_SIZE;
+
+		(*asteroides)[*nb_asteroid-1].vitesse_rota= randSign() * ((1+ MAX_ASTEROID_SIZE - (*asteroides)[*nb_asteroid-1].taille) / (float)(MAX_ASTEROID_SIZE - TAILLE_MIN_ASTEROID)) * (rand()%(int)(MAX_VITESSE_ROTA*PRECISION_RAND_FLOAT)/PRECISION_RAND_FLOAT) ;
+
+		(*asteroides)[*nb_asteroid-1].vitesse*=difficulte;
+		if((*asteroides)[*nb_asteroid-1].vitesse > VITESSE_MAX_ASTEROID){
+			(*asteroides)[*nb_asteroid-1].vitesse= VITESSE_MAX_ASTEROID;
+		}
+	}
 		(*asteroides)[*nb_asteroid-1].x= coord_spawn[id_coord-1].x;
 		(*asteroides)[*nb_asteroid-1].y= coord_spawn[id_coord-1].y;
 
@@ -1260,7 +1278,7 @@ static void drawHelpText(SDL_Renderer *renderer, SDL_Texture *flecheTexture){
 }
 
 extern int updateEnded;
-int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight, char *token, int hardcore, SDL_Texture ** textures, int fullscreen){
+int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight, char *token, int hardcore, SDL_Texture ** textures, int fullscreen, int hardcore){
 
 /////////////////////
 /// MISE EN PLACE ///``
