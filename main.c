@@ -1267,7 +1267,7 @@ int main(int argc, char *argv[])
     // LIBERER MEMOIRE
     /////////////////////////////////////////////////////////////////
     // VIDER LA MEMOIRE DE LA SCENE
-    aiReleaseImport(scene);
+    aiReleaseImport(maScene->scene);
     // VIDER MEMOIRE addPath
     free(addPath);
     addPath = NULL;
