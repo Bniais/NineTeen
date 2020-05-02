@@ -225,7 +225,7 @@ int loadGameTexture(int * id_jeu){
 /// \param const C_STRUCT aiScene* scene scene charger
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-//int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize );
+int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize );
 
 
 
@@ -852,7 +852,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 
 
 
-int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, struct Scene_s *maScene, int optFullScreen, SDL_Rect borderSize)
+int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize)
 {
 
 	optionFullScreen = optFullScreen;
@@ -1082,9 +1082,9 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 
 
-	_textures = malloc( (_nbTextures = maScene->scene->mNumMaterials) * sizeof *_textures);
+	_textures = malloc( (_nbTextures = scene->mNumMaterials) * sizeof *_textures);
 
-	aiLoadTexture(DIR_OBJ_LOAD,maScene->scene,_textures,_nbTextures,&_counts,_nbMeshes);
+	aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,_nbTextures,&_counts,_nbMeshes);
 
 	#ifndef __linux__
 		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
@@ -1138,12 +1138,12 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		//////////////////////////////////////////////////////////
 		// LANCEMENT DES MACHINES
-		lancerMachine(maScene->scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme, _IPS);
+		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme, _IPS);
 		//////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////
 		// CHARGER LA SCENE
 
-		SDL_GL_AppliquerScene(Window, maScene->scene,&camera,&scene_list,_IPS);
+		SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
 
 		//GL_InitialiserParametre(WinWidth,WinHeight,camera);
 		//////////////////////////////////////////////////////////

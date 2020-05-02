@@ -937,10 +937,6 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
     return EXIT_FAILURE;
   }
 
-  //textures = malloc( (_nbTextures = scene->mNumMaterials) * sizeof *_textures);
-
-  //aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,_nbTextures,&_counts,_nbMeshes);
-
   fprintf(EXT_FILE,"main.c : chargementFichier() : scene charger avec success : %s\n",concatenation );
 
 
@@ -1041,6 +1037,7 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
     fprintf(EXT_FILE,"main.c : launcher() : dejaConnecter : TRUE\n");
 
 
+
 	if( chargementFichier(renderer,meilleureScore,token,maScene,path) )
   {
     fprintf(EXT_FILE,"main.c : launcher() : chargementFichier : EXIT FAILURE\n");
@@ -1052,6 +1049,7 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
     Mix_FreeMusic(musique);
     return EXIT_FAILURE;
   }
+
 
 
   ///////////////////////////////////////////
@@ -1261,7 +1259,7 @@ int main(int argc, char *argv[])
       SDL_DestroyWindow(window);
       /////////////////////////////////////////////////////////////////
       // APPEL DE LA ROOM
-      room(token,meilleureScore,window,maScene, fullscreen, borderSize);
+      room(token,meilleureScore,window,maScene->scene, fullscreen, borderSize);
     }
 
 
