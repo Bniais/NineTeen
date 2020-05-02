@@ -573,17 +573,6 @@ int updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 void detruireTexture()
 {
 
@@ -1082,7 +1071,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 
 
-	_textures = malloc( (_nbTextures = scene->mNumMaterials) * sizeof *_textures);
+	 _textures = malloc( (_nbTextures = scene->mNumMaterials) * sizeof *_textures);
 
 	aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,_nbTextures,&_counts,_nbMeshes);
 

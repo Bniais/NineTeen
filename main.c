@@ -766,7 +766,7 @@ int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], i
 
 
 
-int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,struct Scene_s *maScene,char *path )
+int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene,char *path )
 {
 
   // NB ALLOC 2 //
@@ -925,7 +925,7 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 	strcpy(concatenation,path);
 	strcat(concatenation,DIR_OBJ_LOAD);
 
-	if ( aiImportModel(concatenation,&maScene->scene) )
+	if ( aiImportModel(concatenation,scene) )
   {
     fprintf(EXT_FILE,"main.c : chargementFichier() : impossible de charger %s\n",concatenation );
     //////////////////////////////////////
@@ -985,7 +985,7 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 
 
-int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],struct Scene_s *maScene, char path[], int * fullscreen)
+int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[], int * fullscreen)
 {
 	Mix_Music *musique = Mix_LoadMUS(DIR_MUSIC_FILE);
 	if (!musique )
@@ -1037,8 +1037,7 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
     fprintf(EXT_FILE,"main.c : launcher() : dejaConnecter : TRUE\n");
 
 
-
-	if( chargementFichier(renderer,meilleureScore,token,maScene,path) )
+	if( chargementFichier(renderer,meilleureScore,token,scene,path) )
   {
     fprintf(EXT_FILE,"main.c : launcher() : chargementFichier : EXIT FAILURE\n");
     ///////////////////////////////////////////
@@ -1049,7 +1048,6 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
     Mix_FreeMusic(musique);
     return EXIT_FAILURE;
   }
-
 
 
   ///////////////////////////////////////////
@@ -1236,16 +1234,11 @@ int main(int argc, char *argv[])
     /////////////////////////////////////////////////////////////////
     // INIT VARIABLE QUI POINTE SUR LA SCENE
     const C_STRUCT aiScene* scene = NULL;
-
-    struct Scene_s *maScene = malloc(sizeof(struct Scene_s*));
-    maScene->scene = NULL;
-    maScene->textures = NULL;
-    maScene->nbTextures = 0;
-    maScene->counts = NULL;
-    maScene->nbMeshes = 0;
+    GLuint *texture = NULL,*counts= NULL;
+    GLuint nbMeshes = 0, nbTextures=0;
     // APPEL DU LAUNCHER
     /////////////////////////////////////////////////////////////////
-    if( launcher(renderer,token,tokenCpy,meilleureScore,maScene,addPath, &fullscreen) == EXIT_SUCCESS)
+    if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath, &fullscreen) == EXIT_SUCCESS)
     {
 
       /////////////////////////////////////////////////////////////////
@@ -1259,7 +1252,7 @@ int main(int argc, char *argv[])
       SDL_DestroyWindow(window);
       /////////////////////////////////////////////////////////////////
       // APPEL DE LA ROOM
-      room(token,meilleureScore,window,maScene->scene, fullscreen, borderSize);
+      room(token,meilleureScore,window,scene, fullscreen, borderSize);
     }
 
 
@@ -1267,7 +1260,7 @@ int main(int argc, char *argv[])
     // LIBERER MEMOIRE
     /////////////////////////////////////////////////////////////////
     // VIDER LA MEMOIRE DE LA SCENE
-    aiReleaseImport(maScene->scene);
+    aiReleaseImport(scene);
     // VIDER MEMOIRE addPath
     free(addPath);
     addPath = NULL;
