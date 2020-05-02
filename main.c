@@ -151,18 +151,25 @@ int dejaConneceter(char *token)
     fp = fopen (DIR_TOKEN_FILE, "r");
 	if (!fp)
 	{
-		return 0;
+    fprintf(EXT_FILE,"main.c -> dejaConneceter() : aucun fichier token trouver\n" );
+		return EXIT_FAILURE;
 	}
 	else
 	{
+    fprintf(EXT_FILE,"main.c -> dejaConneceter() : parsing fichier token\n" );
 		fscanf(fp,"%s",token);
 		fclose(fp);
 
 		if ( !connectWithKey(token) ){
-			return 1;
+      fprintf(EXT_FILE,"main.c -> dejaConneceter() : Connexion automatique avec le token\n" );
+			return EXIT_SUCCESS;
 		}
+
+    fprintf(EXT_FILE,"main.c -> dejaConneceter() : Le fichier token n'as pas permis de ce connecter\n" );
 	}
-	return 0;
+
+  fprintf(EXT_FILE,"main.c -> dejaConneceter() : EXIT_FAILURE\n" );
+	return EXIT_FAILURE;
 }
 
 int sauvegarderToken(char *token)
@@ -171,13 +178,14 @@ int sauvegarderToken(char *token)
 	fp = fopen(DIR_TOKEN_FILE,"w");
 	if (!fp)
 	{
-		return 0;
+    fprintf(EXT_FILE,"main.c -> sauvegarderToken() : impossible d'ecrire/cree le fichier token\n" );
+		return EXIT_FAILURE;
 	}
 	else
 	{
 		fprintf(fp, "%s\n",token );
 		fclose(fp);
-		return 1;
+		return EXIT_SUCCESS;
 	}
 
 }
@@ -302,43 +310,161 @@ void ouvrirUrlRegistration()
 
 }
 
-void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], int * fullscreen)
+int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], int * fullscreen)
 {
 	//////////////////////////////////////////
 	// INIT CHAINE DE CONCATENATION DU PATH
+  int initFailed = SDL_FALSE;
 	//////////////////////////////////////////
 	// AFFICHAGE
 	SDL_Texture* background = IMG_LoadTexture(renderer,DIR_IMG_BACKGROUND);
 	if(!background)
-		printf("Impossible de charger %s\n",DIR_IMG_BACKGROUND );
+  {
+    fprintf(EXT_FILE,"main.c -> connexion() : IMG_LoadTexture : %s\n",DIR_IMG_BACKGROUND );
+
+    // SET initFailed
+    initFailed = SDL_TRUE;
+  }
+
 
 	SDL_Texture* loading = IMG_LoadTexture(renderer,DIR_LOADING);
 	if(!loading)
-		printf("Impossible de charger %s\n",DIR_LOADING );
+  {
+    fprintf(EXT_FILE,"main.c -> connexion() : IMG_LoadTexture : %s\n",DIR_LOADING );
+
+    // SET initFailed
+    initFailed = SDL_TRUE;
+  }
 
 
 	TTF_Font *police = police = TTF_OpenFont(DIR_FONT_POLICE,100);
 	if(!police)
-		printf("Impossible de charger %s\n",DIR_FONT_POLICE );
+  {
+    fprintf(EXT_FILE,"main.c -> connexion() : TTF_OpenFont : %s\n",DIR_FONT_POLICE );
+
+    // SET initFailed
+    initFailed = SDL_TRUE;
+  }
 
 	TTF_Font *ttf_pwd = ttf_pwd = TTF_OpenFont(DIR_FONT_PASSWORD,100);
 	if(!ttf_pwd)
-		printf("Impossible de charger %s\n",DIR_FONT_PASSWORD );
+  {
+    fprintf(EXT_FILE,"main.c -> connexion() : TTF_OpenFont : %s\n",DIR_FONT_PASSWORD );
 
+    // SET initFailed
+    initFailed = SDL_TRUE;
+  }
 
-	// permet de recuperer depuis le serveur l'information sur
-	// le nombre de tentative de connexion
-//	int delai = DELAY;
-//	int tentative = TENTATIVE;
-//	chargementConfig(&delai,&tentative);
+  ///////////////////////////////
+  // INITALISATION DES VARIABLES
 	int retour = EXIT_FAILURE;
-	char identifiant[24]="";
-	char motDePasse[24]="";
-	char identifiantCpy[24]="";
-	char motDePasseCpy[24]="";
+  ///////////////////////////////
+  ///////////////////////////////
+  // ALLOCATION
+	char *identifiant = NULL;
+  if ( _malloc((void**)&identifiant,sizeof(char),24,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : connexion() : char*identifiant ",NULL) )
+    // SET initFailed if failed
+    initFailed = SDL_TRUE;
+  else
+    // SET VALUE TO ""
+    strcpy(identifiant,"");
+  ///////////////////////////////
+  ///////////////////////////////
+  // ALLOCATION
+  char *motDePasse = NULL;
+  if ( _malloc((void**)&motDePasse,sizeof(char),24,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : connexion() : char*motDePasse ",NULL) )
+    // SET initFailed
+    initFailed = SDL_TRUE;
+  else
+    // SET VALUE TO ""
+    strcpy(motDePasse,"");
+  ///////////////////////////////
+  ///////////////////////////////
+  // ALLOCATION
+  char *identifiantCpy = NULL;
+  if ( _malloc((void**)&identifiantCpy,sizeof(char),24,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : connexion() : char*identifiantCpy ",NULL) )
+    // SET initFailed
+    initFailed = SDL_TRUE;
+  else
+    // SET VALUE TO ""
+    strcpy(identifiantCpy,"");
+  ///////////////////////////////
+  ///////////////////////////////
+  // ALLOCATION
+  char *motDePasseCpy = NULL;
+  if ( _malloc((void**)&motDePasseCpy,sizeof(char),24,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : connexion() : char*motDePasseCpy ",NULL) )
+    // SET initFailed
+    initFailed = SDL_TRUE;
+  else
+    // SET VALUE TO ""
+    strcpy(motDePasseCpy,"");
+
+
+
+  if(initFailed == SDL_TRUE)
+  {
+
+    // NETTOYGAE MEMOIRE
+    if(background)
+    {
+      SDL_DestroyTexture(background);
+      background = NULL;
+    }
+    if(loading)
+    {
+      SDL_DestroyTexture(loading);
+      loading = NULL;
+    }
+    if(police)
+    {
+      TTF_CloseFont(police);
+      police = NULL;
+    }
+    if(ttf_pwd)
+    {
+      TTF_CloseFont(ttf_pwd);
+      ttf_pwd = NULL;
+    }
+    if(identifiant)
+    {
+      free(identifiant);
+      identifiant = NULL;
+    }
+    if(motDePasse)
+    {
+      free(motDePasse);
+      motDePasse = NULL;
+    }
+    if(identifiantCpy)
+    {
+      free(identifiantCpy);
+      identifiantCpy = NULL;
+    }
+    if(motDePasseCpy)
+    {
+      free(motDePasseCpy);
+      motDePasseCpy = NULL;
+    }
+
+    fprintf(EXT_FILE,"main.c -> connexion() : Erreur lors d'une allocation EXIT_FAILURE \n");
+    return EXIT_FAILURE;
+  }
+
+  ///////////////////////////////
+  //  ALLOCATION MEMORY END
+  ///////////////////////////////
+  ///////////////////////////////
+
+  ///////////////////////////////
+  // INITALISATION SANS ALLOCATION
+  // DE MEMOIRE DYNAMIQUE
+  ///////////////////////////////
+
 
 	//anims (connection, hover_co, hover_inscription)
 	int frame_anims[NB_ANIM] = {-1,0,-1,0};
+  ///////////////////////////////
+  // PLACEMENT DES RECTS
 	SDL_Rect targetId = { LARGUEUR/5.5 , HAUTEUR/3, LARGUEUR/1.7 , HAUTEUR/14};
 	SDL_Rect targetPwd = { LARGUEUR/5.5 , HAUTEUR/1.9 , LARGUEUR/1.7 , HAUTEUR/14 };
 	SDL_Rect targetConnect = { LARGUEUR/1.87, HAUTEUR/1.5 , LARGUEUR/4  , HAUTEUR/14};
@@ -347,11 +473,13 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], 
 	int frame = 0;
 	unsigned int lastTime = 0, currentTime;
 
-	printAll(renderer,background, loading, police, targetId, targetPwd, targetConnect, targetInscription,frame_anims,0);
-	SDL_RenderPresent(renderer);
+  ///////////////////////////////
+  // ETAT DE CHAQUE BOUTON
+  // etatIdentifant is FIRST RESPONDER
 	int etatIdentifant = RESPONDER_TRUE;
 	int etatMotDePasse = RESPONDER_FALSE;
 	int pressConnexion = SDL_FALSE;
+
 
 	SDL_Point mouse = {0,0};
 	int pressMaj = SDL_FALSE;
@@ -361,11 +489,13 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], 
 
 	do
 	{
-		targetId = (SDL_Rect){ LARGUEUR/5.5 , HAUTEUR/3, LARGUEUR/1.7 , HAUTEUR/14};
+    ///////////////////////////////
+    // DESSIN DU BACKGROUND
 		SDL_RenderCopy(renderer, background, NULL, NULL);
 		SDL_GetMouseState(&mouse.x, &mouse.y);
 
-		//anims hover
+		///////////////////////////////
+    // ANIMATION MOUSE OVER
 		if ( TF_ClickIn( targetConnect , mouse) )
 		{
 			frame_anims[ANIM_HOVER_CONNECTION]++;
@@ -391,7 +521,8 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], 
 		}
 
 
-		//get text
+		///////////////////////////////
+    // RECUPERATION DES ENTREE CLAVIER
 		if(etatIdentifant != RESPONDER_FALSE){
 			etatIdentifant = textField(renderer, police, blanc_foncer ,identifiant, strlen(identifiant) ,&targetId , &mouse,&pressMaj);
 			if(etatIdentifant)
@@ -403,9 +534,10 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], 
 				frame = 0;
 		}
 
-		//printf("Etat ID = %d\nEtat MDP = %d\n",etatIdentifant,etatMotDePasse );
 
-		// SI CLIC SOURIS //
+    ///////////////////////////////
+		// GESTION EVENEMNT CLIC SOURIS
+    // GESTION EVENEMENT CLAVIER
 		if (etatIdentifant == TF_TAB)
 		{
 			etatIdentifant = RESPONDER_FALSE;
@@ -418,30 +550,60 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], 
 		}
 		else if (etatIdentifant == TF_QUIT || etatMotDePasse  == TF_QUIT)
 		{
-			exit(0);
+			fprintf(EXT_FILE,"main.c : connexion() : APPUIE SUR LA CROIX QUIITER : EXIT_FAILURE NORMALY\n");
+
+      // NETTOYAGE DE LA MEMOIRE ALLOUER
+      SDL_DestroyTexture(background);
+      background = NULL;
+
+      SDL_DestroyTexture(loading);
+      loading = NULL;
+
+      TTF_CloseFont(police);
+      police = NULL;
+
+      TTF_CloseFont(ttf_pwd);
+      ttf_pwd = NULL;
+
+      free(identifiant);
+      identifiant = NULL;
+
+      free(motDePasse);
+      motDePasse = NULL;
+
+      free(identifiantCpy);
+      identifiantCpy = NULL;
+
+      free(motDePasseCpy);
+      motDePasseCpy = NULL;
+
+
+      return EXIT_FAILURE;
 		}
+
 		else if ( etatIdentifant == TF_RETURN || etatMotDePasse  == TF_RETURN )
 		{
 			if(thread == NULL){
+        fprintf(EXT_FILE,"main.c : connexion() : lancement d'un thread de connexion\n");
+
+        // VARIABLES ANIMATION CONNEXION
 				frame_anims[ANIM_LOADING] = 0;
 				connectEnded = 0;
 				frame_anims[ANIM_CONNECTION]=FRAME_ANIM_MAX-1;
+        ////////////////////////////////
+        // VARIABLE CONNEXION SAV
 				strcpy(tokenCpy, token);
 				strcpy(identifiantCpy, identifiant);
 				strcpy(motDePasseCpy, motDePasse);
-				printf("CONNEXION...\n" );
-				printf("%s\n", identifiantCpy);
+
+        fprintf(EXT_FILE,"main.c : connexion() : tentative de connexion...\n");
 				connectStruct = (ConnectStruct){tokenCpy,identifiantCpy,motDePasseCpy};
 				thread = SDL_CreateThread(  (int(*)(void*))connectWithUsername, NULL, &connectStruct );
 			}
-
-			/*if ( !connectWithUsername(token,identifiant,motDePasse) )
-			{
-				pressConnexion = SDL_TRUE;
-			}*/
 		}
 		else if(etatIdentifant == TF_MOUSE_OUT_CLICK || etatMotDePasse  == TF_MOUSE_OUT_CLICK)
 		{
+      // PERTE DU FOCUS DES TEXT_FIELD
 			if(mouse.x && mouse.y)
 			{
 				// si on match avec les coordonner d'une des deux textfield on le met en RESPONDER_TRUE et l'autre en RESPONDER_FALSE
@@ -459,69 +621,52 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], 
 				{
 					*fullscreen = 0;
 					if(thread == NULL){
+            fprintf(EXT_FILE,"main.c : connexion() : lancement d'un thread de connexion\n");
+
+            // VARIABLES ANIMATION CONNEXION
 						frame_anims[ANIM_LOADING] = 0;
 						connectEnded = 0;
 						frame_anims[ANIM_CONNECTION]=FRAME_ANIM_MAX-1;
-						printf("CONNEXION...\n" );
+
+            ////////////////////////////////
+            // VARIABLE CONNEXION SAV
 						strcpy(tokenCpy, token);
-                        strcpy(identifiantCpy, identifiant);
-                        strcpy(motDePasseCpy, motDePasse);
+            strcpy(identifiantCpy, identifiant);
+            strcpy(motDePasseCpy, motDePasse);
+
+            fprintf(EXT_FILE,"main.c : connexion() : tentative de connexion...\n");
 						connectStruct = (ConnectStruct){tokenCpy,identifiantCpy,motDePasseCpy};
 						thread = SDL_CreateThread( (int(*)(void*))connectWithUsername, NULL, &connectStruct);
 					}
 
-					/*if ( !retour )
-					{
-						pressConnexion = SDL_TRUE;
-						etatMotDePasse = RESPONDER_FALSE;
-						etatIdentifant = RESPONDER_FALSE;
-					}
-					else if ( retour == -5 )
-					{
-					//	for (int i=0;i < tentative && retour == -5 ;i++) {
-							printf("ECHEC : -5 DELAI DEPASSER (PB LINUX CONNU)\n");
-					//		SDL_Delay(delai);
-					//		retour = connectWithUsername(token,identifiant,motDePasse);
-					//	}
-						//if (!retour)
-						//{
-						//	pressConnexion = SDL_TRUE;
-						//	etatMotDePasse = RESPONDER_FALSE;
-						//	etatIdentifant = RESPONDER_FALSE;
-						//}
-					}*/
-
 				}
 				else if ( TF_ClickIn( targetInscription , mouse) )
 				{
-					printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" );
+					////////////////////////////////
+          // ANIMATION
 					frame_anims[ANIM_INSCRIPTION]=FRAME_ANIM_MAX-1;
+
+          fprintf(EXT_FILE,"main.c : connexion() : redirection vers page inscription\n");
 					ouvrirUrlRegistration();
 
 				}
 
+        // RESET MOUSE
 				mouse.x = 0;
 				mouse.y = 0;
 			}
 		}
 
-
-
-
-
+    // AFFICHE TOUS
 		printAll(renderer,background, loading, police, targetId, targetPwd, targetConnect, targetInscription, frame_anims,retour);
 
 
-		// permet de ne pas afficher une zone de text vide
-		if( strlen(motDePasse) >= 1){
+		// EMPECHE L'AFFICHE D UNE ZONE DE TEXT VIDE
+		if( strlen(motDePasse) >= 1)
 			renduTextField(renderer,motDePasse,ttf_pwd,noir,targetPwd);
-
-		}
-
-		if( strlen(identifiant) >= 1){
+    // EMPECHE L'AFFICHE D UNE ZONE DE TEXT VIDE
+		if( strlen(identifiant) >= 1)
 			renduTextField(renderer,identifiant,police,noir,targetId);
-
-		}
 
 		if(etatMotDePasse == RESPONDER_TRUE){
 			curseur=targetPwd;
@@ -546,39 +691,39 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], 
 		}
 
 
-
-		/*SDL_Rect curseur = { LARGUEUR/6.5 , HAUTEUR/4 , LARGUEUR/1.7 , HAUTEUR/14};
-		curseur.x += curseur.h*0.5;
-		curseur.w = curseur.h*0.5 * strlen(motDePasse);*/
-
 		if(connectEnded && thread){
-			printf("get thread value \n" );
+			fprintf(EXT_FILE,"main.c : connexion() : recuperation valeur thread\n");
 			SDL_WaitThread(thread, &retour);
-				printf("retour : %d \n", retour);
-			//SDL_DetachThread(thread);
+				fprintf(EXT_FILE,"main.c : connexion() : le thread a retourner une valeur\n");
+
 			thread = NULL;
+      // STOPER l'ANIM
 			frame_anims[ANIM_LOADING] = 0;
 		}
 		else if(thread)
+      // FAIRE CONTINUER L ANIM
 			frame_anims[ANIM_LOADING]++;
 
 		frame ++;
 
+    // FIN DE CONNEXION
 		if(retour == EXIT_SUCCESS){
 						strcpy(token,tokenCpy);
 						pressConnexion = SDL_TRUE;
 		}
 
 
-
+    // AFFICHAGE ET NETTOYAGE DE LA FENETRE
 		SDL_RenderPresent(renderer);
 		SDL_RenderClear(renderer);
 
+    // CALCUL DU TEMPS DE LA FRAME POUR LIMITATION
 		currentTime = SDL_GetTicks();
 		while( currentTime - lastTime < 1000/FPS )
 			currentTime = SDL_GetTicks();
 
 		lastTime = currentTime;
+
 
 		//Decremente anim click
 		frame_anims[ANIM_INSCRIPTION]--;
@@ -591,16 +736,37 @@ void connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], 
 
 	} while( !pressConnexion ) ;
 
+  // NETTOYAGE DE LA MEMOIRE ALLOUER
+  SDL_DestroyTexture(background);
+  background = NULL;
 
-	//destruction des creations
-	SDL_DestroyTexture(background);
-	TTF_CloseFont(police);
-	TTF_CloseFont(ttf_pwd);
+  SDL_DestroyTexture(loading);
+  loading = NULL;
+
+  TTF_CloseFont(police);
+  police = NULL;
+
+  TTF_CloseFont(ttf_pwd);
+  ttf_pwd = NULL;
+
+  free(identifiant);
+  identifiant = NULL;
+
+  free(motDePasse);
+  motDePasse = NULL;
+
+  free(identifiantCpy);
+  identifiantCpy = NULL;
+
+  free(motDePasseCpy);
+  motDePasseCpy = NULL;
+
+  return EXIT_SUCCESS;
 }
 
 
 
-int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene,char *path )
+int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,struct Scene_s *maScene,char *path )
 {
 
   // NB ALLOC 2 //
@@ -744,7 +910,6 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
     concatenation=NULL;
     return EXIT_FAILURE;
   }
-
   // BAR CHARGEMENT
 	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
 	SDL_RenderFillRect(renderer,&chargement);
@@ -755,31 +920,65 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
   // AFFICHER LE TOUS
 	SDL_RenderPresent(renderer);
 
+  //////////////////////////////////////
   // IMPORTER OBJ
 	strcpy(concatenation,path);
 	strcat(concatenation,DIR_OBJ_LOAD);
-	aiImportModel(concatenation,scene);
 
+	if ( aiImportModel(concatenation,&maScene->scene) )
+  {
+    fprintf(EXT_FILE,"main.c : chargementFichier() : impossible de charger %s\n",concatenation );
+    //////////////////////////////////////
+    // NETTOYAGE MEMOIRE
+    SDL_DestroyTexture(background);
+    free(concatenation);
+    concatenation=NULL;
+
+    return EXIT_FAILURE;
+  }
+
+  //textures = malloc( (_nbTextures = scene->mNumMaterials) * sizeof *_textures);
+
+  //aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,_nbTextures,&_counts,_nbMeshes);
+
+  fprintf(EXT_FILE,"main.c : chargementFichier() : scene charger avec success : %s\n",concatenation );
+
+
+  //////////////////////////////////////
   // MISE A JOUR DE L'AFFICHAGE
+  // AVEC DERNIER FICHIER A CHARGER
 	SDL_RenderClear(renderer);
-	SDL_RenderCopy(renderer, background, NULL, NULL);
+  if ( SDL_RenderCopy(renderer, background, NULL, NULL) )
+  {
+    fprintf(EXT_FILE,"main.c : chargementFichier() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+
+    //////////////////////////////////////
+    // NETTOYAGE MEMOIRE
+    SDL_DestroyTexture(background);
+    free(concatenation);
+    concatenation=NULL;
+    return EXIT_FAILURE;
+  }
+
+  // BAR CHARGEMENT
 	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
 	SDL_RenderFillRect(renderer,&chargement);
 	chargementAff.w = LARGUEUR*0.90;
 	SDL_SetRenderDrawColor(renderer, blanc.r , blanc.g, blanc.b,200);
 	SDL_RenderFillRect(renderer,&chargementAff);
+
+  // AFFICHER LE TOUS
 	SDL_RenderPresent(renderer);
 
-
-	SDL_DestroyTexture(background);
 
 
   // LIBERATION DE MEMOIRE
   SDL_DestroyTexture(background);
+  background = NULL;
   free(concatenation);
   concatenation = NULL;
 
-	return SDL_TRUE;
+	return EXIT_SUCCESS;
 }
 
 
@@ -790,13 +989,14 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 
 
-int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[], int * fullscreen)
+int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],struct Scene_s *maScene, char path[], int * fullscreen)
 {
 	Mix_Music *musique = Mix_LoadMUS(DIR_MUSIC_FILE);
 	if (!musique )
   {
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Fichier introuvable",DIR_MUSIC_FILE,NULL);
     fprintf(EXT_FILE,"main.c : launcher() : Mix_LoadMUS %s DIR : %s\n",SDL_GetError(),DIR_MUSIC_FILE);
+    return EXIT_FAILURE;
   }
 	Mix_Volume(0,MIX_MAX_VOLUME/2);
 	Mix_PlayMusic(musique, -1);
@@ -809,25 +1009,50 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
   }
 
 
-	if ( !dejaConneceter(token) )
+	if ( dejaConneceter(token) )
 	{
     fprintf(EXT_FILE,"main.c : launcher() : dejaConnecter : FALSE\n");
 		*fullscreen = 0;
-		connexion(renderer,token, tokenCpy, path, fullscreen);
-		sauvegarderToken(token);
+		if( connexion(renderer,token, tokenCpy, path, fullscreen) )
+    {
+      fprintf(EXT_FILE,"main.c : launcher() : connexion : EXIT_FAILURE\n");
+      ///////////////////////////////////////////
+      // COUPER MUSIQUE
+      Mix_HaltMusic();
+      ///////////////////////////////////////////
+      // LIBERATION DE LA MEMOIRE
+      Mix_FreeMusic(musique);
+      return EXIT_FAILURE;
+    }
+
+		if ( sauvegarderToken(token) )
+    {
+      fprintf(EXT_FILE,"main.c : launcher() : sauvegarderToken : EXIT_FAILURE\n");
+      ///////////////////////////////////////////
+      // COUPER MUSIQUE
+      Mix_HaltMusic();
+      ///////////////////////////////////////////
+      // LIBERATION DE LA MEMOIRE
+      Mix_FreeMusic(musique);
+      return EXIT_FAILURE;
+    }
   }
   else
-  {
     fprintf(EXT_FILE,"main.c : launcher() : dejaConnecter : TRUE\n");
+
+
+	if( chargementFichier(renderer,meilleureScore,token,maScene,path) )
+  {
+    fprintf(EXT_FILE,"main.c : launcher() : chargementFichier : EXIT FAILURE\n");
+    ///////////////////////////////////////////
+    // COUPER MUSIQUE
+    Mix_HaltMusic();
+    ///////////////////////////////////////////
+    // LIBERATION DE LA MEMOIRE
+    Mix_FreeMusic(musique);
+    return EXIT_FAILURE;
   }
 
-  // VALEUR DE RETOUR
-  int returnValue = EXIT_FAILURE;
-
-	if( !chargementFichier(renderer,meilleureScore,token,scene,path) )
-    fprintf(EXT_FILE,"main.c : launcher() : chargementFichier : EXIT FAILURE\n");
-	else
-		returnValue = EXIT_SUCCESS;
 
   ///////////////////////////////////////////
   // COUPER MUSIQUE
@@ -836,7 +1061,7 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
   // LIBERATION DE LA MEMOIRE
   Mix_FreeMusic(musique);
 
-  return returnValue;
+  return EXIT_SUCCESS;
 }
 
 
@@ -963,9 +1188,7 @@ int main(int argc, char *argv[])
     // COPIE DE TOKEN DANS TOKENCOPY
     tokenCpy=strcpy(tokenCpy, token);
 
-    /////////////////////////////////////////////////////////////////
-    // INIT VARIABLE QUI POINTE SUR LA SCENE
-    const C_STRUCT aiScene* scene = NULL;
+
 
     /////////////////////////////////////////////////////////////////
     // INIT FENETRE WINDOWS ET RENDERER ET SURFACE
@@ -1011,9 +1234,20 @@ int main(int argc, char *argv[])
     struct MeilleureScore_s meilleureScore[16];
     /////////////////////////////////////////////////////////////////
 	  int fullscreen=0;
+
+    /////////////////////////////////////////////////////////////////
+    // INIT VARIABLE QUI POINTE SUR LA SCENE
+    const C_STRUCT aiScene* scene = NULL;
+
+    struct Scene_s *maScene = malloc(sizeof(struct Scene_s*));
+    maScene->scene = NULL;
+    maScene->textures = NULL;
+    maScene->nbTextures = 0;
+    maScene->counts = NULL;
+    maScene->nbMeshes = 0;
     // APPEL DU LAUNCHER
     /////////////////////////////////////////////////////////////////
-    if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath, &fullscreen) == EXIT_SUCCESS)
+    if( launcher(renderer,token,tokenCpy,meilleureScore,maScene,addPath, &fullscreen) == EXIT_SUCCESS)
     {
 
       /////////////////////////////////////////////////////////////////
@@ -1027,7 +1261,7 @@ int main(int argc, char *argv[])
       SDL_DestroyWindow(window);
       /////////////////////////////////////////////////////////////////
       // APPEL DE LA ROOM
-      room(token,meilleureScore,window,scene, fullscreen, borderSize);
+      room(token,meilleureScore,window,maScene, fullscreen, borderSize);
     }
 
 

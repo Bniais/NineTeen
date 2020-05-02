@@ -6,10 +6,10 @@
 
 // GLOBAL LIBRARY
 #include <stdio.h>
+#include <stdlib.h>
 
 // EXTERNAL
-int EXT_MODE_DEV;
-FILE *EXT_FILE;
+FILE* EXT_FILE;
 
 
 #ifdef __APPLE__
@@ -225,7 +225,7 @@ int loadGameTexture(int * id_jeu){
 /// \param const C_STRUCT aiScene* scene scene charger
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize );
+//int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize );
 
 
 
@@ -574,274 +574,14 @@ int updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 
 
 
-char * pathOf(const char * path) {
-	int spos = -1;
-	char * tmp, * ptr;
-	tmp = malloc((strlen(path) + 1) * sizeof * tmp); assert(tmp); strcpy(tmp, path); //strdup(path);
-	ptr = tmp;
-	while(*ptr) {
-		if(*ptr == '/' || *ptr == '\\')
-			spos = ptr - tmp;
-		++ptr;
-	}
-	tmp[spos >= 0 ? spos : 0] = 0;
-	return tmp;
-}
-
-
-
-static int sceneNbMeshes(const struct aiScene *sc, const struct aiNode* nd, int subtotal) {
-  int n = 0;
-  subtotal += nd->mNumMeshes;
-  for(n = 0; n < nd->mNumChildren; ++n)
-    subtotal += sceneNbMeshes(sc, nd->mChildren[n], 0);
-  return subtotal;
-}
-
-static void sceneMkVAOs(const struct aiScene *sc, const struct aiNode* nd, GLuint * ivao ) {
-  int i, j; //comp;
-  unsigned int n = 0;
-  //static int temp = 0;
-
-  //temp++;
-
-  for (; n < nd->mNumMeshes; ++n) {
-   // GLfloat * vertices = NULL;
-    GLuint  * indices  = NULL;
-    const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
-  //  comp  = mesh->mVertices ? 3 : 0;
-  //  comp += mesh->mNormals ? 3 : 0;
-  //  comp += mesh->mTextureCoords[0] ? 2 : 0;
-  //  if(!comp) continue;
-
-  //  glBindVertexArray(_vaos[*ivao]);
-  //  glBindBuffer(GL_ARRAY_BUFFER, _buffers[2 * (*ivao)]);
-
-  //  vertices = malloc(comp * mesh->mNumVertices * sizeof *vertices);
-  //  assert(vertices);
-  //  i = 0;
-  //  glDisableVertexAttribArray(0);
-  //  glDisableVertexAttribArray(1);
-  //  glDisableVertexAttribArray(2);
-
-/*    if(mesh->mVertices) {
-    //  glEnableVertexAttribArray(0);
-    //  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
-      for(j = 0; j < mesh->mNumVertices; ++j) {
-				vertices[i++] = mesh->mVertices[j].x;
-				vertices[i++] = mesh->mVertices[j].y;
-				vertices[i++] = mesh->mVertices[j].z;
-      }
-
-    }*/
-/*    if(mesh->mNormals) {
-
-    //  glEnableVertexAttribArray(1);
-    //  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
-      for(j = 0; j < mesh->mNumVertices; ++j) {
-				vertices[i++] = mesh->mNormals[j].x;
-				vertices[i++] = mesh->mNormals[j].y;
-				vertices[i++] = mesh->mNormals[j].z;
-      }
-
-    } */
-
-/*
-    //  glEnableVertexAttribArray(2);
-    //  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (const void *)(i * sizeof *vertices));
-      for(j = 0; j < mesh->mNumVertices; ++j) {
-				vertices[i++] = mesh->mTextureCoords[0][j].x;
-				vertices[i++] = mesh->mTextureCoords[0][j].y;
-      }
-
-    } */
-
-
-  //  glBufferData(GL_ARRAY_BUFFER, (i * sizeof *vertices), vertices, GL_STATIC_DRAW);
-
-//    free(vertices);
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _buffers[2 * (*ivao) + 1]);
-    if(mesh->mFaces) {
-      indices = malloc(3 * mesh->mNumFaces * sizeof *indices);
-      assert(indices);
-      for(i = 0, j = 0; j < mesh->mNumFaces; ++j) {
-				assert(mesh->mFaces[j].mNumIndices < 4);
-				if(mesh->mFaces[j].mNumIndices != 3) continue;
-				indices[i++] = mesh->mFaces[j].mIndices[0];
-				indices[i++] = mesh->mFaces[j].mIndices[1];
-				indices[i++] = mesh->mFaces[j].mIndices[2];
-      }
-
-    //  glBufferData(GL_ELEMENT_ARRAY_BUFFER, i * sizeof *indices, indices, GL_STATIC_DRAW);
-      _counts[*ivao] = i;
-      free(indices);
-    }
-  //  glBindVertexArray(0);
-    (*ivao)++;
-  }
-  for (n = 0; n < nd->mNumChildren; ++n) {
-    sceneMkVAOs(sc, nd->mChildren[n], ivao);
-  }
-}
-
-
-
-void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene)
-{
-  int i = 0;
-	GLuint ivao = 0;
-
-
-  _textures = malloc( (_nbTextures = _scene->mNumMaterials) * sizeof *_textures);
-  assert(_textures);
-
-  glGenTextures(_nbTextures, _textures);
-
-  for (i = 0; i < _scene->mNumMaterials ; i++) {
-
-    const struct aiMaterial* pMaterial = _scene->mMaterials[i];
-       if (aiGetMaterialTextureCount(pMaterial, aiTextureType_DIFFUSE) > 0) {
-         struct aiString tfname;
-         char * dir = pathOf(filename), buf[BUFSIZ];
-         if (aiGetMaterialTexture(pMaterial, aiTextureType_DIFFUSE, 0, &tfname, NULL, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
-           SDL_Surface * t;
-           snprintf(buf, sizeof buf, "%s/%s", dir, tfname.data);
-           if(!(t = IMG_Load(buf))) {
-            fprintf(stderr, "Probleme de chargement de textures %s\n", buf);
-            fprintf(stderr, "\tNouvel essai avec %s\n", tfname.data);
-            if(!(t = IMG_Load(tfname.data)))
-						{
-							fprintf(stderr, "Probleme de chargement de textures %s\n", tfname.data); continue;
-            }
-            glBindTexture(GL_TEXTURE_2D, _textures[i]);
-	          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
-	          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
-            #ifdef __APPLE__
-	           glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_BGR : GL_BGRA, GL_UNSIGNED_BYTE, t->pixels);
-            #else
-	           glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, t->pixels);
-            #endif
-
-	          SDL_FreeSurface(t);
-
-          }
-					glBindTexture(GL_TEXTURE_2D, _textures[i]);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-				//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-				//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
-				//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
-					#ifdef __APPLE__
-					 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, GL_RGB, GL_UNSIGNED_BYTE, t->pixels);
-					#else
-					 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, t->pixels);
-					#endif
-					SDL_FreeSurface(t);
-
-         }
-
-       }
-
-  }
-
-	_nbMeshes = sceneNbMeshes(_scene, _scene->mRootNode, 0);
-//	_vaos = malloc(_nbMeshes * sizeof *_vaos);
-//	assert(_vaos);
-//	glGenVertexArrays(_nbMeshes, _vaos);
-
-//	glGenBuffers(2 * _nbMeshes,_buffers);
-	_counts = calloc(_nbMeshes, sizeof *_counts);
-	assert(_counts);
-	sceneMkVAOs(_scene, _scene->mRootNode, &ivao);
-
-}
 
 
 
 
 
-void aiDessinerImage(const struct aiScene *sc, const struct aiNode* nd, GLuint * ivao)
-{
-	glEnable(GL_TEXTURE_2D);
-	unsigned int n = 0,i,t;
-	struct aiMatrix4x4 m = nd->mTransformation;
-
-
-	/* update transform */
-	aiTransposeMatrix4(&m);
-	glPushMatrix();
-	glMultMatrixf((float*)&m);
-
-	/* draw all meshes assigned to this node */
-	for (; n < nd->mNumMeshes; ++n) {
-		const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
-		// BLIND DE LA TEXTURE SI BESOIN
-
-	//	if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0) {
-			glBindTexture(GL_TEXTURE_2D, _textures[mesh->mMaterialIndex]);
-	//	}
-		if(_counts[*ivao]) {
-
-		//	glBindVertexArray(_vaos[*ivao]);
-			aiAppliquerCouleur(sc->mMaterials[mesh->mMaterialIndex]);
-
-			for (t = 0; t < mesh->mNumFaces; ++t) {
-				const C_STRUCT aiFace* face = &mesh->mFaces[t];
-				GLenum face_mode;
-
-					switch(face->mNumIndices) {
-						case 1: face_mode = GL_POINTS; break;
-						case 2: face_mode = GL_LINES; break;
-						case 3: face_mode = GL_TRIANGLES; break;
-						default: face_mode = GL_POLYGON; break;
-					}
-
-
-					if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0) {
-						glBindTexture(GL_TEXTURE_2D, _textures[mesh->mMaterialIndex]);
-					}
-
-					glBegin(face_mode);
-					for(i = 0; i < face->mNumIndices; i++) {
-
-						int index = face->mIndices[i];
-
-						if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0) {
-							glTexCoord2f(mesh->mTextureCoords[0][index].x, 1- mesh->mTextureCoords[0][index].y);
-						}
-						if(mesh->mColors[0] != NULL)
-						{
-						//	glColor4fv((GLfloat*)&mesh->mColors[0][index]);
-						}
-						if(mesh->mNormals != NULL)
-						{
-							glNormal3fv(&mesh->mNormals[index].x);
-						}
 
 
 
-
-						glVertex3fv(&mesh->mVertices[index].x);
-
-					}
-					glEnd();
-
-
-			}
-		}
-
-		(*ivao)++;
-	}
-
-
-	for (n = 0; n < nd->mNumChildren; ++n) {
-		aiDessinerImage(sc, nd->mChildren[n],ivao);
-	}
-
-	glPopMatrix();
-
-}
 
 
 void detruireTexture()
@@ -857,6 +597,13 @@ void detruireTexture()
     _textures = NULL;
   }
 }
+
+
+
+
+
+
+
 
 void GLlightMode()
 {
@@ -1105,9 +852,8 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 
 
 
-int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize)
+int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, struct Scene_s *maScene, int optFullScreen, SDL_Rect borderSize)
 {
-	printf("VALEUR = %d\n",EXT_MODE_DEV );
 
 	optionFullScreen = optFullScreen;
 	//////////////////////////////////////////////////////////
@@ -1115,7 +861,8 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 	//////////////////////////////////////////////////////////
 	// POSITIONNER LA SOURIS AU CENTRE
-	SDL_GetDisplayBounds(0, &bounds);
+	if ( SDL_GetDisplayBounds(0, &bounds) )
+		fprintf(EXT_FILE,"room.c : room() : SDL_GetDisplayBounds : %s\n",SDL_GetError() );
 	///////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////
 
@@ -1145,46 +892,54 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	// INITALISATION SON
 	mixerInit();
 	// CHARGER LES MUSIQUES D"AMBIANCE
+	int initFailed = SDL_FALSE;
 	Mix_Chunk *music_01	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_1);
 	if( !music_01 )
 	{
-		printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_1);
-		return EXIT_FAILURE;
+		fprintf(EXT_FILE,"room.c -> room() : Mix_LoadWAV : %s DIR:%s\n",Mix_GetError(),DIR_SON_ENIRONNEMENT_1 );
+		// SET initFailed
+		initFailed = SDL_TRUE;
 	}
-
 	Mix_Chunk *music_02	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_2);
 	if( !music_02 )
 	{
-		printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_2);
-		return EXIT_FAILURE;
+		fprintf(EXT_FILE,"room.c -> room() : Mix_LoadWAV : %s DIR:%s\n",Mix_GetError(),DIR_SON_ENIRONNEMENT_2 );
+		// SET initFailed
+		initFailed = SDL_TRUE;
 	}
 
 	Mix_Chunk *music_03	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_3);
 	if( !music_03 )
 	{
-		printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_3);
-		return EXIT_FAILURE;
+		fprintf(EXT_FILE,"room.c -> room() : Mix_LoadWAV : %s DIR:%s\n",Mix_GetError(),DIR_SON_ENIRONNEMENT_3 );
+		// SET initFailed
+		initFailed = SDL_TRUE;
 	}
 
 	Mix_Chunk *music_walk	= Mix_LoadWAV(DIR_SON_ENIRONNEMENT_WALK);
 	if( !music_walk )
 	{
-		printf("Erreur de chargement son %s\n",DIR_SON_ENIRONNEMENT_WALK);
-		return EXIT_FAILURE;
+		fprintf(EXT_FILE,"room.c -> room() : Mix_LoadWAV : %s DIR:%s\n",Mix_GetError(),DIR_SON_ENIRONNEMENT_WALK );
+		// SET initFailed
+		initFailed = SDL_TRUE;
 	}
 
 	Mix_Chunk *sas_ouverture = Mix_LoadWAV("../room/SF-ouvport.wav");
 	if( !sas_ouverture )
 	{
-		printf("Erreur de chargement son %s\n","../room/SF-ouvport.wav");
-		return EXIT_FAILURE;
+		fprintf(EXT_FILE,"room.c -> room() : Mix_LoadWAV : %s DIR:%s\n",Mix_GetError(),"../room/SF-ouvport.wav" );
+		// SET initFailed
+		initFailed = SDL_TRUE;
 	}
 	Mix_Chunk *sas_fermeture = Mix_LoadWAV("../room/SF-fermport.wav");
-	if( !sas_ouverture )
+	if( !sas_fermeture )
 	{
-		printf("Erreur de chargement son %s\n","../room/SF-fermport.wav");
-		return EXIT_FAILURE;
+		fprintf(EXT_FILE,"room.c -> room() : Mix_LoadWAV : %s DIR:%s\n",Mix_GetError(),"../room/SF-fermport.wav" );
+		// SET initFailed
+		initFailed = SDL_TRUE;
 	}
+
+	// VARIABLE JOUER SON
 	int jouerSonPorteFemme = 0;
 	int jouerSonPorteHomme = 0;
 	//////////////////////////////////////////////////////////
@@ -1195,21 +950,23 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 
 
-
 	//////////////////////////////////////////////////////////
 	// INITALISATION DES POLICES
 	TTF_Font * font = TTF_OpenFont(DIR_FONT_POLICE, WinWidth/50);
 	if(!font)
 	{
-		printf("Erreur chargement font %s\n",DIR_FONT_POLICE);
-		return EXIT_FAILURE;
+		fprintf(EXT_FILE,"room.c -> room() : TTF_OpenFont : %s DIR:%s\n",TTF_GetError(),DIR_FONT_POLICE );
+		// SET initFailed
+		initFailed = SDL_TRUE;
 	}
 	TTF_Font * sega = TTF_OpenFont(DIR_FONT_SEGA, WinWidth/50);
 	if(!sega)
 	{
-		printf("Erreur chargement font %s\n",DIR_FONT_SEGA);
-		return EXIT_FAILURE;
+		fprintf(EXT_FILE,"room.c -> room() : TTF_OpenFont : %s DIR:%s\n",TTF_GetError(),DIR_FONT_SEGA );
+		// SET initFailed
+		initFailed = SDL_TRUE;
 	}
+
 	//////////////////////////////////////////////////////////
 
 
@@ -1235,29 +992,86 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	// VERIFIER EXISTANCE DE LA FENETRE ET CREATION CONTEXT
 	if( !Window)
 	{
-		printf("Impossible de cree la fenetre %s\n",SDL_GetError() );
-		return EXIT_FAILURE;
+		// NETTOYAGE MEMOIRE
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal",SDL_GetError(),NULL);
+		fprintf(EXT_FILE,"room.c -> room() : SDL_CreateWindow : %s \n",SDL_GetError() );
+		initFailed = SDL_TRUE;
 	}
-
-
 
 	//////////////////////////////////////////////////////////
 	// CREATION DE L'ICON D'APPLICATION
 	SDL_Surface *favicon;
 	if( ( favicon=IMG_Load("../assets/image/favicon.png") ) )
+	{
 		SDL_SetWindowIcon(Window, favicon);
+		SDL_FreeSurface(favicon);
+	}
 	else
-		printf("Erreur chargement favicon\n");
-	SDL_FreeSurface(favicon);
+		fprintf(EXT_FILE,"room.c : room() : IMG_Load : %s DIR:%s\n",SDL_GetError() , "../assets/image/favicon.png" );
+
 
 	SDL_GLContext Context = SDL_GL_CreateContext(Window);
 	if( !Context)
 	{
-		printf("Impossible de cree le context %s\n",SDL_GetError() );
-		return EXIT_FAILURE;
+		fprintf(EXT_FILE,"room.c : room() : SDL_GL_CreateContext : %s\n",SDL_GetError());
+		initFailed = SDL_TRUE;
 	}
 	//////////////////////////////////////////////////////////
 
+	// QUITTER LA FONCTION SI IL Y'A EUX UNE ERREUR AVANT
+	if(initFailed == SDL_TRUE)
+	{
+		/////////////////////////
+		// NETTOYAGE ALLOCATION DE MEMOIRE
+		// AVANT DESTRUCTION DU PROGRAMME
+		if(music_01)
+		{
+			Mix_FreeChunk(music_01);
+			music_01 = NULL;
+		}
+		if(music_02)
+		{
+			Mix_FreeChunk(music_02);
+			music_02 = NULL;
+		}
+		if(music_03)
+		{
+			Mix_FreeChunk(music_03);
+			music_03 = NULL;
+		}
+		if(music_walk)
+		{
+			Mix_FreeChunk(music_walk);
+			music_walk = NULL;
+		}
+		if(sas_ouverture)
+		{
+			Mix_FreeChunk(sas_ouverture);
+			sas_ouverture = NULL;
+		}
+		if(sas_fermeture)
+		{
+			Mix_FreeChunk(sas_fermeture);
+			sas_fermeture = NULL;
+		}
+		if(font)
+		{
+			TTF_CloseFont(font);
+			font = NULL;
+		}
+		if(sega)
+		{
+			TTF_CloseFont(sega);
+			sega = NULL;
+		}
+		if(Window)
+		{
+			SDL_DestroyWindow(Window);
+			Window = NULL;
+		}
+		// EXIT_FAILURE
+		return EXIT_FAILURE;
+	}
 
 	//////////////////////////////////////////////////////////
 	// VARIABLE DE DEROULEMENT
@@ -1268,10 +1082,9 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 
 
-	glLoadIdentity();
-	GL_InitialiserParametre(WinWidth,WinHeight,camera);
+	_textures = malloc( (_nbTextures = maScene->scene->mNumMaterials) * sizeof *_textures);
 
-	aiLoadTexture(DIR_OBJ_LOAD,scene);
+	aiLoadTexture(DIR_OBJ_LOAD,maScene->scene,_textures,_nbTextures,&_counts,_nbMeshes);
 
 	#ifndef __linux__
 		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
@@ -1325,12 +1138,12 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		//////////////////////////////////////////////////////////
 		// LANCEMENT DES MACHINES
-		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme, _IPS);
+		lancerMachine(maScene->scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme, _IPS);
 		//////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////
 		// CHARGER LA SCENE
 
-		SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
+		SDL_GL_AppliquerScene(Window, maScene->scene,&camera,&scene_list,_IPS);
 
 		//GL_InitialiserParametre(WinWidth,WinHeight,camera);
 		//////////////////////////////////////////////////////////
@@ -1562,7 +1375,7 @@ int updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 		sprintf(str[0].nomJeux,"SCORE : %d",str[0].score);
 		sprintf(str[0].nomJoueur,"CLASSEMENT : %d / %d",temp1,temp2);
 		str[0].multiplicator = temp2; // STOCKER NB JOOUEUR ICI
-		
+
 		return EXIT_SUCCESS;
 }
 
@@ -1594,14 +1407,14 @@ int windowMaxSize(int optionFullScreen)
 	if(optionFullScreen){
 		if (SDL_GetDisplayBounds(0,&dm) != 0)
 	    {
-	        SDL_Log("SDL_GetDisplayUsableBounds failed: %s", SDL_GetError());
+	        fprintf(EXT_FILE,"room.c : windowMaxSize() : SDL_GetDisplayBounds : %s\n",SDL_GetError() );
 	        return EXIT_FAILURE;
 	    }
 	}
 	else{
 		if (SDL_GetDisplayUsableBounds(0,&dm) != 0)
 	    {
-	        SDL_Log("SDL_GetDisplayUsableBounds failed: %s", SDL_GetError());
+	        fprintf(EXT_FILE,"room.c : windowMaxSize() : SDL_GetDisplayBounds : %s\n",SDL_GetError() );
 	        return EXIT_FAILURE;
 	    }
 	}
@@ -1625,9 +1438,7 @@ int windowMaxSize(int optionFullScreen)
     WinWidth = dm.w;
     WinHeight = dm.h;
 
-
-    printf("SIZE : %d %d\n", WinWidth, WinHeight);
-
+		fprintf(EXT_FILE,"room.c : windowMaxSize() : %dx%d\n",WinWidth,WinHeight);
     return EXIT_SUCCESS;
 }
 
@@ -1855,7 +1666,7 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 		*scene_list = glGenLists(1);
 		glNewList(*scene_list, GL_COMPILE);
 		GLuint ivao = 0;
-		aiDessinerImage(scene, scene->mRootNode,&ivao);
+		aiDessinerImage(scene, scene->mRootNode,&ivao,_textures,_counts);
 		glEndList();
 	}
 
