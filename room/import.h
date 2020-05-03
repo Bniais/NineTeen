@@ -13,6 +13,11 @@
 	#include <GL/glut.h>
 #endif
 
+#ifdef _WIN32
+    #include<glew.h>
+#endif
+
+
 //#include <OpenGL/gl.h>
 
 int aiImportModel (const char* path,const C_STRUCT aiScene **scene);
