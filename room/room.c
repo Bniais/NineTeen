@@ -2375,7 +2375,7 @@ int detecterMachine(float x,float y,float angle)
 				///////////////////////////////////////////////////
 				// DETECTER PRECICEMENT LA MACHINE PARMIS LES 3
 				if( x < -5.7 )
-					return 0;//4;
+					return 4;//4;
 				else if ( x < -3.7)
 					return 5;
 				else
@@ -3032,8 +3032,8 @@ int MessageQuitterRoom()
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sImage->w , sImage->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sImage->pixels);
 
 	// RESCALE IMG
-	sImage->w *= (2560.0/WinWidth);
-	sImage->h *= (1440.0/WinHeight);
+	sImage->w *= (WinWidth/2560.0);
+	sImage->h *= (WinHeight/1440.0);
 
 	////////////////////////////////////////////////
 	// POSITIONNEMENT DE LA FENETRE QUITTER X
