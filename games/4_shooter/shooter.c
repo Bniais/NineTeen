@@ -10,7 +10,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_image.h>
-#include "../../include/SDL2/SDL2_gfxPrimitives.h"
+//#include "../../include/SDL2/SDL2_gfxPrimitives.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -265,7 +265,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 			SDL_RenderCopy(renderer, textures[SH_SHIP], &srcShip, &dest);
 
 
-			ellipseColor (renderer, circle.x + circle.w/2, circle.y + circle.h/2, circle.w/2, circle.h/2, 0xFFFFFFFF);
+			//ellipseColor (renderer, circle.x + circle.w/2, circle.y + circle.h/2, circle.w/2, circle.h/2, 0xFFFFFFFF);
 
 			SDL_RenderPresent(renderer);
 
