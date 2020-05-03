@@ -42,7 +42,7 @@ FILE* EXT_FILE;
 
 // LOCAL LIBRARY
 #include "import.h" // YOU NEED ASSIMP LIB FOR import.h (README.dm)
-static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0, _nbMeshes = 0;
+static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0;
 
 
 
@@ -225,7 +225,7 @@ int loadGameTexture(int * id_jeu){
 /// \param const C_STRUCT aiScene* scene scene charger
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize );
+//int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize );
 
 
 
@@ -655,7 +655,15 @@ void GLlightMode()
 
 
 
-
+/////////////////////////////////////////////////////
+/// \fn void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera, float IPS);
+/// \brief permet de gerer les evenements liee au porte des toilettes
+///
+/// \param struct MeilleureScore_s str[] tableau de donner
+///
+/// \return EXIT_SUCCESS/EXIT_FAILURE
+/////////////////////////////////////////////////////
+void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera, float IPS);
 
 
 void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera, float IPS)
@@ -1069,12 +1077,8 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	int afficherMessage = 0;
 	float _IPS = FPS;
 	//////////////////////////////////////////////////////////
-
-
 	 _textures = malloc( (_nbTextures = scene->mNumMaterials) * sizeof *_textures);
-
-	aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,_nbTextures,&_counts,_nbMeshes);
-
+	aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
 	#ifndef __linux__
 		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 		//////////////////////////////////////////////////////////
@@ -2767,7 +2771,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								while(SDL_PollEvent(&Event));
 								// AFFICHAGE DE LA SCENE
 								// RECHARGEMENT DES IMAGES
-								aiLoadTexture(DIR_OBJ_LOAD,scene);
+								_textures = malloc( (_nbTextures = scene->mNumMaterials) * sizeof *_textures);
+							 aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
+
 
 							#else
 

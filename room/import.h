@@ -17,15 +17,6 @@
 
 int aiImportModel (const char* path,const C_STRUCT aiScene **scene);
 
-void aiDessinerScene (const C_STRUCT aiScene *sc, const C_STRUCT aiNode* nd);
-
-void aiAppliquerCouleur(const C_STRUCT aiMaterial *mtl);
-
-
-int sceneNbMeshes(const struct aiScene *sc, const struct aiNode* nd, int subtotal);
-
-void sceneMkVAOs(const struct aiScene *sc, const struct aiNode* nd, GLuint * ivao , GLuint counts[]) ;
-
 void aiDessinerImage(const struct aiScene *sc, const struct aiNode* nd, GLuint * ivao, GLuint textures[], GLuint counts[]);
 
-void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene, GLuint textures[], GLuint nbTextures, GLuint ** counts, GLuint nbMeshes );
+void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene, GLuint textures[], GLuint ** counts );

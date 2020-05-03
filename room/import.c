@@ -22,8 +22,6 @@ int aiImportModel (const char* path,const C_STRUCT aiScene **scene);
 
 void aiAppliquerCouleur(const C_STRUCT aiMaterial *mtl);
 
-void aiDessinerScene (const C_STRUCT aiScene *sc, const C_STRUCT aiNode* nd);
-
 
 
 
@@ -354,7 +352,6 @@ void aiDessinerImage(const struct aiScene *sc, const struct aiNode* nd, GLuint *
 
 			}
 		}
-
 		(*ivao)++;
 	}
 
@@ -382,26 +379,30 @@ char * pathOf(const char * path) {
 }
 
 
-void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene, GLuint textures[], GLuint nbTextures, GLuint ** counts, GLuint nbMeshes )
+void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene, GLuint textures[], GLuint ** counts )
 {
   int i = 0;
-	GLuint ivao = 0;
+
 
 
 //  _textures = malloc( (_nbTextures = _scene->mNumMaterials) * sizeof *_textures);
 //  assert(_textures);
-
-  glGenTextures(nbTextures, textures);
+  glGenTextures(_scene->mNumMaterials, textures);
 
   for (i = 0; i < _scene->mNumMaterials ; i++) {
 
     const struct aiMaterial* pMaterial = _scene->mMaterials[i];
-       if (aiGetMaterialTextureCount(pMaterial, aiTextureType_DIFFUSE) > 0) {
+
+    if (aiGetMaterialTextureCount(pMaterial, aiTextureType_DIFFUSE) > 0) {
+
+
          struct aiString tfname;
-         char * dir = pathOf(filename), buf[BUFSIZ];
          if (aiGetMaterialTexture(pMaterial, aiTextureType_DIFFUSE, 0, &tfname, NULL, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
+
            SDL_Surface * t;
+           char * dir = pathOf(filename), buf[BUFSIZ];
            snprintf(buf, sizeof buf, "%s/%s", dir, tfname.data);
+
            if(!(t = IMG_Load(buf))) {
             fprintf(stderr, "Probleme de chargement de textures %s\n", buf);
             fprintf(stderr, "\tNouvel essai avec %s\n", tfname.data);
@@ -422,7 +423,8 @@ void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene, GLuint 
 
 	          SDL_FreeSurface(t);
 
-          }
+            }
+
 					glBindTexture(GL_TEXTURE_2D, textures[i]);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -441,14 +443,17 @@ void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene, GLuint 
 
   }
 
-	nbMeshes = sceneNbMeshes(_scene, _scene->mRootNode, 0);
+	int nbMeshes = sceneNbMeshes(_scene, _scene->mRootNode, 0);
+  	printf("NB mesh = %d\n",nbMeshes );
 //	_vaos = malloc(_nbMeshes * sizeof *_vaos);
 //	assert(_vaos);
 //	glGenVertexArrays(_nbMeshes, _vaos);
 
 //	glGenBuffers(2 * _nbMeshes,_buffers);
-	*counts = calloc(nbMeshes, sizeof (*counts));
+	*counts = calloc( nbMeshes, sizeof (*counts));
 	assert(*counts);
+
+  GLuint ivao = 0;
 	sceneMkVAOs(_scene, _scene->mRootNode, &ivao,*counts);
 
 }

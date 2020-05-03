@@ -766,7 +766,7 @@ int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], i
 
 
 
-int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene,char *path )
+int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene, char *path )
 {
 
   // NB ALLOC 2 //
@@ -937,7 +937,7 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
     return EXIT_FAILURE;
   }
 
-  fprintf(EXT_FILE,"main.c : chargementFichier() : scene charger avec success : %s\n",concatenation );
+  fprintf(EXT_FILE,"main.c : chargementFichier() : scene charger avec success : %s : nbMeshes %d\n",concatenation,(*scene)->mNumMaterials );
 
 
   //////////////////////////////////////
@@ -1234,8 +1234,6 @@ int main(int argc, char *argv[])
     /////////////////////////////////////////////////////////////////
     // INIT VARIABLE QUI POINTE SUR LA SCENE
     const C_STRUCT aiScene* scene = NULL;
-    GLuint *texture = NULL,*counts= NULL;
-    GLuint nbMeshes = 0, nbTextures=0;
     // APPEL DU LAUNCHER
     /////////////////////////////////////////////////////////////////
     if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath, &fullscreen) == EXIT_SUCCESS)
