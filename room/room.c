@@ -52,6 +52,7 @@ static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0;
 #include "../include/communFunctions.h"
 #include "../games/2_snake/snake.h"
 #include "../games/3_flappy_bird/flappy_bird.h"
+#include "../games/4_shooter/shooter.h"
 #include "../games/5_tetris/tetris.h"
 #include "../games/7_asteroid/asteroid.h"
 #include "leaderboard/leaderboard.h"
@@ -140,7 +141,7 @@ enum {FERMER,OUVERTE,FERMETURE,OUVERTURE};
 int statutPorteFemme = FERMER;
 int statutPorteHomme = FERMER;
 
-enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINEUR_HARD,DEMINEUR_EASY,SNAKE_EASY,PACMAN_EASY,ASTEROID_EASY,TETRIS_EASY,FLAPPY_EASY};
+enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,SHOOTER_HARD,SNAKE_HARD,DEMINEUR_HARD,DEMINEUR_EASY,SNAKE_EASY,SHOOTER_EASY,ASTEROID_EASY,TETRIS_EASY,FLAPPY_EASY};
 
 
 #ifdef _WIN32
@@ -158,14 +159,15 @@ int FIRST_FRAME = 0;
 SDL_Renderer * pRenderer;
 SDL_Texture * textures[NB_MAX_TEXTURES];
 int loadGameTexture(int * id_jeu){
+		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 	    //asteroid
 		switch(*id_jeu){
 			case ASTEROID_EASY:
             case ASTEROID_HARD:
 				for(int i=0; i< NB_ASTEROID_TEXTURES; i++){
-                        int textureFloue[NB_ASTEROID_TEXTURES] ={0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
+                        int textureFloueAsteroid[NB_ASTEROID_TEXTURES] ={0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 
-					if(textureFloue[i])
+					if(textureFloueAsteroid[i])
 						SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");
 					else
 						SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
@@ -205,6 +207,22 @@ int loadGameTexture(int * id_jeu){
 				for(int i=0; i< NB_TETRIS_TEXTURES; i++){
 					 textures[i] = IMG_LoadTexture(pRenderer, DIR_TEXTURES_TETRIS[i]);
 					 if( textures[i] == NULL ){
+						printf("Erreur lors de la creation de texture %s", SDL_GetError());
+						return SDL_FALSE;
+					}
+				}
+				break;
+
+			case SHOOTER_EASY:
+            case SHOOTER_HARD:
+				for(int i=0; i< NB_SHOOTER_TEXTURES; i++){
+					if(textureFloueShooter[i])
+						SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");
+					else
+						SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+
+					textures[i] = IMG_LoadTexture(pRenderer, DIR_TEXTURES_SHOOTER[i]);
+					if( textures[i] == NULL ){
 						printf("Erreur lors de la creation de texture %s", SDL_GetError());
 						return SDL_FALSE;
 					}
@@ -1273,7 +1291,7 @@ void InitMeilleureScore(struct MeilleureScore_s str[])
 
 	strcpy(str[ASTEROID_HARD].nomJeux,"ASTEROID");
 
-	strcpy(str[PACMAN_HARD].nomJeux,"PACMAN");
+	strcpy(str[SHOOTER_HARD].nomJeux,"PACMAN");
 
 	strcpy(str[SNAKE_HARD].nomJeux,"SNAKE");
 
@@ -1283,7 +1301,7 @@ void InitMeilleureScore(struct MeilleureScore_s str[])
 
 	strcpy(str[SNAKE_EASY].nomJeux,"SNAKE");
 
-	strcpy(str[PACMAN_EASY].nomJeux,"PACMAN");
+	strcpy(str[SHOOTER_EASY].nomJeux,"PACMAN");
 
 	strcpy(str[ASTEROID_EASY].nomJeux,"ASTEROID");
 
@@ -1318,12 +1336,12 @@ int updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 																																str[FLAPPY_HARD].nomJoueur,&str[FLAPPY_HARD].score,
 																																str[TETRIS_HARD].nomJoueur,&str[TETRIS_HARD].score,
 																																str[ASTEROID_HARD].nomJoueur,&str[ASTEROID_HARD].score,
-																																str[PACMAN_HARD].nomJoueur,&str[PACMAN_HARD].score,
+																																str[SHOOTER_HARD].nomJoueur,&str[SHOOTER_HARD].score,
 																																str[SNAKE_HARD].nomJoueur,&str[SNAKE_HARD].score,
 																																str[DEMINEUR_HARD].nomJoueur,&str[DEMINEUR_HARD].score,
 																																str[DEMINEUR_EASY].nomJoueur,&str[DEMINEUR_EASY].score,
 																																str[SNAKE_EASY].nomJoueur,&str[SNAKE_EASY].score,
-																																str[PACMAN_EASY].nomJoueur,&str[PACMAN_EASY].score,
+																																str[SHOOTER_EASY].nomJoueur,&str[SHOOTER_EASY].score,
 																																str[ASTEROID_EASY].nomJoueur,&str[ASTEROID_EASY].score,
 																																str[TETRIS_EASY].nomJoueur,&str[TETRIS_EASY].score,
 																																str[FLAPPY_EASY].nomJoueur,&str[FLAPPY_EASY].score,
@@ -1764,12 +1782,19 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 
 
 
-	cible[PACMAN_HARD-1].px = -6.56;
-	cible[PACMAN_HARD-1].pz = 9.189630;
-	cible[PACMAN_HARD-1].py = 3.609998;
-	cible[PACMAN_HARD-1].cible_py = -.332000;
-	cible[PACMAN_HARD-1].angle = 0.0;
-	cible[PACMAN_HARD-1].ouverture =70;
+	camera->px = -6.56;
+	camera->py = 9.189630;
+	camera->pz = 3.609998;
+	camera->cible_py = -.332000;
+	camera->angle = 0.0;
+	camera->ouverture = 70;
+
+	cible[SHOOTER_HARD-1].px = -6.56;
+	cible[SHOOTER_HARD-1].pz = 9.189630;
+	cible[SHOOTER_HARD-1].py = 3.609998;
+	cible[SHOOTER_HARD-1].cible_py = -.332000;
+	cible[SHOOTER_HARD-1].angle = 0.0;
+	cible[SHOOTER_HARD-1].ouverture =70;
 
 	cible[SNAKE_HARD-1].px = -4.626522;
 	cible[SNAKE_HARD-1].pz = 9.189630;
@@ -1803,12 +1828,12 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	cible[SNAKE_EASY-1].angle = M_PI;
 	cible[SNAKE_EASY-1].ouverture =70;
 
-	cible[PACMAN_EASY-1].px = 6.56;
-	cible[PACMAN_EASY-1].pz = 12.924735;
-	cible[PACMAN_EASY-1].py = 3.609998;
-	cible[PACMAN_EASY-1].cible_py = -.332000;
-	cible[PACMAN_EASY-1].angle = M_PI;
-	cible[PACMAN_EASY-1].ouverture =70;
+	cible[SHOOTER_EASY-1].px = 6.56;
+	cible[SHOOTER_EASY-1].pz = 12.924735;
+	cible[SHOOTER_EASY-1].py = 3.609998;
+	cible[SHOOTER_EASY-1].cible_py = -.332000;
+	cible[SHOOTER_EASY-1].angle = M_PI;
+	cible[SHOOTER_EASY-1].ouverture =70;
 
 
 
@@ -2339,7 +2364,7 @@ int detecterMachine(float x,float y,float angle)
 				///////////////////////////////////////////////////
 				// DETECTER PRECICEMENT LA MACHINE PARMIS LES 3
 				if( x < -5.7 )
-					return 0; //4
+					return 0;//4;
 				else if ( x < -3.7)
 					return 5;
 				else
@@ -2717,7 +2742,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
-								case 4: SDL_Delay(500);break;
+								case 4:
+									shooter( pRenderer ,meilleureScore[SHOOTER_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
+									break;
 								case 5:
 									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
