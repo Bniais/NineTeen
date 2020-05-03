@@ -2767,7 +2767,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								while(SDL_PollEvent(&Event));
 								// AFFICHAGE DE LA SCENE
 								// RECHARGEMENT DES IMAGES
-								aiLoadTexture(DIR_OBJ_LOAD,scene);
+								aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,_nbTextures,&_counts,_nbMeshes);
 
 							#else
 
