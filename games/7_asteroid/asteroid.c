@@ -152,26 +152,29 @@ int recoit_bonus(int id_bonus, Vaiss * vaisseau, int *nbBombeNucleaire, ScoreTot
 
 // Collision Mur
 
-void collision_mur(float * x, float * y, float rayon){
+void collision_mur(float * xToMove, float * yToMove, float x, float y, float rayon, int hardcore){
 
-	int deltaGauche = 0 - (*x + rayon);
-	int deltaDroite = PLAYGROUND_SIZE_W - (*x - rayon);
-	int deltaHaut = 0 - (*y + rayon);
-	int deltaBas = PLAYGROUND_SIZE_H - (*y - rayon);
 
-	if(deltaDroite <= 0){
-		*x= rayon - deltaDroite;
-	}
-	if(deltaGauche >= 0){
-		*x= PLAYGROUND_SIZE_W - rayon - deltaGauche;
-	}
+    int deltaGauche = 0 - (x + rayon);
+    int deltaDroite = PLAYGROUND_SIZE_W - (x - rayon);
+    int deltaHaut = 0 - (y + rayon);
+    int deltaBas = PLAYGROUND_SIZE_H - (y - rayon);
 
-	if(deltaBas <= 0){
-		*y= rayon - deltaBas;
-	}
-	if(deltaHaut >= 0){
-		*y= PLAYGROUND_SIZE_H - rayon - deltaHaut;
-	}
+		if(!hardcore){
+			if(deltaDroite <= 0){
+					*xToMove -= PLAYGROUND_SIZE_W + deltaDroite;
+			}
+			if(deltaGauche >= 0){
+					*xToMove += PLAYGROUND_SIZE_W + deltaGauche;
+			}
+		}
+
+    if(deltaBas <= 0){
+        *yToMove -= PLAYGROUND_SIZE_H + deltaBas;
+    }
+    if(deltaHaut >= 0){
+        *yToMove += PLAYGROUND_SIZE_H + deltaHaut;
+    }
 
 }
 
@@ -608,39 +611,42 @@ void afficher_texture_vaisseau(Vaiss vaisseau, SDL_Renderer * renderer, SDL_Text
 
 void afficher_vaisseau( Vaiss vaisseau, SDL_Renderer *renderer, SDL_Texture * vaisseau_texture, SDL_Texture * gem_texture, SDL_Texture * thrust_texture ){
 
-	SDL_Rect vaisseauRect = {vaisseau.x-RAYON_VAISS,vaisseau.y-RAYON_VAISS,RAYON_VAISS*2,RAYON_VAISS*2};
+    SDL_Rect vaisseauRect = {vaisseau.x-RAYON_VAISS,vaisseau.y-RAYON_VAISS,RAYON_VAISS*2,RAYON_VAISS*2};
 
-	afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
+    afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
 
-	if(vaisseauRect.x<0){
-		vaisseau.x+=PLAYGROUND_SIZE_W;
-		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
-	}
-	else if(vaisseauRect.x+RAYON_VAISS*2>PLAYGROUND_SIZE_W){
-		vaisseau.x-=PLAYGROUND_SIZE_W;
-		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
-	}
+    if(vaisseauRect.x<0){
+        vaisseauRect.x+=PLAYGROUND_SIZE_W;
+        vaisseau.x+=PLAYGROUND_SIZE_W;
+        afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
+    }
+    else if(vaisseauRect.x+RAYON_VAISS*2>PLAYGROUND_SIZE_W){
+        vaisseauRect.x-=PLAYGROUND_SIZE_W;
+        vaisseau.x-=PLAYGROUND_SIZE_W;
+        afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
+    }
 
-	if(vaisseauRect.y<0){
-		vaisseau.y+=PLAYGROUND_SIZE_H;
-		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
-	}
-	else if(vaisseauRect.y+RAYON_VAISS*2>PLAYGROUND_SIZE_H){
-		vaisseau.y-=PLAYGROUND_SIZE_H;
-		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
-	}
 
-	if(vaisseauRect.x<0){
-		vaisseau.x+=PLAYGROUND_SIZE_W;
-		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
-	}
-	else if(vaisseauRect.x+RAYON_VAISS*2>PLAYGROUND_SIZE_W){
-		vaisseau.x-=PLAYGROUND_SIZE_W;
-		afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
-	}
+    if(vaisseauRect.y<0 || vaisseauRect.y+RAYON_VAISS*2>PLAYGROUND_SIZE_H){
+        if(vaisseauRect.y<0){
+            vaisseau.y+=PLAYGROUND_SIZE_H;
+            afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
+        }
+        else {
+            vaisseau.y-=PLAYGROUND_SIZE_H;
+            afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
+        }
 
+        if(vaisseauRect.x<0){
+            vaisseau.x+=PLAYGROUND_SIZE_W;
+            afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
+        }
+        else if(vaisseauRect.x+RAYON_VAISS*2>PLAYGROUND_SIZE_W){
+            vaisseau.x-=PLAYGROUND_SIZE_W;
+            afficher_texture_vaisseau(vaisseau,renderer,vaisseau_texture,gem_texture,thrust_texture);
+        }
+    }
 }
-
 
 void afficher_explosion(SDL_Renderer * renderer,Explosion explosion, SDL_Texture * explo_texture){
 	SDL_Rect src = EXPLO_SRCS[explosion.id];
@@ -1021,7 +1027,7 @@ void afficher_texture_asteroid(SDL_Renderer* renderer, SDL_Texture * textureAste
 
 }
 
-void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* textureAsteroid, SDL_Texture* textureFissure, SDL_Texture* textureBonus, SDL_Texture* textureGlace){
+void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* textureAsteroid, SDL_Texture* textureFissure, SDL_Texture* textureBonus, SDL_Texture* textureGlace, int hardcore){
 	SDL_Rect src = ASTE_SRC;
 
 	SDL_Rect asteroidRect={(int)asteroid.x-asteroid.taille, (int)asteroid.y-asteroid.taille,asteroid.taille*2,asteroid.taille*2};
@@ -1068,16 +1074,17 @@ void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* 
 	afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, textureGlace, src, asteroidRect, srcFissure, srcGlace, asteroid);
 
 	//Dessiner bonus est diff�rent quand bord de l'�cran car on ne peut pas d�ssiner en desous de 0 -> � faire
-	if(asteroidRect.x+asteroid.taille*2>PLAYGROUND_SIZE_W || asteroidRect.x<0){
-		if(asteroidRect.x<0){
-			asteroidRect.x+=PLAYGROUND_SIZE_W;
+	if(!hardcore){
+		if(asteroidRect.x+asteroid.taille*2>PLAYGROUND_SIZE_W || asteroidRect.x<0){
+			if(asteroidRect.x<0){
+				asteroidRect.x+=PLAYGROUND_SIZE_W;
+			}
+			else{
+				asteroidRect.x-=PLAYGROUND_SIZE_W;
+			}
+			afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, textureGlace, src, asteroidRect, srcFissure, srcGlace, asteroid);
 		}
-		else{
-			asteroidRect.x-=PLAYGROUND_SIZE_W;
-		}
-		afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, textureGlace, src, asteroidRect, srcFissure, srcGlace, asteroid);
 	}
-
 
 	if(asteroidRect.y+asteroid.taille*2>PLAYGROUND_SIZE_H || asteroidRect.y<0){
 		if(asteroidRect.y<0){
@@ -1089,14 +1096,16 @@ void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* 
 
 		afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, textureGlace, src, asteroidRect, srcFissure, srcGlace, asteroid);
 
-		if(asteroidRect.x+asteroid.taille*2>PLAYGROUND_SIZE_W || asteroidRect.x<0){
-			if(asteroidRect.x<0){
-				asteroidRect.x+=PLAYGROUND_SIZE_W;
+		if(!hardcore){
+			if(asteroidRect.x+asteroid.taille*2>PLAYGROUND_SIZE_W || asteroidRect.x<0){
+				if(asteroidRect.x<0){
+					asteroidRect.x+=PLAYGROUND_SIZE_W;
+				}
+				else{
+					asteroidRect.x-=PLAYGROUND_SIZE_W;
+				}
+				afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, textureGlace, src, asteroidRect, srcFissure, srcGlace, asteroid);
 			}
-			else{
-				asteroidRect.x-=PLAYGROUND_SIZE_W;
-			}
-			afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, textureGlace, src, asteroidRect, srcFissure, srcGlace, asteroid);
 		}
 	}
 }
@@ -1304,6 +1313,9 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 	////////////
 	/// Vars ///`
 	////////////
+
+	float xM,yM;
+	SDL_Point spawn_laser;
 
 	int w, h;
 	SDL_GetRendererOutputSize(renderer, &w, &h);
@@ -1665,10 +1677,17 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		// Check hitboxs //`
 		///////////////////
 
-			collision_mur(&vaisseau.x,&vaisseau.y, RAYON_VAISS);
+		spawn_laser=(SDL_Point){0, RAYON_VAISS};
+    xM = spawn_laser.x;
+    yM = spawn_laser.y;
+    spawn_laser.x = xM*cos(vaisseau.angle-PI/2) - yM * sin(vaisseau.angle-PI/2) ;
+    spawn_laser.y = xM * sin(vaisseau.angle-PI/2) + yM * cos(vaisseau.angle-PI/2) ;
+    collision_mur(&vaisseau.x,&vaisseau.y, vaisseau.x + spawn_laser.x, vaisseau.y + spawn_laser.y, 0,hardcore);
+
+
 			for(int i=0;i<nb_asteroid;i++){
 				float angle_touche = vaisseau.angle;
-				collision_mur(&asteroides[i].x,&asteroides[i].y,asteroides[i].taille);
+				collision_mur(&asteroides[i].x,&asteroides[i].y, asteroides[i].x, asteroides[i].y, asteroides[i].taille,hardcore);
 
 				//hitbox laser
 				if(!done){
@@ -1812,7 +1831,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 			}
 
 			for(int i=0;i<nb_missiles;i++){
-					collision_mur(&missiles[i].x,&missiles[i].y,RAYON_MISSILES[missiles[i].id]);
+					collision_mur(&missiles[i].x,&missiles[i].y, missiles[i].x, missiles[i].y, RAYON_MISSILES[missiles[i].id],hardcore);
 			}
 
 
@@ -1854,7 +1873,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 
 			//int a = asteroid_plus_proche(renderer, asteroides, nb_asteroid, missiles[0], NULL);
 			for(int j=0;j<nb_asteroid;j++){
-				afficher_asteroid(asteroides[j],renderer, textures[A_ASTEROID], textures[A_FISSURE], textures[A_BONUS], textures[A_GLACE]);
+				afficher_asteroid(asteroides[j],renderer, textures[A_ASTEROID], textures[A_FISSURE], textures[A_BONUS], textures[A_GLACE],hardcore);
 			}
 
 			for(int i=0; i<nb_explosions; i++){
