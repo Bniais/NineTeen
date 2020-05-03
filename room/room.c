@@ -479,12 +479,13 @@ void messageMachine(struct MeilleureScore_s str[] ,struct Camera_s camera,TTF_Fo
 
 
 /////////////////////////////////////////////////////
-/// \fn void MessageQuitterRoom()
+/// \fn int MessageQuitterRoom()
 /// \brief permet d'afficher le message avant de quitter
 ///
 ///
+/// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
-void MessageQuitterRoom();
+int MessageQuitterRoom();
 
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
@@ -870,12 +871,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 
 
-	//////////////////////////////////////////////////////////
-	// OpenGL
-	//////////////////////////////////////////////////////////
-	// INITIALISATION LIST SCENE
-	GLuint scene_list = 0; // NB SCENE
-	//////////////////////////////////////////////////////////
+
 
 
 	//////////////////////////////////////////////////////////
@@ -1015,6 +1011,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	}
 	//////////////////////////////////////////////////////////
 
+
 	// QUITTER LA FONCTION SI IL Y'A EUX UNE ERREUR AVANT
 	if(initFailed == SDL_TRUE)
 	{
@@ -1070,15 +1067,32 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		return EXIT_FAILURE;
 	}
 
+
 	//////////////////////////////////////////////////////////
 	// VARIABLE DE DEROULEMENT
 	int Running = 1;
 	int compterSeconde = SDL_GetTicks();
 	int afficherMessage = 0;
 	float _IPS = FPS;
+	int toiletteFemmeOuverteDelai = 0;
+	int toiletteHommeOuverteDelai = 0;
+
+	//////////////////////////////////////////////////////////
+	// OpenGL
+	//////////////////////////////////////////////////////////
+	// INITIALISATION LIST SCENE
+	GLuint scene_list = 0; // NB SCENE
+	//////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////
 	 _textures = malloc( (_nbTextures = scene->mNumMaterials) * sizeof *_textures);
 	aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
+
+
+
+	//////////////////////////////////////////////////////////
+	// FIXER LA SOURIS AU CENTRE ET LA CACHER POUR MAC/WINDOW
+	//////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////
 	#ifndef __linux__
 		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 		//////////////////////////////////////////////////////////
@@ -1086,16 +1100,11 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		SDL_ShowCursor(SDL_DISABLE);
 	#endif
 
-	//SDL_RaiseWindow(Window);
-
-	int toiletteFemmeOuverteDelai = 0;
-	int toiletteHommeOuverteDelai = 0;
-
-
-
+	fprintf(EXT_FILE, "room.c : room() : fin de l'initalisation debut du while statut : %d\n",Running );
+	
 	while (Running)
 	{
-        //SDL_RaiseWindow(Window);
+
 		glLoadIdentity();
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
@@ -2771,13 +2780,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								while(SDL_PollEvent(&Event));
 								// AFFICHAGE DE LA SCENE
 								// RECHARGEMENT DES IMAGES
-<<<<<<< HEAD
 								_textures = malloc( (_nbTextures = scene->mNumMaterials) * sizeof *_textures);
 							 aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
 
-=======
-								aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,_nbTextures,&_counts,_nbMeshes);
->>>>>>> c9c1640d0acda24f718c744e93c4b5e36e32a9b1
 
 							#else
 
@@ -2948,12 +2953,12 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 	glLoadIdentity();
 }
 
-void MessageQuitterRoom()
+int MessageQuitterRoom()
 {
 	////////////////////////////////////////////////
 	// ENVOI MATRICE
 	glPushMatrix();
-
+	glLoadIdentity();
 	////////////////////////////////////////////////
 	// DESACTIVER LES LUMIERE
 	glDisable(GL_LIGHTING);
@@ -2964,7 +2969,7 @@ void MessageQuitterRoom()
 	gluOrtho2D(0, WinWidth, 0, WinHeight);
 	// MOD PROJECTION
 	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+	//glLoadIdentity();
 
 	////////////////////////////////////////////////
 	// DESACTIVATION DU TEST D ARRIERE PLAN
@@ -2983,18 +2988,13 @@ void MessageQuitterRoom()
 	// CREATION TEXTURE AVEC LE TEXT EN SDL
 	// CHOISIR EN FONCTION DE 3 TAILLES D'ECRAN
 	SDL_Surface *sImage = NULL;
-	if( WinWidth > 2000)
+	sImage = IMG_Load("../room/exit@3.png");
+	if(!sImage)
 	{
-		sImage = IMG_Load("../room/exit@3.png");
+		fprintf(EXT_FILE,"room.c : MessageQuitterRoom() : IMG_Load %s DIR:%s\n",SDL_GetError(),"../room/exit@3.png" );
+		return EXIT_FAILURE;
 	}
-	else if ( WinWidth > 1300)
-	{
-		sImage = IMG_Load("../room/exit@2.png");
-	}
-	else
-	{
-		sImage = IMG_Load("../room/exit.png");
-	}
+
 
 	////////////////////////////////////////////////
 	// PARAMETRE 2D
@@ -3002,11 +3002,15 @@ void MessageQuitterRoom()
 	// CONVERTION TEXTURE IMAGE
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sImage->w , sImage->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sImage->pixels);
 
+	// RESCALE IMG
+	sImage->w *= (2560.0/WinWidth);
+	sImage->h *= (1440.0/WinHeight);
+
 	////////////////////////////////////////////////
-	// SI PARAMS X A -1 ON CENTRE LE TEXT SUR X
+	// POSITIONNEMENT DE LA FENETRE QUITTER X
 	int x = WinWidth/2 - sImage->w/2;
 	////////////////////////////////////////////////
-	// SI PARAMS X A -1 ON CENTRE LE TEXT SUR Y
+	// POSITIONNEMENT DE LA FENETRE QUITTER Y
 	int y = WinHeight/2 - sImage->h/2;
 
 	////////////////////////////////////////////////
@@ -3030,4 +3034,6 @@ void MessageQuitterRoom()
 	// RECUPERATION DE LA MATRICE AVANT MODIF
 	glPopMatrix();
 	glLoadIdentity();
+
+	return EXIT_SUCCESS;
 }
