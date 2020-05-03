@@ -41,7 +41,7 @@ extern FILE *EXT_FILE;
 
 #include "define/define.h"
 
-#define DIR_OBJ_LOAD "../room/salle.obj"
+#define DIR_OBJ_LOAD "../room/textures/salle.obj"
 
 #include "launcher/launcher.h"
 
@@ -783,36 +783,36 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
   //////////////////////////////////////
   // Initalisation des variables
-  char *concatenation = NULL;
-  if ( _malloc((void**)&concatenation,sizeof(char),128,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : chargementFichier() : char*concatenation ",NULL) )
-    return EXIT_FAILURE;
+	char *concatenation = NULL;
+	if ( _malloc((void**)&concatenation,sizeof(char),128,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : chargementFichier() : char*concatenation ",NULL) )
+		return EXIT_FAILURE;
   //////////////////////////////////////
   // TEXTURE BACKGROUND
 	SDL_Texture* background = IMG_LoadTexture(renderer,DIR_ING_BACKGROUND_TXT);
 	if(!background)
-  {
-    fprintf(EXT_FILE,"main.c -> chargementFichier() : IMG_LoadTexture : %s\n",DIR_ING_BACKGROUND_TXT );
+	{
+		fprintf(EXT_FILE,"main.c -> chargementFichier() : IMG_LoadTexture : %s\n",DIR_ING_BACKGROUND_TXT );
 
-    // NETTOYAGE MEMOIRE
-    free(concatenation);
-    concatenation=NULL;
-    return EXIT_FAILURE;
-  }
+		// NETTOYAGE MEMOIRE
+		free(concatenation);
+		concatenation=NULL;
+		return EXIT_FAILURE;
+	}
 	//////////////////////////////////////
 
   //////////////////////////////////////
   // ERREUR RENDER COPY
 	if ( SDL_RenderCopy(renderer, background, NULL, NULL) )
-  {
-    fprintf(EXT_FILE,"main.c : chargementFichier() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+	{
+	    fprintf(EXT_FILE,"main.c : chargementFichier() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 
-    //////////////////////////////////////
-    // NETTOYAGE MEMOIRE
-    SDL_DestroyTexture(background);
-    free(concatenation);
-    concatenation=NULL;
-    return EXIT_FAILURE;
-  }
+	    //////////////////////////////////////
+	    // NETTOYAGE MEMOIRE
+	    SDL_DestroyTexture(background);
+	    free(concatenation);
+	    concatenation=NULL;
+	    return EXIT_FAILURE;
+	}
 
 	//AFFICHER FOND BAR DE CHARGEMENT
 	SDL_Rect chargement = {LARGUEUR*0.05,HAUTEUR*0.85,LARGUEUR*0.90,HAUTEUR*0.08};
@@ -851,16 +851,16 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
     // MISE A JOUR DE L'AFFICHAGE //
 		SDL_RenderClear(renderer);
 		if ( SDL_RenderCopy(renderer, background, NULL, NULL) )
-    {
-      fprintf(EXT_FILE,"main.c : chargementFichier() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+	    {
+	      fprintf(EXT_FILE,"main.c : chargementFichier() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 
-      //////////////////////////////////////
-      // NETTOYAGE MEMOIRE
-      SDL_DestroyTexture(background);
-      free(concatenation);
-      concatenation=NULL;
-      return EXIT_FAILURE;
-    }
+	      //////////////////////////////////////
+	      // NETTOYAGE MEMOIRE
+	      SDL_DestroyTexture(background);
+	      free(concatenation);
+	      concatenation=NULL;
+	      return EXIT_FAILURE;
+	    }
     // BAR FOND CHARGEMENT
 		SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
 		SDL_RenderFillRect(renderer,&chargement);
