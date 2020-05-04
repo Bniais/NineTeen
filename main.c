@@ -1,5 +1,5 @@
-#define VERSION_LOGICIEL "version=0.1.5b-dev"
-#define VERSION "0.1.5b-dev"
+#define VERSION_LOGICIEL "version=1.0.0"
+#define VERSION "1.0.0"
 
 #ifdef _WIN32
 #define WESNOTH_EXPORT __declspec(dllexport)
@@ -11,9 +11,14 @@ WESNOTH_EXPORT unsigned long NvOptimusEnablement = 0x00000001;
 WESNOTH_EXPORT int AmdPowerXpressRequestHighPerformance = 1;
 #endif
 
+#ifdef _WIN32
+       HWND hWnd = GetConsoleWindow();
+       ShowWindow( hWnd, SW_HIDE );
+#endif // _WIN32
+
 
 #include <stdio.h>
-#define MODE_DEV 1
+#define MODE_DEV 0
 extern FILE *EXT_FILE;
 
 
