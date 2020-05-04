@@ -1702,7 +1702,7 @@ void deathAnimInit(int *gameOver,DeadPiece **deadPieces,int *nbDeadPieces, int m
 			matrix[col][line] = EMPTY; //vide la case de la matrice
 		}
 	}
-	(*deadPieces) = realloc(*deadPieces, (*nbDeadPieces) * sizeof(DeadPiece));
+	//(*deadPieces) = realloc(*deadPieces, (*nbDeadPieces) * sizeof(DeadPiece));
 }
 
 /**
