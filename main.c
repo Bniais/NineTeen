@@ -310,7 +310,7 @@ void ouvrirUrlRegistration()
 
 }
 
-int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], int * fullscreen)
+int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 {
 	//////////////////////////////////////////
 	// INIT CHAINE DE CONCATENATION DU PATH
@@ -619,7 +619,6 @@ int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], i
 				}
 				else if ( TF_ClickIn( targetConnect , mouse) )
 				{
-					*fullscreen = 0;
 					if(thread == NULL){
             fprintf(EXT_FILE,"main.c : connexion() : lancement d'un thread de connexion\n");
 
@@ -985,7 +984,7 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 
 
-int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[], int * fullscreen)
+int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[])
 {
 	Mix_Music *musique = Mix_LoadMUS(DIR_MUSIC_FILE);
 	if (!musique )
@@ -1008,8 +1007,7 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
 	if ( dejaConneceter(token) )
 	{
     fprintf(EXT_FILE,"main.c : launcher() : dejaConnecter : FALSE\n");
-		*fullscreen = 0;
-		if( connexion(renderer,token, tokenCpy, path, fullscreen) )
+		if( connexion(renderer,token, tokenCpy, path) )
     {
       fprintf(EXT_FILE,"main.c : launcher() : connexion : EXIT_FAILURE\n");
       ///////////////////////////////////////////
@@ -1235,15 +1233,44 @@ int main(int argc, char *argv[])
     // INIT STRUCTURE MEILLEURE_SCORE
     struct MeilleureScore_s meilleureScore[16];
     /////////////////////////////////////////////////////////////////
-	  int fullscreen=0;
 
     /////////////////////////////////////////////////////////////////
     // INIT VARIABLE QUI POINTE SUR LA SCENE
     const C_STRUCT aiScene* scene = NULL;
     // APPEL DU LAUNCHER
     /////////////////////////////////////////////////////////////////
-    if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath, &fullscreen) == EXIT_SUCCESS)
+    if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath) == EXIT_SUCCESS)
     {
+      /////////////////////////////////////////////////////////////////
+      // CREATION D'UNE POP UP BOUTON
+      const SDL_MessageBoxButtonData buttons[] = {
+        { SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 0, "ACTIVER" },
+        {                                       0, 1, "DESACTIVER" }
+      };
+      /////////////////////////////////////////////////////////////////
+      // CREATION DES TEXT PRESENT DANS LA POP UP
+      const SDL_MessageBoxData messageboxdata = {
+        SDL_MESSAGEBOX_INFORMATION, /* .flags */
+        window, /* .window */
+        "Voulez-vous activez le mode pleine ecran ?", /* .title */
+        "Selectionner une option", /* .message */
+        SDL_arraysize(buttons), /* .numbuttons */
+        buttons, /* .buttons */
+        NULL /* .colorScheme */
+      };
+
+      /////////////////////////////////////////////////////////////////
+      // RECUPERATION DE LA DECISION
+      int buttonid;
+      if (SDL_ShowMessageBox(&messageboxdata, &buttonid) < 0) {
+        SDL_Log("error displaying message box");
+      }
+
+      /////////////////////////////////////////////////////////////////
+      // APPLIQUER LA SELECTION
+      int fullscreen = 1;
+      if(buttonid)
+        fullscreen = !fullscreen;
 
       /////////////////////////////////////////////////////////////////
       // RECUPERER LA TAILLE DE L'ECRAN
