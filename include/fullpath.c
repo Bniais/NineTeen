@@ -42,8 +42,8 @@ char *completPathOf(char s[],int mode)
 
 	if(chaine[maxCopie-1] != '/')
 	{
-		chaine[maxCopie-2] = '/';
-		chaine[maxCopie-1] = '\0';
+		chaine[maxCopie] = '/';
+		chaine[maxCopie+1] = '\0';
 	}
 	else
 		chaine[maxCopie] = '\0';
