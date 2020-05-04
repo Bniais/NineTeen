@@ -2404,7 +2404,7 @@ int detecterOuvertureToilette(float x,float y,float angle)
 	// OUVERTURE AUTOMATIQUE FEMME
 	if( x > 19.0 && x < 21.0 && y > 7.5 && y < 8.2)
 	{
-		return 3;
+		return 0;//3
 	}
 	////////////////////////////////////////
 	// OUVERTURE AUTOMATIQUE HOMME
