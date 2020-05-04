@@ -12,6 +12,48 @@ const SDL_Color COLOR_ERROR_LOADING = {0xfb,0x17,0x17};
 
 const int ALPHA[2*(int)FRAME_ANIM_RETOUR] = { 10, 30, 55, 70, 100, 140, 170, 200, 220, 225, 230, 230, 230, 230, 230, 230,230, 230, 230, 230, 230,230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 225,220,200,170,140,100,70,55,30,10};
 
+
+FILE* EXT_FILE;
+
+
+
+
+/////////////////////////////////////////////////////
+/// \fn void informationPreciseCPUGPU()
+/// \brief permet d'afficher les info CPU/GPU
+///
+///
+/////////////////////////////////////////////////////
+void informationPreciseCPUGPU()
+{
+
+	#ifdef __APPLE__
+	system("system_profiler SPSoftwareDataType | grep -e \"System Version\" | sed 's/ //g' | sed 's/SystemVersion://g' >> /tmp/Nineteen.tmp");
+	system("sysctl -n machdep.cpu.brand_string | sed 's/ //g' >> /tmp/Nineteen.tmp");
+	system("system_profiler SPDisplaysDataType | grep -e Chipset -e VRAM | sed 's/ //g' | sed 's/ChipsetModel://' | sed 's/VRAM(Total)://' >> /tmp/Nineteen.tmp");
+
+	char buf[512];
+	FILE *fp = fopen("/tmp/Nineteen.tmp", "r");
+
+	fscanf(fp, "%s\n",buf);
+	fprintf(EXT_FILE," - System : %s\n",buf);
+	
+	fscanf(fp, "%s\n",buf);
+	fprintf(EXT_FILE," - ChipsetCPU : %s\n",buf);
+
+	fscanf(fp, "%s\n",buf);
+	fprintf(EXT_FILE," - ChipsetCPU : %s\n",buf);
+
+	fscanf(fp, "%s\n",buf);
+	fprintf(EXT_FILE," - VRAM GPU = %s\n",buf);
+
+	fclose(fp);
+	system("rm /tmp/Nineteen.tmp");
+	#endif
+
+}
+
+
 /////////////////////////////////////////////////////
 /// \fn int _malloc( void **ptr ,int type, int size , FILE *fp , Uint32 flags,const char* title, const char* message,SDL_Window* window )
 /// \brief permet de faire une allocation dynamqiue avec message d'erreur

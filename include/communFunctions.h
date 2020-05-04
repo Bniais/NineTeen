@@ -8,7 +8,13 @@ void drawReplay(SDL_Renderer* renderer, TTF_Font* font, float posY, int viewW, i
 void drawQuit(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL_Color color);
 
 
-
+/////////////////////////////////////////////////////
+/// \fn void informationPreciseCPUGPU()
+/// \brief permet d'afficher les info CPU/GPU
+///
+///
+/////////////////////////////////////////////////////
+void informationPreciseCPUGPU();
 
 
 /////////////////////////////////////////////////////

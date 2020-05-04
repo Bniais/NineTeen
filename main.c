@@ -1139,6 +1139,9 @@ int main(int argc, char *argv[])
 
   }
 
+  fprintf(EXT_FILE,"INFORMATION GENERAL :\n");
+  informationPreciseCPUGPU();
+  fprintf(EXT_FILE," - RAM : %d,%d Go\n",SDL_GetSystemRAM()/1000, SDL_GetSystemRAM()%1000 );
 
 
   /////////////////////////////////////////////////////////////////
@@ -1151,6 +1154,10 @@ int main(int argc, char *argv[])
     /////////////////////////////////////////////////////////////////
     // INIT SDL // TTF // MIXER
     SDL_Init(SDL_INIT_VIDEO);
+    /////////////////////////////////////////////////////////////////
+    // RECUPERER INFO ORDINATEUR
+
+    /////////////////////////////////////////////////////////////////
     TTF_Init();
     Mix_Init(MIX_INIT_MP3);
     if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) //Initialisation de l'API Mixer
