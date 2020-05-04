@@ -1104,10 +1104,13 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	GLuint scene_list = 0; // NB SCENE
 	//////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////
-	 _textures = malloc( (_nbTextures = scene->mNumMaterials) * sizeof *_textures);
+	// ALLOCATION TEXTURE
+	_malloc((void**)&_textures,sizeof(*_textures),(_nbTextures = scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
+	//////////////////////////////////////////////////////////
+	// CHARGER LES TEXTURES
 	aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
-
-
+	// APPLICATION DE LA SCENE  AVANT LA 1er FRAME
+	SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
 
 	//////////////////////////////////////////////////////////
 	// FIXER LA SOURIS AU CENTRE ET LA CACHER POUR MAC/WINDOW
@@ -1122,15 +1125,19 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 	fprintf(EXT_FILE, "room.c : room() : fin de l'initalisation debut du while statut : %d\n",Running );
 
+
+	FIRST_FRAME = 0 ;
 	while (Running)
 	{
 
-		glLoadIdentity();
-		GL_InitialiserParametre(WinWidth,WinHeight,camera);
-
 	//	GLlightMode();
 
+		//////////////////////////////////////////////////////////
+		// DEBUT DE LA MESURE DU TEMPS D'UNE FRAME
 		int delayLancementFrame = SDL_GetTicks();
+
+		glLoadIdentity();
+		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
@@ -1175,9 +1182,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		//////////////////////////////////////////////////////////
 		// AFFICHER CLASSEMENT / SCORE EN HAUT A GAUCHE
 		AfficherText(sega,meilleureScore[0].nomJeux,Text_rouge,WinWidth/30,WinHeight - WinWidth/30);
-
-
-
+		//
 		AfficherText(sega,meilleureScore[0].nomJoueur,Text_rouge,WinWidth/30,WinHeight - WinWidth/15);
 		//////////////////////////////////////////////////////////
 		// AFFICHAGE MESSAGE A PROXIMITER DES MACHINES
@@ -1186,6 +1191,9 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 
 
+		//////////////////////////////////////////////////////////
+		// ANIMATION PORTE TOILETTES
+		animationPorteToilette(&statutPorteFemme,&statutPorteHomme,&jouerSonPorteFemme,&jouerSonPorteHomme,&toiletteFemmeOuverteDelai,&toiletteHommeOuverteDelai ,sas_ouverture, sas_fermeture,camera, _IPS);
 
 		//////////////////////////////////////////////////////////
 		// OpenGL
@@ -1193,31 +1201,24 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		// APPLIQUER MODIF SUR LA VUE
 		SDL_GL_SwapWindow(Window);
 		//////////////////////////////////////////////////////////
+		// ATTENDRE 1000 MS POUR MESSAGE CLIGNOTANT
+		attendreXsecondeMessage(&compterSeconde, &afficherMessage,1000, _IPS);
+		//////////////////////////////////////////////////////////
+
+		//////////////////////////////////////////////////////////
 		// LIMITER LES FRAMES A CONST FPS
 		limiterFrame(delayLancementFrame,&_IPS);
 		//////////////////////////////////////////////////////////
 
 
-		//////////////////////////////////////////////////////////
-		// ATTENDRE 1000 MS POUR MESSAGE CLIGNOTANT
-		attendreXsecondeMessage(&compterSeconde, &afficherMessage,1000, _IPS);
-		//////////////////////////////////////////////////////////
 
-
-		//////////////////////////////////////////////////////////
-		/////////
-		/////////
-		/////////
-		//////////////////////////////////////////////////////////
-		// ANIMATION PORTE TOILETTES
-
-		animationPorteToilette(&statutPorteFemme,&statutPorteHomme,&jouerSonPorteFemme,&jouerSonPorteHomme,&toiletteFemmeOuverteDelai,&toiletteHommeOuverteDelai ,sas_ouverture, sas_fermeture,camera, _IPS);
 
 
 
 	}
 
 
+	fprintf(EXT_FILE, "room.c : room() : liberation de la memoire\n" );
 	//////////////////////////////////////////////////////////
 	// LIBERER LA MEMOIRE ALLOUER ET NON NECESSAIRE A LA SUITE
 	// LIBERATION DES SONS
@@ -1234,6 +1235,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 	// DESTRUCTION DES EMPLACEMENTS TEXTURES
 	detruireTexture();
+	fprintf(EXT_FILE, "room.c : room() : memoire liberer\n" );
 	//////////////////////////////////////////////////////////
 	// LIBERATION DU CONTEXT
 	SDL_GL_DeleteContext(Context);
@@ -1497,7 +1499,7 @@ int attendreXsecondeMessage(int *compterSeconde, int *afficherMessage, const int
 		*compterSeconde = SDL_GetTicks();
 		*afficherMessage = !(*afficherMessage);
 		// AFFICHER NOMBRE IPS
-		printf("IPS : %f\n",_IPS );
+		fprintf(EXT_FILE,"room.c : attendreXsecondeMessage() : FPS %f\n",_IPS );
 	}
 	return *afficherMessage;
 }
@@ -2184,10 +2186,6 @@ int detectionEnvironnement(float x,float y)
 
 
 
-
-	printf("X = %f && Y = %f\n",x,y );
-
-
 	///////////////////////////////////////////////////
 	// OUVERTURE ENTRE POUR ALLER DANS LA SALLE TOILETTE
 	if( (y >= 7.0 || y <= 2.5) && x >= 14.0 && x <= 16.0)
@@ -2375,7 +2373,7 @@ int detecterMachine(float x,float y,float angle)
 				///////////////////////////////////////////////////
 				// DETECTER PRECICEMENT LA MACHINE PARMIS LES 3
 				if( x < -5.7 )
-					return 4;//4;
+					return 0;//4;
 				else if ( x < -3.7)
 					return 5;
 				else
@@ -2623,9 +2621,10 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 		if (Event.type == SDL_KEYDOWN || Event.type == SDL_MOUSEBUTTONDOWN)
 		{
 				///////////////////////////////////////////////////
-				// TOUCHE ESPACE METTRE FIN AU JEUX
+				// TOUCHE ECHAPE METTRE FIN AU JEUX
 				if(Event.key.keysym.sym == SDLK_ESCAPE)
 				{
+					fprintf(EXT_FILE, "room.c : lancerMachine() : Afficher menu escape (Appui touche echap) \n" );
 					//////////////////////////////////////////////////////////
 					// AFFICHER LA SOURIS
 					SDL_ShowCursor(SDL_ENABLE);
@@ -2657,19 +2656,19 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								switch (Event.key.keysym.sym)
 								{
 									case SDLK_ESCAPE:
+										fprintf(EXT_FILE, "room.c : lancerMachine() :Quitter le menu (Appui touche echap) \n" );
 										decision = 0;
-										printf("Commande annuler\n");
 										FIRST_FRAME = 0;
 										SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
 										break;
 									case SDLK_q:
+										fprintf(EXT_FILE, "room.c : lancerMachine() : Quitter le jeu (Appui touche q) \n" );
 										decision = 0;
-										printf("Vous quittez\n");
 										*Running = 0;
 										break;
 									case SDLK_d:
+										fprintf(EXT_FILE, "room.c : lancerMachine() : Quitter le jeu en ce deconnectant (Appui touche d) \n" );
 										decision = 0;
-										printf("Vous vous deconnecter\n");
 										remove(DIR_TOKEN_FILE);
 										*Running = 0;
 										break;
@@ -2708,13 +2707,18 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						int machine = detecterMachine(camera.px, camera.pz, camera.angle);
 						if ( machine)
 						{
-
-							//SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
+							fprintf(EXT_FILE, "room.c : lancerMachine() : detection d'une machine \n" );
 
 							///////////////////////////////////////////////////
 							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
 							#ifndef __linux__
 								pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+								if(!pRenderer)
+								{
+									SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal creation render.",SDL_GetError(),Window);
+									fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
+									break;
+								}
 								SDL_Thread *thread = SDL_CreateThread(  (int(*)(void*))loadGameTexture, "Charger_textures_jeu", &machine);
 							#endif
 							///////////////////////////////////////////////////
@@ -2732,6 +2736,12 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								}
 							#else
 								pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+								if(!pRenderer)
+								{
+									SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal creation render.",SDL_GetError(),Window);
+									fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
+									break;
+								}
 								loadGameTexture(&machine);
 							#endif
 
@@ -2809,9 +2819,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								while(SDL_PollEvent(&Event));
 								// AFFICHAGE DE LA SCENE
 								// RECHARGEMENT DES IMAGES
-								_textures = malloc( (_nbTextures = scene->mNumMaterials) * sizeof *_textures);
 							 aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
-
 
 							#else
 
@@ -2867,7 +2875,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						machine = detecterRadio(camera.px,camera.pz,camera.angle);
 						if(machine)
 						{
-							printf("RESULTAT MIX PLAYING = %d\n",Mix_Paused(machine - 1) );
+							fprintf(EXT_FILE, "room.c : lancerMachine() : changement statut channel %d, statut pause : %d\n",machine - 1 , Mix_Paused(machine - 1) );
 							if(Mix_Paused(machine - 1) )
 								Mix_Resume(machine - 1);
 							else
@@ -2900,7 +2908,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 		///////////////////////////////////////////////////
 		// IF APPUI CROIS ROUGE
 		else if (Event.type == SDL_QUIT)
+		{
+			fprintf(EXT_FILE, "room.c : lancerMachine() : Appui sur le croix, quitter le programme\n" );
 			*Running = 0;
+		}
+
 
 	}
 
