@@ -311,7 +311,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 			}
 
 			//ellipseColor (renderer, hitbox.x + hitbox.w/2, hitbox.y + hitbox.h/2, hitbox.w/2, hitbox.h/2, 0xFFFFFFFF);
-			ellipseColor (renderer, circle.x + circle.w/2, circle.y + circle.h/2, circle.w/2, circle.h/2, 0xFFFFFFFF);
+			//ellipseColor (renderer, circle.x + circle.w/2, circle.y + circle.h/2, circle.w/2, circle.h/2, 0xFFFFFFFF);
 
 
 			SDL_RenderPresent(renderer);
