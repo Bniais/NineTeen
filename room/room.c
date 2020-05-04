@@ -2811,8 +2811,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 	                            SDL_WaitThread(thread, &retourThread);
 
 								if(!retourThread){
-									printf("couldnt load texture, abort game\n");
-									return;
+									fprintf(EXT_FILE, "room.c : kancerMachine() : retourThread negatif, abort game\n" );
+									return EXIT_FAILURE;
 								}
 							#else
 								pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
