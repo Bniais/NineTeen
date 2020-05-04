@@ -867,7 +867,76 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 }
 
 
+int backgroundClassement(SDL_Surface *sImage)
+{
+	////////////////////////////////////////////////
+	// ENVOI MATRICE
+	glPushMatrix();
+	glLoadIdentity();
+	////////////////////////////////////////////////
+	// DESACTIVER LES LUMIERE
+	glDisable(GL_LIGHTING);
+	glLoadIdentity();
 
+	////////////////////////////////////////////////
+	// PRECISION SUR LA FENETRE
+	gluOrtho2D(0, WinWidth, 0, WinHeight);
+	// MOD PROJECTION
+	glMatrixMode(GL_PROJECTION);
+	//glLoadIdentity();
+
+	////////////////////////////////////////////////
+	// DESACTIVATION DU TEST D ARRIERE PLAN
+	glDisable(GL_DEPTH_TEST);
+	glLoadIdentity();
+
+	////////////////////////////////////////////////
+	// BLEND
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// INIT LOAD TEXTURE
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	////////////////////////////////////////////////
+	// PARAMETRE 2D
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// CONVERTION TEXTURE IMAGE
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sImage->w , sImage->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sImage->pixels);
+
+	// RESCALE IMG
+	int tmpW= sImage->w * (WinWidth/2560.0);
+	int tmpH = sImage->h * (WinHeight/1440.0);
+
+	////////////////////////////////////////////////
+	// POSITIONNEMENT DE LA FENETRE QUITTER X
+	int x = 0;
+	////////////////////////////////////////////////
+	// POSITIONNEMENT DE LA FENETRE QUITTER Y
+	int y = WinHeight - tmpH;
+
+	////////////////////////////////////////////////
+	// DEBUT DU RENDU
+	glBegin(GL_QUADS);
+	{
+		glTexCoord2f(0,0); glVertex2f(x, y);
+		glTexCoord2f(1,0); glVertex2f(x + tmpW, y);
+		glTexCoord2f(1,-1); glVertex2f(x + tmpW, y + tmpH);
+		glTexCoord2f(0,-1); glVertex2f(x, y + tmpH);
+	}
+	glEnd();
+	////////////////////////////////////////////////
+
+	////////////////////////////////////////////////
+	// DESTRUCTUIN DES ELLEMENTS CREE
+	glDeleteTextures(1, &texture);
+	////////////////////////////////////////////////
+	// RECUPERATION DE LA MATRICE AVANT MODIF
+	glPopMatrix();
+	glLoadIdentity();
+
+	return EXIT_SUCCESS;
+}
 
 
 int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize)
@@ -1022,6 +1091,13 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	else
 		fprintf(EXT_FILE,"room.c : room() : IMG_Load : %s DIR:%s\n",SDL_GetError() , "../assets/image/favicon.png" );
 
+	SDL_Surface *bgClassement = NULL;
+	bgClassement = IMG_Load("../room/textures/background_classement.png");
+	if(!bgClassement)
+	{
+		fprintf(EXT_FILE,"room.c : room() : IMG_Load %s DIR:%s\n",SDL_GetError(),"../room/textures/background_classement.png" );
+		initFailed = SDL_TRUE;
+	}
 
 	SDL_GLContext Context = SDL_GL_CreateContext(Window);
 	if( !Context)
@@ -1029,7 +1105,9 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		fprintf(EXT_FILE,"room.c : room() : SDL_GL_CreateContext : %s\n",SDL_GetError());
 		initFailed = SDL_TRUE;
 	}
-	//////////////////////////////////////////////////////////
+
+
+	////////	//////////////////////////////////////////////////
 
 
 	// QUITTER LA FONCTION SI IL Y'A EUX UNE ERREUR AVANT
@@ -1082,6 +1160,11 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		{
 			SDL_DestroyWindow(Window);
 			Window = NULL;
+		}
+		if(bgClassement)
+		{
+			SDL_FreeSurface(bgClassement);
+			bgClassement = NULL;
 		}
 		// EXIT_FAILURE
 		return EXIT_FAILURE;
@@ -1181,6 +1264,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		// OpemGL Text
 		//////////////////////////////////////////////////////////
 		// AFFICHER CLASSEMENT / SCORE EN HAUT A GAUCHE
+		backgroundClassement(bgClassement);
 		AfficherText(sega,meilleureScore[0].nomJeux,Text_rouge,WinWidth/30,WinHeight - WinWidth/30);
 		//
 		AfficherText(sega,meilleureScore[0].nomJoueur,Text_rouge,WinWidth/30,WinHeight - WinWidth/15);
@@ -1188,7 +1272,6 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		// AFFICHAGE MESSAGE A PROXIMITER DES MACHINES
 		messageMachine(meilleureScore,camera,sega,afficherMessage);
 		//////////////////////////////////////////////////////////
-
 
 
 		//////////////////////////////////////////////////////////
@@ -1232,6 +1315,9 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	// LIBERATION DES POLICES
 	TTF_CloseFont(font);
 	TTF_CloseFont(sega);
+	//////////////////////////////////////////////////////////
+	// LIBERATION DES SURFACE
+	SDL_FreeSurface(bgClassement);
 	//////////////////////////////////////////////////////////
 	// DESTRUCTION DES EMPLACEMENTS TEXTURES
 	detruireTexture();
