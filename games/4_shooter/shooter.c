@@ -100,7 +100,13 @@ int collide(double x0, double y0, double w, double h, double x1, double y1, doub
     }
 }
 
-
+int getDirForTexture(int dir){
+	if(dir == -1)
+		return 1;
+	else if(dir == 1)
+		return 2;
+	return 0;
+}
 
 
 extern int updateEnded;
@@ -166,6 +172,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		//vaiss
 		int x,y;
 		int form=0;
+		int weapon = 0;
 
 		 // // // // // // // //
 		//   Initialize vars   //
@@ -199,19 +206,38 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 			if( keystate[SDL_SCANCODE_ESCAPE] ){
 				return 0;
 			}
-
+			int spd = 8;
 			if( keystate[SDL_SCANCODE_UP] ){
-				y-=3;
+				y-=spd;
+			}
+			if( keystate[SDL_SCANCODE_DOWN] ){
+				y+=spd;
+			}
+			int dir = 0;
+			if( keystate[SDL_SCANCODE_LEFT] ){
+				x-=spd;
+				dir = 1;
+			}
+			else if( keystate[SDL_SCANCODE_RIGHT] ){
+				x+=spd;
+				dir = 2;
 			}
 
-			if( keystate[SDL_SCANCODE_DOWN] ){
-				y+=3;
-			}
-			if( keystate[SDL_SCANCODE_LEFT] ){
-				x-=3;
-			}
-			if( keystate[SDL_SCANCODE_RIGHT] ){
-				x+=3;
+			if( keystate[SDL_SCANCODE_TAB] ){
+				weapon++;
+				if(weapon >= NB_MAX_WEAPON)
+					weapon = 0;
+				switch (weapon) {
+					case 0:
+						form = 0;
+						break;
+					case 1:
+					case 2:
+						form = 1;
+						break;
+					default:
+						form = 2;
+				}
 			}
 
 
@@ -223,22 +249,32 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		 // // //
 		// Draw //`
 		 // // //
-		 	SDL_Rect circle = {200,200,200,200};
+		 SDL_SetRenderDrawColor(renderer, 222, 22, 22, 255);
+		 SDL_RenderFillRect(renderer, &PLAYGROUND);
+		 	SDL_Rect circle = {200,200,20,20};
 			SDL_SetRenderDrawColor(renderer,255,255,255,255);
 
 			SDL_Rect srcShip = SHIP_SRC;
-			srcShip.x += form * srcShip.w;
+			srcShip.y += dir * srcShip.h;
 
-			SDL_Rect srcFlame = SHIP_SRC;
+			SDL_Rect srcFlame = srcShip;
+
+			srcShip.x += form * srcShip.w;
 
 
 			SDL_Rect dest = SHIP_SRC;
+			dest.w/=RATIO_TAILLE;
+			dest.h/=RATIO_TAILLE;
 			dest.x+=x;
 			dest.y+=y;
 
 			SDL_Rect hitbox = SHIP_HITBOX[form];
-			hitbox.x+=x;
-			hitbox.y+=y;
+			hitbox.x /= RATIO_TAILLE;
+			hitbox.y /= RATIO_TAILLE;
+			hitbox.w/=RATIO_TAILLE;
+			hitbox.h/=RATIO_TAILLE;
+			hitbox.x += x;
+			hitbox.y += y;
 
 			if(collide( hitbox.x + hitbox.w/2, hitbox.y + hitbox.h/2, hitbox.w/2 ,hitbox.h/2,
 						circle.x + circle.w/2, circle.y + circle.h/2,circle.h/2)){
@@ -249,23 +285,34 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 			}
 
 
-			for(int i=0; i<NB_MAX_WEAPON; i++){
+			for(int i=0; i<3; i++){
 				SDL_RenderCopy(renderer, textures[SH_FLAME], &srcFlame, &dest);
 				srcFlame.x+= srcFlame.w;
 			}
 
-			SDL_Rect destWeapon = WEAPON_DEST[0];
-			for(int i=0; i<NB_MAX_WEAPON; i++){
-				destWeapon.x = dest.x + WEAPON_DEST[i].x;
-				destWeapon.y = dest.y + WEAPON_DEST[i].y;
-				SDL_RenderCopy(renderer, textures[SH_WEAPON], &WEAPON_SRC, &destWeapon);
-			}
-
-
 			SDL_RenderCopy(renderer, textures[SH_SHIP], &srcShip, &dest);
 
 
-			//ellipseColor (renderer, circle.x + circle.w/2, circle.y + circle.h/2, circle.w/2, circle.h/2, 0xFFFFFFFF);
+
+			SDL_Rect destWeapon = WEAPON_DEST[0];
+			for(int i=0; i<=weapon; i++){
+				destWeapon = WEAPON_DEST[WEAPON_DISPOSITION[weapon][i]-1];
+				destWeapon.x += DECALLAGE_TURN[dir][WEAPON_DISPOSITION[weapon][i]-1];
+				destWeapon.x /= RATIO_TAILLE;
+				destWeapon.y /= RATIO_TAILLE;
+				destWeapon.w /= RATIO_TAILLE;
+				destWeapon.h /= RATIO_TAILLE;
+
+
+				destWeapon.x += dest.x;
+				destWeapon.y += dest.y;
+
+				SDL_RenderCopy(renderer, textures[SH_WEAPON], &WEAPON_SRC, &destWeapon);
+			}
+
+			//ellipseColor (renderer, hitbox.x + hitbox.w/2, hitbox.y + hitbox.h/2, hitbox.w/2, hitbox.h/2, 0xFFFFFFFF);
+			ellipseColor (renderer, circle.x + circle.w/2, circle.y + circle.h/2, circle.w/2, circle.h/2, 0xFFFFFFFF);
+
 
 			SDL_RenderPresent(renderer);
 
@@ -281,6 +328,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 				currentTime = SDL_GetTicks();
 
 			lastTime = currentTime;
+
 
 			// On efface
 			SDL_SetRenderDrawColor(renderer, BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, 255);

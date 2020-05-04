@@ -11,8 +11,10 @@ typedef struct {
 	int frameToDest; /*!< \brief Le nombre de frame avant que scoreShow arrive à score*/
 }ScoreTotal;
 
+const SDL_Rect PLAYGROUND = {BASE_WINDOW_W*0.3,0,BASE_WINDOW_W/2.5,BASE_WINDOW_H};
 
 //vaisseau
+#define RATIO_TAILLE 1.45
 #define NB_SHIP_FORMS 3
 const SDL_Rect  SHIP_SRC = {0, 0, 132, 170};
 const SDL_Point SHIP_CENTER = {66, 66};
@@ -26,11 +28,25 @@ const SDL_Rect  SHIP_HITBOX[NB_SHIP_FORMS] = {
 #define NB_MAX_WEAPON 5
 const SDL_Rect WEAPON_SRC = {0,0,3,19};
 const SDL_Rect WEAPON_DEST[NB_MAX_WEAPON] = {
-	{36,14,3,19},
-	{49,10,3,19},
-	{64,6,4,19},
-	{80,10,3,19},
-	{93,14,3,19}
+	{36,14,3,17},
+	{49,10,3,18},
+	{64,6,4,13},
+	{80,10,3,18},
+	{93,14,3,17}
+};
+
+const int WEAPON_DISPOSITION[NB_MAX_WEAPON][NB_MAX_WEAPON] = {
+	{3,0,0,0,0},
+	{2,4,0,0,0},
+	{3,2,4,0,0},
+	{3,2,4,1,0},
+	{3,2,4,1,5}
+};
+
+const int DECALLAGE_TURN[3][NB_MAX_WEAPON] = {
+	{0,0,0},
+	{-1, -2, -3, -3, -4},
+	{4, 3, 3, 2, 1}
 };
 
 
