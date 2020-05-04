@@ -1,5 +1,5 @@
-#define VERSION_LOGICIEL "version=1.0.0"
-#define VERSION "1.0.0"
+#define VERSION_LOGICIEL "version=1.0.1-dev"
+#define VERSION "1.0.1-dev"
 
 #ifdef _WIN32
 #define WESNOTH_EXPORT __declspec(dllexport)
