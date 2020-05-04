@@ -305,10 +305,10 @@ void _limiterFrame(const float delayLancementFrame,float *_IPS)
 /// \param char rechercher[] chaine de text liee a la recherche
 /// \param struct classement donner[] strucuteur de donner actuel
 /// \param int selectionScrollingList element selectionner actuellement dans la liste
-///
+/// \param int *frameType les frames pour le curseur
 /// \return void
 /////////////////////////////////////////////////////
-void gestionEvenement(int *halt, int *xMouse, int *yMouse, Scroll *scrollPositionWindow, Scroll *scrollPositionList, int *_SELECTION, char rechercher[], struct classement donner[], int selectionScrollingList)
+void gestionEvenement(int *halt, int *xMouse, int *yMouse, Scroll *scrollPositionWindow, Scroll *scrollPositionList, int *_SELECTION, char rechercher[], struct classement donner[], int selectionScrollingList, int *frameType)
 {
 	/////////////////////////////////////////////////////
 	// INITIALISATION DE L EVENT
@@ -416,7 +416,9 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, Scroll *scrollPositio
 				/////////////////////////////////////////////////////
 				// RECUPERER LES TOUCHES
 				case SDL_TEXTINPUT:
-					 strcat(rechercher, event.text.text);break;
+					 strcat(rechercher, event.text.text);
+					 *frameType = 0;
+					 break;
 				 /////////////////////////////////////////////////////
 	 			// AUTRE TOUCHE NON TEXT
 				case SDL_KEYDOWN:{
@@ -424,13 +426,15 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, Scroll *scrollPositio
 					// EFFACER
 					if(event.key.keysym.sym == SDLK_BACKSPACE)
 					{
-							if(strlen(rechercher) > 0)
-								rechercher[strlen(rechercher) - 1] = '\0';
+						*frameType = 0;
+						if(strlen(rechercher) > 0)
+							rechercher[strlen(rechercher) - 1] = '\0';
 					}
 					/////////////////////////////////////////////////////
 					// ENTRE
 					if(event.key.keysym.sym == SDLK_RETURN)
 					{
+						*frameType = 0;
 						if(strlen(rechercher) > 0)
 						{
 							*_SELECTION = SEARCH_PLAYER;
@@ -451,7 +455,7 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, Scroll *scrollPositio
 
 
 /////////////////////////////////////////////////////
-/// \fn void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color couleur, int xPosition, int yPosition, float scale, int estHUD)
+/// \fn void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color couleur, int xPosition, int yPosition, float scale, int estHUD, int frameType)
 /// \brief permet d'ecrire du text a l'ecran
 ///
 /// \param SDL_Renderer* renderer pointeur sur le rendu
@@ -462,10 +466,11 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, Scroll *scrollPositio
 /// \param int yPosition position -1 pour centrer
 /// \param float scale scale du text
 /// \param int estHUD est pour l'HUD
+/// \param int frameType frame pour le curseur
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color couleur, int xPosition, int yPosition, float scale, int estHUD){
+void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color couleur, int xPosition, int yPosition, float scale, int estHUD, int frameType){
 
 	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, couleur);
 	SDL_Rect dest;
@@ -499,6 +504,19 @@ void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color c
 		}
 	}
 
+
+
+
+	if(frameType != -1 && frameType%(int)(LIMITE_FPS*1.4) < ((LIMITE_FPS*1.4)/2)){
+		SDL_Rect curseur = dest;
+		curseur.x += dest.w;
+		curseur.w = 4;
+		curseur.y += curseur.h/12;
+		curseur.h -= curseur.h/3;
+		curseur.h --;
+		SDL_SetRenderDrawColor(renderer, 0,0,0,255);
+		SDL_RenderFillRect(renderer, &curseur);
+	}
 
 
 
@@ -559,9 +577,9 @@ int afficherCellule(SDL_Renderer *renderer,SDL_Texture *texture, int cellulePosi
 
 	/////////////////////////////////////////////////////
 	// ECRIRE LE TEXT
-	ecrireText(renderer,police, _cellulePosition, noirCOLOR, NATIF_W*0.08, (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY , 0.5 , 0);
-	ecrireText(renderer,police, donner.username, noirCOLOR,-1, (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY , 0.5 , 0);
-	ecrireText(renderer,police, _score, noirCOLOR, NATIF_W*0.9 , (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY, 0.5 , 0);
+	ecrireText(renderer,police, _cellulePosition, noirCOLOR, NATIF_W*0.08, (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY , 0.5 , 0, -1);
+	ecrireText(renderer,police, donner.username, noirCOLOR,-1, (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY , 0.5 , 0, -1);
+	ecrireText(renderer,police, _score, noirCOLOR, NATIF_W*0.9 , (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY, 0.5 , 0, -1);
 
 	return EXIT_SUCCESS;
 }
@@ -587,11 +605,11 @@ void afficherCelluleScrollView(SDL_Renderer *renderer, int cellulePosition, char
 	SDL_RenderFillRect(renderer, &cellule);
 	/////////////////////////////////////////////////////
 	// ECRIRE LE TEXT
-	ecrireText(renderer,police, text, noirCOLOR, NATIF_W*0.05 + (cellule.w/2), cellule.y  + (HUD_SIZE*0.6)/2 + NATIF_H*0.01 , 0.8 , 1);
+	ecrireText(renderer,police, text, noirCOLOR, NATIF_W*0.05 + (cellule.w/2), cellule.y  + (HUD_SIZE*0.6)/2 + NATIF_H*0.01 , 0.8 , 1, -1);
 }
 
 /////////////////////////////////////////////////////
-/// \fn int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , char *recherche, int _SELECTION, int decallageY,int selectionScrollingList)
+/// \fn int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , char *recherche, int _SELECTION, int decallageY,int selectionScrollingList, int frameType)
 /// \brief affiche l'HUD complet
 ///
 /// \param SDL_Renderer* renderer pointeur sur le rendu
@@ -601,10 +619,10 @@ void afficherCelluleScrollView(SDL_Renderer *renderer, int cellulePosition, char
 /// \param int _SELECTION
 /// \param int decallageY
 /// \param int selectionScrollingList
-///
+/// \param int frameType
 /// \return int
 /////////////////////////////////////////////////////
-int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , char *recherche, int _SELECTION, int decallageY,int selectionScrollingList)
+int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , char *recherche, int _SELECTION, int decallageY,int selectionScrollingList, int frameType)
 {
 
 
@@ -641,9 +659,9 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 
 	// ECRIRE RECHERCHE ACTUEL
 	if(strlen(recherche) < 1)
-		ecrireText(renderer,police, "Rechercher", noirC, rechercheJoueur.x + rechercheJoueur.w/2, rechercheJoueur.y + rechercheJoueur.h/2 + NATIF_H*0.01 , 0.8 , 0);
+		ecrireText(renderer,police, " ", noirC, rechercheJoueur.x + rechercheJoueur.w/2, rechercheJoueur.y + rechercheJoueur.h/2 + NATIF_H*0.01 , 0.8 , 0, frameType);
 	else
-		ecrireText(renderer,police, recherche, noirCOLOR, rechercheJoueur.x + rechercheJoueur.w/2, rechercheJoueur.y + rechercheJoueur.h/2 + NATIF_H*0.01 , 0.8 , 0);
+		ecrireText(renderer,police, recherche, noirCOLOR, rechercheJoueur.x + rechercheJoueur.w/2, rechercheJoueur.y + rechercheJoueur.h/2 + NATIF_H*0.01 , 0.8 , 0, frameType);
 
 
 	////////////////////////////////////////////
@@ -713,9 +731,9 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 
 	// ECRIRE LE TEXT DES CHAMPS
 	if(selectionScrollingList < 7)
-		ecrireText(renderer,police, (char*)nomList[selectionScrollingList], noirCOLOR, listSelection.x + listSelection.w/2, listSelection.y + listSelection.h/2 + NATIF_H*0.01 , 0.8 , 0);
+		ecrireText(renderer,police, (char*)nomList[selectionScrollingList], noirCOLOR, listSelection.x + listSelection.w/2, listSelection.y + listSelection.h/2 + NATIF_H*0.01 , 0.8 , 0,-1);
 	else
-		ecrireText(renderer,police, (char*)nomList[(12-selectionScrollingList) + 1], noirCOLOR, listSelection.x + listSelection.w/2, listSelection.y + listSelection.h/2 + NATIF_H*0.01 , 0.8 , 0);
+		ecrireText(renderer,police, (char*)nomList[(12-selectionScrollingList) + 1], noirCOLOR, listSelection.x + listSelection.w/2, listSelection.y + listSelection.h/2 + NATIF_H*0.01 , 0.8 , 0,-1);
 
 	return EXIT_SUCCESS;
 }
@@ -939,6 +957,7 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 	int indice = -1;
 
 	int frameRecherche = 0;
+	long int frameType = 0;
 
 	/////////////////////////////////////////////////
 	char rechercher[32]="";
@@ -961,7 +980,7 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
 		//////////////////////////////////////////
 		// RECUPERER TOUS LES EVENTS POSSIBLE
-		gestionEvenement(&halt,&xMouse,&yMouse,&scrollPositionWindow,&scrollPositionList, &_SELECTION, rechercher, donner[selectionScrollingList], selectionScrollingList );
+		gestionEvenement(&halt,&xMouse,&yMouse,&scrollPositionWindow,&scrollPositionList, &_SELECTION, rechercher, donner[selectionScrollingList], selectionScrollingList, &frameType );
 		/////////////////////////////////////////////////
 		// RECUPERER LA SELECTION
 		_SELECTION = interactionInterface(xMouse,yMouse,_SELECTION,scrollPositionList,&selectionScrollingList, &scrollPositionWindow, donner);
@@ -985,7 +1004,7 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 		}
 
 
-		if ( afficherHUD(renderer,texture,police,rechercher,_SELECTION,roundf(scrollPositionList.pos),selectionScrollingList) != EXIT_SUCCESS)
+		if ( afficherHUD(renderer,texture,police,rechercher,_SELECTION,roundf(scrollPositionList.pos),selectionScrollingList, frameType) != EXIT_SUCCESS)
 		{
 				fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : afficherHUD()" );
 
@@ -1003,6 +1022,7 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
     SDL_RenderPresent(renderer);
 
+		frameType ++;
 
 		//anim recherche
 		if(frameRecherche)
