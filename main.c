@@ -11,11 +11,6 @@ WESNOTH_EXPORT unsigned long NvOptimusEnablement = 0x00000001;
 WESNOTH_EXPORT int AmdPowerXpressRequestHighPerformance = 1;
 #endif
 
-#ifdef _WIN32
-       HWND hWnd = GetConsoleWindow();
-       ShowWindow( hWnd, SW_HIDE );
-#endif // _WIN32
-
 
 #include <stdio.h>
 #define MODE_DEV 0
@@ -1070,6 +1065,10 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
 
 int main(int argc, char *argv[])
 {
+    #ifdef _WIN32
+       HWND hWnd = GetConsoleWindow();
+       ShowWindow( hWnd, SW_HIDE );
+    #endif // _WIN32
 	EXT_FILE = NULL;
   ////////////////////////////////////////////////////
   // CHOIX DU MODE DE SORTIE POUR LES CODES
