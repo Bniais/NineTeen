@@ -1066,7 +1066,6 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
 int main(int argc, char *argv[])
 {
 	EXT_FILE = NULL;
-
   ////////////////////////////////////////////////////
   // CHOIX DU MODE DE SORTIE POUR LES CODES
   // D'ERREUR
@@ -1263,6 +1262,7 @@ int main(int argc, char *argv[])
 
     /////////////////////////////////////////////////////////////////
     // LIBERER MEMOIRE
+    fprintf(EXT_FILE, "main.c : main() : liberation des allocation \n");
     /////////////////////////////////////////////////////////////////
     // VIDER LA MEMOIRE DE LA SCENE
     aiReleaseImport(scene);
@@ -1274,8 +1274,10 @@ int main(int argc, char *argv[])
     token = NULL;
     free(tokenCpy);
     tokenCpy = NULL;
+    fprintf(EXT_FILE, "main.c : main() : allocation liberer\n");
     /////////////////////////////////////////////////////////////////
     // QUITTER TTF
+    fprintf(EXT_FILE, "main.c : main() : quitter les API \n");
     TTF_Quit();
     /////////////////////////////////////////////////////////////////
     // FERMER AUDIO
@@ -1293,9 +1295,12 @@ int main(int argc, char *argv[])
     /////////////////////////////////////////////////////////////////
     // QUITTER SDL
     SDL_Quit();
+
+    fprintf(EXT_FILE, "main.c : main() : API quitter \n");
   }
 
   // FERMETURE DU FICHIER DE LOG
+  fprintf(EXT_FILE, "main.c : main() : fermeture du programme \n");
   fclose(EXT_FILE);
 
 	return 0;
