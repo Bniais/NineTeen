@@ -1258,7 +1258,7 @@ int main(int argc, char *argv[])
       const SDL_MessageBoxData messageboxdata = {
         SDL_MESSAGEBOX_INFORMATION, /* .flags */
         window, /* .window */
-        "Voulez-vous activez le mode pleine ecran ?", /* .title */
+        "Plein ecran ?", /* .title */
         "Selectionner une option", /* .message */
         SDL_arraysize(buttons), /* .numbuttons */
         buttons, /* .buttons */
