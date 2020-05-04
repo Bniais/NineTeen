@@ -49,9 +49,11 @@ extern FILE *EXT_FILE;
 #define FALSE 0
 
 #ifdef _WIN32
-  #define DIR_TOKEN_FILE "C:\\Windows\\Temp\\.Nineteen"
+	#define DIR_LOG "C:\\Windows\\Temp\\"
+    #define DIR_TOKEN_FILE "C:\\Windows\\Temp\\.Nineteen"
 #else
-  #define DIR_TOKEN_FILE "/tmp/.Nineteen"
+    #define DIR_TOKEN_FILE "/tmp/.Nineteen"
+    #define DIR_LOG "/tmp/"
 #endif
 
 #define DIR_CONFIG_FILE "../launcher/.config"
@@ -1097,7 +1099,7 @@ int main(int argc, char *argv[])
       // ALLOCATION
       if ( _malloc((void**)&nomFichier,sizeof(char),128,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : main() : char*nomFichier ",NULL) )
         return EXIT_FAILURE;
-      sprintf(nomFichier,"/tmp/NineteenLog_%d-%02d-%02d_%02d-%02d-%d.log", year  , mon , day, hour , min, sec);
+      sprintf(nomFichier,"%sNineteenLog_%d-%02d-%02d_%02d-%02d-%d.log", DIR_LOG, year  , mon , day, hour , min, sec);
       EXT_FILE = fopen(nomFichier,"w");
       // VERIFIER CREATION DU FICHIER
 

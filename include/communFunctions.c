@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include "communFunctions.h"
@@ -28,27 +29,55 @@ void informationPreciseCPUGPU()
 {
 
 	#ifdef __APPLE__
-	system("system_profiler SPSoftwareDataType | grep -e \"System Version\" | sed 's/ //g' | sed 's/SystemVersion://g' >> /tmp/Nineteen.tmp");
-	system("sysctl -n machdep.cpu.brand_string | sed 's/ //g' >> /tmp/Nineteen.tmp");
-	system("system_profiler SPDisplaysDataType | grep -e Chipset -e VRAM | sed 's/ //g' | sed 's/ChipsetModel://' | sed 's/VRAM(Total)://' >> /tmp/Nineteen.tmp");
+		system("system_profiler SPSoftwareDataType | grep -e \"System Version\" | sed 's/ //g' | sed 's/SystemVersion://g' >> /tmp/Nineteen.tmp");
+		system("sysctl -n machdep.cpu.brand_string | sed 's/ //g' >> /tmp/Nineteen.tmp");
+		system("system_profiler SPDisplaysDataType | grep -e Chipset -e VRAM | sed 's/ //g' | sed 's/ChipsetModel://' | sed 's/VRAM(Total)://' >> /tmp/Nineteen.tmp");
 
-	char buf[512];
-	FILE *fp = fopen("/tmp/Nineteen.tmp", "r");
+		char buf[512];
+		FILE *fp = fopen("/tmp/Nineteen.tmp", "r");
 
-	fscanf(fp, "%s\n",buf);
-	fprintf(EXT_FILE," - System : %s\n",buf);
-	
-	fscanf(fp, "%s\n",buf);
-	fprintf(EXT_FILE," - ChipsetCPU : %s\n",buf);
+		fscanf(fp, "%s\n",buf);
+		fprintf(EXT_FILE," - System : %s\n",buf);
 
-	fscanf(fp, "%s\n",buf);
-	fprintf(EXT_FILE," - ChipsetCPU : %s\n",buf);
+		fscanf(fp, "%s\n",buf);
+		fprintf(EXT_FILE," - ChipsetCPU : %s\n",buf);
 
-	fscanf(fp, "%s\n",buf);
-	fprintf(EXT_FILE," - VRAM GPU = %s\n",buf);
+		fscanf(fp, "%s\n",buf);
+		fprintf(EXT_FILE," - ChipsetGPU : %s\n",buf);
 
-	fclose(fp);
-	system("rm /tmp/Nineteen.tmp");
+		fscanf(fp, "%s\n",buf);
+		fprintf(EXT_FILE," - VRAM GPU = %s\n",buf);
+
+		fclose(fp);
+		system("rm /tmp/Nineteen.tmp");
+	#endif
+
+	#ifdef _WIN32
+
+		system("ver >> C:\\Windows\\Temp\\Nineteen.tmp");
+		system("wmic cpu get Name | findstr /v Name >> C:\\Windows\\Temp\\Nineteen.tmp");
+		system("wmic path win32_VideoController get name | findstr /v Name >> C:\\Windows\\Temp\\Nineteen.tmp");
+
+		char buf[512], totalbuf[1024];
+
+		FILE *fp = fopen("C:\\Windows\\Temp\\Nineteen.tmp", "r");
+
+		while(fscanf(fp, "%*s %[^\n]",buf) != EOF ){
+			strcat(totalbuf, buf);
+			strcat(totalbuf, "\n");
+		}
+		fclose(fp);
+        system( " del C:\\Windows\\Temp\\Nineteen.tmp" );
+
+		char * system = strtok ( totalbuf, "\n" );
+		fprintf(EXT_FILE," - System : %s\n",system);
+
+		char * chipset = strtok ( NULL, "\n" );
+		fprintf(EXT_FILE," - ChipsetCPU : %s",chipset);
+
+		char * gpu = strtok ( NULL, "\n" );
+		fprintf(EXT_FILE," - ChipsetGPU : %s",gpu);
+
 	#endif
 
 }
