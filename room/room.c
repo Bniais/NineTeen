@@ -1881,12 +1881,6 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 
 
 
-	camera->px = -6.56;
-	camera->py = 9.189630;
-	camera->pz = 3.609998;
-	camera->cible_py = -.332000;
-	camera->angle = 0.0;
-	camera->ouverture = 70;
 
 	cible[SHOOTER_HARD-1].px = -6.56;
 	cible[SHOOTER_HARD-1].pz = 9.189630;
