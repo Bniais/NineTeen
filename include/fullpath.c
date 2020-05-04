@@ -78,7 +78,7 @@ char *fullPath(char s[])
 		{
 			if(slash > 1)
 			{
-				fprintf(EXT_FILE,"fullpath.c : fullePath() : il faut remonter %d dossier",slash -1);
+				fprintf(EXT_FILE,"fullpath.c : fullePath() : il faut remonter %d dossie\n",slash -1);
 				path = completPathOf(s,2);
 			}
 			else
