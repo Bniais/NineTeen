@@ -10,6 +10,7 @@
 
 // EXTERNAL
 FILE* EXT_FILE;
+int MACOS_VER;
 
 
 #ifdef __APPLE__
@@ -2791,7 +2792,33 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							///////////////////////////////////////////////////
 							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
-							#ifndef __linux__
+
+
+
+							#ifdef __APPLE__
+
+								SDL_Thread *thread = NULL;
+
+								if(MACOS_VER < 14)
+								{
+
+								}
+								else
+								{
+									pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+									if(!pRenderer)
+									{
+										SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal creation render.",SDL_GetError(),Window);
+										fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
+										break;
+									}
+									thread = SDL_CreateThread(  (int(*)(void*))loadGameTexture, "Charger_textures_jeu", &machine);
+								}
+
+							#elif __linux__
+
+							#elif __WIN32
+
 								pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 								if(!pRenderer)
 								{
@@ -2800,21 +2827,42 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									break;
 								}
 								SDL_Thread *thread = SDL_CreateThread(  (int(*)(void*))loadGameTexture, "Charger_textures_jeu", &machine);
+
 							#endif
+
+
+
 							///////////////////////////////////////////////////
 							// ANIMATION CENTRAGE SUR MACHINE
 							animationLancerMachine(camera,cible[machine-1],*scene_list,Window, _IPS,60.0);
 
-							#ifndef __linux
-								int retourThread = SDL_FALSE;
 
-	                            SDL_WaitThread(thread, &retourThread);
+							#ifdef __APPLE__
 
-								if(!retourThread){
-									fprintf(EXT_FILE, "room.c : kancerMachine() : retourThread negatif, abort game\n" );
-									return EXIT_FAILURE;
+								if(MACOS_VER < 14)
+								{
+									pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+									if(!pRenderer)
+									{
+										SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal creation render.",SDL_GetError(),Window);
+										fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
+										break;
+									}
+									loadGameTexture(&machine);
 								}
-							#else
+								else
+								{
+									int retourThread = SDL_FALSE;
+									SDL_WaitThread(thread, &retourThread);
+
+									if(!retourThread){
+										fprintf(EXT_FILE, "room.c : kancerMachine() : retourThread negatif, abort game\n" );
+										return;
+									}
+								}
+
+							#elif __linux__
+
 								pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 								if(!pRenderer)
 								{
@@ -2823,7 +2871,19 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									break;
 								}
 								loadGameTexture(&machine);
+
+							#elif __WIN32
+								int retourThread = SDL_FALSE;
+
+								SDL_WaitThread(thread, &retourThread);
+
+								if(!retourThread){
+									fprintf(EXT_FILE, "room.c : kancerMachine() : retourThread negatif, abort game\n" );
+									return;
+								}
+
 							#endif
+
 
 
 
@@ -2883,10 +2943,39 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
 							SDL_DestroyRenderer(pRenderer);
 
+							#ifdef __APPLE__
 
+								if(MACOS_VER < 14)
+								{
+									detruireTexture();
 
-							#ifdef __linux__
+									SDL_GL_DeleteContext(*Context);
+									///////////////////////////////////////////////////
+									*Context = SDL_GL_CreateContext(Window);
+									///////////////////////////////////////////////////
+									// REMISE A ZERO DE LA SCENE
+									*scene_list = 0;
+									// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
+									while(SDL_PollEvent(&Event));
+									// AFFICHAGE DE LA SCENE
+									// RECHARGEMENT DES IMAGES
+									detruireTexture();
+									_malloc((void**)&_textures,sizeof(*_textures),(_nbTextures = scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
+									aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
+								}
+								else
+								{
+									// REMISE A ZERO DE LA SCENE
+									*scene_list = 0;
+									// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
+									while(SDL_PollEvent(&Event));
+									// AFFICHAGE DE LA SCENE
 
+									if (SDL_GetWindowFlags(Window) & (SDL_WINDOW_INPUT_FOCUS ))
+										SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+								}
+
+							#elif __linux__
 								detruireTexture();
 
 								SDL_GL_DeleteContext(*Context);
@@ -2899,10 +2988,10 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								while(SDL_PollEvent(&Event));
 								// AFFICHAGE DE LA SCENE
 								// RECHARGEMENT DES IMAGES
-							 aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
-
-							#else
-
+								detruireTexture();
+								_malloc((void**)&_textures,sizeof(*_textures),(_nbTextures = scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
+								aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
+							#elif _WIN32
 								// REMISE A ZERO DE LA SCENE
 								*scene_list = 0;
 								// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
@@ -2911,7 +3000,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 								if (SDL_GetWindowFlags(Window) & (SDL_WINDOW_INPUT_FOCUS ))
 									SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-
 							#endif
 
 

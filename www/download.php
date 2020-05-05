@@ -85,8 +85,8 @@ function getClientIP(){
 
 			<div class= "jeu" style="margin-left: 2%; float:left; width:30vw;">
 				<h1>Liens de téléchargement</h1>
-				<a href="download/Nineteen_v0.1.4b.dmg"> <img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/MacOS_logo_%282017%29.svg/768px-MacOS_logo_%282017%29.svg.png" alt="logo apple"></a>
-				<a href="download/Nineteen_v0.1.4b.exe"><img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Windows_logo_–_2012_%28dark_blue%29.svg/768px-Windows_logo_–_2012_%28dark_blue%29.svg.png" alt="logo apple"></a>
+				<a href="download/Nineteen_v1.0.0.dmg"> <img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/MacOS_logo_%282017%29.svg/768px-MacOS_logo_%282017%29.svg.png" alt="logo apple"></a>
+				<a href="download/Nineteen_v1.0.0.exe"><img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Windows_logo_–_2012_%28dark_blue%29.svg/768px-Windows_logo_–_2012_%28dark_blue%29.svg.png" alt="logo apple"></a>
 				<a href="#"><img style="width: 4vw; " src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Ubuntu-Logo_ohne_Schriftzug.svg/1200px-Ubuntu-Logo_ohne_Schriftzug.svg.png" alt="logo apple"></a>
 				<br>
 				<br>
@@ -96,6 +96,60 @@ function getClientIP(){
 			<div class= "jeu" style="margin-left: 2%; float:left; width:30vw;">
 				<h1>Note de mise à jour</h1>
 				<br>
+
+				<h2>Version : 1.0.0</h2>
+					<ul style="text-align: left;">
+						<li>Global :</li>
+						<ul>
+							<li>Log disponibles dans les fichiers temporaires</li>
+							<li>Chargement des textures des jeux pendant l'animation de zoom vers écran (plus de petit freeze au début)</li>
+							<li>Chaque score est désormais affecté par un multiplicateur pour le classement général</li>
+							<li>Mode plein écran et optimisation positionnement fenêtre</li>
+							<li>Utilisation du gpu</li>
+							</ul>
+
+						<li>Launcher :</li>
+						<ul>
+							<li>Message indiquant pourquoi la connection a échoué</li>
+							</ul>
+
+						<li>Salle :</li>
+						<ul>
+						<li>Textures pour toute la salle</li>
+							<li>Porte et couloir d'entrée</li>
+							<li>Toilettes fonctionelles</li>
+							<li>Animations de zoom vers les écrans plus précises</li>
+							<li>Son provenant de plusieurs radios qu'il est possible de couper</li>
+							<li>Un écran avec les classements se trouve sur le bar</li>
+						</ul>
+
+						<li>Flappy :</li>
+						<ul>
+							<li>Équilibrage entre les modes</li>
+						</ul>
+
+						<li>Tetris :</li>
+						<ul>
+							<li>Ajout de sons</li>
+						</ul>
+
+						<li>Snake :</li>
+						<ul>
+							<li>Ajout de sons</li>
+						</ul>
+
+						<li>Asteroid :</li>
+						<ul>
+							<li>Mode facile terminé (armes, munitions)</li>
+							<li>Équilibrage</li>
+							<li>Ajout de sons</li>
+						</ul>
+
+					</ul>
+					<br>
+					<br>
+					<hr>
+
 
 				<h2>Version : 0.1.4b</h2>
 				<ul style="text-align: left;">
