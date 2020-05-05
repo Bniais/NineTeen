@@ -159,12 +159,12 @@ int FIRST_FRAME = 0;
 
 
 #include "dir.h"
-SDL_Renderer * pRenderer;
 SDL_Texture * textures[NB_MAX_TEXTURES];
-int loadGameTexture(int * id_jeu){
+typedef struct loadGame_s{int id_jeu; SDL_Renderer *pRenderer;}loadGame;
+int loadGameTexture(loadGame * load){
 		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 	    //asteroid
-		switch(*id_jeu){
+		switch(load->id_jeu){
 			case ASTEROID_EASY:
             case ASTEROID_HARD:
 				for(int i=0; i< NB_ASTEROID_TEXTURES; i++){
@@ -175,7 +175,7 @@ int loadGameTexture(int * id_jeu){
 					else
 						SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 
-					textures[i] = IMG_LoadTexture(pRenderer, DIR_TEXTURES_ASTEROID[i]);
+					textures[i] = IMG_LoadTexture(load->pRenderer, DIR_TEXTURES_ASTEROID[i]);
 					if( textures[i] == NULL ){
 						printf("Erreur lors de la creation de texture %s", SDL_GetError());
 						return SDL_FALSE;
@@ -186,7 +186,7 @@ int loadGameTexture(int * id_jeu){
 			case FLAPPY_EASY:
             case FLAPPY_HARD:
 				for(int i=0; i< NB_FLAPPY_TEXTURES; i++){
-					 textures[i] = IMG_LoadTexture(pRenderer, DIR_TEXTURES_FLAPPY[i]);
+					 textures[i] = IMG_LoadTexture(load->pRenderer, DIR_TEXTURES_FLAPPY[i]);
 					 if( textures[i] == NULL ){
 						printf("Erreur lors de la creation de texture %s", SDL_GetError());
 						return SDL_FALSE;
@@ -197,7 +197,7 @@ int loadGameTexture(int * id_jeu){
 			case SNAKE_EASY:
             case SNAKE_HARD:
 				for(int i=0; i< NB_SNAKE_TEXTURES; i++){
-					 textures[i] = IMG_LoadTexture(pRenderer, DIR_TEXTURES_SNAKE[i]);
+					 textures[i] = IMG_LoadTexture(load->pRenderer, DIR_TEXTURES_SNAKE[i]);
 					 if( textures[i] == NULL ){
 						printf("Erreur lors de la creation de texture %s", SDL_GetError());
 						return SDL_FALSE;
@@ -208,7 +208,7 @@ int loadGameTexture(int * id_jeu){
 			case TETRIS_EASY:
             case TETRIS_HARD:
 				for(int i=0; i< NB_TETRIS_TEXTURES; i++){
-					 textures[i] = IMG_LoadTexture(pRenderer, DIR_TEXTURES_TETRIS[i]);
+					 textures[i] = IMG_LoadTexture(load->pRenderer, DIR_TEXTURES_TETRIS[i]);
 					 if( textures[i] == NULL ){
 						printf("Erreur lors de la creation de texture %s", SDL_GetError());
 						return SDL_FALSE;
@@ -224,7 +224,7 @@ int loadGameTexture(int * id_jeu){
 					else
 						SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 
-					textures[i] = IMG_LoadTexture(pRenderer, DIR_TEXTURES_SHOOTER[i]);
+					textures[i] = IMG_LoadTexture(load->pRenderer, DIR_TEXTURES_SHOOTER[i]);
 					if( textures[i] == NULL ){
 						printf("Erreur lors de la creation de texture %s", SDL_GetError());
 						return SDL_FALSE;
@@ -2794,7 +2794,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
 
 
-
+							SDL_Renderer* pRenderer;
 							#ifdef __APPLE__
 
 								SDL_Thread *thread = NULL;
@@ -2812,7 +2812,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 										fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
 										break;
 									}
-									thread = SDL_CreateThread(  (int(*)(void*))loadGameTexture, "Charger_textures_jeu", &machine);
+									loadGame lg = {machine, pRenderer};
+
+									thread = SDL_CreateThread(  (int(*)(void*))loadGameTexture, "Charger_textures_jeu", &lg);
 								}
 
 							#elif __linux__
@@ -2826,7 +2828,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
 									break;
 								}
-								SDL_Thread *thread = SDL_CreateThread(  (int(*)(void*))loadGameTexture, "Charger_textures_jeu", &machine);
+								loadGame lg = {machine, pRenderer};
+								SDL_Thread *thread = SDL_CreateThread(  (int(*)(void*))loadGameTexture, "Charger_textures_jeu", &lg);
 
 							#endif
 
@@ -2848,7 +2851,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 										fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
 										break;
 									}
-									loadGameTexture(&machine);
+									loadGame lg = {machine, pRenderer};
+									loadGameTexture(&lg);
 								}
 								else
 								{
@@ -2870,7 +2874,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
 									break;
 								}
-								loadGameTexture(&machine);
+								loadGame lg = {machine, pRenderer};
+								loadGameTexture(&lg);
 
 							#elif __WIN32
 								int retourThread = SDL_FALSE;
@@ -2948,6 +2953,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							///////////////////////////////////////////////////
 							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
 							SDL_DestroyRenderer(pRenderer);
+							pRenderer = NULL;
 
 							#ifdef __APPLE__
 
