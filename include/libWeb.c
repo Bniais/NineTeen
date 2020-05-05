@@ -146,7 +146,7 @@ int envoyez_requet(char **response, char *url, char *request)
 
 
 	}
-	fprintf(EXT_FILE, "libWeb.c : envoyez_requet() : curl_easy_init() failed: %s\n", curl_easy_strerror(res));
+	fprintf(EXT_FILE, "libWeb.c : envoyez_requet() : curl_easy_init() failed\n");
 	//nettoyage
 	curl_easy_cleanup(curl);
 	curl_global_cleanup();
@@ -530,7 +530,7 @@ int updateScore(EnvoiScore * envoiScore )
 				printf("%s\n",response);
 				if(!strcmp(response, "SUCCESS")){
 
-					fprintf(EXT_FILE,"libWeb.c : updateScore() : Erreur envoi requete attempt : %d Message : %s\n",attempt,response);
+					fprintf(EXT_FILE,"libWeb.c : updateScore() : Nombre de tentative : %d Reponse : %s\n",attempt + 1,response);
 
 					free(request);
 					request = NULL;
@@ -543,7 +543,7 @@ int updateScore(EnvoiScore * envoiScore )
 			}
 		}
 
-		fprintf(EXT_FILE,"libWeb.c : updateScore() : Erreur constriction requete attempt : %d \n",attempt);
+		fprintf(EXT_FILE,"libWeb.c : updateScore() : Erreur constriction requete attempt : %d \n",attempt + 1);
 
 	}while(attempt++ < 5 && strcmp(response, "SUCCESS"));
 	free(request);

@@ -1,5 +1,5 @@
-#define VERSION_LOGICIEL "version=0.1.5b-dev"
-#define VERSION "0.1.5b-dev"
+#define VERSION_LOGICIEL "version=1.0.1-dev"
+#define VERSION "1.0.1-dev"
 
 #ifdef _WIN32
 #define WESNOTH_EXPORT __declspec(dllexport)
@@ -13,7 +13,7 @@ WESNOTH_EXPORT int AmdPowerXpressRequestHighPerformance = 1;
 
 
 #include <stdio.h>
-#define MODE_DEV 1
+#define MODE_DEV 0
 extern FILE *EXT_FILE;
 
 
@@ -41,7 +41,7 @@ extern FILE *EXT_FILE;
 
 #include "define/define.h"
 
-#define DIR_OBJ_LOAD "../room/salle.obj"
+#define DIR_OBJ_LOAD "../room/textures/salle.obj"
 
 #include "launcher/launcher.h"
 
@@ -49,9 +49,11 @@ extern FILE *EXT_FILE;
 #define FALSE 0
 
 #ifdef _WIN32
-  #define DIR_TOKEN_FILE "C:\\Windows\\Temp\\.Nineteen"
+	#define DIR_LOG "C:\\Windows\\Temp\\"
+    #define DIR_TOKEN_FILE "C:\\Windows\\Temp\\.Nineteen"
 #else
-  #define DIR_TOKEN_FILE "/tmp/.Nineteen"
+    #define DIR_TOKEN_FILE "/tmp/.Nineteen"
+    #define DIR_LOG "/tmp/"
 #endif
 
 #define DIR_CONFIG_FILE "../launcher/.config"
@@ -310,7 +312,7 @@ void ouvrirUrlRegistration()
 
 }
 
-int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], int * fullscreen)
+int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 {
 	//////////////////////////////////////////
 	// INIT CHAINE DE CONCATENATION DU PATH
@@ -619,7 +621,6 @@ int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[], i
 				}
 				else if ( TF_ClickIn( targetConnect , mouse) )
 				{
-					*fullscreen = 0;
 					if(thread == NULL){
             fprintf(EXT_FILE,"main.c : connexion() : lancement d'un thread de connexion\n");
 
@@ -783,36 +784,36 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
   //////////////////////////////////////
   // Initalisation des variables
-  char *concatenation = NULL;
-  if ( _malloc((void**)&concatenation,sizeof(char),128,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : chargementFichier() : char*concatenation ",NULL) )
-    return EXIT_FAILURE;
+	char *concatenation = NULL;
+	if ( _malloc((void**)&concatenation,sizeof(char),128,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : chargementFichier() : char*concatenation ",NULL) )
+		return EXIT_FAILURE;
   //////////////////////////////////////
   // TEXTURE BACKGROUND
 	SDL_Texture* background = IMG_LoadTexture(renderer,DIR_ING_BACKGROUND_TXT);
 	if(!background)
-  {
-    fprintf(EXT_FILE,"main.c -> chargementFichier() : IMG_LoadTexture : %s\n",DIR_ING_BACKGROUND_TXT );
+	{
+		fprintf(EXT_FILE,"main.c -> chargementFichier() : IMG_LoadTexture : %s\n",DIR_ING_BACKGROUND_TXT );
 
-    // NETTOYAGE MEMOIRE
-    free(concatenation);
-    concatenation=NULL;
-    return EXIT_FAILURE;
-  }
+		// NETTOYAGE MEMOIRE
+		free(concatenation);
+		concatenation=NULL;
+		return EXIT_FAILURE;
+	}
 	//////////////////////////////////////
 
   //////////////////////////////////////
   // ERREUR RENDER COPY
 	if ( SDL_RenderCopy(renderer, background, NULL, NULL) )
-  {
-    fprintf(EXT_FILE,"main.c : chargementFichier() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+	{
+	    fprintf(EXT_FILE,"main.c : chargementFichier() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 
-    //////////////////////////////////////
-    // NETTOYAGE MEMOIRE
-    SDL_DestroyTexture(background);
-    free(concatenation);
-    concatenation=NULL;
-    return EXIT_FAILURE;
-  }
+	    //////////////////////////////////////
+	    // NETTOYAGE MEMOIRE
+	    SDL_DestroyTexture(background);
+	    free(concatenation);
+	    concatenation=NULL;
+	    return EXIT_FAILURE;
+	}
 
 	//AFFICHER FOND BAR DE CHARGEMENT
 	SDL_Rect chargement = {LARGUEUR*0.05,HAUTEUR*0.85,LARGUEUR*0.90,HAUTEUR*0.08};
@@ -851,16 +852,16 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
     // MISE A JOUR DE L'AFFICHAGE //
 		SDL_RenderClear(renderer);
 		if ( SDL_RenderCopy(renderer, background, NULL, NULL) )
-    {
-      fprintf(EXT_FILE,"main.c : chargementFichier() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
+	    {
+	      fprintf(EXT_FILE,"main.c : chargementFichier() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
 
-      //////////////////////////////////////
-      // NETTOYAGE MEMOIRE
-      SDL_DestroyTexture(background);
-      free(concatenation);
-      concatenation=NULL;
-      return EXIT_FAILURE;
-    }
+	      //////////////////////////////////////
+	      // NETTOYAGE MEMOIRE
+	      SDL_DestroyTexture(background);
+	      free(concatenation);
+	      concatenation=NULL;
+	      return EXIT_FAILURE;
+	    }
     // BAR FOND CHARGEMENT
 		SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
 		SDL_RenderFillRect(renderer,&chargement);
@@ -985,7 +986,7 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 
 
-int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[], int * fullscreen)
+int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[])
 {
 	Mix_Music *musique = Mix_LoadMUS(DIR_MUSIC_FILE);
 	if (!musique )
@@ -1008,8 +1009,7 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
 	if ( dejaConneceter(token) )
 	{
     fprintf(EXT_FILE,"main.c : launcher() : dejaConnecter : FALSE\n");
-		*fullscreen = 0;
-		if( connexion(renderer,token, tokenCpy, path, fullscreen) )
+		if( connexion(renderer,token, tokenCpy, path) )
     {
       fprintf(EXT_FILE,"main.c : launcher() : connexion : EXIT_FAILURE\n");
       ///////////////////////////////////////////
@@ -1065,8 +1065,11 @@ int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct Meilleur
 
 int main(int argc, char *argv[])
 {
+    #ifdef _WIN32
+       HWND hWnd = GetConsoleWindow();
+       ShowWindow( hWnd, SW_HIDE );
+    #endif // _WIN32
 	EXT_FILE = NULL;
-
   ////////////////////////////////////////////////////
   // CHOIX DU MODE DE SORTIE POUR LES CODES
   // D'ERREUR
@@ -1100,7 +1103,7 @@ int main(int argc, char *argv[])
       // ALLOCATION
       if ( _malloc((void**)&nomFichier,sizeof(char),128,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : main() : char*nomFichier ",NULL) )
         return EXIT_FAILURE;
-      sprintf(nomFichier,"/tmp/NineteenLog_%d-%02d-%02d_%02d-%02d-%d.log", year  , mon , day, hour , min, sec);
+      sprintf(nomFichier,"%sNineteenLog_%d-%02d-%02d_%02d-%02d-%d.log", DIR_LOG, year  , mon , day, hour , min, sec);
       EXT_FILE = fopen(nomFichier,"w");
       // VERIFIER CREATION DU FICHIER
 
@@ -1139,6 +1142,9 @@ int main(int argc, char *argv[])
 
   }
 
+  fprintf(EXT_FILE,"INFORMATION GENERAL :\n");
+  informationPreciseCPUGPU();
+  fprintf(EXT_FILE," - RAM : %d,%d Go\n",SDL_GetSystemRAM()/1000, SDL_GetSystemRAM()%1000 );
 
 
   /////////////////////////////////////////////////////////////////
@@ -1151,6 +1157,10 @@ int main(int argc, char *argv[])
     /////////////////////////////////////////////////////////////////
     // INIT SDL // TTF // MIXER
     SDL_Init(SDL_INIT_VIDEO);
+    /////////////////////////////////////////////////////////////////
+    // RECUPERER INFO ORDINATEUR
+
+    /////////////////////////////////////////////////////////////////
     TTF_Init();
     Mix_Init(MIX_INIT_MP3);
     if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) //Initialisation de l'API Mixer
@@ -1229,15 +1239,44 @@ int main(int argc, char *argv[])
     // INIT STRUCTURE MEILLEURE_SCORE
     struct MeilleureScore_s meilleureScore[16];
     /////////////////////////////////////////////////////////////////
-	  int fullscreen=0;
 
     /////////////////////////////////////////////////////////////////
     // INIT VARIABLE QUI POINTE SUR LA SCENE
     const C_STRUCT aiScene* scene = NULL;
     // APPEL DU LAUNCHER
     /////////////////////////////////////////////////////////////////
-    if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath, &fullscreen) == EXIT_SUCCESS)
+    if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath) == EXIT_SUCCESS)
     {
+      /////////////////////////////////////////////////////////////////
+      // CREATION D'UNE POP UP BOUTON
+      const SDL_MessageBoxButtonData buttons[] = {
+        { SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 0, "ACTIVER" },
+        {                                       0, 1, "DESACTIVER" }
+      };
+      /////////////////////////////////////////////////////////////////
+      // CREATION DES TEXT PRESENT DANS LA POP UP
+      const SDL_MessageBoxData messageboxdata = {
+        SDL_MESSAGEBOX_INFORMATION, /* .flags */
+        window, /* .window */
+        "Plein ecran ?", /* .title */
+        "Selectionner une option", /* .message */
+        SDL_arraysize(buttons), /* .numbuttons */
+        buttons, /* .buttons */
+        NULL /* .colorScheme */
+      };
+
+      /////////////////////////////////////////////////////////////////
+      // RECUPERATION DE LA DECISION
+      int buttonid;
+      if (SDL_ShowMessageBox(&messageboxdata, &buttonid) < 0) {
+        SDL_Log("error displaying message box");
+      }
+
+      /////////////////////////////////////////////////////////////////
+      // APPLIQUER LA SELECTION
+      int fullscreen = 1;
+      if(buttonid)
+        fullscreen = !fullscreen;
 
       /////////////////////////////////////////////////////////////////
       // RECUPERER LA TAILLE DE L'ECRAN
@@ -1256,6 +1295,7 @@ int main(int argc, char *argv[])
 
     /////////////////////////////////////////////////////////////////
     // LIBERER MEMOIRE
+    fprintf(EXT_FILE, "main.c : main() : liberation des allocation \n");
     /////////////////////////////////////////////////////////////////
     // VIDER LA MEMOIRE DE LA SCENE
     aiReleaseImport(scene);
@@ -1267,8 +1307,10 @@ int main(int argc, char *argv[])
     token = NULL;
     free(tokenCpy);
     tokenCpy = NULL;
+    fprintf(EXT_FILE, "main.c : main() : allocation liberer\n");
     /////////////////////////////////////////////////////////////////
     // QUITTER TTF
+    fprintf(EXT_FILE, "main.c : main() : quitter les API \n");
     TTF_Quit();
     /////////////////////////////////////////////////////////////////
     // FERMER AUDIO
@@ -1286,9 +1328,12 @@ int main(int argc, char *argv[])
     /////////////////////////////////////////////////////////////////
     // QUITTER SDL
     SDL_Quit();
+
+    fprintf(EXT_FILE, "main.c : main() : API quitter \n");
   }
 
   // FERMETURE DU FICHIER DE LOG
+  fprintf(EXT_FILE, "main.c : main() : fermeture du programme \n");
   fclose(EXT_FILE);
 
 	return 0;

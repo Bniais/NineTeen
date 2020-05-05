@@ -21,14 +21,14 @@ void pauseClavier(Uint32 tempsMax);
 #define NB_FILE 54
 char verifierFichier[NB_FILE][128]={
 
-	"../room/borne1.wav",
-	"../room/borne2.wav",
-	"../room/borne3.wav",
-	"../room/walk.wav",
-	"../room/sega.ttf",
-	"../room/police.ttf",
-	"../room/salle.obj",
-	"../room/salle.mtl",
+	"../room/sounds/borne1.wav",
+	"../room/sounds/borne2.wav",
+	"../room/sounds/borne3.wav",
+	"../room/sounds/walk.wav",
+	"../room/fonts/sega.ttf",
+	"../room/fonts/police.ttf",
+	"../room/textures/salle.obj",
+	"../room/textures/salle.mtl",
 
 	"../games/3_flappy_bird/Textures/birds.png",
 	"../games/3_flappy_bird/Textures/medals.png",

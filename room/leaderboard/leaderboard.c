@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 FILE *EXT_FILE;
 
 
@@ -11,6 +12,7 @@ FILE *EXT_FILE;
 
 const SDL_Rect EMPLACEMENT_HUD = {0,0,1716,158};
 const SDL_Rect EMPLCEMENT_CELLULE = {0,162,1610,112};
+const SDL_Rect EMPLCEMENT_CELLULE_FLASH = {0,1200,1610,112};
 const SDL_Rect EMPLACEMENT_CHAMPS = {0,398,612,102};
 const SDL_Rect EMPLACEMENT_RECHERCHE = {258,281,102,102};
 const SDL_Rect EMPLACEMENT_LIST = {387,281,102,102};
@@ -46,6 +48,10 @@ const int HUD_SIZE = NATIF_W * 0.085;
 
 const SDL_Color BACKGROUND_C = {10, 24, 40};
 const float VITESSE_SCROLL = 30.0;
+
+
+#define FRAME_RECHERCHE 25
+const int ALPHA_FLASH[FRAME_RECHERCHE] = {13, 17, 22, 27, 30, 33,   35, 38, 38, 38, 38, 38,38, 38, 38, 38, 38, 38, 35, 33,   30, 27, 22, 17, 13};
 ///////////////////////////////////////////////
 // LES SELECTION
 #define SCREEN 0
@@ -70,6 +76,14 @@ struct classement
 	int score;
 	char username[32];
 };
+
+#define FRAME_SCROLL_SMOOTH 8
+typedef struct
+{
+	float pos;
+	float dest;
+	int frame;
+}Scroll;
 
 #define NOMBRE_ELEMENT_LIST 7
 const char nomList[NOMBRE_ELEMENT_LIST][30]={"GLOBAL","FLAPPY BIRD","TETRIS","ASTEROID","PACMAN","SNAKE","DEMINEUR"};
@@ -279,28 +293,31 @@ void _limiterFrame(const float delayLancementFrame,float *_IPS)
 }
 
 /////////////////////////////////////////////////////
-/// \fn void gestionEvenement(int *halt, int *xMouse, int *yMouse, int *scrollPositionWindow, int *scrollPositionList, int *_SELECTION, char rechercher[], struct classement donner[], int selectionScrollingList)
+/// \fn void gestionEvenement(int *halt, int *xMouse, int *yMouse, Scroll *scrollPositionWindow, Scroll *scrollPositionList, int *_SELECTION, char rechercher[], struct classement donner[], int selectionScrollingList)
 /// \brief permet de gerer tous les evenements liee au jeu
 ///
 /// \param int *halt stop le programme
 /// \param int *xMouse coordonner souris x
 /// \param int *yMouse coordonner souris y
-/// \param int *scrollPositionWindow position scroll sur la fenetre
-/// \param int *scrollPositionList position scroll dans la liste
+/// \param Scroll *scrollPositionWindow position scroll sur la fenetre
+/// \param Scroll *scrollPositionList position scroll dans la liste
 /// \param int *_SELECTION connaitre l'evenement a gerer dans le programme principal
 /// \param char rechercher[] chaine de text liee a la recherche
 /// \param struct classement donner[] strucuteur de donner actuel
 /// \param int selectionScrollingList element selectionner actuellement dans la liste
-///
+/// \param int *frameType les frames pour le curseur
 /// \return void
 /////////////////////////////////////////////////////
-void gestionEvenement(int *halt, int *xMouse, int *yMouse, int *scrollPositionWindow, int *scrollPositionList, int *_SELECTION, char rechercher[], struct classement donner[], int selectionScrollingList)
+void gestionEvenement(int *halt, int *xMouse, int *yMouse, Scroll *scrollPositionWindow, Scroll *scrollPositionList, int *_SELECTION, char rechercher[], struct classement donner[], int selectionScrollingList, int *frameType)
 {
 	/////////////////////////////////////////////////////
 	// INITIALISATION DE L EVENT
   SDL_Event event;
   while( SDL_PollEvent( &event ) )
   {
+	    if(event.type == SDL_QUIT)
+			*halt = SDL_TRUE;
+
 		/////////////////////////////////////////////////////
 		// SI APPUIE SUR UNE TOUCHE
 		if(event.type == SDL_KEYDOWN)
@@ -308,11 +325,11 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, int *scrollPositionWi
 			/////////////////////////////////////////////////////
 			// SI TOUCHE ESPACE
 			if(event.key.keysym.sym == SDLK_ESCAPE)
-	    {
+		    {
 				// QUITTER
-	     *halt = SDL_TRUE;
+		     	*halt = SDL_TRUE;
 
-	    }
+		    }
 
 		}
 		/////////////////////////////////////////////////////
@@ -335,19 +352,20 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, int *scrollPositionWi
 			// CLIQUE PARTOUT SAUF DANS LISTE DEROULANTE
 			if(*_SELECTION != LIST_SCROLL || !(x > listDeroulante.x && x < listDeroulante.x + listDeroulante.w && y > listDeroulante.y && y < listDeroulante.h + listDeroulante.y))
 			{
+				int scrollBefore = scrollPositionWindow->dest;
 				/////////////////////////////////
 				// UPDATE VIEW SCROLL
-				*scrollPositionWindow += event.wheel.y * VITESSE_SCROLL;
+				scrollPositionWindow->dest += event.wheel.y * VITESSE_SCROLL;
 				/////////////////////////////////
 				// DEPASSEMENT HAUT
-				if(*scrollPositionWindow > 0)
-					*scrollPositionWindow = 0;
+				if(scrollPositionWindow->dest > 0)
+					scrollPositionWindow->dest = 0;
 
 				/////////////////////////////////////////////////////
 				// LIMITE DU SCROLL AU NOMBRE MAX D ELEMENT DANS LA LISTE
-				if (*scrollPositionWindow < -(int)(  (NATIF_H/10) * ( (PRELOAD_CELLULE_MAX + AFFICHER_PLUS) - NOMBRE_CELLULE_FENETRE  ) + HUD_SIZE ) )
+				else if (scrollPositionWindow->dest < -(int)(  (NATIF_H/10) * ( (PRELOAD_CELLULE_MAX + AFFICHER_PLUS) - NOMBRE_CELLULE_FENETRE  ) + HUD_SIZE ) )
 				{
-					*scrollPositionWindow = -(int)(  (NATIF_H/10) * ( (PRELOAD_CELLULE_MAX + AFFICHER_PLUS) - NOMBRE_CELLULE_FENETRE  ) + HUD_SIZE );
+					scrollPositionWindow->dest = -(int)(  (NATIF_H/10) * ( (PRELOAD_CELLULE_MAX + AFFICHER_PLUS) - NOMBRE_CELLULE_FENETRE  ) + HUD_SIZE );
 
 					////////////////////////////////////////////////////
 					// ON RECHARGE DE NOUVEAU ELEMENT
@@ -355,6 +373,8 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, int *scrollPositionWi
 
 				}
 
+				if(scrollBefore != scrollPositionWindow->dest)
+					scrollPositionWindow->frame = FRAME_SCROLL_SMOOTH;
 
 
 			}
@@ -362,15 +382,19 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, int *scrollPositionWi
 			// SCROLL SUR LA LISTE
 			else
 			{
+				int scrollBefore = scrollPositionList->dest;
 				/////////////////////////////////
 				// UPDATE VIEW SCROLL
-				*scrollPositionList += event.wheel.y;
+				scrollPositionList->dest += event.wheel.y;
 				// DEPASSEMENT HAUT
-				if(*scrollPositionList > 0)
-					*scrollPositionList = 0;
+				if(scrollPositionList->dest > 0)
+					scrollPositionList->dest = 0;
 				// DEPASSEMENT BAS
-				else if (*scrollPositionList < -(int)( HUD_SIZE*0.60 * (NOMBRE_ELEMENT_LIST - NOMBRE_CELLULE_LIST_SCROLL - 1) ) ) // -1 POUR SELECTION ACTUEL
-					*scrollPositionList = -(int)( HUD_SIZE*0.60 * (NOMBRE_ELEMENT_LIST - NOMBRE_CELLULE_LIST_SCROLL - 1) );
+				else if (scrollPositionList->dest < -(int)( HUD_SIZE*0.60 * (NOMBRE_ELEMENT_LIST - NOMBRE_CELLULE_LIST_SCROLL - 1) ) ) // -1 POUR SELECTION ACTUEL
+					scrollPositionList->dest = -(int)( HUD_SIZE*0.60 * (NOMBRE_ELEMENT_LIST - NOMBRE_CELLULE_LIST_SCROLL - 1) );
+
+				if( scrollPositionList->dest != scrollBefore)
+					scrollPositionList->frame = FRAME_SCROLL_SMOOTH;
 			}
 
     }
@@ -392,7 +416,9 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, int *scrollPositionWi
 				/////////////////////////////////////////////////////
 				// RECUPERER LES TOUCHES
 				case SDL_TEXTINPUT:
-					 strcat(rechercher, event.text.text);break;
+					 strcat(rechercher, event.text.text);
+					 *frameType = 0;
+					 break;
 				 /////////////////////////////////////////////////////
 	 			// AUTRE TOUCHE NON TEXT
 				case SDL_KEYDOWN:{
@@ -400,13 +426,15 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, int *scrollPositionWi
 					// EFFACER
 					if(event.key.keysym.sym == SDLK_BACKSPACE)
 					{
-							if(strlen(rechercher) > 0)
-								rechercher[strlen(rechercher) - 1] = '\0';
+						*frameType = 0;
+						if(strlen(rechercher) > 0)
+							rechercher[strlen(rechercher) - 1] = '\0';
 					}
 					/////////////////////////////////////////////////////
 					// ENTRE
 					if(event.key.keysym.sym == SDLK_RETURN)
 					{
+						*frameType = 0;
 						if(strlen(rechercher) > 0)
 						{
 							*_SELECTION = SEARCH_PLAYER;
@@ -427,7 +455,7 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, int *scrollPositionWi
 
 
 /////////////////////////////////////////////////////
-/// \fn void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color couleur, int xPosition, int yPosition, float scale, int estHUD)
+/// \fn void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color couleur, int xPosition, int yPosition, float scale, int estHUD, int frameType)
 /// \brief permet d'ecrire du text a l'ecran
 ///
 /// \param SDL_Renderer* renderer pointeur sur le rendu
@@ -438,10 +466,11 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, int *scrollPositionWi
 /// \param int yPosition position -1 pour centrer
 /// \param float scale scale du text
 /// \param int estHUD est pour l'HUD
+/// \param int frameType frame pour le curseur
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color couleur, int xPosition, int yPosition, float scale, int estHUD){
+void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color couleur, int xPosition, int yPosition, float scale, int estHUD, int frameType){
 
 	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, couleur);
 	SDL_Rect dest;
@@ -478,12 +507,28 @@ void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color c
 
 
 
+	if(frameType != -1 && frameType%(int)(LIMITE_FPS*1.4) < ((LIMITE_FPS*1.4)/2)){
+		SDL_Rect curseur = dest;
+		curseur.x += dest.w;
+		curseur.w = 4;
+		curseur.y += curseur.h/12;
+		curseur.h -= curseur.h/3;
+		curseur.h --;
+		SDL_SetRenderDrawColor(renderer, 0,0,0,255);
+		SDL_RenderFillRect(renderer, &curseur);
+	}
+
+
+
 	SDL_RenderCopy(renderer, Message, &src, &dest);
 	SDL_FreeSurface(surfaceMessage);
 	SDL_DestroyTexture(Message);
 }
 
-
+Uint8 brillance(Uint8 color, int power)
+{
+    return (Uint8) (255 * SDL_pow((double) color / 255, power));
+}
 
 /////////////////////////////////////////////////////
 /// \fn void afficherCellule(SDL_Renderer *renderer,SDL_Texture *texture, int cellulePosition, char *username , int score, TTF_Font * police, int decallageY)
@@ -498,7 +543,7 @@ void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color c
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
-int afficherCellule(SDL_Renderer *renderer,SDL_Texture *texture, int cellulePosition, struct classement donner, TTF_Font * police, int decallageY)
+int afficherCellule(SDL_Renderer *renderer,SDL_Texture *texture, int cellulePosition, struct classement donner, TTF_Font * police, int decallageY, int frameRecherche)
 {
 
 	/////////////////////////////////////////////////////
@@ -512,6 +557,7 @@ int afficherCellule(SDL_Renderer *renderer,SDL_Texture *texture, int cellulePosi
 	/////////////////////////////////////////////////////
 	// DIMENSION CELLULE
 	SDL_Rect cellule = {NATIF_W*0.03, (NATIF_H/10) * cellulePosition + decallageY,NATIF_W*0.94 , NATIF_H * 0.09 + NATIF_H * 0.025 };
+
 	if( SDL_RenderCopy(renderer,texture,&EMPLCEMENT_CELLULE,&cellule) )
 	{
 			fprintf(EXT_FILE,"leaderboard : afficherCellule() :SDL_RenderCopy ERR %s\n",SDL_GetError() );
@@ -519,11 +565,21 @@ int afficherCellule(SDL_Renderer *renderer,SDL_Texture *texture, int cellulePosi
 		return EXIT_FAILURE;
 	}
 
+	if(frameRecherche>=0 && frameRecherche<FRAME_RECHERCHE){
+		SDL_SetTextureAlphaMod(texture, ALPHA_FLASH[frameRecherche]*4);
+		if( SDL_RenderCopy(renderer,texture,&EMPLCEMENT_CELLULE_FLASH,&cellule) )
+		{
+			fprintf(EXT_FILE,"leaderboard : afficherCellule() :SDL_RenderCopy flash ERR %s\n",SDL_GetError() );
+			return EXIT_FAILURE;
+		}
+		SDL_SetTextureAlphaMod(texture, 255);
+	}
+
 	/////////////////////////////////////////////////////
 	// ECRIRE LE TEXT
-	ecrireText(renderer,police, _cellulePosition, noirCOLOR, NATIF_W*0.08, (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY , 0.5 , 0);
-	ecrireText(renderer,police, donner.username, noirCOLOR,-1, (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY , 0.5 , 0);
-	ecrireText(renderer,police, _score, noirCOLOR, NATIF_W*0.9 , (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY, 0.5 , 0);
+	ecrireText(renderer,police, _cellulePosition, noirCOLOR, NATIF_W*0.08, (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY , 0.5 , 0, -1);
+	ecrireText(renderer,police, donner.username, noirCOLOR,-1, (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY , 0.5 , 0, -1);
+	ecrireText(renderer,police, _score, noirCOLOR, NATIF_W*0.9 , (NATIF_H/10) * cellulePosition + (cellule.h/2) + decallageY, 0.5 , 0, -1);
 
 	return EXIT_SUCCESS;
 }
@@ -549,11 +605,11 @@ void afficherCelluleScrollView(SDL_Renderer *renderer, int cellulePosition, char
 	SDL_RenderFillRect(renderer, &cellule);
 	/////////////////////////////////////////////////////
 	// ECRIRE LE TEXT
-	ecrireText(renderer,police, text, noirCOLOR, NATIF_W*0.05 + (cellule.w/2), cellule.y  + (HUD_SIZE*0.6)/2 + NATIF_H*0.01 , 0.8 , 1);
+	ecrireText(renderer,police, text, noirCOLOR, NATIF_W*0.05 + (cellule.w/2), cellule.y  + (HUD_SIZE*0.6)/2 + NATIF_H*0.01 , 0.8 , 1, -1);
 }
 
 /////////////////////////////////////////////////////
-/// \fn int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , char *recherche, int _SELECTION, int decallageY,int selectionScrollingList)
+/// \fn int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , char *recherche, int _SELECTION, int decallageY,int selectionScrollingList, int frameType)
 /// \brief affiche l'HUD complet
 ///
 /// \param SDL_Renderer* renderer pointeur sur le rendu
@@ -563,10 +619,10 @@ void afficherCelluleScrollView(SDL_Renderer *renderer, int cellulePosition, char
 /// \param int _SELECTION
 /// \param int decallageY
 /// \param int selectionScrollingList
-///
+/// \param int frameType
 /// \return int
 /////////////////////////////////////////////////////
-int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , char *recherche, int _SELECTION, int decallageY,int selectionScrollingList)
+int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , char *recherche, int _SELECTION, int decallageY,int selectionScrollingList, int frameType)
 {
 
 
@@ -603,9 +659,9 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 
 	// ECRIRE RECHERCHE ACTUEL
 	if(strlen(recherche) < 1)
-		ecrireText(renderer,police, "Rechercher", noirC, rechercheJoueur.x + rechercheJoueur.w/2, rechercheJoueur.y + rechercheJoueur.h/2 + NATIF_H*0.01 , 0.8 , 0);
+		ecrireText(renderer,police, " ", noirC, rechercheJoueur.x + rechercheJoueur.w/2, rechercheJoueur.y + rechercheJoueur.h/2 + NATIF_H*0.01 , 0.8 , 0, frameType);
 	else
-		ecrireText(renderer,police, recherche, noirCOLOR, rechercheJoueur.x + rechercheJoueur.w/2, rechercheJoueur.y + rechercheJoueur.h/2 + NATIF_H*0.01 , 0.8 , 0);
+		ecrireText(renderer,police, recherche, noirCOLOR, rechercheJoueur.x + rechercheJoueur.w/2, rechercheJoueur.y + rechercheJoueur.h/2 + NATIF_H*0.01 , 0.8 , 0, frameType);
 
 
 	////////////////////////////////////////////
@@ -675,29 +731,29 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 
 	// ECRIRE LE TEXT DES CHAMPS
 	if(selectionScrollingList < 7)
-		ecrireText(renderer,police, (char*)nomList[selectionScrollingList], noirCOLOR, listSelection.x + listSelection.w/2, listSelection.y + listSelection.h/2 + NATIF_H*0.01 , 0.8 , 0);
+		ecrireText(renderer,police, (char*)nomList[selectionScrollingList], noirCOLOR, listSelection.x + listSelection.w/2, listSelection.y + listSelection.h/2 + NATIF_H*0.01 , 0.8 , 0,-1);
 	else
-		ecrireText(renderer,police, (char*)nomList[(12-selectionScrollingList) + 1], noirCOLOR, listSelection.x + listSelection.w/2, listSelection.y + listSelection.h/2 + NATIF_H*0.01 , 0.8 , 0);
+		ecrireText(renderer,police, (char*)nomList[(12-selectionScrollingList) + 1], noirCOLOR, listSelection.x + listSelection.w/2, listSelection.y + listSelection.h/2 + NATIF_H*0.01 , 0.8 , 0,-1);
 
 	return EXIT_SUCCESS;
 }
 
 
 /////////////////////////////////////////////////////
-/// \fn int interactionInterface(int x,int y, int _SELECTION, int scrollPositionList, int *selectionScrollingList, int *scrollPositionWindow, struct classement donner[NOMBRE_JEUX][NOMBRE_JOUEUR_MAX])
+/// \fn int interactionInterface(int x,int y, int _SELECTION, Scroll scrollPositionList, int *selectionScrollingList, Scroll *scrollPositionWindow, struct classement donner[NOMBRE_JEUX][NOMBRE_JOUEUR_MAX])
 /// \brief permet d'interagire avec l'interface
 ///
 /// \param int x
 /// \param int y
 /// \param int _SELECTION
-/// \param int scrollPositionList
+/// \param Scroll scrollPositionList
 /// \param int *selectionScrollingList
-/// \param int int *scrollPositionWindow
+/// \param Scroll *scrollPositionWindow
 /// \param struct classement donner[][]
 ///
 /// \return int
 /////////////////////////////////////////////////////
-int interactionInterface(int x,int y, int _SELECTION, int scrollPositionList, int *selectionScrollingList, int *scrollPositionWindow, struct classement donner[NOMBRE_JEUX][NOMBRE_JOUEUR_MAX]){
+int interactionInterface(int x,int y, int _SELECTION, Scroll scrollPositionList, int *selectionScrollingList, Scroll *scrollPositionWindow, struct classement donner[NOMBRE_JEUX][NOMBRE_JOUEUR_MAX]){
 
 	SDL_Rect ouvrirListeSelection = {NATIF_W*0.05 + NATIF_W*0.35, HUD_SIZE * 0.15, HUD_SIZE*0.6, HUD_SIZE*0.6};
 	SDL_Rect lancerRecherche = {NATIF_W*0.90, HUD_SIZE * 0.15, HUD_SIZE*0.6, HUD_SIZE*0.6};
@@ -723,7 +779,8 @@ int interactionInterface(int x,int y, int _SELECTION, int scrollPositionList, in
 		// CLIQUER SUR RECHERCHER UN JOUEUR
 		else if( x > lancerRecherche.x && x < lancerRecherche.x + lancerRecherche.w && y > lancerRecherche.y && y < lancerRecherche.h + lancerRecherche.y)
 		{
-			*scrollPositionWindow = 0;
+			scrollPositionWindow->dest = 0;
+			scrollPositionWindow->frame = FRAME_SCROLL_SMOOTH;
 			return SEARCH_PLAYER;
 		}
 		/////////////////////////////////////////////////////
@@ -749,7 +806,7 @@ int interactionInterface(int x,int y, int _SELECTION, int scrollPositionList, in
 
 				/////////////////////////////////////////////////////
 				// CALCUL DE LA POSTION DE L ELEMENT SELECTIONNER
-				int ElementSelection = (int)( (y - (listSelection.h+listSelection.y + scrollPositionList) )/(HUD_SIZE*0.6) );
+				int ElementSelection = (int)( (y - (listSelection.h+listSelection.y + scrollPositionList.pos) )/(HUD_SIZE*0.6) );
 				if(*selectionScrollingList <= ElementSelection)
 					*selectionScrollingList = ElementSelection + 1;
 				else
@@ -758,7 +815,8 @@ int interactionInterface(int x,int y, int _SELECTION, int scrollPositionList, in
 
 				////////////////////////////////////////////////////
 				// ON RECHARGE DE NOUVEAU ELEMENT
-				*scrollPositionWindow = 0;
+				scrollPositionWindow->dest = 0;
+				scrollPositionWindow->frame = FRAME_SCROLL_SMOOTH;
 				AFFICHER_PLUS = 0;
 				chargementDonner(*selectionScrollingList, "", 0,15,donner[*selectionScrollingList]);
 
@@ -822,6 +880,7 @@ int interactionInterface(int x,int y, int _SELECTION, int scrollPositionList, in
 // MAIN
 int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_JOUEUR)
 {
+	AFFICHER_PLUS = 0;
 	NOMBRE_JOUEUR_MAX = _MAX_JOUEUR;
 	boutonHardEasy.x = NATIF_W*0.398;
 	boutonHardEasy.y = HUD_SIZE * 0.15;
@@ -852,10 +911,10 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
 		return EXIT_FAILURE;
 	}
-  TTF_Font *police = TTF_OpenFont("../room/neon.ttf" , NATIF_W*0.05);
+  TTF_Font *police = TTF_OpenFont("../room/fonts/neon.ttf" , NATIF_W*0.05);
   if(!police)
 	{
-			fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : TTF_OpenFont : ../room/neon.ttf\n" );
+			fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : TTF_OpenFont : ../room/fonts/neon.ttf\n" );
 
 		return EXIT_FAILURE;
 	}
@@ -892,9 +951,14 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
   float _IPS;
 	/////////////////////////////////////////////////
 	int selectionScrollingList = 0;
-  int scrollPositionWindow = 0;
-	int scrollPositionList = 0;
+    Scroll scrollPositionWindow = {0,0,0};
+	Scroll scrollPositionList = {0,0,0};
 	int _SELECTION = 0;
+	int indice = -1;
+
+	int frameRecherche = 0;
+	long int frameType = 0;
+
 	/////////////////////////////////////////////////
 	char rechercher[32]="";
 	////////////////////////////////////////////////
@@ -916,7 +980,7 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
 		//////////////////////////////////////////
 		// RECUPERER TOUS LES EVENTS POSSIBLE
-		gestionEvenement(&halt,&xMouse,&yMouse,&scrollPositionWindow,&scrollPositionList, &_SELECTION, rechercher, donner[selectionScrollingList], selectionScrollingList );
+		gestionEvenement(&halt,&xMouse,&yMouse,&scrollPositionWindow,&scrollPositionList, &_SELECTION, rechercher, donner[selectionScrollingList], selectionScrollingList, &frameType );
 		/////////////////////////////////////////////////
 		// RECUPERER LA SELECTION
 		_SELECTION = interactionInterface(xMouse,yMouse,_SELECTION,scrollPositionList,&selectionScrollingList, &scrollPositionWindow, donner);
@@ -931,20 +995,16 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
 		for(int i = 0;  i< PRELOAD_CELLULE_MAX + AFFICHER_PLUS ; i++)
 		{
-			if( afficherCellule(renderer,texture,i,donner[selectionScrollingList][i],police,scrollPositionWindow + HUD_SIZE) != EXIT_SUCCESS)
+			if( afficherCellule(renderer,texture,i,donner[selectionScrollingList][i],police,roundf(scrollPositionWindow.pos) + HUD_SIZE, i == indice ? frameRecherche-1 : -1) != EXIT_SUCCESS)
 			{
 					fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : afficherCellule()" );
 
 				return EXIT_FAILURE;
 			}
-
 		}
 
 
-
-
-
-		if ( afficherHUD(renderer,texture,police,rechercher,_SELECTION,scrollPositionList,selectionScrollingList) != EXIT_SUCCESS)
+		if ( afficherHUD(renderer,texture,police,rechercher,_SELECTION,roundf(scrollPositionList.pos),selectionScrollingList, frameType) != EXIT_SUCCESS)
 		{
 				fprintf(EXT_FILE,"leaderboard.c -> leaderboard() : afficherHUD()" );
 
@@ -962,7 +1022,20 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
     SDL_RenderPresent(renderer);
 
+		frameType ++;
 
+		//anim recherche
+		if(frameRecherche)
+			frameRecherche--;
+
+		//Scroll smooth
+		if(scrollPositionList.frame){
+			scrollPositionList.pos += (scrollPositionList.dest - scrollPositionList.pos) / scrollPositionList.frame;
+		}
+
+		if(scrollPositionWindow.frame){
+			scrollPositionWindow.pos += (scrollPositionWindow.dest - scrollPositionWindow.pos) / scrollPositionWindow.frame;
+		}
 
 		// CALCUL NOUVELLE POSITION BOUTON EASY/HARD
 		switch (statutBoutonEASY_HARD) {
@@ -1033,18 +1106,20 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 		// RECHERCHE DU JOUEUR SI NECESSAIRE
 		if(_SELECTION == SEARCH_PLAYER)
 		{
-			int indice = rechercherJoueur(rechercher, donner[selectionScrollingList],selectionScrollingList);
+			indice = rechercherJoueur(rechercher, donner[selectionScrollingList],selectionScrollingList);
 			if( indice != -1)
 			{
+				frameRecherche = FRAME_RECHERCHE ;
+				int scrollBefore = scrollPositionWindow.dest;
 				//////////////////////////////////////////////////////
 				// CIBLER SUR scrollPositionWindow
-				scrollPositionWindow = -(  (NATIF_H/10) * indice   );
+				scrollPositionWindow.dest = -(  (NATIF_H/10) * indice   );
 
-				//////////////////////////////////////////////////////\
+				//////////////////////////////////////////////////////
 				// VERIFIER QUE CA DEPASSE PAS LA TAILLE MAX
-				if (scrollPositionWindow < -(int)(  (NATIF_H/10) * ( (PRELOAD_CELLULE_MAX + AFFICHER_PLUS) - NOMBRE_CELLULE_FENETRE  ) + HUD_SIZE ) )
+				if (scrollPositionWindow.dest < -(int)(  (NATIF_H/10) * ( (PRELOAD_CELLULE_MAX + AFFICHER_PLUS) - NOMBRE_CELLULE_FENETRE  ) + HUD_SIZE ) )
 				{
-					scrollPositionWindow = -(int)(  (NATIF_H/10) * ( (PRELOAD_CELLULE_MAX + AFFICHER_PLUS) - NOMBRE_CELLULE_FENETRE  ) + HUD_SIZE );
+					scrollPositionWindow.dest = -(int)(  (NATIF_H/10) * ( (PRELOAD_CELLULE_MAX + AFFICHER_PLUS) - NOMBRE_CELLULE_FENETRE  ) + HUD_SIZE );
 
 					////////////////////////////////////////////////////
 					// ON RECHARGE DE NOUVEAU ELEMENT
@@ -1052,6 +1127,11 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
 					printf("ELEMENT CHARGER = %d\n",AFFICHER_PLUS + PRELOAD_CELLULE_MAX );
 				}
+				if(scrollPositionWindow.dest != scrollBefore){
+					frameRecherche += FRAME_SCROLL_SMOOTH/1.8;
+					scrollPositionWindow.frame = FRAME_SCROLL_SMOOTH/2.2;
+				}
+
 
 			}
 			_SELECTION = SCREEN;

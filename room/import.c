@@ -18,6 +18,16 @@ FILE *EXT_FILE;
     #include<glew.h>
 #endif
 
+
+/////////////////////////////////////////////////////
+/// \fn int aiImportModel (const char* path,const C_STRUCT aiScene **scene)
+/// \brief charge un fichier 3D
+///
+/// \param const char* path
+/// \param const C_STRUCT aiScene **scene
+///
+/// \return EXIT_SUCCESS/EXIT_FAILURE
+/////////////////////////////////////////////////////
 int aiImportModel (const char* path,const C_STRUCT aiScene **scene);
 
 void aiAppliquerCouleur(const C_STRUCT aiMaterial *mtl);
@@ -25,8 +35,30 @@ void aiAppliquerCouleur(const C_STRUCT aiMaterial *mtl);
 
 
 
-// fonction permettant de convertir des couleurs en different type
+
+/////////////////////////////////////////////////////
+/// \fn void color4_to_float4(const C_STRUCT aiColor4D *c, float f[4])
+/// \brief convertie un type aiColor4D en float [4]
+///
+/// \param const C_STRUCT aiColor4D *c
+/// \param float f[4]
+///
+/// \return void
+/////////////////////////////////////////////////////
 void color4_to_float4(const C_STRUCT aiColor4D *c, float f[4]);
+
+/////////////////////////////////////////////////////
+/// \fn void set_float4(float f[4], float a, float b, float c, float d)
+/// \brief convertie 4 float en tableau de 4 float
+///
+/// \param float f[4]
+/// \param float a
+/// \param float b
+/// \param float c
+/// \param float d
+///
+/// \return void
+/////////////////////////////////////////////////////
 void set_float4(float f[4], float a, float b, float c, float d);
 
 
@@ -72,17 +104,28 @@ void set_float4(float f[4], float a, float b, float c, float d);
 
 
 
-
+/////////////////////////////////////////////////////
+/// \fn int aiImportModel (const char* path,const C_STRUCT aiScene **scene)
+/// \brief charge un fichier 3D
+///
+/// \param const char* path
+/// \param const C_STRUCT aiScene **scene
+///
+/// \return EXIT_SUCCESS/EXIT_FAILURE
+/////////////////////////////////////////////////////
 int aiImportModel (const char* path,const C_STRUCT aiScene **scene)
 {
-	/* we are taking one of the postprocessing presets to avoid
-	   spelling out 20+ single postprocessing flags here. */
+	///////////////////////////////////////////////////////////////////////
+  // CHARGEMENT DE LA SCENE
+  // AVEC DIFFERENT PARAMETRE
 	*scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality |
 						 aiProcess_CalcTangentSpace       |
 			       		 aiProcess_Triangulate            |
 			       	     aiProcess_JoinIdenticalVertices  |
 			             aiProcess_SortByPType);
 
+  ///////////////////////////////////////////////////////////////////////
+  // VERIFIER SI CA A BIEN FONCTIONNER
 	if (*scene) {
 		return EXIT_SUCCESS;
 	}
@@ -164,7 +207,15 @@ void aiAppliquerCouleur(const C_STRUCT aiMaterial *mtl)
 
 }
 
-/* ---------------------------------------------------------------------------- */
+/////////////////////////////////////////////////////
+/// \fn void color4_to_float4(const C_STRUCT aiColor4D *c, float f[4])
+/// \brief convertie un type aiColor4D en float [4]
+///
+/// \param const C_STRUCT aiColor4D *c
+/// \param float f[4]
+///
+/// \return void
+/////////////////////////////////////////////////////
 void color4_to_float4(const C_STRUCT aiColor4D *c, float f[4])
 {
 	f[0] = c->r;
@@ -173,7 +224,18 @@ void color4_to_float4(const C_STRUCT aiColor4D *c, float f[4])
 	f[3] = c->a;
 }
 
-/* ---------------------------------------------------------------------------- */
+/////////////////////////////////////////////////////
+/// \fn void set_float4(float f[4], float a, float b, float c, float d)
+/// \brief convertie 4 float en tableau de 4 float
+///
+/// \param float f[4]
+/// \param float a
+/// \param float b
+/// \param float c
+/// \param float d
+///
+/// \return void
+/////////////////////////////////////////////////////
 void set_float4(float f[4], float a, float b, float c, float d)
 {
 	f[0] = a;
@@ -381,60 +443,56 @@ char * pathOf(const char * path) {
 
 void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene, GLuint textures[], GLuint ** counts )
 {
-  int i = 0;
 
-
-
-//  _textures = malloc( (_nbTextures = _scene->mNumMaterials) * sizeof *_textures);
-//  assert(_textures);
+  fprintf(EXT_FILE,"import.c : aiLoadTexture() : Nombre de textures %d\n", _scene->mNumMaterials );
   glGenTextures(_scene->mNumMaterials, textures);
 
-  for (i = 0; i < _scene->mNumMaterials ; i++) {
+  for (int i = 0; i < _scene->mNumMaterials ; i++) {
 
     const struct aiMaterial* pMaterial = _scene->mMaterials[i];
 
     if (aiGetMaterialTextureCount(pMaterial, aiTextureType_DIFFUSE) > 0) {
 
+      struct aiString tfname;
+      if (aiGetMaterialTexture(pMaterial, aiTextureType_DIFFUSE, 0, &tfname, NULL, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
 
-         struct aiString tfname;
-         if (aiGetMaterialTexture(pMaterial, aiTextureType_DIFFUSE, 0, &tfname, NULL, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
+        SDL_Surface * t;
+        char * dir = pathOf(filename), buf[BUFSIZ];
+        snprintf(buf, sizeof buf, "%s/%s", dir, tfname.data);
 
-           SDL_Surface * t;
-           char * dir = pathOf(filename), buf[BUFSIZ];
-           snprintf(buf, sizeof buf, "%s/%s", dir, tfname.data);
+        if(!(t = IMG_Load(buf))) {
+          fprintf(EXT_FILE, "import.c : aiLoadTexture() : IMG_Load : Probleme de chargement de textures %s\n", buf);
+          fprintf(EXT_FILE, "import.c : aiLoadTexture() : Nouvel essai avec %s\n", tfname.data);
+          if(!(t = IMG_Load(tfname.data)))
+					{
+						fprintf(EXT_FILE, "import.c : aiLoadTexture() : IMG_Load : Probleme de chargement de textures %s\n", tfname.data); continue;
+          }
+          glBindTexture(GL_TEXTURE_2D, textures[i]);
+	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-           if(!(t = IMG_Load(buf))) {
-            fprintf(stderr, "Probleme de chargement de textures %s\n", buf);
-            fprintf(stderr, "\tNouvel essai avec %s\n", tfname.data);
-            if(!(t = IMG_Load(tfname.data)))
-						{
-							fprintf(stderr, "Probleme de chargement de textures %s\n", tfname.data); continue;
-            }
-            glBindTexture(GL_TEXTURE_2D, textures[i]);
-	          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
-	          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
-            #ifdef __APPLE__
-	           glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_BGR : GL_BGRA, GL_UNSIGNED_BYTE, t->pixels);
-            #else
-	           glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, t->pixels);
-            #endif
-
-	          SDL_FreeSurface(t);
-
-            }
+          #ifdef __APPLE__
+	          glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_BGR : GL_BGRA, GL_UNSIGNED_BYTE, t->pixels);
+          #else
+	          glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, t->pixels);
+          #endif
+	         SDL_FreeSurface(t);
+          }
 
 					glBindTexture(GL_TEXTURE_2D, textures[i]);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
+
 					#ifdef __APPLE__
 					 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, GL_RGB, GL_UNSIGNED_BYTE, t->pixels);
 					#else
 					 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, t->pixels);
 					#endif
+
 					SDL_FreeSurface(t);
 
          }
@@ -444,12 +502,6 @@ void aiLoadTexture(const char* filename, const C_STRUCT aiScene *_scene, GLuint 
   }
 
 	int nbMeshes = sceneNbMeshes(_scene, _scene->mRootNode, 0);
-  	printf("NB mesh = %d\n",nbMeshes );
-//	_vaos = malloc(_nbMeshes * sizeof *_vaos);
-//	assert(_vaos);
-//	glGenVertexArrays(_nbMeshes, _vaos);
-
-//	glGenBuffers(2 * _nbMeshes,_buffers);
 	*counts = calloc( nbMeshes, sizeof (*counts));
 	assert(*counts);
 

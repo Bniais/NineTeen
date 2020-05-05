@@ -21,7 +21,7 @@ const char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
     "../games/7_asteroid/Textures/explo2.png",
     "../games/7_asteroid/Textures/explo3.png"
 };
-const int textureFloue[NB_ASTEROID_TEXTURES] = {0		, 0	   , 0       , 0           , 0    , 0         , 0        , 0      , 0      , 0       , 1      , 1     , 1      , 0     , 0          , 0       , 0              , 0               , 0};
+const int textureFloueAsteroid[NB_ASTEROID_TEXTURES] = {0		, 0	   , 0       , 0           , 0    , 0         , 0        , 0      , 0      , 0       , 1      , 1     , 1      , 0     , 0          , 0       , 0              , 0               , 0};
 
 
 //texture
@@ -61,3 +61,10 @@ const char* DIR_TEXTURES_FLAPPY[NB_FLAPPY_TEXTURES]={
 	"../games/3_flappy_bird/Textures/high_score.png",
 	DIR_LOADING
 };
+
+const char* DIR_TEXTURES_SHOOTER[NB_SHOOTER_TEXTURES]={
+	"../games/4_shooter/Textures/vaisseau.png",
+	"../games/4_shooter/Textures/flame.png",
+	"../games/4_shooter/Textures/weapon.png"
+};
+const int textureFloueShooter[NB_SHOOTER_TEXTURES] = {1,1,1};

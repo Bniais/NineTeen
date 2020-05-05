@@ -52,6 +52,7 @@ static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0;
 #include "../include/communFunctions.h"
 #include "../games/2_snake/snake.h"
 #include "../games/3_flappy_bird/flappy_bird.h"
+#include "../games/4_shooter/shooter.h"
 #include "../games/5_tetris/tetris.h"
 #include "../games/7_asteroid/asteroid.h"
 #include "leaderboard/leaderboard.h"
@@ -61,15 +62,17 @@ static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0;
 
 //
 // SON
-#define DIR_SON_ENIRONNEMENT_1 "../room/borne1.wav"
-#define DIR_SON_ENIRONNEMENT_2 "../room/borne2.wav"
-#define DIR_SON_ENIRONNEMENT_3 "../room/borne3.wav"
-#define DIR_SON_ENIRONNEMENT_WALK "../room/walk.wav"
+#define DIR_SON_ENIRONNEMENT_1 "../room/sounds/borne1.wav"
+#define DIR_SON_ENIRONNEMENT_2 "../room/sounds/borne2.wav"
+#define DIR_SON_ENIRONNEMENT_3 "../room/sounds/borne3.wav"
+#define DIR_SON_ENIRONNEMENT_WALK "../room/sounds/walk.wav"
+#define DIR_SON_OUVERTURE_PORTE "../room/sounds/SF-ouvport.wav"
+#define DIR_SON_FERMETURE_PORTE "../room/sounds/SF-fermport.wav"
 // POLICE
-#define DIR_FONT_SEGA "../room/sega.ttf"
-#define DIR_FONT_POLICE "../room/police.ttf"
+#define DIR_FONT_SEGA "../room/fonts/sega.ttf"
+#define DIR_FONT_POLICE "../room/fonts/police.ttf"
 //OBJS
-#define DIR_OBJ_LOAD "../room/salle.obj"
+#define DIR_OBJ_LOAD "../room/textures/salle.obj"
 // EMPLACEMENT FIHCIER NECESSAIRE
 
 #define VITESSE_DEPLACEMENT_COURIR 0.14F
@@ -140,7 +143,7 @@ enum {FERMER,OUVERTE,FERMETURE,OUVERTURE};
 int statutPorteFemme = FERMER;
 int statutPorteHomme = FERMER;
 
-enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,PACMAN_HARD,SNAKE_HARD,DEMINEUR_HARD,DEMINEUR_EASY,SNAKE_EASY,PACMAN_EASY,ASTEROID_EASY,TETRIS_EASY,FLAPPY_EASY};
+enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,SHOOTER_HARD,SNAKE_HARD,DEMINEUR_HARD,DEMINEUR_EASY,SNAKE_EASY,SHOOTER_EASY,ASTEROID_EASY,TETRIS_EASY,FLAPPY_EASY};
 
 
 #ifdef _WIN32
@@ -158,14 +161,15 @@ int FIRST_FRAME = 0;
 SDL_Renderer * pRenderer;
 SDL_Texture * textures[NB_MAX_TEXTURES];
 int loadGameTexture(int * id_jeu){
+		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 	    //asteroid
 		switch(*id_jeu){
 			case ASTEROID_EASY:
             case ASTEROID_HARD:
 				for(int i=0; i< NB_ASTEROID_TEXTURES; i++){
-                        int textureFloue[NB_ASTEROID_TEXTURES] ={0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
+                        int textureFloueAsteroid[NB_ASTEROID_TEXTURES] ={0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0};
 
-					if(textureFloue[i])
+					if(textureFloueAsteroid[i])
 						SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");
 					else
 						SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
@@ -205,6 +209,22 @@ int loadGameTexture(int * id_jeu){
 				for(int i=0; i< NB_TETRIS_TEXTURES; i++){
 					 textures[i] = IMG_LoadTexture(pRenderer, DIR_TEXTURES_TETRIS[i]);
 					 if( textures[i] == NULL ){
+						printf("Erreur lors de la creation de texture %s", SDL_GetError());
+						return SDL_FALSE;
+					}
+				}
+				break;
+
+			case SHOOTER_EASY:
+            case SHOOTER_HARD:
+				for(int i=0; i< NB_SHOOTER_TEXTURES; i++){
+					if(textureFloueShooter[i])
+						SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");
+					else
+						SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+
+					textures[i] = IMG_LoadTexture(pRenderer, DIR_TEXTURES_SHOOTER[i]);
+					if( textures[i] == NULL ){
 						printf("Erreur lors de la creation de texture %s", SDL_GetError());
 						return SDL_FALSE;
 					}
@@ -479,12 +499,13 @@ void messageMachine(struct MeilleureScore_s str[] ,struct Camera_s camera,TTF_Fo
 
 
 /////////////////////////////////////////////////////
-/// \fn void MessageQuitterRoom()
+/// \fn int MessageQuitterRoom()
 /// \brief permet d'afficher le message avant de quitter
 ///
 ///
+/// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
-void MessageQuitterRoom();
+int MessageQuitterRoom();
 
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
@@ -846,7 +867,76 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 }
 
 
+int backgroundClassement(SDL_Surface *sImage)
+{
+	////////////////////////////////////////////////
+	// ENVOI MATRICE
+	glPushMatrix();
+	glLoadIdentity();
+	////////////////////////////////////////////////
+	// DESACTIVER LES LUMIERE
+	glDisable(GL_LIGHTING);
+	glLoadIdentity();
 
+	////////////////////////////////////////////////
+	// PRECISION SUR LA FENETRE
+	gluOrtho2D(0, WinWidth, 0, WinHeight);
+	// MOD PROJECTION
+	glMatrixMode(GL_PROJECTION);
+	//glLoadIdentity();
+
+	////////////////////////////////////////////////
+	// DESACTIVATION DU TEST D ARRIERE PLAN
+	glDisable(GL_DEPTH_TEST);
+	glLoadIdentity();
+
+	////////////////////////////////////////////////
+	// BLEND
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// INIT LOAD TEXTURE
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	////////////////////////////////////////////////
+	// PARAMETRE 2D
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// CONVERTION TEXTURE IMAGE
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sImage->w , sImage->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sImage->pixels);
+
+	// RESCALE IMG
+	int tmpW= sImage->w * (WinWidth/2560.0);
+	int tmpH = sImage->h * (WinHeight/1440.0);
+
+	////////////////////////////////////////////////
+	// POSITIONNEMENT DE LA FENETRE QUITTER X
+	int x = 0;
+	////////////////////////////////////////////////
+	// POSITIONNEMENT DE LA FENETRE QUITTER Y
+	int y = WinHeight - tmpH;
+
+	////////////////////////////////////////////////
+	// DEBUT DU RENDU
+	glBegin(GL_QUADS);
+	{
+		glTexCoord2f(0,0); glVertex2f(x, y);
+		glTexCoord2f(1,0); glVertex2f(x + tmpW, y);
+		glTexCoord2f(1,-1); glVertex2f(x + tmpW, y + tmpH);
+		glTexCoord2f(0,-1); glVertex2f(x, y + tmpH);
+	}
+	glEnd();
+	////////////////////////////////////////////////
+
+	////////////////////////////////////////////////
+	// DESTRUCTUIN DES ELLEMENTS CREE
+	glDeleteTextures(1, &texture);
+	////////////////////////////////////////////////
+	// RECUPERATION DE LA MATRICE AVANT MODIF
+	glPopMatrix();
+	glLoadIdentity();
+
+	return EXIT_SUCCESS;
+}
 
 
 int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize)
@@ -870,12 +960,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 
 
-	//////////////////////////////////////////////////////////
-	// OpenGL
-	//////////////////////////////////////////////////////////
-	// INITIALISATION LIST SCENE
-	GLuint scene_list = 0; // NB SCENE
-	//////////////////////////////////////////////////////////
+
 
 
 	//////////////////////////////////////////////////////////
@@ -921,17 +1006,17 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		initFailed = SDL_TRUE;
 	}
 
-	Mix_Chunk *sas_ouverture = Mix_LoadWAV("../room/SF-ouvport.wav");
+	Mix_Chunk *sas_ouverture = Mix_LoadWAV(DIR_SON_OUVERTURE_PORTE);
 	if( !sas_ouverture )
 	{
-		fprintf(EXT_FILE,"room.c -> room() : Mix_LoadWAV : %s DIR:%s\n",Mix_GetError(),"../room/SF-ouvport.wav" );
+		fprintf(EXT_FILE,"room.c -> room() : Mix_LoadWAV : %s DIR:%s\n",Mix_GetError(),DIR_SON_OUVERTURE_PORTE);
 		// SET initFailed
 		initFailed = SDL_TRUE;
 	}
-	Mix_Chunk *sas_fermeture = Mix_LoadWAV("../room/SF-fermport.wav");
+	Mix_Chunk *sas_fermeture = Mix_LoadWAV(DIR_SON_FERMETURE_PORTE);
 	if( !sas_fermeture )
 	{
-		fprintf(EXT_FILE,"room.c -> room() : Mix_LoadWAV : %s DIR:%s\n",Mix_GetError(),"../room/SF-fermport.wav" );
+		fprintf(EXT_FILE,"room.c -> room() : Mix_LoadWAV : %s DIR:%s\n",Mix_GetError(),DIR_SON_FERMETURE_PORTE );
 		// SET initFailed
 		initFailed = SDL_TRUE;
 	}
@@ -1006,6 +1091,13 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	else
 		fprintf(EXT_FILE,"room.c : room() : IMG_Load : %s DIR:%s\n",SDL_GetError() , "../assets/image/favicon.png" );
 
+	SDL_Surface *bgClassement = NULL;
+	bgClassement = IMG_Load("../room/textures/background_classement.png");
+	if(!bgClassement)
+	{
+		fprintf(EXT_FILE,"room.c : room() : IMG_Load %s DIR:%s\n",SDL_GetError(),"../room/textures/background_classement.png" );
+		initFailed = SDL_TRUE;
+	}
 
 	SDL_GLContext Context = SDL_GL_CreateContext(Window);
 	if( !Context)
@@ -1013,7 +1105,10 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		fprintf(EXT_FILE,"room.c : room() : SDL_GL_CreateContext : %s\n",SDL_GetError());
 		initFailed = SDL_TRUE;
 	}
-	//////////////////////////////////////////////////////////
+
+
+	////////	//////////////////////////////////////////////////
+
 
 	// QUITTER LA FONCTION SI IL Y'A EUX UNE ERREUR AVANT
 	if(initFailed == SDL_TRUE)
@@ -1066,9 +1161,15 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 			SDL_DestroyWindow(Window);
 			Window = NULL;
 		}
+		if(bgClassement)
+		{
+			SDL_FreeSurface(bgClassement);
+			bgClassement = NULL;
+		}
 		// EXIT_FAILURE
 		return EXIT_FAILURE;
 	}
+
 
 	//////////////////////////////////////////////////////////
 	// VARIABLE DE DEROULEMENT
@@ -1076,9 +1177,28 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	int compterSeconde = SDL_GetTicks();
 	int afficherMessage = 0;
 	float _IPS = FPS;
+	int toiletteFemmeOuverteDelai = 0;
+	int toiletteHommeOuverteDelai = 0;
+
 	//////////////////////////////////////////////////////////
-	 _textures = malloc( (_nbTextures = scene->mNumMaterials) * sizeof *_textures);
+	// OpenGL
+	//////////////////////////////////////////////////////////
+	// INITIALISATION LIST SCENE
+	GLuint scene_list = 0; // NB SCENE
+	//////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////
+	// ALLOCATION TEXTURE
+	_malloc((void**)&_textures,sizeof(*_textures),(_nbTextures = scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
+	//////////////////////////////////////////////////////////
+	// CHARGER LES TEXTURES
 	aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
+	// APPLICATION DE LA SCENE  AVANT LA 1er FRAME
+	SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
+
+	//////////////////////////////////////////////////////////
+	// FIXER LA SOURIS AU CENTRE ET LA CACHER POUR MAC/WINDOW
+	//////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////
 	#ifndef __linux__
 		SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
 		//////////////////////////////////////////////////////////
@@ -1086,22 +1206,21 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		SDL_ShowCursor(SDL_DISABLE);
 	#endif
 
-	//SDL_RaiseWindow(Window);
-
-	int toiletteFemmeOuverteDelai = 0;
-	int toiletteHommeOuverteDelai = 0;
+	fprintf(EXT_FILE, "room.c : room() : fin de l'initalisation debut du while statut : %d\n",Running );
 
 
-
+	FIRST_FRAME = 0 ;
 	while (Running)
 	{
-        //SDL_RaiseWindow(Window);
-		glLoadIdentity();
-		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
 	//	GLlightMode();
 
+		//////////////////////////////////////////////////////////
+		// DEBUT DE LA MESURE DU TEMPS D'UNE FRAME
 		int delayLancementFrame = SDL_GetTicks();
+
+		glLoadIdentity();
+		GL_InitialiserParametre(WinWidth,WinHeight,camera);
 
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
@@ -1145,10 +1264,9 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		// OpemGL Text
 		//////////////////////////////////////////////////////////
 		// AFFICHER CLASSEMENT / SCORE EN HAUT A GAUCHE
+		backgroundClassement(bgClassement);
 		AfficherText(sega,meilleureScore[0].nomJeux,Text_rouge,WinWidth/30,WinHeight - WinWidth/30);
-
-
-
+		//
 		AfficherText(sega,meilleureScore[0].nomJoueur,Text_rouge,WinWidth/30,WinHeight - WinWidth/15);
 		//////////////////////////////////////////////////////////
 		// AFFICHAGE MESSAGE A PROXIMITER DES MACHINES
@@ -1156,7 +1274,9 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		//////////////////////////////////////////////////////////
 
 
-
+		//////////////////////////////////////////////////////////
+		// ANIMATION PORTE TOILETTES
+		animationPorteToilette(&statutPorteFemme,&statutPorteHomme,&jouerSonPorteFemme,&jouerSonPorteHomme,&toiletteFemmeOuverteDelai,&toiletteHommeOuverteDelai ,sas_ouverture, sas_fermeture,camera, _IPS);
 
 		//////////////////////////////////////////////////////////
 		// OpenGL
@@ -1164,31 +1284,24 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 		// APPLIQUER MODIF SUR LA VUE
 		SDL_GL_SwapWindow(Window);
 		//////////////////////////////////////////////////////////
+		// ATTENDRE 1000 MS POUR MESSAGE CLIGNOTANT
+		attendreXsecondeMessage(&compterSeconde, &afficherMessage,1000, _IPS);
+		//////////////////////////////////////////////////////////
+
+		//////////////////////////////////////////////////////////
 		// LIMITER LES FRAMES A CONST FPS
 		limiterFrame(delayLancementFrame,&_IPS);
 		//////////////////////////////////////////////////////////
 
 
-		//////////////////////////////////////////////////////////
-		// ATTENDRE 1000 MS POUR MESSAGE CLIGNOTANT
-		attendreXsecondeMessage(&compterSeconde, &afficherMessage,1000, _IPS);
-		//////////////////////////////////////////////////////////
 
-
-		//////////////////////////////////////////////////////////
-		/////////
-		/////////
-		/////////
-		//////////////////////////////////////////////////////////
-		// ANIMATION PORTE TOILETTES
-
-		animationPorteToilette(&statutPorteFemme,&statutPorteHomme,&jouerSonPorteFemme,&jouerSonPorteHomme,&toiletteFemmeOuverteDelai,&toiletteHommeOuverteDelai ,sas_ouverture, sas_fermeture,camera, _IPS);
 
 
 
 	}
 
 
+	fprintf(EXT_FILE, "room.c : room() : liberation de la memoire\n" );
 	//////////////////////////////////////////////////////////
 	// LIBERER LA MEMOIRE ALLOUER ET NON NECESSAIRE A LA SUITE
 	// LIBERATION DES SONS
@@ -1203,8 +1316,12 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	TTF_CloseFont(font);
 	TTF_CloseFont(sega);
 	//////////////////////////////////////////////////////////
+	// LIBERATION DES SURFACE
+	SDL_FreeSurface(bgClassement);
+	//////////////////////////////////////////////////////////
 	// DESTRUCTION DES EMPLACEMENTS TEXTURES
 	detruireTexture();
+	fprintf(EXT_FILE, "room.c : room() : memoire liberer\n" );
 	//////////////////////////////////////////////////////////
 	// LIBERATION DU CONTEXT
 	SDL_GL_DeleteContext(Context);
@@ -1273,7 +1390,7 @@ void InitMeilleureScore(struct MeilleureScore_s str[])
 
 	strcpy(str[ASTEROID_HARD].nomJeux,"ASTEROID");
 
-	strcpy(str[PACMAN_HARD].nomJeux,"PACMAN");
+	strcpy(str[SHOOTER_HARD].nomJeux,"PACMAN");
 
 	strcpy(str[SNAKE_HARD].nomJeux,"SNAKE");
 
@@ -1283,7 +1400,7 @@ void InitMeilleureScore(struct MeilleureScore_s str[])
 
 	strcpy(str[SNAKE_EASY].nomJeux,"SNAKE");
 
-	strcpy(str[PACMAN_EASY].nomJeux,"PACMAN");
+	strcpy(str[SHOOTER_EASY].nomJeux,"PACMAN");
 
 	strcpy(str[ASTEROID_EASY].nomJeux,"ASTEROID");
 
@@ -1318,12 +1435,12 @@ int updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 																																str[FLAPPY_HARD].nomJoueur,&str[FLAPPY_HARD].score,
 																																str[TETRIS_HARD].nomJoueur,&str[TETRIS_HARD].score,
 																																str[ASTEROID_HARD].nomJoueur,&str[ASTEROID_HARD].score,
-																																str[PACMAN_HARD].nomJoueur,&str[PACMAN_HARD].score,
+																																str[SHOOTER_HARD].nomJoueur,&str[SHOOTER_HARD].score,
 																																str[SNAKE_HARD].nomJoueur,&str[SNAKE_HARD].score,
 																																str[DEMINEUR_HARD].nomJoueur,&str[DEMINEUR_HARD].score,
 																																str[DEMINEUR_EASY].nomJoueur,&str[DEMINEUR_EASY].score,
 																																str[SNAKE_EASY].nomJoueur,&str[SNAKE_EASY].score,
-																																str[PACMAN_EASY].nomJoueur,&str[PACMAN_EASY].score,
+																																str[SHOOTER_EASY].nomJoueur,&str[SHOOTER_EASY].score,
 																																str[ASTEROID_EASY].nomJoueur,&str[ASTEROID_EASY].score,
 																																str[TETRIS_EASY].nomJoueur,&str[TETRIS_EASY].score,
 																																str[FLAPPY_EASY].nomJoueur,&str[FLAPPY_EASY].score,
@@ -1468,7 +1585,7 @@ int attendreXsecondeMessage(int *compterSeconde, int *afficherMessage, const int
 		*compterSeconde = SDL_GetTicks();
 		*afficherMessage = !(*afficherMessage);
 		// AFFICHER NOMBRE IPS
-		printf("IPS : %f\n",_IPS );
+		fprintf(EXT_FILE,"room.c : attendreXsecondeMessage() : FPS %f\n",_IPS );
 	}
 	return *afficherMessage;
 }
@@ -1764,12 +1881,13 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 
 
 
-	cible[PACMAN_HARD-1].px = -6.56;
-	cible[PACMAN_HARD-1].pz = 9.189630;
-	cible[PACMAN_HARD-1].py = 3.609998;
-	cible[PACMAN_HARD-1].cible_py = -.332000;
-	cible[PACMAN_HARD-1].angle = 0.0;
-	cible[PACMAN_HARD-1].ouverture =70;
+
+	cible[SHOOTER_HARD-1].px = -6.56;
+	cible[SHOOTER_HARD-1].pz = 9.189630;
+	cible[SHOOTER_HARD-1].py = 3.609998;
+	cible[SHOOTER_HARD-1].cible_py = -.332000;
+	cible[SHOOTER_HARD-1].angle = 0.0;
+	cible[SHOOTER_HARD-1].ouverture =70;
 
 	cible[SNAKE_HARD-1].px = -4.626522;
 	cible[SNAKE_HARD-1].pz = 9.189630;
@@ -1803,12 +1921,12 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	cible[SNAKE_EASY-1].angle = M_PI;
 	cible[SNAKE_EASY-1].ouverture =70;
 
-	cible[PACMAN_EASY-1].px = 6.56;
-	cible[PACMAN_EASY-1].pz = 12.924735;
-	cible[PACMAN_EASY-1].py = 3.609998;
-	cible[PACMAN_EASY-1].cible_py = -.332000;
-	cible[PACMAN_EASY-1].angle = M_PI;
-	cible[PACMAN_EASY-1].ouverture =70;
+	cible[SHOOTER_EASY-1].px = 6.56;
+	cible[SHOOTER_EASY-1].pz = 12.924735;
+	cible[SHOOTER_EASY-1].py = 3.609998;
+	cible[SHOOTER_EASY-1].cible_py = -.332000;
+	cible[SHOOTER_EASY-1].angle = M_PI;
+	cible[SHOOTER_EASY-1].ouverture =70;
 
 
 
@@ -2148,10 +2266,6 @@ int detectionEnvironnement(float x,float y)
 
 
 
-
-	printf("X = %f && Y = %f\n",x,y );
-
-
 	///////////////////////////////////////////////////
 	// OUVERTURE ENTRE POUR ALLER DANS LA SALLE TOILETTE
 	if( (y >= 7.0 || y <= 2.5) && x >= 14.0 && x <= 16.0)
@@ -2325,7 +2439,7 @@ int detecterMachine(float x,float y,float angle)
 				else if ( x < -3.7)
 					return 2;
 				else
-					return 3;
+					return 0;//3
 			}
 		}
 		///////////////////////////////////////////////////
@@ -2339,7 +2453,7 @@ int detecterMachine(float x,float y,float angle)
 				///////////////////////////////////////////////////
 				// DETECTER PRECICEMENT LA MACHINE PARMIS LES 3
 				if( x < -5.7 )
-					return 0; //4
+					return 0;//4;
 				else if ( x < -3.7)
 					return 5;
 				else
@@ -2587,9 +2701,10 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 		if (Event.type == SDL_KEYDOWN || Event.type == SDL_MOUSEBUTTONDOWN)
 		{
 				///////////////////////////////////////////////////
-				// TOUCHE ESPACE METTRE FIN AU JEUX
+				// TOUCHE ECHAPE METTRE FIN AU JEUX
 				if(Event.key.keysym.sym == SDLK_ESCAPE)
 				{
+					fprintf(EXT_FILE, "room.c : lancerMachine() : Afficher menu escape (Appui touche echap) \n" );
 					//////////////////////////////////////////////////////////
 					// AFFICHER LA SOURIS
 					SDL_ShowCursor(SDL_ENABLE);
@@ -2621,19 +2736,19 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								switch (Event.key.keysym.sym)
 								{
 									case SDLK_ESCAPE:
+										fprintf(EXT_FILE, "room.c : lancerMachine() :Quitter le menu (Appui touche echap) \n" );
 										decision = 0;
-										printf("Commande annuler\n");
 										FIRST_FRAME = 0;
 										SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
 										break;
 									case SDLK_q:
+										fprintf(EXT_FILE, "room.c : lancerMachine() : Quitter le jeu (Appui touche q) \n" );
 										decision = 0;
-										printf("Vous quittez\n");
 										*Running = 0;
 										break;
 									case SDLK_d:
+										fprintf(EXT_FILE, "room.c : lancerMachine() : Quitter le jeu en ce deconnectant (Appui touche d) \n" );
 										decision = 0;
-										printf("Vous vous deconnecter\n");
 										remove(DIR_TOKEN_FILE);
 										*Running = 0;
 										break;
@@ -2672,13 +2787,18 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						int machine = detecterMachine(camera.px, camera.pz, camera.angle);
 						if ( machine)
 						{
-
-							//SDL_WarpMouseGlobal( (WinWidth/2) + (bounds.w-WinWidth) /2  ,(WinHeight/2) + (bounds.h-WinHeight) /2);
+							fprintf(EXT_FILE, "room.c : lancerMachine() : detection d'une machine \n" );
 
 							///////////////////////////////////////////////////
 							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
 							#ifndef __linux__
 								pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+								if(!pRenderer)
+								{
+									SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal creation render.",SDL_GetError(),Window);
+									fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
+									break;
+								}
 								SDL_Thread *thread = SDL_CreateThread(  (int(*)(void*))loadGameTexture, "Charger_textures_jeu", &machine);
 							#endif
 							///////////////////////////////////////////////////
@@ -2691,15 +2811,27 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 	                            SDL_WaitThread(thread, &retourThread);
 
 								if(!retourThread){
-									printf("couldnt load texture, abort game\n");
-									return;
+									fprintf(EXT_FILE, "room.c : kancerMachine() : retourThread negatif, abort game\n" );
+									return EXIT_FAILURE;
 								}
 							#else
 								pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+								if(!pRenderer)
+								{
+									SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal creation render.",SDL_GetError(),Window);
+									fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
+									break;
+								}
 								loadGameTexture(&machine);
 							#endif
 
 
+                            #ifdef _WIN32
+							if(optionFullScreen ){
+								SDL_MinimizeWindow(Window);
+								SDL_MaximizeWindow(Window);
+							}
+							#endif
 
 							///////////////////////////////////////////////////
 							// CASE POUR CHAQUE MACHINE
@@ -2717,7 +2849,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
-								case 4: SDL_Delay(500);break;
+								case 4:
+									shooter( pRenderer ,meilleureScore[SHOOTER_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
+									break;
 								case 5:
 									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
@@ -2771,13 +2905,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								while(SDL_PollEvent(&Event));
 								// AFFICHAGE DE LA SCENE
 								// RECHARGEMENT DES IMAGES
-<<<<<<< HEAD
-								_textures = malloc( (_nbTextures = scene->mNumMaterials) * sizeof *_textures);
 							 aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
-
-=======
-								aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,_nbTextures,&_counts,_nbMeshes);
->>>>>>> c9c1640d0acda24f718c744e93c4b5e36e32a9b1
 
 							#else
 
@@ -2833,7 +2961,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						machine = detecterRadio(camera.px,camera.pz,camera.angle);
 						if(machine)
 						{
-							printf("RESULTAT MIX PLAYING = %d\n",Mix_Paused(machine - 1) );
+							fprintf(EXT_FILE, "room.c : lancerMachine() : changement statut channel %d, statut pause : %d\n",machine - 1 , Mix_Paused(machine - 1) );
 							if(Mix_Paused(machine - 1) )
 								Mix_Resume(machine - 1);
 							else
@@ -2866,7 +2994,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 		///////////////////////////////////////////////////
 		// IF APPUI CROIS ROUGE
 		else if (Event.type == SDL_QUIT)
+		{
+			fprintf(EXT_FILE, "room.c : lancerMachine() : Appui sur le croix, quitter le programme\n" );
 			*Running = 0;
+		}
+
 
 	}
 
@@ -2948,12 +3080,12 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 	glLoadIdentity();
 }
 
-void MessageQuitterRoom()
+int MessageQuitterRoom()
 {
 	////////////////////////////////////////////////
 	// ENVOI MATRICE
 	glPushMatrix();
-
+	glLoadIdentity();
 	////////////////////////////////////////////////
 	// DESACTIVER LES LUMIERE
 	glDisable(GL_LIGHTING);
@@ -2964,7 +3096,7 @@ void MessageQuitterRoom()
 	gluOrtho2D(0, WinWidth, 0, WinHeight);
 	// MOD PROJECTION
 	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+	//glLoadIdentity();
 
 	////////////////////////////////////////////////
 	// DESACTIVATION DU TEST D ARRIERE PLAN
@@ -2983,18 +3115,13 @@ void MessageQuitterRoom()
 	// CREATION TEXTURE AVEC LE TEXT EN SDL
 	// CHOISIR EN FONCTION DE 3 TAILLES D'ECRAN
 	SDL_Surface *sImage = NULL;
-	if( WinWidth > 2000)
+	sImage = IMG_Load("../room/textures/exit@3.png");
+	if(!sImage)
 	{
-		sImage = IMG_Load("../room/exit@3.png");
+		fprintf(EXT_FILE,"room.c : MessageQuitterRoom() : IMG_Load %s DIR:%s\n",SDL_GetError(),"../room/textures/exit@3.png" );
+		return EXIT_FAILURE;
 	}
-	else if ( WinWidth > 1300)
-	{
-		sImage = IMG_Load("../room/exit@2.png");
-	}
-	else
-	{
-		sImage = IMG_Load("../room/exit.png");
-	}
+
 
 	////////////////////////////////////////////////
 	// PARAMETRE 2D
@@ -3002,11 +3129,15 @@ void MessageQuitterRoom()
 	// CONVERTION TEXTURE IMAGE
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sImage->w , sImage->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sImage->pixels);
 
+	// RESCALE IMG
+	sImage->w *= (WinWidth/2560.0);
+	sImage->h *= (WinHeight/1440.0);
+
 	////////////////////////////////////////////////
-	// SI PARAMS X A -1 ON CENTRE LE TEXT SUR X
+	// POSITIONNEMENT DE LA FENETRE QUITTER X
 	int x = WinWidth/2 - sImage->w/2;
 	////////////////////////////////////////////////
-	// SI PARAMS X A -1 ON CENTRE LE TEXT SUR Y
+	// POSITIONNEMENT DE LA FENETRE QUITTER Y
 	int y = WinHeight/2 - sImage->h/2;
 
 	////////////////////////////////////////////////
@@ -3030,4 +3161,6 @@ void MessageQuitterRoom()
 	// RECUPERATION DE LA MATRICE AVANT MODIF
 	glPopMatrix();
 	glLoadIdentity();
+
+	return EXIT_SUCCESS;
 }

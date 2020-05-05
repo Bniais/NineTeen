@@ -13,8 +13,21 @@
 	#include <GL/glut.h>
 #endif
 
-//#include <OpenGL/gl.h>
+#ifdef _WIN32
+    #include<glew.h>
+#endif
 
+
+
+/////////////////////////////////////////////////////
+/// \fn int aiImportModel (const char* path,const C_STRUCT aiScene **scene)
+/// \brief charge un fichier 3D
+///
+/// \param const char* path
+/// \param const C_STRUCT aiScene **scene
+///
+/// \return EXIT_SUCCESS/EXIT_FAILURE
+/////////////////////////////////////////////////////
 int aiImportModel (const char* path,const C_STRUCT aiScene **scene);
 
 void aiDessinerImage(const struct aiScene *sc, const struct aiNode* nd, GLuint * ivao, GLuint textures[], GLuint counts[]);

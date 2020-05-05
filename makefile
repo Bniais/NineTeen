@@ -1,8 +1,8 @@
 OBJDIR = obj
 BINDIR = bin
-OBJS	=  $(addprefix $(OBJDIR)/, main.o room.o flappy_bird.o import.o libWeb.o textField.o tetris.o snake.o asteroid.o hashage.o fullpath.o communFunctions.o leaderboard.o)
+OBJS	=  $(addprefix $(OBJDIR)/, main.o room.o flappy_bird.o import.o libWeb.o textField.o tetris.o snake.o asteroid.o shooter.o hashage.o fullpath.o communFunctions.o leaderboard.o )
 SOURCE	= launcher.c
-HEADER	= room.h flappy_bird.h tetris.h snake.h asteroid.h fullpath.h leaderboard.h
+HEADER	= room.h flappy_bird.h tetris.h snake.h asteroid.h shooter.h fullpath.h leaderboard.h
 OUT	= Nineteen
 
 
@@ -34,6 +34,9 @@ $(OBJDIR)/main.o: main.c
 	$(CC) $(FLAGS) $(LSDL) -o $@ $<
 
 $(OBJDIR)/flappy_bird.o : games/3_flappy_bird/flappy_bird.c
+	$(CC) $(FLAGS) $(LSDL) -o $@ $<
+
+$(OBJDIR)/shooter.o : games/4_shooter/shooter.c
 	$(CC) $(FLAGS) $(LSDL) -o $@ $<
 
 $(OBJDIR)/tetris.o : games/5_tetris/tetris.c
