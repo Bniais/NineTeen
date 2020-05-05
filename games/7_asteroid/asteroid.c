@@ -160,13 +160,12 @@ void collision_mur(float * xToMove, float * yToMove, float x, float y, float ray
     int deltaHaut = 0 - (y + rayon);
     int deltaBas = PLAYGROUND_SIZE_H - (y - rayon);
 
-		if(!hardcore){
-			if(deltaDroite <= 0){
-					*xToMove -= PLAYGROUND_SIZE_W + deltaDroite;
-			}
-			if(deltaGauche >= 0){
-					*xToMove += PLAYGROUND_SIZE_W + deltaGauche;
-			}
+
+		if(deltaDroite <= 0){
+				*xToMove -= PLAYGROUND_SIZE_W + deltaDroite;
+		}
+		if(deltaGauche >= 0){
+				*xToMove += PLAYGROUND_SIZE_W + deltaGauche;
 		}
 
     if(deltaBas <= 0){
@@ -609,7 +608,7 @@ void afficher_texture_vaisseau(Vaiss vaisseau, SDL_Renderer * renderer, SDL_Text
 
 }
 
-void afficher_vaisseau( Vaiss vaisseau, SDL_Renderer *renderer, SDL_Texture * vaisseau_texture, SDL_Texture * gem_texture, SDL_Texture * thrust_texture ){
+void afficher_vaisseau( Vaiss vaisseau, SDL_Renderer *renderer, SDL_Texture * vaisseau_texture, SDL_Texture * gem_texture, SDL_Texture * thrust_texture){
 
     SDL_Rect vaisseauRect = {vaisseau.x-RAYON_VAISS,vaisseau.y-RAYON_VAISS,RAYON_VAISS*2,RAYON_VAISS*2};
 
@@ -983,6 +982,7 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 		(*asteroides)[*nb_asteroid-1].frame_hit = 0;
 		(*asteroides)[*nb_asteroid-1].frozen= 0;
 		(*asteroides)[*nb_asteroid-1].taille=rand()%MAX_ASTEROID_SIZE;
+		(*asteroides)[*nb_asteroid-1].bonus=SDL_FALSE;
 
 		(*asteroides)[*nb_asteroid-1].vitesse_rota= randSign() * ((1+ MAX_ASTEROID_SIZE - (*asteroides)[*nb_asteroid-1].taille) / (float)(MAX_ASTEROID_SIZE - TAILLE_MIN_ASTEROID)) * (rand()%(int)(MAX_VITESSE_ROTA*PRECISION_RAND_FLOAT)/PRECISION_RAND_FLOAT) ;
 
@@ -990,7 +990,10 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 		if((*asteroides)[*nb_asteroid-1].vitesse > VITESSE_MAX_ASTEROID){
 			(*asteroides)[*nb_asteroid-1].vitesse= VITESSE_MAX_ASTEROID;
 		}
-
+		(*asteroides)[*nb_asteroid-1].taille=rand()%MAX_ASTEROID_SIZE;
+		if((*asteroides)[*nb_asteroid-1].taille < TAILLE_MIN_ASTEROID){
+			(*asteroides)[*nb_asteroid-1].taille=TAILLE_MIN_ASTEROID;
+		}
 		do{
 			id_coord=rand()%4;
 			if(id_coord<2){
@@ -1687,7 +1690,10 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 
 			for(int i=0;i<nb_asteroid;i++){
 				float angle_touche = vaisseau.angle;
-				collision_mur(&asteroides[i].x,&asteroides[i].y, asteroides[i].x, asteroides[i].y, asteroides[i].taille,hardcore);
+				if(!hardcore){
+					collision_mur(&asteroides[i].x,&asteroides[i].y, asteroides[i].x, asteroides[i].y, asteroides[i].taille,hardcore);
+				}
+
 
 				//hitbox laser
 				if(!done){
