@@ -2885,6 +2885,12 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							#endif
 
 
+                            #ifdef _WIN32
+							if(optionFullScreen ){
+								SDL_MinimizeWindow(Window);
+								SDL_MaximizeWindow(Window);
+							}
+							#endif
 
 
 							///////////////////////////////////////////////////
