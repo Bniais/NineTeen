@@ -506,7 +506,7 @@ void messageMachine(struct MeilleureScore_s str[] ,struct Camera_s camera,TTF_Fo
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
-int MessageQuitterRoom();
+int MessageQuitterRoom(int modeChargement);
 
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
@@ -2713,7 +2713,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					///////////////////////////////////////////////////
 					// INIT AFFICHAGE DU MESSAGE
 					SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
-					MessageQuitterRoom();
+					MessageQuitterRoom(0);
 					SDL_GL_SwapWindow(Window);
 
 					///////////////////////////////////////////////////
@@ -2885,7 +2885,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							///////////////////////////////////////////////////
 							// AFFICHAGE DE LA SCENE
 							// RECHARGEMENT DES IMAGES
-							SDL_Color black_ = {1,1,0};
 							///////////////////////////////////////////////////
 							// SET BLACK COLOR BACKGROUND
 							glClearColor(0.0,0.0,0.0,1.0);
@@ -2893,7 +2892,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							///////////////////////////////////////////////////
 							glLoadIdentity();
 							GL_InitialiserParametre(WinWidth,WinHeight,camera);
-							MessageQuitterRoom();
+							MessageQuitterRoom(1);
 
 							SDL_GL_SwapWindow(Window);
 
@@ -3064,7 +3063,8 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 	glLoadIdentity();
 }
 
-int MessageQuitterRoom()
+
+int MessageQuitterRoom(int modeChargement)
 {
 	////////////////////////////////////////////////
 	// ENVOI MATRICE
@@ -3099,7 +3099,10 @@ int MessageQuitterRoom()
 	// CREATION TEXTURE AVEC LE TEXT EN SDL
 	// CHOISIR EN FONCTION DE 3 TAILLES D'ECRAN
 	SDL_Surface *sImage = NULL;
-	sImage = IMG_Load("../room/textures/exit@3.png");
+	if(!modeChargement)
+		sImage = IMG_Load("../room/textures/exit.png");
+	else
+		sImage = IMG_Load("../room/textures/chargement.png");
 	if(!sImage)
 	{
 		fprintf(EXT_FILE,"room.c : MessageQuitterRoom() : IMG_Load %s DIR:%s\n",SDL_GetError(),"../room/textures/exit@3.png" );
