@@ -145,7 +145,9 @@ int statutPorteFemme = FERMER;
 int statutPorteHomme = FERMER;
 
 enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,SHOOTER_HARD,SNAKE_HARD,DEMINEUR_HARD,DEMINEUR_EASY,SNAKE_EASY,SHOOTER_EASY,ASTEROID_EASY,TETRIS_EASY,FLAPPY_EASY};
-
+char adresseFontImg[15][64]={"../room/textures/flappy_hard_font.jpg","../room/textures/tetris_font.jpg","../room/textures/asteroid_font.jpg","../room/textures/chargement.jpg","../room/textures/snake_font.jpg","../room/textures/chargement.jpg",
+														 "../room/textures/chargement.jpg","../room/textures/snake_font.jpg","../room/textures/chargement.jpg","../room/textures/asteroid_font.jpg","../room/textures/tetris_font.jpg","../room/textures/flappy_easy_font.jpg",
+														 "../room/textures/chargement.jpg","../room/textures/chargement.jpg","../room/textures/chargement.jpg"};
 
 #ifdef _WIN32
   #define DIR_TOKEN_FILE "C:\\Windows\\Temp\\.Nineteen"
@@ -506,7 +508,7 @@ void messageMachine(struct MeilleureScore_s str[] ,struct Camera_s camera,TTF_Fo
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
-int MessageQuitterRoom(int modeChargement);
+int MessageQuitterRoom(int modeChargement, char path[]);
 
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
@@ -2713,7 +2715,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 					///////////////////////////////////////////////////
 					// INIT AFFICHAGE DU MESSAGE
 					SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
-					MessageQuitterRoom(0);
+					MessageQuitterRoom(0,"../room/textures/exit.png");
 					SDL_GL_SwapWindow(Window);
 
 					///////////////////////////////////////////////////
@@ -2892,7 +2894,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							///////////////////////////////////////////////////
 							glLoadIdentity();
 							GL_InitialiserParametre(WinWidth,WinHeight,camera);
-							MessageQuitterRoom(1);
+							MessageQuitterRoom(1,adresseFontImg[machine-1]);
+							MessageQuitterRoom(1,"../room/textures/chargement.png");
 
 							SDL_GL_SwapWindow(Window);
 
@@ -3064,7 +3067,7 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 }
 
 
-int MessageQuitterRoom(int modeChargement)
+int MessageQuitterRoom(int modeChargement,char path[])
 {
 	////////////////////////////////////////////////
 	// ENVOI MATRICE
@@ -3099,10 +3102,8 @@ int MessageQuitterRoom(int modeChargement)
 	// CREATION TEXTURE AVEC LE TEXT EN SDL
 	// CHOISIR EN FONCTION DE 3 TAILLES D'ECRAN
 	SDL_Surface *sImage = NULL;
-	if(!modeChargement)
-		sImage = IMG_Load("../room/textures/exit.png");
-	else
-		sImage = IMG_Load("../room/textures/chargement.png");
+	sImage = IMG_Load(path);
+
 	if(!sImage)
 	{
 		fprintf(EXT_FILE,"room.c : MessageQuitterRoom() : IMG_Load %s DIR:%s\n",SDL_GetError(),"../room/textures/exit@3.png" );
@@ -3114,11 +3115,31 @@ int MessageQuitterRoom(int modeChargement)
 	// PARAMETRE 2D
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	// CONVERTION TEXTURE IMAGE
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sImage->w , sImage->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sImage->pixels);
+
+	if(modeChargement)
+	{
+		#ifdef __APPLE__
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sImage->w, sImage->h, 0, sImage->format->BytesPerPixel == 3 ? GL_RGB : GL_BGRA, GL_UNSIGNED_BYTE, sImage->pixels);
+		#else
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sImage->w, sImage->h, 0, sImage->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, sImage->pixels);
+		#endif
+	}
+	else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sImage->w , sImage->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sImage->pixels);
+
+
 
 	// RESCALE IMG
-	sImage->w *= (WinWidth/2560.0);
-	sImage->h *= (WinHeight/1440.0);
+	if(!modeChargement)
+	{
+		sImage->w *= (WinWidth/2560.0);
+		sImage->h *= (WinHeight/1440.0);
+	}
+	else
+	{
+		sImage->w = WinWidth;
+		sImage->h = WinHeight;
+	}
 
 	////////////////////////////////////////////////
 	// POSITIONNEMENT DE LA FENETRE QUITTER X
@@ -3126,6 +3147,11 @@ int MessageQuitterRoom(int modeChargement)
 	////////////////////////////////////////////////
 	// POSITIONNEMENT DE LA FENETRE QUITTER Y
 	int y = WinHeight/2 - sImage->h/2;
+	if(modeChargement)
+	{
+		x = 0;
+		y = 0;
+	}
 
 	////////////////////////////////////////////////
 	// DEBUT DU RENDU
