@@ -786,7 +786,7 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
   //////////////////////////////////////
   // Initalisation des variables
 	char *concatenation = NULL;
-	if ( _malloc((void**)&concatenation,sizeof(char),128,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : chargementFichier() : char*concatenation ",NULL) )
+	if ( _malloc((void**)&concatenation,sizeof(char),512,EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","main.c : chargementFichier() : char*concatenation ",NULL) )
 		return EXIT_FAILURE;
   //////////////////////////////////////
   // TEXTURE BACKGROUND
@@ -1248,6 +1248,7 @@ int main(int argc, char *argv[])
     /////////////////////////////////////////////////////////////////
     if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath) == EXIT_SUCCESS)
     {
+      /*
       /////////////////////////////////////////////////////////////////
       // CREATION D'UNE POP UP BOUTON
       const SDL_MessageBoxButtonData buttons[] = {
@@ -1257,13 +1258,13 @@ int main(int argc, char *argv[])
       /////////////////////////////////////////////////////////////////
       // CREATION DES TEXT PRESENT DANS LA POP UP
       const SDL_MessageBoxData messageboxdata = {
-        SDL_MESSAGEBOX_INFORMATION, /* .flags */
-        window, /* .window */
-        "Plein ecran ?", /* .title */
-        "Selectionner une option", /* .message */
-        SDL_arraysize(buttons), /* .numbuttons */
-        buttons, /* .buttons */
-        NULL /* .colorScheme */
+        SDL_MESSAGEBOX_INFORMATION,
+        window,
+        "Plein ecran ?",
+        "Selectionner une option",
+        SDL_arraysize(buttons),
+        buttons,
+        NULL
       };
 
       /////////////////////////////////////////////////////////////////
@@ -1275,9 +1276,9 @@ int main(int argc, char *argv[])
 
       /////////////////////////////////////////////////////////////////
       // APPLIQUER LA SELECTION
-      int fullscreen = 1;
-      if(buttonid)
-        fullscreen = !fullscreen;
+    */ int fullscreen = 0;
+    //  if(buttonid)
+    //    fullscreen = !fullscreen;
 
       /////////////////////////////////////////////////////////////////
       // RECUPERER LA TAILLE DE L'ECRAN
