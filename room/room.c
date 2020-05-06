@@ -537,7 +537,7 @@ int MessageQuitterRoom();
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme,  int *jouerSonPorteHomme, float _IPS);
+void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme,  int *jouerSonPorteHomme, float _IPS, TTF_Font *font);
 
 
 /////////////////////////////////////////////////////
@@ -1251,7 +1251,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		//////////////////////////////////////////////////////////
 		// LANCEMENT DES MACHINES
-		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme, _IPS);
+		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme, _IPS,sega);
 		//////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////
 		// CHARGER LA SCENE
@@ -2688,7 +2688,7 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 
 }
 
-void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme , int *jouerSonPorteHomme, float _IPS)
+void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme , int *jouerSonPorteHomme, float _IPS, TTF_Font *font)
 {
 
 
@@ -2794,103 +2794,29 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
 
 
-							SDL_Renderer* pRenderer;
-							#ifdef __APPLE__
-
-								SDL_Thread *thread = NULL;
-
-								if(MACOS_VER < 14)
-								{
-
-								}
-								else
-								{
-									pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
-									if(!pRenderer)
-									{
-										SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal creation render.",SDL_GetError(),Window);
-										fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
-										break;
-									}
-									loadGame lg = {machine, pRenderer};
-
-									thread = SDL_CreateThread(  (int(*)(void*))loadGameTexture, "Charger_textures_jeu", &lg);
-								}
-
-							#elif __linux__
-
-							#elif __WIN32
-
-								pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
-								if(!pRenderer)
-								{
-									SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal creation render.",SDL_GetError(),Window);
-									fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
-									break;
-								}
-								loadGame lg = {machine, pRenderer};
-								SDL_Thread *thread = SDL_CreateThread(  (int(*)(void*))loadGameTexture, "Charger_textures_jeu", &lg);
-
-							#endif
-
-
-
 							///////////////////////////////////////////////////
 							// ANIMATION CENTRAGE SUR MACHINE
 							animationLancerMachine(camera,cible[machine-1],*scene_list,Window, _IPS,60.0);
 
-
-							#ifdef __APPLE__
-
-								if(MACOS_VER < 14)
-								{
-									pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
-									if(!pRenderer)
-									{
-										SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal creation render.",SDL_GetError(),Window);
-										fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
-										break;
-									}
-									loadGame lg = {machine, pRenderer};
-									loadGameTexture(&lg);
-								}
-								else
-								{
-									int retourThread = SDL_FALSE;
-									SDL_WaitThread(thread, &retourThread);
-
-									if(!retourThread){
-										fprintf(EXT_FILE, "room.c : kancerMachine() : retourThread negatif, abort game\n" );
-										return;
-									}
-								}
-
-							#elif __linux__
-
-								pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
-								if(!pRenderer)
-								{
-									SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal creation render.",SDL_GetError(),Window);
-									fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
-									break;
-								}
-								loadGame lg = {machine, pRenderer};
-								loadGameTexture(&lg);
-
-							#elif __WIN32
-								int retourThread = SDL_FALSE;
-
-								SDL_WaitThread(thread, &retourThread);
-
-								if(!retourThread){
-									fprintf(EXT_FILE, "room.c : kancerMachine() : retourThread negatif, abort game\n" );
-									return;
-								}
-
-							#endif
+							///////////////////////////////////////////////////
+							// CREATION DU RENDU POUR CHARGEMENT DES TEXTURES
+							SDL_GL_DeleteContext(*Context);
+							SDL_Renderer * pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+							if(!pRenderer)
+							{
+								SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal creation render.",SDL_GetError(),Window);
+								fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
+								break;
+							}
 
 
-                            #ifdef _WIN32
+
+							loadGame lg = {machine, pRenderer};
+							loadGameTexture(&lg);
+
+
+
+              #ifdef _WIN32
 							if(optionFullScreen ){
 								SDL_MinimizeWindow(Window);
 								SDL_MaximizeWindow(Window);
@@ -2950,71 +2876,35 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								default:break;
 							}
 
+
 							///////////////////////////////////////////////////
 							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
 							SDL_DestroyRenderer(pRenderer);
 							pRenderer = NULL;
+							*Context = SDL_GL_CreateContext(Window);
+							///////////////////////////////////////////////////
+							// AFFICHAGE DE LA SCENE
+							// RECHARGEMENT DES IMAGES
+							SDL_Color black_ = {1,1,0};
+							///////////////////////////////////////////////////
+							// SET BLACK COLOR BACKGROUND
+							glClearColor(0.0,0.0,0.0,1.0);
+							glClear(GL_COLOR_BUFFER_BIT);
+							///////////////////////////////////////////////////
+							glLoadIdentity();
+							GL_InitialiserParametre(WinWidth,WinHeight,camera);
+							MessageQuitterRoom();
 
-							#ifdef __APPLE__
+							SDL_GL_SwapWindow(Window);
 
-								if(MACOS_VER < 14)
-								{
-									detruireTexture();
+							// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
+							while(SDL_PollEvent(&Event));
+							detruireTexture();
+							_malloc((void**)&_textures,sizeof(*_textures),(_nbTextures = scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
+							aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
 
-									SDL_GL_DeleteContext(*Context);
-									///////////////////////////////////////////////////
-									*Context = SDL_GL_CreateContext(Window);
-									///////////////////////////////////////////////////
-									// REMISE A ZERO DE LA SCENE
-									*scene_list = 0;
-									// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
-									while(SDL_PollEvent(&Event));
-									// AFFICHAGE DE LA SCENE
-									// RECHARGEMENT DES IMAGES
-									detruireTexture();
-									_malloc((void**)&_textures,sizeof(*_textures),(_nbTextures = scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
-									aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
-								}
-								else
-								{
-									// REMISE A ZERO DE LA SCENE
-									*scene_list = 0;
-									// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
-									while(SDL_PollEvent(&Event));
-									// AFFICHAGE DE LA SCENE
-
-									if (SDL_GetWindowFlags(Window) & (SDL_WINDOW_INPUT_FOCUS ))
-										SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-								}
-
-							#elif __linux__
-								detruireTexture();
-
-								SDL_GL_DeleteContext(*Context);
-								///////////////////////////////////////////////////
-								*Context = SDL_GL_CreateContext(Window);
-								///////////////////////////////////////////////////
-								// REMISE A ZERO DE LA SCENE
-								*scene_list = 0;
-								// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
-								while(SDL_PollEvent(&Event));
-								// AFFICHAGE DE LA SCENE
-								// RECHARGEMENT DES IMAGES
-								detruireTexture();
-								_malloc((void**)&_textures,sizeof(*_textures),(_nbTextures = scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
-								aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
-							#elif _WIN32
-								// REMISE A ZERO DE LA SCENE
-								*scene_list = 0;
-								// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
-								while(SDL_PollEvent(&Event));
-								// AFFICHAGE DE LA SCENE
-
-								if (SDL_GetWindowFlags(Window) & (SDL_WINDOW_INPUT_FOCUS ))
-									SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
-							#endif
-
-
+							// REMISE A ZERO DE LA SCENE
+							*scene_list = 0;
 							static struct Camera_s camera2;
 							SDL_GL_AppliquerScene(Window, scene,&camera2,scene_list,FPS);
 							// ANIMATION DE RETOUR SUR MACHINE
