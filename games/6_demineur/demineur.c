@@ -55,23 +55,23 @@ int coor_valide(int x, int y){
 int nb_bombes_autour(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
 
 	int nb_bombes_autour=0;
-	if(grille[x][y]==BOMBE)
+	if(grille[x][y]==MASQUE_AVEC_BOMBES)
 		return -1;
-	if((coor_valide(x-1, y-1))&&((grille[x-1][y-1]==BOMBE)||(grille[x-1][y-1]==DRAPEAU_AVEC_BOMBES)))
+	if((coor_valide(x-1, y-1))&&((grille[x-1][y-1]==MASQUE_AVEC_BOMBES)||(grille[x-1][y-1]==DRAPEAU_AVEC_BOMBES)||(grille[x-1][y-1]==BOMBE)))
 		nb_bombes_autour++;
-	if((coor_valide(x-1, y))&&((grille[x-1][y]==BOMBE)||(grille[x-1][y]==DRAPEAU_AVEC_BOMBES)))
+	if((coor_valide(x-1, y))&&((grille[x-1][y]==MASQUE_AVEC_BOMBES)||(grille[x-1][y]==DRAPEAU_AVEC_BOMBES)||(grille[x-1][y]==BOMBE)))
 		nb_bombes_autour++;
-	if((coor_valide(x-1, y+1))&&((grille[x-1][y+1]==BOMBE)||(grille[x-1][y+1]==DRAPEAU_AVEC_BOMBES)))
+	if((coor_valide(x-1, y+1))&&((grille[x-1][y+1]==MASQUE_AVEC_BOMBES)||(grille[x-1][y+1]==DRAPEAU_AVEC_BOMBES)||(grille[x-1][y+1]==BOMBE)))
 		nb_bombes_autour++;
-	if((coor_valide(x, y-1))&&((grille[x][y-1]==BOMBE)||(grille[x][y-1]==DRAPEAU_AVEC_BOMBES)))
+	if((coor_valide(x, y-1))&&((grille[x][y-1]==MASQUE_AVEC_BOMBES)||(grille[x][y-1]==DRAPEAU_AVEC_BOMBES)||(grille[x][y-1]==BOMBE)))
 		nb_bombes_autour++;
-	if((coor_valide(x, y+1))&&((grille[x][y+1]==BOMBE)||(grille[x][y+1]==DRAPEAU_AVEC_BOMBES)))
+	if((coor_valide(x, y+1))&&((grille[x][y+1]==MASQUE_AVEC_BOMBES)||(grille[x][y+1]==DRAPEAU_AVEC_BOMBES)||(grille[x][y+1]==BOMBE)))
 		nb_bombes_autour++;
-	if((coor_valide(x+1, y-1))&&((grille[x+1][y-1]==BOMBE)||(grille[x+1][y-1]==DRAPEAU_AVEC_BOMBES)))
+	if((coor_valide(x+1, y-1))&&((grille[x+1][y-1]==MASQUE_AVEC_BOMBES)||(grille[x+1][y-1]==DRAPEAU_AVEC_BOMBES)||(grille[x+1][y-1]==BOMBE)))
 		nb_bombes_autour++;
-	if((coor_valide(x+1, y))&&((grille[x+1][y]==BOMBE)||(grille[x+1][y]==DRAPEAU_AVEC_BOMBES)))
+	if((coor_valide(x+1, y))&&((grille[x+1][y]==MASQUE_AVEC_BOMBES)||(grille[x+1][y]==DRAPEAU_AVEC_BOMBES)||(grille[x+1][y]==BOMBE)))
 		nb_bombes_autour++;
-	if((coor_valide(x+1, y+1))&&((grille[x+1][y+1]==BOMBE)||(grille[x+1][y+1]==DRAPEAU_AVEC_BOMBES)))
+	if((coor_valide(x+1, y+1))&&((grille[x+1][y+1]==MASQUE_AVEC_BOMBES)||(grille[x+1][y+1]==DRAPEAU_AVEC_BOMBES)||(grille[x+1][y+1]==BOMBE)))
 		nb_bombes_autour++;
 
 	return nb_bombes_autour;
@@ -172,15 +172,15 @@ void init_grille(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, 
 	while(bombes>0){
 		i=rand()%TAILLE_GRILLE_LIGNE;
 		j=rand()%TAILLE_GRILLE_COLONNE;
-		if((grille[i][j]!=BOMBE)&&(grille[i][j]!=MASQUE)){
-			grille[i][j]=BOMBE;
+		if((grille[i][j]!=MASQUE_AVEC_BOMBES)&&(grille[i][j]!=MASQUE)){
+			grille[i][j]=MASQUE_AVEC_BOMBES;
 			--bombes;
 		}
 	}
 
 	for(i=0;i<TAILLE_GRILLE_LIGNE;i++){
 		for(j=0;j<TAILLE_GRILLE_COLONNE;j++){
-			if(grille[i][j]!=BOMBE){
+			if(grille[i][j]!=MASQUE_AVEC_BOMBES){
 				grille[i][j]=MASQUE;
 			}
 		}
@@ -237,11 +237,11 @@ void afficher_grille(SDL_Renderer *renderer, int grille[TAILLE_GRILLE_LIGNE][TAI
 		for(int i=0;i<TAILLE_GRILLE_LIGNE;i++){
 			case_dem.x=50;
 			for(int j=0;j<TAILLE_GRILLE_COLONNE;j++){
-				if(grille[i][j]==BOMBE && click_bombe==0){
+				if(grille[i][j]==MASQUE_AVEC_BOMBES){
 					src.x=54*3; src.y=54;
 					SDL_RenderCopy(renderer, texture, &src, &case_dem);
 				}
-				else if(grille[i][j]==BOMBE && click_bombe==1){
+				else if(grille[i][j]==BOMBE){
 					src.x=54*5; src.y=54;
 					SDL_RenderCopy(renderer, texture, &src, &case_dem);
 				}
@@ -357,6 +357,7 @@ int main(){
 	////////////
 	/// Vars ///`
 	////////////
+	int i,j;
 	char message[30];
 	float ratioWindowSize = 1;
 	SDL_Rect displayBounds;
@@ -613,7 +614,13 @@ int main(){
 		SDL_RenderFillRect(renderer, &case_dem);
 		case_coor.x--;
 		case_coor.y--;
-		if((grille[case_coor.y][case_coor.x] == BOMBE)||(grille[case_coor.y][case_coor.x]==DRAPEAU_AVEC_BOMBES)){
+		if((grille[case_coor.y][case_coor.x] ==MASQUE_AVEC_BOMBES)||(grille[case_coor.y][case_coor.x]==DRAPEAU_AVEC_BOMBES)){
+			for(i=0;i<TAILLE_GRILLE_LIGNE;i++){
+				for(j=0;j<TAILLE_GRILLE_COLONNE;j++){
+					if(grille[i][j]==MASQUE_AVEC_BOMBES)
+						grille[i][j]=BOMBE;
+				}
+			}
 			click_bombe=1;
 		}
 		else{
@@ -632,10 +639,13 @@ int main(){
 		if(grille[case_coor.y][case_coor.x]==MASQUE){
 			grille[case_coor.y][case_coor.x]=DRAPEAU_SANS_BOMBES;
 		}
-		else if ((grille[case_coor.y][case_coor.x]==BOMBE)&&(click_bombe==0)){
+		else if (grille[case_coor.y][case_coor.x]==MASQUE_AVEC_BOMBES){
 			grille[case_coor.y][case_coor.x]=DRAPEAU_AVEC_BOMBES;
 		}
-		else if ((grille[case_coor.y][case_coor.x]==DRAPEAU_AVEC_BOMBES)||(grille[case_coor.y][case_coor.x]==DRAPEAU_SANS_BOMBES)){
+		else if (grille[case_coor.y][case_coor.x]==DRAPEAU_AVEC_BOMBES){
+			grille[case_coor.y][case_coor.x]=MASQUE_AVEC_BOMBES;
+		}
+		else if(grille[case_coor.y][case_coor.x]==DRAPEAU_SANS_BOMBES){
 			grille[case_coor.y][case_coor.x]=MASQUE;
 		}
 
