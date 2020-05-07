@@ -522,9 +522,10 @@ int updateScore(EnvoiScore * envoiScore )
 	char *request;
 	char *response;
 	int attempt =0;
-	do{
+	do {
 		if ( !construire_requete(&request, NULL, NULL, envoiScore->key, envoiScore->gameID, envoiScore->score, NULL , NULL) )
 		{
+
 			if ( !envoyez_requet(&response,URL_UPDATE_SCORE,request) )
 			{
 				printf("%s\n",response);
@@ -541,11 +542,12 @@ int updateScore(EnvoiScore * envoiScore )
 				}
 
 			}
+
 		}
+	}while ( ++attempt < 5 );
 
-		fprintf(EXT_FILE,"libWeb.c : updateScore() : Erreur constriction requete attempt : %d \n",attempt + 1);
+	fprintf(EXT_FILE,"libWeb.c : updateScore() : Erreur constriction requete attempt : %d \n",attempt);
 
-	}while(attempt++ < 5 && strcmp(response, "SUCCESS"));
 	free(request);
 	request = NULL;
 	updateEnded = 1;
