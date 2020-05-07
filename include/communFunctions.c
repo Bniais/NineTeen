@@ -52,7 +52,7 @@ void informationPreciseCPUGPU()
 		system("rm /tmp/Nineteen.tmp");
 	#endif
 
-	#ifdef _WIN32
+	/*#ifdef _WIN32
 
 		system("ver >> C:\\Windows\\Temp\\Nineteen.tmp");
 		system("wmic cpu get Name | findstr /v Name >> C:\\Windows\\Temp\\Nineteen.tmp");
@@ -78,7 +78,7 @@ void informationPreciseCPUGPU()
 		char * gpu = strtok ( NULL, "\n" );
 		fprintf(EXT_FILE," - ChipsetGPU : %s",gpu);
 
-	#endif
+	#endif */
 
 }
 
