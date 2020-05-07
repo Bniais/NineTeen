@@ -13,7 +13,7 @@ WESNOTH_EXPORT int AmdPowerXpressRequestHighPerformance = 1;
 
 
 #include <stdio.h>
-#define MODE_DEV 0
+#define MODE_DEV 1
 extern FILE *EXT_FILE;
 extern int MACOS_VER;
 

@@ -55,6 +55,7 @@ static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0;
 #include "../games/3_flappy_bird/flappy_bird.h"
 #include "../games/4_shooter/shooter.h"
 #include "../games/5_tetris/tetris.h"
+#include "../games/6_demineur/demineur.h"
 #include "../games/7_asteroid/asteroid.h"
 #include "leaderboard/leaderboard.h"
 // END INCLUDE
@@ -2442,7 +2443,7 @@ int detecterMachine(float x,float y,float angle)
 				else if ( x < -3.7)
 					return 2;
 				else
-					return 0;//3
+					return 3;//3
 			}
 		}
 		///////////////////////////////////////////////////
@@ -2460,7 +2461,7 @@ int detecterMachine(float x,float y,float angle)
 				else if ( x < -3.7)
 					return 5;
 				else
-					return 0; //6
+					return 6; //6
 			}
 		}
 	}
@@ -2848,7 +2849,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								case 5:
 									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
-								case 6: SDL_Delay(500);break;
+								case 6:
+									SDL_ShowCursor(SDL_ENABLE);
+									demineur(pRenderer, meilleureScore[DEMINEUR_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1);
+									SDL_ShowCursor(SDL_DISABLE);
+									break;
 								case 7: SDL_Delay(500);break;
 								case 8:
 									snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
