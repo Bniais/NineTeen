@@ -2461,7 +2461,7 @@ int detecterMachine(float x,float y,float angle)
 				else if ( x < -3.7)
 					return 5;
 				else
-					return 6; //6
+					return 0; //6
 			}
 		}
 	}
@@ -2850,9 +2850,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
 								case 6:
-									SDL_ShowCursor(SDL_ENABLE);
+									/*SDL_ShowCursor(SDL_ENABLE);
 									demineur(pRenderer, meilleureScore[DEMINEUR_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1);
-									SDL_ShowCursor(SDL_DISABLE);
+									SDL_ShowCursor(SDL_DISABLE);*/
 									break;
 								case 7: SDL_Delay(500);break;
 								case 8:

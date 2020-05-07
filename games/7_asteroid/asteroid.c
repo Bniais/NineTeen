@@ -997,7 +997,6 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 		(*asteroides)[*nb_asteroid-1].taille=rand()%MAX_ASTEROID_SIZE;
 		(*asteroides)[*nb_asteroid-1].bonus=SDL_FALSE;
 		(*asteroides)[*nb_asteroid-1].vitesse_rota= randSign() * ((1+ MAX_ASTEROID_SIZE - (*asteroides)[*nb_asteroid-1].taille) / (float)(MAX_ASTEROID_SIZE - TAILLE_MIN_ASTEROID)) * (rand()%(int)(MAX_VITESSE_ROTA*PRECISION_RAND_FLOAT)/PRECISION_RAND_FLOAT) ;
-		(*asteroides)[*nb_asteroid-1].vitesse*=difficulte;
 		(*asteroides)[*nb_asteroid-1].frame_depart=FRAME_DEPART;
 
 		if(difficulte >= 1+1/PRECISION_RAND_FLOAT){
@@ -1017,6 +1016,7 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 
 
 		(*asteroides)[*nb_asteroid-1].vitesse*=difficulte/ratio_pv;
+		(*asteroides)[*nb_asteroid-1].vitesse*=SPEED_HARDCORE;
 		if((*asteroides)[*nb_asteroid-1].vitesse > VITESSE_MAX_ASTEROID){
 			(*asteroides)[*nb_asteroid-1].vitesse= VITESSE_MAX_ASTEROID;
 		}
