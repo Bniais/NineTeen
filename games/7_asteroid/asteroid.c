@@ -181,25 +181,33 @@ float dist_2f(float x1, float y1, float x2, float y2){
 	return sqrt(pow(x2-x1,2)+pow(y2-y1,2));
 }
 
-int trop_pres(float x1, float y1, float x2, float y2, float dist){
-    if(x2-x1 > PLAYGROUND_SIZE_W/2)
+int trop_pres(float x1, float y1, float x2, float y2, float dist, int cote_spawn){
+    if(x2-x1 > PLAYGROUND_SIZE_W/2 && cote_spawn != 2)
         x2-= PLAYGROUND_SIZE_W;
-    else if(x1-x2 > PLAYGROUND_SIZE_W/2)
+    else if(x1-x2 > PLAYGROUND_SIZE_W/2 && cote_spawn != 0)
         x1-= PLAYGROUND_SIZE_W;
 
-    if(y2-y1 > PLAYGROUND_SIZE_H/2)
+    if(y2-y1 > PLAYGROUND_SIZE_H/2 && cote_spawn != 3)
         y2-= PLAYGROUND_SIZE_H;
-    else if(y1-y2 > PLAYGROUND_SIZE_H/2)
+    else if(y1-y2 > PLAYGROUND_SIZE_H/2 && cote_spawn != 1)
         y1-= PLAYGROUND_SIZE_H;
 
     return (dist_2f(x1,y1,x2,y2)<=dist) ;
 
 }
 
+int sur_asteroid(Asteroid * asteroides, int nb_asteroid, int i_asteroid){
+	for(int i=0; i<nb_asteroid; i++){
+		if(i!=i_asteroid && trop_pres(asteroides[i].x,asteroides[i].y,asteroides[i_asteroid].x,asteroides[i_asteroid].y,DIST_SPAWN_2ASTEROID,asteroides[i_asteroid].cote_spawn)){
+			return SDL_TRUE;
+		}
+	}
+	return SDL_FALSE;
+}
 
 int vaisseau_touche(Vaiss vaisseau, Asteroid * asteroides, int nb_asteroid){
 	for(int i=0;i<nb_asteroid;i++){
-		if(trop_pres(vaisseau.x,vaisseau.y,asteroides[i].x,asteroides[i].y,asteroides[i].taille+RAYON_VAISS)){
+		if(trop_pres(vaisseau.x,vaisseau.y,asteroides[i].x,asteroides[i].y,asteroides[i].taille+RAYON_VAISS,asteroides[i].cote_spawn)){
 			return i;
 		}
 	}
@@ -209,7 +217,7 @@ int vaisseau_touche(Vaiss vaisseau, Asteroid * asteroides, int nb_asteroid){
 int asteroid_touche(Asteroid asteroid, Missile * missiles, int nb_missiles ){
 
 	for(int i=0;i<nb_missiles;i++){
-		if(trop_pres(asteroid.x,asteroid.y,missiles[i].x,missiles[i].y,asteroid.taille+RAYON_MISSILES[missiles[i].id])){
+		if(trop_pres(asteroid.x,asteroid.y,missiles[i].x,missiles[i].y,asteroid.taille+RAYON_MISSILES[missiles[i].id],-1)){
 			return i;
 		}
 	}
@@ -359,10 +367,10 @@ void decaler_gauche_e(Explosion * tab, int taille_tab, int i){
 
 
 void asteroid_cpy(Asteroid * asteroid_src, Asteroid * asteroid_dest){
-    asteroid_dest->x = asteroid_src->x;
-    asteroid_dest->y = asteroid_src->y;
-    asteroid_dest->taille = asteroid_src->taille;
-    asteroid_dest->angle = asteroid_src->angle;
+  asteroid_dest->x = asteroid_src->x;
+  asteroid_dest->y = asteroid_src->y;
+  asteroid_dest->taille = asteroid_src->taille;
+  asteroid_dest->angle = asteroid_src->angle;
 	asteroid_dest->vitesse = asteroid_src->vitesse;
 	asteroid_dest->pv = asteroid_src->pv;
 	asteroid_dest->difficulte = asteroid_src->difficulte;
@@ -371,6 +379,8 @@ void asteroid_cpy(Asteroid * asteroid_src, Asteroid * asteroid_dest){
 	asteroid_dest->bonus = asteroid_src->bonus;
 	asteroid_dest->frame_hit = asteroid_src->frame_hit;
 	asteroid_dest->frozen = asteroid_src->frozen;
+	asteroid_dest->frame_depart = asteroid_src->frame_depart;
+	asteroid_dest->cote_spawn = asteroid_src->cote_spawn;
 }
 
 int randSign(){
@@ -919,11 +929,13 @@ void afficher_tir( SDL_Renderer * renderer, Missile shot, SDL_Texture * missileT
 
 //ASTEROID
 void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, float difficulte, float munitions[NB_MISSILES], int hardcore){
+	printf("Je suis la 0 \n");
 	difficulte *= 1 + randSign() * rand()%(int)(PRECISION_RAND_FLOAT *INTERVALE_RAND_DIFFICULTE)/(float)PRECISION_RAND_FLOAT;
 	int id_coord;
 	float ratio_pv;
 	(*nb_asteroid)++;
 	(*asteroides)=realloc((*asteroides),sizeof(Asteroid)*(*nb_asteroid));
+	printf("Je suis la 1 \n");
 	if(!hardcore){
 		(*asteroides)[*nb_asteroid-1].angle=(rand()%(int)PRECISION_RAND_FLOAT*2*PI)/PRECISION_RAND_FLOAT;
 		(*asteroides)[*nb_asteroid-1].pv=PV_BASE;
@@ -933,7 +945,8 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 		(*asteroides)[*nb_asteroid-1].angle_rota=rand()%(int)(2*PI*100);
 		(*asteroides)[*nb_asteroid-1].frame_hit = 0;
 		(*asteroides)[*nb_asteroid-1].frozen= 0;
-
+		(*asteroides)[*nb_asteroid-1].frame_depart=0;
+		(*asteroides)[*nb_asteroid-1].cote_spawn=-1;
 
 		if(difficulte >= 1+1/PRECISION_RAND_FLOAT){
 				ratio_pv=1+(rand()%(int)((difficulte-1)*PRECISION_RAND_FLOAT))/PRECISION_RAND_FLOAT;
@@ -969,47 +982,68 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 			}
 			(*asteroides)[*nb_asteroid-1].x= coord_spawn[id_coord-1].x;
 			(*asteroides)[*nb_asteroid-1].y= coord_spawn[id_coord-1].y;
-		}	while(trop_pres(vaisseau.x,vaisseau.y,(*asteroides)[*nb_asteroid-1].x,(*asteroides)[*nb_asteroid-1].y,DIST_VAISSEAU_ASTEROID+RAYON_VAISS+(*asteroides)[*nb_asteroid-1].taille));
+		}	while(trop_pres(vaisseau.x,vaisseau.y,(*asteroides)[*nb_asteroid-1].x,(*asteroides)[*nb_asteroid-1].y,DIST_VAISSEAU_ASTEROID+RAYON_VAISS+(*asteroides)[*nb_asteroid-1].taille,-1));
 	}
 	else{
-
-		(*asteroides)[*nb_asteroid-1].angle=PI;
+		printf("Je suis la 2 \n");
 		(*asteroides)[*nb_asteroid-1].vitesse=VITESSE_BASE;
 		(*asteroides)[*nb_asteroid-1].difficulte=difficulte;
 		(*asteroides)[*nb_asteroid-1].difficulte_pere = (*asteroides)[*nb_asteroid-1].difficulte;
 		(*asteroides)[*nb_asteroid-1].angle_rota=rand()%(int)(2*PI*100);
 		(*asteroides)[*nb_asteroid-1].pv=PV_BASE;
+		(*asteroides)[*nb_asteroid-1].pv_max=PV_BASE;
 		(*asteroides)[*nb_asteroid-1].frame_hit = 0;
 		(*asteroides)[*nb_asteroid-1].frozen= 0;
 		(*asteroides)[*nb_asteroid-1].taille=rand()%MAX_ASTEROID_SIZE;
 		(*asteroides)[*nb_asteroid-1].bonus=SDL_FALSE;
-
 		(*asteroides)[*nb_asteroid-1].vitesse_rota= randSign() * ((1+ MAX_ASTEROID_SIZE - (*asteroides)[*nb_asteroid-1].taille) / (float)(MAX_ASTEROID_SIZE - TAILLE_MIN_ASTEROID)) * (rand()%(int)(MAX_VITESSE_ROTA*PRECISION_RAND_FLOAT)/PRECISION_RAND_FLOAT) ;
-
 		(*asteroides)[*nb_asteroid-1].vitesse*=difficulte;
-		if((*asteroides)[*nb_asteroid-1].vitesse > VITESSE_MAX_ASTEROID){
-			(*asteroides)[*nb_asteroid-1].vitesse= VITESSE_MAX_ASTEROID;
+		(*asteroides)[*nb_asteroid-1].frame_depart=FRAME_DEPART;
+
+		if(difficulte >= 1+1/PRECISION_RAND_FLOAT){
+				ratio_pv=1+(rand()%(int)((difficulte-1)*PRECISION_RAND_FLOAT))/PRECISION_RAND_FLOAT;
 		}
-		(*asteroides)[*nb_asteroid-1].taille=rand()%MAX_ASTEROID_SIZE;
+		else ratio_pv = difficulte/2;
+
+		(*asteroides)[*nb_asteroid-1].pv*=ratio_pv;
+		(*asteroides)[*nb_asteroid-1].pv_max = (*asteroides)[*nb_asteroid-1].pv;
+
+		(*asteroides)[*nb_asteroid-1].taille=(ratio_pv/difficulte)*MAX_ASTEROID_SIZE;
 		if((*asteroides)[*nb_asteroid-1].taille < TAILLE_MIN_ASTEROID){
 			(*asteroides)[*nb_asteroid-1].taille=TAILLE_MIN_ASTEROID;
 		}
+
+		(*asteroides)[*nb_asteroid-1].vitesse_rota= randSign() * ((1+ MAX_ASTEROID_SIZE - (*asteroides)[*nb_asteroid-1].taille) / (float)(MAX_ASTEROID_SIZE - TAILLE_MIN_ASTEROID)) * (rand()%(int)(MAX_VITESSE_ROTA*PRECISION_RAND_FLOAT)/PRECISION_RAND_FLOAT) ;
+
+
+		(*asteroides)[*nb_asteroid-1].vitesse*=difficulte/ratio_pv;
+		if((*asteroides)[*nb_asteroid-1].vitesse > VITESSE_MAX_ASTEROID){
+			(*asteroides)[*nb_asteroid-1].vitesse= VITESSE_MAX_ASTEROID;
+		}
+		else if((*asteroides)[*nb_asteroid-1].vitesse < VITESSE_MIN_ASTEROID){
+			(*asteroides)[*nb_asteroid-1].vitesse= VITESSE_MIN_ASTEROID;
+		}
 		do{
-			id_coord=rand()%4;
-			if(id_coord<2){
-				id_coord=1;
+			printf("Je suis la 3\n");
+			(*asteroides)[*nb_asteroid-1].cote_spawn=rand()%4;
+			if((*asteroides)[*nb_asteroid-1].cote_spawn%2){
+				(*asteroides)[*nb_asteroid-1].y= PLAYGROUND_SIZE_H*((*asteroides)[*nb_asteroid-1].cote_spawn==1?0:1);
+				(*asteroides)[*nb_asteroid-1].x= rand()%PLAYGROUND_SIZE_W;
 			}
-			(*asteroides)[*nb_asteroid-1].x= PLAYGROUND_SIZE_W;
-			(*asteroides)[*nb_asteroid-1].y= rand()%PLAYGROUND_SIZE_H;
-		}	while(trop_pres(vaisseau.x,vaisseau.y,(*asteroides)[*nb_asteroid-1].x,(*asteroides)[*nb_asteroid-1].y,DIST_VAISSEAU_ASTEROID+RAYON_VAISS+(*asteroides)[*nb_asteroid-1].taille));
+			else{
+				(*asteroides)[*nb_asteroid-1].x= PLAYGROUND_SIZE_W*((*asteroides)[*nb_asteroid-1].cote_spawn?1:0);
+				(*asteroides)[*nb_asteroid-1].y= rand()%PLAYGROUND_SIZE_H;
+			}
+		}	while(sur_asteroid(*asteroides,*nb_asteroid,*nb_asteroid-1));
+		(*asteroides)[*nb_asteroid-1].angle=PI/2*(*asteroides)[*nb_asteroid-1].cote_spawn;
 	}
 
 }
 void mouvement_asteroid(Asteroid* asteroid){
-
-	asteroid->x+=asteroid->vitesse*cos(asteroid->angle) * (1 - 0.4*asteroid->frozen); // 0 1   /  1 0.5   2  0
-	asteroid->y+=asteroid->vitesse*sin(asteroid->angle) * (1 - 0.4*asteroid->frozen); // 0 1   /  1 0.5   2  0
-
+	if(!asteroid->frame_depart){
+		asteroid->x+=asteroid->vitesse*cos(asteroid->angle) * (1 - 0.4*asteroid->frozen); // 0 1   /  1 0.5   2  0
+		asteroid->y+=asteroid->vitesse*sin(asteroid->angle) * (1 - 0.4*asteroid->frozen); // 0 1   /  1 0.5   2  0
+	}
 }
 
 void afficher_texture_asteroid(SDL_Renderer* renderer, SDL_Texture * textureAsteroid, SDL_Texture* textureFissure, SDL_Texture* textureBonus, SDL_Texture* textureGlace, SDL_Rect src, SDL_Rect dest, SDL_Rect srcFissure, SDL_Rect srcGlace, Asteroid asteroid){
@@ -1077,7 +1111,7 @@ void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* 
 	afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, textureGlace, src, asteroidRect, srcFissure, srcGlace, asteroid);
 
 	//Dessiner bonus est diff�rent quand bord de l'�cran car on ne peut pas d�ssiner en desous de 0 -> � faire
-	if(!hardcore){
+	if(!hardcore || asteroid.cote_spawn == 1 || asteroid.cote_spawn == 3){
 		if(asteroidRect.x+asteroid.taille*2>PLAYGROUND_SIZE_W || asteroidRect.x<0){
 			if(asteroidRect.x<0){
 				asteroidRect.x+=PLAYGROUND_SIZE_W;
@@ -1088,26 +1122,27 @@ void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* 
 			afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, textureGlace, src, asteroidRect, srcFissure, srcGlace, asteroid);
 		}
 	}
+	if(!hardcore || asteroid.cote_spawn == 0 || asteroid.cote_spawn == 2){
+		if(asteroidRect.y+asteroid.taille*2>PLAYGROUND_SIZE_H || asteroidRect.y<0){
+			if(asteroidRect.y<0){
+				asteroidRect.y+=PLAYGROUND_SIZE_H;
+			}
+			else {
+				asteroidRect.y-=PLAYGROUND_SIZE_H;
+			}
 
-	if(asteroidRect.y+asteroid.taille*2>PLAYGROUND_SIZE_H || asteroidRect.y<0){
-		if(asteroidRect.y<0){
-			asteroidRect.y+=PLAYGROUND_SIZE_H;
-		}
-		else {
-			asteroidRect.y-=PLAYGROUND_SIZE_H;
-		}
+			afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, textureGlace, src, asteroidRect, srcFissure, srcGlace, asteroid);
 
-		afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, textureGlace, src, asteroidRect, srcFissure, srcGlace, asteroid);
-
-		if(!hardcore){
-			if(asteroidRect.x+asteroid.taille*2>PLAYGROUND_SIZE_W || asteroidRect.x<0){
-				if(asteroidRect.x<0){
-					asteroidRect.x+=PLAYGROUND_SIZE_W;
+			if(!hardcore || asteroid.cote_spawn == 1 || asteroid.cote_spawn == 3){
+				if(asteroidRect.x+asteroid.taille*2>PLAYGROUND_SIZE_W || asteroidRect.x<0){
+					if(asteroidRect.x<0){
+						asteroidRect.x+=PLAYGROUND_SIZE_W;
+					}
+					else{
+						asteroidRect.x-=PLAYGROUND_SIZE_W;
+					}
+					afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, textureGlace, src, asteroidRect, srcFissure, srcGlace, asteroid);
 				}
-				else{
-					asteroidRect.x-=PLAYGROUND_SIZE_W;
-				}
-				afficher_texture_asteroid(renderer,textureAsteroid, textureFissure, textureBonus, textureGlace, src, asteroidRect, srcFissure, srcGlace, asteroid);
 			}
 		}
 	}
@@ -1279,7 +1314,7 @@ static void myFrees(Missile ** missiles, Asteroid ** asteroides, Explosion ** ex
 	}
 }
 
-static void drawHelpText(SDL_Renderer *renderer, SDL_Texture *flecheTexture){
+static void drawHelpText(SDL_Renderer *renderer, SDL_Texture *flecheTexture,int hardcore){
 
 	//direction
 	SDL_SetTextureColorMod(flecheTexture, SCORE_COLOR.r, SCORE_COLOR.g-20, SCORE_COLOR.b-20);
@@ -1287,14 +1322,17 @@ static void drawHelpText(SDL_Renderer *renderer, SDL_Texture *flecheTexture){
 	SDL_RenderCopyEx(renderer, flecheTexture, &FLECHE_SRC, &FLECHE_DEST[1], 0, NULL, SDL_FLIP_NONE);
 	SDL_RenderCopyEx(renderer, flecheTexture, &FLECHE_SRC, &FLECHE_DEST[2], 0, NULL, SDL_FLIP_HORIZONTAL);
 
-	//tab
-	SDL_SetTextureColorMod(flecheTexture, GEM_COLORS[0].r, GEM_COLORS[0].g, GEM_COLORS[0].b);
-	SDL_RenderCopyEx(renderer, flecheTexture, &FLECHE_SRC, &FLECHE_DEST[3], 0, NULL, SDL_FLIP_NONE);
-	SDL_RenderCopyEx(renderer, flecheTexture, &FLECHE_SRC, &FLECHE_DEST[4], 0, NULL, SDL_FLIP_HORIZONTAL);
+	if(!hardcore){
+		//tab
+		SDL_SetTextureColorMod(flecheTexture, GEM_COLORS[0].r, GEM_COLORS[0].g, GEM_COLORS[0].b);
+		SDL_RenderCopyEx(renderer, flecheTexture, &FLECHE_SRC, &FLECHE_DEST[3], 0, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(renderer, flecheTexture, &FLECHE_SRC, &FLECHE_DEST[4], 0, NULL, SDL_FLIP_HORIZONTAL);
 
-	SDL_SetTextureColorMod(flecheTexture, SCORE_COLOR.r, SCORE_COLOR.g, SCORE_COLOR.b);
-	//bomb
-	SDL_RenderCopyEx(renderer, flecheTexture, &FLECHE_SRC, &FLECHE_DEST[5], -90, NULL, SDL_FLIP_NONE);
+		SDL_SetTextureColorMod(flecheTexture, SCORE_COLOR.r, SCORE_COLOR.g, SCORE_COLOR.b);
+		//bomb
+		SDL_RenderCopyEx(renderer, flecheTexture, &FLECHE_SRC, &FLECHE_DEST[5], -90, NULL, SDL_FLIP_NONE);
+
+	}
 
 }
 
@@ -1390,6 +1428,8 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		int frame_apparition_asteroid= 0;
 		float vitesse_spawn = VITESSE_SPAWN_INIT;
 		int frame_2asteroid= FRAME_INIT_SPAWN;
+		int frame_vague=FRAME_VAGUE_INIT/2;
+		int frame_entre_vague=FRAME_VAGUE_INIT;
 
 		//VAISSEAU
 	 	Vaiss vaisseau=
@@ -1469,6 +1509,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 	/////////////////////
 		int done = 0;
 		while( 1 ){
+			printf("Coucou 0 \n");
 			if(firstframe){
 				done = SDL_TRUE;
 				firstframe = SDL_FALSE;
@@ -1564,8 +1605,8 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 					turn = RIGHT;
 
 
-				if(keystate[SDL_SCANCODE_DOWN]){
-					if(  nbBombeNucleaire && rdyToBomb){
+				if(keystate[SDL_SCANCODE_DOWN] && !hardcore){
+					if( nbBombeNucleaire && rdyToBomb){
 						frame_2asteroid = FRAME_BOMBE_NUCLEAIRE;
 						nbBombeNucleaire--;
 						frameAnimBomb = FRAME_ANIM_BOMB;
@@ -1611,15 +1652,17 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		//////////////
 		// Gameplay //`
 		//////////////
-
+		printf("Coucou 1 \n");
 		//hardcore
 		if(hardcore){
-			for(int i=0; i<=nb_asteroid;i++){
-					if(asteroides[i].x < 0){
-						detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_TRUE, &score, &nbBombeNucleaire, 0, textsBonus, munitions, keys, &score_hash, sounds[SOUND_BONUS], sounds[SOUND_ICE_EXPLO], done);
+			for(int i=0; i<nb_asteroid;i++){
+					if((asteroides[i].x < -asteroides[i].taille && asteroides[i].cote_spawn == 2) || (asteroides[i].y < -asteroides[i].taille && asteroides[i].cote_spawn == 3) || (asteroides[i].x - asteroides[i].taille > PLAYGROUND_SIZE_W && asteroides[i].cote_spawn == 0) || (asteroides[i].y - asteroides[i].taille > PLAYGROUND_SIZE_H && asteroides[i].cote_spawn == 1) ){
+
+						detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_TRUE, &score, &nbBombeNucleaire, 0, textsBonus, munitions, keys, &score_hash, sounds[SOUND_BONUS], sounds[SOUND_EXPLO], done);
 					}
 			}
 		}
+
 			accelerate.x/=DECELERATION + BONUS_DEAD_DECELERATION*done;
 		    accelerate.y/=DECELERATION + BONUS_DEAD_DECELERATION*done;
 
@@ -1645,7 +1688,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 
 			move(&vaisseau,accelerate);
 
-			if(keystate[SDL_SCANCODE_SPACE]){
+			if(keystate[SDL_SCANCODE_SPACE] && !hardcore){
 
 				if(!done && vaisseau.frame_recharge == 0 && munitions[vaisseau.missile_id]){
 					if(vaisseau.missile_id != SHOT_LASER){
@@ -1679,6 +1722,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		///////////////////
 		// Check hitboxs //`
 		///////////////////
+		printf("Coucou 2 \n");
 
 		spawn_laser=(SDL_Point){0, RAYON_VAISS};
     xM = spawn_laser.x;
@@ -1844,6 +1888,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		//////////
 		// Draw //`
 		//////////
+		printf("Coucou 3 \n");
 
 			SDL_RenderCopy(renderer, textures[A_BACKGROUND], NULL, NULL);
 
@@ -1869,14 +1914,20 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 			else{
 				frameLaser = 0;
 			}
-
-			if(!done && (frame_apparition_asteroid==0 || nb_asteroid <= (frame/FRAME_APPARITION_ASTEROID))&& frame_2asteroid == 0 ){
-				spawn_asteroid(vaisseau,&asteroides,&nb_asteroid,difficulte, munitions, hardcore);
-				frame_2asteroid=FRAME_2ASTEROID;
-				frame_apparition_asteroid=vitesse_spawn;
-				rdyToReloadBomb = SDL_TRUE;
+			if(!hardcore){
+				if(!done && (frame_apparition_asteroid==0 || nb_asteroid <= (frame/FRAME_APPARITION_ASTEROID))&& frame_2asteroid == 0 ){
+					spawn_asteroid(vaisseau,&asteroides,&nb_asteroid,difficulte, munitions, hardcore);
+					frame_2asteroid=FRAME_2ASTEROID;
+					frame_apparition_asteroid=vitesse_spawn;
+					rdyToReloadBomb = SDL_TRUE;
+				}
 			}
-
+			else if(frame_vague == 0){
+				frame_vague=frame_entre_vague;
+				for(int i=0;i<(int)roundf((difficulte+20)/4.57);i++){
+					spawn_asteroid(vaisseau,&asteroides,&nb_asteroid,difficulte, munitions, hardcore);
+				}
+			}
 			//int a = asteroid_plus_proche(renderer, asteroides, nb_asteroid, missiles[0], NULL);
 			for(int j=0;j<nb_asteroid;j++){
 				afficher_asteroid(asteroides[j],renderer, textures[A_ASTEROID], textures[A_FISSURE], textures[A_BONUS], textures[A_GLACE],hardcore);
@@ -1948,7 +1999,8 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 					FRAME_SHOW_HELP//frame_explo
 				};
 				drawReplay(renderer, fonts[FONT_BONUS],0.7, PLAYGROUND_SIZE_W,PLAYGROUND_SIZE_H);
-				drawHelpText(renderer, textures[A_ARROW]);
+
+				drawHelpText(renderer, textures[A_ARROW],hardcore);
 			}
 
 
@@ -1957,11 +2009,15 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 			SDL_RenderSetViewport(renderer, NULL);
 			SDL_RenderCopy(renderer, textures[A_HUD], NULL, NULL);
+			if(!hardcore){
 
-			afficherJauge(renderer, textures[A_JAUGE], ratioWindowSize, jauge);
-			afficherRoue(renderer,textures[A_ROUE], ratioWindowSize, munitions, roue, vaisseau.missile_id, jauge.color );
+				afficherJauge(renderer, textures[A_JAUGE], ratioWindowSize, jauge);
+				afficherRoue(renderer,textures[A_ROUE], ratioWindowSize, munitions, roue, vaisseau.missile_id, jauge.color );
+				afficherBombIcon(renderer,textures[A_BOMB_ICON], nbBombeNucleaire, ratioWindowSize);
 
-			afficherBombIcon(renderer,textures[A_BOMB_ICON], nbBombeNucleaire, ratioWindowSize);
+			}
+
+
 
 			afficherScoreTotal(renderer, fonts[FONT_SCORE], score.scoreShow, ratioWindowSize);
 
@@ -1999,13 +2055,19 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		////////////////
 		// Next frame //`
 		////////////////
+			if(frame_vague){
+				frame_vague--;
+			}
 			if(score.frameToDest)
 				score.scoreShow += (float)(score.score - score.scoreShow ) / ( score.frameToDest-- );
 
-			for(int i=0; i<nb_asteroid; i++)
+			for(int i=0; i<nb_asteroid; i++){
 				if(asteroides[i].frame_hit)
 					asteroides[i].frame_hit--;
 
+				if(asteroides[i].frame_depart)
+					asteroides[i].frame_depart--;
+			}
 
 			for(int i=0; i<nb_explosions; i++){
 				explosions[i].frame--;

@@ -55,7 +55,7 @@ enum{THRUST_UP, THRUST_LEFT, THRUST_RIGHT};
 
 typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier;int missile_id; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust; long frame_explo;}Vaiss;
 
-typedef struct{float x; float y; float angle; float taille; int bonus; float pv; float pv_max; float vitesse; float difficulte; float difficulte_pere; float angle_rota; float vitesse_rota; int frame_hit; int frozen;}Asteroid;
+typedef struct{float x; float y; float angle; float taille; int bonus; float pv; float pv_max; float vitesse; float difficulte; float difficulte_pere; float angle_rota; float vitesse_rota; int frame_hit; int frozen; int cote_spawn; int frame_depart;}Asteroid;
 
 typedef struct{float x; float y; int frame; int taille; int id;}Explosion;
 
@@ -116,6 +116,7 @@ SDL_Point coord_spawn[3]={{0,0},{0,(PLAYGROUND_SIZE_H/2)},{(PLAYGROUND_SIZE_W/2)
 #define TAILLE_MIN_SPLIT 36
 #define TAILLE_MIN_ASTEROID 18
 #define VITESSE_MAX_ASTEROID 22
+#define VITESSE_MIN_ASTEROID 9
 #define START_DIFFICULTE 1.01
 #define DIFFICULTE_MIN_SPLIT 5
 #define RATIO_DIFFICULTE_AUGMENT 0.0027
@@ -134,6 +135,9 @@ SDL_Rect ASTE_SRC = {0,0,48,48};
 #define INTERVALE_RAND_DIFFICULTE 0.3
 
 #define FRAME_HIT_ANIM 2
+#define FRAME_VAGUE_INIT (4.28*FRAMES_PER_SECOND)
+#define FRAME_DEPART 23
+#define DIST_SPAWN_2ASTEROID 40
 
 //ammo
 #define NB_ROUE_EMPLACEMENTS 5
