@@ -85,9 +85,9 @@ function getClientIP(){
 
 			<div class= "jeu" style="margin-left: 2%; float:left; width:30vw;">
 				<h1>Liens de téléchargement</h1>
-				<a href="download/Nineteen_v1.0.0.dmg"> <img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/MacOS_logo_%282017%29.svg/768px-MacOS_logo_%282017%29.svg.png" alt="logo apple"></a>
-				<a href="download/Nineteen_v1.0.0.exe"><img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Windows_logo_–_2012_%28dark_blue%29.svg/768px-Windows_logo_–_2012_%28dark_blue%29.svg.png" alt="logo apple"></a>
-				<a href="#"><img style="width: 4vw; " src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Ubuntu-Logo_ohne_Schriftzug.svg/1200px-Ubuntu-Logo_ohne_Schriftzug.svg.png" alt="logo apple"></a>
+				<a href="download/Nineteen_v1.0.1.zip"> <img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/MacOS_logo_%282017%29.svg/768px-MacOS_logo_%282017%29.svg.png" alt="logo apple"></a>
+				<a href="download/Nineteen_v1.0.1.exe"><img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Windows_logo_–_2012_%28dark_blue%29.svg/768px-Windows_logo_–_2012_%28dark_blue%29.svg.png" alt="logo apple"></a>
+	<!--			<a href="#"><img style="width: 4vw; " src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Ubuntu-Logo_ohne_Schriftzug.svg/1200px-Ubuntu-Logo_ohne_Schriftzug.svg.png" alt="logo apple"></a> -->
 				<br>
 				<br>
 				<hr>
@@ -96,6 +96,18 @@ function getClientIP(){
 			<div class= "jeu" style="margin-left: 2%; float:left; width:30vw;">
 				<h1>Note de mise à jour</h1>
 				<br>
+
+				<h2>Version : 1.0.1</h2>
+					<ul style="text-align: left;">
+						<li>Global :</li>
+						<ul>
+							<li>Résolution de probléme liée a l'affichage affectant une infime partie d'utilisateur</li>
+							</ul>
+					</ul>
+					<br>
+					<br>
+					<hr>
+
 
 				<h2>Version : 1.0.0</h2>
 					<ul style="text-align: left;">
