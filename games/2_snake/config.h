@@ -98,7 +98,7 @@ typedef struct {float x; float y; int giant; int id; int hitbox; int frame; Vect
 const SDL_Point FRUIT_DIM = {64, 64};
 #define RANGEE_BLINK 2
 #define NB_FRUITS 25
-#define RATIO_RADIUS_BODYADD 5
+#define RATIO_RADIUS_BODYADD 6
 #define GIANT_SIZE 40
 #define GIANT_DIGESTION 15
 #define GIANT_SCORE 10
