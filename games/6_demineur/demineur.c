@@ -348,6 +348,9 @@ void afficher_grille(SDL_Renderer *renderer, int grille[TAILLE_GRILLE_LIGNE][TAI
 	}
 }
 
+int click_en_grille(SDL_Point mouseCoor){
+	return (mouseCoor.x>50&&mouseCoor.x<50+TAILLE_CASE*TAILLE_GRILLE_LIGNE&&mouseCoor.y>50&&mouseCoor.y<50+TAILLE_CASE*TAILLE_GRILLE_COLONNE);
+}
 int main(){
 /////////////////////
 /// MISE EN PLACE ///``
@@ -472,7 +475,7 @@ int main(){
 				case SDL_MOUSEBUTTONUP:
 					if((event.button.button == SDL_BUTTON_LEFT)&&(clique_gauche==SDL_TRUE)){
 						relache_gauche=SDL_TRUE;
-						premier_click=1;
+
 					}break;
 			}
 		}
@@ -502,11 +505,14 @@ int main(){
 		mouseCoor.y-=ratio_fen*HUD_H;
 		SDL_Point case_coor = {(int)(mouseCoor.x/(TAILLE_CASE*ratio_fen)), (int)(mouseCoor.y/(TAILLE_CASE*ratio_fen))};
 		SDL_Rect case_dem={case_coor.x*TAILLE_CASE,case_coor.y*TAILLE_CASE,TAILLE_CASE,TAILLE_CASE};
-		SDL_SetRenderDrawColor(renderer,255,0,0,255);
-		SDL_RenderFillRect(renderer, &case_dem);
 		case_coor.y--;case_coor.x--;
-		init_grille(grille, case_coor.y, case_coor.x);
-		etat(grille, case_coor.y, case_coor.x);
+		if(coor_valide(case_coor.y, case_coor.x)){
+			SDL_SetRenderDrawColor(renderer,255,0,0,255);
+			SDL_RenderFillRect(renderer, &case_dem);
+			init_grille(grille, case_coor.y, case_coor.x);
+			etat(grille, case_coor.y, case_coor.x);
+			premier_click=1;
+		}
 	}
 
 		afficher_texte(renderer, "Temps jeu", police, 1350, 50);
@@ -610,21 +616,24 @@ int main(){
 		mouseCoor.y-=ratio_fen*HUD_H;
 		SDL_Point case_coor = {(int)(mouseCoor.x/(TAILLE_CASE*ratio_fen)), (int)(mouseCoor.y/(TAILLE_CASE*ratio_fen))};
 		SDL_Rect case_dem={case_coor.x*TAILLE_CASE,case_coor.y*TAILLE_CASE,TAILLE_CASE,TAILLE_CASE};
-		SDL_SetRenderDrawColor(renderer,255,0,0,255);
-		SDL_RenderFillRect(renderer, &case_dem);
 		case_coor.x--;
 		case_coor.y--;
-		if((grille[case_coor.y][case_coor.x] ==MASQUE_AVEC_BOMBES)||(grille[case_coor.y][case_coor.x]==DRAPEAU_AVEC_BOMBES)){
-			for(i=0;i<TAILLE_GRILLE_LIGNE;i++){
-				for(j=0;j<TAILLE_GRILLE_COLONNE;j++){
-					if(grille[i][j]==MASQUE_AVEC_BOMBES)
-						grille[i][j]=BOMBE;
+		if(coor_valide(case_coor.y,case_coor.x)){
+			SDL_SetRenderDrawColor(renderer,255,0,0,255);
+			SDL_RenderFillRect(renderer, &case_dem);
+
+			if((grille[case_coor.y][case_coor.x] ==MASQUE_AVEC_BOMBES)||(grille[case_coor.y][case_coor.x]==DRAPEAU_AVEC_BOMBES)){
+				for(i=0;i<TAILLE_GRILLE_LIGNE;i++){
+					for(j=0;j<TAILLE_GRILLE_COLONNE;j++){
+						if(grille[i][j]==MASQUE_AVEC_BOMBES)
+							grille[i][j]=BOMBE;
+					}
 				}
+				click_bombe=1;
 			}
-			click_bombe=1;
-		}
-		else{
-			etat(grille, case_coor.y, case_coor.x);
+			else{
+				etat(grille, case_coor.y, case_coor.x);
+			}
 		}
 	}
 	if(relache_droit){
