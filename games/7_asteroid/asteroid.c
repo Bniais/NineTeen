@@ -1658,7 +1658,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 			for(int i=0; i<nb_asteroid;i++){
 					if((asteroides[i].x < -asteroides[i].taille && asteroides[i].cote_spawn == 2) || (asteroides[i].y < -asteroides[i].taille && asteroides[i].cote_spawn == 3) || (asteroides[i].x - asteroides[i].taille > PLAYGROUND_SIZE_W && asteroides[i].cote_spawn == 0) || (asteroides[i].y - asteroides[i].taille > PLAYGROUND_SIZE_H && asteroides[i].cote_spawn == 1) ){
 
-						detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_TRUE, &score, &nbBombeNucleaire, 0, textsBonus, munitions, keys, &score_hash, sounds[SOUND_BONUS], sounds[SOUND_EXPLO], done);
+						detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_TRUE, &score, &nbBombeNucleaire, 0, textsBonus, munitions, keys, &score_hash, sounds[SOUND_BONUS], NULL, done);
 					}
 			}
 		}
@@ -1922,7 +1922,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 					rdyToReloadBomb = SDL_TRUE;
 				}
 			}
-			else if(frame_vague == 0){
+			else if( !done && frame_vague == 0){
 				frame_vague=frame_entre_vague;
 				for(int i=0;i<(int)roundf((difficulte+20)/4.57);i++){
 					spawn_asteroid(vaisseau,&asteroides,&nb_asteroid,difficulte, munitions, hardcore);
