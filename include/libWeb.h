@@ -102,12 +102,10 @@ int connectWithKey(char *key);
 
 typedef struct{char *gameID; char *score; char *key;}EnvoiScore;
 /////////////////////////////////////////////////////
-/// \fn int updateScore(char *key, char *gameID, char *score)
+/// \fn int updateScore(EnvoiScore * envoiScore)
 /// \brief update le score
 ///
-/// \param char *gameID id du jeux
-/// \param char *score score à update
-/// \param char *key cle du joueur
+/// \param EnvoiScore * envoiScore
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////

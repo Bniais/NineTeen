@@ -11,7 +11,9 @@
 #include <stdio.h>
 #include <math.h>
 
-void myInit(){
+static const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
+
+static void myInit(){
 
 	// SDL Init
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -26,7 +28,7 @@ void myInit(){
 	srand(time(NULL));
 }
 
-const SDL_Point ESPACE_DISPLAY_WINDOW = { 100, 100};
+static const SDL_Point ESPACE_DISPLAY_WINDOW = { 100, 100};
 
 SDL_Point maximizeWindow(SDL_Rect displayBounds, float* ratioWindowSize){
 	SDL_Point maxW = {(PLAYGROUND_SIZE_W + 2 * HUD_W), (PLAYGROUND_SIZE_H + 2 * HUD_H)};
@@ -201,6 +203,7 @@ int fin_jeu(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE]){
 
 void afficher_texte(SDL_Renderer * renderer, char *message, TTF_Font * police, int x, int y)
 {
+
 	SDL_Color couleur={255, 255, 255, 255};
 
 	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(police, message, couleur);
@@ -208,10 +211,11 @@ void afficher_texte(SDL_Renderer * renderer, char *message, TTF_Font * police, i
 	SDL_Rect dest={x,y,0,0};
 	SDL_QueryTexture(textureMessage,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
 
-  SDL_RenderCopy(renderer, textureMessage, NULL, &dest);
+	SDL_RenderCopy(renderer, textureMessage, NULL, &dest);
 
-  SDL_FreeSurface(surfaceMessage);
-  SDL_DestroyTexture(textureMessage);
+	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(textureMessage);
+
 
 }
 
@@ -348,10 +352,14 @@ void afficher_grille(SDL_Renderer *renderer, int grille[TAILLE_GRILLE_LIGNE][TAI
 	}
 }
 
+<<<<<<< HEAD
 int click_en_grille(SDL_Point mouseCoor){
 	return (mouseCoor.x>50&&mouseCoor.x<50+TAILLE_CASE*TAILLE_GRILLE_LIGNE&&mouseCoor.y>50&&mouseCoor.y<50+TAILLE_CASE*TAILLE_GRILLE_COLONNE);
 }
 int main(){
+=======
+int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, char *token, int hardcore){
+>>>>>>> 62b4c7482bcf5a534dc7d17288e5e23a167b4b69
 /////////////////////
 /// MISE EN PLACE ///``
 /////////////////////
@@ -374,7 +382,7 @@ int main(){
 	int premier_click=0;
 	TTF_Font * police=NULL;
 	int temps_final=0;
-	police = TTF_OpenFont("FLATS.ttf", 40);
+	police = TTF_OpenFont("../assets/font/police.ttf", 40);
 	float ratio_fen=(float)maxWindowSize.x/(PLAYGROUND_SIZE_W + 2 * HUD_W);
 	printf("ratio_fen -->%d %d %d %f\n",maxWindowSize.x, HUD_W, (PLAYGROUND_SIZE_W + 2 * HUD_W), ratio_fen);
 	//Keyboard
@@ -400,7 +408,7 @@ int main(){
 	//Window and renderer
 
 
-
+/*
 	SDL_Window *myWindow = SDL_CreateWindow("Démineur", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, maxWindowSize.x ,maxWindowSize.y, WINDOW_FLAG);
 	if( myWindow == NULL ){
 		printf("Erreur lors de la creation de la fenêtre : %s", SDL_GetError());
@@ -414,7 +422,7 @@ int main(){
 		printf("Erreur lors de la creation d'un renderer : %s", SDL_GetError());
 		return EXIT_FAILURE;
 	}
-
+*/
 
 	//Views
 	SDL_Rect playgroundView = {HUD_W/ratioWindowSize, HUD_H/ratioWindowSize, PLAYGROUND_SIZE_W, PLAYGROUND_SIZE_H};
@@ -429,14 +437,14 @@ int main(){
 	SDL_Point mouseCoor;
 
 	//Textures
-	SDL_Texture *hudTexture = IMG_LoadTexture(renderer, "../2_snake/Textures/hud.png");
+	SDL_Texture *hudTexture = IMG_LoadTexture(renderer, "../games/2_snake/Textures/hud.png");
 	if( hudTexture == NULL ){
 		printf("Erreur lors de la creation de texture");
 		return EXIT_FAILURE;
 	}
 
 	SDL_Texture * texture;
-	texture=IMG_LoadTexture(renderer, "demineur.png");
+	texture=IMG_LoadTexture(renderer, "../games/6_demineur/demineur.png");
 
 	int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE];
 
@@ -466,7 +474,14 @@ int main(){
 					// fermer
 					return 0;
 					break;
-
+				case SDL_KEYDOWN:
+				{
+					if(event.key.keysym.sym == SDLK_ESCAPE)
+					{
+						// fermer
+						return 0;
+					}
+				}
 				case SDL_MOUSEBUTTONDOWN:
 					if(event.button.button == SDL_BUTTON_LEFT){
 						clique_gauche = SDL_TRUE;
@@ -571,6 +586,14 @@ int main(){
 					// fermer
 					return 0;
 					break;
+				case SDL_KEYDOWN:
+				{
+					if(event.key.keysym.sym == SDLK_ESCAPE)
+					{
+						// fermer
+						return 0;
+					}
+				}
 
 				case SDL_MOUSEBUTTONDOWN:
 					if(event.button.button == SDL_BUTTON_LEFT){
@@ -724,6 +747,15 @@ int main(){
 					// fermer
 					return 0;
 					break;
+				case SDL_KEYDOWN:
+				{
+					if(event.key.keysym.sym == SDLK_ESCAPE)
+					{
+						// fermer
+						return 0;
+					}
+				}
+
 			}
 		}
 
@@ -789,12 +821,11 @@ int main(){
 		SDL_RenderClear(renderer);
 	}
 	//printf("Waw t'es nul, %d\n", score);
-	TTF_CloseFont(police);
-	TTF_Quit();
-	SDL_DestroyRenderer(renderer);
+//	TTF_CloseFont(police);
+////	SDL_DestroyRenderer(renderer);
 	SDL_DestroyTexture(hudTexture);
 	SDL_DestroyTexture(texture);
-	SDL_DestroyWindow(myWindow);
-	SDL_Quit();
+	//SDL_DestroyWindow(myWindow);
+//	SDL_Quit();
 	return 0;
 }

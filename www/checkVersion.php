@@ -1,12 +1,25 @@
 <?php
-	$versionActuel = "1.0.0";
-	$versionBeta = "1.0.1-dev";
+	$versionActuel = "1.0.1";
+	$versionBeta = "1.0.2-dev";
+
+	$versionAutoriser[0] =  $versionBeta;
+	$versionAutoriser[1] =  $versionActuel;
+	$versionAutoriser[2] =  "1.0.0";
 
 	if( $_SERVER['REQUEST_METHOD'] == 'POST' )
 	{
-		if ( ($_POST["version"] == $versionActuel) || ($_POST["version"] == $versionBeta)  || ($_POST["version"] == $versionApush) )
-			echo "1";
-		else
-			echo "0";
+
+		$versionTest = $_POST["version"];
+
+		$autoriserConnexion = 0;
+		foreach ($versionAutoriser as $value) {
+			if( $versionTest == $value )
+				$autoriserConnexion = 1;
+		}
+
+		echo $autoriserConnexion;
 	}
+
+
+
 ?>

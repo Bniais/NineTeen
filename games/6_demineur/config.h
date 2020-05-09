@@ -1,7 +1,6 @@
 
 //Window
 #define FRAMES_PER_SECOND 30
-const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
 
 
 //grille
