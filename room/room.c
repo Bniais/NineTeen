@@ -1,9 +1,6 @@
 // CODERUNNER COMPILEFLAG
 // -std=c99 -framework OpenGL -framework GLUT -lassimp -lm -F/Library/Frameworks -framework SDL2
 
-
-
-
 // GLOBAL LIBRARY
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,11 +16,11 @@ int MACOS_VER;
 	#include <OpenGL/OpenGL.h>
 	#include <GLUT/glut.h>
 	#include <OpenCL/cl.h>
-#include <OpenCL/cl_gl.h>
-#include <OpenCL/cl_gl_ext.h>
-#include <OpenCL/cl_ext.h>
+	#include <OpenCL/cl_gl.h>
+	#include <OpenCL/cl_gl_ext.h>
+	#include <OpenCL/cl_ext.h>
 #endif
-#ifdef __linux
+#ifdef __linux__
 	#include <GL/gl.h>
 	#include <GL/glu.h>
 	#include <GL/glut.h>
@@ -684,263 +681,32 @@ void GLlightMode()
 /// \fn void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera, float IPS);
 /// \brief permet de gerer les evenements liee au porte des toilettes
 ///
-/// \param struct MeilleureScore_s str[] tableau de donner
+/// \param int *statutPorteFemme
+/// \param int *statutPorteHomme
+/// \param int *jouerSonPorteFemme
+/// \param int *jouerSonPorteHomme
+/// \param int *toiletteFemmeOuverteDelai
+/// \param int *toiletteHommeOuverteDelai
+/// \param Mix_Chunk *sas_ouverture
+/// \param Mix_Chunk *sas_fermeture
+/// \param struct Camera_s camera
+/// \param float IPS
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
 void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera, float IPS);
 
 
-void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera, float IPS)
-{
-	// ANIMATION FAITE POUR 50 _FPS
-	float variateurFPSanimation = (25.0/IPS) * 0.1;
-	//////////////////////////////////////////////////////////
-	///////// SI IL FAUT JOUER UN SON POUR LES FEMMES
-	if(*jouerSonPorteFemme == 1)
-	{
-		Mix_PlayChannel(4,sas_ouverture,0);
-		*jouerSonPorteFemme = 0;
-	}
-	if(*jouerSonPorteFemme == 2)
-	{
-		Mix_PlayChannel(4,sas_fermeture,0);
-		*jouerSonPorteFemme = 0;
-	}
-	//////////////////////////////////////////////////////////
-	///////// SI IL FAUT JOUER UN SON POUR LES HOMME
-	if(*jouerSonPorteHomme == 1)
-	{
-		Mix_PlayChannel(4,sas_ouverture,0);
-		*jouerSonPorteHomme = 0;
-	}
-	if(*jouerSonPorteHomme == 2)
-	{
-		Mix_PlayChannel(4,sas_fermeture,0);
-		*jouerSonPorteHomme = 0;
-	}
+/////////////////////////////////////////////////////
+/// \fn int backgroundClassement(SDL_Surface *sImage)
+/// \brief afficher un background au classement pour qu'il soit plus facilement visible
+///
+/// \param SDL_Surface *sImage
+///
+/// \return EXIT_SUCCESS/EXIT_FAILURE
+/////////////////////////////////////////////////////
+int backgroundClassement(SDL_Surface *sImage);
 
-
-	//////////////////////////////////////////////////////////
-	// GESTION DES STATUS DE CHAQUE PORTE
-	//////////////////////////////////////////////////////////
-	// PORTE EN COURS D OUVERTURE FEMME
-	if( *statutPorteFemme == OUVERTURE )
-	{
-		//////////////////////////////////////////////////////////
-		// REGLAGE SON TOILETTE FEMME
-		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,8.0,camera.angle, 70);
-
-		if( toiletteFemme.x >= 23.0 )
-		{
-			*statutPorteFemme = OUVERTE;
-			*toiletteFemmeOuverteDelai = SDL_GetTicks();
-		}
-		else
-		{
-			toiletteFemme.x += variateurFPSanimation;
-		}
-	}
-	//////////////////////////////////////////////////////////
-	// PORTE EN COURS D OUVERTURE HOMME
-	if( *statutPorteHomme == OUVERTURE )
-	{
-		//////////////////////////////////////////////////////////
-		// REGLAGE SON TOILETTE HOMME
-		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, 70);
-
-
-		if( toiletteHomme.x >= 23.0 )
-		{
-			*statutPorteHomme = OUVERTE;
-			*toiletteHommeOuverteDelai = SDL_GetTicks();
-		}
-		else
-		{
-			toiletteHomme.x += variateurFPSanimation;
-		}
-
-	}
-
-	//////////////////////////////////////////////////////////
-	// PORTE EN COURS DE FERMETURE FEMME
-	if( *statutPorteFemme == FERMETURE )
-	{
-		//////////////////////////////////////////////////////////
-		// REGLAGE SON TOILETTE FEMME
-		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,8.0,camera.angle, 70);
-		////////////////////////////////////////////////////////
-		// RE OUVRIR SI PASSAGE DEVANT LA PORTE DURANT LA FERMETURE
-		if(camera.px > 19.0 && camera.pz < 9.0 && camera.pz > 8.0)
-		{
-			printf("RE OUVRIR\n" );
-			*statutPorteFemme = OUVERTURE;
-			*toiletteFemmeOuverteDelai = 0;
-			*jouerSonPorteFemme = 1;
-		}
-		////////////////////////////////////////////////////////
-		// BOUCLE DE FERMETURE
-		else
-		{
-			if( toiletteFemme.x < 20.3 )
-			{
-				toiletteFemme.x = 20.2;
-				*statutPorteFemme = FERMER;
-			}
-			else
-				toiletteFemme.x -= variateurFPSanimation;
-		}
-
-	}
-	//////////////////////////////////////////////////////////
-	// PORTE EN COURS DE FERMETURE HOMME
-	if( *statutPorteHomme == FERMETURE )
-	{
-		//////////////////////////////////////////////////////////
-		// REGLAGE SON TOILETTE HOMME
-		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, 70);
-		////////////////////////////////////////////////////////
-		// RE OUVRIR SI PASSAGE DEVANT LA PORTE DURANT LA FERMETURE
-		if(camera.px > 19.0 && camera.pz < 1.5 && camera.pz > 0.4)
-		{
-			printf("RE OUVRIR\n" );
-			*statutPorteHomme = OUVERTURE;
-			*toiletteHommeOuverteDelai = 0;
-			*jouerSonPorteHomme = 1;
-		}
-		////////////////////////////////////////////////////////
-		// BOUCLE DE FERMETURE
-		else
-		{
-			if( toiletteHomme.x < 20.3 )
-			{
-				toiletteHomme.x = 20.2;
-				*statutPorteHomme = FERMER;
-			}
-
-			else
-				toiletteHomme.x -= variateurFPSanimation;
-		}
-
-	}
-
-
-	//////////////////////////////////////////////////////////
-	// FERMETURE AUTOMATIQUE FEMME
-	if( *statutPorteFemme == OUVERTE )
-	{
-		if( ( *toiletteFemmeOuverteDelai + 3000) < SDL_GetTicks() )
-		{
-			*statutPorteFemme = FERMETURE;
-			*toiletteFemmeOuverteDelai = 0;
-			*jouerSonPorteFemme = 2;
-		}
-	}
-	//////////////////////////////////////////////////////////
-	// FERMETURE AUTOMATIQUE FEMME
-	if( *statutPorteHomme == OUVERTE )
-	{
-		if( ( *toiletteHommeOuverteDelai + 3000) < SDL_GetTicks() )
-		{
-			*statutPorteHomme = FERMETURE;
-			*toiletteHommeOuverteDelai = 0;
-			*jouerSonPorteHomme = 2;
-		}
-	}
-
-
-	//////////////////////////////////////////////////////////
-	// OUBERTURE INTERIEUR AUTOMATIQUE
-	int toilette = detecterOuvertureToilette(camera.px,camera.pz,camera.angle);
-	switch (toilette) {
-		case 3:{
-			if( *statutPorteFemme != OUVERTE && *statutPorteFemme != OUVERTURE)
-			{
-				*statutPorteFemme = OUVERTURE;
-				*jouerSonPorteFemme = 1;
-			}
-		}break;
-		case 4:{
-			if( *statutPorteHomme != OUVERTE && *statutPorteHomme != OUVERTURE)
-			{
-				*statutPorteHomme = OUVERTURE;
-				*jouerSonPorteHomme = 1;
-			}
-		}break;
-	}
-}
-
-
-int backgroundClassement(SDL_Surface *sImage)
-{
-	////////////////////////////////////////////////
-	// ENVOI MATRICE
-	glPushMatrix();
-	glLoadIdentity();
-	////////////////////////////////////////////////
-	// DESACTIVER LES LUMIERE
-	glDisable(GL_LIGHTING);
-	glLoadIdentity();
-
-	////////////////////////////////////////////////
-	// PRECISION SUR LA FENETRE
-	gluOrtho2D(0, WinWidth, 0, WinHeight);
-	// MOD PROJECTION
-	glMatrixMode(GL_PROJECTION);
-	//glLoadIdentity();
-
-	////////////////////////////////////////////////
-	// DESACTIVATION DU TEST D ARRIERE PLAN
-	glDisable(GL_DEPTH_TEST);
-	glLoadIdentity();
-
-	////////////////////////////////////////////////
-	// BLEND
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	// INIT LOAD TEXTURE
-	GLuint texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-	////////////////////////////////////////////////
-	// PARAMETRE 2D
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	// CONVERTION TEXTURE IMAGE
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sImage->w , sImage->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sImage->pixels);
-
-	// RESCALE IMG
-	int tmpW= sImage->w * (WinWidth/2560.0);
-	int tmpH = sImage->h * (WinHeight/1440.0);
-
-	////////////////////////////////////////////////
-	// POSITIONNEMENT DE LA FENETRE QUITTER X
-	int x = 0;
-	////////////////////////////////////////////////
-	// POSITIONNEMENT DE LA FENETRE QUITTER Y
-	int y = WinHeight - tmpH;
-
-	////////////////////////////////////////////////
-	// DEBUT DU RENDU
-	glBegin(GL_QUADS);
-	{
-		glTexCoord2f(0,0); glVertex2f(x, y);
-		glTexCoord2f(1,0); glVertex2f(x + tmpW, y);
-		glTexCoord2f(1,-1); glVertex2f(x + tmpW, y + tmpH);
-		glTexCoord2f(0,-1); glVertex2f(x, y + tmpH);
-	}
-	glEnd();
-	////////////////////////////////////////////////
-
-	////////////////////////////////////////////////
-	// DESTRUCTUIN DES ELLEMENTS CREE
-	glDeleteTextures(1, &texture);
-	////////////////////////////////////////////////
-	// RECUPERATION DE LA MATRICE AVANT MODIF
-	glPopMatrix();
-	glLoadIdentity();
-
-	return EXIT_SUCCESS;
-}
 
 
 int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize)
@@ -1195,7 +961,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	_malloc((void**)&_textures,sizeof(*_textures),(_nbTextures = scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
 	//////////////////////////////////////////////////////////
 	// CHARGER LES TEXTURES
-	aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
+	chargerTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
 	// APPLICATION DE LA SCENE  AVANT LA 1er FRAME
 	SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
 
@@ -1776,11 +1542,10 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 	GlDessinerQuad(toiletteHomme);
 
 	if(*scene_list == 0) {
-		// FIXER LA SCENE A 1
 		*scene_list = glGenLists(1);
 		glNewList(*scene_list, GL_COMPILE);
 		GLuint ivao = 0;
-		aiDessinerImage(scene, scene->mRootNode,&ivao,_textures,_counts);
+		afficherScene(scene, scene->mRootNode,&ivao,_textures,_counts);
 		glEndList();
 	}
 
@@ -2461,7 +2226,7 @@ int detecterMachine(float x,float y,float angle)
 				else if ( x < -3.7)
 					return 5;
 				else
-					return 0; //6
+					return 6; //6
 			}
 		}
 	}
@@ -2850,9 +2615,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
 								case 6:
-									/*SDL_ShowCursor(SDL_ENABLE);
+									SDL_ShowCursor(SDL_ENABLE);
 									demineur(pRenderer, meilleureScore[DEMINEUR_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1);
-									SDL_ShowCursor(SDL_DISABLE);*/
+									SDL_ShowCursor(SDL_DISABLE);
 									break;
 								case 7: SDL_Delay(500);break;
 								case 8:
@@ -2908,7 +2673,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							while(SDL_PollEvent(&Event));
 							detruireTexture();
 							_malloc((void**)&_textures,sizeof(*_textures),(_nbTextures = scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
-							aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
+							chargerTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
 
 							// REMISE A ZERO DE LA SCENE
 							*scene_list = 0;
@@ -3072,6 +2837,189 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 }
 
 
+
+void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera, float IPS)
+{
+	// ANIMATION FAITE POUR 50 _FPS
+	float variateurFPSanimation = (25.0/IPS) * 0.1;
+	//////////////////////////////////////////////////////////
+	///////// SI IL FAUT JOUER UN SON POUR LES FEMMES
+	if(*jouerSonPorteFemme == 1)
+	{
+		Mix_PlayChannel(4,sas_ouverture,0);
+		*jouerSonPorteFemme = 0;
+	}
+	if(*jouerSonPorteFemme == 2)
+	{
+		Mix_PlayChannel(4,sas_fermeture,0);
+		*jouerSonPorteFemme = 0;
+	}
+	//////////////////////////////////////////////////////////
+	///////// SI IL FAUT JOUER UN SON POUR LES HOMME
+	if(*jouerSonPorteHomme == 1)
+	{
+		Mix_PlayChannel(4,sas_ouverture,0);
+		*jouerSonPorteHomme = 0;
+	}
+	if(*jouerSonPorteHomme == 2)
+	{
+		Mix_PlayChannel(4,sas_fermeture,0);
+		*jouerSonPorteHomme = 0;
+	}
+
+
+	//////////////////////////////////////////////////////////
+	// GESTION DES STATUS DE CHAQUE PORTE
+	//////////////////////////////////////////////////////////
+	// PORTE EN COURS D OUVERTURE FEMME
+	if( *statutPorteFemme == OUVERTURE )
+	{
+		//////////////////////////////////////////////////////////
+		// REGLAGE SON TOILETTE FEMME
+		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,8.0,camera.angle, 70);
+
+		if( toiletteFemme.x >= 23.0 )
+		{
+			*statutPorteFemme = OUVERTE;
+			*toiletteFemmeOuverteDelai = SDL_GetTicks();
+		}
+		else
+		{
+			toiletteFemme.x += variateurFPSanimation;
+		}
+	}
+	//////////////////////////////////////////////////////////
+	// PORTE EN COURS D OUVERTURE HOMME
+	if( *statutPorteHomme == OUVERTURE )
+	{
+		//////////////////////////////////////////////////////////
+		// REGLAGE SON TOILETTE HOMME
+		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, 70);
+
+
+		if( toiletteHomme.x >= 23.0 )
+		{
+			*statutPorteHomme = OUVERTE;
+			*toiletteHommeOuverteDelai = SDL_GetTicks();
+		}
+		else
+		{
+			toiletteHomme.x += variateurFPSanimation;
+		}
+
+	}
+
+	//////////////////////////////////////////////////////////
+	// PORTE EN COURS DE FERMETURE FEMME
+	if( *statutPorteFemme == FERMETURE )
+	{
+		//////////////////////////////////////////////////////////
+		// REGLAGE SON TOILETTE FEMME
+		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,8.0,camera.angle, 70);
+		////////////////////////////////////////////////////////
+		// RE OUVRIR SI PASSAGE DEVANT LA PORTE DURANT LA FERMETURE
+		if(camera.px > 19.0 && camera.pz < 9.0 && camera.pz > 8.0)
+		{
+			printf("RE OUVRIR\n" );
+			*statutPorteFemme = OUVERTURE;
+			*toiletteFemmeOuverteDelai = 0;
+			*jouerSonPorteFemme = 1;
+		}
+		////////////////////////////////////////////////////////
+		// BOUCLE DE FERMETURE
+		else
+		{
+			if( toiletteFemme.x < 20.3 )
+			{
+				toiletteFemme.x = 20.2;
+				*statutPorteFemme = FERMER;
+			}
+			else
+				toiletteFemme.x -= variateurFPSanimation;
+		}
+
+	}
+	//////////////////////////////////////////////////////////
+	// PORTE EN COURS DE FERMETURE HOMME
+	if( *statutPorteHomme == FERMETURE )
+	{
+		//////////////////////////////////////////////////////////
+		// REGLAGE SON TOILETTE HOMME
+		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, 70);
+		////////////////////////////////////////////////////////
+		// RE OUVRIR SI PASSAGE DEVANT LA PORTE DURANT LA FERMETURE
+		if(camera.px > 19.0 && camera.pz < 1.5 && camera.pz > 0.4)
+		{
+			printf("RE OUVRIR\n" );
+			*statutPorteHomme = OUVERTURE;
+			*toiletteHommeOuverteDelai = 0;
+			*jouerSonPorteHomme = 1;
+		}
+		////////////////////////////////////////////////////////
+		// BOUCLE DE FERMETURE
+		else
+		{
+			if( toiletteHomme.x < 20.3 )
+			{
+				toiletteHomme.x = 20.2;
+				*statutPorteHomme = FERMER;
+			}
+
+			else
+				toiletteHomme.x -= variateurFPSanimation;
+		}
+
+	}
+
+
+	//////////////////////////////////////////////////////////
+	// FERMETURE AUTOMATIQUE FEMME
+	if( *statutPorteFemme == OUVERTE )
+	{
+		if( ( *toiletteFemmeOuverteDelai + 3000) < SDL_GetTicks() )
+		{
+			*statutPorteFemme = FERMETURE;
+			*toiletteFemmeOuverteDelai = 0;
+			*jouerSonPorteFemme = 2;
+		}
+	}
+	//////////////////////////////////////////////////////////
+	// FERMETURE AUTOMATIQUE FEMME
+	if( *statutPorteHomme == OUVERTE )
+	{
+		if( ( *toiletteHommeOuverteDelai + 3000) < SDL_GetTicks() )
+		{
+			*statutPorteHomme = FERMETURE;
+			*toiletteHommeOuverteDelai = 0;
+			*jouerSonPorteHomme = 2;
+		}
+	}
+
+
+	//////////////////////////////////////////////////////////
+	// OUBERTURE INTERIEUR AUTOMATIQUE
+	int toilette = detecterOuvertureToilette(camera.px,camera.pz,camera.angle);
+	switch (toilette) {
+		case 3:{
+			if( *statutPorteFemme != OUVERTE && *statutPorteFemme != OUVERTURE)
+			{
+				*statutPorteFemme = OUVERTURE;
+				*jouerSonPorteFemme = 1;
+			}
+		}break;
+		case 4:{
+			if( *statutPorteHomme != OUVERTE && *statutPorteHomme != OUVERTURE)
+			{
+				*statutPorteHomme = OUVERTURE;
+				*jouerSonPorteHomme = 1;
+			}
+		}break;
+	}
+}
+
+
+
+
 int MessageQuitterRoom(int modeChargement,char path[])
 {
 	////////////////////////////////////////////////
@@ -3175,6 +3123,78 @@ int MessageQuitterRoom(int modeChargement,char path[])
 	glDeleteTextures(1, &texture);
 	SDL_FreeSurface(sImage);
 
+	////////////////////////////////////////////////
+	// RECUPERATION DE LA MATRICE AVANT MODIF
+	glPopMatrix();
+	glLoadIdentity();
+
+	return EXIT_SUCCESS;
+}
+
+
+int backgroundClassement(SDL_Surface *sImage)
+{
+	////////////////////////////////////////////////
+	// ENVOI MATRICE
+	glPushMatrix();
+	glLoadIdentity();
+	////////////////////////////////////////////////
+	// DESACTIVER LES LUMIERE
+	glDisable(GL_LIGHTING);
+	glLoadIdentity();
+
+	////////////////////////////////////////////////
+	// PRECISION SUR LA FENETRE
+	gluOrtho2D(0, WinWidth, 0, WinHeight);
+	// MOD PROJECTION
+	glMatrixMode(GL_PROJECTION);
+	//glLoadIdentity();
+
+	////////////////////////////////////////////////
+	// DESACTIVATION DU TEST D ARRIERE PLAN
+	glDisable(GL_DEPTH_TEST);
+	glLoadIdentity();
+
+	////////////////////////////////////////////////
+	// BLEND
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// INIT LOAD TEXTURE
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	////////////////////////////////////////////////
+	// PARAMETRE 2D
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// CONVERTION TEXTURE IMAGE
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sImage->w , sImage->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sImage->pixels);
+
+	// RESCALE IMG
+	int tmpW= sImage->w * (WinWidth/2560.0);
+	int tmpH = sImage->h * (WinHeight/1440.0);
+
+	////////////////////////////////////////////////
+	// POSITIONNEMENT DE LA FENETRE QUITTER X
+	int x = 0;
+	////////////////////////////////////////////////
+	// POSITIONNEMENT DE LA FENETRE QUITTER Y
+	int y = WinHeight - tmpH;
+
+	////////////////////////////////////////////////
+	// DEBUT DU RENDU
+	glBegin(GL_QUADS);
+	{
+		glTexCoord2f(0,0); glVertex2f(x, y);
+		glTexCoord2f(1,0); glVertex2f(x + tmpW, y);
+		glTexCoord2f(1,-1); glVertex2f(x + tmpW, y + tmpH);
+		glTexCoord2f(0,-1); glVertex2f(x, y + tmpH);
+	}
+	glEnd();
+	////////////////////////////////////////////////
+
+	////////////////////////////////////////////////
+	// DESTRUCTUIN DES ELLEMENTS CREE
+	glDeleteTextures(1, &texture);
 	////////////////////////////////////////////////
 	// RECUPERATION DE LA MATRICE AVANT MODIF
 	glPopMatrix();
