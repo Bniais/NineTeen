@@ -314,6 +314,17 @@ int detectionEnvironnement(float x,float y);
 /////////////////////////////////////////////////////
 int detecterRadio(float x,float y,float angle);
 
+/////////////////////////////////////////////////////
+/// \fn int detecterPorte(float x,float y,float angle)
+/// \brief detection porte a proximite
+///
+/// \param float x coordonner x
+/// \param float y coordonner y
+/// \param float angle angle
+///
+/// \return TRUE/FALSE
+/////////////////////////////////////////////////////
+int detecterPorte(float x,float y,float angle);
 
 /////////////////////////////////////////////////////
 /// \fn int detecterOuvertureToilette(float x,float y,float angle)
@@ -1649,7 +1660,13 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	cible[ASTEROID_HARD-1].ouverture =70;
 
 
-
+	/*
+		camera->px = -6.56;
+		camera->pz = 9.189630;
+		camera->py = 3.609998;
+		camera->cible_py = -.332000;
+		camera->angle = 0.0;
+		camera->ouverture =70;*/
 
 	cible[SHOOTER_HARD-1].px = -6.56;
 	cible[SHOOTER_HARD-1].pz = 9.189630;
@@ -1696,8 +1713,6 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	cible[SHOOTER_EASY-1].cible_py = -.332000;
 	cible[SHOOTER_EASY-1].angle = M_PI;
 	cible[SHOOTER_EASY-1].ouverture =70;
-
-
 
 	cible[ASTEROID_EASY-1].px = 2.707498;
 	cible[ASTEROID_EASY-1].pz = 9.192631;
@@ -2149,6 +2164,24 @@ int detecterRadio(float x,float y,float angle)
 	return 0;
 }
 
+int detecterPorte(float x,float y,float angle)
+{
+	printf("%f %f \n",x, y );
+	///////////////////////////////////////////////////
+	// DETECTER D'UN ANGLE FACE A LA RADIO
+	if( ( angle > ( 2*M_PI - (ANGLE_DETECTION_MACHINE) ) && angle <= 2*M_PI  ) ||    (    angle >= 0 && angle < 0 + (ANGLE_DETECTION_MACHINE)   )   )
+	{
+		////////////////////////////////////////
+		// DETECTION RADIO MUSIC 1
+		if( y > 33)
+		{
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
 int detecterOuvertureToilette(float x,float y,float angle)
 {
 
@@ -2222,7 +2255,7 @@ int detecterMachine(float x,float y,float angle)
 				///////////////////////////////////////////////////
 				// DETECTER PRECICEMENT LA MACHINE PARMIS LES 3
 				if( x < -5.7 )
-					return 0;//4;
+					return 4;//4;
 				else if ( x < -3.7)
 					return 5;
 				else
@@ -2245,11 +2278,11 @@ int detecterMachine(float x,float y,float angle)
 			if(angle > M_PI - (ANGLE_DETECTION_MACHINE) && angle < M_PI + (ANGLE_DETECTION_MACHINE) )
 			{
 				if( x < 3.4 )
-					return 0; //7
+					return 7; //7
 				else if ( x < 5.8)
 					return 8;
 				else
-					return 0; //9
+					return 9; //9
 			}
 		}
 		///////////////////////////////////////////////////
@@ -2379,6 +2412,18 @@ void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Fo
 		else
 			AfficherText(font,"MUSIC : ON",white,-1,WinHeight*0.4);
 	}
+
+
+	detection = detecterPorte(camera.px,camera.pz,camera.angle);
+	if(detection)
+	{
+		////////////////////////////////////////////////
+		// AFFICHAGE CLIGNOTANT
+		if(afficherMessage)
+			AfficherText(font,"APPUYER   SUR   E",white,-1,-1);
+			AfficherText(font,"QUITTER",white,-1,WinHeight*0.4);
+	}
+
 }
 
 
@@ -2471,7 +2516,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 		{
 				///////////////////////////////////////////////////
 				// TOUCHE ECHAPE METTRE FIN AU JEUX
-				if(Event.key.keysym.sym == SDLK_ESCAPE)
+				if(Event.key.keysym.sym == SDLK_ESCAPE || ((Event.key.keysym.sym == SDLK_SPACE || Event.key.keysym.sym == SDLK_e || Event.type == SDL_MOUSEBUTTONDOWN) && detecterPorte(camera.px,camera.pz,camera.angle)))
 				{
 					fprintf(EXT_FILE, "room.c : lancerMachine() : Afficher menu escape (Appui touche echap) \n" );
 					//////////////////////////////////////////////////////////
@@ -2486,11 +2531,12 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 					///////////////////////////////////////////////////
 					// VIDER LA LISTE DES EVENEMENTS
-					do
-		  			{
-		     				SDL_WaitEvent(&Event);
-		  			}
-		  			while (Event.key.keysym.sym != SDLK_ESCAPE);
+					if(Event.key.keysym.sym == SDLK_ESCAPE)
+						do
+			  			{
+			     			SDL_WaitEvent(&Event);
+			  			}
+			  			while (Event.key.keysym.sym != SDLK_ESCAPE);
 
 
 					///////////////////////////////////////////////////
@@ -2599,7 +2645,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								case 1:
 									flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
-								break;
+									break;
 								case 2:
 									tetris( pRenderer ,meilleureScore[TETRIS_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
@@ -2614,25 +2660,32 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								case 5:
 									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
+									break;
 								case 6:
 									SDL_ShowCursor(SDL_ENABLE);
 									demineur(pRenderer, meilleureScore[DEMINEUR_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1);
 									SDL_ShowCursor(SDL_DISABLE);
 									break;
-								case 7: SDL_Delay(500);break;
+								case 7:
+									SDL_ShowCursor(SDL_ENABLE);
+									demineur(pRenderer, meilleureScore[DEMINEUR_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0);
+									SDL_ShowCursor(SDL_DISABLE);
+									break;
 								case 8:
 									snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
-								case 9: SDL_Delay(500);break;
+									break;
+								case 9:
+									shooter( pRenderer ,meilleureScore[SHOOTER_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
+									break;
 								case 10:
 									asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
-								case 11: {
+								case 11:
 									tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
-								}break;
 								case 12:
 									flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
@@ -2644,7 +2697,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									SDL_ShowCursor(SDL_TRUE);
 									leaderboard(pRenderer,WinWidth,WinHeight,meilleureScore[0].multiplicator);
 									SDL_ShowCursor(SDL_FALSE);
-								break;
+									break;
 								default:break;
 							}
 

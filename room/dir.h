@@ -65,6 +65,12 @@ const char* DIR_TEXTURES_FLAPPY[NB_FLAPPY_TEXTURES]={
 const char* DIR_TEXTURES_SHOOTER[NB_SHOOTER_TEXTURES]={
 	"../games/4_shooter/Textures/vaisseau.png",
 	"../games/4_shooter/Textures/flame.png",
-	"../games/4_shooter/Textures/weapon.png"
+	"../games/4_shooter/Textures/weapon.png",
+	"../games/4_shooter/Textures/missiles.png",
+	"../games/4_shooter/Textures/background.png",
+	"../games/4_shooter/Textures/enemy1.png",
+	"../games/4_shooter/Textures/enemy2.png",
+	"../games/4_shooter/Textures/enemy3.png"
+
 };
-const int textureFloueShooter[NB_SHOOTER_TEXTURES] = {1,1,1};
+const int textureFloueShooter[NB_SHOOTER_TEXTURES] = {1,1,1,1,1,1,1};
