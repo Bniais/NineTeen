@@ -945,7 +945,7 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 		(*asteroides)[*nb_asteroid-1].angle_rota=rand()%(int)(2*PI*100);
 		(*asteroides)[*nb_asteroid-1].frame_hit = 0;
 		(*asteroides)[*nb_asteroid-1].frozen= 0;
-		(*asteroides)[*nb_asteroid-1].frame_depart=0;
+		(*asteroides)[*nb_asteroid-1].frame_depart=FRAME_DEPART;
 		(*asteroides)[*nb_asteroid-1].cote_spawn=-1;
 
 		if(difficulte >= 1+1/PRECISION_RAND_FLOAT){
@@ -1039,8 +1039,8 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 	}
 
 }
-void mouvement_asteroid(Asteroid* asteroid){
-	if(!asteroid->frame_depart){
+void mouvement_asteroid(Asteroid* asteroid, int hardcore){
+	if(!asteroid->frame_depart || !hardcore){
 		asteroid->x+=asteroid->vitesse*cos(asteroid->angle) * (1 - 0.4*asteroid->frozen); // 0 1   /  1 0.5   2  0
 		asteroid->y+=asteroid->vitesse*sin(asteroid->angle) * (1 - 0.4*asteroid->frozen); // 0 1   /  1 0.5   2  0
 	}
@@ -1065,6 +1065,11 @@ void afficher_texture_asteroid(SDL_Renderer* renderer, SDL_Texture * textureAste
 }
 
 void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* textureAsteroid, SDL_Texture* textureFissure, SDL_Texture* textureBonus, SDL_Texture* textureGlace, int hardcore){
+	SDL_SetTextureAlphaMod(textureAsteroid, 255 - 150 * asteroid.frame_depart/FRAME_DEPART);
+	SDL_SetTextureAlphaMod(textureFissure, 255 - 150 * asteroid.frame_depart/FRAME_DEPART);
+	SDL_SetTextureAlphaMod(textureBonus, 255 - 150 * asteroid.frame_depart/FRAME_DEPART);
+	SDL_SetTextureAlphaMod(textureGlace, 255 - 150 * asteroid.frame_depart/FRAME_DEPART);
+
 	SDL_Rect src = ASTE_SRC;
 
 	SDL_Rect asteroidRect={(int)asteroid.x-asteroid.taille, (int)asteroid.y-asteroid.taille,asteroid.taille*2,asteroid.taille*2};
@@ -1717,7 +1722,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 				mouvement_tir(renderer, &missiles[i], asteroides, nb_asteroid);
 			}
 			for(int i=0;i<nb_asteroid; i++){
-				mouvement_asteroid(&asteroides[i]);
+				mouvement_asteroid(&asteroides[i], hardcore);
 			}
 		///////////////////
 		// Check hitboxs //`
