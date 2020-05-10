@@ -2,10 +2,10 @@
 #include "config.h"
 #include <time.h>
 
-#include <SDL.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
-#include <SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_image.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -18,11 +18,6 @@ static void myInit(){
 	// SDL Init
 	SDL_Init(SDL_INIT_EVERYTHING);
 	TTF_Init();
-
-	//audio
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-	if( Mix_OpenAudio( MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 1, 1024 ) == -1 )
-		printf("Erreur init SDL_Mixer\n" );
 
 	// rand
 	srand(time(NULL));
@@ -352,14 +347,11 @@ void afficher_grille(SDL_Renderer *renderer, int grille[TAILLE_GRILLE_LIGNE][TAI
 	}
 }
 
-<<<<<<< HEAD
 int click_en_grille(SDL_Point mouseCoor){
 	return (mouseCoor.x>50&&mouseCoor.x<50+TAILLE_CASE*TAILLE_GRILLE_LIGNE&&mouseCoor.y>50&&mouseCoor.y<50+TAILLE_CASE*TAILLE_GRILLE_COLONNE);
 }
-int main(){
-=======
+
 int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, char *token, int hardcore){
->>>>>>> 62b4c7482bcf5a534dc7d17288e5e23a167b4b69
 /////////////////////
 /// MISE EN PLACE ///``
 /////////////////////
