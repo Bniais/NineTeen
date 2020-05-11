@@ -1,3 +1,10 @@
+/* An exemple of debug and fix of a crash that occured when a missile was colliding an enemy after destroying an enemy
+ * The problem was that after hitting an enemy, the game was still looking for collision with other enemies for that destroyed missile, leading into searching in arrays with a random missile.id
+ * Printing informations step by step lead me to find that the crash was occuring on the call of collideOblique in the collision between missiles and enemies, so it could only be a divide by 0 or an wrong array subscripter.
+ * Printing dividers didn't show anything anormal, so I printed the array subscripters and found out missile.id was random, and so that missile[i] wasnt declared or was out of range.
+ * See functions missileHitEnemy and its call loop
+*/
+
 #include "../../include/communFunctions.h"
 #include "../../define/define.h"
 #include "../../include/hashage.h"
@@ -109,6 +116,7 @@ int collide(double x0, double y0, double w0, double h0, double x1, double y1, do
   // vector (wx, wy) and the other major or minor radius perpendicular to that vector and hw times as long.
 int collideOblique(double x0, double y0, double wx0, double wy0, double hw0,
 	double x1, double y1, double wx1, double wy1, double hw1, int collideRect) {
+		printf("%f %f %f %f %f %f %f %f %f %f %d\n",  x0,  y0,  wx0,  wy0,  hw0, x1,  y1,  wx1,  wy1,  hw1,  collideRect);
 	float rr = hw1*hw1*(wx1*wx1 + wy1*wy1)*(wx1*wx1 + wy1*wy1)*(wx1*wx1 + wy1*wy1);
 	float x = hw1*wx1*(wy1*(y1 - y0) + wx1*(x1 - x0)) - wy1*(wx1*(y1 - y0) - wy1*(x1 - x0));
 	float y = hw1*wy1*(wy1*(y1 - y0) + wx1*(x1 - x0)) + wx1*(wx1*(y1 - y0) - wy1*(x1 - x0));
@@ -203,7 +211,8 @@ void drawShip(SDL_Renderer *renderer, Ship ship, SDL_Texture **textures){
 		srcFlame.x+= srcFlame.w;
 	}
 
-
+	//SDL_RenderCopy(renderer, textures[SH_SHIP], &srcShip, &dest);
+    //SDL_Point pt = {SHIP_HITBOX[ship.form].x, SHIP_HITBOX[ship.form].y};
 	SDL_RenderCopy(renderer, textures[SH_SHIP], &srcShip, &dest);
 
 	SDL_Rect destWeapon = WEAPON_DEST[0];
@@ -231,23 +240,9 @@ void drawEnemy(SDL_Renderer *renderer, Enemy enemy, SDL_Texture **textures){
 
 	if( enemy.id == BASE_ENEMY){
 		SDL_RenderCopyEx(renderer, textures[SH_ENEMY_ROND + enemy.id], &srcEnemy, &destEnemy, enemy.rota, NULL, SDL_FLIP_NONE);
-		if(enemy.frameHit){
-			srcEnemy.y += srcEnemy.h;
-			SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy.id], ALPHA_HIT);
-			SDL_RenderCopyEx(renderer, textures[SH_ENEMY_ROND + enemy.id], &srcEnemy, &destEnemy, enemy.rota, NULL, SDL_FLIP_NONE);
-			srcEnemy.y -= srcEnemy.h;
-			SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy.id], 255);
-		}
-
 		srcEnemy.x += srcEnemy.w;
 	}
 	SDL_RenderCopy(renderer, textures[SH_ENEMY_ROND + enemy.id], &srcEnemy, &destEnemy );
-	if(enemy.frameHit){
-		SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy.id], ALPHA_HIT);
-		srcEnemy.y += srcEnemy.h;
-		SDL_RenderCopy(renderer, textures[SH_ENEMY_ROND + enemy.id], &srcEnemy, &destEnemy );
-		SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy.id], 255);
-	}
 }
 
 
@@ -259,16 +254,32 @@ int shipHitEnemy(Ship ship, Enemy enemy){
 				SHIP_HITBOX[ship.form].x + ship.x, SHIP_HITBOX[ship.form].y + ship.y,SHIP_HITBOX[ship.form].rx ,  0, SHIP_HITBOX[ship.form].ry/SHIP_HITBOX[ship.form].rx, 1)
 			);
 
+	/*return (collide( SHIP_HITBOX[ship.form].x + ship.x, SHIP_HITBOX[ship.form].y + ship.y, SHIP_HITBOX[ship.form].rx ,SHIP_HITBOX[ship.form].ry,
+			ENEMY_HITBOX[enemy.id].x + enemy.x, ENEMY_HITBOX[enemy.id].y + enemy.y, ENEMY_HITBOX[enemy.id].rx, ENEMY_HITBOX[enemy.id].ry, SDL_FALSE)
+			||
+			collide( ENEMY_ADDITIONAL_HITBOX[enemy.id].x + enemy.x, ENEMY_ADDITIONAL_HITBOX[enemy.id].y + enemy.y,ENEMY_ADDITIONAL_HITBOX[enemy.id].rx, ENEMY_ADDITIONAL_HITBOX[enemy.id].ry,
+				SHIP_HITBOX[ship.form].x + ship.x, SHIP_HITBOX[ship.form].y + ship.y, SHIP_HITBOX[ship.form].rx ,SHIP_HITBOX[ship.form].ry, SDL_TRUE)
+			);*/
 }
 
 int missileHitEnemy(Missile missile, Enemy enemy){
+	//return(collideOblique())
+	printf("%d %d\n", enemy.id, missile.id);
+	printf("entered %f %f\n", ENEMY_HITBOX[enemy.id].rx,  MISSILE_HITBOX[missile.id].rx);
+
 	return (collideOblique(missile.x, missile.y, cos(missile.rota) * MISSILE_HITBOX[missile.id].rx , sin(missile.rota) * MISSILE_HITBOX[missile.id].rx,MISSILE_HITBOX[missile.id].ry/MISSILE_HITBOX[missile.id].rx,
-			ENEMY_HITBOX[enemy.id].x + enemy.x, ENEMY_HITBOX[enemy.id].y + enemy.y, cos(enemy.rota * PI / 180) * ENEMY_HITBOX[enemy.id].rx, sin(enemy.rota * PI / 180) * ENEMY_HITBOX[enemy.id].rx, ENEMY_HITBOX[enemy.id].ry/ENEMY_HITBOX[enemy.id].rx, 0)
+			ENEMY_HITBOX[enemy.id].x + enemy.x, ENEMY_HITBOX[enemy.id].y + enemy.y, cos(enemy.rota) * ENEMY_HITBOX[enemy.id].rx, sin(enemy.rota) * ENEMY_HITBOX[enemy.id].rx, ENEMY_HITBOX[enemy.id].ry/ENEMY_HITBOX[enemy.id].rx, 0)
 			||
 			collideOblique(ENEMY_ADDITIONAL_HITBOX[enemy.id].x + enemy.x, ENEMY_ADDITIONAL_HITBOX[enemy.id].y + enemy.y, cos(enemy.rota) * ENEMY_ADDITIONAL_HITBOX[enemy.id].rx, sin(enemy.rota) * ENEMY_ADDITIONAL_HITBOX[enemy.id].rx, ENEMY_ADDITIONAL_HITBOX[enemy.id].ry/ENEMY_ADDITIONAL_HITBOX[enemy.id].rx,
 			missile.x, missile.y, cos(missile.rota) * MISSILE_HITBOX[missile.id].rx , sin(missile.rota) * MISSILE_HITBOX[missile.id].rx, MISSILE_HITBOX[missile.id].ry/MISSILE_HITBOX[missile.id].rx, 1)
 			);
 
+	/*return (collide( missile.x, missile.y, MISSILE_HITBOX[missile.id].rx ,MISSILE_HITBOX[missile.id].ry,
+			ENEMY_HITBOX[enemy.id].x + enemy.x, ENEMY_HITBOX[enemy.id].y + enemy.y,ENEMY_HITBOX[enemy.id].rx, ENEMY_HITBOX[enemy.id].ry, SDL_FALSE)
+			||
+			collide(ENEMY_ADDITIONAL_HITBOX[enemy.id].x + enemy.x, ENEMY_ADDITIONAL_HITBOX[enemy.id].y + enemy.y,ENEMY_ADDITIONAL_HITBOX[enemy.id].rx, ENEMY_ADDITIONAL_HITBOX[enemy.id].ry,
+				 missile.x, missile.y, MISSILE_HITBOX[missile.id].rx ,MISSILE_HITBOX[missile.id].ry, SDL_TRUE)
+			);*/
 }
 
 int missileHitShip(Missile missile, Ship ship){
@@ -318,7 +329,8 @@ void drawMissile(SDL_Renderer *renderer, Missile missile, SDL_Texture *textureMi
 	dest.h *= RATIO_SIZE_MISSILE[missile.id];
 	dest.x = missile.x - MISSILE_CENTER[missile.id].x ;
 	dest.y = missile.y - MISSILE_CENTER[missile.id].y ;
-
+	//MISSILE_DEST_SHIFT[missile.id] * RATIO_SIZE_MISSILE[missile.id]
+//
 	SDL_RenderCopyEx(renderer, textureMissile, &MISSILE_SRC[missile.id], &dest, missile.rota * 180/PI, &MISSILE_CENTER[missile.id], SDL_FLIP_NONE);
 
 	SDL_SetRenderDrawColor(renderer, 0,255,0,255);
@@ -472,7 +484,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 			0, //dir
 			0, //form
 			0, //nbWeapon
-			{{W_BASE, 0},{W_BASE, 0},{W_BASE, 0},{W_BASE, 0},{W_BASE, 0}} //weapons
+			{{W_BASE, 0},{NO_WEAPON, 0},{NO_WEAPON, 0},{NO_WEAPON, 0},{NO_WEAPON, 0}} //weapons
 		};
 
 		int nbEnemy = 3;
@@ -639,11 +651,15 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 			//enemy-missiles
 			for(int i=0; i< nbAllyMissiles; i++){
 				for(int iEnemy = 0; iEnemy < nbEnemy; iEnemy++){
+					printf("\nboucle %d %d  \n", i, iEnemy);
+					printf("max %d %d  \n", nbAllyMissiles, nbEnemy);
+					printf("id%d \n\n", enemies[iEnemy].id);
 					//enemy hitted
 					if(missileHitEnemy(allyMissiles[i], enemies[iEnemy])){
+						printf("hit  \n");
 						enemies[iEnemy].hp -= allyMissiles[i].damage;
-						enemies[iEnemy].frameHit = FRAME_HIT_ANIM;
 						if(enemies[iEnemy].hp <= 0){
+							printf("exploding\n");
 							explosions = realloc(explosions, ++nbExplosions * sizeof(Explosion));
 							explosions[nbExplosions-1].id = EXPLO_SHIP;
 							explosions[nbExplosions-1].taille = 2 * ENEMY_HITBOX[enemies[iEnemy].id].rx * RATIO_SHIP_EXPLO_SIZE;
@@ -656,7 +672,11 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 							if(nbEnemy !=0)
 								enemies=realloc(enemies, sizeof(Enemy)* nbEnemy );
 
+							printf("exploded\n");
+
 						}
+
+						printf("mexploding\n");
 						explosions = realloc(explosions, ++nbExplosions * sizeof(Explosion));
 						explosions[nbExplosions-1].id = EXPLO_MISSILE;
 						explosions[nbExplosions-1].x = allyMissiles[i].x - TAILLE_EXPLOSIONS[allyMissiles[i].id]/2 - MISSILE_CENTER[allyMissiles[i].id].x;
@@ -668,11 +688,13 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 						nbAllyMissiles--;
 						if(nbAllyMissiles !=0)
 							allyMissiles=realloc(allyMissiles, sizeof(Missile)* nbAllyMissiles );
-						break;
+						printf("mexploded\n");
+
+						/* SOLUTION : break; */
 					}
 				}
 			}
-
+			printf("before drawn\n");
 		 // // //
 		// Draw //`
 		 // // //
@@ -692,6 +714,10 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 
 			for(int i=0; i<nbExplosions; i++)
 				drawExplosion(renderer, explosions[i], textures[SH_EXPLO_MISSILE+explosions[i].id]);
+			printf("drawn\n");
+
+			//ellipseColor (renderer, hitbox.x + hitbox.w/2, hitbox.y + hitbox.h/2, hitbox.w/2, hitbox.h/2, 0xFFFFFFFF);
+			//ellipseColor (renderer, circle.x + circle.w/2, circle.y + circle.h/2, circle.w/2, circle.h/2, 0xFFFFFFFF);
 
 			SDL_RenderPresent(renderer);
 
@@ -702,9 +728,6 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		 // // // // //
 			//rotate enemy base
 			for(int i=0; i<nbEnemy; i++){
-				if( enemies[i].frameHit )
-					enemies[i].frameHit--;
-
 				if(enemies[i].id == BASE_ENEMY)
 					enemies[i].rota += 6;
 			}
@@ -747,6 +770,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 					}
 				}
 			}
+			printf("updated\n");
 
 			//regulateFPS
 			currentTime = SDL_GetTicks();

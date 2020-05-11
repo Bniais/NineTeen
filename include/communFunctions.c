@@ -264,3 +264,7 @@ int lenNum(int n)
 
 	return count;
 }
+
+int randSign(){
+	return (rand()%2 ? 1 : -1);
+}
