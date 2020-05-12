@@ -1011,8 +1011,8 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 
 		(*asteroides)[*nb_asteroid-1].vitesse*=difficulte/ratio_pv;
 		(*asteroides)[*nb_asteroid-1].vitesse*=SPEED_HARDCORE;
-		if((*asteroides)[*nb_asteroid-1].vitesse > VITESSE_MAX_ASTEROID){
-			(*asteroides)[*nb_asteroid-1].vitesse= VITESSE_MAX_ASTEROID;
+		if((*asteroides)[*nb_asteroid-1].vitesse > VITESSE_MAX_ASTEROID_HARDCORE){
+			(*asteroides)[*nb_asteroid-1].vitesse= VITESSE_MAX_ASTEROID_HARDCORE;
 		}
 		else if((*asteroides)[*nb_asteroid-1].vitesse < VITESSE_MIN_ASTEROID){
 			(*asteroides)[*nb_asteroid-1].vitesse= VITESSE_MIN_ASTEROID;
