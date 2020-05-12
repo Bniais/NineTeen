@@ -16,6 +16,34 @@
 #include <string.h>
 #include <math.h>
 
+
+/*http://ressources.polytech-lille.fr/cours-algos-calcul-scientifique/progrcit.html*/
+void it_coef_lagrange(int n,double x[NMAX],double f[NMAX],double d[NMAX])
+{
+ int i,j;
+ for(i=0;i<=n;i++)
+ {
+  d[i]=f[i];
+  for(j=0;j<=n;j++)
+  if(j!=i) d[i]/=x[i]-x[j];
+ }
+}
+
+double it_pol_lagrange(int n,double d[NMAX],double x[NMAX],double alpha)
+{
+ int i,j;
+ double l,p;
+ p=0;
+ for(i=0;i<=n;i++)
+ {
+  l=d[i];
+  for(j=0;j<=n;j++)
+  if(j!=i) l*=alpha-x[j];
+  p+=l;
+ }
+ return(p);
+}
+
 /* Ellipse-circle collision detection
  * http://yehar.com/blog/?p=2926
  * by Olli Niemitalo in 2012-08-06.
@@ -285,6 +313,7 @@ void fire(Ship *ship, Missile **allyMissiles, int *nbAllyMissiles){
 			(*allyMissiles)[*nbAllyMissiles - 1].y = ship->y + (WEAPON_DEST[WEAPON_DISPOSITION[ship->nbWeapon][i]-1].y)/RATIO_SIZE_SHIP;
 			(*allyMissiles)[*nbAllyMissiles - 1].id = ship->weapons[i].id;
 			(*allyMissiles)[*nbAllyMissiles - 1].rota = 0;
+			(*allyMissiles)[*nbAllyMissiles - 1].frame = 0;
 			(*allyMissiles)[*nbAllyMissiles - 1].damage = 1;
 			(*allyMissiles)[*nbAllyMissiles - 1].speed = MISSILE_SPEED[ship->weapons[i].id];
 
@@ -305,6 +334,7 @@ void enemyFire(Enemy *enemy, Missile **enemyMissiles, int *nbEnemyMissiles){
 				(*enemyMissiles)[*nbEnemyMissiles - 1].rota += ANGLE_ENEMY_FIRE[enemy->id][i] ? (randSign() * ((rand()%(int)(PRECISION_RAND_FLOAT*ANGLE_ENEMY_FIRE[enemy->id][i])) / PRECISION_RAND_FLOAT)) : 0;
 
 			(*enemyMissiles)[*nbEnemyMissiles - 1].damage = 1;
+			(*enemyMissiles)[*nbEnemyMissiles - 1].frame = 0;
 			(*enemyMissiles)[*nbEnemyMissiles - 1].speed = MISSILE_SPEED_ENEMY[enemy->id][i];
 
 			enemy->weapons[i].frame_reload = RELOAD_FRAME_ENEMY[enemy->id][i];
@@ -319,14 +349,20 @@ void drawMissile(SDL_Renderer *renderer, Missile missile, SDL_Texture *textureMi
 	dest.x = missile.x - MISSILE_CENTER[missile.id].x ;
 	dest.y = missile.y - MISSILE_CENTER[missile.id].y ;
 
-	SDL_RenderCopyEx(renderer, textureMissile, &MISSILE_SRC[missile.id], &dest, missile.rota * 180/PI, &MISSILE_CENTER[missile.id], SDL_FLIP_NONE);
+	SDL_Rect src = MISSILE_SRC[missile.id];
+	if(missile.id == W_BASE_ENEMY && missile.frame%4 < 2){
+		src.y += src.w;
+	}
+
+
+	SDL_RenderCopyEx(renderer, textureMissile, &src, &dest, missile.rota * 180/PI, &MISSILE_CENTER[missile.id], SDL_FLIP_NONE);
 
 	SDL_SetRenderDrawColor(renderer, 0,255,0,255);
 	SDL_RenderDrawPoint(renderer, missile.x, missile.y);
 }
 
 void drawBackground(SDL_Renderer *renderer, SDL_Texture *textureBackground, SDL_Rect *backgroundSrc, SDL_Rect *backgroundDest){
-	for(int layer=0; layer<3; layer++){
+	for(int layer=0; layer<NB_BACKGROUND_LAYER; layer++){
 		if(backgroundSrc[layer].y<0){
 			int tmp = backgroundSrc[layer].y;
 			backgroundSrc[layer].y = 0;
@@ -343,13 +379,13 @@ void drawBackground(SDL_Renderer *renderer, SDL_Texture *textureBackground, SDL_
 			backgroundSrc[layer].y = BACKGROUND_GLOBAL_SRC.h - backgroundSrc[layer].h;
 
 			backgroundSrc[layer].x += backgroundSrc[layer].w;
-			if(backgroundSrc[layer].x == (3 * (layer+1) )*backgroundSrc[layer].w)
-				backgroundSrc[layer].x =  (3 * layer ) *backgroundSrc[layer].w;
+			if(backgroundSrc[layer].x == (NB_BACKGROUND_LAYER * (layer+1) )*backgroundSrc[layer].w)
+				backgroundSrc[layer].x =  (NB_BACKGROUND_LAYER * layer ) *backgroundSrc[layer].w;
 			SDL_RenderCopy(renderer, textureBackground, &backgroundSrc[layer], &backgroundDest[layer]);
 
 			backgroundSrc[layer].x -= backgroundSrc[layer].w;
-			if(backgroundSrc[layer].x == (3*layer-1) * backgroundSrc[layer].w)
-				backgroundSrc[layer].x = (3*(layer+1) -1) * backgroundSrc[layer].w;
+			if(backgroundSrc[layer].x == (NB_BACKGROUND_LAYER*layer-1) * backgroundSrc[layer].w)
+				backgroundSrc[layer].x = (NB_BACKGROUND_LAYER*(layer+1) -1) * backgroundSrc[layer].w;
 
 			backgroundSrc[layer].y = tmp;
 			backgroundDest[layer].h = BACKGROUND_DEST.h;
@@ -393,6 +429,80 @@ void drawExplosion(SDL_Renderer * renderer,Explosion explosion, SDL_Texture * ex
 void moveMissile(Missile *missile){
 	missile->x += missile->speed * cos(missile->rota - PI/2);
 	missile->y += missile->speed * sin(missile->rota - PI/2);
+	(missile->frame)++;
+}
+
+void moveEnemy(Enemy *enemy){
+	printf("fw : %d\n", enemy->frameWait);
+	if(enemy->id == BASE_ENEMY && enemy->frameWait == 0){
+		float tmpX, tmpY, tmpD;
+		while(enemy->dist < SPEED_ENEMY[enemy->id]){
+			tmpX = enemy->x;
+			tmpY = enemy->y;
+			enemy->x +=50 ;
+			enemy->y = it_pol_lagrange(3,enemy->coefs,enemy->abscisses,enemy->x);
+
+			tmpD =  sqrt(pow(tmpX - enemy->x, 2) + pow(tmpY - enemy->y, 2));
+			enemy->dist += tmpD;
+		}
+		enemy->x -= (50 * (enemy->dist - SPEED_ENEMY[enemy->id])) / tmpD;
+		enemy->y = it_pol_lagrange(3,enemy->coefs,enemy->abscisses,enemy->x);
+		enemy->dist = 0 ;
+
+	}
+	else if(enemy->frameWait == 0){
+		enemy->x += SPEED_ENEMY[enemy->id];
+	}
+}
+
+void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
+	*nbEnemy += nbSpawn;
+	*enemies = realloc( *enemies, *nbEnemy * sizeof(Enemy));
+
+	//Polynomial interpolation
+	double x[NMAX];
+	double f[NMAX];
+	double d[NMAX];
+	if(id == BASE_ENEMY){
+		x[0] = BACKGROUND_DEST.x - ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY];
+		f[0] = rand()%300+100;
+		for(int i=1; i<NMAX; i++){
+			x[i] = x[i-1] + 248+1/3.;
+			f[i] = rand()%250+100;
+		}
+		//x[NMAX-1] = BACKGROUND_DEST.x + BACKGROUND_DEST.w + ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY];
+
+		it_coef_lagrange(3,x,f,d);
+	}
+	for(int i=0; i<NMAX; i++){
+		printf("%f %f\n", x[i], f[i]);
+	}
+	printf(" \n");
+
+	for(int i = *nbEnemy-1; i> *nbEnemy - 1 - nbSpawn; i--){
+		(*enemies)[i] = (Enemy){
+			id, //id
+			0, //x
+			200, //y
+			0, //rota
+			ENEMY_HP[id], //hp
+			0, // framehit
+			0, //dist
+			FRAME_MULTI_SPAWN[id] * (*nbEnemy-1 -i), //frameWait
+			NB_WEAPON_ENEMY[id] //nbWeapon
+		};
+		for(int j=0; j<= (*enemies)[i].nbWeapon; j++)
+            (*enemies)[i].weapons[j] = WEAPONS_ENEMY[id][j];
+
+		if(id == BASE_ENEMY){
+			for(int j=0; j<NMAX; j++){
+				(*enemies)[i].abscisses[j] = x[j];
+				(*enemies)[i].coefs[j] = d[j];
+			}
+			(*enemies)[i].x = x[0];
+			(*enemies)[i].y = f[0];
+		}
+	}
 }
 
 extern int updateEnded;
@@ -437,6 +547,10 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 
 	//audio
 
+
+
+	SDL_SetRenderDrawColor(renderer, 0,0,255,255);
+
 	int quit = SDL_FALSE;
 	while(!quit){
 
@@ -475,41 +589,52 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 			{{W_BASE, 0},{W_BASE, 0},{W_BASE, 0},{W_BASE, 0},{W_BASE, 0}} //weapons
 		};
 
-		int nbEnemy = 3;
-		enemies = realloc(enemies, nbEnemy * sizeof(Enemy));
+		int nbEnemy = 0;
+		spawnEnemy(&enemies, &nbEnemy, 1, 1);
+	    spawnEnemy(&enemies, &nbEnemy, 0, 5);
+		spawnEnemy(&enemies, &nbEnemy, 2, 1);
 
-		enemies[0] = (Enemy){
+		/*enemies[0] = (Enemy){
 			BASE_ENEMY, //id
-			BASE_WINDOW_W/2, //x
+			BACKGROUND_DEST.x, //abcise
+			x[0], //x
 			200, //y
-			0, //r
 			0, //rota
 			10, //hp
 			0, //nbWeapon
-			{{W_BASE_ENEMY, 0},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1}}
-		};
+			{{W_BASE_ENEMY, 0},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1}},
+			0, // framehit
+			//abcises
+            //coefs
+		};*/
 
-		enemies[1] = (Enemy){
+		/*enemies[1] = (Enemy){
 			LASER_ENEMY, //id
+			BACKGROUND_DEST.x, //abcise
 			BASE_WINDOW_W/2, //x
 			400, //y
-			0, //r
 			0, //rota
 			3, //hp
 			3, //nbWeapon
-			{{W_BASE_ENEMY, 0},{W_LASER_ENEMY, 0},{W_LASER_ENEMY, 0},{W_BASE_ENEMY, 0},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1}}
-		};
+			{{W_BASE_ENEMY, 0},{W_LASER_ENEMY, 0},{W_LASER_ENEMY, 0},{W_BASE_ENEMY, 0},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1}},
+			0, // framehit
+			//abcises
+			//coefs
+		};*/
 
-		enemies[2] = (Enemy){
+		/*enemies[2] = (Enemy){
 			BOSS_ENEMY, //id
+			BACKGROUND_DEST.x, //abcise
 			BASE_WINDOW_W/2, //x
 			700, //y
-			0, //r
 			0, //rota
 			5, //hp
 			6, //nbWeapon
-			{{W_BASE_ENEMY, 0},{W_BASE_ENEMY, 0},{W_BASE_ENEMY, 0},{W_LASER_ENEMY, 0},{W_BASE_ENEMY, 0},{W_BASE_ENEMY, 0},{W_BASE_ENEMY, 0}}
-		};
+			{{W_BASE_ENEMY, 0},{W_BASE_ENEMY, 0},{W_BASE_ENEMY, 0},{W_LASER_ENEMY, 0},{W_BASE_ENEMY, 0},{W_BASE_ENEMY, 0},{W_BASE_ENEMY, 0}},
+			0, // framehit
+			//abcises
+			//coefs
+		};*/
 
 		int nbAllyMissiles = 0;
 		int nbEnemyMissiles = 0;
@@ -606,6 +731,9 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		// // // // //
 		// Gameplay //`
 		// // // // //
+		if(nbEnemy == 0)
+			spawnEnemy(&enemies, &nbEnemy, 0, 1);//4 + rand()%3
+
 		for(int i=0; i<nbEnemy; i++)
 			enemyFire(&(enemies[i]), &enemyMissiles, &nbEnemyMissiles);
 
@@ -616,7 +744,8 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		for(int i=0; i<nbEnemyMissiles; i++)
 			moveMissile(&(enemyMissiles[i]));
 
-
+		for(int i=0; i<nbEnemy; i++)
+			moveEnemy(&(enemies[i]));
 
 
 		// // // // //
@@ -678,6 +807,20 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		 // // //
 			drawBackground(renderer, textures[SH_BACKGROUND], backgroundSrc, backgroundDest);
 
+			if(nbEnemy){
+				for(int i=enemies[0].abscisses[0]; i<BACKGROUND_DEST.x + BACKGROUND_DEST.w + ENEMY_SRC[0].w / RATIO_SIZE_ENEMY[0]; i++){
+					SDL_SetRenderDrawColor(renderer, 0,255,0,255);
+					if(i == roundf(enemies[0].abscisses[0]) || i == roundf(enemies[0].abscisses[1]) || i == roundf(enemies[0].abscisses[2]) || i == roundf(enemies[0].abscisses[3]))
+						SDL_SetRenderDrawColor(renderer, 255,0,0,255);
+					SDL_RenderDrawPoint(renderer, i, it_pol_lagrange(3,enemies[0].coefs,enemies[0].abscisses,i));
+				}
+
+				/*SDL_SetRenderDrawColor(renderer, 255,255,255,255);
+				for(int i=0; i<NMAX; i++)
+					SDL_RenderDrawPoint(renderer, x[i], f[i]);*/
+			}
+
+
 			for(int i=0; i<nbAllyMissiles; i++)
 				drawMissile(renderer, allyMissiles[i], textures[SH_MISSILE]);
 
@@ -705,6 +848,9 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 				if( enemies[i].frameHit )
 					enemies[i].frameHit--;
 
+				if( enemies[i].frameWait )
+					enemies[i].frameWait--;
+
 				if(enemies[i].id == BASE_ENEMY)
 					enemies[i].rota += 6;
 			}
@@ -728,8 +874,8 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 				if(backgroundSrc[layer].y < -backgroundSrc[layer].h){
 					backgroundSrc[layer].y = BACKGROUND_GLOBAL_SRC.h - BACKGROUND_SRC.h - (-backgroundSrc[layer].h -backgroundSrc[layer].y);
 					backgroundSrc[layer].x += backgroundSrc[layer].w;
-					if(backgroundSrc[layer].x == 3*(layer+1)*backgroundSrc[layer].w)
-						backgroundSrc[layer].x = 3*layer*backgroundSrc[layer].w;
+					if(backgroundSrc[layer].x == NB_BACKGROUND_LAYER*(layer+1)*backgroundSrc[layer].w)
+						backgroundSrc[layer].x = NB_BACKGROUND_LAYER*layer*backgroundSrc[layer].w;
 				}
 			}
 
