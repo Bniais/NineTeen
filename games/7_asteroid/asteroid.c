@@ -1,3 +1,11 @@
+/**
+*\file asteroid.c
+*\brief Jeu asteroid avec bonus
+*\author Rayyan LAJNEF
+*\version 1.0
+*\date 12/05/2020
+*/
+
 
 #include "config.h"
 #include <time.h>
@@ -14,6 +22,11 @@
 
 #include <math.h>
 
+
+/**
+*\fn void asteroidInit()
+*\brief Initialise l'environement SDL, TTF et rand
+*/
 void asteroidInit(){
 
 	// SDL Init
@@ -40,6 +53,20 @@ void asteroidInit(){
 
 //BONUS
 
+/**
+*\fn int useNuclear()
+*\brief Utilisation de la bombe nucléaire
+*\param asteroides la liste des asteroides
+*\param nb_asteroid le nombre d'asteroide
+*\param  explosions les explosions
+*\param  nb_explosions le nombre d'explosion
+*\param  score Le score total
+*\param keys Les clés de hashage
+*\param score_hash Le score hashé
+*\param done indique si le jeu est fini
+*\param exploSound Son d'explosion
+*\return 0 si pas de problème sinon return HACKED
+*/
 int useNuclear( Asteroid ** asteroides, int * nb_asteroid, Explosion ** explosions, int * nb_explosions, ScoreTotal * score, long keys[4], long long * score_hash, int done, Mix_Chunk * exploSound){
 
 	int skinAste;
@@ -85,7 +112,19 @@ int useNuclear( Asteroid ** asteroides, int * nb_asteroid, Explosion ** explosio
 
 
 
-
+/**
+*\fn int recoit_bonus()
+*\brief Applique les changements en fonction des bonus
+*\param id_bonus id du bonus
+*\param vaisseau Le vaisseau
+*\param  nbBombeNucleaire Nombre de bombe nucléaire en notre possession
+*\param  score Le score total
+*\param munitions[NB_MISSILES] munitions des missiles
+*\param keys Les clés de hashage
+*\param score_hash Le score hashé
+*\param bonusSound Son des bonus
+*\return 0 si pas de problème sinon return HACKED
+*/
 
 int recoit_bonus(int id_bonus, Vaiss * vaisseau, int *nbBombeNucleaire, ScoreTotal *score, float munitions[NB_MISSILES], long keys[4], long long * score_hash, Mix_Chunk * bonusSound){
 	Mix_PlayChannel(6, bonusSound, 0);
@@ -151,7 +190,16 @@ int recoit_bonus(int id_bonus, Vaiss * vaisseau, int *nbBombeNucleaire, ScoreTot
 
 
 // Collision Mur
-
+/**
+*\fn void collision_mur()
+*\brief collision avec les côtés de l'écran
+*\param xToMove coord en x
+*\param yToMove coord en y
+*\param x coord en x
+*\param y coord en y
+*\param rayon
+*\param hardcore mode hardcore activé
+*/
 void collision_mur(float * xToMove, float * yToMove, float x, float y, float rayon, int hardcore){
 
 
@@ -176,11 +224,30 @@ void collision_mur(float * xToMove, float * yToMove, float x, float y, float ray
     }
 
 }
-
+/**
+*\fn float dist_2f()
+*\brief calcul la distance entre deux points
+*\param x1 coord en x
+*\param y1 coord en y
+*\param x2 coord en x
+*\param y2 coord en y
+*\return la distance entre deux points
+*/
 float dist_2f(float x1, float y1, float x2, float y2){
 	return sqrt(pow(x2-x1,2)+pow(y2-y1,2));
 }
 
+/**
+*\fn int trop_pres()
+*\brief vaisseau trop_pres ou non
+*\param x1 coord en x
+*\param y1 coord en y
+*\param x2 coord en x
+*\param y2 coord en y
+*\param dist distance
+*\param cote_spawn côté de spawn des asteroides
+*\return si oui ou non les deux points sont trop près
+*/
 int trop_pres(float x1, float y1, float x2, float y2, float dist, int cote_spawn){
     if(x2-x1 > PLAYGROUND_SIZE_W/2 && cote_spawn != 2)
         x2-= PLAYGROUND_SIZE_W;
@@ -195,7 +262,14 @@ int trop_pres(float x1, float y1, float x2, float y2, float dist, int cote_spawn
     return (dist_2f(x1,y1,x2,y2)<=dist) ;
 
 }
-
+/**
+*\fn int sur_asteroid()
+*\brief test si un asteroide est sur un autre asteroide
+*\param asteroides liste des asteroides
+*\param nb_asteroid nombre d'asteroide
+*\param i_asteroid indice de l'asteroide
+*\return return VRAI si problème sinon FAUX
+*/
 int sur_asteroid(Asteroid * asteroides, int nb_asteroid, int i_asteroid){
 	for(int i=0; i<nb_asteroid; i++){
 		if(i!=i_asteroid && trop_pres(asteroides[i].x,asteroides[i].y,asteroides[i_asteroid].x,asteroides[i_asteroid].y,DIST_SPAWN_2ASTEROID,asteroides[i_asteroid].cote_spawn)){
@@ -205,6 +279,14 @@ int sur_asteroid(Asteroid * asteroides, int nb_asteroid, int i_asteroid){
 	return SDL_FALSE;
 }
 
+/**
+*\fn int vaisseau_touche()
+*\brief test si le vaisseau a touché un asteroid
+*\param vaisseau structure du vaisseau
+*\param asteroides liste des asteroides
+*\param nb_asteroid nombre d'asteroides
+*\return return l'indice de l'asteroide sinon return -1
+*/
 int vaisseau_touche(Vaiss vaisseau, Asteroid * asteroides, int nb_asteroid){
 	for(int i=0;i<nb_asteroid;i++){
 		if(trop_pres(vaisseau.x,vaisseau.y,asteroides[i].x,asteroides[i].y,asteroides[i].taille+RAYON_VAISS,asteroides[i].cote_spawn)){
@@ -214,6 +296,14 @@ int vaisseau_touche(Vaiss vaisseau, Asteroid * asteroides, int nb_asteroid){
 	return -1;
 }
 
+/**
+*\fn int asteroid_touche()
+*\brief test si un asteroide est sur un autre asteroide
+*\param asteroid un asteroide
+*\param missiles liste des missiles
+*\param nb_missiles nombre de missile
+*\return return l'indice de l'asteroide sinon return -1
+*/
 int asteroid_touche(Asteroid asteroid, Missile * missiles, int nb_missiles ){
 
 	for(int i=0;i<nb_missiles;i++){
