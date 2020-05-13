@@ -40,7 +40,7 @@ int MACOS_VER;
 
 // LOCAL LIBRARY
 #include "import.h" // YOU NEED ASSIMP LIB FOR import.h (README.dm)
-static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0;
+static GLuint * _textures =  NULL, *_counts = NULL;
 
 
 
@@ -153,14 +153,31 @@ char adresseFontImg[16][64]={"../room/textures/flappy_hard_font.jpg","../room/te
   #define DIR_TOKEN_FILE "/tmp/.Nineteen"
 #endif
 
-
-
 int FIRST_FRAME = 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #include "dir.h"
 SDL_Texture * textures[NB_MAX_TEXTURES];
-typedef struct loadGame_s{int id_jeu; SDL_Renderer *pRenderer;}loadGame;
+typedef struct loadGame_s{
+	int id_jeu;
+	SDL_Renderer *pRenderer;
+}loadGame;
+
+
 int loadGameTexture(loadGame * load){
 		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 	    //asteroid
@@ -606,7 +623,7 @@ int updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 
 
 
-void detruireTexture()
+void detruireTexture(GLuint nbTextures)
 {
 
   if(_counts) {
@@ -614,7 +631,7 @@ void detruireTexture()
     _counts = NULL;
   }
   if(_textures) {
-    glDeleteTextures(_nbTextures, _textures);
+    glDeleteTextures(nbTextures, _textures);
     free(_textures);
     _textures = NULL;
   }
@@ -969,7 +986,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////
 	// ALLOCATION TEXTURE
-	_malloc((void**)&_textures,sizeof(*_textures),(_nbTextures = scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
+	_malloc((void**)&_textures,sizeof(*_textures),(scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
 	//////////////////////////////////////////////////////////
 	// CHARGER LES TEXTURES
 	chargerTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
@@ -1101,7 +1118,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	SDL_FreeSurface(bgClassement);
 	//////////////////////////////////////////////////////////
 	// DESTRUCTION DES EMPLACEMENTS TEXTURES
-	detruireTexture();
+	detruireTexture(scene->mNumMaterials);
 	fprintf(EXT_FILE, "room.c : room() : memoire liberer\n" );
 	//////////////////////////////////////////////////////////
 	// LIBERATION DU CONTEXT
@@ -2166,7 +2183,7 @@ int detecterRadio(float x,float y,float angle)
 
 int detecterPorte(float x,float y,float angle)
 {
-	printf("%f %f \n",x, y );
+
 	///////////////////////////////////////////////////
 	// DETECTER D'UN ANGLE FACE A LA RADIO
 	if( ( angle > ( 2*M_PI - (ANGLE_DETECTION_MACHINE) ) && angle <= 2*M_PI  ) ||    (    angle >= 0 && angle < 0 + (ANGLE_DETECTION_MACHINE)   )   )
@@ -2724,8 +2741,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
 							while(SDL_PollEvent(&Event));
-							detruireTexture();
-							_malloc((void**)&_textures,sizeof(*_textures),(_nbTextures = scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
+							detruireTexture(scene->mNumMaterials);
+							_malloc((void**)&_textures,sizeof(*_textures),(scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
 							chargerTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
 
 							// REMISE A ZERO DE LA SCENE

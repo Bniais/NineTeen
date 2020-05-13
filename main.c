@@ -1,5 +1,5 @@
-#define VERSION_LOGICIEL "version=1.0.1"
-#define VERSION "1.0.1"
+#define VERSION_LOGICIEL "version=1.0.2-dev"
+#define VERSION "1.0.2-dev"
 
 #ifdef _WIN32
 #define WESNOTH_EXPORT __declspec(dllexport)
@@ -103,7 +103,14 @@ const int RATIO_CLICK[FRAME_ANIM_MAX] = {-5, -20, -50, -55, -30};
 //Le thread qui sera utiliser
 SDL_Thread *thread = NULL;
 
-
+/////////////////////////////////////////////////////
+/// \fn int checkVersion(char version[])
+/// \brief permet de verifier la version du VERSION_LOGICIEL
+///
+/// \param char version[]
+///
+/// \return EXIT_SUCCESS / EXIT_FAILURE
+/////////////////////////////////////////////////////
 int checkVersion(char version[])
 {
   if( checkVersionOnline(version) )
@@ -111,45 +118,23 @@ int checkVersion(char version[])
     afficherMessageSysteme("Une nouvelle version est disponible. Version actuel : " VERSION);
     return EXIT_FAILURE;
   }
+
   return EXIT_SUCCESS;
 }
 
-void chargementConfig(int *delai, int *tentative)
-{
-	char *response;;
-	envoyez_requet(&response, URL_CONFIG_FILE, "");
-	sscanf(response, "%d %d", delai ,tentative);
-	free(response);
-}
 
-int apply_renderer_texture(SDL_Renderer* renderer , SDL_Texture * texture){
-
-		if(SDL_RenderCopy(renderer, texture, NULL, NULL))
-		{
-			printf("Error () : SDL_RenderCopy failed %s\n", IMG_GetError());
-			return FALSE;
-		} else {
-			SDL_RenderPresent(renderer);
-			return TRUE;
-		}
-}
-
-SDL_Texture *load_texture_png(SDL_Renderer* renderer, char directory[]){
-
-	SDL_Texture * texture = IMG_LoadTexture(renderer, directory);
-	if(!texture)
-	{
-		printf("texture load failed: %s\n", IMG_GetError());
-		return NULL;
-	} else {
-
-		apply_renderer_texture(renderer, texture);
-		return texture;
-	}
-}
-
+/////////////////////////////////////////////////////
+/// \fn int dejaConneceter(char *token)
+/// \brief verifie si l utilisateur est deja connecter
+///
+/// \param char *token
+///
+/// \return EXIT_SUCCESS / EXIT_FAILURE
+/////////////////////////////////////////////////////
 int dejaConneceter(char *token)
 {
+  // FONCTION FACILEMENT COMPRENSIBLE AVEC LES PRINTF
+
 	FILE * fp;
     fp = fopen (DIR_TOKEN_FILE, "r");
 	if (!fp)
@@ -175,8 +160,18 @@ int dejaConneceter(char *token)
 	return EXIT_FAILURE;
 }
 
+/////////////////////////////////////////////////////
+/// \fn int sauvegarderToken(char *token)
+/// \brief permet de sauvegarder le token dans un fichier
+///
+/// \param char *token
+///
+/// \return EXIT_SUCCESS / EXIT_FAILURE
+/////////////////////////////////////////////////////
 int sauvegarderToken(char *token)
 {
+  // FONCTION FACILEMENT COMPRENSIBLE AVEC LES PRINTF
+
 	FILE *fp;
 	fp = fopen(DIR_TOKEN_FILE,"w");
 	if (!fp)
@@ -193,78 +188,58 @@ int sauvegarderToken(char *token)
 
 }
 
-void affichageForMac()
-{
-    int attendre = 5;
-    do
-    {
-        SDL_Event ev;
-        while ( SDL_PollEvent(&ev) )
-        {
-            attendre--;
 
-        }
-    } while (attendre);
-}
-
-void attendreEvenementAppuyer(int event)
-{
-    int attendre = 1;
-    do
-    {
-        SDL_Event ev;
-        while ( SDL_PollEvent(&ev) )
-        {
-            if (ev.type == SDL_KEYDOWN){
-
-                if(ev.key.keysym.sym == event)
-                {
-                    attendre = 0;
-                }
-
-            }
-
-        }
-    } while (attendre);
-}
-
+/////////////////////////////////////////////////////
+/// \fn void printAll(SDL_Renderer *renderer, SDL_Texture* background,SDL_Texture* loading, TTF_Font *police,SDL_Rect targetId, SDL_Rect targetPwd, SDL_Rect targetConnect, SDL_Rect targetInscription, int frame_anims[NB_ANIM],int valeurRetour )
+/// \brief cette fonction permet d'afficher tous les elements present dans le launcher.
+///
+/// \param
+///
+/// \return void
+/////////////////////////////////////////////////////
 void printAll(SDL_Renderer *renderer, SDL_Texture* background,SDL_Texture* loading, TTF_Font *police,SDL_Rect targetId, SDL_Rect targetPwd, SDL_Rect targetConnect, SDL_Rect targetInscription, int frame_anims[NB_ANIM],int valeurRetour )
 {
-
+  // RECT LABEL IDENTIFIANT
 	SDL_Rect targetIdLabel = { LARGUEUR/6.5 , HAUTEUR/4 , LARGUEUR/1.7 , HAUTEUR/14};
 
-
+  // RECT LABEL MDP
 	SDL_Rect targetPwdLabel = { LARGUEUR/6.3 , HAUTEUR/2.3 , LARGUEUR/1.7 , HAUTEUR/14 };
 
-
+  // RECT FOND DE LA VUE DE CONNEXION
 	SDL_Rect targetUIView = {LARGUEUR/6.5,HAUTEUR/4.8, HAUTEUR,HAUTEUR/2};
 
+  // RECT EMPLACEMENT MESSAGE ALERTE ERREUR CONNEXION
   SDL_Rect targetMessage = { LARGUEUR*0.19 , HAUTEUR*0.61, LARGUEUR*0.05 , HAUTEUR*0.05};
 
-
+  // AFFICHER IMG BACKGROUND
 	SDL_RenderCopy(renderer, background, NULL, NULL);
 
+  // AFFICHER CHARGEMENT REQUETE
 	afficherLoading(renderer, loading, cyan, 0, 0 ,frame_anims[ANIM_LOADING], LARGUEUR, HAUTEUR, 2*LARGUEUR);
 
+  // DESSINER LE FOND DE LA VUE DE CONNEXION
 	SDL_SetRenderDrawColor(renderer, noir.r , noir.g, noir.b,200);
 	SDL_RenderFillRect(renderer,&targetUIView);
 
-
+  // DESSINER RECTANGLE IDENTIFIANT
 	SDL_SetRenderDrawColor(renderer, blanc_foncer.r , blanc_foncer.g, blanc_foncer.b,255);
 	SDL_RenderFillRect(renderer,&targetId);
 
+  // DESSINER RECTANGLE MDP
 	SDL_RenderFillRect(renderer,&targetPwd);
 
+  // ECRIRE LES LABEL AU EMPLACEMENT EN DERNIER PARAMETRE
 	renduTextField(renderer,"Identifiant",police,blanc_foncer,targetIdLabel);
 	renduTextField(renderer,"Mot de passe",police,blanc_foncer,targetPwdLabel);
 
-
+  // ECRIRE LES MESSAGES D ERREUR DE CONNEXION
   if(valeurRetour == -3 )
     renduTextField(renderer,"Identifant/Mot de passe incorrect",police,rougeFoncer,targetMessage);
   else if(valeurRetour == -5)
     renduTextField(renderer,"Echec de synchronisation, try later",police,rougeFoncer,targetMessage);
 
-	//Change couleur boutons selon animation
+
+	//CHANGER COULEUR BOUTON SELON ANIMATION
 	SDL_Color vertDraw = vert;
 	vertDraw.r += RATIO_ANIM * frame_anims[ANIM_HOVER_CONNECTION];
 	vertDraw.b += RATIO_ANIM * frame_anims[ANIM_HOVER_CONNECTION];
@@ -288,21 +263,26 @@ void printAll(SDL_Renderer *renderer, SDL_Texture* background,SDL_Texture* loadi
 	}
 
 
-
+  // DESSINER RECTANGLE BOUTON CONNEXION + TEXT
 	SDL_SetRenderDrawColor(renderer, vertDraw.r   , vertDraw.g , vertDraw.b ,255);
 	SDL_RenderFillRect(renderer,&targetConnect);
 	renduTextField(renderer,"Connexion",police,noir,targetConnect);
-
+  // DESSINER RECTANGLE BOUTON INSCRIPTION + TEXT
 	SDL_SetRenderDrawColor(renderer, bleu_foncerDraw.r, bleu_foncerDraw.g, bleu_foncer.b,255);
 	SDL_RenderFillRect(renderer,&targetInscription);
 	renduTextField(renderer,"Inscription",police,noir,targetInscription);
 
-
 }
 
+
+/////////////////////////////////////////////////////
+/// \fn void ouvrirUrlRegistration()
+/// \brief permet d'ouvrir une page web sur les 3 OS
+///
+/// \return void
+/////////////////////////////////////////////////////
 void ouvrirUrlRegistration()
 {
-
 	#ifdef _WIN64
 		system("start "URL_REGISTRATION);
 	#elif __APPLE__
@@ -310,9 +290,20 @@ void ouvrirUrlRegistration()
 	#elif __linux__
 		system("xdg-open "URL_REGISTRATION);
 	#endif
-
 }
 
+
+/////////////////////////////////////////////////////
+/// \fn int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
+/// \brief la fonction gere l'interaction globale de la vue, elle envoie les requetes de connexion et traite les retour
+///
+/// \param SDL_Renderer *renderer
+/// \param char *token
+/// \param char *tokenCpy
+/// \param char path[]
+///
+/// \return EXIT_FAILURE/EXIT_SUCCESS
+/////////////////////////////////////////////////////
 int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 {
 	//////////////////////////////////////////
@@ -767,7 +758,18 @@ int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 }
 
 
-
+/////////////////////////////////////////////////////
+/// \fn int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene, char *path )
+/// \brief verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores
+///
+/// \param SDL_Renderer *renderer
+/// \param struct MeilleureScore_s meilleureScore[]
+/// \param char *token
+/// \param const C_STRUCT aiScene** scene
+/// \param char *path
+///
+/// \return EXIT_FAILURE/EXIT_SUCCESS
+/////////////////////////////////////////////////////
 int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene, char *path )
 {
 
@@ -986,7 +988,19 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 
 
 
-
+/////////////////////////////////////////////////////
+/// \fn int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[])
+/// \brief regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargement fichier
+///
+/// \param SDL_Renderer *renderer
+/// \param char *token
+/// \param char *tokenCpy
+/// \param struct MeilleureScore_s meilleureScore[]
+/// \param const C_STRUCT aiScene** scene
+/// \param char *path
+///
+/// \return EXIT_FAILURE/EXIT_SUCCESS
+/////////////////////////////////////////////////////
 int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[])
 {
 	Mix_Music *musique = Mix_LoadMUS(DIR_MUSIC_FILE);
@@ -1248,37 +1262,6 @@ int main(int argc, char *argv[])
     /////////////////////////////////////////////////////////////////
     if( launcher(renderer,token,tokenCpy,meilleureScore,&scene,addPath) == EXIT_SUCCESS)
     {
-      /*
-      /////////////////////////////////////////////////////////////////
-      // CREATION D'UNE POP UP BOUTON
-      const SDL_MessageBoxButtonData buttons[] = {
-        { SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 0, "ACTIVER" },
-        {                                       0, 1, "DESACTIVER" }
-      };
-      /////////////////////////////////////////////////////////////////
-      // CREATION DES TEXT PRESENT DANS LA POP UP
-      const SDL_MessageBoxData messageboxdata = {
-        SDL_MESSAGEBOX_INFORMATION,
-        window,
-        "Plein ecran ?",
-        "Selectionner une option",
-        SDL_arraysize(buttons),
-        buttons,
-        NULL
-      };
-
-      /////////////////////////////////////////////////////////////////
-      // RECUPERATION DE LA DECISION
-      int buttonid;
-      if (SDL_ShowMessageBox(&messageboxdata, &buttonid) < 0) {
-        SDL_Log("error displaying message box");
-      }
-
-      /////////////////////////////////////////////////////////////////
-      // APPLIQUER LA SELECTION
-    */ int fullscreen = 0;
-    //  if(buttonid)
-    //    fullscreen = !fullscreen;
 
       /////////////////////////////////////////////////////////////////
       // RECUPERER LA TAILLE DE L'ECRAN
@@ -1291,6 +1274,7 @@ int main(int argc, char *argv[])
       SDL_DestroyWindow(window);
       /////////////////////////////////////////////////////////////////
       // APPEL DE LA ROOM
+      int fullscreen = 0;
       room(token,meilleureScore,window,scene, fullscreen, borderSize);
     }
 
