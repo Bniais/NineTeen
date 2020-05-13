@@ -39,51 +39,12 @@ function getClientIP(){
 		<h1>Téléchargement</h1>
 		<br><br>
 		<div class="container">
-			<div class= "jeu" style="margin-left: 2%; float:left; width:60vw;">
-				<h1>Feedback</h1>
-				<div class= "jeu" style="margin-left: 2%; float:left; width:30vw;">
-					<h2>Last feedback</h2>
 
-					<?php
-						$max = -1;
-						$resultat = $link->query("SELECT * FROM nineteen_tickets ORDER BY id DESC");
-						while ($row = $resultat->fetch_assoc() ) {
-
-							echo "<hr>";
-							echo "<br>";
-							echo "<a style=\"margin-left: -55%;\">#";
-							echo  $row["id"];
-
-							if( $row["statut"] == 1)
-								echo "<a> <a style=\"margin-left: 10%;\">DONE<a><br><br><a>";
-							else
-								echo "<a> <a style=\"margin-left: 10%;\">IN PROGRESS<a><br><br><a>";
-
-							echo  strip_tags( $row["message"] );
-							echo "</a><br><br>";
-							if($max == -1)
-								$max = $row["id"];
-						}
-
-						$max++;
-					?>
-
-				</div>
-				<div class= "jeu" style="margin-left: 2%; float:left; width:25vw;">
-					<h2>Créer un ticket</h2>
-					<form action="#" method="post">
-						<input class="ticket-num" type="text" placeholder="#<?php echo $max ?>" disabled="true">
-						<br>
-						<textarea class="ticket-message" name="message" rows=10 COLS=40 placeholder="Message"></textarea>
-						<br>
-
-						<input class="ticket-send" type="submit" value="Envoyer">
-					</form>
-					<br>
-				</div>
+			<div class="jeu" style="margin-left: 2%; float:left; width:60vw; height:33.75vw ">
+					<iframe style="margin-top: 0.5%; margin-bottom: 0.5%; -moz-border-radius: 10px; -moz-border-radius:5%; -webkit-border-radius: 2%; border-radius: 2%;" width="98%"  height="98%" src="https://www.youtube.com/embed/AtzQSTAA0Kw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="1"></iframe>
 			</div>
 
-			<div class= "jeu" style="margin-left: 2%; float:left; width:30vw;">
+			<div class= "jeu" style="margin-right: 2%; float:right; width:30vw;">
 				<h1>Liens de téléchargement</h1>
 				<a href="download/Nineteen_v1.0.1.zip"> <img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/MacOS_logo_%282017%29.svg/768px-MacOS_logo_%282017%29.svg.png" alt="logo apple"></a>
 				<a href="download/Nineteen_v1.0.1.exe"><img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Windows_logo_–_2012_%28dark_blue%29.svg/768px-Windows_logo_–_2012_%28dark_blue%29.svg.png" alt="logo apple"></a>
@@ -93,7 +54,7 @@ function getClientIP(){
 				<hr>
 				<h2>Version actuelle :  <?php include("checkVersion.php"); echo $versionActuel ?></h2>
 			</div>
-			<div class= "jeu" style="margin-left: 2%; float:left; width:30vw;">
+			<div class= "jeu" style="margin-right: 2%; float:right; width:30vw;">
 				<h1>Note de mise à jour</h1>
 				<br>
 
@@ -248,6 +209,50 @@ function getClientIP(){
 
 
 
+			</div>
+
+			<div class= "jeu" style="margin-left: 2%; float:left; width:60vw;">
+				<h1>Feedback</h1>
+				<div class= "jeu" style="margin-left: 2%; float:left; width:30vw;">
+					<h2>Last feedback</h2>
+
+					<?php
+						$max = -1;
+						$resultat = $link->query("SELECT * FROM nineteen_tickets ORDER BY id DESC");
+						while ($row = $resultat->fetch_assoc() ) {
+
+							echo "<hr>";
+							echo "<br>";
+							echo "<a style=\"margin-left: -55%;\">#";
+							echo  $row["id"];
+
+							if( $row["statut"] == 1)
+								echo "<a> <a style=\"margin-left: 10%;\">DONE<a><br><br><a>";
+							else
+								echo "<a> <a style=\"margin-left: 10%;\">IN PROGRESS<a><br><br><a>";
+
+							echo  strip_tags( $row["message"] );
+							echo "</a><br><br>";
+							if($max == -1)
+								$max = $row["id"];
+						}
+
+						$max++;
+					?>
+
+				</div>
+				<div class= "jeu" style="margin-left: 2%; float:left; width:25vw;">
+					<h2>Créer un ticket</h2>
+					<form action="#" method="post">
+						<input class="ticket-num" type="text" placeholder="#<?php echo $max ?>" disabled="true">
+						<br>
+						<textarea class="ticket-message" name="message" rows=10 COLS=40 placeholder="Message"></textarea>
+						<br>
+
+						<input class="ticket-send" type="submit" value="Envoyer">
+					</form>
+					<br>
+				</div>
 			</div>
 
 		</div>
