@@ -1,3 +1,11 @@
+/////////////////////////////////////////////////
+///	\file demineur.c
+///	\author David L.
+///	\version 1.0
+///	\date 31 janvier 2020
+///	\brief Programme permettant de jouer au demineur
+/////////////////////////////////////////////////
+
 #include "../../define/define.h"
 #include "config.h"
 #include <time.h>
