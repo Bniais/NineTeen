@@ -31,6 +31,25 @@ FILE *EXT_FILE;
 int aiImportModel (const char* path,const C_STRUCT aiScene **scene);
 
 /////////////////////////////////////////////////////
+/// \fn void afficherScene(const struct aiScene *scene, const struct aiNode* node, GLuint * ivao, GLuint textures[], GLuint counts[])
+/// \brief permet d'afficher la scene dans openGL
+///
+/// \param const struct aiScene *scene
+/// \param const struct aiNode* node\
+/// \param GLuint * ivao
+/// \param GLuint textures[]
+/// \param GLuint counts[]
+///
+/// \return void
+/////////////////////////////////////////////////////
+void afficherScene(const struct aiScene *sc, const struct aiNode* nd, GLuint * ivao, GLuint textures[], GLuint counts[]);
+
+
+////////////////////////////
+//////// CHARGEMENT ////////
+////////////////////////////
+
+/////////////////////////////////////////////////////
 /// \fn void chargerCouleur(const C_STRUCT aiMaterial *mtl);
 /// \brief chargement des couleurs des objets
 ///
@@ -51,6 +70,24 @@ void chargerCouleur(const C_STRUCT aiMaterial *mtl);
 /////////////////////////////////////////////////////
 void chargerTexture(const char* filename, const C_STRUCT aiScene *scene, GLuint textures[], GLuint ** counts );
 
+
+////////////////////////////
+//////// COMPTAGE //////////
+////////////////////////////
+
+/////////////////////////////////////////////////////
+/// \fn void nombreVertexObjetScene(const struct aiScene *scene, const struct aiNode* node, GLuint * ivao , GLuint counts[]);
+/// \brief Compte le nombre de vertex dans un node et le note dans un tableau counts a l'indice de l objet
+///
+/// \param const struct aiScene *scene
+/// \param const struct aiNode* node
+/// \param GLuint * ivao
+/// \param GLuint counts[]
+/// \return void
+/////////////////////////////////////////////////////
+void nombreVertexObjetScene(const struct aiScene *scene, const struct aiNode* node, GLuint * ivao , GLuint counts[]);
+
+
 /////////////////////////////////////////////////////
 /// \fn int nombreMeshesScenes(const struct aiScene *scene, const struct aiNode* node, int sousTotal)
 /// \brief retourne le nombre de mesh dans une scene
@@ -64,7 +101,10 @@ void chargerTexture(const char* filename, const C_STRUCT aiScene *scene, GLuint 
 int nombreMeshesScenes(const struct aiScene *scene, const struct aiNode* node, int sousTotal);
 
 
-void sceneMkVAOs(const struct aiScene *sc, const struct aiNode* nd, GLuint * ivao , GLuint counts[]);
+////////////////////////////
+//////// CONVERTION ////////
+////////////////////////////
+
 
 /////////////////////////////////////////////////////
 /// \fn void color4_to_float4(const C_STRUCT aiColor4D *c, float f[4])
@@ -93,6 +133,14 @@ void set_float4(float f[4], float a, float b, float c, float d);
 
 
 
+/////////////////////////////////////////////////////
+/// \fn char * pathOf(const char * path)
+/// \brief trouve l'arborescene repertoire
+///
+/// \param const char * path
+///
+/// \return char * pointeur sur la chaine cree
+/////////////////////////////////////////////////////
 char * pathOf(const char * path);
 
 
@@ -147,6 +195,89 @@ int aiImportModel (const char* path,const C_STRUCT aiScene **scene)
 
 
 
+/////////////////////////////////////////////////////
+/// \fn void afficherScene(const struct aiScene *scene, const struct aiNode* node, GLuint * ivao, GLuint textures[], GLuint counts[])
+/// \brief permet d'afficher la scene dans openGL
+///
+/// \param const struct aiScene *scene
+/// \param const struct aiNode* node\
+/// \param GLuint * ivao
+/// \param GLuint textures[]
+/// \param GLuint counts[]
+///
+/// \return void
+/////////////////////////////////////////////////////
+void afficherScene(const struct aiScene *scene, const struct aiNode* node, GLuint * ivao, GLuint textures[], GLuint counts[])
+{
+	glEnable(GL_TEXTURE_2D);
+	unsigned int n = 0,i,t;
+	struct aiMatrix4x4 m = node->mTransformation;
+
+
+	// APPLICATION DE TRANSFORMATION SUR LA MATRISE GL
+	aiTransposeMatrix4(&m);
+	glPushMatrix();
+	glMultMatrixf((float*)&m);
+
+
+	// DESSINER TOUTES LES MESHES ASSIGNER A CE NODE
+	for (; n < node->mNumMeshes; ++n) {
+		const struct aiMesh* mesh = scene->mMeshes[node->mMeshes[n]];
+
+    // UNIQUEMENT SI IL Y A DES VERTISE
+		if(counts[*ivao]) {
+      // CHARGEMENT DES COULEURS DES OBJETS NON TEXTURE ET TEXTURER EGALEMENT
+			chargerCouleur(scene->mMaterials[mesh->mMaterialIndex]);
+      // CHARGEMENT DE LA TEXTURE
+      glBindTexture(GL_TEXTURE_2D, textures[mesh->mMaterialIndex]);
+
+			for (t = 0; t < mesh->mNumFaces; ++t) {
+				const C_STRUCT aiFace* face = &mesh->mFaces[t];
+
+        // DETECTION DU TYPE D OBJ A DESSINER
+        GLenum face_mode;
+				switch(face->mNumIndices) {
+					case 1: face_mode = GL_POINTS; break;
+					case 2: face_mode = GL_LINES; break;
+					case 3: face_mode = GL_TRIANGLES; break;
+					default: face_mode = GL_POLYGON; break;
+				}
+
+        // MODE DESSIN OPENGL
+				glBegin(face_mode);
+            // PARCOUR DE TOUTE LES MESHES PRESENTE DANS CE NODE
+				    for(i = 0; i < face->mNumIndices; i++)
+            {
+              // INDICE DE LA MESHES A DESSINER
+              int index = face->mIndices[i];
+
+              // SI DETECTION DE TEXTURE ON L APPLIQUE EGALEMENT
+              if (aiGetMaterialTextureCount(scene->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0)
+							   glTexCoord2f(mesh->mTextureCoords[0][index].x, 1- mesh->mTextureCoords[0][index].y);
+              // DESSINER NORMAL MESH
+						  if(mesh->mNormals != NULL)
+						     glNormal3fv(&mesh->mNormals[index].x);
+              // DESSINER VERTEX MESH
+              if(mesh->mVertices != NULL)
+                 glVertex3fv(&mesh->mVertices[index].x);
+
+					  }
+				 glEnd();
+
+
+			}
+		}
+		(*ivao)++;
+	}
+
+  // APPEL RECURSIF POUR TOUS LES NODES PRESENT
+	for (n = 0; n < node->mNumChildren; ++n)
+		afficherScene(scene, node->mChildren[n],ivao,textures,counts);
+
+}
+
+
+
 
 
 /////////////////////////////////////////////////////
@@ -159,71 +290,55 @@ int aiImportModel (const char* path,const C_STRUCT aiScene **scene)
 
 void chargerCouleur(const C_STRUCT aiMaterial *mtl)
 {
-	float c[4];
 
-	GLenum fill_mode;
-	int ret1, ret2;
-	C_STRUCT aiColor4D diffuse;
-	C_STRUCT aiColor4D specular;
-	C_STRUCT aiColor4D ambient;
-	C_STRUCT aiColor4D emission;
-	ai_real shininess, strength;
-	int two_sided;
-	int wireframe;
-	unsigned int max;
 
-	set_float4(c, 0.8f, 0.8f, 0.8f, 1.0f);
+  // tableau de float pour contenir des preset
+  float c[4];
+
+  // CHARGEMENT DES PARAMETRE DE DIFFUSION
+  C_STRUCT aiColor4D diffuse;
 	if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
-		color4_to_float4(&diffuse, c);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, c);
-
-	set_float4(c, 0.0f, 0.0f, 0.0f, 1.0f);
+  {
+    color4_to_float4(&diffuse, c);
+	  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, c);
+  }
+  // CHARGEMENT DES PARAMETRE DE SPECULARITER
+  C_STRUCT aiColor4D specular;
 	if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_SPECULAR, &specular))
-		color4_to_float4(&specular, c);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, c);
-
-	set_float4(c, 0.2f, 0.2f, 0.2f, 1.0f);
+  {
+    color4_to_float4(&specular, c);
+	  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, c);
+  }
+  // CHARGEMENT DES PARAMETRE AMBIENTE
+  C_STRUCT aiColor4D ambient;
 	if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_AMBIENT, &ambient))
-		color4_to_float4(&ambient, c);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, c);
-
-	set_float4(c, 0.0f, 0.0f, 0.0f, 1.0f);
+  {
+    color4_to_float4(&ambient, c);
+	  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, c);
+  }
+  // CHARGEMENT DES PARAMETRE D EMISSION
+  C_STRUCT aiColor4D emission;
 	if(AI_SUCCESS == aiGetMaterialColor(mtl, AI_MATKEY_COLOR_EMISSIVE, &emission))
-		color4_to_float4(&emission, c);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, c);
+  {
+    color4_to_float4(&emission, c);
+	  glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, c);
+  }
 
 
 
 
-
-	max = 1;
-	ret1 = aiGetMaterialFloatArray(mtl, AI_MATKEY_SHININESS, &shininess, &max);
-	if(ret1 == AI_SUCCESS) {
-    	max = 1;
-    	ret2 = aiGetMaterialFloatArray(mtl, AI_MATKEY_SHININESS_STRENGTH, &strength, &max);
-		if(ret2 == AI_SUCCESS)
+	unsigned int max = 1;
+  // RECUPERATION DES PARAMETRE SHININESS
+  ai_real shininess;
+	if( AI_SUCCESS == aiGetMaterialFloatArray(mtl, AI_MATKEY_SHININESS, &shininess, &max))
+  {
+    // RECUPERATION DES PARAMETRE strength ET APPLICATION DES DEUX OU DE L'UN OU L AUTRE
+    ai_real strength;
+		if(AI_SUCCESS == aiGetMaterialFloatArray(mtl, AI_MATKEY_SHININESS_STRENGTH, &strength, &max))
 			glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininess * strength);
-        else
-        	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
-    }
-	else {
-		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 0.0f);
-		set_float4(c, 0.0f, 0.0f, 0.0f, 0.0f);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, c);
-	}
-
-	max = 1;
-	if(AI_SUCCESS == aiGetMaterialIntegerArray(mtl, AI_MATKEY_ENABLE_WIREFRAME, &wireframe, &max))
-		fill_mode = wireframe ? GL_LINE : GL_FILL;
-	else
-		fill_mode = GL_FILL;
-	glPolygonMode(GL_FRONT_AND_BACK, fill_mode);
-
-	max = 1;
-	if((AI_SUCCESS == aiGetMaterialIntegerArray(mtl, AI_MATKEY_TWOSIDED, &two_sided, &max)) && two_sided)
-		glDisable(GL_CULL_FACE);
-	else
-		glEnable(GL_CULL_FACE);
+    else
+      glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
+  }
 
 }
 
@@ -291,11 +406,10 @@ void chargerTexture(const char* filename, const C_STRUCT aiScene *scene, GLuint 
 	int nbMeshes = nombreMeshesScenes(scene, scene->mRootNode, 0);
 	*counts = calloc( nbMeshes, sizeof (*counts));
 	if(!counts)
-  fprintf(EXT_FILE, "import.c : chargerTexture() : allocation failed counts\n");
-
+    fprintf(EXT_FILE, "import.c : chargerTexture() : allocation failed counts\n");
 
   GLuint ivao = 0;
-	sceneMkVAOs(scene, scene->mRootNode, &ivao,*counts);
+	nombreVertexObjetScene(scene, scene->mRootNode, &ivao,*counts);
 
 }
 
@@ -322,123 +436,51 @@ int nombreMeshesScenes(const struct aiScene *scene, const struct aiNode* node, i
 
 
 
-
-void sceneMkVAOs(const struct aiScene *sc, const struct aiNode* nd, GLuint * ivao , GLuint counts[]) {
+/////////////////////////////////////////////////////
+/// \fn void nombreVertexObjetScene(const struct aiScene *scene, const struct aiNode* node, GLuint * ivao , GLuint counts[]);
+/// \brief Compte le nombre de vertex dans un node et le note dans un tableau counts a l'indice de l objet
+///
+/// \param const struct aiScene *scene
+/// \param const struct aiNode* node
+/// \param GLuint * ivao
+/// \param GLuint counts[]
+/// \return void
+/////////////////////////////////////////////////////
+void nombreVertexObjetScene(const struct aiScene *scene, const struct aiNode* node, GLuint * ivao , GLuint counts[]) {
   int i, j;
   unsigned int n = 0;
 
-  for (; n < nd->mNumMeshes; ++n) {
-    GLuint  * indices  = NULL;
-    const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
+  // PARCOUR DU NODE
+  for (; n < node->mNumMeshes; ++n) {
+    const struct aiMesh* mesh = scene->mMeshes[node->mMeshes[n]];
 
+    // DETECTION D UNE FACE
     if(mesh->mFaces) {
-      indices = malloc(3 * mesh->mNumFaces * sizeof *indices);
+      // POUR CHAQUE FACE
       for(i = 0, j = 0; j < mesh->mNumFaces; ++j) {
-				if(mesh->mFaces[j].mNumIndices != 3) continue;
-				indices[i++] = mesh->mFaces[j].mIndices[0];
-				indices[i++] = mesh->mFaces[j].mIndices[1];
-				indices[i++] = mesh->mFaces[j].mIndices[2];
+        // AJOUT ++ a i si un indice existe pour cette ELLEMENTS
+        // PERMET DE COMPTER LE NOMBRE D INDICE PRESENT DANS LA FACE
+				if(mesh->mFaces[j].mNumIndices != 3)continue;
+        //
+        if(mesh->mFaces[j].mIndices[0])
+          i++;
+        if(mesh->mFaces[j].mIndices[1])
+          i++;
+        if(mesh->mFaces[j].mIndices[2])
+          i++;
       }
-
+      // AJOUT DE L INDICE i DANS counts
       counts[*ivao] = i;
-      free(indices);
     }
+    // INCREMENTATION DE L INDICE DU TAB COUNTS
     (*ivao)++;
   }
-  for (n = 0; n < nd->mNumChildren; ++n) {
-    sceneMkVAOs(sc, nd->mChildren[n], ivao,counts);
+
+  // PARCOUR RECUSSIF
+  for (n = 0; n < node->mNumChildren; ++n) {
+    nombreVertexObjetScene(scene, node->mChildren[n], ivao,counts);
   }
 }
-
-
-
-void afficherScene(const struct aiScene *sc, const struct aiNode* nd, GLuint * ivao, GLuint textures[], GLuint counts[])
-{
-	glEnable(GL_TEXTURE_2D);
-	unsigned int n = 0,i,t;
-	struct aiMatrix4x4 m = nd->mTransformation;
-
-
-	/* update transform */
-	aiTransposeMatrix4(&m);
-	glPushMatrix();
-	glMultMatrixf((float*)&m);
-
-
-	// DESSINER TOUTES LES MESHES ASSIGNER A CE NODE
-	for (; n < nd->mNumMeshes; ++n) {
-		const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
-		// BLIND DE LA TEXTURE SI BESOIN
-
-		if(counts[*ivao]) {
-      // CHARGEMENT DES COULEURS DES OBJETS NON TEXTURE ET TEXTURER EGALEMENT
-			chargerCouleur(sc->mMaterials[mesh->mMaterialIndex]);
-      // CHARGEMENT DE LA TEXTURE
-      glBindTexture(GL_TEXTURE_2D, textures[mesh->mMaterialIndex]);
-
-			for (t = 0; t < mesh->mNumFaces; ++t) {
-				const C_STRUCT aiFace* face = &mesh->mFaces[t];
-
-        // DETECTION DU TYPE D OBJ A DESSINER
-        GLenum face_mode;
-				switch(face->mNumIndices) {
-					case 1: face_mode = GL_POINTS; break;
-					case 2: face_mode = GL_LINES; break;
-					case 3: face_mode = GL_TRIANGLES; break;
-					default: face_mode = GL_POLYGON; break;
-				}
-
-        // MODE DESSIN OPENGL
-				glBegin(face_mode);
-            // PARCOUR DE TOUTE LES MESHES PRESENTE DANS CE NODE
-				    for(i = 0; i < face->mNumIndices; i++)
-            {
-              // INDICE DE LA MESHES A DESSINER
-              int index = face->mIndices[i];
-
-              // SI DETECTION DE TEXTURE ON L APPLIQUE EGALEMENT
-              if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0)
-							   glTexCoord2f(mesh->mTextureCoords[0][index].x, 1- mesh->mTextureCoords[0][index].y);
-              // DESSINER NORMAL MESH
-						  if(mesh->mNormals != NULL)
-						     glNormal3fv(&mesh->mNormals[index].x);
-              // DESSINER VERTEX MESH
-              if(mesh->mVertices != NULL)
-                 glVertex3fv(&mesh->mVertices[index].x);
-
-					  }
-				 glEnd();
-
-
-			}
-		}
-		(*ivao)++;
-	}
-
-  // APPEL RECURSIF POUR TOUS LES NODES PRESENT
-	for (n = 0; n < nd->mNumChildren; ++n)
-		afficherScene(sc, nd->mChildren[n],ivao,textures,counts);
-
-}
-
-
-
-char * pathOf(const char * path) {
-	int spos = -1;
-	char * tmp, * ptr;
-	tmp = malloc((strlen(path) + 1) * sizeof * tmp); assert(tmp); strcpy(tmp, path); //strdup(path);
-	ptr = tmp;
-	while(*ptr) {
-		if(*ptr == '/' || *ptr == '\\')
-			spos = ptr - tmp;
-		++ptr;
-	}
-	tmp[spos >= 0 ? spos : 0] = 0;
-	return tmp;
-}
-
-
-
 
 
 
@@ -481,4 +523,26 @@ void set_float4(float f[4], float a, float b, float c, float d)
 	f[1] = b;
 	f[2] = c;
 	f[3] = d;
+}
+
+/////////////////////////////////////////////////////
+/// \fn char * pathOf(const char * path)
+/// \brief trouve l'arborescene repertoire
+///
+/// \param const char * path
+///
+/// \return char * pointeur sur la chaine cree
+/////////////////////////////////////////////////////
+char * pathOf(const char * path) {
+	int spos = -1;
+	char * tmp, * ptr;
+	tmp = malloc((strlen(path) + 1) * sizeof * tmp); assert(tmp); strcpy(tmp, path); //strdup(path);
+	ptr = tmp;
+	while(*ptr) {
+		if(*ptr == '/' || *ptr == '\\')
+			spos = ptr - tmp;
+		++ptr;
+	}
+	tmp[spos >= 0 ? spos : 0] = 0;
+	return tmp;
 }
