@@ -40,7 +40,7 @@ int aiImportModel (const char* path,const C_STRUCT aiScene **scene);
 void chargerCouleur(const C_STRUCT aiMaterial *mtl);
 
 /////////////////////////////////////////////////////
-/// \fn void chargerTexture(const char* filename, const C_STRUCT aiScene *_scene, GLuint textures[], GLuint ** counts );
+/// \fn void chargerTexture(const char* filename, const C_STRUCT aiScene *scene, GLuint textures[], GLuint ** counts );
 /// \brief chargement des textures de la room
 ///
 /// \param const char* filename
@@ -49,7 +49,7 @@ void chargerCouleur(const C_STRUCT aiMaterial *mtl);
 /// \param GLuint ** counts
 ///
 /////////////////////////////////////////////////////
-void chargerTexture(const char* filename, const C_STRUCT aiScene *_scene, GLuint textures[], GLuint ** counts );
+void chargerTexture(const char* filename, const C_STRUCT aiScene *scene, GLuint textures[], GLuint ** counts );
 
 /////////////////////////////////////////////////////
 /// \fn int nombreMeshesScenes(const struct aiScene *scene, const struct aiNode* node, int sousTotal)
@@ -230,7 +230,7 @@ void chargerCouleur(const C_STRUCT aiMaterial *mtl)
 
 
 /////////////////////////////////////////////////////
-/// \fn void chargerTexture(const char* filename, const C_STRUCT aiScene *_scene, GLuint textures[], GLuint ** counts );
+/// \fn void chargerTexture(const char* filename, const C_STRUCT aiScene *scene, GLuint textures[], GLuint ** counts );
 /// \brief chargement des textures de la room
 ///
 /// \param const char* filename
@@ -239,72 +239,63 @@ void chargerCouleur(const C_STRUCT aiMaterial *mtl)
 /// \param GLuint ** counts
 ///
 /////////////////////////////////////////////////////
-void chargerTexture(const char* filename, const C_STRUCT aiScene *_scene, GLuint textures[], GLuint ** counts )
+void chargerTexture(const char* filename, const C_STRUCT aiScene *scene, GLuint textures[], GLuint ** counts )
 {
 
-  fprintf(EXT_FILE,"import.c : chargerTexture() : Nombre de textures %d\n", _scene->mNumMaterials );
-  glGenTextures(_scene->mNumMaterials, textures);
+  fprintf(EXT_FILE,"import.c : chargerTexture() : Nombre de textures %d\n", scene->mNumMaterials );
+  glGenTextures(scene->mNumMaterials, textures);
 
-  for (int i = 0; i < _scene->mNumMaterials ; i++) {
+  // PARCOURIR TOUTES LES TEXTURE PRESENTE DANS LA STRUCT
+  for (int i = 0; i < scene->mNumMaterials ; i++) {
 
-    const struct aiMaterial* pMaterial = _scene->mMaterials[i];
+    const struct aiMaterial* pMaterial = scene->mMaterials[i];
 
+    // VERIFIER LA PRESENCE D UNE TEXTURE POUR TEL INDICE
     if (aiGetMaterialTextureCount(pMaterial, aiTextureType_DIFFUSE) > 0) {
 
+      // RECUPERATION DU NOM DU FICHIER
       struct aiString tfname;
       if (aiGetMaterialTexture(pMaterial, aiTextureType_DIFFUSE, 0, &tfname, NULL, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS) {
 
-        SDL_Surface * t;
-        char * dir = pathOf(filename), buf[BUFSIZ];
+        char * dir = pathOf(filename);
+        char buf[BUFSIZ];
+        // LIEN COMPLET VER LE FICHIER
         snprintf(buf, sizeof buf, "%s/%s", dir, tfname.data);
 
-        if(!(t = IMG_Load(buf))) {
+
+        SDL_Surface * img = IMG_Load(buf);
+        if(!img)
+          // SI FICHIER INTROUVABLE ESSAYER AVEC UNE AUTRE
           fprintf(EXT_FILE, "import.c : chargerTexture() : IMG_Load : Probleme de chargement de textures %s\n", buf);
-          fprintf(EXT_FILE, "import.c : chargerTexture() : Nouvel essai avec %s\n", tfname.data);
-          if(!(t = IMG_Load(tfname.data)))
-					{
-						fprintf(EXT_FILE, "import.c : chargerTexture() : IMG_Load : Probleme de chargement de textures %s\n", tfname.data); continue;
-          }
+        else
+        {
+          // MISE EN TAMPO DE LA TEXTURE DANS LE CONTEXT
           glBindTexture(GL_TEXTURE_2D, textures[i]);
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
+          glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
           #ifdef __APPLE__
-	          glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_BGR : GL_BGRA, GL_UNSIGNED_BYTE, t->pixels);
+           glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->w, img->h, 0, GL_RGB, GL_UNSIGNED_BYTE, img->pixels);
           #else
-	          glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, t->pixels);
+           glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->w, img->h, 0, t->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
           #endif
-	         SDL_FreeSurface(t);
-          }
 
-					glBindTexture(GL_TEXTURE_2D, textures[i]);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT/* GL_CLAMP_TO_EDGE */);
+          // DESTRUCTION DE LA SURFACE
+          SDL_FreeSurface(img);
+        }
 
-					#ifdef __APPLE__
-					 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, GL_RGB, GL_UNSIGNED_BYTE, t->pixels);
-					#else
-					 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t->w, t->h, 0, t->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, t->pixels);
-					#endif
+      }
 
-					SDL_FreeSurface(t);
-
-         }
-
-       }
+    }
 
   }
 
-	int nbMeshes = nombreMeshesScenes(_scene, _scene->mRootNode, 0);
+	int nbMeshes = nombreMeshesScenes(scene, scene->mRootNode, 0);
 	*counts = calloc( nbMeshes, sizeof (*counts));
-	assert(*counts);
+	if(!counts)
+  fprintf(EXT_FILE, "import.c : chargerTexture() : allocation failed counts\n");
+
 
   GLuint ivao = 0;
-	sceneMkVAOs(_scene, _scene->mRootNode, &ivao,*counts);
+	sceneMkVAOs(scene, scene->mRootNode, &ivao,*counts);
 
 }
 
@@ -373,49 +364,50 @@ void afficherScene(const struct aiScene *sc, const struct aiNode* nd, GLuint * i
 	glPushMatrix();
 	glMultMatrixf((float*)&m);
 
-	/* draw all meshes assigned to this node */
+
+	// DESSINER TOUTES LES MESHES ASSIGNER A CE NODE
 	for (; n < nd->mNumMeshes; ++n) {
 		const struct aiMesh* mesh = sc->mMeshes[nd->mMeshes[n]];
 		// BLIND DE LA TEXTURE SI BESOIN
 
-			glBindTexture(GL_TEXTURE_2D, textures[mesh->mMaterialIndex]);
 		if(counts[*ivao]) {
-
+      // CHARGEMENT DES COULEURS DES OBJETS NON TEXTURE ET TEXTURER EGALEMENT
 			chargerCouleur(sc->mMaterials[mesh->mMaterialIndex]);
+      // CHARGEMENT DE LA TEXTURE
+      glBindTexture(GL_TEXTURE_2D, textures[mesh->mMaterialIndex]);
 
 			for (t = 0; t < mesh->mNumFaces; ++t) {
 				const C_STRUCT aiFace* face = &mesh->mFaces[t];
-				GLenum face_mode;
 
-					switch(face->mNumIndices) {
-						case 1: face_mode = GL_POINTS; break;
-						case 2: face_mode = GL_LINES; break;
-						case 3: face_mode = GL_TRIANGLES; break;
-						default: face_mode = GL_POLYGON; break;
-					}
+        // DETECTION DU TYPE D OBJ A DESSINER
+        GLenum face_mode;
+				switch(face->mNumIndices) {
+					case 1: face_mode = GL_POINTS; break;
+					case 2: face_mode = GL_LINES; break;
+					case 3: face_mode = GL_TRIANGLES; break;
+					default: face_mode = GL_POLYGON; break;
+				}
 
+        // MODE DESSIN OPENGL
+				glBegin(face_mode);
+            // PARCOUR DE TOUTE LES MESHES PRESENTE DANS CE NODE
+				    for(i = 0; i < face->mNumIndices; i++)
+            {
+              // INDICE DE LA MESHES A DESSINER
+              int index = face->mIndices[i];
 
-					if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0) {
-						glBindTexture(GL_TEXTURE_2D, textures[mesh->mMaterialIndex]);
-					}
+              // SI DETECTION DE TEXTURE ON L APPLIQUE EGALEMENT
+              if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0)
+							   glTexCoord2f(mesh->mTextureCoords[0][index].x, 1- mesh->mTextureCoords[0][index].y);
+              // DESSINER NORMAL MESH
+						  if(mesh->mNormals != NULL)
+						     glNormal3fv(&mesh->mNormals[index].x);
+              // DESSINER VERTEX MESH
+              if(mesh->mVertices != NULL)
+                 glVertex3fv(&mesh->mVertices[index].x);
 
-					glBegin(face_mode);
-					for(i = 0; i < face->mNumIndices; i++) {
-
-						int index = face->mIndices[i];
-
-						if (aiGetMaterialTextureCount(sc->mMaterials[mesh->mMaterialIndex], aiTextureType_DIFFUSE) > 0) {
-							glTexCoord2f(mesh->mTextureCoords[0][index].x, 1- mesh->mTextureCoords[0][index].y);
-						}
-						if(mesh->mNormals != NULL)
-						{
-							glNormal3fv(&mesh->mNormals[index].x);
-						}
-
-						glVertex3fv(&mesh->mVertices[index].x);
-
-					}
-					glEnd();
+					  }
+				 glEnd();
 
 
 			}
