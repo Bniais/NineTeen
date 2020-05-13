@@ -1,5 +1,5 @@
 # Blender MTL File: 'salle.blend'
-# Material Count: 140
+# Material Count: 135
 
 newmtl BMD_CarPaint_0020
 Ns 96.078443
@@ -105,7 +105,7 @@ d 1.000000
 illum 2
 map_Kd Radio.jpg
 
-newmtl Matériau.001
+newmtl Matériau
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -114,7 +114,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd /Users/samymahi/PROJET/NineTeen/room/alu.jpg
+map_Kd nineteen_name.jpg
 
 newmtl Matériau.002
 Ns 225.000000
@@ -126,17 +126,6 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd toilette_push.jpg
-
-newmtl Matériau.003
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd /Users/samymahi/PROJET/NineTeen/room/alu.jpg
 
 newmtl Matériau.004
 Ns 225.000000
@@ -827,46 +816,6 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd carllage_mur_toilette.jpg
-
-newmtl neon_blanc
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.798456 0.773281 0.800000
-Ks 0.000000 0.000000 0.000000
-Ke 0.968327 1.000000 0.966423
-Ni 1.450000
-d 1.000000
-illum 1
-
-newmtl neon_bleu
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.000000 0.013480 0.800000
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.002349 1.000000
-Ni 1.450000
-d 1.000000
-illum 1
-
-newmtl neon_rouge
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.016199 0.038061
-Ks 0.000000 0.000000 0.000000
-Ke 1.000000 0.004743 0.011552
-Ni 1.450000
-d 1.000000
-illum 1
-
-newmtl neon_sombre
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.071598 0.023536 0.003082
-Ks 0.000000 0.000000 0.000000
-Ke 0.045699 0.028569 0.004805
-Ni 1.450000
-d 1.000000
-illum 1
 
 newmtl phone_screen
 Ns 96.078443
