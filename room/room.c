@@ -1,3 +1,11 @@
+/////////////////////////////////////////////////
+///	\file room.c
+///	\author Samy M.
+///	\version 1.0
+///	\date 31 janvier 2020
+///	\brief affichage de la room et gestion des evenements liee
+/////////////////////////////////////////////////
+
 // CODERUNNER COMPILEFLAG
 // -std=c99 -framework OpenGL -framework GLUT -lassimp -lm -F/Library/Frameworks -framework SDL2
 
@@ -124,14 +132,32 @@ SDL_Color Text_rouge = {255,0,0};
 #define MAX_VOLUME_ARCADE 100
 
 // STATIC VAR FOR CAMERA
+/**
+*\struct Camera_s
+*\brief Contient les informations necessaire pour positionner la camera openGL
+*/
 struct Camera_s
 {
-	float px,py,pz,cible_py,angle,ouverture;
+	float px; /*!< \Eyes position X */
+	float py; /*!< \Eyes position Y */
+	float pz; /*!< \Eyes position Z */
+	float cible_py; /*!< \Cible position Y */
+	float angle; /*!< \Cible position X */
+	float ouverture; /*!< \Ouverture focale */
 };
 
+/**
+*\struct GL_Quadf
+*\brief Contient les coordonner et dimension d'un quadrilataire
+*/
 struct GL_Quadf
 {
-	float x,y,z,largueur,epaisseur,hauteur;
+	float x; /*!< \ position X */
+	float y; /*!< \ position Y */
+	float z; /*!< \ position Z */
+	float largueur; /*!< \ Largueur */
+	float epaisseur; /*!< \ epaisseur */
+	float hauteur; /*!< \ hauteur */
 };
 //////////////////////////////////////////////////////////////////////////////////
 // struct toilette femme
@@ -268,10 +294,12 @@ int loadGameTexture(loadGame * load){
 
 
 /////////////////////////////////////////////////////
-/// \fn int windowMaxSize()
+/// \fn int windowMaxSize(int optionFullScreen)
 /// \brief fonction qui charge fixe la taille max de la fenetre
+/// \param int optionFullScreen
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
+static
 int windowMaxSize(int optionFullScreen);
 
 
@@ -284,6 +312,7 @@ int windowMaxSize(int optionFullScreen);
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 void limiterFrame(const float delayLancementFrame,float *_IPS);
 
 /////////////////////////////////////////////////////
@@ -297,6 +326,7 @@ void limiterFrame(const float delayLancementFrame,float *_IPS);
 ///
 /// \return VRAI/FAUX
 /////////////////////////////////////////////////////
+static
 int attendreXsecondeMessage(int *compterSeconde, int *afficherMessage,const int MS, const float _FPS);
 
 /////////////////////////////////////////////////////
@@ -316,6 +346,7 @@ int attendreXsecondeMessage(int *compterSeconde, int *afficherMessage,const int 
 ///
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
+static
 int detectionEnvironnement(float x,float y);
 
 
@@ -329,6 +360,7 @@ int detectionEnvironnement(float x,float y);
 ///
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
+static
 int detecterRadio(float x,float y,float angle);
 
 /////////////////////////////////////////////////////
@@ -341,6 +373,7 @@ int detecterRadio(float x,float y,float angle);
 ///
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
+static
 int detecterPorte(float x,float y,float angle);
 
 /////////////////////////////////////////////////////
@@ -353,6 +386,7 @@ int detecterPorte(float x,float y,float angle);
 ///
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
+static
 int detecterOuvertureToilette(float x,float y,float angle);
 
 
@@ -366,6 +400,7 @@ int detecterOuvertureToilette(float x,float y,float angle);
 ///
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
+static
 int detecterMachine(float x,float y,float angle);
 
 
@@ -374,6 +409,7 @@ int detecterMachine(float x,float y,float angle);
 /// \brief initalisation du volume
 ///
 /////////////////////////////////////////////////////
+static
 void mixerInit();
 
 
@@ -388,13 +424,14 @@ void mixerInit();
 ///
 /// \return float distance point a et b
 /////////////////////////////////////////////////////
+static
 float distancePoint(float xa, float ya, float xb, float yb);
 
 
 
 /////////////////////////////////////////////////////
-/// \fn void reglageVolume(int channel, float xa, float ya, float xb, float yb, int porter)
-/// \brief regle le volume de l'environement sur un chainnel particuliere
+/// \fn void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur, int max_volume)
+/// \brief regle le volume de l'environement sur un channel particuliere
 ///
 /// \param int channel canal du son a regler
 /// \param float xa
@@ -402,10 +439,13 @@ float distancePoint(float xa, float ya, float xb, float yb);
 /// \param float xb
 /// \param float yb
 /// \param int porter Porter du son
+/// \param float angleJoueur
+/// \param int max_volume
 ///
 /// \return void
 /////////////////////////////////////////////////////
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter,float angleJoueur, int max_volume);
+static
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur, int max_volume);
 
 
 /////////////////////////////////////////////////////
@@ -420,6 +460,7 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, float po
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music);
 
 /////////////////////////////////////////////////////
@@ -435,6 +476,7 @@ void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int 
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 float calculAngle(float xa, float ya,      float xb, float yb,       float xc, float yc);
 
 
@@ -459,6 +501,7 @@ float calculAngle(float xa, float ya,      float xb, float yb,       float xc, f
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 void GL_InitialiserParametre(int width, int height, struct Camera_s camera);
 
 
@@ -471,18 +514,21 @@ void GL_InitialiserParametre(int width, int height, struct Camera_s camera);
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 void InitCamera(struct Camera_s *camera, struct Camera_s *cible);
 
 
 /////////////////////////////////////////////////////
-/// \fn void mouvementCamera(struct Camera_s *camera,const float IPS)
+/// \fn void mouvementCamera(SDL_Window * window, struct Camera_s *camera,const float IPS)
 /// \brief Permet de gerer les deplacements de la camera
 ///
+/// \param SDL_Window * window
 /// \param struct Camera_s *camera prend l'adresse de la camera
-/// \param
+/// \param const float IPS
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 void mouvementCamera(SDL_Window * window, struct Camera_s *camera, const float IPS);
 
 
@@ -496,6 +542,7 @@ void mouvementCamera(SDL_Window * window, struct Camera_s *camera, const float I
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list, const float IPS);
 
 
@@ -511,6 +558,7 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y);
 
 /////////////////////////////////////////////////////
@@ -524,16 +572,20 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y);
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 void messageMachine(struct MeilleureScore_s str[] ,struct Camera_s camera,TTF_Font *font,int afficherMessage);
 
 
 /////////////////////////////////////////////////////
-/// \fn int MessageQuitterRoom()
-/// \brief permet d'afficher le message avant de quitter
+/// \fn int MessageQuitterRoom(int modeChargement, char path[])
+/// \brief permet d'afficher le message avant de quitter ou au chargement de la room
 ///
+/// \param int modeChargement
+/// \param char path[]
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
+static
 int MessageQuitterRoom(int modeChargement, char path[]);
 
 /////////////////////////////////////////////////////
@@ -565,6 +617,7 @@ int MessageQuitterRoom(int modeChargement, char path[]);
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme,  int *jouerSonPorteHomme, float _IPS, TTF_Font *font);
 
 
@@ -580,6 +633,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window, float _IPS, float imgAnim);
 
 
@@ -618,11 +672,19 @@ void InitMeilleureScore(struct MeilleureScore_s str[]);
 int updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 
 
+/////////////////////////////////////////////////////
+/// \fn void GlDessinerQuad(struct GL_Quadf quad)
+/// \brief Dessine un quadrilataire
+///
+/// \param struct GL_Quadf quad
+///
+/// \return EXIT_SUCCESS/EXIT_FAILURE
+/////////////////////////////////////////////////////
+static
+void GlDessinerQuad(struct GL_Quadf quad);
 
 
-
-
-
+static
 void detruireTexture(GLuint nbTextures)
 {
 
@@ -643,7 +705,7 @@ void detruireTexture(GLuint nbTextures)
 
 
 
-
+static
 void GLlightMode()
 {
 	glEnable(GL_LIGHTING);	// Active l'éclairage
@@ -722,6 +784,7 @@ void GLlightMode()
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
+static
 void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera, float IPS);
 
 
@@ -733,6 +796,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
+static
 int backgroundClassement(SDL_Surface *sImage);
 
 
@@ -1433,6 +1497,8 @@ float calculAngle(float xa, float ya,      float xb, float yb,       float xc, f
 	return (2*M_PI) - angleRad;
 }
 
+
+
 void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur, int max_volume)
 {
 	////////////////////////////////////////////////////
@@ -1509,6 +1575,7 @@ void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int 
 		Mix_PlayChannel(channel,music,0);
 	}
 }
+
 
 void GlDessinerQuad(struct GL_Quadf quad)
 {
@@ -2630,8 +2697,12 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							animationLancerMachine(camera,cible[machine-1],*scene_list,Window, _IPS,60.0);
 
 							///////////////////////////////////////////////////
-							// CREATION DU RENDU POUR CHARGEMENT DES TEXTURES
+							// DESTRUCTION DES TEXTURES ET DU CONTEXT
+							detruireTexture(scene->mNumMaterials);
 							SDL_GL_DeleteContext(*Context);
+
+							///////////////////////////////////////////////////
+							// CREATION DU RENDU POUR CHARGEMENT DES TEXTURES
 							SDL_Renderer * pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 							if(!pRenderer)
 							{
@@ -2741,7 +2812,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
 							while(SDL_PollEvent(&Event));
-							detruireTexture(scene->mNumMaterials);
 							_malloc((void**)&_textures,sizeof(*_textures),(scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
 							chargerTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
 
@@ -3129,7 +3199,7 @@ int MessageQuitterRoom(int modeChargement,char path[])
 
 	if(!sImage)
 	{
-		fprintf(EXT_FILE,"room.c : MessageQuitterRoom() : IMG_Load %s DIR:%s\n",SDL_GetError(),"../room/textures/exit@3.png" );
+		fprintf(EXT_FILE,"room.c : MessageQuitterRoom() : IMG_Load %s DIR:%s\n",SDL_GetError(),path );
 		return EXIT_FAILURE;
 	}
 

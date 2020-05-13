@@ -1,3 +1,11 @@
+/////////////////////////////////////////////////
+///	\file main.c
+///	\author Samy M.
+///	\version 1.0
+///	\date 31 janvier 2020
+///	\brief regroupe le launcher ainsi que le programme principal du jeu
+/////////////////////////////////////////////////
+
 #define VERSION_LOGICIEL "version=1.0.2-dev"
 #define VERSION "1.0.2-dev"
 
