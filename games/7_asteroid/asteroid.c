@@ -272,7 +272,7 @@ int trop_pres(float x1, float y1, float x2, float y2, float dist, int cote_spawn
 */
 int sur_asteroid(Asteroid * asteroides, int nb_asteroid, int i_asteroid){
 	for(int i=0; i<nb_asteroid; i++){
-		if(i!=i_asteroid && trop_pres(asteroides[i].x,asteroides[i].y,asteroides[i_asteroid].x,asteroides[i_asteroid].y,DIST_SPAWN_2ASTEROID,asteroides[i_asteroid].cote_spawn)){
+		if(i!=i_asteroid && trop_pres(asteroides[i].x,asteroides[i].y,asteroides[i_asteroid].x,asteroides[i_asteroid].y,asteroides[i_asteroid].taille + asteroides[i].taille,asteroides[i_asteroid].cote_spawn)){
 			return SDL_TRUE;
 		}
 	}
