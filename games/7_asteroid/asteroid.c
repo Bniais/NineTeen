@@ -315,12 +315,28 @@ int asteroid_touche(Asteroid asteroid, Missile * missiles, int nb_missiles ){
 }
 
 
-//determinant
+
+/**
+*\fn float det()
+*\brief calcul le determinant
+*\param x1 coord en x
+*\param y1 coord en y
+*\param x2 coord en x
+*\param y2 coord en y
+*\return le determinant
+*/
 float det(float x1, float y1, float x2, float y2 ){
 	return( (x1*y2) - (y1*x2));
 
 }
 
+/**
+*\fn int ligneColli()
+*\brief ///////////////////////////////////////
+*\param ligne_laser[5][2] tableau de ligne du laser
+*\param asteroid_diametre[2] diametre de l'asteroide
+*\return Vrai sinon Faux
+*/
 int ligneColli(SDL_Point lignes_laser[5][2], SDL_Point asteroid_diametre[2]){
 	for(int i = 0; i< 5; i++){
 		if(
@@ -341,6 +357,14 @@ int ligneColli(SDL_Point lignes_laser[5][2], SDL_Point asteroid_diametre[2]){
 	return SDL_FALSE;
 }
 
+
+/**
+*\fn int laser_touche
+*\brief test si le laser touche un asteroide
+*\param asteroid un asteroide
+*\param vaisseau le vaisseau
+*\return Vrai si oui sinon Faux
+*/
 int laser_touche(Asteroid asteroid, Vaiss vaisseau){
 	SDL_Point lignes_laser[5][2]=
 	{
@@ -436,18 +460,41 @@ int laser_touche(Asteroid asteroid, Vaiss vaisseau){
     return SDL_FALSE;
 }
 
+
+/**
+*\fn void decaler_gauche_a()
+*\brief decale de 1 les valeurs d'un tableau d'asteroide
+*\param tab tab d'asteroide
+*\param taille_tab taille du tableau
+*\param i indice de début
+*/
 void decaler_gauche_a(Asteroid * tab, int taille_tab, int i){
 
     for(;i<taille_tab-1;i++){
         tab[i]=tab[i+1];
     }
 }
+
+/**
+*\fn void decaler_gauche_m()
+*\brief decale de 1 les valeurs d'un tableau de missile
+*\param tab tab de missile
+*\param taille_tab taille du tableau
+*\param i indice de début
+*/
 void decaler_gauche_m(Missile * tab, int taille_tab, int i){
 
     for(;i<taille_tab-1;i++){
         tab[i]=tab[i+1];
     }
 }
+/**
+*\fn void decaler_gauche_e()
+*\brief decale de 1 les valeurs d'un tableau d'explosion
+*\param tab tab d'explosion
+*\param taille_tab taille du tableau
+*\param i indice de début
+*/
 void decaler_gauche_e(Explosion * tab, int taille_tab, int i){
 
     for(;i<taille_tab-1;i++){
@@ -456,6 +503,12 @@ void decaler_gauche_e(Explosion * tab, int taille_tab, int i){
 }
 
 
+/**
+*\fn void asteroid_cpy()
+*\brief copie de la source au destinataire
+*\param asteroid_src à copier
+*\param asteroid_dest reçoit les valeurs
+*/
 void asteroid_cpy(Asteroid * asteroid_src, Asteroid * asteroid_dest){
   asteroid_dest->x = asteroid_src->x;
   asteroid_dest->y = asteroid_src->y;
@@ -473,6 +526,12 @@ void asteroid_cpy(Asteroid * asteroid_src, Asteroid * asteroid_dest){
 	asteroid_dest->cote_spawn = asteroid_src->cote_spawn;
 }
 
+/**
+*\fn int getFirstNullText()
+*\brief ////////////////////////////////////////
+*\param textsBonus[MAX_TEXT_BONUS]
+*\return l'indice
+*/
 int getFirstNullText(TextBonus textsBonus[MAX_TEXT_BONUS]){
 	for(int i=0; i<MAX_TEXT_BONUS; i++){
 		if(!textsBonus[i].frame)
@@ -489,7 +548,15 @@ int getFirstNullText(TextBonus textsBonus[MAX_TEXT_BONUS]){
 }
 
 
-
+/**
+*\fn int isObtainable()
+*\brief test si un bonus peut être obtenu
+*\param id_bonus indice du bonus
+*\param vaisseau le vaisseau
+*\param munitions[NB_MISSILES] munitions des missiles
+*\param nbBombeNucleaire nombre de bombe nucleaire stocké
+*\return Vrai si oui sinon FAUX
+*/
 int isObtainable(int id_bonus, Vaiss vaisseau, float munitions[NB_MISSILES], int nbBombeNucleaire){
 	if(id_bonus >= NB_BONUS)
 		return (munitions[id_bonus - NB_BONUS +1] <= MAX_RATIO_AMMO_OBTAINABLE);
@@ -518,6 +585,14 @@ int isObtainable(int id_bonus, Vaiss vaisseau, float munitions[NB_MISSILES], int
 		}
 }
 
+/**
+*\fn int isObtainable()
+*\brief attribue un bonus au hasard
+*\param vaisseau le vaisseau
+*\param munitions[NB_MISSILES] munitions des missiles
+*\param nbBombeNucleaire nombre de bombe nucleaire stocké
+*\return l'indice du bonus
+*/
 int get_bonus(Vaiss vaisseau, float munitions[NB_MISSILES], int nbBombeNucleaire){
 	int chanceTotal = 0;
 	int i;
@@ -535,6 +610,26 @@ int get_bonus(Vaiss vaisseau, float munitions[NB_MISSILES], int nbBombeNucleaire
 
 }
 
+/**
+*\fn int detruire_asteroid()
+*\brief détruit un asteroid
+*\param asteroides liste d'asteroides
+*\param nb_asteroid nombre d'asteroides
+*\param i_asteroid indice de l'asteroide
+*\param vaisseau le vaisseau
+*\param touche_bouclier indique si il y a un bouclier
+*\param score score total
+*\param nbBombeNucleaire nombre de Bombe Nucléaire
+*\param angleMissile angle du missile
+*\param bonusTexts[MAX_TEXT_BONUS] texte du bonus affiché à l'écran
+*\param munitions[NB_MISSILES] liste de munitions
+*\param keys[4] clé du hashage
+*\param score_hash score hashé
+*\param bonusSound son du bonus
+*\param exploSound son de l'explosion
+*\param done indique si le jeu est fini
+*\return 0 si il n'y a pas de problème sinon return HACKED
+*/
 int detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid,Vaiss * vaisseau,int touche_bouclier, ScoreTotal * score, int* nbBombeNucleaire, float angleMissile, TextBonus bonusTexts[MAX_TEXT_BONUS], float munitions[NB_MISSILES], long keys[4], long long *score_hash, Mix_Chunk * bonusSound, Mix_Chunk * exploSound, int done){
 	int channel=Mix_GroupAvailable(1);
 	if (channel==-1) {
@@ -609,6 +704,14 @@ int detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid,
 
 
 // Vaisseau
+
+/**
+*\fn void turn_vaiss()
+*\brief permet au vaisseau de tourner
+*\param vaisseau le vaisseau
+*\param turn indique si l'on doit tourner à gauche ou à droite
+*\param accelerate acceleration du vaisseau
+*/
 void turn_vaiss(Vaiss * vaisseau, int turn, Vector2f * accelerate){
 	if(turn == LEFT || turn == BOTH){
 		accelerate->x +=  RATIO_TURN[vaisseau->frame_turn_left] * RATIO_ACCEL_TURN * cos(vaisseau->angle-PI/4);
@@ -657,8 +760,12 @@ void turn_vaiss(Vaiss * vaisseau, int turn, Vector2f * accelerate){
 	vaisseau->angle += RATIO_TURN[vaisseau->frame_turn_right] * TURN_AMMOUNT;
 }
 
-
-
+/**
+*\fn void acceleration()
+*\brief augmente la vitesse de déplacement du vaisseau
+*\param accelerate acceleration du vaisseau
+*\param vaisseau le vaisseau
+*/
 void acceleration( Vector2f *accelerate, Vaiss vaisseau){
 
 	accelerate->x += RATIO_ACCEL[vaisseau.frame_thrust+1] * ACCEL * cos(vaisseau.angle);
@@ -666,11 +773,27 @@ void acceleration( Vector2f *accelerate, Vaiss vaisseau){
 
 }
 
+/**
+*\fn void move()
+*\brief permet au vaisseau d'avancer
+*\param vaisseau le vaisseau
+*\param accelerate acceleration du vaisseau
+*/
 void move( Vaiss *vaisseau,Vector2f accelerate){
 	vaisseau->x+=accelerate.x;
 	vaisseau->y+=accelerate.y;
 
 }
+
+/**
+*\fn void afficher_texture_vaisseau()
+*\brief affichage de la texture du vaisseau
+*\param vaisseau le vaisseau
+*\param renderer Le renderer où dessiner
+*\param vaisseau_texture texture du vaisseau
+*\param gem_texture texture de la gemme sur le vaisseau
+*\param thrust_texture texture des flammes du vaisseau
+*/
 void afficher_texture_vaisseau(Vaiss vaisseau, SDL_Renderer * renderer, SDL_Texture * vaisseau_texture, SDL_Texture * gem_texture, SDL_Texture * thrust_texture){
 
 	if(vaisseau.bouclier)
@@ -704,6 +827,15 @@ void afficher_texture_vaisseau(Vaiss vaisseau, SDL_Renderer * renderer, SDL_Text
 
 }
 
+/**
+*\fn void afficher_vaisseau()
+*\brief affichage du vaisseau
+*\param vaisseau le vaisseau
+*\param renderer Le renderer où dessiner
+*\param vaisseau_texture texture du vaisseau
+*\param gem_texture texture de la gemme sur le vaisseau
+*\param thrust_texture texture des flammes du vaisseau
+*/
 void afficher_vaisseau( Vaiss vaisseau, SDL_Renderer *renderer, SDL_Texture * vaisseau_texture, SDL_Texture * gem_texture, SDL_Texture * thrust_texture){
 
     SDL_Rect vaisseauRect = {vaisseau.x-RAYON_VAISS,vaisseau.y-RAYON_VAISS,RAYON_VAISS*2,RAYON_VAISS*2};
@@ -743,6 +875,13 @@ void afficher_vaisseau( Vaiss vaisseau, SDL_Renderer *renderer, SDL_Texture * va
     }
 }
 
+/**
+*\fn void afficher_explosion()
+*\brief affichage de d'explosion
+*\param renderer Le renderer où dessiner
+*\param explosion explosion de la bombe
+*\param explo_texture texture de l'explosion
+*/
 void afficher_explosion(SDL_Renderer * renderer,Explosion explosion, SDL_Texture * explo_texture){
 	SDL_Rect src = EXPLO_SRCS[explosion.id];
 	src.x += (int)((FRAME_EXPLOSIONS[explosion.id] - explosion.frame) / ((float)FRAME_EXPLOSIONS[explosion.id] /NB_ANIM_EXPLOSIONS[explosion.id])) * src.w;
@@ -780,6 +919,16 @@ void afficher_explosion(SDL_Renderer * renderer,Explosion explosion, SDL_Texture
 
 //LASER
 
+
+/**
+*\fn void afficher_laser()
+*\brief affichage du laser
+*\param renderer Le renderer où dessiner
+*\param laser_texture texture du laser
+*\param vaisseau le vaisseau
+*\param frame
+*\param asteroid un asteroide
+*/
 void afficher_laser(SDL_Renderer * renderer, SDL_Texture * laser_texture, Vaiss vaisseau, int frame, Asteroid asteroid){
 
 
@@ -802,7 +951,13 @@ void afficher_laser(SDL_Renderer * renderer, SDL_Texture * laser_texture, Vaiss 
 	SDL_RenderCopyEx(renderer,laser_texture, &laser_src, &laser_dest,vaisseau.angle*180/PI,&MISSILE_CENTRES[SHOT_LASER],SDL_FLIP_NONE);
 }
 
-
+/**
+*\fn void afficher_text_bonus()
+*\brief affichage du texte des bonus
+*\param renderer Le renderer où dessiner
+*\param textBonus[MAX_TEXT_BONUS]
+*\param font Les polices
+*/
 void afficher_text_bonus(SDL_Renderer * renderer, TextBonus textBonus[MAX_TEXT_BONUS], TTF_Font * font){
 	int nbText=0;
 	for(int i=0; i<MAX_TEXT_BONUS; i++)
@@ -841,6 +996,15 @@ void afficher_text_bonus(SDL_Renderer * renderer, TextBonus textBonus[MAX_TEXT_B
 
 
 //MISSILE
+
+/**
+*\fn void tirer()
+*\brief permet de tirer
+*\param vaisseau le vaisseau
+*\param missile liste de missiles
+*\param nb_missiles nombre de missiles
+*\param shootSound son du tir
+*/
  void tirer(Vaiss * vaisseau, Missile ** missiles, int * nb_missiles, Mix_Chunk * shootSound){
 
 	Mix_PlayChannel( 5, shootSound,0);
@@ -864,10 +1028,15 @@ void afficher_text_bonus(SDL_Renderer * renderer, TextBonus textBonus[MAX_TEXT_B
 }
 
 
-
-
-
-
+/**
+*\fn float calculer_angle()
+*\brief calcul de l'angle
+*\param x1 coord en x
+*\param y1 coord en y
+*\param x2 coord en x
+*\param y2 coord en y
+*\return le resultat du calcul
+*/
 float calculer_angle(float x1, float y1, float x2, float y2){
 	return atan2((y2-y1) , (x2-x1));
 }
@@ -886,6 +1055,15 @@ float base360(float angle){
 	return (angle * 360 / (2*PI));
 }
 
+/**
+*\fn void asteroid_plus_proche()
+*\brief cherche l'asteroid le plus proche
+*\param renderer Le renderer où dessiner
+*\param asteroides liste d'asteroides
+*\param nb_asteroid nombre d'asteroides
+*\param best_angle_between meilleur_angle_possible
+*\return imin_asteroid indice de l'asteroide
+*/
 int asteroid_plus_proche(SDL_Renderer * renderer, Asteroid * asteroides, int nb_asteroid, Missile missile, float * best_angle_between){
 
 	int i;
@@ -936,6 +1114,14 @@ int signOf( float f){
 	return (f > 0) ? 1 : ((f < 0 )? -1 : 0);
 }
 
+/**
+*\fn void mouvement_tir()
+*\brief mouvement du missile en fonction de l'arme
+*\param renderer Le renderer où dessiner
+*\param shot un tir de missile
+*\param asteroides liste d'asteroides
+*\param nb_asteroid nombre d'asteroides
+*/
 void mouvement_tir(SDL_Renderer *renderer,Missile * shot, Asteroid * asteroides, int nb_asteroid){
 	int i;
 	float angle_between;
@@ -958,12 +1144,28 @@ void mouvement_tir(SDL_Renderer *renderer,Missile * shot, Asteroid * asteroides,
 }
 
 
-
+/**
+*\fn void rotateAsteroides()
+*\brief permet la rotation de l'asteroide sur lui même
+*\param asteroides liste d'asteroides
+*\param nb_asteroid nombre d'asteroides
+*/
 void rotateAsteroides(Asteroid * asteroides, int nb_asteroid){
 	for(int i=0; i<nb_asteroid; i++)
 		asteroides[i].angle_rota += asteroides[i].vitesse_rota * (1 - 0.4*asteroides[i].frozen);
 }
 
+/**
+*\fn void update_frame()
+*\brief mise à jour à chaque frame
+*\param missiles liste de missiles
+*\param nb_missiles nombre de missiles
+*\param vaisseau le vaisseau
+*\param frame
+*\param frame_apparition_asteroid
+*\param vitesse_spawn vitesse à laquelle spawn les astéroides
+*\param frame_2asteroid
+*/
 void update_frame(Missile ** missiles, int * nb_missiles, Vaiss * vaisseau, long int * frame, int * frame_apparition_asteroid, float * vitesse_spawn, int * frame_2asteroid){
 	for(int i=0;i<*nb_missiles;i++){
 		((*missiles)[i].frame)--;
@@ -990,6 +1192,13 @@ void update_frame(Missile ** missiles, int * nb_missiles, Vaiss * vaisseau, long
 	}
 }
 
+/**
+*\fn void afficher_tir()
+*\brief affichage du tir
+*\param renderer Le renderer où dessiner
+*\param shot un tir
+*\param missileTexture texture du missile
+*/
 void afficher_tir( SDL_Renderer * renderer, Missile shot, SDL_Texture * missileTexture){
 	SDL_Rect src = { MISSILE_CUT * shot.id, 0, MISSILE_SRC[shot.id].x, MISSILE_SRC[shot.id].y};
 	float ratioSize = (float)RAYON_MISSILES[shot.id]/MISSILES_SRC_RAYON[shot.id];
@@ -1012,6 +1221,17 @@ void afficher_tir( SDL_Renderer * renderer, Missile shot, SDL_Texture * missileT
 
 
 //ASTEROID
+
+/**
+*\fn void spawn_asteroid()
+*\brief apparation d'un asteroide
+*\param vaisseau le vaisseau
+*\param asteroides liste d'asteroides
+*\param nb_asteroid nombre d'asteroid
+*\param difficulte difficulte du jeu
+*\param munitions[NB_MISSILES] liste des munitions
+*\param hardcore mode de jeu hardcore ou non
+*/
 void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, float difficulte, float munitions[NB_MISSILES], int hardcore){
 	printf("Je suis la 0 \n");
 	difficulte *= 1 + randSign() * (rand()%(int)(PRECISION_RAND_FLOAT *INTERVALE_RAND_DIFFICULTE))/(float)PRECISION_RAND_FLOAT;
@@ -1123,6 +1343,12 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 	}
 
 }
+/**
+*\fn void mouvement_asteroid()
+*\brief mouvement d'un asteroide
+*\param asteroid un asteroide
+*\param hardcore mode de jeu hardcore ou non
+*/
 void mouvement_asteroid(Asteroid* asteroid, int hardcore){
 	if(!asteroid->frame_depart || !hardcore){
 		asteroid->x+=asteroid->vitesse*cos(asteroid->angle) * (1 - 0.4*asteroid->frozen); // 0 1   /  1 0.5   2  0
@@ -1130,6 +1356,20 @@ void mouvement_asteroid(Asteroid* asteroid, int hardcore){
 	}
 }
 
+/**
+*\fn void afficher_texture_asteroid()
+*\brief affichage de la texture de l'asteroide
+*\param renderer Le renderer où dessiner
+*\param textureAsteroid texture de l'asteroid
+*\param textureFissure texture de la fissure
+*\param textureBonus texture du bonus
+*\param textureGlace texture de la glace
+*\param src Rect source
+*\param dest Rect destinataire
+*\param srcFissure Fissure source
+*\param srcGlace Glace source
+*\param asteroid un asteroid
+*/
 void afficher_texture_asteroid(SDL_Renderer* renderer, SDL_Texture * textureAsteroid, SDL_Texture* textureFissure, SDL_Texture* textureBonus, SDL_Texture* textureGlace, SDL_Rect src, SDL_Rect dest, SDL_Rect srcFissure, SDL_Rect srcGlace, Asteroid asteroid){
 
 	SDL_RenderCopyEx(renderer, textureAsteroid, &src, &dest, asteroid.angle_rota, NULL, SDL_FLIP_NONE);
@@ -1147,7 +1387,17 @@ void afficher_texture_asteroid(SDL_Renderer* renderer, SDL_Texture * textureAste
 
 
 }
-
+/**
+*\fn void afficher_asteroid()
+*\brief affichage de l'asteroide
+*\param asteroid un asteroid
+*\param renderer Le renderer où dessiner
+*\param textureAsteroid texture de l'asteroid
+*\param textureFissure texture de la fissure
+*\param textureBonus texture du bonus
+*\param textureGlace texture de la glace
+*\param hardcore mode de jeu hardcore ou non
+*/
 void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* textureAsteroid, SDL_Texture* textureFissure, SDL_Texture* textureBonus, SDL_Texture* textureGlace, int hardcore){
 	SDL_SetTextureAlphaMod(textureAsteroid, 255 - 150 * asteroid.frame_depart/FRAME_DEPART);
 	SDL_SetTextureAlphaMod(textureFissure, 255 - 150 * asteroid.frame_depart/FRAME_DEPART);
@@ -1237,12 +1487,25 @@ void afficher_asteroid(Asteroid asteroid, SDL_Renderer * renderer, SDL_Texture* 
 	}
 }
 
+/**
+*\fn void initText()
+*\brief initialiser du texte
+*\param textsBonus
+*/
 void initText(TextBonus textsBonus[MAX_TEXT_BONUS]){
 	for(int i=0; i<MAX_TEXT_BONUS; i++){
 		textsBonus[i].frame = 0;
 	}
 }
 
+/**
+*\fn void afficherJauge()
+*\brief afficher la jauge de munitions
+*\param renderer Le renderer où dessiner
+*\param textureJauge texture de la jauge
+*\param ratioWindowSize  Le ratio de la taille de fenetre par rapport à la taille max
+*\param jauge la jauge à dessiner
+*/
 void afficherJauge(SDL_Renderer * renderer, SDL_Texture * textureJauge, float ratioWindowSize, Jauge jauge){
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
@@ -1285,7 +1548,17 @@ void afficherJauge(SDL_Renderer * renderer, SDL_Texture * textureJauge, float ra
 
 
 }
-
+/**
+*\fn void afficherRoue()
+*\brief afficher de la roue de munitions
+*\param renderer Le renderer où dessiner
+*\param textureRoue texture de la roue
+*\param ratioWindowSize  Le ratio de la taille de fenetre par rapport à la taille max
+*\param munitions[NB_MISSILES] liste des munitions
+*\param roue la roue à dessiner
+*\param currentId
+*\param centerColor couleur du centre
+*/
 void afficherRoue(SDL_Renderer * renderer, SDL_Texture * textureRoue, float ratioWindowSize, float munitions[NB_MISSILES], Roue roue, int currentId, SDL_Color centerColor){
 	SDL_Rect dest = ROUE_DIM;
 	dest.w *= ratioWindowSize;
@@ -1336,6 +1609,14 @@ void afficherRoue(SDL_Renderer * renderer, SDL_Texture * textureRoue, float rati
 
 }
 
+/**
+*\fn void afficherScoreTotal()
+*\brief affichage du score total
+*\param renderer Le renderer où dessiner
+*\param font Les polices
+*\param scoreShow
+*\param ratioWindowSize  Le ratio de la taille de fenetre par rapport à la taille max
+*/
 static void afficherScoreTotal(SDL_Renderer *renderer, TTF_Font *font, int scoreShow, float ratioWindowSize){
 	char msgScore[20];
 	sprintf(msgScore, "%d", scoreShow);
@@ -1357,7 +1638,14 @@ static void afficherScoreTotal(SDL_Renderer *renderer, TTF_Font *font, int score
 	SDL_DestroyTexture(Message);
 }
 
-
+/**
+*\fn void afficherBombeIcon()
+*\brief afficher de l'icone de la bombe
+*\param renderer Le renderer où dessiner
+*\param textureBombIcon texture de l'icone de bombe
+*\param nbBombeNucleaire nombre de bombe nucleaire
+*\param ratioWindowSize  Le ratio de la taille de fenetre par rapport à la taille max
+*/
 void afficherBombIcon(SDL_Renderer * renderer, SDL_Texture * textureBombIcon, int nbBombeNucleaire, float ratioWindowSize){
 	if(nbBombeNucleaire)
 		SDL_SetTextureAlphaMod(textureBombIcon, 255);
@@ -1373,7 +1661,16 @@ void afficherBombIcon(SDL_Renderer * renderer, SDL_Texture * textureBombIcon, in
 
 	SDL_RenderCopy(renderer, textureBombIcon, NULL, &dest);
 }
-
+/**
+*\fn void myFrees()
+*\brief Libère la mémoire
+*\param missiles liste de missiles
+*\param asteroides liste d'asteroides
+*\param explosions liste d'explosions
+*\param fonts Les polices
+*\param thread Le thread d'envoi de score
+*\param sounds liste des sons
+*/
 static void myFrees(Missile ** missiles, Asteroid ** asteroides, Explosion ** explosions, TTF_Font ** fonts, SDL_Thread ** thread, Mix_Chunk ** sounds){
 
 	if(*missiles)
@@ -1403,6 +1700,13 @@ static void myFrees(Missile ** missiles, Asteroid ** asteroides, Explosion ** ex
 	}
 }
 
+/**
+*\fn void drawHelpText()
+*\brief Affiche les commandes et explications des bonus
+*\param renderer Le renderer où afficher
+*\param flecheTexture La texture des flèches directionelles
+*\param hardcore mode de jeu hardcore ou non
+*/
 static void drawHelpText(SDL_Renderer *renderer, SDL_Texture *flecheTexture,int hardcore){
 
 	//direction
