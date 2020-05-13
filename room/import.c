@@ -275,7 +275,7 @@ void chargerTexture(const char* filename, const C_STRUCT aiScene *scene, GLuint 
           #ifdef __APPLE__
            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->w, img->h, 0, GL_RGB, GL_UNSIGNED_BYTE, img->pixels);
           #else
-           glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->w, img->h, 0, t->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
+           glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->w, img->h, 0, img->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
           #endif
 
           // DESTRUCTION DE LA SURFACE
@@ -415,14 +415,13 @@ void afficherScene(const struct aiScene *sc, const struct aiNode* nd, GLuint * i
 		(*ivao)++;
 	}
 
-
-	for (n = 0; n < nd->mNumChildren; ++n) {
+  // APPEL RECURSIF POUR TOUS LES NODES PRESENT
+	for (n = 0; n < nd->mNumChildren; ++n)
 		afficherScene(sc, nd->mChildren[n],ivao,textures,counts);
-	}
-
-	glPopMatrix();
 
 }
+
+
 
 char * pathOf(const char * path) {
 	int spos = -1;
