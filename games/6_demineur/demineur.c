@@ -21,42 +21,15 @@
 
 static const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
 
-static void myInit(){
 
-	// SDL Init
-	SDL_Init(SDL_INIT_EVERYTHING);
-	TTF_Init();
-
-	// rand
-	srand(time(NULL));
-}
-
-static const SDL_Point ESPACE_DISPLAY_WINDOW = { 100, 100};
-
-SDL_Point maximizeWindow(SDL_Rect displayBounds, float* ratioWindowSize){
-	SDL_Point maxW = {(PLAYGROUND_SIZE_W + 2 * HUD_W), (PLAYGROUND_SIZE_H + 2 * HUD_H)};
-	if( maxW.x > displayBounds.w - ESPACE_DISPLAY_WINDOW.x  ||  maxW.y > (displayBounds.h - ESPACE_DISPLAY_WINDOW.y) - ESPACE_DISPLAY_WINDOW.y){
-		if( (float)maxW.x/maxW.y > (float)(displayBounds.w - ESPACE_DISPLAY_WINDOW.x)/(displayBounds.h - ESPACE_DISPLAY_WINDOW.y) ){
-			*ratioWindowSize = (float)maxW.x / (displayBounds.w - ESPACE_DISPLAY_WINDOW.x);
-			maxW.y /= (float)maxW.x / (displayBounds.w - ESPACE_DISPLAY_WINDOW.x);
-			maxW.x = displayBounds.w - ESPACE_DISPLAY_WINDOW.x;
-		}
-		else{
-			*ratioWindowSize = (float)maxW.y / (displayBounds.h - ESPACE_DISPLAY_WINDOW.y);
-			maxW.x /= (float)maxW.y / (displayBounds.h - ESPACE_DISPLAY_WINDOW.y);
-			maxW.y = (displayBounds.h - ESPACE_DISPLAY_WINDOW.y);
-		}
-	}
-	return maxW;
-}
-
-
+/*Fonction qui permet de vérifier que les coordonnées de la case rentrées en paramètre sont bien dans la grille de démineur*/
 int coor_valide(int x, int y){
 	if((x>=0)&&(x<TAILLE_GRILLE_LIGNE)&&(y>=0)&&(y<TAILLE_GRILLE_COLONNE))
 		return 1;
 	else return 0;
 }
 
+/*Fonction qui renvoi le nombre de bombes autour d'une case (les 8 cases qui l'entoure)*/
 int nb_bombes_autour(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
 
 	int nb_bombes_autour=0;
@@ -81,7 +54,9 @@ int nb_bombes_autour(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int
 
 	return nb_bombes_autour;
 }
-
+/*Fonction qui vérifie si la case donnée en paramètre possède au moins une case libre autour d'elle
+Une case est dite libre si elle n'a aucune bombe autour d'elle (voir config.h)
+Cette fonction servira dans le programme principal car, si le joueur clique sur une case qui ne possède aucune case libre autour d'elle, alors le démineur affichera cette case seule, sans chercher à démasquer les autres cases autour*/
 int danger_avec_libre_autour(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
 
 	if((coor_valide(x-1, y-1))&&(nb_bombes_autour(grille, x-1, y-1)==0))
@@ -104,10 +79,17 @@ int danger_avec_libre_autour(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLON
 	else return 0;
 }
 
+/*Fonction récursive qui affiche les cases (ou non) de la grille en fonction des coordonnées où l'utilisateur a cliqué
+C'est la fonction principale du jeu, celle qui détermine les cases de la grille à démasquer en fonction de leur type (si il y a une bombe autour etc...)*/
 void etat(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
+	//Vérifie dans un premier temps si les coordonnées du clique sont valides
 	if(coor_valide(x,y)){
+		//cette fonction agit sur les cases masquées, ce que vérifie la condiion ci-dessous
 		if((grille[x][y]==MASQUE)||(grille[x][y]==DRAPEAU_SANS_BOMBES))
 		{
+			/*si la case concernée n'a aucune bombe autour, elle est libre,
+			lorsqu'un case est libre cela veut dire qu'on la dévoile et qu'on cherche à dévoiler les cases qui sont autour,
+			d'où l'appel récursif */
 			if(nb_bombes_autour(grille, x, y)==0){
 				grille[x][y]=LIBRE;
 				etat(grille, x-1, y-1);
@@ -120,6 +102,8 @@ void etat(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
 				etat(grille, x+1, y+1);
 			}
 			else if(danger_avec_libre_autour(grille, x, y)){
+				/*Si une case vérifie cette condition, alors elle a au moins une case libre et une bombe autour d'elle
+				la fonction cherche la/les cases libres autour pour la/les dévoiler et ainsi de suite*/
 				grille[x][y]=DANGER_AVEC_LIBRE_AUTOUR;
 				if(nb_bombes_autour(grille, x-1, y-1)==0)
 					etat(grille, x-1, y-1);
@@ -138,23 +122,27 @@ void etat(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
 				if(nb_bombes_autour(grille, x+1, y+1)==0)
 					etat(grille, x+1, y+1);
 			}
+			//Si la case concernée n'a aucune case libre autour d'elle, la fonction arrête de dévoiler des cases
 			else grille[x][y]=DANGER_SANS_LIBRE_AUTOUR;
 		}
 	}
 }
-
+/*La fonction suivante sert à initiliser la grille à l'aide du premier click de l'utilisateur
+En effet, lors d'une partie de démineur, la grille s'initialise en fonction des coordonnées du premier click de l'utilisateur
+(Le premier click ne peut pas être sur une bombe, sinon la partie est perdue sans que l'utilisateur ait pu jouer)*/
 void init_grille(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, int y){
 
 	int i, j;
 	int bombes=NOMBRE_BOMBES_GRILLE;
 	printf("nb bombes : %d", bombes);
-
+	//Initialisation de toutes les cases à -1 afin qu'elles soient toutes neutres au départ
 	for(i=0;i<TAILLE_GRILLE_LIGNE;i++){
 		for(j=0;j<TAILLE_GRILLE_COLONNE;j++){
 				grille[i][j]=-1;
 		}
 	}
 
+	//On met des cases de type MASQUE à l'endroit du premier click, afin d'éviter que des bombes s'y glisse
 	grille[x][y]=MASQUE;
 
 	if(coor_valide(x-1, y-1))
@@ -174,6 +162,8 @@ void init_grille(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, 
 	if(coor_valide(x+1, y+1))
 		grille[x+1][y+1]=MASQUE;
 
+	//La fonction place des bombes aléatoirement sur des cases de la grille
+	//sauf sur les cases qui sont autour du premier click
 	while(bombes>0){
 		i=rand()%TAILLE_GRILLE_LIGNE;
 		j=rand()%TAILLE_GRILLE_COLONNE;
@@ -182,7 +172,7 @@ void init_grille(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, 
 			--bombes;
 		}
 	}
-
+	//la fonction remplit les cases restantes
 	for(i=0;i<TAILLE_GRILLE_LIGNE;i++){
 		for(j=0;j<TAILLE_GRILLE_COLONNE;j++){
 			if(grille[i][j]!=MASQUE_AVEC_BOMBES){
@@ -190,9 +180,12 @@ void init_grille(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int x, 
 			}
 		}
 	}
+	//on lance la fonction etat, qui découvre les premières cases, où l'utilisateur vient de cliquer
 	etat(grille, x, y);
 }
 
+//Cette fonction renvoit 1 lorsque les seules cases masquées restantes sur la grille sont des bombes,
+//l'utilisateur a alors gagné
 int fin_jeu(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE]){
 	int i, j;
 	for(i=0; i<TAILLE_GRILLE_LIGNE; i++){
@@ -204,6 +197,8 @@ int fin_jeu(int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE]){
 	return 1;
 }
 
+/*Cette fonction sert à écrire du texte sur la fenêtre SDL aux coordonnées indiquées en paramètre,
+avec le message rentré et la police choisie*/
 void afficher_texte(SDL_Renderer * renderer, char *message, TTF_Font * police, int x, int y)
 {
 
@@ -222,13 +217,17 @@ void afficher_texte(SDL_Renderer * renderer, char *message, TTF_Font * police, i
 
 }
 
+/*Fonction assez longue mais néanmoins asses simple, affiche les cases en fonction de leur type
+Les images mises sur les cases proviennent de la texture en paramètre, initialisé dans le main..
+Cette fonction est appelée en boucle dans le programme principale*/
 void afficher_grille(SDL_Renderer *renderer, int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE], int premier_click, int click_bombe, SDL_Texture * texture){
 
 	SDL_Rect case_dem={50,50,TAILLE_CASE,TAILLE_CASE};
-	//SDL_SetRenderDrawColor(renderer,0,0,0,255);
 
 	SDL_Rect src={0,0,54,54};
 
+	/*Avant le premier click, les cases de la grille n'ont aucun type,
+	 on affiche juste une grille entière de cases masquées*/
 	if(premier_click==0){
 		for(int i=0;i<TAILLE_GRILLE_LIGNE;i++){
 			case_dem.x=50;
@@ -381,44 +380,17 @@ int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, cha
 	police = TTF_OpenFont("../assets/font/police.ttf", 40);
 	float ratio_fen=(float)maxWindowSize.x/(PLAYGROUND_SIZE_W + 2 * HUD_W);
 	printf("ratio_fen -->%d %d %d %f\n",maxWindowSize.x, HUD_W, (PLAYGROUND_SIZE_W + 2 * HUD_W), ratio_fen);
+
+
 	//Keyboard
 	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 	int temps_jeu=0;
 	int tempo;
 	int minutes, secondes;
+
+
 	//Time
 	unsigned int lastTime = 0, currentTime;
-
-	//Fonts
-	/*TTF_Font* scoreFont = TTF_OpenFont("./fonts/flappy.ttf", OPEN_FONT_SIZE);
-	if( scoreFont == NULL ){
-		printf("TTF_OpenFont() Failed: %s\n", TTF_GetError());
-		return EXIT_FAILURE;
-	}*/
-
-	//audio
-	/*Mix_Chunk *flap_wav = Mix_LoadWAV( "../3_flappy_bird/Sounds/flap.wav" );
-	if( !flap_wav)
-		printf("Erreur chargement des sons\n");*/
-
-	//Window and renderer
-
-
-/*
-	SDL_Window *myWindow = SDL_CreateWindow("Démineur", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, maxWindowSize.x ,maxWindowSize.y, WINDOW_FLAG);
-	if( myWindow == NULL ){
-		printf("Erreur lors de la creation de la fenêtre : %s", SDL_GetError());
-		return EXIT_FAILURE;
-	}
-
-	printf("%d, %d\n", maxWindowSize.x ,maxWindowSize.y );
-
-	SDL_Renderer *renderer = SDL_CreateRenderer(myWindow, -1, SDL_RENDERER_ACCELERATED);
-	if( renderer == NULL ){
-		printf("Erreur lors de la creation d'un renderer : %s", SDL_GetError());
-		return EXIT_FAILURE;
-	}
-*/
 
 	//Views
 	SDL_Rect playgroundView = {HUD_W/ratioWindowSize, HUD_H/ratioWindowSize, PLAYGROUND_SIZE_W, PLAYGROUND_SIZE_H};
@@ -445,16 +417,11 @@ int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, cha
 	int grille[TAILLE_GRILLE_LIGNE][TAILLE_GRILLE_COLONNE];
 
 
-
-	///////////////////////
-	/// Initialize vars ///`
-	///////////////////////
-
-
 /////////////////////
-/// BOUCLE DU JEU ///``
+/// BOUCLES DU JEU ///``
 /////////////////////
 
+//première boucle, qui se fermera lorsque l'utilisateur aura effectué son premier click
 	while( premier_click==0 ){
 
 		// Init input
@@ -511,12 +478,18 @@ int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, cha
 	// Draw //`
 	//////////
 
+/*Lorsque l'utilisateur effectue un click,
+un renderer de la taille d'une case est créé,
+ce renderer se "colle" forcement à une case*/
 	if(relache_gauche){
 		mouseCoor.x-=ratio_fen*HUD_W;
 		mouseCoor.y-=ratio_fen*HUD_H;
 		SDL_Point case_coor = {(int)(mouseCoor.x/(TAILLE_CASE*ratio_fen)), (int)(mouseCoor.y/(TAILLE_CASE*ratio_fen))};
 		SDL_Rect case_dem={case_coor.x*TAILLE_CASE,case_coor.y*TAILLE_CASE,TAILLE_CASE,TAILLE_CASE};
 		case_coor.y--;case_coor.x--;
+		/*Vérifie que l'utilisateur click bien dans la grille, sinon sans effet
+		Le premier click lance l'initialisation de la grille et sort de cette boucle
+		la partie est maintenant lancée*/
 		if(coor_valide(case_coor.y, case_coor.x)){
 			SDL_SetRenderDrawColor(renderer,255,0,0,255);
 			SDL_RenderFillRect(renderer, &case_dem);
@@ -563,8 +536,10 @@ int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, cha
 
 	}
 
+	//cette variable servira plus tard dans le programme pour connaître le temps de jeu réel (temps de jeu qui commencer après le premier click)
 	tempo=SDL_GetTicks();
 
+	//Boucle principale du jeu, se termine lorsque la partie est gagnée ou perdue
 	while((!fin_jeu(grille))&&(click_bombe==0))
 	{
 
@@ -602,7 +577,6 @@ int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, cha
 				case SDL_MOUSEBUTTONUP:
 					if((event.button.button == SDL_BUTTON_LEFT)&&(clique_gauche==SDL_TRUE)){
 						relache_gauche=SDL_TRUE;
-						//premier_click=1;
 					}
 					else if((event.button.button == SDL_BUTTON_RIGHT)&&(clique_droit==SDL_TRUE)){
 						relache_droit=SDL_TRUE;
@@ -630,6 +604,8 @@ int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, cha
 	// Draw //`
 	//////////
 
+	/*comme la boucle précédente, un clique gauche regardera l'état de la case
+	si c'est une bombe, la partie se termine*/
 	if(relache_gauche){
 		mouseCoor.x-=ratio_fen*HUD_W;
 		mouseCoor.y-=ratio_fen*HUD_H;
@@ -655,6 +631,7 @@ int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, cha
 			}
 		}
 	}
+	//Un click droit permet de placer un drapeau sur une case (ou de l'enlever)
 	if(relache_droit){
 		mouseCoor.x-=ratio_fen*HUD_W;
 		mouseCoor.y-=ratio_fen*HUD_H;
@@ -680,7 +657,8 @@ int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, cha
 	}
 
 
-
+		/*Pour connaitre le temps effectif du jeu, on prend le temps depuis que la fenêtre SDL est ouverte
+		et on soustrait le temps que l'utilisateur à pris pour son premier click*/
 		temps_jeu=(SDL_GetTicks()-tempo)/1000;
 		afficher_texte(renderer, "Temps jeu", police, 1350, 50);
 
@@ -759,6 +737,8 @@ int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, cha
 	////////////////////////////
 	// Handle Keyboard inputs //`
 	////////////////////////////
+
+	//Dernière boucle du jeu, affiche un message en fonction de si l'utilisateur a gagné ou a perdu
 		SDL_PumpEvents();
 
 		if(fin_jeu(grille)){
