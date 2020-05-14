@@ -463,7 +463,6 @@ void moveEnemy(Enemy **enemies, int * nbEnemy, int iEnemy){
 }
 
 void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
-	return;
 	*nbEnemy += nbSpawn;
 	*enemies = realloc( *enemies, *nbEnemy * sizeof(Enemy));
 
