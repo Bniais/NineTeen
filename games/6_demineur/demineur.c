@@ -537,11 +537,11 @@ ce renderer se "colle" forcement à une case*/
 		afficher_grille(renderer,grille, premier_click, click_bombe, texture);
 
 		//hud
-		drawBeta(renderer, police ,1, (SDL_Color){0xFF,0x00,0x00},100);
+		drawBeta(renderer, police ,1. / ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},100);
 		SDL_RenderSetScale(renderer, 1, 1);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderSetViewport(renderer, &hudView);
-		SDL_RenderCopy(renderer, hudTexture, &hudView, &hudDraw);
+		//SDL_RenderCopy(renderer, hudTexture, &hudView, &hudDraw);
 		SDL_RenderSetViewport(renderer, &playgroundView);
 
 		//afficher
@@ -711,12 +711,12 @@ ce renderer se "colle" forcement à une case*/
 		}
 
 		afficher_grille(renderer,grille, premier_click, click_bombe, texture);
-		drawBeta(renderer, police ,1. /ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},100);
+		drawBeta(renderer, police ,1. / ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},100);
 		//hud
 		SDL_RenderSetScale(renderer, 1, 1);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderSetViewport(renderer, &hudView);
-		SDL_RenderCopy(renderer, hudTexture, &hudView, &hudDraw);
+		//SDL_RenderCopy(renderer, hudTexture, &hudView, &hudDraw);
 		SDL_RenderSetViewport(renderer, &playgroundView);
 
 		//afficher
@@ -802,11 +802,11 @@ ce renderer se "colle" forcement à une case*/
 
 			afficher_texte(renderer, "Tu as perdu...", police, 1350, 50);
 		}
-		drawBeta(renderer, police ,1. /ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},100);
+		drawBeta(renderer, police ,1. / ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},100);
 		SDL_RenderSetScale(renderer, 1, 1);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderSetViewport(renderer, &hudView);
-		SDL_RenderCopy(renderer, hudTexture, &hudView, &hudDraw);
+		//SDL_RenderCopy(renderer, hudTexture, &hudView, &hudDraw);
 		SDL_RenderSetViewport(renderer, &playgroundView);
 
 		//afficher

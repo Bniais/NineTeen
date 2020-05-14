@@ -1730,50 +1730,44 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	cible[TETRIS_HARD-1].ouverture =70;
 
 	cible[ASTEROID_HARD-1].px = -2.680496;
-	cible[ASTEROID_HARD-1].pz = 12.924740;
-	cible[ASTEROID_HARD-1].py = 3.611998;
-	cible[ASTEROID_HARD-1].cible_py = -.332000;
+	cible[ASTEROID_HARD-1].pz = 12.925740;
+	cible[ASTEROID_HARD-1].py = 3.610998;
+	cible[ASTEROID_HARD-1].cible_py = -.329000;
 	cible[ASTEROID_HARD-1].angle = M_PI;
 	cible[ASTEROID_HARD-1].ouverture =70;
 
 
-	/*
-		camera->px = -6.56;
-		camera->pz = 9.189630;
-		camera->py = 3.609998;
-		camera->cible_py = -.332000;
-		camera->angle = 0.0;
-		camera->ouverture =70;*/
+
 
 	cible[SHOOTER_HARD-1].px = -6.56;
-	cible[SHOOTER_HARD-1].pz = 9.189630;
+	cible[SHOOTER_HARD-1].pz = 9.195632;
 	cible[SHOOTER_HARD-1].py = 3.609998;
-	cible[SHOOTER_HARD-1].cible_py = -.332000;
+	cible[SHOOTER_HARD-1].cible_py = -.329000;
 	cible[SHOOTER_HARD-1].angle = 0.0;
 	cible[SHOOTER_HARD-1].ouverture =70;
 
-	cible[SNAKE_HARD-1].px = -4.626522;
-	cible[SNAKE_HARD-1].pz = 9.189630;
-	cible[SNAKE_HARD-1].py = 3.609998;
-	cible[SNAKE_HARD-1].cible_py = -.332000;
-	cible[SNAKE_HARD-1].angle = 0;
+	cible[SNAKE_HARD-1].px = -4.627522;
+	cible[SNAKE_HARD-1].pz = 9.194634;
+	cible[SNAKE_HARD-1].py = 3.612998;
+	cible[SNAKE_HARD-1].cible_py = -.330000;
+	cible[SNAKE_HARD-1].angle = 0.001000;
 	cible[SNAKE_HARD-1].ouverture =70;
 
-	cible[DEMINEUR_HARD-1].px = -2.68;
-	cible[DEMINEUR_HARD-1].pz = 9.189630;
+	cible[DEMINEUR_HARD-1].px = -2.677498;
+	cible[DEMINEUR_HARD-1].pz = 9.194127;
 	cible[DEMINEUR_HARD-1].py = 3.609998;
-	cible[DEMINEUR_HARD-1].cible_py = -.332000;
+	cible[DEMINEUR_HARD-1].cible_py = -.328500;
 	cible[DEMINEUR_HARD-1].angle = 0;
 	cible[DEMINEUR_HARD-1].ouverture =70;
 
 
-
 	// // // // //
 
-	cible[DEMINEUR_EASY-1].px = 2.68;
-	cible[DEMINEUR_EASY-1].pz = 12.924735;
+
+	cible[DEMINEUR_EASY-1].px = 2.703498;
+	cible[DEMINEUR_EASY-1].pz = 12.925235;
 	cible[DEMINEUR_EASY-1].py = 3.609998;
-	cible[DEMINEUR_EASY-1].cible_py = -.332000;
+	cible[DEMINEUR_EASY-1].cible_py = -.327500;
 	cible[DEMINEUR_EASY-1].angle = M_PI;
 	cible[DEMINEUR_EASY-1].ouverture =70;
 
@@ -1784,33 +1778,36 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	cible[SNAKE_EASY-1].angle = M_PI;
 	cible[SNAKE_EASY-1].ouverture =70;
 
-	cible[SHOOTER_EASY-1].px = 6.56;
-	cible[SHOOTER_EASY-1].pz = 12.924735;
+	cible[SHOOTER_EASY-1].px = 6.587511;
+	cible[SHOOTER_EASY-1].pz = 12.924235;
 	cible[SHOOTER_EASY-1].py = 3.609998;
 	cible[SHOOTER_EASY-1].cible_py = -.332000;
 	cible[SHOOTER_EASY-1].angle = M_PI;
 	cible[SHOOTER_EASY-1].ouverture =70;
 
-	cible[ASTEROID_EASY-1].px = 2.707498;
-	cible[ASTEROID_EASY-1].pz = 9.192631;
-	cible[ASTEROID_EASY-1].py = 3.608998;
-	cible[ASTEROID_EASY-1].cible_py = -.329500;
+
+
+	cible[ASTEROID_EASY-1].px = 2.706498;
+	cible[ASTEROID_EASY-1].pz = 9.193630;
+	cible[ASTEROID_EASY-1].py = 3.612498;
+	cible[ASTEROID_EASY-1].cible_py = -.331500;
 	cible[ASTEROID_EASY-1].angle = 0.0;
 	cible[ASTEROID_EASY-1].ouverture =70;
 
 	cible[TETRIS_EASY-1].px = 4.637994;
 	cible[TETRIS_EASY-1].pz = 9.192131;
-	cible[TETRIS_EASY-1].py = 3.608998;
-	cible[TETRIS_EASY-1].cible_py = -.326500;
+	cible[TETRIS_EASY-1].py = 3.612498;
+	cible[TETRIS_EASY-1].cible_py = -.329000;
 	cible[TETRIS_EASY-1].angle = 0;
 	cible[TETRIS_EASY-1].ouverture =70;
 
 	cible[FLAPPY_EASY-1].px = 6.59;
  	cible[FLAPPY_EASY-1].pz = 9.195626;
- 	cible[FLAPPY_EASY-1].py = 3.606998;
- 	cible[FLAPPY_EASY-1].cible_py = -.330000;
+ 	cible[FLAPPY_EASY-1].py = 3.613497;
+ 	cible[FLAPPY_EASY-1].cible_py = -.331000;
 	cible[FLAPPY_EASY-1].angle = 0;
 	cible[FLAPPY_EASY-1].ouverture =70;
+
 
 
 	cible[12].px = -13.10;
@@ -1835,9 +1832,9 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	cible[14].ouverture =70;
 
 	cible[15].px = 0.000;
-	cible[15].pz = 19.53;
-	cible[15].py = 3.648998;
-	cible[15].cible_py = -.144400;
+	cible[15].pz = 19.523005;
+	cible[15].py = 3.665997;
+	cible[15].cible_py = -.152400;
 	cible[15].angle = 0.0;
 	cible[15].ouverture =70;
 }
@@ -2037,14 +2034,6 @@ void mouvementCamera(SDL_Window * Window, struct Camera_s *camera, const float I
 		}
 
 	}
-
-
-    /*printf(" x%f  z%f  y%f  a%f o%f\n\n",camera->px,
-	camera->pz,
-	camera->py ,
-	camera->cible_py,
-	camera->angle ,
-	camera->ouverture );*/
 
 
 	///////////////////////////////////////////////////
@@ -2690,6 +2679,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							///////////////////////////////////////////////////
 							// ANIMATION CENTRAGE SUR MACHINE
 							animationLancerMachine(camera,cible[machine-1],*scene_list,Window, _IPS,60.0);
+
+							MessageQuitterRoom(1,adresseFontImg[machine-1]);
+							MessageQuitterRoom(1,"../room/textures/chargement.png");
+
+							SDL_GL_SwapWindow(Window);
 
 							///////////////////////////////////////////////////
 							// DESTRUCTION DES TEXTURES ET DU CONTEXT
