@@ -61,8 +61,8 @@ typedef struct{
 *\brief information sur l'envoie d un score en structure pour le passer en param d'un thread SDL
 */
 typedef struct{
-	char *gameID; c
-	har *score;
+	char *gameID;
+	char *score;
 	char *key;
 }EnvoiScore;
 
