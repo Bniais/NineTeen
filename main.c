@@ -6,8 +6,8 @@
 ///	\brief regroupe le launcher ainsi que le programme principal du jeu
 /////////////////////////////////////////////////
 
-#define VERSION_LOGICIEL "version=1.0.2-dev"
-#define VERSION "1.0.2-dev"
+#define VERSION_LOGICIEL "version=1.1.0"
+#define VERSION "1.1.0"
 
 #ifdef _WIN32
 #define WESNOTH_EXPORT __declspec(dllexport)
@@ -21,7 +21,7 @@ WESNOTH_EXPORT int AmdPowerXpressRequestHighPerformance = 1;
 
 
 #include <stdio.h>
-#define MODE_DEV 1
+#define MODE_DEV 0
 extern FILE *EXT_FILE;
 extern int MACOS_VER;
 
