@@ -17,7 +17,7 @@
 #include "../../include/libWeb.h"
 #include "../../include/hashage.h"
 
-#include"../../define/define.h"
+#include"../../include/define.h"
 //native resolution
 #define WINDOW_L 1820.
 #define WINDOW_H 1024.

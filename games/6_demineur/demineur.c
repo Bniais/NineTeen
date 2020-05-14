@@ -6,7 +6,7 @@
 ///	\brief Programme permettant de jouer au demineur
 /////////////////////////////////////////////////
 
-#include "../../define/define.h"
+#include "../../include/define.h"
 #include "../../include/communFunctions.h"
 #include "config.h"
 #include <time.h>

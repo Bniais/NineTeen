@@ -12,7 +12,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include "communFunctions.h"
-#include "../define/define.h"
+#include "../include/define.h"
 #define LOADING_SIZE 54
 #define LOADING_ANGLE_PER_FRAME (360/60)
 #define SIZE_ECHEC 62.

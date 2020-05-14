@@ -9,7 +9,7 @@
 *\date 12/05/2020
 */
 
-#include "../../define/define.h"
+#include "../../include/define.h"
 #include "../../include/hashage.h"
 #include "../../include/libWeb.h"
 #include "../../include/communFunctions.h"

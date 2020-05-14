@@ -1,5 +1,5 @@
 #include "../../include/communFunctions.h"
-#include "../../define/define.h"
+#include "../../include/define.h"
 #include "../../include/hashage.h"
 #include "../../include/libWeb.h"
 #include "config.h"

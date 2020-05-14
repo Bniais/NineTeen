@@ -48,7 +48,7 @@ extern int MACOS_VER;
 #include "include/libWeb.h"
 #include "room/room.h"
 
-#include "define/define.h"
+#include "include/define.h"
 
 #define DIR_OBJ_LOAD "../room/textures/salle.obj"
 

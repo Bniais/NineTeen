@@ -53,7 +53,7 @@ static GLuint * _textures =  NULL, *_counts = NULL;
 
 
 #include "room.h"
-#include "../define/define.h"
+#include "../include/define.h"
 #include "../include/libWeb.h"
 #include "../include/communFunctions.h"
 #include "../games/2_snake/snake.h"
