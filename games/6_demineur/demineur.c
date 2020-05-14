@@ -22,6 +22,34 @@
 
 static const int FRAME_TIME = 1000 / FRAMES_PER_SECOND;
 
+static void myInit(){
+
+	// SDL Init
+	SDL_Init(SDL_INIT_EVERYTHING);
+	TTF_Init();
+
+	// rand
+	srand(time(NULL));
+}
+
+static const SDL_Point ESPACE_DISPLAY_WINDOW = { 100, 100};
+
+SDL_Point maximizeWindow(SDL_Rect displayBounds, float* ratioWindowSize){
+	SDL_Point maxW = {(PLAYGROUND_SIZE_W + 2 * HUD_W), (PLAYGROUND_SIZE_H + 2 * HUD_H)};
+	if( maxW.x > displayBounds.w - ESPACE_DISPLAY_WINDOW.x  ||  maxW.y > (displayBounds.h - ESPACE_DISPLAY_WINDOW.y) - ESPACE_DISPLAY_WINDOW.y){
+		if( (float)maxW.x/maxW.y > (float)(displayBounds.w - ESPACE_DISPLAY_WINDOW.x)/(displayBounds.h - ESPACE_DISPLAY_WINDOW.y) ){
+			*ratioWindowSize = (float)maxW.x / (displayBounds.w - ESPACE_DISPLAY_WINDOW.x);
+			maxW.y /= (float)maxW.x / (displayBounds.w - ESPACE_DISPLAY_WINDOW.x);
+			maxW.x = displayBounds.w - ESPACE_DISPLAY_WINDOW.x;
+		}
+		else{
+			*ratioWindowSize = (float)maxW.y / (displayBounds.h - ESPACE_DISPLAY_WINDOW.y);
+			maxW.x /= (float)maxW.y / (displayBounds.h - ESPACE_DISPLAY_WINDOW.y);
+			maxW.y = (displayBounds.h - ESPACE_DISPLAY_WINDOW.y);
+		}
+	}
+	return maxW;
+}
 
 /*Fonction qui permet de vérifier que les coordonnées de la case rentrées en paramètre sont bien dans la grille de démineur*/
 int coor_valide(int x, int y){
