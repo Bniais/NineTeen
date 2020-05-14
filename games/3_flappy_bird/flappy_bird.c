@@ -311,12 +311,13 @@ void traitementVariableAnimation(int *varAnimationPersonnage,int *varAnimationSo
 
 
 /////////////////////////////////////////////////////
-/// \fn void attendreAvantDepart(Mix_Chunk *flap_wav)
+/// \fn int attendreAvantDepart(Mix_Chunk *flap_wav, int * rdyToSpace)
 /// \brief attend l'appui sur espace pour demarrer joue un son
 ///
 /// \param Mix_Chunk *flap_wav jouer le son passer en parametre
+/// \param rdyToSpace Determine si la touche espace a été relachée
 ///
-/// \return void
+/// \return faux si le joueur quitte le jeu, sinon vrai
 /////////////////////////////////////////////////////
 static
 int attendreAvantDepart(Mix_Chunk *flap_wav, int * rdyToSpace);
@@ -324,13 +325,14 @@ int attendreAvantDepart(Mix_Chunk *flap_wav, int * rdyToSpace);
 
 
 /////////////////////////////////////////////////////
-/// \fn void evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_wav)
+/// \fn int evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_wav, int *rdyToSpace)
 /// \brief remet les variables au DEFINE si on appui sur espace
 ///
 /// \param int *upper
 /// \param int *vitesseGraviter
 /// \param int *nb_boucle
 /// \param Mix_Chunk *flap_wav
+/// \param rdyToSpace Determine si la touche espace a été relachée
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -357,7 +359,19 @@ void updateVariableEnvironement(SDL_Point *emplacementPersonnage, int *upper, do
 
 
 extern int updateEnded;
-// primary func
+/////////////////////////////////////////////////////
+/// \fn int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h, char *token , int hardcore, SDL_Texture **textures)
+
+/// \brief Fonction principale qui joue le jeu flappy bird
+///
+/// \param renderer Le renderer où afficher le jeu
+/// \param highscore le record du jeu
+/// \param send_l La largeur d'écran
+/// \param send_h La hauteur d'écran
+/// \param token La clé de connexion du joueur
+/// \param hardcore Le mode de jeu
+/// \param textures Les textures du jeu
+/// \return L'erreur associée ou EXIT_SUCCESS si pas d'erreur
 int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h, char *token , int hardcore, SDL_Texture **textures)
 {
 	//SDL_Init(SDL_INIT_EVERYTHING);
