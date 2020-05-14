@@ -5,6 +5,8 @@ FILE *EXT_FILE;
 #include <string.h>
 #include <curl/curl.h>
 #include <SDL2/SDL.h>
+typedef struct{char *key; char *email; char *password;}ConnectStruct;
+typedef struct{char *gameID; char *score; char *key;}EnvoiScore;
 // secure protocol //
 #include <time.h>
 #include <openssl/md5.h>
@@ -37,45 +39,12 @@ FILE *EXT_FILE;
 
 #define MD5_SIZE 32
 
-/**
-*\struct string
-*\brief stock une chaine avec ca longueur
-*/
 struct string {
 	char *ptr;
 	size_t len;
 };
 
-/**
-*\struct ConnectStruct
-*\brief information sur l'envoie de la requete connexion en structure pour le passer en param d'un thread SDL
-*/
-typedef struct{
-	char *key;
-	char *email;
-	char *password;
-}ConnectStruct;
 
-/**
-*\struct EnvoiScore
-*\brief information sur l'envoie d un score en structure pour le passer en param d'un thread SDL
-*/
-typedef struct{
-	char *gameID;
-	char *score;
-	char *key;
-}EnvoiScore;
-
-
-
-/////////////////////////////////////////////////////
-/// \fn void init_string(struct string *s)
-/// \brief initilalise la structure qui contient la reponse
-///
-/// \param struct string *s
-///
-/// \return void
-/////////////////////////////////////////////////////
 void init_string(struct string *s) {
 	s->len = 0;
 	s->ptr = malloc(s->len+1);
@@ -87,17 +56,7 @@ void init_string(struct string *s) {
 	s->ptr[0] = '\0';
 }
 
-/////////////////////////////////////////////////////
-/// \fn size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s)
-/// \brief Ecrit la reponse de la requete dans une chaine
-///
-/// \param void *ptr
-/// \param size_t size
-/// \param size_t nmemb
-/// \param struct string *s
-///
-/// \return void
-/////////////////////////////////////////////////////
+
 size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s)
 {
 	size_t new_len = s->len + size*nmemb;
@@ -114,13 +73,7 @@ size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s)
 }
 
 /////////////////////////////////////////////////////
-/// \fn void md5Hash (char *string, char *hash)
-/// \brief hash la chaine en md5
-///
-/// \param char *string
-/// \param char *hash
-///
-/// \return void
+
 /////////////////////////////////////////////////////
 void md5Hash (char *string, char *hash)
 {
@@ -206,13 +159,6 @@ int envoyez_requet(char **response, char *url, char *request)
 }
 
 /////////////////////////////////////////////////////
-/// \fn void securePass(char secure[])
-/// \brief securise la requete avec une cle unique
-///
-/// \param char secure[]
-///
-/// \return void
-/////////////////////////////////////////////////////
 void securePass(char secure[])
 {
 
@@ -236,7 +182,7 @@ void securePass(char secure[])
 }
 
 /////////////////////////////////////////////////////
-/// \fn int construire_requete(char **dest, char *username, char *password, char *key, char *gameID, char *score, char *offset, char *limite)
+/// \fn int construire_requete(char *dest, char *email, char *password, char *key, char *gameID, char *score, char *offset)
 /// \brief Permet de crée une requet dans *dest
 ///
 /// \param char *dest Ecriture de la requet
@@ -245,8 +191,7 @@ void securePass(char secure[])
 /// \param char *key Key de connexion (Optionnal)
 /// \param char *gameID id du jeux (Optional)
 /// \param char *score score (Optional)
-/// \param char *offset nombre d element recherche (Optional)
-/// \param char *limite limit recherche score (Optional)
+/// \param char *offset limit recherche score (Optional)
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -376,10 +321,12 @@ int construire_requete(char **dest, char *username, char *password, char *key, c
 
 int connectEnded;
 /////////////////////////////////////////////////////
-/// \fn int connectWithUsername(ConnectStruct * connectStruct)
+/// \fn int connectWithUsername(char *key, char *email, char *password)
 /// \brief connexion avec nom d'utilisateur
 ///
-/// \param ConnectStruct * connectStruct
+/// \param char *key Ecriture de la clé dans key
+/// \param char *email Email de connexion
+/// \param char *password Mot de passe de connexion
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -474,11 +421,11 @@ int connectWithKey(char *key)
 
 
 /////////////////////////////////////////////////////
-/// \fn int updateMeilleureScoreStruct(char *key,char *retour)
-/// \brief recuperer les meilleures score
+/// \fn updateMeilleureScoreStruct(char *key,int *coins)
+/// \brief recuperer notre somme d'argent
 ///
 /// \param char *key Ecriture de la clé dans key
-/// \param char *retour
+/// \param int *coins Valeur de retour de notre somme d'argent
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////

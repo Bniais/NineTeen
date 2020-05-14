@@ -1,11 +1,3 @@
-/////////////////////////////////////////////////
-///	\file communFunctions.c
-///	\author Samy M.
-///	\version 1.0
-///	\date 31 janvier 2020
-///	\brief regroupe un certain nombre de fonction utiliser par different fichier
-/////////////////////////////////////////////////
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -271,8 +263,4 @@ int lenNum(int n)
 	}
 
 	return count;
-}
-
-int randSign(){
-	return (rand()%2 ? 1 : -1);
 }

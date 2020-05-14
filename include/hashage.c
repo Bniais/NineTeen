@@ -39,7 +39,7 @@ long long int hashage (int value, long keys[4])
 }
 
 /////////////////////////////////////////////
-/// \fn void initialisationConstantHashage(long keys[4])
+/// \fn void initialisationConstantHashage (long *const_1, long *const_2, long *const_3, long *const_4)
 /// \brief initialise des valeurs aleatoire pour le hashage
 ///
 /// \param keys Le tableau de clés de hashage à initialiser
@@ -52,7 +52,7 @@ void initialisationConstantHashage(long keys[4])
 }
 
 /////////////////////////////////////////////
-/// \fn int changeProtectedVar(long long int *score_hash,int *var, int updatedVar, long keys[4])
+/// \fn int changeProtectedVar (long long int *score_hash,int *var, int updatedVar, long *const_1, long *const_2, long *const_3, long *const_4)
 /// \brief Verifie que la valeur correspond a une valeur et re met a jours les constants pour un prochain hasahage
 ///
 /// \param long long long int *score_hash valeur hasher

@@ -1,11 +1,3 @@
-/////////////////////////////////////////////////
-///	\file leaderboard.c
-///	\author Samy M.
-///	\version 1.0
-///	\date 31 janvier 2020
-///	\brief permet d'affciher le score du joueur
-/////////////////////////////////////////////////
-
 #include <stdio.h>
 #include <math.h>
 FILE *EXT_FILE;
@@ -79,29 +71,19 @@ enum {EASY,HARD,OFF,OFF_EASY,OFF_HARD};
 
 int statutBoutonEASY_HARD = OFF;
 
-/**
-*\struct classement
-*\brief Contient les scores et nom des joueur charger
-*/
 struct classement
 {
-	int score; /*!< \Score */
-	char username[32];/*!< \Nom d'utulisateur */
+	int score;
+	char username[32];
 };
 
 #define FRAME_SCROLL_SMOOTH 8
-
-/**
-*\struct Scroll
-*\brief Contient les informations sur un scroll
-*/
 typedef struct
 {
-	float pos; /*!< \Position actuel */
-	float dest; /*!< \Destination */
-	int frame; /*!< \Frame */
+	float pos;
+	float dest;
+	int frame;
 }Scroll;
-
 
 #define NOMBRE_ELEMENT_LIST 7
 const char nomList[NOMBRE_ELEMENT_LIST][30]={"GLOBAL","FLAPPY BIRD","TETRIS","ASTEROID","PACMAN","SNAKE","DEMINEUR"};

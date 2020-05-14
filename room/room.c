@@ -1,13 +1,8 @@
-/////////////////////////////////////////////////
-///	\file room.c
-///	\author Samy M.
-///	\version 1.0
-///	\date 31 janvier 2020
-///	\brief affichage de la room et gestion des evenements liee
-/////////////////////////////////////////////////
-
 // CODERUNNER COMPILEFLAG
 // -std=c99 -framework OpenGL -framework GLUT -lassimp -lm -F/Library/Frameworks -framework SDL2
+
+
+
 
 // GLOBAL LIBRARY
 #include <stdio.h>
@@ -24,11 +19,11 @@ int MACOS_VER;
 	#include <OpenGL/OpenGL.h>
 	#include <GLUT/glut.h>
 	#include <OpenCL/cl.h>
-	#include <OpenCL/cl_gl.h>
-	#include <OpenCL/cl_gl_ext.h>
-	#include <OpenCL/cl_ext.h>
+#include <OpenCL/cl_gl.h>
+#include <OpenCL/cl_gl_ext.h>
+#include <OpenCL/cl_ext.h>
 #endif
-#ifdef __linux__
+#ifdef __linux
 	#include <GL/gl.h>
 	#include <GL/glu.h>
 	#include <GL/glut.h>
@@ -48,7 +43,7 @@ int MACOS_VER;
 
 // LOCAL LIBRARY
 #include "import.h" // YOU NEED ASSIMP LIB FOR import.h (README.dm)
-static GLuint * _textures =  NULL, *_counts = NULL;
+static GLuint * _textures =  NULL, *_counts = NULL,_nbTextures = 0;
 
 
 
@@ -132,32 +127,14 @@ SDL_Color Text_rouge = {255,0,0};
 #define MAX_VOLUME_ARCADE 100
 
 // STATIC VAR FOR CAMERA
-/**
-*\struct Camera_s
-*\brief Contient les informations necessaire pour positionner la camera openGL
-*/
 struct Camera_s
 {
-	float px; /*!< \Eyes position X */
-	float py; /*!< \Eyes position Y */
-	float pz; /*!< \Eyes position Z */
-	float cible_py; /*!< \Cible position Y */
-	float angle; /*!< \Cible position X */
-	float ouverture; /*!< \Ouverture focale */
+	float px,py,pz,cible_py,angle,ouverture;
 };
 
-/**
-*\struct GL_Quadf
-*\brief Contient les coordonner et dimension d'un quadrilataire
-*/
 struct GL_Quadf
 {
-	float x; /*!< \ position X */
-	float y; /*!< \ position Y */
-	float z; /*!< \ position Z */
-	float largueur; /*!< \ Largueur */
-	float epaisseur; /*!< \ epaisseur */
-	float hauteur; /*!< \ hauteur */
+	float x,y,z,largueur,epaisseur,hauteur;
 };
 //////////////////////////////////////////////////////////////////////////////////
 // struct toilette femme
@@ -169,7 +146,7 @@ int statutPorteFemme = FERMER;
 int statutPorteHomme = FERMER;
 
 enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,SHOOTER_HARD,SNAKE_HARD,DEMINEUR_HARD,DEMINEUR_EASY,SNAKE_EASY,SHOOTER_EASY,ASTEROID_EASY,TETRIS_EASY,FLAPPY_EASY};
-char adresseFontImg[16][64]={"../room/textures/flappy_hard_font.jpg","../room/textures/tetris_font.jpg","../room/textures/asteroid_font_hard.jpg","../room/textures/chargement.jpg","../room/textures/snake_font.jpg","../room/textures/chargement.jpg",
+char adresseFontImg[16][64]={"../room/textures/flappy_hard_font.jpg","../room/textures/tetris_font.jpg","../room/textures/asteroid_font.jpg","../room/textures/chargement.jpg","../room/textures/snake_font.jpg","../room/textures/chargement.jpg",
 														 "../room/textures/chargement.jpg","../room/textures/snake_font.jpg","../room/textures/chargement.jpg","../room/textures/asteroid_font.jpg","../room/textures/tetris_font.jpg","../room/textures/flappy_easy_font.jpg",
 														 "../room/textures/chargement.jpg","../room/textures/chargement.jpg","../room/textures/chargement.jpg","../room/textures/leaderboard_font.jpg"};
 
@@ -179,31 +156,14 @@ char adresseFontImg[16][64]={"../room/textures/flappy_hard_font.jpg","../room/te
   #define DIR_TOKEN_FILE "/tmp/.Nineteen"
 #endif
 
+
+
 int FIRST_FRAME = 0;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #include "dir.h"
 SDL_Texture * textures[NB_MAX_TEXTURES];
-typedef struct loadGame_s{
-	int id_jeu;
-	SDL_Renderer *pRenderer;
-}loadGame;
-
-
+typedef struct loadGame_s{int id_jeu; SDL_Renderer *pRenderer;}loadGame;
 int loadGameTexture(loadGame * load){
 		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 	    //asteroid
@@ -294,12 +254,10 @@ int loadGameTexture(loadGame * load){
 
 
 /////////////////////////////////////////////////////
-/// \fn int windowMaxSize(int optionFullScreen)
+/// \fn int windowMaxSize()
 /// \brief fonction qui charge fixe la taille max de la fenetre
-/// \param int optionFullScreen
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
-static
 int windowMaxSize(int optionFullScreen);
 
 
@@ -312,7 +270,6 @@ int windowMaxSize(int optionFullScreen);
 ///
 /// \return void
 /////////////////////////////////////////////////////
-static
 void limiterFrame(const float delayLancementFrame,float *_IPS);
 
 /////////////////////////////////////////////////////
@@ -326,7 +283,6 @@ void limiterFrame(const float delayLancementFrame,float *_IPS);
 ///
 /// \return VRAI/FAUX
 /////////////////////////////////////////////////////
-static
 int attendreXsecondeMessage(int *compterSeconde, int *afficherMessage,const int MS, const float _FPS);
 
 /////////////////////////////////////////////////////
@@ -346,7 +302,6 @@ int attendreXsecondeMessage(int *compterSeconde, int *afficherMessage,const int 
 ///
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
-static
 int detectionEnvironnement(float x,float y);
 
 
@@ -360,21 +315,8 @@ int detectionEnvironnement(float x,float y);
 ///
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
-static
 int detecterRadio(float x,float y,float angle);
 
-/////////////////////////////////////////////////////
-/// \fn int detecterPorte(float x,float y,float angle)
-/// \brief detection porte a proximite
-///
-/// \param float x coordonner x
-/// \param float y coordonner y
-/// \param float angle angle
-///
-/// \return TRUE/FALSE
-/////////////////////////////////////////////////////
-static
-int detecterPorte(float x,float y,float angle);
 
 /////////////////////////////////////////////////////
 /// \fn int detecterOuvertureToilette(float x,float y,float angle)
@@ -386,7 +328,6 @@ int detecterPorte(float x,float y,float angle);
 ///
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
-static
 int detecterOuvertureToilette(float x,float y,float angle);
 
 
@@ -400,7 +341,6 @@ int detecterOuvertureToilette(float x,float y,float angle);
 ///
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
-static
 int detecterMachine(float x,float y,float angle);
 
 
@@ -409,7 +349,6 @@ int detecterMachine(float x,float y,float angle);
 /// \brief initalisation du volume
 ///
 /////////////////////////////////////////////////////
-static
 void mixerInit();
 
 
@@ -424,14 +363,13 @@ void mixerInit();
 ///
 /// \return float distance point a et b
 /////////////////////////////////////////////////////
-static
 float distancePoint(float xa, float ya, float xb, float yb);
 
 
 
 /////////////////////////////////////////////////////
-/// \fn void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur, int max_volume)
-/// \brief regle le volume de l'environement sur un channel particuliere
+/// \fn void reglageVolume(int channel, float xa, float ya, float xb, float yb, int porter)
+/// \brief regle le volume de l'environement sur un chainnel particuliere
 ///
 /// \param int channel canal du son a regler
 /// \param float xa
@@ -439,13 +377,10 @@ float distancePoint(float xa, float ya, float xb, float yb);
 /// \param float xb
 /// \param float yb
 /// \param int porter Porter du son
-/// \param float angleJoueur
-/// \param int max_volume
 ///
 /// \return void
 /////////////////////////////////////////////////////
-static
-void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur, int max_volume);
+void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter,float angleJoueur, int max_volume);
 
 
 /////////////////////////////////////////////////////
@@ -460,7 +395,6 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, float po
 ///
 /// \return void
 /////////////////////////////////////////////////////
-static
 void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music);
 
 /////////////////////////////////////////////////////
@@ -476,7 +410,6 @@ void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int 
 ///
 /// \return void
 /////////////////////////////////////////////////////
-static
 float calculAngle(float xa, float ya,      float xb, float yb,       float xc, float yc);
 
 
@@ -501,7 +434,6 @@ float calculAngle(float xa, float ya,      float xb, float yb,       float xc, f
 ///
 /// \return void
 /////////////////////////////////////////////////////
-static
 void GL_InitialiserParametre(int width, int height, struct Camera_s camera);
 
 
@@ -514,21 +446,18 @@ void GL_InitialiserParametre(int width, int height, struct Camera_s camera);
 ///
 /// \return void
 /////////////////////////////////////////////////////
-static
 void InitCamera(struct Camera_s *camera, struct Camera_s *cible);
 
 
 /////////////////////////////////////////////////////
-/// \fn void mouvementCamera(SDL_Window * window, struct Camera_s *camera,const float IPS)
+/// \fn void mouvementCamera(struct Camera_s *camera,const float IPS)
 /// \brief Permet de gerer les deplacements de la camera
 ///
-/// \param SDL_Window * window
 /// \param struct Camera_s *camera prend l'adresse de la camera
-/// \param const float IPS
+/// \param
 ///
 /// \return void
 /////////////////////////////////////////////////////
-static
 void mouvementCamera(SDL_Window * window, struct Camera_s *camera, const float IPS);
 
 
@@ -542,7 +471,6 @@ void mouvementCamera(SDL_Window * window, struct Camera_s *camera, const float I
 ///
 /// \return void
 /////////////////////////////////////////////////////
-static
 void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list, const float IPS);
 
 
@@ -558,7 +486,6 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 ///
 /// \return void
 /////////////////////////////////////////////////////
-static
 void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y);
 
 /////////////////////////////////////////////////////
@@ -572,20 +499,16 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y);
 ///
 /// \return void
 /////////////////////////////////////////////////////
-static
 void messageMachine(struct MeilleureScore_s str[] ,struct Camera_s camera,TTF_Font *font,int afficherMessage);
 
 
 /////////////////////////////////////////////////////
-/// \fn int MessageQuitterRoom(int modeChargement, char path[])
-/// \brief permet d'afficher le message avant de quitter ou au chargement de la room
+/// \fn int MessageQuitterRoom()
+/// \brief permet d'afficher le message avant de quitter
 ///
-/// \param int modeChargement
-/// \param char path[]
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
-static
 int MessageQuitterRoom(int modeChargement, char path[]);
 
 /////////////////////////////////////////////////////
@@ -617,7 +540,6 @@ int MessageQuitterRoom(int modeChargement, char path[]);
 ///
 /// \return void
 /////////////////////////////////////////////////////
-static
 void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme,  int *jouerSonPorteHomme, float _IPS, TTF_Font *font);
 
 
@@ -633,7 +555,6 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 ///
 /// \return void
 /////////////////////////////////////////////////////
-static
 void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window, float _IPS, float imgAnim);
 
 
@@ -672,129 +593,354 @@ void InitMeilleureScore(struct MeilleureScore_s str[]);
 int updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 
 
-/////////////////////////////////////////////////////
-/// \fn void GlDessinerQuad(struct GL_Quadf quad)
-/// \brief Dessine un quadrilataire
-///
-/// \param struct GL_Quadf quad
-///
-/// \return EXIT_SUCCESS/EXIT_FAILURE
-/////////////////////////////////////////////////////
-static
-void GlDessinerQuad(struct GL_Quadf quad);
-
-
-/////////////////////////////////////////////////////
-/// \fn void detruireTexture(GLuint nbTextures)
-/// \brief detruit les elements initaliser
-/// \param GLuint nbTextures
-/// \return void
-/////////////////////////////////////////////////////
-static
-void detruireTexture(GLuint nbTextures);
 
 
 
-/////////////////////////////////////////////////////
-/// \fn void GLlightMode()
-/// \brief permet de regler l'intensiter de chaque lampe presente dans la salle
-///
-///
-/// \return void
-/////////////////////////////////////////////////////
-static
-void GLlightMode();
+
+
+void detruireTexture()
+{
+
+  if(_counts) {
+    free(_counts);
+    _counts = NULL;
+  }
+  if(_textures) {
+    glDeleteTextures(_nbTextures, _textures);
+    free(_textures);
+    _textures = NULL;
+  }
+}
+
+
+
+
+
+
+
+
+void GLlightMode()
+{
+	glEnable(GL_LIGHTING);	// Active l'éclairage
+	glEnable(GL_LIGHT0);	// Allume la lumière n°1
+	glEnable(GL_LIGHT1);	// Allume la lumière n°1
+	//glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+	// COULEUR DES LAMPES
+	/////////////////////
+	//
+	GLfloat ambiant1[] = { 1.0, 0.917 , 0.173 , 1.0 };
+	GLfloat diffuse[] = { 1.0, 1.0 , 1.0 , 1.0 };
+	GLfloat specular[] = { 1.0, 1.0 , 1.0 , 1.0 };
+
+
+	GLfloat position1[]={-9.3 , 5.4 , 0.0 , 1.0 };
+	GLfloat spot_direction1[]={ 0.0 , -1.0 , 0.0 };
+
+	GLfloat position2[]={3.4 , 4.2 , -4.8 , 1.0 };
+	GLfloat spot_direction2[]={ 0.0 , 0.0 , -1.0 };
+
+
+	glLightfv(GL_LIGHT0  , GL_AMBIENT, ambiant1);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, position1);
+
+
+	//GLfloat ambiant2[] = { 0.89, 0.33 , 0.27 , 1.0 };
+	glLightfv(GL_LIGHT1  , GL_AMBIENT, ambiant1);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, specular);
+	glLightfv(GL_LIGHT1, GL_POSITION, position2);
+
+
+	// ATENUATION
+
+
+	glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.0);
+	glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.01);
+	glLightf(GL_LIGHT1 , GL_QUADRATIC_ATTENUATION, 0.1);
+
+	glLightf(GL_LIGHT0 , GL_SPOT_CUTOFF, 90.0);
+	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction1);
+	glLightf(GL_LIGHT0 , GL_SPOT_EXPONENT, 2.0);
+
+	glLightf(GL_LIGHT0 , GL_SPOT_CUTOFF, 90.0);
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction2);
+	glLightf(GL_LIGHT0 , GL_SPOT_EXPONENT, 2.0);
+}
+
+
+
+
+
+
+
+
+
+
 
 
 /////////////////////////////////////////////////////
 /// \fn void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera, float IPS);
 /// \brief permet de gerer les evenements liee au porte des toilettes
 ///
-/// \param int *statutPorteFemme
-/// \param int *statutPorteHomme
-/// \param int *jouerSonPorteFemme
-/// \param int *jouerSonPorteHomme
-/// \param int *toiletteFemmeOuverteDelai
-/// \param int *toiletteHommeOuverteDelai
-/// \param Mix_Chunk *sas_ouverture
-/// \param Mix_Chunk *sas_fermeture
-/// \param struct Camera_s camera
-/// \param float IPS
+/// \param struct MeilleureScore_s str[] tableau de donner
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
-static
 void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera, float IPS);
 
 
-/////////////////////////////////////////////////////
-/// \fn int backgroundClassement(SDL_Surface *sImage)
-/// \brief afficher un background au classement pour qu'il soit plus facilement visible
-///
-/// \param SDL_Surface *sImage
-///
-/// \return EXIT_SUCCESS/EXIT_FAILURE
-/////////////////////////////////////////////////////
-static
-int backgroundClassement(SDL_Surface *sImage);
+void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera, float IPS)
+{
+	// ANIMATION FAITE POUR 50 _FPS
+	float variateurFPSanimation = (25.0/IPS) * 0.1;
+	//////////////////////////////////////////////////////////
+	///////// SI IL FAUT JOUER UN SON POUR LES FEMMES
+	if(*jouerSonPorteFemme == 1)
+	{
+		Mix_PlayChannel(4,sas_ouverture,0);
+		*jouerSonPorteFemme = 0;
+	}
+	if(*jouerSonPorteFemme == 2)
+	{
+		Mix_PlayChannel(4,sas_fermeture,0);
+		*jouerSonPorteFemme = 0;
+	}
+	//////////////////////////////////////////////////////////
+	///////// SI IL FAUT JOUER UN SON POUR LES HOMME
+	if(*jouerSonPorteHomme == 1)
+	{
+		Mix_PlayChannel(4,sas_ouverture,0);
+		*jouerSonPorteHomme = 0;
+	}
+	if(*jouerSonPorteHomme == 2)
+	{
+		Mix_PlayChannel(4,sas_fermeture,0);
+		*jouerSonPorteHomme = 0;
+	}
 
 
+	//////////////////////////////////////////////////////////
+	// GESTION DES STATUS DE CHAQUE PORTE
+	//////////////////////////////////////////////////////////
+	// PORTE EN COURS D OUVERTURE FEMME
+	if( *statutPorteFemme == OUVERTURE )
+	{
+		//////////////////////////////////////////////////////////
+		// REGLAGE SON TOILETTE FEMME
+		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,8.0,camera.angle, 70);
+
+		if( toiletteFemme.x >= 23.0 )
+		{
+			*statutPorteFemme = OUVERTE;
+			*toiletteFemmeOuverteDelai = SDL_GetTicks();
+		}
+		else
+		{
+			toiletteFemme.x += variateurFPSanimation;
+		}
+	}
+	//////////////////////////////////////////////////////////
+	// PORTE EN COURS D OUVERTURE HOMME
+	if( *statutPorteHomme == OUVERTURE )
+	{
+		//////////////////////////////////////////////////////////
+		// REGLAGE SON TOILETTE HOMME
+		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, 70);
 
 
+		if( toiletteHomme.x >= 23.0 )
+		{
+			*statutPorteHomme = OUVERTE;
+			*toiletteHommeOuverteDelai = SDL_GetTicks();
+		}
+		else
+		{
+			toiletteHomme.x += variateurFPSanimation;
+		}
+
+	}
+
+	//////////////////////////////////////////////////////////
+	// PORTE EN COURS DE FERMETURE FEMME
+	if( *statutPorteFemme == FERMETURE )
+	{
+		//////////////////////////////////////////////////////////
+		// REGLAGE SON TOILETTE FEMME
+		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,8.0,camera.angle, 70);
+		////////////////////////////////////////////////////////
+		// RE OUVRIR SI PASSAGE DEVANT LA PORTE DURANT LA FERMETURE
+		if(camera.px > 19.0 && camera.pz < 9.0 && camera.pz > 8.0)
+		{
+			printf("RE OUVRIR\n" );
+			*statutPorteFemme = OUVERTURE;
+			*toiletteFemmeOuverteDelai = 0;
+			*jouerSonPorteFemme = 1;
+		}
+		////////////////////////////////////////////////////////
+		// BOUCLE DE FERMETURE
+		else
+		{
+			if( toiletteFemme.x < 20.3 )
+			{
+				toiletteFemme.x = 20.2;
+				*statutPorteFemme = FERMER;
+			}
+			else
+				toiletteFemme.x -= variateurFPSanimation;
+		}
+
+	}
+	//////////////////////////////////////////////////////////
+	// PORTE EN COURS DE FERMETURE HOMME
+	if( *statutPorteHomme == FERMETURE )
+	{
+		//////////////////////////////////////////////////////////
+		// REGLAGE SON TOILETTE HOMME
+		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, 70);
+		////////////////////////////////////////////////////////
+		// RE OUVRIR SI PASSAGE DEVANT LA PORTE DURANT LA FERMETURE
+		if(camera.px > 19.0 && camera.pz < 1.5 && camera.pz > 0.4)
+		{
+			printf("RE OUVRIR\n" );
+			*statutPorteHomme = OUVERTURE;
+			*toiletteHommeOuverteDelai = 0;
+			*jouerSonPorteHomme = 1;
+		}
+		////////////////////////////////////////////////////////
+		// BOUCLE DE FERMETURE
+		else
+		{
+			if( toiletteHomme.x < 20.3 )
+			{
+				toiletteHomme.x = 20.2;
+				*statutPorteHomme = FERMER;
+			}
+
+			else
+				toiletteHomme.x -= variateurFPSanimation;
+		}
+
+	}
 
 
+	//////////////////////////////////////////////////////////
+	// FERMETURE AUTOMATIQUE FEMME
+	if( *statutPorteFemme == OUVERTE )
+	{
+		if( ( *toiletteFemmeOuverteDelai + 3000) < SDL_GetTicks() )
+		{
+			*statutPorteFemme = FERMETURE;
+			*toiletteFemmeOuverteDelai = 0;
+			*jouerSonPorteFemme = 2;
+		}
+	}
+	//////////////////////////////////////////////////////////
+	// FERMETURE AUTOMATIQUE FEMME
+	if( *statutPorteHomme == OUVERTE )
+	{
+		if( ( *toiletteHommeOuverteDelai + 3000) < SDL_GetTicks() )
+		{
+			*statutPorteHomme = FERMETURE;
+			*toiletteHommeOuverteDelai = 0;
+			*jouerSonPorteHomme = 2;
+		}
+	}
 
 
+	//////////////////////////////////////////////////////////
+	// OUBERTURE INTERIEUR AUTOMATIQUE
+	int toilette = detecterOuvertureToilette(camera.px,camera.pz,camera.angle);
+	switch (toilette) {
+		case 3:{
+			if( *statutPorteFemme != OUVERTE && *statutPorteFemme != OUVERTURE)
+			{
+				*statutPorteFemme = OUVERTURE;
+				*jouerSonPorteFemme = 1;
+			}
+		}break;
+		case 4:{
+			if( *statutPorteHomme != OUVERTE && *statutPorteHomme != OUVERTURE)
+			{
+				*statutPorteHomme = OUVERTURE;
+				*jouerSonPorteHomme = 1;
+			}
+		}break;
+	}
+}
 
 
+int backgroundClassement(SDL_Surface *sImage)
+{
+	////////////////////////////////////////////////
+	// ENVOI MATRICE
+	glPushMatrix();
+	glLoadIdentity();
+	////////////////////////////////////////////////
+	// DESACTIVER LES LUMIERE
+	glDisable(GL_LIGHTING);
+	glLoadIdentity();
 
+	////////////////////////////////////////////////
+	// PRECISION SUR LA FENETRE
+	gluOrtho2D(0, WinWidth, 0, WinHeight);
+	// MOD PROJECTION
+	glMatrixMode(GL_PROJECTION);
+	//glLoadIdentity();
 
+	////////////////////////////////////////////////
+	// DESACTIVATION DU TEST D ARRIERE PLAN
+	glDisable(GL_DEPTH_TEST);
+	glLoadIdentity();
 
+	////////////////////////////////////////////////
+	// BLEND
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// INIT LOAD TEXTURE
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 
+	////////////////////////////////////////////////
+	// PARAMETRE 2D
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// CONVERTION TEXTURE IMAGE
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sImage->w , sImage->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sImage->pixels);
 
+	// RESCALE IMG
+	int tmpW= sImage->w * (WinWidth/2560.0);
+	int tmpH = sImage->h * (WinHeight/1440.0);
 
+	////////////////////////////////////////////////
+	// POSITIONNEMENT DE LA FENETRE QUITTER X
+	int x = 0;
+	////////////////////////////////////////////////
+	// POSITIONNEMENT DE LA FENETRE QUITTER Y
+	int y = WinHeight - tmpH;
 
+	////////////////////////////////////////////////
+	// DEBUT DU RENDU
+	glBegin(GL_QUADS);
+	{
+		glTexCoord2f(0,0); glVertex2f(x, y);
+		glTexCoord2f(1,0); glVertex2f(x + tmpW, y);
+		glTexCoord2f(1,-1); glVertex2f(x + tmpW, y + tmpH);
+		glTexCoord2f(0,-1); glVertex2f(x, y + tmpH);
+	}
+	glEnd();
+	////////////////////////////////////////////////
 
+	////////////////////////////////////////////////
+	// DESTRUCTUIN DES ELLEMENTS CREE
+	glDeleteTextures(1, &texture);
+	////////////////////////////////////////////////
+	// RECUPERATION DE LA MATRICE AVANT MODIF
+	glPopMatrix();
+	glLoadIdentity();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	return EXIT_SUCCESS;
+}
 
 
 int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window, const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize)
@@ -1046,10 +1192,10 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	//////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////
 	// ALLOCATION TEXTURE
-	_malloc((void**)&_textures,sizeof(*_textures),(scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
+	_malloc((void**)&_textures,sizeof(*_textures),(_nbTextures = scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
 	//////////////////////////////////////////////////////////
 	// CHARGER LES TEXTURES
-	chargerTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
+	aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
 	// APPLICATION DE LA SCENE  AVANT LA 1er FRAME
 	SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
 
@@ -1071,15 +1217,14 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	while (Running)
 	{
 
-
+	//	GLlightMode();
 
 		//////////////////////////////////////////////////////////
 		// DEBUT DE LA MESURE DU TEMPS D'UNE FRAME
 		int delayLancementFrame = SDL_GetTicks();
 
-
+		glLoadIdentity();
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
-
 
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
@@ -1116,6 +1261,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
 
+		//GL_InitialiserParametre(WinWidth,WinHeight,camera);
 		//////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////
@@ -1178,7 +1324,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	SDL_FreeSurface(bgClassement);
 	//////////////////////////////////////////////////////////
 	// DESTRUCTION DES EMPLACEMENTS TEXTURES
-	detruireTexture(scene->mNumMaterials);
+	detruireTexture();
 	fprintf(EXT_FILE, "room.c : room() : memoire liberer\n" );
 	//////////////////////////////////////////////////////////
 	// LIBERATION DU CONTEXT
@@ -1493,8 +1639,6 @@ float calculAngle(float xa, float ya,      float xb, float yb,       float xc, f
 	return (2*M_PI) - angleRad;
 }
 
-
-
 void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur, int max_volume)
 {
 	////////////////////////////////////////////////////
@@ -1572,7 +1716,6 @@ void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int 
 	}
 }
 
-
 void GlDessinerQuad(struct GL_Quadf quad)
 {
 	glBegin(GL_QUADS);
@@ -1624,20 +1767,20 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 
 	////////////////////////////////////////////////////
 	// GERER LES MOUVEMENT DE CAMERA
+
 	mouvementCamera(Window, camera,IPS);
-	////////////////////////////////////////////////////
-	// GERER LES LUMIERE PRESENTE DANS LA SALLE
-	GLlightMode();
+
 	////////////////////////////////////////////////////
 	// SI LE RENDU DE LA SCENE N'EST PAS FAIT LE FAIRE
 	GlDessinerQuad(toiletteFemme);
 	GlDessinerQuad(toiletteHomme);
 
 	if(*scene_list == 0) {
+		// FIXER LA SCENE A 1
 		*scene_list = glGenLists(1);
 		glNewList(*scene_list, GL_COMPILE);
 		GLuint ivao = 0;
-		afficherScene(scene, scene->mRootNode,&ivao,_textures,_counts);
+		aiDessinerImage(scene, scene->mRootNode,&ivao,_textures,_counts);
 		glEndList();
 	}
 
@@ -1666,7 +1809,11 @@ void GL_InitialiserParametre(int width, int height, struct Camera_s camera)
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position0);
 
 
-
+	///////////////////////////////////////////////////
+	// ACTIVATION DES LUMIERES
+	glEnable(GL_LIGHTING);
+	// ACTIVATION DE LA LUMIERE 0
+	glEnable(GL_LIGHT0);
 	// ACTIVATION DE LA DETECTION D'OBJET L'UN DEVANT L'AUTRE POUR NE PAS TOUS AFFICHER
 	glEnable(GL_DEPTH_TEST);
 
@@ -1737,13 +1884,7 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	cible[ASTEROID_HARD-1].ouverture =70;
 
 
-	/*
-		camera->px = -6.56;
-		camera->pz = 9.189630;
-		camera->py = 3.609998;
-		camera->cible_py = -.332000;
-		camera->angle = 0.0;
-		camera->ouverture =70;*/
+
 
 	cible[SHOOTER_HARD-1].px = -6.56;
 	cible[SHOOTER_HARD-1].pz = 9.189630;
@@ -1790,6 +1931,8 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	cible[SHOOTER_EASY-1].cible_py = -.332000;
 	cible[SHOOTER_EASY-1].angle = M_PI;
 	cible[SHOOTER_EASY-1].ouverture =70;
+
+
 
 	cible[ASTEROID_EASY-1].px = 2.707498;
 	cible[ASTEROID_EASY-1].pz = 9.192631;
@@ -2241,24 +2384,6 @@ int detecterRadio(float x,float y,float angle)
 	return 0;
 }
 
-int detecterPorte(float x,float y,float angle)
-{
-
-	///////////////////////////////////////////////////
-	// DETECTER D'UN ANGLE FACE A LA RADIO
-	if( ( angle > ( 2*M_PI - (ANGLE_DETECTION_MACHINE) ) && angle <= 2*M_PI  ) ||    (    angle >= 0 && angle < 0 + (ANGLE_DETECTION_MACHINE)   )   )
-	{
-		////////////////////////////////////////
-		// DETECTION RADIO MUSIC 1
-		if( y > 33)
-		{
-			return 1;
-		}
-	}
-
-	return 0;
-}
-
 int detecterOuvertureToilette(float x,float y,float angle)
 {
 
@@ -2332,7 +2457,7 @@ int detecterMachine(float x,float y,float angle)
 				///////////////////////////////////////////////////
 				// DETECTER PRECICEMENT LA MACHINE PARMIS LES 3
 				if( x < -5.7 )
-					return 4;//4;
+					return 0;//4;
 				else if ( x < -3.7)
 					return 5;
 				else
@@ -2355,11 +2480,11 @@ int detecterMachine(float x,float y,float angle)
 			if(angle > M_PI - (ANGLE_DETECTION_MACHINE) && angle < M_PI + (ANGLE_DETECTION_MACHINE) )
 			{
 				if( x < 3.4 )
-					return 7; //7
+					return 0; //7
 				else if ( x < 5.8)
 					return 8;
 				else
-					return 9; //9
+					return 0; //9
 			}
 		}
 		///////////////////////////////////////////////////
@@ -2489,18 +2614,6 @@ void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Fo
 		else
 			AfficherText(font,"MUSIC : ON",white,-1,WinHeight*0.4);
 	}
-
-
-	detection = detecterPorte(camera.px,camera.pz,camera.angle);
-	if(detection)
-	{
-		////////////////////////////////////////////////
-		// AFFICHAGE CLIGNOTANT
-		if(afficherMessage)
-			AfficherText(font,"APPUYER   SUR   E",white,-1,-1);
-			AfficherText(font,"QUITTER",white,-1,WinHeight*0.4);
-	}
-
 }
 
 
@@ -2593,7 +2706,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 		{
 				///////////////////////////////////////////////////
 				// TOUCHE ECHAPE METTRE FIN AU JEUX
-				if(Event.key.keysym.sym == SDLK_ESCAPE || ((Event.key.keysym.sym == SDLK_SPACE || Event.key.keysym.sym == SDLK_e || Event.type == SDL_MOUSEBUTTONDOWN) && detecterPorte(camera.px,camera.pz,camera.angle)))
+				if(Event.key.keysym.sym == SDLK_ESCAPE)
 				{
 					fprintf(EXT_FILE, "room.c : lancerMachine() : Afficher menu escape (Appui touche echap) \n" );
 					//////////////////////////////////////////////////////////
@@ -2608,12 +2721,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 					///////////////////////////////////////////////////
 					// VIDER LA LISTE DES EVENEMENTS
-					if(Event.key.keysym.sym == SDLK_ESCAPE)
-						do
-			  			{
-			     			SDL_WaitEvent(&Event);
-			  			}
-			  			while (Event.key.keysym.sym != SDLK_ESCAPE);
+					do
+		  			{
+		     				SDL_WaitEvent(&Event);
+		  			}
+		  			while (Event.key.keysym.sym != SDLK_ESCAPE);
 
 
 					///////////////////////////////////////////////////
@@ -2690,12 +2802,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							animationLancerMachine(camera,cible[machine-1],*scene_list,Window, _IPS,60.0);
 
 							///////////////////////////////////////////////////
-							// DESTRUCTION DES TEXTURES ET DU CONTEXT
-							detruireTexture(scene->mNumMaterials);
-							SDL_GL_DeleteContext(*Context);
-
-							///////////////////////////////////////////////////
 							// CREATION DU RENDU POUR CHARGEMENT DES TEXTURES
+							SDL_GL_DeleteContext(*Context);
 							SDL_Renderer * pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 							if(!pRenderer)
 							{
@@ -2726,7 +2834,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								case 1:
 									flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
-									break;
+								break;
 								case 2:
 									tetris( pRenderer ,meilleureScore[TETRIS_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
@@ -2741,32 +2849,25 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 								case 5:
 									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
 									updateMeilleureScore(meilleureScore,token);
-									break;
 								case 6:
 									SDL_ShowCursor(SDL_ENABLE);
 									demineur(pRenderer, meilleureScore[DEMINEUR_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1);
 									SDL_ShowCursor(SDL_DISABLE);
 									break;
-								case 7:
-									SDL_ShowCursor(SDL_ENABLE);
-									demineur(pRenderer, meilleureScore[DEMINEUR_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0);
-									SDL_ShowCursor(SDL_DISABLE);
-									break;
+								case 7: SDL_Delay(500);break;
 								case 8:
 									snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
-									break;
-								case 9:
-									shooter( pRenderer ,meilleureScore[SHOOTER_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
-									break;
+								case 9: SDL_Delay(500);break;
 								case 10:
 									asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
-								case 11:
+								case 11: {
 									tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
 									break;
+								}break;
 								case 12:
 									flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
 									updateMeilleureScore(meilleureScore,token);
@@ -2778,7 +2879,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 									SDL_ShowCursor(SDL_TRUE);
 									leaderboard(pRenderer,WinWidth,WinHeight,meilleureScore[0].multiplicator);
 									SDL_ShowCursor(SDL_FALSE);
-									break;
+								break;
 								default:break;
 							}
 
@@ -2805,8 +2906,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
 							while(SDL_PollEvent(&Event));
-							_malloc((void**)&_textures,sizeof(*_textures),(scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
-							chargerTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
+							detruireTexture();
+							_malloc((void**)&_textures,sizeof(*_textures),(_nbTextures = scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
+							aiLoadTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
 
 							// REMISE A ZERO DE LA SCENE
 							*scene_list = 0;
@@ -2970,189 +3072,6 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 }
 
 
-
-void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera, float IPS)
-{
-	// ANIMATION FAITE POUR 50 _FPS
-	float variateurFPSanimation = (25.0/IPS) * 0.1;
-	//////////////////////////////////////////////////////////
-	///////// SI IL FAUT JOUER UN SON POUR LES FEMMES
-	if(*jouerSonPorteFemme == 1)
-	{
-		Mix_PlayChannel(4,sas_ouverture,0);
-		*jouerSonPorteFemme = 0;
-	}
-	if(*jouerSonPorteFemme == 2)
-	{
-		Mix_PlayChannel(4,sas_fermeture,0);
-		*jouerSonPorteFemme = 0;
-	}
-	//////////////////////////////////////////////////////////
-	///////// SI IL FAUT JOUER UN SON POUR LES HOMME
-	if(*jouerSonPorteHomme == 1)
-	{
-		Mix_PlayChannel(4,sas_ouverture,0);
-		*jouerSonPorteHomme = 0;
-	}
-	if(*jouerSonPorteHomme == 2)
-	{
-		Mix_PlayChannel(4,sas_fermeture,0);
-		*jouerSonPorteHomme = 0;
-	}
-
-
-	//////////////////////////////////////////////////////////
-	// GESTION DES STATUS DE CHAQUE PORTE
-	//////////////////////////////////////////////////////////
-	// PORTE EN COURS D OUVERTURE FEMME
-	if( *statutPorteFemme == OUVERTURE )
-	{
-		//////////////////////////////////////////////////////////
-		// REGLAGE SON TOILETTE FEMME
-		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,8.0,camera.angle, 70);
-
-		if( toiletteFemme.x >= 23.0 )
-		{
-			*statutPorteFemme = OUVERTE;
-			*toiletteFemmeOuverteDelai = SDL_GetTicks();
-		}
-		else
-		{
-			toiletteFemme.x += variateurFPSanimation;
-		}
-	}
-	//////////////////////////////////////////////////////////
-	// PORTE EN COURS D OUVERTURE HOMME
-	if( *statutPorteHomme == OUVERTURE )
-	{
-		//////////////////////////////////////////////////////////
-		// REGLAGE SON TOILETTE HOMME
-		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, 70);
-
-
-		if( toiletteHomme.x >= 23.0 )
-		{
-			*statutPorteHomme = OUVERTE;
-			*toiletteHommeOuverteDelai = SDL_GetTicks();
-		}
-		else
-		{
-			toiletteHomme.x += variateurFPSanimation;
-		}
-
-	}
-
-	//////////////////////////////////////////////////////////
-	// PORTE EN COURS DE FERMETURE FEMME
-	if( *statutPorteFemme == FERMETURE )
-	{
-		//////////////////////////////////////////////////////////
-		// REGLAGE SON TOILETTE FEMME
-		reglageVolume(4,toiletteFemme.x,toiletteFemme.y, camera.px, camera.pz,8.0,camera.angle, 70);
-		////////////////////////////////////////////////////////
-		// RE OUVRIR SI PASSAGE DEVANT LA PORTE DURANT LA FERMETURE
-		if(camera.px > 19.0 && camera.pz < 9.0 && camera.pz > 8.0)
-		{
-			printf("RE OUVRIR\n" );
-			*statutPorteFemme = OUVERTURE;
-			*toiletteFemmeOuverteDelai = 0;
-			*jouerSonPorteFemme = 1;
-		}
-		////////////////////////////////////////////////////////
-		// BOUCLE DE FERMETURE
-		else
-		{
-			if( toiletteFemme.x < 20.3 )
-			{
-				toiletteFemme.x = 20.2;
-				*statutPorteFemme = FERMER;
-			}
-			else
-				toiletteFemme.x -= variateurFPSanimation;
-		}
-
-	}
-	//////////////////////////////////////////////////////////
-	// PORTE EN COURS DE FERMETURE HOMME
-	if( *statutPorteHomme == FERMETURE )
-	{
-		//////////////////////////////////////////////////////////
-		// REGLAGE SON TOILETTE HOMME
-		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, 70);
-		////////////////////////////////////////////////////////
-		// RE OUVRIR SI PASSAGE DEVANT LA PORTE DURANT LA FERMETURE
-		if(camera.px > 19.0 && camera.pz < 1.5 && camera.pz > 0.4)
-		{
-			printf("RE OUVRIR\n" );
-			*statutPorteHomme = OUVERTURE;
-			*toiletteHommeOuverteDelai = 0;
-			*jouerSonPorteHomme = 1;
-		}
-		////////////////////////////////////////////////////////
-		// BOUCLE DE FERMETURE
-		else
-		{
-			if( toiletteHomme.x < 20.3 )
-			{
-				toiletteHomme.x = 20.2;
-				*statutPorteHomme = FERMER;
-			}
-
-			else
-				toiletteHomme.x -= variateurFPSanimation;
-		}
-
-	}
-
-
-	//////////////////////////////////////////////////////////
-	// FERMETURE AUTOMATIQUE FEMME
-	if( *statutPorteFemme == OUVERTE )
-	{
-		if( ( *toiletteFemmeOuverteDelai + 3000) < SDL_GetTicks() )
-		{
-			*statutPorteFemme = FERMETURE;
-			*toiletteFemmeOuverteDelai = 0;
-			*jouerSonPorteFemme = 2;
-		}
-	}
-	//////////////////////////////////////////////////////////
-	// FERMETURE AUTOMATIQUE FEMME
-	if( *statutPorteHomme == OUVERTE )
-	{
-		if( ( *toiletteHommeOuverteDelai + 3000) < SDL_GetTicks() )
-		{
-			*statutPorteHomme = FERMETURE;
-			*toiletteHommeOuverteDelai = 0;
-			*jouerSonPorteHomme = 2;
-		}
-	}
-
-
-	//////////////////////////////////////////////////////////
-	// OUBERTURE INTERIEUR AUTOMATIQUE
-	int toilette = detecterOuvertureToilette(camera.px,camera.pz,camera.angle);
-	switch (toilette) {
-		case 3:{
-			if( *statutPorteFemme != OUVERTE && *statutPorteFemme != OUVERTURE)
-			{
-				*statutPorteFemme = OUVERTURE;
-				*jouerSonPorteFemme = 1;
-			}
-		}break;
-		case 4:{
-			if( *statutPorteHomme != OUVERTE && *statutPorteHomme != OUVERTURE)
-			{
-				*statutPorteHomme = OUVERTURE;
-				*jouerSonPorteHomme = 1;
-			}
-		}break;
-	}
-}
-
-
-
-
 int MessageQuitterRoom(int modeChargement,char path[])
 {
 	////////////////////////////////////////////////
@@ -3192,7 +3111,7 @@ int MessageQuitterRoom(int modeChargement,char path[])
 
 	if(!sImage)
 	{
-		fprintf(EXT_FILE,"room.c : MessageQuitterRoom() : IMG_Load %s DIR:%s\n",SDL_GetError(),path );
+		fprintf(EXT_FILE,"room.c : MessageQuitterRoom() : IMG_Load %s DIR:%s\n",SDL_GetError(),"../room/textures/exit@3.png" );
 		return EXIT_FAILURE;
 	}
 
@@ -3262,269 +3181,4 @@ int MessageQuitterRoom(int modeChargement,char path[])
 	glLoadIdentity();
 
 	return EXIT_SUCCESS;
-}
-
-
-int backgroundClassement(SDL_Surface *sImage)
-{
-	////////////////////////////////////////////////
-	// ENVOI MATRICE
-	glPushMatrix();
-	glLoadIdentity();
-	////////////////////////////////////////////////
-	// DESACTIVER LES LUMIERE
-	glDisable(GL_LIGHTING);
-	glLoadIdentity();
-
-	////////////////////////////////////////////////
-	// PRECISION SUR LA FENETRE
-	gluOrtho2D(0, WinWidth, 0, WinHeight);
-	// MOD PROJECTION
-	glMatrixMode(GL_PROJECTION);
-	//glLoadIdentity();
-
-	////////////////////////////////////////////////
-	// DESACTIVATION DU TEST D ARRIERE PLAN
-	glDisable(GL_DEPTH_TEST);
-	glLoadIdentity();
-
-	////////////////////////////////////////////////
-	// BLEND
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	// INIT LOAD TEXTURE
-	GLuint texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-	////////////////////////////////////////////////
-	// PARAMETRE 2D
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	// CONVERTION TEXTURE IMAGE
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sImage->w , sImage->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sImage->pixels);
-
-	// RESCALE IMG
-	int tmpW= sImage->w * (WinWidth/2560.0);
-	int tmpH = sImage->h * (WinHeight/1440.0);
-
-	////////////////////////////////////////////////
-	// POSITIONNEMENT DE LA FENETRE QUITTER X
-	int x = 0;
-	////////////////////////////////////////////////
-	// POSITIONNEMENT DE LA FENETRE QUITTER Y
-	int y = WinHeight - tmpH;
-
-	////////////////////////////////////////////////
-	// DEBUT DU RENDU
-	glBegin(GL_QUADS);
-	{
-		glTexCoord2f(0,0); glVertex2f(x, y);
-		glTexCoord2f(1,0); glVertex2f(x + tmpW, y);
-		glTexCoord2f(1,-1); glVertex2f(x + tmpW, y + tmpH);
-		glTexCoord2f(0,-1); glVertex2f(x, y + tmpH);
-	}
-	glEnd();
-	////////////////////////////////////////////////
-
-	////////////////////////////////////////////////
-	// DESTRUCTUIN DES ELLEMENTS CREE
-	glDeleteTextures(1, &texture);
-	////////////////////////////////////////////////
-	// RECUPERATION DE LA MATRICE AVANT MODIF
-	glPopMatrix();
-	glLoadIdentity();
-
-	return EXIT_SUCCESS;
-}
-
-
-
-void GLlightMode()
-{
-	glEnable(GL_LIGHTING);	// Active l'éclairage
-
-
-	// LUMIERE BILLARD
-	// ALLUMMAGE
-	glEnable(GL_LIGHT0);	// Allume la lumière n°0
-	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION
-	GLfloat light0_billard_ambiant[] = { 1.0, 0.917 , 0.173 , 1.0 };
-	GLfloat light0_billard_diffuse[] = { 1.0, 1.0 , 1.0 , 1.0 };
-	GLfloat light0_billard_specular[] = { 1.0, 1.0 , 1.0 , 1.0 };
-	glLightfv(GL_LIGHT0  , GL_AMBIENT, light0_billard_ambiant);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_billard_diffuse);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, light0_billard_specular);
-	// POSITIONNEMENT DE LA LAMPE
-	GLfloat light0_billard_position[]={-9.3 , 5.4 , 0.0 , 1.0 };
-	glLightfv(GL_LIGHT0, GL_POSITION, light0_billard_position);
-	// DIRECTION DU SPOT
-	GLfloat light0_billard_spot_direction[]={ 0.0 , -1.0 , 0.0 };
-	glLightf(GL_LIGHT0 , GL_SPOT_CUTOFF, 90.0);
-	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_billard_spot_direction);
-	glLightf(GL_LIGHT0 , GL_SPOT_EXPONENT, 2.0);
-	// ATTENUATION DU SPOT
-	glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.f);
-	glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.1);
-	glLightf(GL_LIGHT0 , GL_QUADRATIC_ATTENUATION, 0.f);
-
-////////////////////////////////////////////////////////////////////////////////
-
-	// LUMIERE MURALE
-	// ALLUMMAGE
-	glEnable(GL_LIGHT1);	// Allume la lumière n°1
-	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION
-	GLfloat light1_murale_ambiant[] = { 1.0, 0.917 , 0.173 , 1.0 };
-	GLfloat light1_murale_diffuse[] = { 1.0, 1.0 , 1.0 , 1.0 };
-	GLfloat light1_murale_specular[] = { 1.0, 1.0 , 1.0 , 1.0 };
-	glLightfv(GL_LIGHT1, GL_AMBIENT, light1_murale_ambiant);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_murale_diffuse);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, light1_murale_specular);
-	// POSITIONNEMENT DE LA LAMPE
-	GLfloat light1_murale_position[]={3.4 , 3.8 , -4.8 , 1.0 };
-	glLightfv(GL_LIGHT1, GL_POSITION, light1_murale_position);
-	// DIRECTION DU SPOT
-	GLfloat light1_murale_spot_direction[]={ 0.0 , 0.0 , -1.0 };
-	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light1_murale_spot_direction);
-	// ATTENUATION DU SPOT
-	glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.1f);
-	glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.01);
-	glLightf(GL_LIGHT1 , GL_QUADRATIC_ATTENUATION, 0.1);
-
-////////////////////////////////////////////////////////////////////////////////
-
-	// LUMIERE MURALE
-	// ALLUMMAGE
-	glEnable(GL_LIGHT2);	// Allume la lumière n°2
-	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION UTILISATION PRESET LAMP 1
-	glLightfv(GL_LIGHT2, GL_AMBIENT, light1_murale_ambiant);
-	glLightfv(GL_LIGHT2, GL_DIFFUSE, light1_murale_diffuse);
-	glLightfv(GL_LIGHT2, GL_SPECULAR, light1_murale_specular);
-	// POSITIONNEMENT DE LA LAMPE
-	GLfloat light2_murale_position[]={-2.5  , 3.8 , -4.8 , 1.0 };
-	glLightfv(GL_LIGHT2, GL_POSITION, light2_murale_position);
-	// DIRECTION DU SPOT UTILISATION PRESET LAMP 1
-	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, light1_murale_spot_direction);
-	// ATTENUATION DU SPOT
-	glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 0.1f);
-	glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.01);
-	glLightf(GL_LIGHT2 , GL_QUADRATIC_ATTENUATION, 0.1);
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-	// LUMIERE MURALE
-	// ALLUMMAGE
-	glEnable(GL_LIGHT3);	// Allume la lumière n°3
-	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION UTILISATION PRESET LAMP 1
-	glLightfv(GL_LIGHT3, GL_AMBIENT, light1_murale_ambiant);
-	glLightfv(GL_LIGHT3, GL_DIFFUSE, light1_murale_diffuse);
-	glLightfv(GL_LIGHT3, GL_SPECULAR, light1_murale_specular);
-	// POSITIONNEMENT DE LA LAMPE
-	GLfloat light3_murale_position[]={9.2  , 3.8 , -4.8 , 1.0 };
-	glLightfv(GL_LIGHT3, GL_POSITION, light3_murale_position);
-	// DIRECTION DU SPOT UTILISATION PRESET LAMP 1
-	glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, light1_murale_spot_direction);
-	// ATTENUATION DU SPOT
-	glLightf(GL_LIGHT3, GL_CONSTANT_ATTENUATION, 0.1f);
-	glLightf(GL_LIGHT3, GL_LINEAR_ATTENUATION, 0.01);
-	glLightf(GL_LIGHT3 , GL_QUADRATIC_ATTENUATION, 0.1);
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-	// LUMIERE MURALE
-	// ALLUMMAGE
-	glEnable(GL_LIGHT4);	// Allume la lumière n°4
-	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION UTILISATION PRESET LAMP 1
-	glLightfv(GL_LIGHT4, GL_AMBIENT, light1_murale_ambiant);
-	glLightfv(GL_LIGHT4, GL_DIFFUSE, light1_murale_diffuse);
-	glLightfv(GL_LIGHT4, GL_SPECULAR, light1_murale_specular);
-	// POSITIONNEMENT DE LA LAMPE
-	GLfloat light4_murale_position[]={-8.5  , 3.8 , -4.8 , 1.0 };
-	glLightfv(GL_LIGHT4, GL_POSITION, light4_murale_position);
-	// DIRECTION DU SPOT UTILISATION PRESET LAMP 1
-	glLightfv(GL_LIGHT4, GL_SPOT_DIRECTION, light1_murale_spot_direction);
-	// ATTENUATION DU SPOT
-	glLightf(GL_LIGHT4, GL_CONSTANT_ATTENUATION, 0.1f);
-	glLightf(GL_LIGHT4, GL_LINEAR_ATTENUATION, 0.01);
-	glLightf(GL_LIGHT4 , GL_QUADRATIC_ATTENUATION, 0.1);
-
-////////////////////////////////////////////////////////////////////////////////
-
-	// LUMIERE MURALE
-	// ALLUMMAGE
-	glEnable(GL_LIGHT5);	// Allume la lumière n°5
-	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION UTILISATION PRESET LAMP 1
-	glLightfv(GL_LIGHT5, GL_AMBIENT, light1_murale_ambiant);
-	glLightfv(GL_LIGHT5, GL_DIFFUSE, light1_murale_diffuse);
-	glLightfv(GL_LIGHT5, GL_SPECULAR, light1_murale_specular);
-	// POSITIONNEMENT DE LA LAMPE
-	GLfloat light5_murale_position[]={-14.0  , 3.8 , 1.4 , 1.0 };
-	glLightfv(GL_LIGHT5, GL_POSITION, light5_murale_position);
-	// DIRECTION DU SPOT
-	GLfloat light5_murale_spot_direction[] = { -1.0 , 1.0 , 0.0 };
-	glLightfv(GL_LIGHT5, GL_SPOT_DIRECTION, light5_murale_spot_direction);
-	// ATTENUATION DU SPOT
-	glLightf(GL_LIGHT5, GL_CONSTANT_ATTENUATION, 0.1f);
-	glLightf(GL_LIGHT5, GL_LINEAR_ATTENUATION, 0.01);
-	glLightf(GL_LIGHT5 , GL_QUADRATIC_ATTENUATION, 0.1);
-
-////////////////////////////////////////////////////////////////////////////////
-
-// LUMIERE MURALE
-	// ALLUMMAGE
-	glEnable(GL_LIGHT6);	// Allume la lumière n°6
-	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION UTILISATION PRESET LAMP 1
-	glLightfv(GL_LIGHT6, GL_AMBIENT, light1_murale_ambiant);
-	glLightfv(GL_LIGHT6, GL_DIFFUSE, light1_murale_diffuse);
-	glLightfv(GL_LIGHT6, GL_SPECULAR, light1_murale_specular);
-	// POSITIONNEMENT DE LA LAMPE
-	GLfloat light6_murale_position[]={-14.0  , 3.8 , 8.1 , 1.0 };
-	glLightfv(GL_LIGHT6, GL_POSITION, light6_murale_position);
-	// DIRECTION DU SPOT UTILISATION PRESET LAMP 6
-	glLightfv(GL_LIGHT6, GL_SPOT_DIRECTION, light5_murale_spot_direction);
-	// ATTENUATION DU SPOT
-	glLightf(GL_LIGHT6, GL_CONSTANT_ATTENUATION, 0.1f);
-	glLightf(GL_LIGHT6, GL_LINEAR_ATTENUATION, 0.01);
-	glLightf(GL_LIGHT6 , GL_QUADRATIC_ATTENUATION, 0.1);
-
-////////////////////////////////////////////////////////////////////////////////
-
-	// LUMIERE LOGO NINETEEN
-	// ALLUMMAGE
-	glEnable(GL_LIGHT7 );	// Allume la lumière n°8
-	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION
-	GLfloat light7_nineteen_ambiant[] = { 0.7, 0.5 , 0.9 , 1.0 };
-	GLfloat light7_nineteen_diffuse[] = { 1.0, 1.0 , 1.0 , 1.0 };
-	GLfloat light7_nineteen_specular[] = { 1.0, 1.0 , 1.0 , 1.0 };
-	glLightfv(GL_LIGHT7, GL_AMBIENT, light7_nineteen_ambiant);
-	glLightfv(GL_LIGHT7, GL_DIFFUSE, light7_nineteen_diffuse);
-	glLightfv(GL_LIGHT7, GL_SPECULAR, light7_nineteen_specular);
-	// POSITIONNEMENT DE LA LAMPE
-	GLfloat light7_nineteen_position[]={0.f , 4.4 , 24.5 , 1.0 };
-	glLightfv(GL_LIGHT7, GL_POSITION, light7_nineteen_position);
-	// DIRECTION DU SPOT
-	GLfloat light7_nineteen_spot_direction[]={ 0.0 , 0.0 , -1.0 };
-
-	glLightfv(GL_LIGHT7, GL_SPOT_DIRECTION, light7_nineteen_spot_direction);
-
-	// ATTENUATION DU SPOT
-	glLightf(GL_LIGHT7, GL_CONSTANT_ATTENUATION, 0.01f);
-	glLightf(GL_LIGHT7, GL_LINEAR_ATTENUATION, 0.01);
-	glLightf(GL_LIGHT7 , GL_QUADRATIC_ATTENUATION, 0.02f);
-}
-
-
-
-void detruireTexture(GLuint nbTextures)
-{
-
-  if(_counts) {
-    free(_counts);
-    _counts = NULL;
-  }
-  if(_textures) {
-    glDeleteTextures(nbTextures, _textures);
-    free(_textures);
-    _textures = NULL;
-  }
 }

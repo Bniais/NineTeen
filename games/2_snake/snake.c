@@ -1428,7 +1428,7 @@ int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, ch
 				//Move
 				speedRestant = moveSnake(&snakeBody, pastBody, &snakeSize, accelerate * speedSnake + speedRestant, dirAngle, fruit, nbFruits, &bonus, &radiusRestant, hardcore);
 				//spawn more fruits
-				if( (hardcore && rand()%(int)(PRECISION_SPAWN*chance_spawn_hardcore) < PRECISION_SPAWN)  || rand() % (int)(CHANCE_SPAWN_FRUIT * nbFruits) == 0 ){
+				if( (hardcore && rand()%(int)(PRECISION_SPAWN*chance_spawn_hardcore) < PRECISION_SPAWN)  || rand() % (CHANCE_SPAWN_FRUIT * nbFruits) == 0 ){
 					fruit = realloc(fruit, sizeof(Fruit) * (++nbFruits));
 					spawnFruit(snakeBody[SIZE_PRE_RADIUS], fruit, nbFruits - 1, nbFruits, nbFruitEaten, &bonus, UNDEF, FROM_NATURAL, 0, sounds[SOUND_APPEAR], hardcore);
 				}

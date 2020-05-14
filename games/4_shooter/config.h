@@ -11,44 +11,7 @@ typedef struct {
 	int frameToDest; /*!< \brief Le nombre de frame avant que scoreShow arrive à score*/
 }ScoreTotal;
 
-typedef struct { float x; float y; float rx; float ry;}Ellips;
-#define PRECISION_RAND_FLOAT 100.
-//Background
-	#define NB_BACKGROUND_LAYER 3
-	#define RATIO_WIDTH_PLAYGROUND 3
-	static const SDL_Rect BACKGROUND_DEST = {(BASE_WINDOW_W - BASE_WINDOW_W/RATIO_WIDTH_PLAYGROUND)/2, 0, BASE_WINDOW_W/RATIO_WIDTH_PLAYGROUND, BASE_WINDOW_H};
-	static const SDL_Rect BACKGROUND_SRC = {0,0,BASE_WINDOW_W/RATIO_WIDTH_PLAYGROUND, BASE_WINDOW_H};
-	static const SDL_Rect BACKGROUND_GLOBAL_SRC = {0,0,BASE_WINDOW_W/RATIO_WIDTH_PLAYGROUND, 4096};
-
-	const int SCROLL_SPEED_BACKGROUND[3] = {6,10,12};
-
-//weapon
-	#define NB_MAX_WEAPON 5
-	#define NB_MAX_WEAPON_ENEMY 7
-	const SDL_Rect WEAPON_SRC = {0,0,3,19};
-	const SDL_Rect WEAPON_DEST[NB_MAX_WEAPON] = {
-		{36,14,3,17},
-		{49,10,3,18},
-		{64,6,4,13},
-		{80,10,3,18},
-		{93,14,3,17}
-	};
-
-	const int WEAPON_DISPOSITION[NB_MAX_WEAPON][NB_MAX_WEAPON] = {
-		{3,0,0,0,0},
-		{2,4,0,0,0},
-		{3,2,4,0,0},
-		{3,2,4,1,0},
-		{3,2,4,1,5}
-	};
-
-	const int DECALLAGE_TURN[3][NB_MAX_WEAPON] = {
-		{0,0,0},
-		{-1, -2, -3, -3, -4},
-		{4, 3, 3, 2, 1}
-	};
-
-
+const SDL_Rect PLAYGROUND = {BASE_WINDOW_W*0.3,0,BASE_WINDOW_W/2.5,BASE_WINDOW_H};
 
 //vaisseau
 	#define SHIP_SPEED 10
@@ -190,6 +153,30 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 	#define BASE_TAILLE_EXPLOSION 40
 	#define RATIO_SHIP_EXPLO_SIZE 1.2
 
+//weapon
+#define NB_MAX_WEAPON 5
+const SDL_Rect WEAPON_SRC = {0,0,3,19};
+const SDL_Rect WEAPON_DEST[NB_MAX_WEAPON] = {
+	{36,14,3,17},
+	{49,10,3,18},
+	{64,6,4,13},
+	{80,10,3,18},
+	{93,14,3,17}
+};
+
+const int WEAPON_DISPOSITION[NB_MAX_WEAPON][NB_MAX_WEAPON] = {
+	{3,0,0,0,0},
+	{2,4,0,0,0},
+	{3,2,4,0,0},
+	{3,2,4,1,0},
+	{3,2,4,1,5}
+};
+
+const int DECALLAGE_TURN[3][NB_MAX_WEAPON] = {
+	{0,0,0},
+	{-1, -2, -3, -3, -4},
+	{4, 3, 3, 2, 1}
+};
 
 
 //colors

@@ -40,4 +40,3 @@ int _malloc( void **ptr ,int type, int size , FILE*fp , Uint32 flags,const char*
 void afficherMessageSysteme(char message[]);
 
 int lenNum(int n);
-int randSign();

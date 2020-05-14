@@ -52,10 +52,10 @@ $(OBJDIR)/asteroid.o : games/7_asteroid/asteroid.c
 	$(CC) $(FLAGS) $(LSDL) -o $@ $<
 
 $(OBJDIR)/leaderboard.o : room/leaderboard/leaderboard.c
-	$(CC) -o $@ $< $(FLAGS) $(LSDL)  
+	$(CC) -o $@ $< $(FLAGS)
 
 $(OBJDIR)/import.o : room/import.c
-	$(CC) -o $@ $< $(FLAGS) $(LSDL)
+	$(CC) -o $@ $< $(FLAGS)
 
 $(OBJDIR)/libWeb.o : include/libWeb.c
 	$(CC) -o $@ $< $(FLAGS)
