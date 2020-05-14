@@ -656,7 +656,6 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 	 // // // // // // //
 	 	int frame =0;
 		while( 1 ){
-			SDL_Delay(700);
 		// // // //
 		// Events //`
 		// // // //
