@@ -46,8 +46,8 @@ function getClientIP(){
 
 			<div class= "jeu" style="margin-right: 2%; float:right; width:30vw;">
 				<h1>Liens de téléchargement</h1>
-				<a href="download/Nineteen_v1.0.1.zip"> <img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/MacOS_logo_%282017%29.svg/768px-MacOS_logo_%282017%29.svg.png" alt="logo apple"></a>
-				<a href="download/Nineteen_v1.0.1.exe"><img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Windows_logo_–_2012_%28dark_blue%29.svg/768px-Windows_logo_–_2012_%28dark_blue%29.svg.png" alt="logo apple"></a>
+				<a href="download/Nineteen_v1.1.0.zip"> <img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/MacOS_logo_%282017%29.svg/768px-MacOS_logo_%282017%29.svg.png" alt="logo apple"></a>
+				<a href="download/Nineteen_v1.1.0.exe"><img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Windows_logo_–_2012_%28dark_blue%29.svg/768px-Windows_logo_–_2012_%28dark_blue%29.svg.png" alt="logo apple"></a>
 	<!--			<a href="#"><img style="width: 4vw; " src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Ubuntu-Logo_ohne_Schriftzug.svg/1200px-Ubuntu-Logo_ohne_Schriftzug.svg.png" alt="logo apple"></a> -->
 				<br>
 				<br>
@@ -58,6 +58,33 @@ function getClientIP(){
 				<h1>Note de mise à jour</h1>
 				<br>
 
+				<h2>Version : 1.1.0</h2>
+                <ul style="text-align: left;">
+
+                    <li>Room :</li>
+                    <ul>
+                        <li>Performances améliorées</li>
+                        <li>Lumières améliorées</li>
+                        <li>Amélioration des animations de zoom et dezoom</li>
+                    </ul>
+                    <li>Asteroid :</li>
+                    <ul>
+                        <li>Accelération du vaisseau plus puissante</li>
+                        <li>Mode difficile disponible et terminé</li>
+                    </ul>
+                    <li>Démineur :</li>
+                    <ul>
+                        <li>Accès au jeu possible, sans score</li>
+                    </ul>
+                    <li>Shooter :</li>
+                    <ul>
+                        <li>Accès au jeu sans score et pas terminé</li>
+                    </ul>
+                </ul>
+                <br>
+                <br>
+                <hr>
+								
 				<h2>Version : 1.0.1</h2>
 					<ul style="text-align: left;">
 						<li>Global :</li>
