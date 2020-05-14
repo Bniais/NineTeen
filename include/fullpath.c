@@ -18,8 +18,8 @@ FILE *EXT_FILE;
 /// \fn int nbOccurence(char s[], char c)
 /// \brief compte le nombre d occurence d un caractere
 ///
-/// \param s
-/// \param c
+/// \param s La chaine à examiner
+/// \param c Le caractère à compter
 ///
 /// \return retourne le nombre d occurence d un caractere
 /////////////////////////////////////////////
@@ -41,8 +41,8 @@ int nbOccurence(char s[], char c)
 /// \fn char *completPathOf(char s[],int mode)
 /// \brief complete le path
 ///
-/// \param s
-/// \param mode
+/// \param s Le chemin d'execution
+/// \param mode Détermine si c'est ./ ou a/a
 ///
 /// \return la nouvelle chaine
 /////////////////////////////////////////////
@@ -78,7 +78,7 @@ char *completPathOf(char s[],int mode)
 /// \fn int detectionMode(char s[])
 /// \brief detecte le mode si besoin ou non
 ///
-/// \param s
+/// \param s Détecte le mode du chemin ( ./ ou a/a )
 ///
 /// \return 1/0
 /////////////////////////////////////////////
@@ -98,7 +98,7 @@ int detectionMode(char s[])
 /// \fn char *fullPath(char s[])
 /// \brief fonction principal que ce charge de faire l appel de chaque fonction
 ///
-/// \param s
+/// \param s Le chemin d'exectution
 ///
 /// \return nouvelle chaine avec le path complet pour mac
 /////////////////////////////////////////////

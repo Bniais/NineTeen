@@ -13,7 +13,7 @@
 /// \fn long long int hashage (int value, long keys[4])
 /// \brief retourne une valeur hasher de la valeur d'entrer.
 ///
-/// \param int value Valeur a hasher
+/// \param value Valeur a hasher
 /// \param keys Le tableau de clés de hashage
 ///
 /// \return long long retourne la valeur hasher de value.
@@ -55,9 +55,9 @@ void initialisationConstantHashage(long keys[4])
 /// \fn int changeProtectedVar(long long int *score_hash,int *var, int updatedVar, long keys[4])
 /// \brief Verifie que la valeur correspond a une valeur et re met a jours les constants pour un prochain hasahage
 ///
-/// \param long long long int *score_hash valeur hasher
-/// \param int *var valeur a verifier
-/// \param int pdatedVar nouvelle valeur a hasher a la sortie.
+/// \param score_hash valeur hasher
+/// \param var valeur a verifier
+/// \param pdatedVar nouvelle valeur a hasher a la sortie.
 /// \param keys Le tableau de clés de hashage
 ///
 /// \return valeur <=> valeur_hasher retorune 1, sinon retourne 0.

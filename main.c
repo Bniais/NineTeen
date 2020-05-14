@@ -115,7 +115,7 @@ SDL_Thread *thread = NULL;
 /// \fn int checkVersion(char version[])
 /// \brief permet de verifier la version du VERSION_LOGICIEL
 ///
-/// \param version
+/// \param version La version du jeu
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -135,7 +135,7 @@ int checkVersion(char version[])
 /// \fn int dejaConneceter(char *token)
 /// \brief verifie si l utilisateur est deja connecter
 ///
-/// \param token
+/// \param token La clé de connexion de l'utilisateur
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -172,7 +172,7 @@ int dejaConneceter(char *token)
 /// \fn int sauvegarderToken(char *token)
 /// \brief permet de sauvegarder le token dans un fichier
 ///
-/// \param token
+/// \param token La clé de connexion de l'utilisateur
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -200,8 +200,6 @@ int sauvegarderToken(char *token)
 /////////////////////////////////////////////////////
 /// \fn void printAll(SDL_Renderer *renderer, SDL_Texture* background,SDL_Texture* loading, TTF_Font *police,SDL_Rect targetId, SDL_Rect targetPwd, SDL_Rect targetConnect, SDL_Rect targetInscription, int frame_anims[NB_ANIM],int valeurRetour )
 /// \brief cette fonction permet d'afficher tous les elements present dans le launcher.
-///
-/// \param
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -305,10 +303,10 @@ void ouvrirUrlRegistration()
 /// \fn int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 /// \brief la fonction gere l'interaction globale de la vue, elle envoie les requetes de connexion et traite les retour
 ///
-/// \param renderer
-/// \param token
-/// \param tokenCpy
-/// \param path
+/// \param renderer Le renderer où afficher
+/// \param token  La clé de connexion de l'utilisateur
+/// \param tokenCpy La copie de la clé de connexion de l'utilisateur
+/// \param path Le chemin d'execution
 ///
 /// \return EXIT_FAILURE/EXIT_SUCCESS
 /////////////////////////////////////////////////////
@@ -770,11 +768,11 @@ int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 /// \fn int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene, char *path )
 /// \brief verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores
 ///
-/// \param renderer
-/// \param meilleureScore
-/// \param token
-/// \param scene
-/// \param path
+/// \param renderer Le renderer où afficher
+/// \param meilleureScore Le tableau de records
+/// \param token La clé de connexion de l'utilisateur
+/// \param scene La scène opengl
+/// \param path Le chemin d'execution
 ///
 /// \return EXIT_FAILURE/EXIT_SUCCESS
 /////////////////////////////////////////////////////
@@ -1000,12 +998,12 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 /// \fn int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[])
 /// \brief regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargement fichier
 ///
-/// \param renderer
-/// \param token
-/// \param tokenCpy
-/// \param meilleureScore
-/// \param scene
-/// \param path
+/// \param renderer Le renderer où afficher
+/// \param token La clé de connexion de l'utilisateur
+/// \param tokenCpy La copie clé de connexion de l'utilisateur
+/// \param meilleureScore Le tableaud de records
+/// \param scene La scène opengl
+/// \param path Le chemin d'execution
 ///
 /// \return EXIT_FAILURE/EXIT_SUCCESS
 /////////////////////////////////////////////////////
