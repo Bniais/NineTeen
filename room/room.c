@@ -709,51 +709,176 @@ static
 void GLlightMode()
 {
 	glEnable(GL_LIGHTING);	// Active l'éclairage
-	glEnable(GL_LIGHT0);	// Allume la lumière n°1
+
+
+	// LUMIERE BILLARD
+	// ALLUMMAGE
+	glEnable(GL_LIGHT0);	// Allume la lumière n°0
+	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION
+	GLfloat light0_billard_ambiant[] = { 1.0, 0.917 , 0.173 , 1.0 };
+	GLfloat light0_billard_diffuse[] = { 1.0, 1.0 , 1.0 , 1.0 };
+	GLfloat light0_billard_specular[] = { 1.0, 1.0 , 1.0 , 1.0 };
+	glLightfv(GL_LIGHT0  , GL_AMBIENT, light0_billard_ambiant);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_billard_diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light0_billard_specular);
+	// POSITIONNEMENT DE LA LAMPE
+	GLfloat light0_billard_position[]={-9.3 , 5.4 , 0.0 , 1.0 };
+	glLightfv(GL_LIGHT0, GL_POSITION, light0_billard_position);
+	// DIRECTION DU SPOT
+	GLfloat light0_billard_spot_direction[]={ 0.0 , -1.0 , 0.0 };
+	glLightf(GL_LIGHT0 , GL_SPOT_CUTOFF, 90.0);
+	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_billard_spot_direction);
+	glLightf(GL_LIGHT0 , GL_SPOT_EXPONENT, 2.0);
+	// ATTENUATION DU SPOT
+	glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.f);
+	glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.1);
+	glLightf(GL_LIGHT0 , GL_QUADRATIC_ATTENUATION, 0.f);
+
+////////////////////////////////////////////////////////////////////////////////
+
+	// LUMIERE MURALE
+	// ALLUMMAGE
 	glEnable(GL_LIGHT1);	// Allume la lumière n°1
-	//glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
-	// COULEUR DES LAMPES
-	/////////////////////
-	//
-	GLfloat ambiant1[] = { 1.0, 0.917 , 0.173 , 1.0 };
-	GLfloat diffuse[] = { 1.0, 1.0 , 1.0 , 1.0 };
-	GLfloat specular[] = { 1.0, 1.0 , 1.0 , 1.0 };
-
-
-	GLfloat position1[]={-9.3 , 5.4 , 0.0 , 1.0 };
-	GLfloat spot_direction1[]={ 0.0 , -1.0 , 0.0 };
-
-	GLfloat position2[]={3.4 , 4.2 , -4.8 , 1.0 };
-	GLfloat spot_direction2[]={ 0.0 , 0.0 , -1.0 };
-
-
-	glLightfv(GL_LIGHT0  , GL_AMBIENT, ambiant1);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-	glLightfv(GL_LIGHT0, GL_POSITION, position1);
-
-
-	//GLfloat ambiant2[] = { 0.89, 0.33 , 0.27 , 1.0 };
-	glLightfv(GL_LIGHT1  , GL_AMBIENT, ambiant1);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, specular);
-	glLightfv(GL_LIGHT1, GL_POSITION, position2);
-
-
-	// ATENUATION
-
-
-	glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.0);
+	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION
+	GLfloat light1_murale_ambiant[] = { 1.0, 0.917 , 0.173 , 1.0 };
+	GLfloat light1_murale_diffuse[] = { 1.0, 1.0 , 1.0 , 1.0 };
+	GLfloat light1_murale_specular[] = { 1.0, 1.0 , 1.0 , 1.0 };
+	glLightfv(GL_LIGHT1, GL_AMBIENT, light1_murale_ambiant);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_murale_diffuse);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, light1_murale_specular);
+	// POSITIONNEMENT DE LA LAMPE
+	GLfloat light1_murale_position[]={3.4 , 3.8 , -4.8 , 1.0 };
+	glLightfv(GL_LIGHT1, GL_POSITION, light1_murale_position);
+	// DIRECTION DU SPOT
+	GLfloat light1_murale_spot_direction[]={ 0.0 , 0.0 , -1.0 };
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light1_murale_spot_direction);
+	// ATTENUATION DU SPOT
+	glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.1f);
 	glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.01);
 	glLightf(GL_LIGHT1 , GL_QUADRATIC_ATTENUATION, 0.1);
 
-	glLightf(GL_LIGHT0 , GL_SPOT_CUTOFF, 90.0);
-	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction1);
-	glLightf(GL_LIGHT0 , GL_SPOT_EXPONENT, 2.0);
+////////////////////////////////////////////////////////////////////////////////
 
-	glLightf(GL_LIGHT0 , GL_SPOT_CUTOFF, 90.0);
-	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction2);
-	glLightf(GL_LIGHT0 , GL_SPOT_EXPONENT, 2.0);
+	// LUMIERE MURALE
+	// ALLUMMAGE
+	glEnable(GL_LIGHT2);	// Allume la lumière n°2
+	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION UTILISATION PRESET LAMP 1
+	glLightfv(GL_LIGHT2, GL_AMBIENT, light1_murale_ambiant);
+	glLightfv(GL_LIGHT2, GL_DIFFUSE, light1_murale_diffuse);
+	glLightfv(GL_LIGHT2, GL_SPECULAR, light1_murale_specular);
+	// POSITIONNEMENT DE LA LAMPE
+	GLfloat light2_murale_position[]={-2.5  , 3.8 , -4.8 , 1.0 };
+	glLightfv(GL_LIGHT2, GL_POSITION, light2_murale_position);
+	// DIRECTION DU SPOT UTILISATION PRESET LAMP 1
+	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, light1_murale_spot_direction);
+	// ATTENUATION DU SPOT
+	glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 0.1f);
+	glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.01);
+	glLightf(GL_LIGHT2 , GL_QUADRATIC_ATTENUATION, 0.1);
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+	// LUMIERE MURALE
+	// ALLUMMAGE
+	glEnable(GL_LIGHT3);	// Allume la lumière n°3
+	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION UTILISATION PRESET LAMP 1
+	glLightfv(GL_LIGHT3, GL_AMBIENT, light1_murale_ambiant);
+	glLightfv(GL_LIGHT3, GL_DIFFUSE, light1_murale_diffuse);
+	glLightfv(GL_LIGHT3, GL_SPECULAR, light1_murale_specular);
+	// POSITIONNEMENT DE LA LAMPE
+	GLfloat light3_murale_position[]={9.2  , 3.8 , -4.8 , 1.0 };
+	glLightfv(GL_LIGHT3, GL_POSITION, light3_murale_position);
+	// DIRECTION DU SPOT UTILISATION PRESET LAMP 1
+	glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, light1_murale_spot_direction);
+	// ATTENUATION DU SPOT
+	glLightf(GL_LIGHT3, GL_CONSTANT_ATTENUATION, 0.1f);
+	glLightf(GL_LIGHT3, GL_LINEAR_ATTENUATION, 0.01);
+	glLightf(GL_LIGHT3 , GL_QUADRATIC_ATTENUATION, 0.1);
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+	// LUMIERE MURALE
+	// ALLUMMAGE
+	glEnable(GL_LIGHT4);	// Allume la lumière n°4
+	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION UTILISATION PRESET LAMP 1
+	glLightfv(GL_LIGHT4, GL_AMBIENT, light1_murale_ambiant);
+	glLightfv(GL_LIGHT4, GL_DIFFUSE, light1_murale_diffuse);
+	glLightfv(GL_LIGHT4, GL_SPECULAR, light1_murale_specular);
+	// POSITIONNEMENT DE LA LAMPE
+	GLfloat light4_murale_position[]={-8.5  , 3.8 , -4.8 , 1.0 };
+	glLightfv(GL_LIGHT4, GL_POSITION, light4_murale_position);
+	// DIRECTION DU SPOT UTILISATION PRESET LAMP 1
+	glLightfv(GL_LIGHT4, GL_SPOT_DIRECTION, light1_murale_spot_direction);
+	// ATTENUATION DU SPOT
+	glLightf(GL_LIGHT4, GL_CONSTANT_ATTENUATION, 0.1f);
+	glLightf(GL_LIGHT4, GL_LINEAR_ATTENUATION, 0.01);
+	glLightf(GL_LIGHT4 , GL_QUADRATIC_ATTENUATION, 0.1);
+
+////////////////////////////////////////////////////////////////////////////////
+
+	// LUMIERE MURALE
+	// ALLUMMAGE
+	glEnable(GL_LIGHT5);	// Allume la lumière n°5
+	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION UTILISATION PRESET LAMP 1
+	glLightfv(GL_LIGHT5, GL_AMBIENT, light1_murale_ambiant);
+	glLightfv(GL_LIGHT5, GL_DIFFUSE, light1_murale_diffuse);
+	glLightfv(GL_LIGHT5, GL_SPECULAR, light1_murale_specular);
+	// POSITIONNEMENT DE LA LAMPE
+	GLfloat light5_murale_position[]={-14.0  , 3.8 , 1.4 , 1.0 };
+	glLightfv(GL_LIGHT5, GL_POSITION, light5_murale_position);
+	// DIRECTION DU SPOT
+	GLfloat light5_murale_spot_direction[] = { -1.0 , 1.0 , 0.0 };
+	glLightfv(GL_LIGHT5, GL_SPOT_DIRECTION, light5_murale_spot_direction);
+	// ATTENUATION DU SPOT
+	glLightf(GL_LIGHT5, GL_CONSTANT_ATTENUATION, 0.1f);
+	glLightf(GL_LIGHT5, GL_LINEAR_ATTENUATION, 0.01);
+	glLightf(GL_LIGHT5 , GL_QUADRATIC_ATTENUATION, 0.1);
+
+////////////////////////////////////////////////////////////////////////////////
+
+// LUMIERE MURALE
+	// ALLUMMAGE
+	glEnable(GL_LIGHT6);	// Allume la lumière n°6
+	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION UTILISATION PRESET LAMP 1
+	glLightfv(GL_LIGHT6, GL_AMBIENT, light1_murale_ambiant);
+	glLightfv(GL_LIGHT6, GL_DIFFUSE, light1_murale_diffuse);
+	glLightfv(GL_LIGHT6, GL_SPECULAR, light1_murale_specular);
+	// POSITIONNEMENT DE LA LAMPE
+	GLfloat light6_murale_position[]={-14.0  , 3.8 , 8.1 , 1.0 };
+	glLightfv(GL_LIGHT6, GL_POSITION, light6_murale_position);
+	// DIRECTION DU SPOT UTILISATION PRESET LAMP 6
+	glLightfv(GL_LIGHT6, GL_SPOT_DIRECTION, light5_murale_spot_direction);
+	// ATTENUATION DU SPOT
+	glLightf(GL_LIGHT6, GL_CONSTANT_ATTENUATION, 0.1f);
+	glLightf(GL_LIGHT6, GL_LINEAR_ATTENUATION, 0.01);
+	glLightf(GL_LIGHT6 , GL_QUADRATIC_ATTENUATION, 0.1);
+
+////////////////////////////////////////////////////////////////////////////////
+
+	// LUMIERE LOGO NINETEEN
+	// ALLUMMAGE
+	glEnable(GL_LIGHT7 );	// Allume la lumière n°8
+	// REGLAGE COULEUR AMBIANT/SPECULARITE/DIFFUSION
+	GLfloat light7_nineteen_ambiant[] = { 0.7, 0.5 , 0.9 , 1.0 };
+	GLfloat light7_nineteen_diffuse[] = { 1.0, 1.0 , 1.0 , 1.0 };
+	GLfloat light7_nineteen_specular[] = { 1.0, 1.0 , 1.0 , 1.0 };
+	glLightfv(GL_LIGHT7, GL_AMBIENT, light7_nineteen_ambiant);
+	glLightfv(GL_LIGHT7, GL_DIFFUSE, light7_nineteen_diffuse);
+	glLightfv(GL_LIGHT7, GL_SPECULAR, light7_nineteen_specular);
+	// POSITIONNEMENT DE LA LAMPE
+	GLfloat light7_nineteen_position[]={0.f , 4.4 , 24.5 , 1.0 };
+	glLightfv(GL_LIGHT7, GL_POSITION, light7_nineteen_position);
+	// DIRECTION DU SPOT
+	GLfloat light7_nineteen_spot_direction[]={ 0.0 , 0.0 , -1.0 };
+
+	glLightfv(GL_LIGHT7, GL_SPOT_DIRECTION, light7_nineteen_spot_direction);
+
+	// ATTENUATION DU SPOT
+	glLightf(GL_LIGHT7, GL_CONSTANT_ATTENUATION, 0.01f);
+	glLightf(GL_LIGHT7, GL_LINEAR_ATTENUATION, 0.01);
+	glLightf(GL_LIGHT7 , GL_QUADRATIC_ATTENUATION, 0.02f);
 }
 
 
@@ -1075,14 +1200,15 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 	while (Running)
 	{
 
-	//	GLlightMode();
+
 
 		//////////////////////////////////////////////////////////
 		// DEBUT DE LA MESURE DU TEMPS D'UNE FRAME
 		int delayLancementFrame = SDL_GetTicks();
 
-		glLoadIdentity();
+
 		GL_InitialiserParametre(WinWidth,WinHeight,camera);
+
 
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON ENVIRONEMENT AVEC LEUR POSITION
@@ -1119,7 +1245,6 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		SDL_GL_AppliquerScene(Window, scene,&camera,&scene_list,_IPS);
 
-		//GL_InitialiserParametre(WinWidth,WinHeight,camera);
 		//////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////
@@ -1628,9 +1753,10 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 
 	////////////////////////////////////////////////////
 	// GERER LES MOUVEMENT DE CAMERA
-
 	mouvementCamera(Window, camera,IPS);
-
+	////////////////////////////////////////////////////
+	// GERER LES LUMIERE PRESENTE DANS LA SALLE
+	GLlightMode();
 	////////////////////////////////////////////////////
 	// SI LE RENDU DE LA SCENE N'EST PAS FAIT LE FAIRE
 	GlDessinerQuad(toiletteFemme);
@@ -1669,11 +1795,7 @@ void GL_InitialiserParametre(int width, int height, struct Camera_s camera)
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position0);
 
 
-	///////////////////////////////////////////////////
-	// ACTIVATION DES LUMIERES
-	glEnable(GL_LIGHTING);
-	// ACTIVATION DE LA LUMIERE 0
-	glEnable(GL_LIGHT0);
+
 	// ACTIVATION DE LA DETECTION D'OBJET L'UN DEVANT L'AUTRE POUR NE PAS TOUS AFFICHER
 	glEnable(GL_DEPTH_TEST);
 
