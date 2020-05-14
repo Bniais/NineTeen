@@ -432,29 +432,38 @@ void moveMissile(Missile *missile){
 	(missile->frame)++;
 }
 
-void moveEnemy(Enemy *enemy){
-	if(enemy->id == BASE_ENEMY && enemy->frameWait == 0){
+void moveEnemy(Enemy **enemies, int * nbEnemy, int iEnemy){
+	if((*enemies)[iEnemy].id == BASE_ENEMY && (*enemies)[iEnemy].frameWait == 0){
 		float tmpX, tmpY, tmpD;
-		while(enemy->dist < SPEED_ENEMY[enemy->id]){
-			tmpX = enemy->x;
-			tmpY = enemy->y;
-			enemy->x += enemy->dir * SPEED_DECOMPOSITION;
-			enemy->y = it_pol_lagrange(NMAX-1,enemy->coefs,enemy->abscisses,enemy->x);
+		while((*enemies)[iEnemy].dist < SPEED_ENEMY[(*enemies)[iEnemy].id]){
+			tmpX = (*enemies)[iEnemy].x;
+			tmpY = (*enemies)[iEnemy].y;
+			(*enemies)[iEnemy].x += (*enemies)[iEnemy].dir * SPEED_DECOMPOSITION;
+			(*enemies)[iEnemy].y = it_pol_lagrange(NMAX-1,(*enemies)[iEnemy].coefs,(*enemies)[iEnemy].abscisses,(*enemies)[iEnemy].x);
 
-			tmpD =  sqrt(pow(tmpX - enemy->x, 2) + pow(tmpY - enemy->y, 2));
-			enemy->dist += tmpD;
+			tmpD =  sqrt(pow(tmpX - (*enemies)[iEnemy].x, 2) + pow(tmpY - (*enemies)[iEnemy].y, 2));
+			(*enemies)[iEnemy].dist += tmpD;
 		}
-		enemy->x -= enemy->dir * (SPEED_DECOMPOSITION * (enemy->dist - SPEED_ENEMY[enemy->id])) / tmpD;
-		enemy->y = it_pol_lagrange(3,enemy->coefs,enemy->abscisses,enemy->x);
-		enemy->dist = 0 ;
+		(*enemies)[iEnemy].x -= (*enemies)[iEnemy].dir * (SPEED_DECOMPOSITION * ((*enemies)[iEnemy].dist - SPEED_ENEMY[(*enemies)[iEnemy].id])) / tmpD;
+		(*enemies)[iEnemy].y = it_pol_lagrange(3,(*enemies)[iEnemy].coefs,(*enemies)[iEnemy].abscisses,(*enemies)[iEnemy].x);
+		(*enemies)[iEnemy].dist = 0 ;
+
 
 	}
-	else if(enemy->frameWait == 0){
-		enemy->x += SPEED_ENEMY[enemy->id];
+	else if((*enemies)[iEnemy].frameWait == 0){
+		(*enemies)[iEnemy].x += SPEED_ENEMY[(*enemies)[iEnemy].id];
+	}
+
+	if((*enemies)[iEnemy].x < BACKGROUND_DEST.x - ENEMY_SRC[(*enemies)[iEnemy].id].w / RATIO_SIZE_ENEMY[(*enemies)[iEnemy].id]  || (*enemies)[iEnemy].x > BACKGROUND_DEST.x + BACKGROUND_DEST.w){
+		shiftEnemy(*enemies, *nbEnemy, iEnemy);
+		(*nbEnemy)--;
+		if(*nbEnemy !=0)
+			*enemies=realloc(*enemies, sizeof(Enemy)* *nbEnemy );
 	}
 }
 
 void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
+	return;
 	*nbEnemy += nbSpawn;
 	*enemies = realloc( *enemies, *nbEnemy * sizeof(Enemy));
 
@@ -466,7 +475,7 @@ void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
 		x[0] = BACKGROUND_DEST.x - ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY];
 		f[0] = rand()%300+100;
 		for(int i=1; i<NMAX; i++){
-			x[i] = x[i-1] + 248+1/3.;
+			x[i] = x[i-1] + (BACKGROUND_DEST.w + ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY])/3;
 			f[i] = rand()%250+100;
 		}
 		//x[NMAX-1] = BACKGROUND_DEST.x + BACKGROUND_DEST.w + ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY];
@@ -479,7 +488,7 @@ void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
 	for(int i = *nbEnemy-1; i> *nbEnemy - 1 - nbSpawn; i--){
 		(*enemies)[i] = (Enemy){
 			id, //id
-			0, //x
+			BACKGROUND_DEST.x - ENEMY_SRC[id].w/RATIO_SIZE_ENEMY[id], //x
 			200, //y
 			0, //rota
 			ENEMY_HP[id], //hp
@@ -552,7 +561,6 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 
 	int quit = SDL_FALSE;
 	while(!quit){
-
    		 // // // //
 		// Vars   //`
 		 // // // //
@@ -589,8 +597,8 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		};
 
 		int nbEnemy = 0;
+		 spawnEnemy(&enemies, &nbEnemy, 0, 5);
 		spawnEnemy(&enemies, &nbEnemy, 1, 1);
-	    spawnEnemy(&enemies, &nbEnemy, 0, 5);
 		spawnEnemy(&enemies, &nbEnemy, 2, 1);
 
 		/*enemies[0] = (Enemy){
@@ -648,7 +656,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 	 // // // // // // //
 	 	int frame =0;
 		while( 1 ){
-
+			SDL_Delay(700);
 		// // // //
 		// Events //`
 		// // // //
@@ -730,8 +738,16 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		// // // // //
 		// Gameplay //`
 		// // // // //
-		if(nbEnemy == 0)
-			spawnEnemy(&enemies, &nbEnemy, 0, 1);//4 + rand()%3
+		if(nbEnemy == 0){
+			int r = rand()%9;
+			if(r<5)
+				spawnEnemy(&enemies, &nbEnemy, 0, 4 + rand()%3);
+			else if (r<7)
+				spawnEnemy(&enemies, &nbEnemy, 1, 1);
+			else
+				spawnEnemy(&enemies, &nbEnemy, 2, 1);
+		}
+
 
 		for(int i=0; i<nbEnemy; i++)
 			enemyFire(&(enemies[i]), &enemyMissiles, &nbEnemyMissiles);
@@ -744,7 +760,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 			moveMissile(&(enemyMissiles[i]));
 
 		for(int i=0; i<nbEnemy; i++)
-			moveEnemy(&(enemies[i]));
+			moveEnemy(&enemies, &nbEnemy, i);
 
 
 		// // // // //
@@ -806,12 +822,12 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		 // // //
 			drawBackground(renderer, textures[SH_BACKGROUND], backgroundSrc, backgroundDest);
 
-			if(nbEnemy){
-				for(int i=enemies[0].abscisses[0]; i<BACKGROUND_DEST.x + BACKGROUND_DEST.w + ENEMY_SRC[0].w / RATIO_SIZE_ENEMY[0]; i++){
+			if(nbEnemy && enemies[0].id == BASE_ENEMY){
+				for(int i=enemies[0].abscisses[0]; i<=BACKGROUND_DEST.x + BACKGROUND_DEST.w ; i++){
 					SDL_SetRenderDrawColor(renderer, 0,255,0,255);
 					if(i == roundf(enemies[0].abscisses[0]) || i == roundf(enemies[0].abscisses[1]) || i == roundf(enemies[0].abscisses[2]) || i == roundf(enemies[0].abscisses[3]))
 						SDL_SetRenderDrawColor(renderer, 255,0,0,255);
-					SDL_RenderDrawPoint(renderer, i, it_pol_lagrange(3,enemies[0].coefs,enemies[0].abscisses,i));
+					SDL_RenderDrawPoint(renderer, i + (ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY])/2, it_pol_lagrange(3,enemies[0].coefs,enemies[0].abscisses,i)+ (ENEMY_SRC[BASE_ENEMY].h/RATIO_SIZE_ENEMY[BASE_ENEMY])/2);
 				}
 
 				/*SDL_SetRenderDrawColor(renderer, 255,255,255,255);
@@ -835,7 +851,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 			for(int i=0; i<nbExplosions; i++)
 				drawExplosion(renderer, explosions[i], textures[SH_EXPLO_MISSILE+explosions[i].id]);
 
-			drawBeta(renderer, font ,ratioWindowSize, (SDL_Color){0xFF,0xFF,0xFF},28);
+			drawBeta(renderer, font ,ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},28);
 
 			SDL_RenderPresent(renderer);
 
