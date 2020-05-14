@@ -115,7 +115,7 @@ SDL_Thread *thread = NULL;
 /// \fn int checkVersion(char version[])
 /// \brief permet de verifier la version du VERSION_LOGICIEL
 ///
-/// \param char version[]
+/// \param version
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -135,7 +135,7 @@ int checkVersion(char version[])
 /// \fn int dejaConneceter(char *token)
 /// \brief verifie si l utilisateur est deja connecter
 ///
-/// \param char *token
+/// \param token
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -172,7 +172,7 @@ int dejaConneceter(char *token)
 /// \fn int sauvegarderToken(char *token)
 /// \brief permet de sauvegarder le token dans un fichier
 ///
-/// \param char *token
+/// \param token
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -305,10 +305,10 @@ void ouvrirUrlRegistration()
 /// \fn int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 /// \brief la fonction gere l'interaction globale de la vue, elle envoie les requetes de connexion et traite les retour
 ///
-/// \param SDL_Renderer *renderer
-/// \param char *token
-/// \param char *tokenCpy
-/// \param char path[]
+/// \param renderer
+/// \param token
+/// \param tokenCpy
+/// \param path
 ///
 /// \return EXIT_FAILURE/EXIT_SUCCESS
 /////////////////////////////////////////////////////
@@ -770,11 +770,11 @@ int connexion(SDL_Renderer *renderer, char *token, char *tokenCpy,char path[])
 /// \fn int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureScore[],char *token,const C_STRUCT aiScene** scene, char *path )
 /// \brief verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores
 ///
-/// \param SDL_Renderer *renderer
-/// \param struct MeilleureScore_s meilleureScore[]
-/// \param char *token
-/// \param const C_STRUCT aiScene** scene
-/// \param char *path
+/// \param renderer
+/// \param meilleureScore
+/// \param token
+/// \param scene
+/// \param path
 ///
 /// \return EXIT_FAILURE/EXIT_SUCCESS
 /////////////////////////////////////////////////////
@@ -1000,12 +1000,12 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
 /// \fn int launcher(SDL_Renderer* renderer, char *token, char *tokenCpy,struct MeilleureScore_s meilleureScore[],const C_STRUCT aiScene** scene, char path[])
 /// \brief regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargement fichier
 ///
-/// \param SDL_Renderer *renderer
-/// \param char *token
-/// \param char *tokenCpy
-/// \param struct MeilleureScore_s meilleureScore[]
-/// \param const C_STRUCT aiScene** scene
-/// \param char *path
+/// \param renderer
+/// \param token
+/// \param tokenCpy
+/// \param meilleureScore
+/// \param scene
+/// \param path
 ///
 /// \return EXIT_FAILURE/EXIT_SUCCESS
 /////////////////////////////////////////////////////

@@ -72,7 +72,7 @@ typedef struct{
 /// \fn void init_string(struct string *s)
 /// \brief initilalise la structure qui contient la reponse
 ///
-/// \param struct string *s
+/// \param s
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -91,10 +91,10 @@ void init_string(struct string *s) {
 /// \fn size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s)
 /// \brief Ecrit la reponse de la requete dans une chaine
 ///
-/// \param void *ptr
-/// \param size_t size
-/// \param size_t nmemb
-/// \param struct string *s
+/// \param ptr
+/// \param size
+/// \param nmemb
+/// \param s
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -117,8 +117,8 @@ size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s)
 /// \fn void md5Hash (char *string, char *hash)
 /// \brief hash la chaine en md5
 ///
-/// \param char *string
-/// \param char *hash
+/// \param string
+/// \param hash
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -144,8 +144,8 @@ void md5Hash (char *string, char *hash)
 /// \fn int envoyez_requet(char **response, char *url, char *request)
 /// \brief Envoi une requet et ecrit la reponse dans **response
 ///
-/// \param char *url url de destination
-/// \param char *request requete a envoyez
+/// \param url url de destination
+/// \param request requete a envoyez
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -209,7 +209,7 @@ int envoyez_requet(char **response, char *url, char *request)
 /// \fn void securePass(char secure[])
 /// \brief securise la requete avec une cle unique
 ///
-/// \param char secure[]
+/// \param secure
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -239,14 +239,14 @@ void securePass(char secure[])
 /// \fn int construire_requete(char **dest, char *username, char *password, char *key, char *gameID, char *score, char *offset, char *limite)
 /// \brief Permet de crée une requet dans *dest
 ///
-/// \param char *dest Ecriture de la requet
-/// \param char *username Username de connexion (Optionnal)
-/// \param char *password Mot de passe de connexion (Optionnal)
-/// \param char *key Key de connexion (Optionnal)
-/// \param char *gameID id du jeux (Optional)
-/// \param char *score score (Optional)
-/// \param char *offset nombre d element recherche (Optional)
-/// \param char *limite limit recherche score (Optional)
+/// \param dest Ecriture de la requet
+/// \param username Username de connexion (Optionnal)
+/// \param password Mot de passe de connexion (Optionnal)
+/// \param key Key de connexion (Optionnal)
+/// \param gameID id du jeux (Optional)
+/// \param score score (Optional)
+/// \param offset nombre d element recherche (Optional)
+/// \param limite limit recherche score (Optional)
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -379,7 +379,7 @@ int connectEnded;
 /// \fn int connectWithUsername(ConnectStruct * connectStruct)
 /// \brief connexion avec nom d'utilisateur
 ///
-/// \param ConnectStruct * connectStruct
+/// \param connectStruct
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -439,7 +439,7 @@ int connectWithUsername(ConnectStruct * connectStruct)
 /// \fn int connectWithKey(char *key)
 /// \brief connexion avec key
 ///
-/// \param char *key Ecriture de la clé dans key
+/// \param key Ecriture de la clé dans key
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -477,8 +477,8 @@ int connectWithKey(char *key)
 /// \fn int updateMeilleureScoreStruct(char *key,char *retour)
 /// \brief recuperer les meilleures score
 ///
-/// \param char *key Ecriture de la clé dans key
-/// \param char *retour
+/// \param key Ecriture de la clé dans key
+/// \param retour
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -516,10 +516,10 @@ int updateMeilleureScoreStruct(char *key,char *retour)
 /// \fn int getLeaderboard(char *gameID,char *username, char *offset,char *limite ,char *retour)
 /// \brief recupere le classement des joueurs
 ///
-/// \param char *gameID
-/// \param char *username
-/// \param char *offset
-/// \param char *retour
+/// \param gameID
+/// \param username
+/// \param offset
+/// \param retour
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -563,7 +563,7 @@ int updateEnded;
 /// \fn int updateScore(EnvoiScore * envoiScore)
 /// \brief update le score
 ///
-/// \param EnvoiScore * envoiScore
+/// \param envoiScore
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////

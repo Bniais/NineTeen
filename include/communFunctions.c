@@ -247,9 +247,9 @@ SDL_Color WHITE = {255,255,255,255};
 *\brief Affiche un texte invitant le joueur à rejouer
 *\param renderer Le renderer où afficher
 *\param font La police d'écriture
-*\param float posY position du text sur Y
-*\param int viewW hauteur de la fenetre
-*\param int viewH largueur de la fenetre
+*\param posY position du text sur Y
+*\param viewW hauteur de la fenetre
+*\param viewH largueur de la fenetre
 */
 void drawReplay(SDL_Renderer* renderer, TTF_Font* font, float posY, int viewW, int viewH){
 	char * text = REPLAY;
@@ -280,8 +280,8 @@ static SDL_Rect QUIT_DEST = {10,10,0,0};
 *\brief Affiche echap en haut a gauche
 *\param renderer Le renderer où afficher
 *\param font La police d'écriture
-*\param float ratioWindowSize ratio de l ecran
-*\param SDL_Color color couleur du text
+*\param ratioWindowSize ratio de l ecran
+*\param color couleur du text
 */
 void drawQuit(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL_Color color){
 	char * text = QUIT;
@@ -309,9 +309,9 @@ static SDL_Rect BASE_DEST = {BASE_WINDOW_W-10, BASE_WINDOW_H-10, 0,0};
 *\brief Affiche beta en bas a droite
 *\param renderer Le renderer où afficher
 *\param font La police d'écriture
-*\param float ratioWindowSize ratio de l ecran
-*\param SDL_Color color couleur du text
-*\param int size taille du text
+*\param ratioWindowSize ratio de l ecran
+*\param color couleur du text
+*\param size taille du text
 */
 void drawBeta(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL_Color color, int size){
 	char * text = BETA;
@@ -338,6 +338,7 @@ void drawBeta(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL
 /////////////////////////////////////////////////////
 /// \fn int lenNum(int n)
 /// \brief retourne la longueur d'un nombre
+/// \param n Le nombre à examiner
 /// \return longueur d'un chiffre
 /////////////////////////////////////////////////////
 int lenNum(int n)
@@ -354,7 +355,7 @@ int lenNum(int n)
 
 /////////////////////////////////////////////////////
 /// \fn int randSign()
-/// \brief renvoie un signe soit 1 ou -1
+/// \brief renvoie un signe aléatoire : soit 1 ou -1
 /// \return 1/-1
 /////////////////////////////////////////////////////
 int randSign(){
