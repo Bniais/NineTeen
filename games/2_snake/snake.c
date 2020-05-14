@@ -459,7 +459,7 @@ int tooCloseFromFruit(Fruit* fruitRang, int rang, Fruit* fruitSearch, int nbFrui
 
 
 /**
-*\fn void spawnFruit(SnakePart head, Fruit *fruit, int rang, int nbFruits, float nbFruitEaten, Fruit *bonus, Vector2f spawn, int spawnCondition, int retardFrame)
+*\fn void spawnFruit(SnakePart head, Fruit *fruit, int rang, int nbFruits, float nbFruitEaten, Fruit *bonus, Vector2f spawn, int spawnCondition, int retardFrame, Mix_Chunk *soundAppear, int hardcore)
 *\brief Fait apparaître un fruit
 *\param head La tête du serpent
 *\param fruit Le tableau de fruit
@@ -470,6 +470,8 @@ int tooCloseFromFruit(Fruit* fruitRang, int rang, Fruit* fruitSearch, int nbFrui
 *\param spawn La position d'apparition si elle n'est pas aléatoire
 *\param spawnCondition La condition d'apparition ( naturelle, coffre...)
 *\param retardFrame Le nombre de frame avant que l'apparition du fruit commence
+*\param soundAppear Le son d'apparition des fruits
+*\param hardcore Le mode de jeu
 */
 void spawnFruit(SnakePart head, Fruit *fruit, int rang, int nbFruits, float nbFruitEaten, Fruit *bonus, Vector2f spawn, int spawnCondition, int retardFrame, Mix_Chunk *soundAppear, int hardcore){
 	//if(!hardcore)
@@ -677,6 +679,12 @@ void drawFruit(SDL_Renderer *renderer, SDL_Texture *fruitTexture, SDL_Texture *s
 	}
 }
 
+/**
+*\fn static void drawHelpText(SDL_Renderer *renderer, SDL_Texture *flecheTexture)
+*\brief Affiche les commandes
+*\param renderer Le renderer où afficher
+*\param flecheTexture La texture des flèches
+*/
 static void drawHelpText(SDL_Renderer *renderer, SDL_Texture *flecheTexture){
 
 	//direction
@@ -926,7 +934,7 @@ int scoreSize(Fruit fruit){
 
 
 /**
-*\fn int eatFruit(SnakePart **snake, size_t *size, Fruit** fruitTab, size_t* nbFruits, Fruit fruit, float *speed, ScoreTotal *score, float *nbFruitEaten, int *frameJaugeAnim, Vector2f* pastBody, Fruit* bonus, SnakePart **deadBodies, size_t *nbDeadBodies, int* nbPotion, float* poisoned, Score** scoreAffichage, size_t* nbScoreAffichage, int *frameAcce, Mix_Chunk *flap_wav, long long *score_hash, long keys[4], int hardcore)
+*\fn int eatFruit(SnakePart **snake, size_t *size, Fruit** fruitTab, size_t* nbFruits, Fruit fruit, float *speed, ScoreTotal *score, float *nbFruitEaten, int *frameJaugeAnim, Vector2f* pastBody, Fruit* bonus, SnakePart **deadBodies, size_t *nbDeadBodies, int* nbPotion, float* poisoned, Score** scoreAffichage, size_t* nbScoreAffichage, int *frameAcce, Mix_Chunk ** sounds, long long *score_hash, long keys[4], int hardcore)
 *\brief Mange un fruit
 *\param snake Le serpent
 *\param size La taille du serpent
@@ -1179,11 +1187,12 @@ static void myFrees(Fruit ** fruits, SnakePart ** deadBodies, SnakePart **snakeB
 
 extern int updateEnded; /** < Changée dans le thread pour savoir s'il est finit > */
 /**
-*\fn int snake(SDL_Renderer * renderer,int highscore, float ratioWindowSize, char *token, int hardcore)
+*\fn int snake(SDL_Renderer * renderer,int highscore, int WinWidth, int WinHeight, char *token, int hardcore, SDL_Texture ** textures)
 *\brief Affiche un score de terrain
 *\param renderer Le renderer
 *\param highscore Le meilleur score personnel
-*\param ratioWindowSize Le ratio tailleBase/tailleActuelle
+*\param WinWidth La largeur de la fenêtre
+*\param WinHeight La hauteur de la fenêtre
 *\param token Le token pour l'envoi des scores
 *\param hardcore  Le difficulté du jeu
 */

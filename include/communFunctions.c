@@ -146,6 +146,19 @@ void afficherMessageSysteme(char message[])
 	#endif
 }
 
+/**
+*\fn void afficherLoading(SDL_Renderer * renderer, SDL_Texture * loadingTexture, SDL_Color color, int shiftX, int shiftY, int frameAnim, int windowW, int windowH, int referenceW){
+*\brief Affiche l'animation de chargement des envois de requêtes
+*\param renderer Le renderer où afficher
+*\param loadingTexture La texture de chargement
+*\param color La couleur de la texture chargement
+*\param shiftX Le décallage horizontal
+*\param shiftY Le décallage vertical
+*\param frameAnim La famr de l'animation
+*\param windowW La largeur de fenêtre
+*\param windowH La hauteur de fenêtre
+*\param referenceW La largeur de référence
+*/
 void afficherLoading(SDL_Renderer * renderer, SDL_Texture * loadingTexture, SDL_Color color, int shiftX, int shiftY, int frameAnim, int windowW, int windowH, int referenceW){
 
 	float ratioSize = (float)referenceW/BASE_WINDOW_W;
@@ -157,7 +170,20 @@ void afficherLoading(SDL_Renderer * renderer, SDL_Texture * loadingTexture, SDL_
 	}
 }
 
-
+/**
+*\fn void afficherRetour(SDL_Renderer * renderer, SDL_Texture * loadingTexture, TTF_Font * font, SDL_Color color, int shiftX, int shiftY, int frameAnim, int windowW, int windowH, int referenceW)
+*\brief Affiche l'animation de retour de requête
+*\param renderer Le renderer où afficher
+*\param loadingTexture La texture de retour
+*\param font La police d'écriture du message d'erreur
+*\param color La couleur de la texture chargement
+*\param shiftX Le décallage horizontal
+*\param shiftY Le décallage vertical
+*\param frameAnim La famr de l'animation
+*\param windowW La largeur de fenêtre
+*\param windowH La hauteur de fenêtre
+*\param referenceW La largeur de référence
+*/
 void afficherRetour(SDL_Renderer * renderer, SDL_Texture * loadingTexture,TTF_Font * font, SDL_Color color, int shiftX, int shiftY, int frameAnim, int windowW, int windowH, int referenceW){
 
 	float ratioSize = (float)referenceW/BASE_WINDOW_W;
