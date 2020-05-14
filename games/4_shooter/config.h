@@ -115,7 +115,7 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 	#define FRAME_HIT_ANIM 2
 	#define ALPHA_HIT 210
 	enum{BASE_ENEMY, LASER_ENEMY, BOSS_ENEMY};
-	typedef struct {int id; float x; float y; float rota; float hp; int frameHit; float dist; int frameWait;int nbWeapon; Weapon weapons[NB_MAX_WEAPON_ENEMY]; double abscisses[NMAX]; double coefs[NMAX]; }Enemy;
+	typedef struct {int id; float x; float y; float rota; float hp; int frameHit; float dist; int frameWait; int dir;int nbWeapon; Weapon weapons[NB_MAX_WEAPON_ENEMY]; double abscisses[NMAX]; double coefs[NMAX]; }Enemy;
 	const SDL_Rect ENEMY_SRC[NB_ENEMY] = {
 		{0,0,79,79},
 		{0,0,150,109},
@@ -127,6 +127,7 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 	#define RATIO_SIZE_ENEMY_2 1
 
 	const float SPEED_ENEMY[NB_ENEMY] = {6, 3, 3};
+	#define SPEED_DECOMPOSITION 5
 	const int ENEMY_HP[NB_ENEMY] = {1, 3, 7};
 	const float FRAME_MULTI_SPAWN[NB_ENEMY] = {8, 0, 0};
 	const int NB_WEAPON_ENEMY[NB_ENEMY] = {0,3,6};

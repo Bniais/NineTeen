@@ -433,19 +433,18 @@ void moveMissile(Missile *missile){
 }
 
 void moveEnemy(Enemy *enemy){
-	printf("fw : %d\n", enemy->frameWait);
 	if(enemy->id == BASE_ENEMY && enemy->frameWait == 0){
 		float tmpX, tmpY, tmpD;
 		while(enemy->dist < SPEED_ENEMY[enemy->id]){
 			tmpX = enemy->x;
 			tmpY = enemy->y;
-			enemy->x +=50 ;
-			enemy->y = it_pol_lagrange(3,enemy->coefs,enemy->abscisses,enemy->x);
+			enemy->x += enemy->dir * SPEED_DECOMPOSITION;
+			enemy->y = it_pol_lagrange(NMAX-1,enemy->coefs,enemy->abscisses,enemy->x);
 
 			tmpD =  sqrt(pow(tmpX - enemy->x, 2) + pow(tmpY - enemy->y, 2));
 			enemy->dist += tmpD;
 		}
-		enemy->x -= (50 * (enemy->dist - SPEED_ENEMY[enemy->id])) / tmpD;
+		enemy->x -= enemy->dir * (SPEED_DECOMPOSITION * (enemy->dist - SPEED_ENEMY[enemy->id])) / tmpD;
 		enemy->y = it_pol_lagrange(3,enemy->coefs,enemy->abscisses,enemy->x);
 		enemy->dist = 0 ;
 
@@ -474,10 +473,8 @@ void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
 
 		it_coef_lagrange(3,x,f,d);
 	}
-	for(int i=0; i<NMAX; i++){
-		printf("%f %f\n", x[i], f[i]);
-	}
-	printf(" \n");
+
+	int dir = randSign();
 
 	for(int i = *nbEnemy-1; i> *nbEnemy - 1 - nbSpawn; i--){
 		(*enemies)[i] = (Enemy){
@@ -488,9 +485,11 @@ void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
 			ENEMY_HP[id], //hp
 			0, // framehit
 			0, //dist
-			FRAME_MULTI_SPAWN[id] * (*nbEnemy-1 -i), //frameWait
+			FRAME_MULTI_SPAWN[id] * (*nbEnemy-1 -i),//frameWait
+			dir, //dir
 			NB_WEAPON_ENEMY[id] //nbWeapon
 		};
+		printf("dir : %d\n", (*enemies)[i].dir);
 		for(int j=0; j<= (*enemies)[i].nbWeapon; j++)
             (*enemies)[i].weapons[j] = WEAPONS_ENEMY[id][j];
 
@@ -499,8 +498,8 @@ void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
 				(*enemies)[i].abscisses[j] = x[j];
 				(*enemies)[i].coefs[j] = d[j];
 			}
-			(*enemies)[i].x = x[0];
-			(*enemies)[i].y = f[0];
+			(*enemies)[i].x = x[(*enemies)[i].dir == 1 ? 0: NMAX-1];
+			(*enemies)[i].y = f[(*enemies)[i].dir == 1 ? 0: NMAX-1];
 		}
 	}
 }
