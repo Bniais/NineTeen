@@ -261,6 +261,29 @@ void drawQuit(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL
 	SDL_DestroyTexture(Message);
 }
 
+static char * BETA = "(Beta)";
+static SDL_Rect BASE_DEST = {BASE_WINDOW_W-10, BASE_WINDOW_H-10, 0,0};
+void drawBeta(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL_Color color, int size){
+	char * text = BETA;
+
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, text, color);
+	SDL_Rect dest = BASE_DEST;
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+	SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
+	dest.w /= (OPEN_FONT_SIZE / size);
+	dest.h /= (OPEN_FONT_SIZE / size);
+	dest.w *= ratioWindowSize;
+	dest.h *= ratioWindowSize;
+	dest.x *= ratioWindowSize;
+	dest.y *= ratioWindowSize;
+	dest.x -= dest.w;
+	dest.y -= dest.h;
+
+	SDL_RenderCopy(renderer, Message, NULL, &dest);
+	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(Message);
+}
+
 int lenNum(int n)
 {
 	int count=1;

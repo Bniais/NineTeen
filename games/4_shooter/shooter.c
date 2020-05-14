@@ -543,7 +543,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 	Enemy *enemies = malloc(sizeof(Enemy));
 	Explosion *explosions = malloc(sizeof(Explosion));
 	//Fonts
-
+	TTF_Font * font = TTF_OpenFont("../games/2_snake/Fonts/zorque.ttf", OPEN_FONT_SIZE);
 	//audio
 
 
@@ -834,6 +834,8 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 
 			for(int i=0; i<nbExplosions; i++)
 				drawExplosion(renderer, explosions[i], textures[SH_EXPLO_MISSILE+explosions[i].id]);
+
+			drawBeta(renderer, font ,ratioWindowSize, (SDL_Color){0xFF,0xFF,0xFF},28);
 
 			SDL_RenderPresent(renderer);
 

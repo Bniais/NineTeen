@@ -2498,7 +2498,7 @@ void messageMachine(struct MeilleureScore_s str[], struct Camera_s camera,TTF_Fo
 		// AFFICHAGE CLIGNOTANT
 		if(afficherMessage)
 			AfficherText(font,"APPUYER   SUR   E",white,-1,-1);
-			AfficherText(font,"QUITTER",white,-1,WinHeight*0.4);
+        AfficherText(font,"QUITTER",white,-1,WinHeight*0.4);
 	}
 
 }

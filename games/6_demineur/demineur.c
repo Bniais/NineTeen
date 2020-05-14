@@ -7,6 +7,7 @@
 /////////////////////////////////////////////////
 
 #include "../../define/define.h"
+#include "../../include/communFunctions.h"
 #include "config.h"
 #include <time.h>
 
@@ -535,6 +536,7 @@ int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, cha
 		afficher_grille(renderer,grille, premier_click, click_bombe, texture);
 
 		//hud
+		drawBeta(renderer, police ,1. /ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},100);
 		SDL_RenderSetScale(renderer, 1, 1);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderSetViewport(renderer, &hudView);
@@ -703,6 +705,7 @@ int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, cha
 		}
 
 		afficher_grille(renderer,grille, premier_click, click_bombe, texture);
+		drawBeta(renderer, police ,1. /ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},100);
 		//hud
 		SDL_RenderSetScale(renderer, 1, 1);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -767,6 +770,7 @@ int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, cha
 
 		if(fin_jeu(grille)){
 			afficher_grille(renderer,grille, premier_click, click_bombe, texture);
+			drawBeta(renderer, police ,1. /ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},100);
 			afficher_texte(renderer, "Temps jeu", police, 1350, 50);
 			if(temps_final<60)
 			{
@@ -787,9 +791,10 @@ int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, cha
 		else if(click_bombe==1)
 		{
 			afficher_grille(renderer,grille, premier_click, click_bombe, texture);
+
 			afficher_texte(renderer, "Tu as perdu...", police, 1350, 50);
 		}
-
+		drawBeta(renderer, police ,1. /ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},100);
 		SDL_RenderSetScale(renderer, 1, 1);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderSetViewport(renderer, &hudView);
