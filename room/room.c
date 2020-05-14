@@ -2568,6 +2568,8 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 				  0.0
 				               ,1.0         ,0.0)                        ;
 
+		// REGLAGE DE LA LUMIERE APRES LE DEPLACEMENT DE LA CAMERA
+		GLlightMode();
 		// APPEL LIST SCENE
 		glCallList(scene_list);
 		// APPLICATION A LA WINDOW
