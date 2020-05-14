@@ -1,0 +1,69 @@
+install_name_tool -change @executable_path @executable_path/../Framework/libSystem.B.dylib Nineteen
+install_name_tool -change /usr/lib/libcurl.4.dylib @executable_path/../Framework/libcurl.4.dylib Nineteen
+install_name_tool -change /usr/lib/libcrypto.35.dylib @executable_path/../Framework/libcrypto.35.dylib Nineteen
+install_name_tool -change /usr/local/opt/assimp/lib/libassimp.5.dylib @executable_path/../Framework/libassimp.5.dylib Nineteen
+install_name_tool -change /usr/local/opt/sdl2/lib/libSDL2-2.0.0.dylib @executable_path/../Framework/libSDL2-2.0.0.dylib Nineteen
+install_name_tool -change /usr/local/opt/sdl2_ttf/lib/libSDL2_ttf-2.0.0.dylib @executable_path/../Framework/libSDL2_ttf-2.0.0.dylib Nineteen
+install_name_tool -change /usr/local/opt/sdl2_image/lib/libSDL2_image-2.0.0.dylib @executable_path/../Framework/libSDL2_image-2.0.0.dylib Nineteen
+install_name_tool -change /usr/local/opt/sdl2_mixer/lib/libSDL2_mixer-2.0.0.dylib @executable_path/../Framework/libSDL2_mixer-2.0.0.dylib Nineteen
+install_name_tool -change /System/Library/Frameworks/OpenGL.framework/Versions/A/OpenGL @executable_path/../Framework/OpenGL Nineteen
+install_name_tool -change /System/Library/Frameworks/GLUT.framework/Versions/A/GLUT @executable_path/../Framework/GLUT Nineteen
+
+install_name_tool -change /usr/local/opt/openssl@1.1/lib/libcrypto.1.1.dylib @executable_path/../Framework/libcrypto.1.1.dylib Nineteen
+install_name_tool -add_rpath @executable_path/../Framework/ Nineteen
+
+// FOR LIB TTF
+install_name_tool -change /usr/local/opt/sdl2/lib/libSDL2-2.0.0.dylib @executable_path/../Framework/libSDL2-2.0.0.dylib libSDL2_ttf-2.0.0.dylib
+install_name_tool -change /usr/local/opt/freetype/lib/libfreetype.6.dylib @executable_path/../Framework/libfreetype.6.dylib libSDL2_ttf-2.0.0.dylib
+
+// FOR LIB IMMG
+install_name_tool -change /usr/local/opt/sdl2/lib/libSDL2-2.0.0.dylib @executable_path/../Framework/libSDL2-2.0.0.dylib libSDL2_image-2.0.0.dylib
+install_name_tool -change /usr/local/opt/libpng/lib/libpng16.16.dylib @executable_path/../Framework/libpng16.16.dylib libSDL2_image-2.0.0.dylib
+install_name_tool -change /usr/local/opt/jpeg/lib/libjpeg.9.dylib @executable_path/../Framework/libjpeg.9.dylib libSDL2_image-2.0.0.dylib
+install_name_tool -change /usr/local/opt/libtiff/lib/libtiff.5.dylib @executable_path/../Framework/libtiff.5.dylib libSDL2_image-2.0.0.dylib
+install_name_tool -change /usr/local/opt/webp/lib/libwebp.7.dylib @executable_path/../Framework/libwebp.7.dylib libSDL2_image-2.0.0.dylib
+
+\
+
+// FOR LIB MIXER
+install_name_tool -change /usr/local/opt/sdl2/lib/libSDL2-2.0.0.dylib @executable_path/../Framework/libSDL2-2.0.0.dylib libSDL2_mixer-2.0.0.dylib
+install_name_tool -change /usr/local/opt/libmodplug/lib/libmodplug.1.dylib @executable_path/../Framework/libmodplug.1.dylib libSDL2_mixer-2.0.0.dylib
+install_name_tool -change /usr/local/opt/libvorbis/lib/libvorbisfile.3.dylib @executable_path/../Framework/libvorbisfile.3.dylib libSDL2_mixer-2.0.0.dylib
+install_name_tool -change /usr/local/opt/libvorbis/lib/libvorbis.0.dylib @executable_path/../Framework/libvorbis.0.dylib libSDL2_mixer-2.0.0.dylib
+
+// FOR LIB FREETYPE
+
+install_name_tool -change /usr/local/opt/libpng/lib/libpng16.16.dylib @executable_path/../Framework/libpng16.16.dylib libfreetype.6.dylib
+
+// FOR LIB TIFF
+install_name_tool -change /usr/local/opt/jpeg/lib/libjpeg.9.dylib @executable_path/../Framework/libjpeg.9.dylib libtiff.5.dylib
+
+
+// FOR LIB libvorbisfile.3.dylib
+install_name_tool -change /usr/local/Cellar/libvorbis/1.3.6/lib/libvorbis.0.dylib @executable_path/../Framework/libvorbis.0.dylib libvorbisfile.3.dylib
+install_name_tool -change /usr/local/opt/libogg/lib/libogg.0.dylib @executable_path/../Framework/libogg.0.dylib libvorbisfile.3.dylib
+
+// FOR LIB libvorbis.0.dylib
+install_name_tool -change /usr/local/opt/libogg/lib/libogg.0.dylib @executable_path/../Framework/libogg.0.dylib libvorbis.0.dylib
+
+// FOR LIB libassimp.5.dylib
+install_name_tool -change @rpath/libIrrXML.dylib @executable_path/../Framework/libIrrXML.dylib libassimp.5.dylib
+
+
+
+Last login: Tue May  5 16:32:29 on ttys000
+You have new mail.
+/Volumes/Nineteen/Nineteen.app/Contents/MacOS/Nineteen ; exit;
+macbook-pro-de-nicolas:~ nico$ /Volumes/Nineteen/Nineteen.app/Contents/MacOS/Nineteen ; exit;
+/Volumes/Nineteen/Nineteen.app/Contents/MacOS/
+exec /Volumes/Nineteen/Nineteen.app/Contents/MacOS/../Resources/Nineteen
+dyld: Library not loaded: /usr/local/opt/assimp/lib/libassimp.5.dylib
+  Referenced from: /Volumes/Nineteen/Nineteen.app/Contents/MacOS/../Resources/Nineteen
+  Reason: image not found
+logout
+Saving session...
+...copying shared history...
+...saving history...truncating history files...
+...completed.
+
+[Opération terminée]

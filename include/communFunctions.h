@@ -6,7 +6,7 @@ void afficherLoading(SDL_Renderer * renderer, SDL_Texture * loadingTexture, SDL_
 void afficherRetour(SDL_Renderer * renderer, SDL_Texture * loadingTexture,TTF_Font * font, SDL_Color color, int shiftX, int shiftY, int frameAnim, int windowW, int windowH, int referenceW);
 void drawReplay(SDL_Renderer* renderer, TTF_Font* font, float posY, int viewW, int viewH);
 void drawQuit(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL_Color color);
-
+void drawBeta(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL_Color color, int size);
 
 /////////////////////////////////////////////////////
 /// \fn void informationPreciseCPUGPU()
@@ -40,3 +40,4 @@ int _malloc( void **ptr ,int type, int size , FILE*fp , Uint32 flags,const char*
 void afficherMessageSysteme(char message[]);
 
 int lenNum(int n);
+int randSign();

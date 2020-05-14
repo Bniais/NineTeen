@@ -7,7 +7,7 @@
 */
 
 #include "../../include/communFunctions.h"
-#include "../../define/define.h"
+#include "../../include/define.h"
 #include "../../include/hashage.h"
 #include "../../include/libWeb.h"
 #include "config.h"
@@ -1758,7 +1758,7 @@ void moveDeadPiece(DeadPiece *deadPiece){
 *\param fonts Les polices
 *\param thread Le thread d'envoi de score
 */
-void myFrees(Piece * currentPiece, Piece * nextPiece, DeadPiece ** deadPieces, SDL_Texture * textures[NB_TETRIS_TEXTURES], TTF_Font * fonts[NB_TETRIS_FONTS], SDL_Thread ** thread){
+static void myFrees(Piece * currentPiece, Piece * nextPiece, DeadPiece ** deadPieces, SDL_Texture * textures[NB_TETRIS_TEXTURES], TTF_Font * fonts[NB_TETRIS_FONTS], SDL_Thread ** thread){
 	if(currentPiece->grille){
 		free(currentPiece->grille);
 		currentPiece->grille = NULL;

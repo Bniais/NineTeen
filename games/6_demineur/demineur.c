@@ -6,7 +6,8 @@
 ///	\brief Programme permettant de jouer au demineur
 /////////////////////////////////////////////////
 
-#include "../../define/define.h"
+#include "../../include/define.h"
+#include "../../include/communFunctions.h"
 #include "config.h"
 #include <time.h>
 
@@ -354,11 +355,15 @@ void afficher_grille(SDL_Renderer *renderer, int grille[TAILLE_GRILLE_LIGNE][TAI
 	}
 }
 
+int click_en_grille(SDL_Point mouseCoor){
+	return (mouseCoor.x>50&&mouseCoor.x<50+TAILLE_CASE*TAILLE_GRILLE_LIGNE&&mouseCoor.y>50&&mouseCoor.y<50+TAILLE_CASE*TAILLE_GRILLE_COLONNE);
+}
+
 int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, char *token, int hardcore){
 /////////////////////
 /// MISE EN PLACE ///``
 /////////////////////
-//	myInit();
+	myInit();
 
 	////////////
 	/// Vars ///`
@@ -504,6 +509,7 @@ ce renderer se "colle" forcement à une case*/
 		afficher_grille(renderer,grille, premier_click, click_bombe, texture);
 
 		//hud
+		drawBeta(renderer, police ,1, (SDL_Color){0xFF,0x00,0x00},100);
 		SDL_RenderSetScale(renderer, 1, 1);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderSetViewport(renderer, &hudView);
@@ -677,6 +683,7 @@ ce renderer se "colle" forcement à une case*/
 		}
 
 		afficher_grille(renderer,grille, premier_click, click_bombe, texture);
+		drawBeta(renderer, police ,1. /ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},100);
 		//hud
 		SDL_RenderSetScale(renderer, 1, 1);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -743,6 +750,7 @@ ce renderer se "colle" forcement à une case*/
 
 		if(fin_jeu(grille)){
 			afficher_grille(renderer,grille, premier_click, click_bombe, texture);
+			drawBeta(renderer, police ,1. /ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},100);
 			afficher_texte(renderer, "Temps jeu", police, 1350, 50);
 			if(temps_final<60)
 			{
@@ -763,9 +771,10 @@ ce renderer se "colle" forcement à une case*/
 		else if(click_bombe==1)
 		{
 			afficher_grille(renderer,grille, premier_click, click_bombe, texture);
+
 			afficher_texte(renderer, "Tu as perdu...", police, 1350, 50);
 		}
-
+		drawBeta(renderer, police ,1. /ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},100);
 		SDL_RenderSetScale(renderer, 1, 1);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 		SDL_RenderSetViewport(renderer, &hudView);
