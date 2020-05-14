@@ -169,8 +169,8 @@ int statutPorteFemme = FERMER;
 int statutPorteHomme = FERMER;
 
 enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,SHOOTER_HARD,SNAKE_HARD,DEMINEUR_HARD,DEMINEUR_EASY,SNAKE_EASY,SHOOTER_EASY,ASTEROID_EASY,TETRIS_EASY,FLAPPY_EASY};
-char adresseFontImg[16][64]={"../room/textures/flappy_hard_font.jpg","../room/textures/tetris_font.jpg","../room/textures/asteroid_font_hard.jpg","../room/textures/chargement.jpg","../room/textures/snake_font.jpg","../room/textures/chargement.jpg",
-														 "../room/textures/chargement.jpg","../room/textures/snake_font.jpg","../room/textures/chargement.jpg","../room/textures/asteroid_font.jpg","../room/textures/tetris_font.jpg","../room/textures/flappy_easy_font.jpg",
+char adresseFontImg[16][64]={"../room/textures/flappy_hard_font.jpg","../room/textures/tetris_font.jpg","../room/textures/asteroid_font_hard.jpg","../room/textures/shooter_font.jpg","../room/textures/snake_font.jpg","../room/textures/demineur_font.jpg",
+														 "../room/textures/demineur_font.jpg","../room/textures/snake_font.jpg","../room/textures/shooter_font.jpg","../room/textures/asteroid_font.jpg","../room/textures/tetris_font.jpg","../room/textures/flappy_easy_font.jpg",
 														 "../room/textures/chargement.jpg","../room/textures/chargement.jpg","../room/textures/chargement.jpg","../room/textures/leaderboard_font.jpg"};
 
 #ifdef _WIN32
@@ -1248,7 +1248,7 @@ void InitMeilleureScore(struct MeilleureScore_s str[])
 
 	strcpy(str[ASTEROID_HARD].nomJeux,"ASTEROID");
 
-	strcpy(str[SHOOTER_HARD].nomJeux,"PACMAN");
+	strcpy(str[SHOOTER_HARD].nomJeux,"SHOOTER");
 
 	strcpy(str[SNAKE_HARD].nomJeux,"SNAKE");
 
@@ -1258,7 +1258,7 @@ void InitMeilleureScore(struct MeilleureScore_s str[])
 
 	strcpy(str[SNAKE_EASY].nomJeux,"SNAKE");
 
-	strcpy(str[SHOOTER_EASY].nomJeux,"PACMAN");
+	strcpy(str[SHOOTER_EASY].nomJeux,"SHOOTER");
 
 	strcpy(str[ASTEROID_EASY].nomJeux,"ASTEROID");
 
