@@ -19,16 +19,12 @@
 
 #include"../../include/define.h"
 //native resolution
-#define WINDOW_L 1820.
-#define WINDOW_H 1024.
+#define WINDOW_L 1920.
+#define WINDOW_H 1080.
 
 #define FPS 60
 const int FRAME_TIME = 1000/FPS;
 
-// FOR DEBUG ONLY
-// definition envoyer depuis la room pour le rescale
-#define WINDOW_SEND_L 720.
-#define WINDOW_SEND_H 480.
 
 // scale ratio for native resolution
 #define SCALE_TO_FIT 4 // WIINDOW_H/BACKGROUND.h *4
@@ -112,7 +108,7 @@ SDL_Texture * LoadTextureWithErrorCode(SDL_Renderer *renderer ,char directory[])
 
 
 /////////////////////////////////////////////////////
-/// \fn int afficherBackground(SDL_Renderer *renderer, SDL_Texture* texture_background, int theme)
+/// \fn int afficherBackground(SDL_Renderer *renderer, SDL_Texture *texture_background, int theme)
 /// \brief affiche l'image de fond
 ///
 /// \param SDL_Renderer* renderer
@@ -122,7 +118,7 @@ SDL_Texture * LoadTextureWithErrorCode(SDL_Renderer *renderer ,char directory[])
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
 static
-int afficherBackground(SDL_Renderer *renderer, SDL_Texture* texture_background, int theme);
+int afficherBackground(SDL_Renderer *renderer, SDL_Texture *texture_background, int theme);
 
 
 /////////////////////////////////////////////////////
@@ -221,10 +217,10 @@ int afficherMeilleurScore(SDL_Renderer* renderer,SDL_Texture *texture_highscore,
 
 
 /////////////////////////////////////////////////////
-/// \fn int afficherTout(SDL_Renderer * renderer, SDL_Point emplacementPersonnage, pilonne *pilonne ,int score,int varAnimationPersonnage,int varAnimationSol, int cible, double angle ,SDL_Texture *texture_background, SDL_Texture *texture_pipes, SDL_Texture *texture_birds, SDL_Texture *texture_medals, SDL_Texture *texture_scoreBoard, SDL_Texture *texture_sol, SDL_Texture *texture_chiffre, SDL_Texture* texture_highscore, int theme)
+/// \fn int int afficherTout(SDL_Renderer *renderer,SDL_Thread **thread, TTF_Font *myFont, int *retour, int *frame_anim_loading, int *frameRetour, SDL_Texture *texture_loading,SDL_Point emplacementPersonnage, pilonne *pilonne ,int score,int varAnimationPersonnage,int varAnimationSol, int cible, double angle ,SDL_Texture *texture_background, SDL_Texture *texture_pipes, SDL_Texture *texture_birds, SDL_Texture *texture_medals, SDL_Texture *texture_scoreBoard, SDL_Texture *texture_sol, SDL_Texture *texture_chiffre, SDL_Texture *texture_highscore, int theme)
 /// \brief regroupement de toute les fonctions d'affichage pour afficher tous
 ///
-/// \param SDL_Renderer * renderer
+/// \param SDL_Renderer *renderer
 /// \param SDL_Point emplacementPersonnage
 /// \param pilonne *pilonne
 /// \param int score
@@ -238,30 +234,30 @@ int afficherMeilleurScore(SDL_Renderer* renderer,SDL_Texture *texture_highscore,
 /// \param  SDL_Texture *texture_scoreBoard
 /// \param  SDL_Texture *texture_sol
 /// \param  SDL_Texture *texture_chiffre
-/// \param  SDL_Texture* texture_highscore)
+/// \param  SDL_Texture *texture_highscore)
 /// \param int theme
 ///
 /// \return void
 /////////////////////////////////////////////////////
 static
-int afficherTout(SDL_Renderer * renderer,SDL_Thread ** thread, TTF_Font* myFont, int *retour, int *frame_anim_loading, int *frameRetour, SDL_Texture* texture_loading,SDL_Point emplacementPersonnage, pilonne *pilonne ,int score,int varAnimationPersonnage,int varAnimationSol, int cible, double angle ,SDL_Texture *texture_background, SDL_Texture *texture_pipes, SDL_Texture *texture_birds, SDL_Texture *texture_medals, SDL_Texture *texture_scoreBoard, SDL_Texture *texture_sol, SDL_Texture *texture_chiffre, SDL_Texture* texture_highscore, int theme);
+int afficherTout(SDL_Renderer *renderer,SDL_Thread **thread, TTF_Font* myFont, int *retour, int *frame_anim_loading, int *frameRetour, SDL_Texture* texture_loading,SDL_Point emplacementPersonnage, pilonne *pilonne ,int score,int varAnimationPersonnage,int varAnimationSol, int cible, double angle ,SDL_Texture *texture_background, SDL_Texture *texture_pipes, SDL_Texture *texture_birds, SDL_Texture *texture_medals, SDL_Texture *texture_scoreBoard, SDL_Texture *texture_sol, SDL_Texture *texture_chiffre, SDL_Texture* texture_highscore, int theme);
 
 
 /////////////////////////////////////////////////////
-/// \fn void init_pilonne(pilonne *pilonne, int *varAnimationPersonnage, int *varAnimationSol, int *end, int* dead, int *traitement)
+/// \fn void init_pilonne(pilonne *pilonne, int *varAnimationPersonnage, int *varAnimationSol, int *end, int *dead, int *traitement)
 /// \brief initialisation des pilonnes et des animation et de certaine variables liee au boucle du jeu
 ///
 /// \param pilonne *pilonne struct pilonne
 /// \param int *varAnimationPersonnage
 /// \param int *varAnimationSol
 /// \param int *end
-/// \param int* dead
+/// \param int *dead
 /// \param int *traitement
 ///
 /// \return void
 /////////////////////////////////////////////////////
 static
-void init_pilonne(pilonne *pilonne, int *varAnimationPersonnage, int *varAnimationSol, int *end, int* dead, int *traitement);
+void init_pilonne(pilonne *pilonne, int *varAnimationPersonnage, int *varAnimationSol, int *end, int *dead, int *traitement);
 
 
 
@@ -342,19 +338,19 @@ int evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_wa
 
 
 /////////////////////////////////////////////////////
-/// \fn void updateVariableEnvironement(SDL_Point *emplacementPersonnage, int *upper, double *angle, int *nb_boucle, int* vitesseGraviter)
+/// \fn void updateVariableEnvironement(SDL_Point *emplacementPersonnage, int *upper, double *angle, int *nb_boucle, int *vitesseGraviter)
 /// \brief permet de mettre a jours les variables utilisez
 ///
 /// \param SDL_Point *emplacementPersonnage point X,Y sur la position de l'oiseau
 /// \param int *upper l'oiseau monte
 /// \param double *angle angle de l'oiseau
 /// \param int *nb_boucle nombre de boucle
-/// \param int* vitesseGraviter vitesse de graviter
+/// \param int *vitesseGraviter vitesse de graviter
 ///
 /// \return void
 /////////////////////////////////////////////////////
 static
-void updateVariableEnvironement(SDL_Point *emplacementPersonnage, int *upper, double *angle, int *nb_boucle, int* vitesseGraviter);
+void updateVariableEnvironement(SDL_Point *emplacementPersonnage, int *upper, double *angle, int *nb_boucle, int *vitesseGraviter);
 
 
 

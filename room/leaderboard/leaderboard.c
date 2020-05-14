@@ -294,8 +294,17 @@ int rechercherJoueur(char nomJoueur[], struct classement donner[], int selection
 }
 
 
-
-void _limiterFrame(const float delayLancementFrame,float *_IPS)
+/////////////////////////////////////////////////////
+/// \fn void limiterFrame(const float delayLancementFrame,float *_IPS)
+/// \brief permet de limiter le nombre de frame de l'affcihage a une certaine valeur
+///
+/// \param const float delayLancementFrame
+/// \param float *_IPS
+///
+/// \return void
+/////////////////////////////////////////////////////
+static
+void limiterFrame(const float delayLancementFrame,float *_IPS)
 {
 	float delayFrame = SDL_GetTicks() - delayLancementFrame;
 	// MISE A JOURS DU NOMBRE DE FPS
@@ -311,7 +320,7 @@ void _limiterFrame(const float delayLancementFrame,float *_IPS)
 }
 
 /////////////////////////////////////////////////////
-/// \fn void gestionEvenement(int *halt, int *xMouse, int *yMouse, Scroll *scrollPositionWindow, Scroll *scrollPositionList, int *_SELECTION, char rechercher[], struct classement donner[], int selectionScrollingList)
+/// \fn void gestionEvenement(int *halt, int *xMouse, int *yMouse, Scroll *scrollPositionWindow, Scroll *scrollPositionList, int *_SELECTION, char rechercher[], struct classement donner[], int selectionScrollingList, int *frameType)
 /// \brief permet de gerer tous les evenements liee au jeu
 ///
 /// \param int *halt stop le programme
@@ -324,6 +333,8 @@ void _limiterFrame(const float delayLancementFrame,float *_IPS)
 /// \param struct classement donner[] strucuteur de donner actuel
 /// \param int selectionScrollingList element selectionner actuellement dans la liste
 /// \param int *frameType les frames pour le curseur
+/// \param int *frameType
+///
 /// \return void
 /////////////////////////////////////////////////////
 void gestionEvenement(int *halt, int *xMouse, int *yMouse, Scroll *scrollPositionWindow, Scroll *scrollPositionList, int *_SELECTION, char rechercher[], struct classement donner[], int selectionScrollingList, int *frameType)
@@ -543,6 +554,16 @@ void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color c
 	SDL_DestroyTexture(Message);
 }
 
+
+/////////////////////////////////////////////////////
+/// \fn Uint8 brillance(Uint8 color, int power)
+/// \brief renvoie une valeur de brillance pour un code couleur
+///
+/// \param Uint8 color
+/// \param int power
+///
+/// \return Uint8
+/////////////////////////////////////////////////////
 Uint8 brillance(Uint8 color, int power)
 {
     return (Uint8) (255 * SDL_pow((double) color / 255, power));
@@ -1164,7 +1185,7 @@ int leaderboard(SDL_Renderer *renderer,int WinWeidth , int WinHeight, int _MAX_J
 
     /////////////////////////////////////////////////
     // LIMITER LE NOMBRE DE FRAME A X FPS
-    _limiterFrame(lancementFrameTime,&_IPS);
+    limiterFrame(lancementFrameTime,&_IPS);
 
   }
   /////////////////////////////////////////////////

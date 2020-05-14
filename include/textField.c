@@ -48,7 +48,7 @@ void renduTextField(SDL_Renderer *renderer,char *chaine ,TTF_Font *font , SDL_Co
 }
 
 ///////////////////////////////////////////////////////////////
-/// \fn int textField (SDL_Renderer* renderer, TTF_Font *police, SDL_Color color, char *chaine, int startWhere, SDL_Rect cible)
+/// \fn int textField (SDL_Renderer *renderer, TTF_Font *police, SDL_Color color, char *chaine, int startWhere, SDL_Rect *cible, SDL_Point *mouse,int *pressMaj)
 /// \brief Recuperer une chaine de caractere saisi au clavier.
 ///
 /// Copier la nouvelle texture dans SDL_Renderer, il est necessaire de realiser un RenderPresent().
@@ -58,7 +58,10 @@ void renduTextField(SDL_Renderer *renderer,char *chaine ,TTF_Font *font , SDL_Co
 /// \param SDL_Color color Couleur du texte a affichager.
 /// \param char *chaine ecrit la chaine de caracatere dans la variable en entre.
 /// \param int startWhere mettre strlen(chaine) pour reprendre a la fin de la chaine la saisi.
-/// \param SDL_Rect cible indiquer la cible ou afficher le resultat.
+/// \param SDL_Rect *cible indiquer la cible ou afficher le resultat.
+/// \param SDL_Point *mouse position de la souris
+/// \param int *pressMaj bouton maj appuyer
+///
 /// \return retourne la raison de sorti (TF_MAX_SIZE, TF_TEXT_TYPED..).
 ///////////////////////////////////////////////////////////////
 int textField(SDL_Renderer* renderer, TTF_Font *police, SDL_Color color, char *chaine, int startWhere, SDL_Rect *cible, SDL_Point *mouse,int *pressMaj)
@@ -140,6 +143,13 @@ int textField(SDL_Renderer* renderer, TTF_Font *police, SDL_Color color, char *c
 	return retour;
 }
 
+///////////////////////////////////////////////////////////////
+/// \fn int TF_ClickIn(SDL_Rect rect, SDL_Point mouse)
+/// \brief test si la souris est positionner dans le rectangle
+///
+/// \return retourn VRAI/FAUX
+///
+///////////////////////////////////////////////////////////////
 int TF_ClickIn(SDL_Rect rect, SDL_Point mouse)
 {
 	return ( ( mouse.x >= rect.x && mouse.x <= ( rect.x + rect.w ) && mouse.y >= rect.y && mouse.y <= (rect.y + rect.h)) );
