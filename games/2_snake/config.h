@@ -98,7 +98,7 @@ typedef struct {float x; float y; int giant; int id; int hitbox; int frame; Vect
 const SDL_Point FRUIT_DIM = {64, 64};
 #define RANGEE_BLINK 2
 #define NB_FRUITS 25
-#define RATIO_RADIUS_BODYADD 5
+#define RATIO_RADIUS_BODYADD 6.6
 #define GIANT_SIZE 40
 #define GIANT_DIGESTION 15
 #define GIANT_SCORE 10
@@ -106,9 +106,9 @@ const SDL_Point FRUIT_DIM = {64, 64};
 #define UNLOCK_GIANT 0
 #define GIANT_CHANCE 200
 #define MAX_TRIES_RAND 100
-#define CHANCE_SPAWN_FRUIT (4 * FRAMES_PER_SECOND)
+#define CHANCE_SPAWN_FRUIT ((int)(1 * FRAMES_PER_SECOND))
 #define CHANCE_SPAWN_FRUIT_HARDCORE_INIT 6
-#define CHANCE_SPAWN_FRUIT_HARDCORE_MIN 1.8
+#define CHANCE_SPAWN_FRUIT_HARDCORE_MIN 1.6
 #define CHANCE_SPAWN_FRUIT_HARDCORE_RATE ((CHANCE_SPAWN_FRUIT_HARDCORE_INIT - CHANCE_SPAWN_FRUIT_HARDCORE_MIN) / (3.*60 * FRAMES_PER_SECOND)) //3mins
 #define FRUIT_TTL (FRAMES_PER_SECOND * 14)
 #define NB_FRAME_SPAWN_FRUIT 12
@@ -138,14 +138,14 @@ typedef enum {FRAISE, ORANGE, CITROUILLE, PIMENT, CERISE, POMME, PASTEQUE, CAROT
 #define DURATION_POTION 180
 #define RELATIVE_ACCELERATE_COFEE 0.25
 #define NB_BONUSES 7
-#define CHANCE_SPAWN_BONUS  (10 * FRAMES_PER_SECOND)
+#define CHANCE_SPAWN_BONUS  (12 * FRAMES_PER_SECOND)
 
 #define FLAT_RM_BOMB 10
 #define RELATIVE_RM_BOMB 0.2
 #define RELATIVE_SLOW_FEATHER 0.3
 #define COFFRE_SPAWN_MIN 50
 #define COFFRE_SPAWN_RANGE 100
-#define NB_SPAWN_COFFRE 5
+#define NB_SPAWN_COFFRE 6
 #define CHEST_BOOST_FRUIT_EATEN 5
 #define FRAME_RETARD_COFFRE 2
 #define NB_SPAWN_ARC_EN_CIEL 12
@@ -195,7 +195,7 @@ typedef struct {
 #define FRAME_SCORE_ANIM 20
 SDL_Color TOTAL_SCORE_COLOR = {0x02,0x31,0x02};
 
-#define RATIO_SCORE_SIZE
+
 #define MIN_SIZE_SCORE 22
 #define MAX_SIZE_SCORE 45
 #define SCORE_TTL 20
@@ -238,11 +238,11 @@ const float FRUIT_PROPRIETES[NB_FRUITS + NB_BONUSES][NB_PROPRIETES]=
 {   0.08,    24,      3,    5000,      18,       47}, // gateau
 {   0.06,    26,      2,   10000,      16,       50}, // muffin op
 {      0,    24,      1,    5000,       3,       15}, // café
-{     -1,    28,     11,       0,       0,       0 }, // plume
-{      0,    28,     11,       0,       0,       0 }, // BOMBE
-{      0,    28,      7,       0,       0,       10 }, // coffre
-{      0,    28,      6,       0,       0,       20}, // ARC_EN_CIEL
-{      0,    28,      5,       0,       0,       25}, // potion hitbox
+{     -1,    28,      8,       0,       0,       5 }, // plume
+{      0,    28,      8,       0,       0,       5 }, // BOMBE
+{      0,    28,      9,       0,       0,       0 }, // coffre
+{      0,    28,      7,       0,       0,       20}, // ARC_EN_CIEL
+{      0,    28,      6,       0,       0,       25}, // potion hitbox
 {      0,    28,      3,       0,       0,       35}, // potion verte
 {      0,    28,      2,   30000,       0,       45} // potion jaune
 };

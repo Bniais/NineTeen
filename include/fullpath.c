@@ -1,3 +1,11 @@
+/////////////////////////////////////////////////
+///	\file fullpath.c
+///	\author Samy M.
+///	\version 1.0
+///	\date 31 janvier 2020
+///	\brief permet de reconstruire un lien de fichier complet sur mac OS
+/////////////////////////////////////////////////
+
 #include <stdio.h>
 FILE *EXT_FILE;
 #include <stdlib.h>
@@ -6,10 +14,16 @@ FILE *EXT_FILE;
 
 
 
-////////////////////////////////////
-
-////////////////////////////////////
-
+/////////////////////////////////////////////
+/// \fn int nbOccurence(char s[], char c)
+/// \brief compte le nombre d occurence d un caractere
+///
+/// \param char s[]
+/// \param char c
+///
+/// \return retourne le nombre d occurence d un caractere
+/////////////////////////////////////////////
+static
 int nbOccurence(char s[], char c)
 {
 	int occurence = 0;
@@ -23,8 +37,16 @@ int nbOccurence(char s[], char c)
 }
 
 
-////////////////////////////////////
-////////////////////////////////////
+/////////////////////////////////////////////
+/// \fn char *completPathOf(char s[],int mode)
+/// \brief complete le path
+///
+/// \param char s[]
+/// \param int mode
+///
+/// \return la nouvelle chaine
+/////////////////////////////////////////////
+static
 char *completPathOf(char s[],int mode)
 {
 	////////////////////////////////////
@@ -52,6 +74,15 @@ char *completPathOf(char s[],int mode)
 	return chaine;
 }
 
+/////////////////////////////////////////////
+/// \fn int detectionMode(char s[])
+/// \brief detecte le mode si besoin ou non
+///
+/// \param char s[]
+///
+/// \return 1/0
+/////////////////////////////////////////////
+static
 int detectionMode(char s[])
 {
 	int i = 0;
@@ -62,6 +93,15 @@ int detectionMode(char s[])
 		return 0;
 }
 
+
+/////////////////////////////////////////////
+/// \fn char *fullPath(char s[])
+/// \brief fonction principal que ce charge de faire l appel de chaque fonction
+///
+/// \param char s[]
+///
+/// \return nouvelle chaine avec le path complet pour mac
+/////////////////////////////////////////////
 char *fullPath(char s[])
 {
 	////////////////////////////////////

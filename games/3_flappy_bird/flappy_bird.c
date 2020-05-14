@@ -1,3 +1,11 @@
+/**
+*\file flappy_bird.c
+*\brief Jeu flappy bird
+*\author S.Mahi
+*\version 1.0
+*\date 10/01/2020
+*/
+
 #include <stdio.h>
 #include <time.h>
 #include <math.h>
@@ -48,10 +56,15 @@ int DISTANCE_UNDER_OBSTACLE = 100; // difficulte max en distance d'obstacle
 #define NB_POS_OBSTACLE 5
 #define TRANCHE_POS_OBSTACLE 550 // largeur sur Y des positions possible des portes de passages des pilonnes
 
+
 // PERMET DE STOCKER LE BUFFER DES PILONNES DANS UNE STRUCTURE
+/**
+*\struct pilonne
+*\brief Stock la position d'un obstacle
+*/
 typedef struct {
-	int position; // POSITION DU PILONE SUR L'AXE DES X
-	int hauteur; // POSITION DE LA PORTE SUR L'AXE DES Y
+	int position; /*!< \POSITION DU PILONE SUR L'AXE DES X *///
+	int hauteur; /*!< \POSITION DU PILONE SUR L'AXE DES Y *///
 }pilonne;
 
 // NOMBRE DE BOUCLE POUR UNE ANIMATION DE MONTER
@@ -93,6 +106,7 @@ const int VITESSE_DEPLACEMENT_DECOR = 8 / (FPS/30); // vitesse de deplacement de
 ///
 /// \return SDL_Texture*
 /////////////////////////////////////////////////////
+static
 SDL_Texture * LoadTextureWithErrorCode(SDL_Renderer *renderer ,char directory[]);
 
 
@@ -107,6 +121,7 @@ SDL_Texture * LoadTextureWithErrorCode(SDL_Renderer *renderer ,char directory[])
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
+static
 int afficherBackground(SDL_Renderer *renderer, SDL_Texture* texture_background, int theme);
 
 
@@ -122,6 +137,7 @@ int afficherBackground(SDL_Renderer *renderer, SDL_Texture* texture_background, 
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
+static
 int afficherPilonne(SDL_Renderer *renderer, SDL_Texture *texture_pipes, int position, int position_axe_x, int theme);
 
 
@@ -135,6 +151,7 @@ int afficherPilonne(SDL_Renderer *renderer, SDL_Texture *texture_pipes, int posi
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
+static
 int afficherSol(SDL_Renderer *renderer, SDL_Texture *texture_sol,int target_x);
 
 
@@ -152,6 +169,7 @@ int afficherSol(SDL_Renderer *renderer, SDL_Texture *texture_sol,int target_x);
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
+static
 int AfficherPersonnage(SDL_Renderer *renderer,SDL_Texture *texture_birds, SDL_Point emplacementPersonnage, int varAnimationPersonnage, double angle,int theme);
 
 
@@ -164,6 +182,7 @@ int AfficherPersonnage(SDL_Renderer *renderer,SDL_Texture *texture_birds, SDL_Po
 ///
 /// \return int
 /////////////////////////////////////////////////////
+static
 int intLen(int score);
 
 
@@ -180,6 +199,7 @@ int intLen(int score);
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
+static
 int afficherScore(SDL_Renderer *renderer , SDL_Texture *texture_chiffre,int score,int mode);
 
 
@@ -195,6 +215,7 @@ int afficherScore(SDL_Renderer *renderer , SDL_Texture *texture_chiffre,int scor
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
+static
 int afficherMeilleurScore(SDL_Renderer* renderer,SDL_Texture *texture_highscore, int score, int high_score, int cible);
 
 
@@ -222,6 +243,7 @@ int afficherMeilleurScore(SDL_Renderer* renderer,SDL_Texture *texture_highscore,
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 int afficherTout(SDL_Renderer * renderer,SDL_Thread ** thread, TTF_Font* myFont, int *retour, int *frame_anim_loading, int *frameRetour, SDL_Texture* texture_loading,SDL_Point emplacementPersonnage, pilonne *pilonne ,int score,int varAnimationPersonnage,int varAnimationSol, int cible, double angle ,SDL_Texture *texture_background, SDL_Texture *texture_pipes, SDL_Texture *texture_birds, SDL_Texture *texture_medals, SDL_Texture *texture_scoreBoard, SDL_Texture *texture_sol, SDL_Texture *texture_chiffre, SDL_Texture* texture_highscore, int theme);
 
 
@@ -238,6 +260,7 @@ int afficherTout(SDL_Renderer * renderer,SDL_Thread ** thread, TTF_Font* myFont,
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 void init_pilonne(pilonne *pilonne, int *varAnimationPersonnage, int *varAnimationSol, int *end, int* dead, int *traitement);
 
 
@@ -255,6 +278,7 @@ void init_pilonne(pilonne *pilonne, int *varAnimationPersonnage, int *varAnimati
 ///
 /// \return int TRUE/FALSE
 /////////////////////////////////////////////////////
+static
 int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *score_hash, long keys[4], Mix_Chunk *score_wav);
 
 
@@ -269,6 +293,7 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 ///
 /// \return int TRUE/FALSE
 /////////////////////////////////////////////////////
+static
 int collision(pilonne *pilonne, SDL_Point emplacementPersonnage, Mix_Chunk *hurt_wav);
 
 
@@ -281,6 +306,7 @@ int collision(pilonne *pilonne, SDL_Point emplacementPersonnage, Mix_Chunk *hurt
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 void traitementVariableAnimation(int *varAnimationPersonnage,int *varAnimationSol);
 
 
@@ -292,6 +318,7 @@ void traitementVariableAnimation(int *varAnimationPersonnage,int *varAnimationSo
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 int attendreAvantDepart(Mix_Chunk *flap_wav, int * rdyToSpace);
 
 
@@ -307,6 +334,7 @@ int attendreAvantDepart(Mix_Chunk *flap_wav, int * rdyToSpace);
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 int evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_wav, int *rdyToSpace);
 
 
@@ -323,6 +351,7 @@ int evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_wa
 ///
 /// \return void
 /////////////////////////////////////////////////////
+static
 void updateVariableEnvironement(SDL_Point *emplacementPersonnage, int *upper, double *angle, int *nb_boucle, int* vitesseGraviter);
 
 
