@@ -97,8 +97,8 @@ const int VITESSE_DEPLACEMENT_DECOR = 8 / (FPS/30); // vitesse de deplacement de
 /// \fn SDL_Texture * LoadTextureWithErrorCode(SDL_Renderer *renderer ,char directory[])
 /// \brief affiche l'image de fond
 ///
-/// \param SDL_Renderer* renderer
-/// \param char directory[]
+/// \param  renderer
+/// \param  directory
 ///
 /// \return SDL_Texture*
 /////////////////////////////////////////////////////
@@ -111,9 +111,9 @@ SDL_Texture * LoadTextureWithErrorCode(SDL_Renderer *renderer ,char directory[])
 /// \fn int afficherBackground(SDL_Renderer *renderer, SDL_Texture *texture_background, int theme)
 /// \brief affiche l'image de fond
 ///
-/// \param SDL_Renderer* renderer
-/// \param SDL_Texture *texture_background
-/// \param int theme
+/// \param  renderer
+/// \param  texture_background
+/// \param  theme
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -125,11 +125,11 @@ int afficherBackground(SDL_Renderer *renderer, SDL_Texture *texture_background, 
 /// \fn int afficherPilonne(SDL_Renderer *renderer, SDL_Texture *texture_pipes, int position, int position_axe_x, int theme)
 /// \brief affiche le OBSTACLE
 ///
-/// \param SDL_Renderer* renderer
-/// \param SDL_Texture *texture_pipes
-/// \param int position
-/// \param int position_axe_x
-/// \param int theme
+/// \param renderer
+/// \param texture_pipes
+/// \param position
+/// \param position_axe_x
+/// \param theme
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -141,9 +141,9 @@ int afficherPilonne(SDL_Renderer *renderer, SDL_Texture *texture_pipes, int posi
 /// \fn int afficherSol(SDL_Renderer *renderer, SDL_Texture *texture_sol,int target_x)
 /// \brief affiche le SOL DECORE
 ///
-/// \param SDL_Renderer* renderer
-/// \param SDL_Texture *texture_sol
-/// \param SDL_Point target_x
+/// \param  renderer
+/// \param  texture_sol
+/// \param  target_x
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -156,12 +156,12 @@ int afficherSol(SDL_Renderer *renderer, SDL_Texture *texture_sol,int target_x);
 /// \fn int AfficherPersonnage(SDL_Renderer *renderer,SDL_Texture *texture_birds, SDL_Point emplacementPersonnage, int varAnimationPersonnage, double angle, int theme)
 /// \brief affiche le personnage a l ecran
 ///
-/// \param SDL_Renderer* renderer
-/// \param SDL_Texture *texture_birds
-/// \param SDL_Point emplacementPersonnage
-/// \param int varAnimationPersonnage
-/// \param double angle
-/// \param int theme
+/// \param  renderer
+/// \param  texture_birds
+/// \param  emplacementPersonnage
+/// \param  varAnimationPersonnage
+/// \param  angle
+/// \param  theme
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -174,7 +174,7 @@ int AfficherPersonnage(SDL_Renderer *renderer,SDL_Texture *texture_birds, SDL_Po
 /// \fn int intLen(int score)
 /// \brief retourne la longueur d'un nombre
 ///
-/// \param int score
+/// \param  score
 ///
 /// \return int
 /////////////////////////////////////////////////////
@@ -188,10 +188,10 @@ int intLen(int score);
 /// \fn int afficherScore(SDL_Renderer *renderer , SDL_Texture *texture_chiffre,int score,int mode)
 /// \brief affiche le score en cours a l ecran
 ///
-/// \param SDL_Renderer* renderer
-/// \param SDL_Texture *texture_chiffre
-/// \param int score
-/// \param int mode
+/// \param  renderer
+/// \param  texture_chiffre
+/// \param  score
+/// \param  mode
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -203,11 +203,11 @@ int afficherScore(SDL_Renderer *renderer , SDL_Texture *texture_chiffre,int scor
 /// \fn int afficherMeilleurScore(SDL_Renderer* renderer,SDL_Texture *texture_highscore, int score, int high_score, int cible)
 /// \brief affiche le meilleur score a l'ecran
 ///
-/// \param SDL_Renderer* renderer
-/// \param SDL_Texture *texture_highscore
-/// \param int score
-/// \param int high_score
-/// \param int cible
+/// \param  renderer
+/// \param  texture_highscore
+/// \param  score
+/// \param  high_score
+/// \param  cible
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -220,22 +220,22 @@ int afficherMeilleurScore(SDL_Renderer* renderer,SDL_Texture *texture_highscore,
 /// \fn int int afficherTout(SDL_Renderer *renderer,SDL_Thread **thread, TTF_Font *myFont, int *retour, int *frame_anim_loading, int *frameRetour, SDL_Texture *texture_loading,SDL_Point emplacementPersonnage, pilonne *pilonne ,int score,int varAnimationPersonnage,int varAnimationSol, int cible, double angle ,SDL_Texture *texture_background, SDL_Texture *texture_pipes, SDL_Texture *texture_birds, SDL_Texture *texture_medals, SDL_Texture *texture_scoreBoard, SDL_Texture *texture_sol, SDL_Texture *texture_chiffre, SDL_Texture *texture_highscore, int theme)
 /// \brief regroupement de toute les fonctions d'affichage pour afficher tous
 ///
-/// \param SDL_Renderer *renderer
-/// \param SDL_Point emplacementPersonnage
-/// \param pilonne *pilonne
-/// \param int score
-/// \param int varAnimationPersonnage
-/// \param int cible
-/// \param  double angle
-/// \param  SDL_Texture *texture_background
-/// \param  SDL_Texture *texture_pipes
-/// \param  SDL_Texture *texture_birds
-/// \param  SDL_Texture *texture_medals
-/// \param  SDL_Texture *texture_scoreBoard
-/// \param  SDL_Texture *texture_sol
-/// \param  SDL_Texture *texture_chiffre
-/// \param  SDL_Texture *texture_highscore)
-/// \param int theme
+/// \param  renderer
+/// \param  emplacementPersonnage
+/// \param  pilonne
+/// \param  score
+/// \param  varAnimationPersonnage
+/// \param  cible
+/// \param  angle
+/// \param  texture_background
+/// \param  texture_pipes
+/// \param  texture_birds
+/// \param  texture_medals
+/// \param  texture_scoreBoard
+/// \param  texture_sol
+/// \param  texture_chiffre
+/// \param  texture_highscore)
+/// \param  theme
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -247,12 +247,12 @@ int afficherTout(SDL_Renderer *renderer,SDL_Thread **thread, TTF_Font* myFont, i
 /// \fn void init_pilonne(pilonne *pilonne, int *varAnimationPersonnage, int *varAnimationSol, int *end, int *dead, int *traitement)
 /// \brief initialisation des pilonnes et des animation et de certaine variables liee au boucle du jeu
 ///
-/// \param pilonne *pilonne struct pilonne
-/// \param int *varAnimationPersonnage
-/// \param int *varAnimationSol
-/// \param int *end
-/// \param int *dead
-/// \param int *traitement
+/// \param  pilonne struct pilonne
+/// \param  varAnimationPersonnage
+/// \param  varAnimationSol
+/// \param  end
+/// \param  dead
+/// \param  traitement
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -265,12 +265,12 @@ void init_pilonne(pilonne *pilonne, int *varAnimationPersonnage, int *varAnimati
 /// \fn int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *score_hash, long keys[4], Mix_Chunk *score_wav)
 /// \brief detecte le passage d'un pilonne et joue un son
 ///
-/// \param pilonne *pilonne struct pilonne
-/// \param int traitement pilonne a traiter
-/// \param int *score score a incrementer
-/// \param long long *score_hash liee a la securite
-/// \param long keys[4] liee a la securite
-/// \param Mix_Chunk *score_wav son a jouer
+/// \param  pilonne struct pilonne
+/// \param  traitement pilonne a traiter
+/// \param  score score a incrementer
+/// \param  score_hash liee a la securite
+/// \param  keys liee a la securite
+/// \param  score_wav son a jouer
 ///
 /// \return int TRUE/FALSE
 /////////////////////////////////////////////////////
@@ -283,9 +283,9 @@ int traitement_pilonne(pilonne *pilonne, int traitement, int *score, long long *
 /// \fn int collision(pilonne *pilonne, SDL_Point emplacementPersonnage, Mix_Chunk *hurt_wav)
 /// \brief permet de detecter une collision et de jouer un son
 ///
-/// \param pilonne *pilonne
-/// \param SDL_Point emplacementPersonnage
-/// \param Mix_Chunk *hurt_wav
+/// \param  pilonne
+/// \param  emplacementPersonnage
+/// \param  hurt_wav
 ///
 /// \return int TRUE/FALSE
 /////////////////////////////////////////////////////
@@ -297,8 +297,8 @@ int collision(pilonne *pilonne, SDL_Point emplacementPersonnage, Mix_Chunk *hurt
 /// \fn void traitementVariableAnimation(int *varAnimationPersonnage,int *varAnimationSol)
 /// \brief mise a jours des variables liee a l'environement/decor
 ///
-/// \param int *varAnimationPersonnage
-/// \param int *varAnimationSol
+/// \param  varAnimationPersonnage
+/// \param  varAnimationSol
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -310,8 +310,8 @@ void traitementVariableAnimation(int *varAnimationPersonnage,int *varAnimationSo
 /// \fn int attendreAvantDepart(Mix_Chunk *flap_wav, int * rdyToSpace)
 /// \brief attend l'appui sur espace pour demarrer joue un son
 ///
-/// \param Mix_Chunk *flap_wav jouer le son passer en parametre
-/// \param rdyToSpace Determine si la touche espace a été relachée
+/// \param  flap_wav jouer le son passer en parametre
+/// \param  Determine si la touche espace a été relachée
 ///
 /// \return faux si le joueur quitte le jeu, sinon vrai
 /////////////////////////////////////////////////////
@@ -324,11 +324,11 @@ int attendreAvantDepart(Mix_Chunk *flap_wav, int * rdyToSpace);
 /// \fn int evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_wav, int *rdyToSpace)
 /// \brief remet les variables au DEFINE si on appui sur espace
 ///
-/// \param int *upper
-/// \param int *vitesseGraviter
-/// \param int *nb_boucle
-/// \param Mix_Chunk *flap_wav
-/// \param rdyToSpace Determine si la touche espace a été relachée
+/// \param  upper
+/// \param  vitesseGraviter
+/// \param  nb_boucle
+/// \param  flap_wav
+/// \param  Determine si la touche espace a été relachée
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -341,11 +341,11 @@ int evenement(int *upper,int *vitesseGraviter, int *nb_boucle,Mix_Chunk *flap_wa
 /// \fn void updateVariableEnvironement(SDL_Point *emplacementPersonnage, int *upper, double *angle, int *nb_boucle, int *vitesseGraviter)
 /// \brief permet de mettre a jours les variables utilisez
 ///
-/// \param SDL_Point *emplacementPersonnage point X,Y sur la position de l'oiseau
-/// \param int *upper l'oiseau monte
-/// \param double *angle angle de l'oiseau
-/// \param int *nb_boucle nombre de boucle
-/// \param int *vitesseGraviter vitesse de graviter
+/// \param  emplacementPersonnage point X,Y sur la position de l'oiseau
+/// \param  upper l'oiseau monte
+/// \param  angle angle de l'oiseau
+/// \param  nb_boucle nombre de boucle
+/// \param  vitesseGraviter vitesse de graviter
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -368,6 +368,7 @@ extern int updateEnded;
 /// \param hardcore Le mode de jeu
 /// \param textures Les textures du jeu
 /// \return L'erreur associée ou EXIT_SUCCESS si pas d'erreur
+/////////////////////////////////////////////////////
 int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h, char *token , int hardcore, SDL_Texture **textures)
 {
 	//SDL_Init(SDL_INIT_EVERYTHING);
