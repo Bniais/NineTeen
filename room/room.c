@@ -1834,7 +1834,7 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	cible[14].angle = M_PI;
 	cible[14].ouverture =70;
 
-	cible[15].px = 0.040;
+	cible[15].px = 0.000;
 	cible[15].pz = 19.53;
 	cible[15].py = 3.648998;
 	cible[15].cible_py = -.144400;
@@ -2567,7 +2567,9 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 				  camera.px+sin(camera.angle) ,camera.py + camera.cible_py    , camera.pz+cos(camera.angle),
 				  0.0
 				               ,1.0         ,0.0)                        ;
-
+		// REGLAGE DE LA LUMIERE APRES LE DEPLACEMENT
+		// DE LA CAMERA
+		GLlightMode();
 		// APPEL LIST SCENE
 		glCallList(scene_list);
 		// APPLICATION A LA WINDOW
