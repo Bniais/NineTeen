@@ -42,7 +42,7 @@ static int SOUND_VOLUMES[NB_SNAKE_SOUNDS] = {70,128,80,55,13, 18,100};
 //hud
 
 
-	///replay
+	//replay
 	#define SHOW_HELP_FRAME 20
 	#define RELAY_SNAKE_SIZE 15
 	#define SIZE_REPLAY 43.
@@ -62,7 +62,18 @@ SDL_Color HUD_COLOR = {138,82,47};
 
 
 //Snake
-typedef struct {float x; float y; int frame; float radius;} SnakePart;
+/**
+*\struct SnakePart
+*\brief Contient des informations sur les parties du corps du serpent
+*/
+typedef struct {
+	float x; /*!< \brief Position en x */
+	float y; /*!< \brief Position en y */
+	int frame; /*!< \brief Frame d'animation de mort du corps */
+	float radius; /*!< \brief La taille de la partie de corps */
+} SnakePart;
+
+
 const Vector2f INIT_HEAD = {PLAYGROUND_SIZE_W / 2, PLAYGROUND_SIZE_H / 2};
 #define BODY_RADIUS 20
 #define INIT_BODY 30
@@ -89,7 +100,21 @@ const int BLINK_FRAMES_BODY[NB_BLINK_BODY] = {(int)(FRAMES_PER_SECOND * 4.5  + (
 #define SCALE_SPEED 0.0035
 
 //Fruit
-typedef struct {float x; float y; int giant; int id; int hitbox; int frame; Vector2f dest; float coefRadius;} Fruit;
+/**
+*\struct Fruit
+*\brief Contient des informations sur les fruits et bonus
+*/
+typedef struct {
+	float x; /*!< \brief Position en x */
+	float y; /*!< \brief Position en y */
+	int giant; /*!< \brief Détermine si le fruit est géant */
+	int id; /*!< \brief Identifiant du fruit */
+	int hitbox; /*!< \brief Détermine si le fruit est touché */
+	int frame; /*!< \brief Le nombre de frame depuis l'apparition */
+	Vector2f dest; /*!< \brief La position finale du fruit */
+	float coefRadius;/*!< \brief Le coefficient de taille */
+} Fruit;
+
 #define NO_ID -1
 #define DIST_HEAD_FRUIT 30
 #define DIST_WALL_FRUIT 30
@@ -182,7 +207,19 @@ static SDL_Rect FLECHE_DEST[6] = {
 
 //Score
 #define NB_CHAR_AFFICHAGE_SCORE 21
-typedef struct {float x; float y; int score; int frame; int size;int fromTimeOut;} Score;
+/**
+*\struct Score
+*\brief Contient des informations sur les affichages de scores individuels
+*/
+typedef struct {
+	float x; /*!< \brief Position en x */
+	float y; /*!< \brief Position en y */
+	int score; /*!< \brief Valeur du score */
+	int frame; /*!< \brief Frame de l'animation */
+	int size;/*!< \brief Taille d'affichage */
+	int fromTimeOut;/*!< \brief Détermine si le score est obtenu avec l'expiration d'un fruit */
+} Score;
+
 /**
 *\struct ScoreTotal
 *\brief Contient des informations sur le score total
@@ -192,6 +229,7 @@ typedef struct {
 	float scoreShow; /*!< \brief Le score total affiché (tend vers score)*/
 	int frameToDest; /*!< \brief Le nombre de frame avant que scoreShow arrive à score*/
 }ScoreTotal;
+
 #define FRAME_SCORE_ANIM 20
 SDL_Color TOTAL_SCORE_COLOR = {0x02,0x31,0x02};
 
