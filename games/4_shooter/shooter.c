@@ -512,6 +512,17 @@ void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
 	}
 }
 
+void myFrees(Enemy ** enemies, Missile ** allyMissiles, Missile ** enemyMissiles){
+	if(*enemies)
+		free(*enemies);
+
+	if(*allyMissiles)
+		free(*allyMissiles);
+
+	if(*enemyMissiles)
+		free(*enemyMissiles);
+}
+
 extern int updateEnded;
 int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, char *token, int hardcore, SDL_Texture ** textures){
 
@@ -537,6 +548,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 	int retour = EXIT_FAILURE;
 	int frameRetour = 0;
 	int frame_anim_loading = 0;
+	int rdyToTab = SDL_FALSE;
 
 	SDL_Rect backgroundSrc[3] = {BACKGROUND_SRC, BACKGROUND_SRC, BACKGROUND_SRC};
 	backgroundSrc[1].x += 3* backgroundSrc[1].w;
@@ -677,6 +689,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 
 			//move
 			if( keystate[SDL_SCANCODE_ESCAPE] ){
+				myFrees(&enemies, &allyMissiles, &enemyMissiles);
 				return 0;
 			}
 
@@ -716,7 +729,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 			}
 
 
-			if( keystate[SDL_SCANCODE_TAB] ){
+			if( keystate[SDL_SCANCODE_TAB] && rdyToTab){
 				ship.nbWeapon++;
 				if(ship.nbWeapon >= NB_MAX_WEAPON)
 					ship.nbWeapon = 0;
@@ -731,6 +744,10 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 					default:
 						ship.form = 2;
 				}
+				rdyToTab = SDL_FALSE;
+			}
+			else if (!keystate[SDL_SCANCODE_TAB]){
+				rdyToTab = SDL_TRUE;
 			}
 
 		// // // // //
@@ -848,6 +865,10 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 
 			for(int i=0; i<nbExplosions; i++)
 				drawExplosion(renderer, explosions[i], textures[SH_EXPLO_MISSILE+explosions[i].id]);
+
+			SDL_SetRenderDrawColor(renderer, BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, 255);
+			SDL_RenderFillRect(renderer, &LEFT_BACK);
+			SDL_RenderFillRect(renderer, &RIGHT_BACK);
 
 			drawBeta(renderer, font ,ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},28);
 

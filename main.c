@@ -52,7 +52,7 @@ extern int MACOS_VER;
 
 #define DIR_OBJ_LOAD "../room/textures/salle.obj"
 
-#include "launcher/launcher.h"
+#include "main.h"
 
 #define TRUE 1
 #define FALSE 0
