@@ -92,10 +92,13 @@ void informationPreciseCPUGPU()
 
 
 /////////////////////////////////////////////////////
-/// \fn int _malloc( void **ptr ,int type, int size , FILE *fp , Uint32 flags,const char* title, const char* message,SDL_Window* window )
+/// \fn int _malloc( void **ptr ,int type, int size , FILE *fp , Uint32 flags , const char *title, const char *message,SDL_Window *window )
+///
 /// \brief permet de faire une allocation dynamqiue avec message d'erreur
+///
 /// \param void **ptr element a allouer
-/// \param int type sizeof(type)
+/// \param int type taille du type
+/// \param int size nombre d element a allouer
 /// \param FILE *fp pointeur sur element sorti erreur
 /// \param Uint32 flags flags message SDL
 /// \paran char *title if set NULL no message on SDL
@@ -214,10 +217,13 @@ char* REPLAY = "Appuyer sur Espace pour jouer !";
 #define SIZE_REPLAY 43.
 SDL_Color WHITE = {255,255,255,255};
 /**
-*\fn void drawReplay(SDL_Renderer* renderer, TTF_Font* font)
+*\fn void drawReplay(SDL_Renderer* renderer, TTF_Font* font, float posY, int viewW, int viewH)
 *\brief Affiche un texte invitant le joueur à rejouer
 *\param renderer Le renderer où afficher
 *\param font La police d'écriture
+*\param float posY position du text sur Y
+*\param int viewW hauteur de la fenetre
+*\param int viewH largueur de la fenetre
 */
 void drawReplay(SDL_Renderer* renderer, TTF_Font* font, float posY, int viewW, int viewH){
 	char * text = REPLAY;
@@ -242,6 +248,15 @@ void drawReplay(SDL_Renderer* renderer, TTF_Font* font, float posY, int viewW, i
 static char * QUIT = "Echap";
 static SDL_Rect QUIT_DEST = {10,10,0,0};
 #define SIZE_QUIT 28.
+
+/**
+*\fn void drawQuit(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL_Color color)
+*\brief Affiche echap en haut a gauche
+*\param renderer Le renderer où afficher
+*\param font La police d'écriture
+*\param float ratioWindowSize ratio de l ecran
+*\param SDL_Color color couleur du text
+*/
 void drawQuit(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL_Color color){
 	char * text = QUIT;
 
@@ -263,6 +278,15 @@ void drawQuit(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL
 
 static char * BETA = "(Beta)";
 static SDL_Rect BASE_DEST = {BASE_WINDOW_W-10, BASE_WINDOW_H-10, 0,0};
+/**
+*\fn void drawBeta(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL_Color color, int size)
+*\brief Affiche beta en bas a droite
+*\param renderer Le renderer où afficher
+*\param font La police d'écriture
+*\param float ratioWindowSize ratio de l ecran
+*\param SDL_Color color couleur du text
+*\param int size taille du text
+*/
 void drawBeta(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL_Color color, int size){
 	char * text = BETA;
 
@@ -284,6 +308,12 @@ void drawBeta(SDL_Renderer* renderer, TTF_Font* font, float ratioWindowSize, SDL
 	SDL_DestroyTexture(Message);
 }
 
+
+/////////////////////////////////////////////////////
+/// \fn int lenNum(int n)
+/// \brief retourne la longueur d'un nombre
+/// \return longueur d'un chiffre
+/////////////////////////////////////////////////////
 int lenNum(int n)
 {
 	int count=1;
@@ -296,6 +326,11 @@ int lenNum(int n)
 	return count;
 }
 
+/////////////////////////////////////////////////////
+/// \fn int randSign()
+/// \brief renvoie un signe soit 1 ou -1
+/// \return 1/-1
+/////////////////////////////////////////////////////
 int randSign(){
 	return (rand()%2 ? 1 : -1);
 }
