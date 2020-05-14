@@ -1,0 +1,82 @@
+Nom du fichier /tmp/NineteenLog_2020-05-14_18-46-0.log
+Version du logiciel 1.0.2-dev
+INFORMATION GENERAL :
+ - System : macOS10.15.4(19E287)
+ - ChipsetCPU : Intel(R)Core(TM)i5-9600KCPU@3.70GHz
+ - ChipsetGPU : RadeonPro580X
+ - VRAM GPU = 8GB
+ - RAM : 53,248 Go
+main.c : main() : REPERTOIRE D'EXECUTION ./bin/Nineteen
+fullpath.c : fullePath() : il faut remonter 1 dossie
+fullpath.c : fullePath() : return value : bin/
+main.c : main() : AJOUTER : bin/
+main.c -> dejaConneceter() : aucun fichier token trouver
+main.c : launcher() : dejaConnecter : FALSE
+main.c : connexion() : lancement d'un thread de connexion
+main.c : connexion() : tentative de connexion...
+main.c : connexion() : recuperation valeur thread
+main.c : connexion() : le thread a retourner une valeur
+main.c : chargementFichier() : tout les fichiers sont present
+main.c : chargementFichier() : chargement structure score = OK
+main.c : chargementFichier() : scene charger avec success : bin/../room/textures/salle.obj : nbTextures 66
+main.c : main() : SDL_GetWindowBordersSize That operation is not supported
+room.c : windowMaxSize() : 2250x1266
+import.c : chargerTexture() : Nombre de textures 66
+room.c : room() : fin de l'initalisation debut du while statut : 1
+room.c : attendreXsecondeMessage() : FPS 60.000000
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : lancerMachine() : changement statut channel 0, statut pause : 0
+room.c : attendreXsecondeMessage() : FPS 58.823528
+room.c : lancerMachine() : changement statut channel 0, statut pause : 1
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 58.823528
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : lancerMachine() : changement statut channel 2, statut pause : 0
+room.c : attendreXsecondeMessage() : FPS 58.823528
+room.c : attendreXsecondeMessage() : FPS 58.823528
+room.c : attendreXsecondeMessage() : FPS 58.823528
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : lancerMachine() : changement statut channel 1, statut pause : 0
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 58.823528
+room.c : attendreXsecondeMessage() : FPS 58.823528
+room.c : attendreXsecondeMessage() : FPS 58.823528
+room.c : lancerMachine() : changement statut channel 0, statut pause : 0
+room.c : attendreXsecondeMessage() : FPS 58.823528
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : lancerMachine() : lancement de la machine numero 1 
+libWeb.c : updateScore() : Nombre de tentative : 1 Reponse : SUCCESS
+import.c : chargerTexture() : Nombre de textures 66
+room.c : attendreXsecondeMessage() : FPS 58.823528
+room.c : attendreXsecondeMessage() : FPS 58.823528
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : lancerMachine() : lancement de la machine numero 3 
+import.c : chargerTexture() : Nombre de textures 66
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 58.823528
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 58.823528
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 58.823528
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : lancerMachine() : Afficher menu escape (Appui touche echap) 
+room.c : lancerMachine() : Quitter le jeu en ce deconnectant (Appui touche d) 
+room.c : attendreXsecondeMessage() : FPS 62.500000
+room.c : room() : liberation de la memoire
+room.c : room() : memoire liberer
+main.c : main() : liberation des allocation 
+main.c : main() : allocation liberer
+main.c : main() : quitter les API 
+main.c : main() : API quitter 
+main.c : main() : fermeture du programme 
