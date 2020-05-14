@@ -949,7 +949,7 @@ int chargementFichier(SDL_Renderer *renderer,struct MeilleureScore_s meilleureSc
     return EXIT_FAILURE;
   }
 
-  fprintf(EXT_FILE,"main.c : chargementFichier() : scene charger avec success : %s : nbMeshes %d\n",concatenation,(*scene)->mNumMaterials );
+  fprintf(EXT_FILE,"main.c : chargementFichier() : scene charger avec success : %s : nbTextures %d\n",concatenation,(*scene)->mNumMaterials );
 
 
   //////////////////////////////////////

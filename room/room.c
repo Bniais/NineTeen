@@ -2681,7 +2681,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						int machine = detecterMachine(camera.px, camera.pz, camera.angle);
 						if ( machine)
 						{
-							fprintf(EXT_FILE, "room.c : lancerMachine() : detection d'une machine \n" );
+							fprintf(EXT_FILE, "room.c : lancerMachine() : lancement de la machine numero %d \n",machine );
 
 							///////////////////////////////////////////////////
 							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
