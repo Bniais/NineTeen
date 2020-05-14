@@ -93,35 +93,31 @@ static GLuint * _textures =  NULL, *_counts = NULL;
 const float ANGLE_DETECTION_MACHINE = M_PI/6;
 #define SON_PAS_DISTANCE 2.2F
 
-#define START_PX 12.5F //AXE X
-#define START_PY 3.64F // hauteur CAMERA
-#define START_PZ 35.0F // AXE Y
-#define START_CIBLE_Y 0.0F // REGARDE SUR AXE HAUTEUR
-#define START_CIBLE_X M_PI// REGARDE SUR AXE X
-#define START_OUVERTURE 70.0F //OUVERTURE CAMERA
+#define START_PX 12.5F /// POSTION DEPART AXE X
+#define START_PY 3.64F /// POSTION DEPART HAUTEUR CAMERA
+#define START_PZ 35.0F /// POSTION DEPART AXE Y
+#define START_CIBLE_Y 0.0F /// POSTION DEPART REGARDE SUR AXE HAUTEUR
+#define START_CIBLE_X M_PI /// POSTION DEPART REGARDE SUR AXE X
+#define START_OUVERTURE 70.0F /// POSTION DEPART OUVERTURE CAMERA
 
-
-const int SON_PAS = 5;
-float HAUTEUR_PERSONNAGE = HAUTEUR_CAMERA_DEBOUT;
-
-
-
-#define MIN_INTENSITE 100 // INTENSITE SON STEREO
-
-float VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT;
+float VITESSE_DEPLACEMENT = VITESSE_DEPLACEMENT_DEBOUT; /// VITESSE DEPLACEMENT DEBOUT ASSIS
 float HAUTEUR_CAMERA = HAUTEUR_CAMERA_DEBOUT;
 
 
-#define RATIO_WINDOW_SCREEN 0.95
-static int WinWidth = 1280;
-static int WinHeight = 720;
+const int SON_PAS = 5; /// VOLUME SON PAS
+#define MIN_INTENSITE 100 /// INTENSITE SON STEREO MINI
+
+
+#define RATIO_WINDOW_SCREEN 0.95 /// TAILLE DE L ECRAN
+static int WinWidth = 1280; /// DEFAULT RESOLUTION
+static int WinHeight = 720; /// DEFAULT RESOLUTION
+
 SDL_Rect bounds;
 int optionFullScreen = 0;
 //////////////////////////////////////////////////
-// FIXER NOMBRE FPS MAX
-#define FPS 60
-// EN DEDUIRE LE DELAI MIN D'UNE FRAME
-static const float FRAME_TIME = 1000/FPS;
+
+#define FPS 60 /// FIXER NOMBRE FPS MAX
+static const float FRAME_TIME = 1000/FPS;  /// EN DEDUIRE LE DELAI MIN D'UNE FRAME
 
 
 SDL_Color Text_rouge = {255,0,0};
@@ -160,18 +156,22 @@ struct GL_Quadf
 	float hauteur; /*!< \ hauteur */
 };
 //////////////////////////////////////////////////////////////////////////////////
-// struct toilette femme
+// struct toilette femme/homme
+enum {FERMER,OUVERTE,FERMETURE,OUVERTURE};
+// INIT
 struct GL_Quadf toiletteFemme = {20.2  , 8.65 , 1.9 , 3. , 0.1 , 3.9};
 struct GL_Quadf toiletteHomme = {20.2  , 1.05 , 1.9 , 3. , 0.1 , 3.9};
-
-enum {FERMER,OUVERTE,FERMETURE,OUVERTURE};
+//////////////////////////////////////////////////////////////////////////////////
 int statutPorteFemme = FERMER;
 int statutPorteHomme = FERMER;
+//////////////////////////////////////////////////////////////////////////////////
+
+
 
 enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,SHOOTER_HARD,SNAKE_HARD,DEMINEUR_HARD,DEMINEUR_EASY,SNAKE_EASY,SHOOTER_EASY,ASTEROID_EASY,TETRIS_EASY,FLAPPY_EASY};
 char adresseFontImg[16][64]={"../room/textures/flappy_hard_font.jpg","../room/textures/tetris_font.jpg","../room/textures/asteroid_font_hard.jpg","../room/textures/shooter_font.jpg","../room/textures/snake_font.jpg","../room/textures/demineur_font.jpg",
 														 "../room/textures/demineur_font.jpg","../room/textures/snake_font.jpg","../room/textures/shooter_font.jpg","../room/textures/asteroid_font.jpg","../room/textures/tetris_font.jpg","../room/textures/flappy_easy_font.jpg",
-														 "../room/textures/chargement.jpg","../room/textures/chargement.jpg","../room/textures/chargement.jpg","../room/textures/leaderboard_font.jpg"};
+														 "../room/textures/chargement.jpg","../room/textures/chargement.jpg","../room/textures/chargement.jpg","../room/textures/leaderboard_font.jpg"}; /// STOCK LES POSITIONS
 
 #ifdef _WIN32
   #define DIR_TOKEN_FILE "C:\\Windows\\Temp\\.Nineteen"
@@ -283,10 +283,11 @@ int loadGameTexture(loadGame * load){
 /// \fn int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene )
 /// \brief fonction d'appel principal
 ///
-/// \param char *token cle de connexion
-/// \param struct MeilleureScore_s meilleureScore[] tableau charger des scores
-/// \param SDL_Window *Window fenetre initaliser
-/// \param const C_STRUCT aiScene* scene scene charger
+/// \param token cle de connexion
+/// \param meilleureScore tableau charger des scores
+/// \param Window fenetre initaliser
+/// \param  scene scene charger
+///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
 //int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize );
@@ -296,7 +297,7 @@ int loadGameTexture(loadGame * load){
 /////////////////////////////////////////////////////
 /// \fn int windowMaxSize(int optionFullScreen)
 /// \brief fonction qui charge fixe la taille max de la fenetre
-/// \param int optionFullScreen
+/// \param optionFullScreen
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
 static
@@ -307,8 +308,8 @@ int windowMaxSize(int optionFullScreen);
 /// \fn void limiterFrame(const float delayLancementFrame,float *_IPS)
 /// \brief permet de mettre un nombre d'image max et reglger la vitesse de deplacement en fonction des ips
 ///
-/// \param const float delayLancementFrame temps au lancement de la frame
-/// \param float *_IPS mise a jour de la constante IPS
+/// \param delayLancementFrame temps au lancement de la frame
+/// \param _IPS mise a jour de la constante IPS
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -319,10 +320,10 @@ void limiterFrame(const float delayLancementFrame,float *_IPS);
 /// \fn int attendreXsecondeMessage(int *compterSeconde, int *afficherMessage,const int MS, const float _IPS)
 /// \brief permet d'attendre avant d'afficher message CLIGNOTANT affiche egalement les IPS
 ///
-/// \param int *compterSeconde delai d'attente mesurer
-/// \param int *afficherMessage booleen vrai ou faux
-/// \param const int MS delai d'attente
-/// \param const float _IPS affichage des IPS
+/// \param compterSeconde delai d'attente mesurer
+/// \param afficherMessage booleen vrai ou faux
+/// \param MS delai d'attente
+/// \param _IPS affichage des IPS
 ///
 /// \return VRAI/FAUX
 /////////////////////////////////////////////////////
@@ -341,8 +342,8 @@ int attendreXsecondeMessage(int *compterSeconde, int *afficherMessage,const int 
 /// \fn int detectionEnvironnement(float x,float y)
 /// \brief fonction de collision avec l'environement
 ///
-/// \param float x coordonner x
-/// \param float y coordonner y
+/// \param  x coordonner x
+/// \param  y coordonner y
 ///
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
@@ -354,9 +355,9 @@ int detectionEnvironnement(float x,float y);
 /// \fn int detecterRadio(float x,float y,float angle)
 /// \brief detection radio a proximite
 ///
-/// \param float x coordonner x
-/// \param float y coordonner y
-/// \param float angle angle
+/// \param  x coordonner x
+/// \param  y coordonner y
+/// \param  angle angle
 ///
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
@@ -367,9 +368,9 @@ int detecterRadio(float x,float y,float angle);
 /// \fn int detecterPorte(float x,float y,float angle)
 /// \brief detection porte a proximite
 ///
-/// \param float x coordonner x
-/// \param float y coordonner y
-/// \param float angle angle
+/// \param  x coordonner x
+/// \param  y coordonner y
+/// \param  angle angle
 ///
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
@@ -380,9 +381,9 @@ int detecterPorte(float x,float y,float angle);
 /// \fn int detecterOuvertureToilette(float x,float y,float angle)
 /// \brief detection des toilettes h/f
 ///
-/// \param float x coordonner x
-/// \param float y coordonner y
-/// \param float angle angle
+/// \param  x coordonner x
+/// \param  y coordonner y
+/// \param  angle angle
 ///
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
@@ -394,9 +395,9 @@ int detecterOuvertureToilette(float x,float y,float angle);
 /// \fn detecterMachine(float x,float y,float angle)
 /// \brief fonction qui detecte la proxmiter avec une machine de jeu
 ///
-/// \param float x coordonner x
-/// \param float y coordonner y
-/// \param float angle angle
+/// \param  x coordonner x
+/// \param  y coordonner y
+/// \param  angle angle
 ///
 /// \return TRUE/FALSE
 /////////////////////////////////////////////////////
@@ -417,10 +418,10 @@ void mixerInit();
 /// \fn float distancePoint(float xa, float ya, float xb, float yb)
 /// \brief renvoi la distance entre deux point
 ///
-/// \param float xa
-/// \param float ya
-/// \param float xb
-/// \param float yb
+/// \param  xa
+/// \param  ya
+/// \param  xb
+/// \param  yb
 ///
 /// \return float distance point a et b
 /////////////////////////////////////////////////////
@@ -433,14 +434,14 @@ float distancePoint(float xa, float ya, float xb, float yb);
 /// \fn void reglageVolume(int channel, float xa, float ya, float xb, float yb, float porter, float angleJoueur, int max_volume)
 /// \brief regle le volume de l'environement sur un channel particuliere
 ///
-/// \param int channel canal du son a regler
-/// \param float xa
-/// \param float ya
-/// \param float xb
-/// \param float yb
-/// \param int porter Porter du son
+/// \param  channel canal du son a regler
+/// \param  xa
+/// \param  ya
+/// \param  xb
+/// \param  yb
+/// \param  porter Porter du son
 /// \param float angleJoueur
-/// \param int max_volume
+/// \param  max_volume
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -452,11 +453,11 @@ void reglageVolume(int channel, float xa, float ya, float xb, float yb, float po
 /// \fn void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int channel, Mix_Chunk *music)
 /// \brief permet de deplacer la source du son des pas et de le jouer
 ///
-/// \param struct Camera_s *dernierePosition derniere position ou le son a etait jouer
-/// \param struct Camera_s camera position actuel
-/// \param struct int channel channel sur le quelle jouer le son
-/// \param struct Mix_Chumk *music son a jouer
-/// \param float angleJoueur angle de la camera du joueur
+/// \param dernierePosition derniere position ou le son a etait jouer
+/// \param  camera position actuel
+/// \param  channel channel sur le quelle jouer le son
+/// \param music son a jouer
+/// \param  angleJoueur angle de la camera du joueur
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -467,12 +468,12 @@ void bruitagePas(struct Camera_s *dernierePosition, struct Camera_s camera, int 
 /// \fn float calculAngle(float xa, float ya,      float xb, float yb,       float xc, float yc)
 /// \brief renvoi l'angle entre 3 points
 ///
-/// \param float xa
-/// \param float ya
-/// \param float xb
-/// \param float yb
-/// \param float xc
-/// \param float yc
+/// \param  xa
+/// \param  ya
+/// \param  xb
+/// \param  yb
+/// \param  xc
+/// \param  yc
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -495,9 +496,9 @@ float calculAngle(float xa, float ya,      float xb, float yb,       float xc, f
 /// \fn void GL_InitialiserParametre(int width, int height, struct Camera_s camera)
 /// \brief regle le mode de vue voulu et les lummiere de opengl
 ///
-/// \param int width
-/// \param int height
-/// \param struct Camera_s camera
+/// \param  width
+/// \param  height
+/// \param   camera
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -509,8 +510,8 @@ void GL_InitialiserParametre(int width, int height, struct Camera_s camera);
 /// \fn void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 /// \brief initialisation des variables lier au camera joueur et machines
 ///
-/// \param struct Camera_s *camera
-/// \param struct Camera_s *cible
+/// \param   camera
+/// \param   cible
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -522,9 +523,9 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible);
 /// \fn void mouvementCamera(SDL_Window * window, struct Camera_s *camera,const float IPS)
 /// \brief Permet de gerer les deplacements de la camera
 ///
-/// \param SDL_Window * window
-/// \param struct Camera_s *camera prend l'adresse de la camera
-/// \param const float IPS
+/// \param   window
+/// \param   camera prend l'adresse de la camera
+/// \param   IPS
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -533,12 +534,12 @@ void mouvementCamera(SDL_Window * window, struct Camera_s *camera, const float I
 
 
 /////////////////////////////////////////////////////
-/// \fn void SDL_GL_AppliquerScene(const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list)
+/// \fn void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,struct Camera_s *camera,GLuint *scene_list, const float IPS)
 /// \brief permet d'appliquer la scene dans la window + mouvement camera
 ///
-/// \param const C_STRUCT aiScene *scene scene ou est stocker notre obj
-/// \param struct Camera_s *camera mise a jour de LookAt
-/// \param GLuint *scene_list Nombre de scene
+/// \param    scene scene ou est stocker notre obj
+/// \param   camera mise a jour de LookAt
+/// \param  scene_list Nombre de scene
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -550,11 +551,11 @@ void SDL_GL_AppliquerScene(SDL_Window * Window, const C_STRUCT aiScene *scene,st
 /// \fn void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y)
 /// \brief affichage de text sur un rendu OpenGL
 ///
-/// \param TTF_Font *font police d'ecriture du texte
-/// \param char *message message a afficher
-/// \param SDL_Color color couleur du texte
-/// \param int x position du text sur X -1 = centrer
-/// \param int y position du text sur Y -1 = centrer
+/// \param  font police d'ecriture du texte
+/// \param  message message a afficher
+/// \param  color couleur du texte
+/// \param  x position du text sur X -1 = centrer
+/// \param  y position du text sur Y -1 = centrer
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -565,10 +566,10 @@ void AfficherText(TTF_Font *font, char *message, SDL_Color color, int x, int y);
 /// \fn void messageMachine(struct MeilleureScore_s str[] ,struct Camera_s camera,TTF_Font *font,int afficherMessage)
 /// \brief affichage un message propre a chaque machine
 ///
-/// \param struct MeilleureScore_s str[] structure stockant les nom et score des meilleure joueur par machine
-/// \param struct Camera_s camera Camera du joueur pour detection des machines
-/// \param TTF_Font *font pointeur sur la police
-/// \param int afficherMessage afficher messages clignotant ou nom
+/// \param   str structure stockant les nom et score des meilleure joueur par machine
+/// \param   camera Camera du joueur pour detection des machines
+/// \param  font pointeur sur la police
+/// \param  afficherMessage afficher messages clignotant ou nom
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -580,8 +581,8 @@ void messageMachine(struct MeilleureScore_s str[] ,struct Camera_s camera,TTF_Fo
 /// \fn int MessageQuitterRoom(int modeChargement, char path[])
 /// \brief permet d'afficher le message avant de quitter ou au chargement de la room
 ///
-/// \param int modeChargement
-/// \param char path[]
+/// \param  modeChargement
+/// \param  path
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -599,21 +600,21 @@ int MessageQuitterRoom(int modeChargement, char path[]);
 
 
 /////////////////////////////////////////////////////
-/// \fn void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme,  int *jouerSonPorteHomme);
+/// \fn void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme,  int *jouerSonPorteHomme, float _IPS, TTF_Font *font);
 /// \brief permet de lancer une machine de jeux comprend plusieur fonction annexe
 ///
-/// \param const C_STRUCT aiScene *scene permet de passer la scene a re afficher au retour de la machine
-/// \param int *Running permet de mettre fin au jeux
-/// \param struct Camera_s camera camera du joueur
-/// \param struct Camera_s cible[] camera cible machine
-/// \param char *token cle du joueur pour mode en ligne
-/// \param struct MeilleureScore_s meilleureScore[] strucuteur des score et nom meilleure joueur
-/// \param GLuint *scene_list liste des scenes
-/// \param SDL_Window *Window fenetre sdl/opengl
-/// \param SDL_GLContext *Context context sdl/opengl
-/// \param int *jouerSonPorteFemme
-/// \param int *jouerSonPorteHomme
-/// \param float _IPS
+/// \param    scene permet de passer la scene a re afficher au retour de la machine
+/// \param  Running permet de mettre fin au jeux
+/// \param   camera camera du joueur
+/// \param   cible camera cible machine
+/// \param  token cle du joueur pour mode en ligne
+/// \param   meilleureScore strucuteur des score et nom meilleure joueur
+/// \param  scene_list liste des scenes
+/// \param  Window fenetre sdl/opengl
+/// \param  Context context sdl/opengl
+/// \param  jouerSonPorteFemme
+/// \param  jouerSonPorteHomme
+/// \param  _IPS
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -625,11 +626,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 /// \fn void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint scene_list,SDL_Window *Window, float _IPS,float imgAnim)
 /// \brief permet d'animer le lancement et retour des machines
 ///
-/// \param struct Camera_s camera camera de depart
-/// \param struct Camera_s cible camera de fin
-/// \param GLuint scene_list scene
-/// \param SDL_Window *Window vue d'affichae
-/// \param float _IPS image / s
+/// \param   camera camera de depart
+/// \param   cible camera de fin
+/// \param  scene_list scene
+/// \param  Window vue d'affichae
+/// \param  _IPS image / s
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -655,17 +656,17 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 /// \fn void InitMeilleureScore(struct MeilleureScore_s str[])
 /// \brief initialise la strcuture MeilleureScore_s avec le nom des jeux
 ///
-/// \param struct MeilleureScore_s str[] tableau de donner
+/// \param  MeilleureScore_s str tableau de donner
 ///
 /////////////////////////////////////////////////////
 void InitMeilleureScore(struct MeilleureScore_s str[]);
 
 
 /////////////////////////////////////////////////////
-/// \fn int lleureScore(struct MeilleureScore_s str[] ,char *token)
+/// \fn int updateMeilleureScore(struct MeilleureScore_s str[] ,char *token)
 /// \brief Mes a jours les donnees liee au score de la structure meilleureScore
 ///
-/// \param struct MeilleureScore_s str[] tableau de donner
+/// \param   str tableau de donner
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -676,7 +677,7 @@ int updateMeilleureScore(struct MeilleureScore_s str[] ,char *token);
 /// \fn void GlDessinerQuad(struct GL_Quadf quad)
 /// \brief Dessine un quadrilataire
 ///
-/// \param struct GL_Quadf quad
+/// \param  quad
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -687,7 +688,7 @@ void GlDessinerQuad(struct GL_Quadf quad);
 /////////////////////////////////////////////////////
 /// \fn void detruireTexture(GLuint nbTextures)
 /// \brief detruit les elements initaliser
-/// \param GLuint nbTextures
+/// \param  nbTextures
 /// \return void
 /////////////////////////////////////////////////////
 static
@@ -710,16 +711,16 @@ void GLlightMode();
 /// \fn void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jouerSonPorteFemme,int *jouerSonPorteHomme, int *toiletteFemmeOuverteDelai, int *toiletteHommeOuverteDelai ,Mix_Chunk *sas_ouverture, Mix_Chunk *sas_fermeture,struct Camera_s camera, float IPS);
 /// \brief permet de gerer les evenements liee au porte des toilettes
 ///
-/// \param int *statutPorteFemme
-/// \param int *statutPorteHomme
-/// \param int *jouerSonPorteFemme
-/// \param int *jouerSonPorteHomme
-/// \param int *toiletteFemmeOuverteDelai
-/// \param int *toiletteHommeOuverteDelai
-/// \param Mix_Chunk *sas_ouverture
-/// \param Mix_Chunk *sas_fermeture
-/// \param struct Camera_s camera
-/// \param float IPS
+/// \param  statutPorteFemme
+/// \param  statutPorteHomme
+/// \param  jouerSonPorteFemme
+/// \param  jouerSonPorteHomme
+/// \param  toiletteFemmeOuverteDelai
+/// \param  toiletteHommeOuverteDelai
+/// \param  sas_ouverture
+/// \param  sas_fermeture
+/// \param   camera
+/// \param  IPS
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -731,7 +732,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 /// \fn int backgroundClassement(SDL_Surface *sImage)
 /// \brief afficher un background au classement pour qu'il soit plus facilement visible
 ///
-/// \param SDL_Surface *sImage
+/// \param  sImage
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
