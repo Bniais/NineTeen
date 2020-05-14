@@ -1,6 +1,14 @@
 /////////////////
 //ASTEROID CONFIGS//
 /////////////////
+/**
+*\file config.h
+*\brief Configuration pour le jeu asteroid
+*\author Rayyan Lajnef
+*\version 1.0
+*\date 12/05/2020
+*/
+
 #include "../../define/define.h"
 #include "../../include/hashage.h"
 #include "../../include/libWeb.h"
@@ -53,11 +61,61 @@ char* DIR_SOUNDS_ASTEROID[NB_ASTEROID_SOUNDS] = {
 static int SOUND_VOLUMES[NB_ASTEROID_SOUNDS] = {30,110,17,85,25, 128, 12,50, 115,128, 100, 100};
 enum{THRUST_UP, THRUST_LEFT, THRUST_RIGHT};
 
-typedef struct{  float x;  float y; float angle; int frame_recharge; int temps_recharge; int nb_tir; int bouclier;int missile_id; float vitesse_missile; float degat_missile; int frame_turn_left; int frame_turn_right; int frame_thrust; long frame_explo;}Vaiss;
+/**
+*\struct Vaiss
+*\brief Contient des informations sur le vaisseau
+*/
+typedef struct{
+	  float x;/*!< \brief La position en x du vaisseau */
+		float y;/*!< \brief La position en y du vaisseau */
+		float angle; /*!< \brief L'angle du vaisseau' */
+		int frame_recharge; /*!< \brief nombre de frame restantes avant de pouvoir tirer*/
+		int temps_recharge; /*!< \brief Temps de recharge entre chaque tir */
+		int nb_tir; /*!< \brief nombre de tir du vaisseau  */
+		int bouclier;  /*!< \brief Indique si le vaisseau possède un bouclier ou non*/
+		int missile_id; /*!< \brief id du type de missile utilisé */
+		float vitesse_missile; /*!< \brief vitesse du missile utilisé */
+		float degat_missile; /*!< \brief dégat des missiles utilisé */
+		int frame_turn_left; /*!< \brief  l'avancement de l'animation pour tourner à gauche */
+		int frame_turn_right; /*!< \brief  l'avancement de l'animation pour tourner à droite */
+		int frame_thrust; /*!< \brief  avancement de l'animation d'acceleration*/
+		long frame_explo; /*!< \brief avancement de l'animation d'explosion du vaisseau */
+	}Vaiss;
 
-typedef struct{float x; float y; float angle; float taille; int bonus; float pv; float pv_max; float vitesse; float difficulte; float difficulte_pere; float angle_rota; float vitesse_rota; int frame_hit; int frozen; int cote_spawn; int frame_depart;}Asteroid;
+	/**
+	*\struct Asteroid
+	*\brief Contient des informations sur un asteroide
+	*/
+typedef struct{
+	float x; /*!< \brief La position en x d'un asteroide */
+	float y; /*!< \brief La position en y d'un asteroide */
+	float angle;  /*!< \brief L'angle d'un asteroide */
+	float taille;  /*!< \brief La taille d'un asteroide */
+	int bonus;  /*!< \brief Bonus contenu dans l'asteroide */
+	float pv;  /*!< \brief point de vie de l'asteroide */
+	float pv_max;  /*!< \brief point de vie max que peut avoir l'asteroide */
+	float vitesse;  /*!< \brief vitesse de l'asteroide*/
+	float difficulte;  /*!< \brief difficulté de l'asteroid */
+	float difficulte_pere;  /*!< \brief difficulté de l'asteroide père */
+	float angle_rota;  /*!< \brief L'angle de rotation de l'asteroide */
+	float vitesse_rota;  /*!< \brief Vitesse de rotation de l'asteroide */
+	int frame_hit;  /*!< \brief  frame d'animation d'asteroid touché*/
+	int frozen;  /*!< \brief  nombre de missile gelé reçu*/
+	int cote_spawn;  /*!< \brief  côté de l'écran dans lequel spawn l'asteroide*/
+	int frame_depart;  /*!< \brief frame d'animation de transparence et d'attente en hardmode à l'apparition */
+}Asteroid;
 
-typedef struct{float x; float y; int frame; int taille; int id;}Explosion;
+/**
+*\struct Explosion
+*\brief Contient des informations sur l'explosion
+*/
+typedef struct{
+	float x; /*!< \brief La position en x de l'explosion */
+	float y; /*!< \brief La position en y de l'explosion */
+	int frame; /*!< \brief  frame de l'animation*/
+	int taille; /*!< \brief Taille de l'explosion */
+	int id; /*!< \brief id de l'explosion */
+}Explosion;
 
 #define NB_EXPLOSIONS 3
 typedef enum{EXPLO_MISSILE, EXPLO_ASTE, EXPLO_GLACE}EXPLOSIONS;
@@ -157,8 +215,26 @@ SDL_Color ROUE_COLOR = {40,40,40};
 const int BLOCKING_ANIM_ANGLE[FRAME_ROTA_ROUE] = {0,0,0,4,4,4,4,4,4,1,-1,-12,-12};
 SDL_Rect JAUGE_DIM = {0,0,80,500};
 
-typedef struct{int frame; SDL_Color color; float ammo; int frameAmmo;}Jauge;
-typedef struct{int frame; float rota; int rota_dest;}Roue;
+/**
+*\struct Jauge
+*\brief Contient des informations sur la jauge
+*/
+typedef struct{
+	int frame; /*!< \brief frame de l'animation */
+	SDL_Color color; /*!< \brief couleur de la jauge */
+	float ammo; /*!< \brief nombre de munitions */
+	int frameAmmo; /*!< \brief avancement de l'animation des munitions */
+}Jauge;
+
+/**
+*\struct Roue
+*\brief Contient des informations sur la roue
+*/
+typedef struct{
+	int frame; /*!< \brief frame de l'animation */
+	float rota; /*!< \brief degrès de rotation de la roue */
+	int rota_dest; /*!< \brief degrès de rotation de la roue visé  */
+}Roue;
 //missiles
 
 #define NB_MISSILES 5
@@ -174,7 +250,21 @@ typedef struct{int frame; float rota; int rota_dest;}Roue;
 	const SDL_Color BOUCLIER_COLOR = {0xfd,0xff,0x37};
 
 	//attributs
-	typedef struct{ float x; float y; float angle; float target_angle; int frame; float vitesse; float degat; int id;}Missile;
+
+	/**
+	*\struct Missile
+	*\brief Contient des informations sur un missile
+	*/
+	typedef struct{
+		float x;  /*!< \brief La position en x du missile */
+		float y; /*!< \brief La position en y du missile */
+		float angle;  /*!< \brief L'angle du missile */
+		float target_angle;  /*!< \brief angle visé*/
+		int frame;  /*!< \brief frame de l'animation du missile */
+		float vitesse;  /*!< \brief Vitesse du missile */
+		float degat;  /*!< \brief Dégat du missile*/
+		int id;  /*!< \brief id du missile*/
+	}Missile;
 
 	typedef enum{SHOT_NORMAL, SHOT_ZIGZAG, SHOT_TELEGUIDE, SHOT_GLACE, SHOT_LASER}shots;
 
@@ -311,7 +401,14 @@ char * TEXT_BONUS[NB_BONUS + NB_MISSILES - 1]= {
 	"Munitions laser !"
 };
 
-typedef struct {int id; int frame;}TextBonus;
+/**
+*\struct TextBonus
+*\brief Contient des informations sur le texte à l'obtention d'un bonus
+*/
+typedef struct {
+	int id;  /*!< \brief id du texte */
+	int frame;  /*!< \brief frame du texte */
+}TextBonus;
 #define MAX_TEXT_BONUS 10
 #define FRAME_SHOW_BONUS_TEXT 30
 #define ESPACEMENT_SHOW_TEXT 70

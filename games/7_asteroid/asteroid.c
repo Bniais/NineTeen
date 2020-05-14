@@ -332,7 +332,7 @@ float det(float x1, float y1, float x2, float y2 ){
 
 /**
 *\fn int ligneColli()
-*\brief ///////////////////////////////////////
+*\brief  détermine si une des lignes est en collision avec une autre ligne qui correspond au diamètre d'un asteroid perpendiculaire aux lignes du laser
 *\param ligne_laser[5][2] tableau de ligne du laser
 *\param asteroid_diametre[2] diametre de l'asteroide
 *\return Vrai sinon Faux
@@ -528,7 +528,7 @@ void asteroid_cpy(Asteroid * asteroid_src, Asteroid * asteroid_dest){
 
 /**
 *\fn int getFirstNullText()
-*\brief ////////////////////////////////////////
+*\brief détermine à quel endroit le texte va s'afficher
 *\param textsBonus[MAX_TEXT_BONUS]
 *\return l'indice
 */
@@ -922,7 +922,7 @@ void afficher_explosion(SDL_Renderer * renderer,Explosion explosion, SDL_Texture
 
 /**
 *\fn void afficher_laser()
-*\brief affichage du laser
+*\brief affichage du laser, fait par Hugo
 *\param renderer Le renderer où dessiner
 *\param laser_texture texture du laser
 *\param vaisseau le vaisseau
@@ -953,7 +953,7 @@ void afficher_laser(SDL_Renderer * renderer, SDL_Texture * laser_texture, Vaiss 
 
 /**
 *\fn void afficher_text_bonus()
-*\brief affichage du texte des bonus
+*\brief affichage du texte des bonus, fait par Hugo
 *\param renderer Le renderer où dessiner
 *\param textBonus[MAX_TEXT_BONUS]
 *\param font Les polices
@@ -1041,7 +1041,11 @@ float calculer_angle(float x1, float y1, float x2, float y2){
 	return atan2((y2-y1) , (x2-x1));
 }
 
-
+/**
+*\fn float basePi()
+*\brief converti un angle en base Pi
+*\param angle l'angle à convertir
+*/
 float basePi(float angle){
 	while(angle > PI)
 		angle -= 2 * PI;
@@ -1050,13 +1054,17 @@ float basePi(float angle){
 
 	return angle;
 }
-
+/**
+*\fn float base360()
+*\brief converti un angle en base 360
+*\param angle l'angle à convertir
+*/
 float base360(float angle){
 	return (angle * 360 / (2*PI));
 }
 
 /**
-*\fn void asteroid_plus_proche()
+*\fn int asteroid_plus_proche()
 *\brief cherche l'asteroid le plus proche
 *\param renderer Le renderer où dessiner
 *\param asteroides liste d'asteroides
@@ -1116,7 +1124,7 @@ int signOf( float f){
 
 /**
 *\fn void mouvement_tir()
-*\brief mouvement du missile en fonction de l'arme
+*\brief mouvement du missile en fonction de l'arme, fait par Hugo
 *\param renderer Le renderer où dessiner
 *\param shot un tir de missile
 *\param asteroides liste d'asteroides
@@ -1730,6 +1738,19 @@ static void drawHelpText(SDL_Renderer *renderer, SDL_Texture *flecheTexture,int 
 }
 
 extern int updateEnded;
+/**
+*\fn int asteroid( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, char *token, int hardcore, SDL_Texture ** textures, int fullscreen)
+*\brief La fonction principale : Lance et fait tourner le jeu asteroid
+*\param renderer Le renderer où afficher
+*\param highscore Le meilleur score fait par le joueur
+*\param WinWidth Largeur de la fenêtre
+*\param WinHeight Hauteur de la fenêtre
+*\param token Le token du joueur pour les requêtes
+*\param hardcore Le niveau de difficulté du jeu
+*\param textures tableau de textures
+*\param fullscreen pleine écran
+*\return 0 en cas de retour normal
+*/
 int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight, char *token, int hardcore, SDL_Texture ** textures, int fullscreen){
 
 /////////////////////
