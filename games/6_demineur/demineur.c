@@ -1,11 +1,19 @@
+/////////////////////////////////////////////////
+///	\file demineur.c
+///	\author David L.
+///	\version 1.0
+///	\date 31 janvier 2020
+///	\brief Programme permettant de jouer au demineur
+/////////////////////////////////////////////////
+
 #include "../../define/define.h"
 #include "config.h"
 #include <time.h>
 
-#include <SDL.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
-#include <SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_image.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -18,11 +26,6 @@ static void myInit(){
 	// SDL Init
 	SDL_Init(SDL_INIT_EVERYTHING);
 	TTF_Init();
-
-	//audio
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-	if( Mix_OpenAudio( MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 1, 1024 ) == -1 )
-		printf("Erreur init SDL_Mixer\n" );
 
 	// rand
 	srand(time(NULL));
