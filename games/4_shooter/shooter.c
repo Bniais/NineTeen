@@ -870,7 +870,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 			SDL_RenderFillRect(renderer, &LEFT_BACK);
 			SDL_RenderFillRect(renderer, &RIGHT_BACK);
 
-			drawBeta(renderer, font ,ratioWindowSize, (SDL_Color){0xFF,0x00,0x00},28);
+			drawBeta(renderer, font ,1, (SDL_Color){0xFF,0x00,0x00},28);
 
 			SDL_RenderPresent(renderer);
 
