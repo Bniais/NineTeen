@@ -570,15 +570,16 @@ Uint8 brillance(Uint8 color, int power)
 }
 
 /////////////////////////////////////////////////////
-/// \fn void afficherCellule(SDL_Renderer *renderer,SDL_Texture *texture, int cellulePosition, char *username , int score, TTF_Font * police, int decallageY)
+/// \fn int afficherCellule(SDL_Renderer *renderer,SDL_Texture *texture, int cellulePosition, struct classement donner, TTF_Font * police, int decallageY, int frameRecherche)
 /// \brief affiche une cellule
 ///
 /// \param  renderer pointeur sur le rendu
-/// \param  texture
-/// \param  cellulePosition
-/// \param  classement donner
-/// \param  police
-/// \param  decallageY
+/// \param  texture texture de la cellule
+/// \param  cellulePosition position de la cellule
+/// \param donner ensemble des donners stocker sur unsermane et score
+/// \param  police pointeur sur la police d'ecriture
+/// \param  decallageY decallage de la postion sur Y
+/// \param frameRecherche parametre de sur brillance
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
