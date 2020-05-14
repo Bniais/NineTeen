@@ -1,5 +1,5 @@
 # Blender MTL File: 'salle.blend'
-# Material Count: 119
+# Material Count: 120
 
 newmtl Material
 Ns 2.938775
@@ -516,7 +516,29 @@ Ni 1.500000
 d 1.000000
 illum 1
 
-newmtl ecran_eteint
+newmtl ecran_demineur
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd demineur_font.jpg
+
+newmtl ecran_shooter
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 1.000000 1.000000 1.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd shooter_font.jpg
+
+newmtl ecran_shooter.001
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.000000 0.000000 0.000000
@@ -537,16 +559,6 @@ Ni 0.050000
 d 1.000000
 illum 1
 map_Kd marron_foncer.jpg
-
-newmtl green1-LED
-Ns 96.078443
-Ka 1.000000 1.000000 1.000000
-Kd 0.640000 0.005391 0.312416
-Ks 0.305876 0.305876 0.305876
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 2
 
 newmtl gris_foncer
 Ns 225.000000
