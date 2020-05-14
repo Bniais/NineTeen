@@ -2993,12 +2993,12 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 	///////// SI IL FAUT JOUER UN SON POUR LES HOMME
 	if(*jouerSonPorteHomme == 1)
 	{
-		Mix_PlayChannel(4,sas_ouverture,0);
+		Mix_PlayChannel(15,sas_ouverture,0);
 		*jouerSonPorteHomme = 0;
 	}
 	if(*jouerSonPorteHomme == 2)
 	{
-		Mix_PlayChannel(4,sas_fermeture,0);
+		Mix_PlayChannel(15,sas_fermeture,0);
 		*jouerSonPorteHomme = 0;
 	}
 
@@ -3029,7 +3029,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 	{
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON TOILETTE HOMME
-		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, 70);
+		reglageVolume(15,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, 70);
 
 
 		if( toiletteHomme.x >= 23.0 )
@@ -3080,7 +3080,7 @@ void animationPorteToilette(int *statutPorteFemme, int *statutPorteHomme,int *jo
 	{
 		//////////////////////////////////////////////////////////
 		// REGLAGE SON TOILETTE HOMME
-		reglageVolume(4,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, 70);
+		reglageVolume(15,toiletteHomme.x,toiletteHomme.y, camera.px, camera.pz,8.0,camera.angle, 70);
 		////////////////////////////////////////////////////////
 		// RE OUVRIR SI PASSAGE DEVANT LA PORTE DURANT LA FERMETURE
 		if(camera.px > 19.0 && camera.pz < 1.5 && camera.pz > 0.4)
