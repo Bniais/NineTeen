@@ -198,12 +198,22 @@ int FIRST_FRAME = 0;
 
 #include "dir.h"
 SDL_Texture * textures[NB_MAX_TEXTURES];
+
+/**
+*\struct loadGame
+*\brief Contient les paramètres pour le thread de chargement des textures du jeu
+*/
 typedef struct loadGame_s{
-	int id_jeu;
-	SDL_Renderer *pRenderer;
+	int id_jeu;  /*!< \brief  L'identifiant du jeu */
+	SDL_Renderer *pRenderer;  /*!< \brief Le renderer */
 }loadGame;
 
-
+/**
+*\fn int loadGameTexture(loadGame * load)
+*\brief Charge les textures d'un jeu
+*\param load La structure contenant l'id du jeu et le renderer
+*\return Faux en cas de problème sinon vrai
+*/
 int loadGameTexture(loadGame * load){
 		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 	    //asteroid

@@ -485,12 +485,13 @@ int tryShift(int shiftInit, int maxShift, Piece * piece, float * pieceCoor, int 
 }
 
 /**
-*\fn void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], int hardcore)
+*\fn void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], int hardcore, Mix_Chunk ** sounds)
 *\brief Essaye de tourner une pièce, en la déplaçant si besoin
 *\param piece La pièce à tourner
 *\param rotateSens Le sens de rotation
 *\param matrix La matrice pour vérifier les collisions
 *\param hardcore Indique si le mode de jeu est facile ou difficile
+*\param sounds Les sons du jeu
 */
 void rotatePiece(Piece *piece, int rotateSens, int matrix[GRILLE_W][GRILLE_H], int hardcore, Mix_Chunk ** sounds){
 	if( rotateSens ){
@@ -772,7 +773,7 @@ int getBonusId(int n){
 }
 
 /**
-*\fn int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine, ScoreTotal *scoreTotal, long long *score_hash, long keys[4])
+*\fn int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine, ScoreTotal *scoreTotal, long long *score_hash, long keys[4], Mix_Chunk * soundLine)
 *\brief Enclenche l'animation de destruction de ligne et comptabilise les points rapportés et les bonus gagnés
 *\param matrix La grille
 *\param frameCompleteLine Les frames d'animation de complétion de ligne
@@ -785,6 +786,7 @@ int getBonusId(int n){
 *\param scoreTotal Le score total
 *\param score_hash Le scroe hashé
 *\param keys Les clés de hashage
+*\param soundLine Le son de complétion de ligne
 *\return Vrai si pas de problème, faux si problème dans le hashage
 */
 int completeLine(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int line, int lastLine, int bonusActivate[NB_BONUSES], int getBonuses, Score scoreAdd[GRILLE_H], int comboLine, ScoreTotal *scoreTotal, long long *score_hash, long keys[4], Mix_Chunk * soundLine){
@@ -936,11 +938,12 @@ void drawMatrix(SDL_Renderer *renderer, int matrix[GRILLE_W][GRILLE_H], int fram
 }
 
 /**
-*\fn void drawLaser(SDL_Renderer *renderer, int frameLaser[GRILLE_H], SDL_Texture *laserTexture){
+*\fn void drawLaser(SDL_Renderer *renderer, int frameLaser[GRILLE_H], SDL_Texture *laserTexture, Mix_Chunk * soundLaser){
 *\brief Dessine l'animation du bonus LASER
 *\param renderer Le renderer où dessiner
 *\param frameLaser Les frames d'animation du bonus LASER
 *\param laserTexture La texture du laser
+*\param soundLaser Le son du laser
 */
 void drawLaser(SDL_Renderer *renderer, int frameLaser[GRILLE_H], SDL_Texture *laserTexture, Mix_Chunk * soundLaser){
 	//laser
@@ -1095,7 +1098,7 @@ void eraseLine(int matrix[GRILLE_W][GRILLE_H], int line, int matrixFill[GRILLE_W
 }
 
 /**
-*\fn int checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal, long long * score_hash, long keys[4])
+*\fn int checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal, long long * score_hash, long keys[4], Mix_Chunk * soundLine)
 *\brief Vérifie si des lignes sont complétées
 *\param matrix La matrice
 *\param frameCompleteLine Les frames d'animation de complétion de ligne
@@ -1105,6 +1108,7 @@ void eraseLine(int matrix[GRILLE_W][GRILLE_H], int line, int matrixFill[GRILLE_W
 *\param scoreTotal Le score total
 *\param score_hash Le score hashé
 *\param keys Les clés de hashage
+*\param soundLine Le son de complétion de ligne
 *\return Vrai si pas de problème, faux si problème dans le hashage
 */
 int checkLines(int matrix[GRILLE_W][GRILLE_H], int frameCompleteLine[GRILLE_H], int bonusActivate[NB_BONUSES], int getBonus, Score scoreAdd[GRILLE_H], ScoreTotal *scoreTotal, long long * score_hash, long keys[4], Mix_Chunk * soundLine){
@@ -1235,7 +1239,8 @@ int lineEmpty(int matrix[GRILLE_W][GRILLE_H], int line ){
 }
 
 /**
-*\fn int updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], Score *scoreAffichage, Score *scoreAdd, ScoreTotal *scoreTotal,int *frameDestJauge,long int frameTotalSpeed,long int *frameTotalShow, long long *score_hash, long keys[4])
+*\fn int updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], Score *scoreAffichage, Score *scoreAdd, ScoreTotal *scoreTotal,int *frameDestJauge,long int frameTotalSpeed,long int *frameTotalShow, long long *score_hash, long keys[4], Mix_Chunk * soundLine, Mix_Chunk * soundFill){
+
 *\brief Actualise toutes les animations et réagis lorsqu'elles arrivent à certains moments
 *\remark De nombreuses variables et choses différentes se passent dans cette fonction, mais pour beaucoup elles dépendent les unes des autres donc décomposer en fonction ne ferait qu'ajouter des appels lourds
 *\param frameLaser Les animations de LASER
@@ -1251,6 +1256,9 @@ int lineEmpty(int matrix[GRILLE_W][GRILLE_H], int line ){
 *\param frameTotalShow Le nombre de frame total qui tend vers frameTotalSpeed pour l'animation d'update score total
 *\param score_hash le score hashé
 *\param keys les clés de hashage
+*\param soundLine Le son de complétion de ligne
+*\param soundFill Le son du bonus FILL
+*\return Faux si il y a une erreur de sécurité hashage, sinon vrai
 */
 int updateFrames(int frameLaser[GRILLE_H], int frameCompleteLine[GRILLE_H], int matrix[GRILLE_W][GRILLE_H], int matrixFill[GRILLE_W][GRILLE_H], int bonusActivate[NB_BONUSES], Score *scoreAffichage, Score *scoreAdd, ScoreTotal *scoreTotal,int *frameDestJauge,long int frameTotalSpeed,long int *frameTotalShow, long long *score_hash, long keys[4], Mix_Chunk * soundLine, Mix_Chunk * soundFill){
 
@@ -1796,13 +1804,15 @@ static void myFrees(Piece * currentPiece, Piece * nextPiece, DeadPiece ** deadPi
 
 extern int updateEnded;
 /**
-*\fn int tetris( SDL_Renderer *renderer ,int highscore, float ratioWindowSize,char *token,int hardcore)
+*\fn int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, char *token, int hardcore, SDL_Texture ** textures){
+
 *\brief La fonction principale : Lance et fait tourner le jeu tetris
-*\param renderer Le renderer où afficher
-*\param highscore Le meilleur score fait par le joueur
-*\param ratioWindowSize Le ratio de la taille de fenetre par rapport à la taille max
-*\param token Le token du joueur pour les requêtes
-*\param hardcore Le niveau de difficulté du jeu
+*\param renderer Le renderer
+*\param highscore Le meilleur score personnel
+*\param WinWidth La largeur de la fenêtre
+*\param WinHeight La hauteur de la fenêtre
+*\param token Le token pour l'envoi des scores
+*\param hardcore  Le difficulté du jeu
 *\return 0 en cas de retour normal
 */
 int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, char *token, int hardcore, SDL_Texture ** textures){
