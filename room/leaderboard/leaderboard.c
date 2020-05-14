@@ -104,7 +104,7 @@ typedef struct
 
 
 #define NOMBRE_ELEMENT_LIST 7
-const char nomList[NOMBRE_ELEMENT_LIST][30]={"GLOBAL","FLAPPY BIRD","TETRIS","ASTEROID","PACMAN","SNAKE","DEMINEUR"};
+const char nomList[NOMBRE_ELEMENT_LIST][30]={"GLOBAL","FLAPPY BIRD","TETRIS","ASTEROID","SHOOTER","SNAKE","DEMINEUR"};
 
 SDL_Color noirCOLOR = {0,0,0};
 SDL_Color noirC = {50,50,50};
@@ -115,9 +115,9 @@ SDL_Color noirC = {50,50,50};
 /// \fn void concatenationChaine(char dest[], char source[], int debut)
 /// \brief permet de copier une chaine au +n element de la chaine source
 ///
-/// \param char dest[] chaine destination
-/// \param char source[] chaine source
-/// \param char debut indice debut de la copie
+/// \param  dest chaine destination
+/// \param  source chaine source
+/// \param  debut indice debut de la copie
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -136,11 +136,11 @@ void concatenationChaine(char dest[], char source[], int debut)
 /// \fn int chargementDonner(int gameID, char *username, int offset,int limite, struct classement donner[])
 /// \brief permet de charger les donner dans la structure
 ///
-/// \param int gameID
-/// \param char *username
-/// \param int offset
-/// \param int limite
-/// \param struct classement donner[]
+/// \param  gameID
+/// \param  username
+/// \param  offset
+/// \param  limite
+/// \param   donner
 ///
 /// \return int nombre de nouveau ellement charger
 /////////////////////////////////////////////////////
@@ -215,8 +215,8 @@ int chargementDonner(int gameID, char *username, int offset,int limite, struct c
 /// \fn int _strcmpMin(char s1[], char s2[])
 /// \brief permet de comparer de chaine caster en minature
 ///
-/// \param char s1[]
-/// \param char s2[]
+/// \param s1
+/// \param s2
 ///
 /// \return 0 si egale
 /////////////////////////////////////////////////////
@@ -248,9 +248,9 @@ int _strcmpMin(char s1[], char s2[])
 /// \fn int rechercherJoueur(char nomJoueur[], struct classement donner[], int selectionScrollingList)
 /// \brief permet de rechercher un joueur dans une structure de donner de type classement
 ///
-/// \param char nomJoueur[] nom du joueur rechercher
-/// \param struct classement donner[] structure de donner
-/// \param int selectionScrollingList liste sur la quelle on ce trouve
+/// \param  nomJoueur nom du joueur rechercher
+/// \param  donner structure de donner
+/// \param  selectionScrollingList liste sur la quelle on ce trouve
 ///
 /// \return int indice de recherche diff -1 si trouver
 /////////////////////////////////////////////////////
@@ -298,8 +298,8 @@ int rechercherJoueur(char nomJoueur[], struct classement donner[], int selection
 /// \fn void limiterFrame(const float delayLancementFrame,float *_IPS)
 /// \brief permet de limiter le nombre de frame de l'affcihage a une certaine valeur
 ///
-/// \param const float delayLancementFrame
-/// \param float *_IPS
+/// \param   delayLancementFrame duree en cours depuis le debut de la frame
+/// \param  _IPS ecrit le nombre de FPS actuel
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -323,17 +323,17 @@ void limiterFrame(const float delayLancementFrame,float *_IPS)
 /// \fn void gestionEvenement(int *halt, int *xMouse, int *yMouse, Scroll *scrollPositionWindow, Scroll *scrollPositionList, int *_SELECTION, char rechercher[], struct classement donner[], int selectionScrollingList, int *frameType)
 /// \brief permet de gerer tous les evenements liee au jeu
 ///
-/// \param int *halt stop le programme
-/// \param int *xMouse coordonner souris x
-/// \param int *yMouse coordonner souris y
-/// \param Scroll *scrollPositionWindow position scroll sur la fenetre
-/// \param Scroll *scrollPositionList position scroll dans la liste
-/// \param int *_SELECTION connaitre l'evenement a gerer dans le programme principal
-/// \param char rechercher[] chaine de text liee a la recherche
-/// \param struct classement donner[] strucuteur de donner actuel
-/// \param int selectionScrollingList element selectionner actuellement dans la liste
-/// \param int *frameType les frames pour le curseur
-/// \param int *frameType
+/// \param halt stop le programme
+/// \param xMouse coordonner souris x
+/// \param yMouse coordonner souris y
+/// \param scrollPositionWindow position scroll sur la fenetre
+/// \param scrollPositionList position scroll dans la liste
+/// \param _SELECTION connaitre l'evenement a gerer dans le programme principal
+/// \param rechercher chaine de text liee a la recherche
+/// \param donner strucuteur de donner actuel
+/// \param selectionScrollingList element selectionner actuellement dans la liste
+/// \param frameType les frames pour le curseur
+/// \param frameType
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -487,15 +487,15 @@ void gestionEvenement(int *halt, int *xMouse, int *yMouse, Scroll *scrollPositio
 /// \fn void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color couleur, int xPosition, int yPosition, float scale, int estHUD, int frameType)
 /// \brief permet d'ecrire du text a l'ecran
 ///
-/// \param SDL_Renderer* renderer pointeur sur le rendu
-/// \param TTF_Font* font pointeur sur la police
-/// \param char * text pointeur sur le text
-/// \param SDL_Color couleur couleur du text
-/// \param int xPosition position -1 pour centrer
-/// \param int yPosition position -1 pour centrer
-/// \param float scale scale du text
-/// \param int estHUD est pour l'HUD
-/// \param int frameType frame pour le curseur
+/// \param  renderer pointeur sur le rendu
+/// \param  font pointeur sur la police
+/// \param  text pointeur sur le text
+/// \param  couleur couleur du text
+/// \param  xPosition position -1 pour centrer
+/// \param  yPosition position -1 pour centrer
+/// \param  scale scale du text
+/// \param  estHUD est pour l'HUD
+/// \param  frameType frame pour le curseur
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -559,8 +559,8 @@ void ecrireText(SDL_Renderer* renderer, TTF_Font* font, char * text, SDL_Color c
 /// \fn Uint8 brillance(Uint8 color, int power)
 /// \brief renvoie une valeur de brillance pour un code couleur
 ///
-/// \param Uint8 color
-/// \param int power
+/// \param  color
+/// \param  power
 ///
 /// \return Uint8
 /////////////////////////////////////////////////////
@@ -573,12 +573,12 @@ Uint8 brillance(Uint8 color, int power)
 /// \fn void afficherCellule(SDL_Renderer *renderer,SDL_Texture *texture, int cellulePosition, char *username , int score, TTF_Font * police, int decallageY)
 /// \brief affiche une cellule
 ///
-/// \param SDL_Renderer* renderer pointeur sur le rendu
-/// \param SDL_Texture *texture
-/// \param int cellulePosition
-/// \param struct classement donner
-/// \param TTF_Font * police
-/// \param int decallageY
+/// \param  renderer pointeur sur le rendu
+/// \param  texture
+/// \param  cellulePosition
+/// \param  classement donner
+/// \param  police
+/// \param  decallageY
 ///
 /// \return EXIT_SUCCESS/EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -628,11 +628,11 @@ int afficherCellule(SDL_Renderer *renderer,SDL_Texture *texture, int cellulePosi
 /// \fn void afficherCelluleScrollView(SDL_Renderer *renderer, int cellulePosition, char *text, TTF_Font *police,int decallageY)
 /// \brief affiche une / separateur entre des listes
 ///
-/// \param SDL_Renderer* renderer pointeur sur le rendu
-/// \param int cellulePosition
-/// \param  char *text
-/// \param  TTF_Font *police
-/// \param int decallageY
+/// \param  renderer pointeur sur le rendu
+/// \param  cellulePosition position de la cellule
+/// \param  text
+/// \param  police pointeur sur la police
+/// \param  decallageY decallage sur l'axe des Y
 ///
 /// \return void
 /////////////////////////////////////////////////////
@@ -651,14 +651,14 @@ void afficherCelluleScrollView(SDL_Renderer *renderer, int cellulePosition, char
 /// \fn int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , char *recherche, int _SELECTION, int decallageY,int selectionScrollingList, int frameType)
 /// \brief affiche l'HUD complet
 ///
-/// \param SDL_Renderer* renderer pointeur sur le rendu
-/// \param SDL_Texture *texture
-/// \param TTF_Font *police
-/// \param char *recherche
-/// \param int _SELECTION
-/// \param int decallageY
-/// \param int selectionScrollingList
-/// \param int frameType
+/// \param  renderer pointeur sur le rendu
+/// \param  texture pointeur sur la texture
+/// \param  police pointeur sur la police
+/// \param recherche text present dans le champs recherche
+/// \param  _SELECTION selectiona actuel
+/// \param  decallageY decallage sur Y
+/// \param  selectionScrollingList selection sur la scrolling list
+/// \param  frameType type de brillance
 /// \return int
 /////////////////////////////////////////////////////
 int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , char *recherche, int _SELECTION, int decallageY,int selectionScrollingList, int frameType)
@@ -782,13 +782,13 @@ int afficherHUD(SDL_Renderer *renderer,SDL_Texture *texture, TTF_Font *police , 
 /// \fn int interactionInterface(int x,int y, int _SELECTION, Scroll scrollPositionList, int *selectionScrollingList, Scroll *scrollPositionWindow, struct classement donner[NOMBRE_JEUX][NOMBRE_JOUEUR_MAX])
 /// \brief permet d'interagire avec l'interface
 ///
-/// \param int x
-/// \param int y
-/// \param int _SELECTION
-/// \param Scroll scrollPositionList
-/// \param int *selectionScrollingList
-/// \param Scroll *scrollPositionWindow
-/// \param struct classement donner[][]
+/// \param  x position souris X
+/// \param  y position souris Y
+/// \param  _SELECTION selectiona actuel
+/// \param  scrollPositionList postion sur la scroll principal
+/// \param  selectionScrollingList position sur la liste des jeux
+/// \param  scrollPositionWindow
+/// \param   donner donner de chaque joueur et leur score deja charger
 ///
 /// \return int
 /////////////////////////////////////////////////////
