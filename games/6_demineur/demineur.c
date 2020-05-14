@@ -352,18 +352,11 @@ void afficher_grille(SDL_Renderer *renderer, int grille[TAILLE_GRILLE_LIGNE][TAI
 	}
 }
 
-<<<<<<< HEAD
-int click_en_grille(SDL_Point mouseCoor){
-	return (mouseCoor.x>50&&mouseCoor.x<50+TAILLE_CASE*TAILLE_GRILLE_LIGNE&&mouseCoor.y>50&&mouseCoor.y<50+TAILLE_CASE*TAILLE_GRILLE_COLONNE);
-}
-int main(){
-=======
 int demineur(SDL_Renderer *renderer, int score, int WinWidht, int WinHeight, char *token, int hardcore){
->>>>>>> 62b4c7482bcf5a534dc7d17288e5e23a167b4b69
 /////////////////////
 /// MISE EN PLACE ///``
 /////////////////////
-	myInit();
+//	myInit();
 
 	////////////
 	/// Vars ///`
