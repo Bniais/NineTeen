@@ -1,0 +1,4 @@
+<map id="afficherPotions" name="afficherPotions">
+<area shape="rect" id="node2" href="$tetris_8c.html#a34d1b7f8502942d0c349fbe5f7bd699c" title="Affiche la commande pour quitter le jeu. " alt="" coords="168,5,243,32"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#ad0abb9784a21bbacb78c422920767cb6" title="Affiche la jauge de vitesse en fonction de l&#39;avancement de la partie. " alt="" coords="163,56,248,83"/>
+</map>

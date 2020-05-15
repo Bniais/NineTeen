@@ -1,0 +1,7 @@
+<map id="detecterMachine" name="detecterMachine">
+<area shape="rect" id="node2" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="344,26,469,53"/>
+<area shape="rect" id="node3" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="517,26,624,53"/>
+<area shape="rect" id="node6" href="$room_8c.html#a554c27dfea1971e6926e461187ebd29e" title="affichage un message propre a chaque machine " alt="" coords="172,77,296,104"/>
+<area shape="rect" id="node4" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="672,52,723,78"/>
+<area shape="rect" id="node5" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="771,52,821,78"/>
+</map>

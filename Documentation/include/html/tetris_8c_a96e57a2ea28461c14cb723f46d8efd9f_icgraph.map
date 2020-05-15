@@ -1,0 +1,10 @@
+<map id="getFirstRow" name="getFirstRow">
+<area shape="rect" id="node2" href="$tetris_8c.html#afd2c27e6f112264f9fb50e10fa8e9d70" title="Met à jour les informations de premières et dernière ligne et collone d&#39;une pièce. " alt="" coords="147,31,263,57"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#afcb86b88f9ff5bb73f44c78f48230203" title="Obtient une nouvelle pièce aléatoire. " alt="" coords="311,5,411,32"/>
+<area shape="rect" id="node9" href="$tetris_8c.html#ac768d060dc9bea4735aeab56c4ff699f" title="Essaye de tourner une pièce, en la déplaçant si besoin. " alt="" coords="317,56,405,83"/>
+<area shape="rect" id="node4" href="$tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="459,31,509,57"/>
+<area shape="rect" id="node5" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="557,31,664,57"/>
+<area shape="rect" id="node6" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="712,31,837,57"/>
+<area shape="rect" id="node7" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="749,81,800,108"/>
+<area shape="rect" id="node8" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="885,81,936,108"/>
+</map>

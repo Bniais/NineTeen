@@ -1,0 +1,9 @@
+<map id="isObtainable" name="isObtainable">
+<area shape="rect" id="node2" href="$asteroid_8c.html#af1f3f4f317dd71e9379a6e19ad0cb303" title="attribue un bonus au hasard " alt="" coords="148,5,231,32"/>
+<area shape="rect" id="node3" href="$asteroid_8c.html#a53204c929ab037429cac314a6c3d15e0" title="détruit un asteroid " alt="" coords="279,5,397,32"/>
+<area shape="rect" id="node4" href="$asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="445,5,513,32"/>
+<area shape="rect" id="node5" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="561,5,668,32"/>
+<area shape="rect" id="node6" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="716,5,841,32"/>
+<area shape="rect" id="node7" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="753,56,804,83"/>
+<area shape="rect" id="node8" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="889,56,940,83"/>
+</map>

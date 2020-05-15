@@ -1,0 +1,20 @@
+<map id="leaderboard" name="leaderboard">
+<area shape="rect" id="node2" href="$leaderboard_8c.html#a8b9b72ad5c70dc9ed442cd734f2b3361" title="permet de charger les donner dans la structure " alt="" coords="341,69,473,96"/>
+<area shape="rect" id="node11" href="$leaderboard_8c.html#a8aa1a5fcb4a3d825a4614dd3c9221233" title="permet de gerer tous les evenements liee au jeu " alt="" coords="144,107,275,133"/>
+<area shape="rect" id="node12" href="$leaderboard_8c.html#a8cc8b08c1c9d8854a008e3fdb6cf091c" title="permet d&#39;interagire avec l&#39;interface " alt="" coords="143,5,276,32"/>
+<area shape="rect" id="node13" href="$leaderboard_8c.html#a14f7dd0af5a5a76079a0b705a796f679" title="affiche une cellule " alt="" coords="355,284,460,311"/>
+<area shape="rect" id="node15" href="$leaderboard_8c.html#a09857ead625fd6b4c32d3c0894f13c1d" title="affiche l&#39;HUD complet " alt="" coords="162,208,257,235"/>
+<area shape="rect" id="node17" href="$leaderboard_8c.html#ab1c772497e2229750ce69da0742fc217" title="permet de rechercher un joueur dans une structure de donner de type classement " alt="" coords="148,157,271,184"/>
+<area shape="rect" id="node19" href="$leaderboard_8c.html#a88eaba9341fa844401d12a78679830dc" title="permet de limiter le nombre de frame de l&#39;affcihage a une certaine valeur " alt="" coords="162,309,257,336"/>
+<area shape="rect" id="node3" href="$lib_web_8c.html#a1f539ac35bb1d7222d32434ed795da30" title="recupere le classement des joueurs " alt="" coords="555,95,666,121"/>
+<area shape="rect" id="node10" href="$leaderboard_8c.html#ae7640fffad36983c36c0e8262770db4a" title="permet de copier une chaine au +n element de la chaine source " alt="" coords="539,44,683,71"/>
+<area shape="rect" id="node4" href="$lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="731,69,860,96"/>
+<area shape="rect" id="node6" href="$lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="1047,120,1161,147"/>
+<area shape="rect" id="node5" href="$lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="908,69,999,96"/>
+<area shape="rect" id="node9" href="$lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="1065,69,1143,96"/>
+<area shape="rect" id="node7" href="$lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="1209,95,1288,121"/>
+<area shape="rect" id="node8" href="$lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="1211,145,1286,172"/>
+<area shape="rect" id="node14" href="$leaderboard_8c.html#a7fa5ca4e2a4178364eef7a0d151e1b3d" title="permet d&#39;ecrire du text a l&#39;ecran " alt="" coords="571,233,651,260"/>
+<area shape="rect" id="node16" href="$leaderboard_8c.html#a66f0efd7a6cc2cb950f5325357a3fe9f" title="affiche une / separateur entre des listes " alt="" coords="324,183,491,209"/>
+<area shape="rect" id="node18" href="$leaderboard_8c.html#af9258a6d91eaf100ecc6d2367e46c812" title="permet de comparer de chaine caster en minature " alt="" coords="362,132,453,159"/>
+</map>

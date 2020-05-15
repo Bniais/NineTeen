@@ -1,0 +1,8 @@
+<map id="getNewPiece" name="getNewPiece">
+<area shape="rect" id="node2" href="$tetris_8c.html#a33a2ebbffb42b551f6c1a4a1a1ad30af" title="Met à jour les informations de la grille de la pièce selon son id, sa rotation et le fait qu&#39;elle soi..." alt="" coords="166,31,257,57"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#afd2c27e6f112264f9fb50e10fa8e9d70" title="Met à jour les informations de premières et dernière ligne et collone d&#39;une pièce. " alt="" coords="153,81,269,108"/>
+<area shape="rect" id="node4" href="$tetris_8c.html#a247740fca8738ba272f965130ea77491" title="Calcule l&#39;indice de la première collone d&#39;une pièce. " alt="" coords="317,5,428,32"/>
+<area shape="rect" id="node5" href="$tetris_8c.html#afa8c2cc6ef8499b8480402ff1aa27762" title="Calcule l&#39;indice de la dernière collone d&#39;une pièce. " alt="" coords="317,56,428,83"/>
+<area shape="rect" id="node6" href="$tetris_8c.html#a96e57a2ea28461c14cb723f46d8efd9f" title="Calcule l&#39;indice de la première ligne d&#39;une pièce. " alt="" coords="326,107,419,133"/>
+<area shape="rect" id="node7" href="$tetris_8c.html#ad09a602d0b6c16445fab969f701a7d06" title="Calcule l&#39;indice de la dernière ligne d&#39;une pièce. " alt="" coords="327,157,419,184"/>
+</map>

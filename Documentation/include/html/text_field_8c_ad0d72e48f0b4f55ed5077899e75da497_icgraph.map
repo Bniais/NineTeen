@@ -1,0 +1,6 @@
+<map id="renduTextField" name="renduTextField">
+<area shape="rect" id="node2" href="$main_8c.html#ac99b5b2ed70796b04227bea66568dd51" title="cette fonction permet d&#39;afficher tous les elements present dans le launcher. " alt="" coords="161,5,224,32"/>
+<area shape="rect" id="node3" href="$main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="272,31,353,57"/>
+<area shape="rect" id="node4" href="$main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="401,31,472,57"/>
+<area shape="rect" id="node5" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="520,31,571,57"/>
+</map>

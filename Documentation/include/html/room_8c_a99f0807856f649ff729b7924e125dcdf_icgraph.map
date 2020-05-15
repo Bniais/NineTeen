@@ -1,0 +1,9 @@
+<map id="distancePoint" name="distancePoint">
+<area shape="rect" id="node2" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="511,75,636,102"/>
+<area shape="rect" id="node6" href="$room_8c.html#a920b806cad48b375b9a530814e7afd63" title="regle le volume de l&#39;environement sur un channel particuliere " alt="" coords="155,50,263,76"/>
+<area shape="rect" id="node8" href="$room_8c.html#a3ea615b7ff319d3bef6227857ce52786" title="permet de deplacer la source du son des pas et de le jouer " alt="" coords="341,176,432,203"/>
+<area shape="rect" id="node3" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="684,75,791,102"/>
+<area shape="rect" id="node4" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="839,50,889,76"/>
+<area shape="rect" id="node5" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="937,50,988,76"/>
+<area shape="rect" id="node7" href="$room_8c.html#a22b155abc1008cd51da9718d8dff813e" title="permet de gerer les evenements liee au porte des toilettes " alt="" coords="311,24,463,51"/>
+</map>

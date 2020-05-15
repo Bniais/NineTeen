@@ -1,0 +1,4 @@
+<map id="spawnFruit" name="spawnFruit">
+<area shape="rect" id="node2" href="$snake_8c.html#a257da46eca3bf8efc447053ef8ba1109" title="Mange un fruit. " alt="" coords="140,5,207,32"/>
+<area shape="rect" id="node3" href="$snake_8c.html#a0d195fc2e338a489acaa254db3a2d44e" title="Affiche un score de terrain. " alt="" coords="255,31,312,57"/>
+</map>

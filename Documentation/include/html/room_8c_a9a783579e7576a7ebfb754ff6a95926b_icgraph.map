@@ -1,0 +1,8 @@
+<map id="GLlightMode" name="GLlightMode">
+<area shape="rect" id="node2" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="367,56,492,83"/>
+<area shape="rect" id="node6" href="$room_8c.html#a77b40d2a48a66dc8f7b8207ed7a5e2a6" title="permet d&#39;appliquer la scene dans la window + mouvement camera " alt="" coords="148,107,319,133"/>
+<area shape="rect" id="node7" href="$room_8c.html#aaa0228d441c082bc57e7abb2e4c68ffc" title="permet d&#39;animer le lancement et retour des machines " alt="" coords="150,5,317,32"/>
+<area shape="rect" id="node3" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="540,56,647,83"/>
+<area shape="rect" id="node4" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="695,107,745,133"/>
+<area shape="rect" id="node5" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="793,107,844,133"/>
+</map>

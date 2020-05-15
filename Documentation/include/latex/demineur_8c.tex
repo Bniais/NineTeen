@@ -1,0 +1,267 @@
+\hypertarget{demineur_8c}{}\section{Référence du fichier games/6\+\_\+demineur/demineur.c}
+\label{demineur_8c}\index{games/6\+\_\+demineur/demineur.\+c@{games/6\+\_\+demineur/demineur.\+c}}
+{\ttfamily \#include \char`\"{}../../include/define.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../include/commun\+Functions.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}config.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+ttf.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+mixer.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+image.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+Graphe des dépendances par inclusion de demineur.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{demineur_8c_a98ccc1d6ebce113643a26c9968dd5f58}{my\+Init} ()
+\item 
+S\+D\+L\+\_\+\+Point \hyperlink{demineur_8c_ad29393d03041cbab1de2d78d8fd4bc69}{maximize\+Window} (S\+D\+L\+\_\+\+Rect display\+Bounds, float $\ast$ratio\+Window\+Size)
+\item 
+int \hyperlink{demineur_8c_a90ebe0ed1e9ab349fdfe54706f5a2ad3}{coor\+\_\+valide} (int x, int y)
+\item 
+int \hyperlink{demineur_8c_a216e830c55f7138da1627b29dac41b69}{nb\+\_\+bombes\+\_\+autour} (int grille\mbox{[}T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+L\+I\+G\+NE\mbox{]}\mbox{[}T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+C\+O\+L\+O\+N\+NE\mbox{]}, int x, int y)
+\item 
+int \hyperlink{demineur_8c_a56afde4cddb364095eab7c98ae563e22}{danger\+\_\+avec\+\_\+libre\+\_\+autour} (int grille\mbox{[}T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+L\+I\+G\+NE\mbox{]}\mbox{[}T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+C\+O\+L\+O\+N\+NE\mbox{]}, int x, int y)
+\item 
+void \hyperlink{demineur_8c_a1aeb236ea4ef74475e3fc90c2bb789ad}{etat} (int grille\mbox{[}T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+L\+I\+G\+NE\mbox{]}\mbox{[}T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+C\+O\+L\+O\+N\+NE\mbox{]}, int x, int y)
+\item 
+void \hyperlink{demineur_8c_afa69eb8d56620bc1b8e77daca6250cc0}{init\+\_\+grille} (int grille\mbox{[}T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+L\+I\+G\+NE\mbox{]}\mbox{[}T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+C\+O\+L\+O\+N\+NE\mbox{]}, int x, int y)
+\item 
+int \hyperlink{demineur_8c_ad9d11bfa701219bc7e10683e3e2b8ca2}{fin\+\_\+jeu} (int grille\mbox{[}T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+L\+I\+G\+NE\mbox{]}\mbox{[}T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+C\+O\+L\+O\+N\+NE\mbox{]})
+\item 
+void \hyperlink{demineur_8c_a8e0b93803ed0574541c771a04263132f}{afficher\+\_\+texte} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, char $\ast$message, T\+T\+F\+\_\+\+Font $\ast$police, int x, int y)
+\item 
+void \hyperlink{demineur_8c_ac2482fce090f9b10007dd4cb206d58c7}{afficher\+\_\+grille} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, int grille\mbox{[}T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+L\+I\+G\+NE\mbox{]}\mbox{[}T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+C\+O\+L\+O\+N\+NE\mbox{]}, int premier\+\_\+click, int click\+\_\+bombe, S\+D\+L\+\_\+\+Texture $\ast$texture)
+\item 
+int \hyperlink{demineur_8c_a0f5fe86027e22714b1fed94eee2d9633}{click\+\_\+en\+\_\+grille} (S\+D\+L\+\_\+\+Point mouse\+Coor)
+\item 
+int \hyperlink{demineur_8c_ae6dd3a6c44bb8a7612ca54a0da5478ae}{demineur} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, int score, int Win\+Widht, int \hyperlink{room_8c_a14d631ded45fe3c6396d41f0b31a8aba}{Win\+Height}, char $\ast$token, int hardcore)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static const int \hyperlink{demineur_8c_a1563e736047cb57052434e132e4afac4}{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME} = 1000 / \hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}
+\item 
+static const S\+D\+L\+\_\+\+Point \hyperlink{demineur_8c_a968d31411239df4ea501d92b69ce6548}{E\+S\+P\+A\+C\+E\+\_\+\+D\+I\+S\+P\+L\+A\+Y\+\_\+\+W\+I\+N\+D\+OW} = \{ 100, 100\}
+\end{DoxyCompactItemize}
+
+
+\subsection{Documentation des fonctions}
+\mbox{\Hypertarget{demineur_8c_ac2482fce090f9b10007dd4cb206d58c7}\label{demineur_8c_ac2482fce090f9b10007dd4cb206d58c7}} 
+\index{demineur.\+c@{demineur.\+c}!afficher\+\_\+grille@{afficher\+\_\+grille}}
+\index{afficher\+\_\+grille@{afficher\+\_\+grille}!demineur.\+c@{demineur.\+c}}
+\subsubsection{\texorpdfstring{afficher\+\_\+grille()}{afficher\_grille()}}
+{\footnotesize\ttfamily void afficher\+\_\+grille (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{int}]{grille\mbox{[}\+T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+L\+I\+G\+N\+E\mbox{]}\mbox{[}\+T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+C\+O\+L\+O\+N\+N\+E\mbox{]},  }\item[{int}]{premier\+\_\+click,  }\item[{int}]{click\+\_\+bombe,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture }\end{DoxyParamCaption})}
+
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_ac2482fce090f9b10007dd4cb206d58c7_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_ac2482fce090f9b10007dd4cb206d58c7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{demineur_8c_a8e0b93803ed0574541c771a04263132f}\label{demineur_8c_a8e0b93803ed0574541c771a04263132f}} 
+\index{demineur.\+c@{demineur.\+c}!afficher\+\_\+texte@{afficher\+\_\+texte}}
+\index{afficher\+\_\+texte@{afficher\+\_\+texte}!demineur.\+c@{demineur.\+c}}
+\subsubsection{\texorpdfstring{afficher\+\_\+texte()}{afficher\_texte()}}
+{\footnotesize\ttfamily void afficher\+\_\+texte (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{char $\ast$}]{message,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{police,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_a8e0b93803ed0574541c771a04263132f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{demineur_8c_a0f5fe86027e22714b1fed94eee2d9633}\label{demineur_8c_a0f5fe86027e22714b1fed94eee2d9633}} 
+\index{demineur.\+c@{demineur.\+c}!click\+\_\+en\+\_\+grille@{click\+\_\+en\+\_\+grille}}
+\index{click\+\_\+en\+\_\+grille@{click\+\_\+en\+\_\+grille}!demineur.\+c@{demineur.\+c}}
+\subsubsection{\texorpdfstring{click\+\_\+en\+\_\+grille()}{click\_en\_grille()}}
+{\footnotesize\ttfamily int click\+\_\+en\+\_\+grille (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Point}]{mouse\+Coor }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{demineur_8c_a90ebe0ed1e9ab349fdfe54706f5a2ad3}\label{demineur_8c_a90ebe0ed1e9ab349fdfe54706f5a2ad3}} 
+\index{demineur.\+c@{demineur.\+c}!coor\+\_\+valide@{coor\+\_\+valide}}
+\index{coor\+\_\+valide@{coor\+\_\+valide}!demineur.\+c@{demineur.\+c}}
+\subsubsection{\texorpdfstring{coor\+\_\+valide()}{coor\_valide()}}
+{\footnotesize\ttfamily int coor\+\_\+valide (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_a90ebe0ed1e9ab349fdfe54706f5a2ad3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{demineur_8c_a56afde4cddb364095eab7c98ae563e22}\label{demineur_8c_a56afde4cddb364095eab7c98ae563e22}} 
+\index{demineur.\+c@{demineur.\+c}!danger\+\_\+avec\+\_\+libre\+\_\+autour@{danger\+\_\+avec\+\_\+libre\+\_\+autour}}
+\index{danger\+\_\+avec\+\_\+libre\+\_\+autour@{danger\+\_\+avec\+\_\+libre\+\_\+autour}!demineur.\+c@{demineur.\+c}}
+\subsubsection{\texorpdfstring{danger\+\_\+avec\+\_\+libre\+\_\+autour()}{danger\_avec\_libre\_autour()}}
+{\footnotesize\ttfamily int danger\+\_\+avec\+\_\+libre\+\_\+autour (\begin{DoxyParamCaption}\item[{int}]{grille\mbox{[}\+T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+L\+I\+G\+N\+E\mbox{]}\mbox{[}\+T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+C\+O\+L\+O\+N\+N\+E\mbox{]},  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_a56afde4cddb364095eab7c98ae563e22_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_a56afde4cddb364095eab7c98ae563e22_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{demineur_8c_ae6dd3a6c44bb8a7612ca54a0da5478ae}\label{demineur_8c_ae6dd3a6c44bb8a7612ca54a0da5478ae}} 
+\index{demineur.\+c@{demineur.\+c}!demineur@{demineur}}
+\index{demineur@{demineur}!demineur.\+c@{demineur.\+c}}
+\subsubsection{\texorpdfstring{demineur()}{demineur()}}
+{\footnotesize\ttfamily int demineur (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{int}]{score,  }\item[{int}]{Win\+Widht,  }\item[{int}]{Win\+Height,  }\item[{char $\ast$}]{token,  }\item[{int}]{hardcore }\end{DoxyParamCaption})}
+
+M\+I\+SE EN P\+L\+A\+CE ///``
+
+Vars ///`
+
+B\+O\+U\+C\+L\+ES DU J\+EU ///``Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_ae6dd3a6c44bb8a7612ca54a0da5478ae_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_ae6dd3a6c44bb8a7612ca54a0da5478ae_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{demineur_8c_a1aeb236ea4ef74475e3fc90c2bb789ad}\label{demineur_8c_a1aeb236ea4ef74475e3fc90c2bb789ad}} 
+\index{demineur.\+c@{demineur.\+c}!etat@{etat}}
+\index{etat@{etat}!demineur.\+c@{demineur.\+c}}
+\subsubsection{\texorpdfstring{etat()}{etat()}}
+{\footnotesize\ttfamily void etat (\begin{DoxyParamCaption}\item[{int}]{grille\mbox{[}\+T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+L\+I\+G\+N\+E\mbox{]}\mbox{[}\+T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+C\+O\+L\+O\+N\+N\+E\mbox{]},  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_a1aeb236ea4ef74475e3fc90c2bb789ad_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_a1aeb236ea4ef74475e3fc90c2bb789ad_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{demineur_8c_ad9d11bfa701219bc7e10683e3e2b8ca2}\label{demineur_8c_ad9d11bfa701219bc7e10683e3e2b8ca2}} 
+\index{demineur.\+c@{demineur.\+c}!fin\+\_\+jeu@{fin\+\_\+jeu}}
+\index{fin\+\_\+jeu@{fin\+\_\+jeu}!demineur.\+c@{demineur.\+c}}
+\subsubsection{\texorpdfstring{fin\+\_\+jeu()}{fin\_jeu()}}
+{\footnotesize\ttfamily int fin\+\_\+jeu (\begin{DoxyParamCaption}\item[{int}]{grille\mbox{[}\+T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+L\+I\+G\+N\+E\mbox{]}\mbox{[}\+T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+C\+O\+L\+O\+N\+N\+E\mbox{]} }\end{DoxyParamCaption})}
+
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_ad9d11bfa701219bc7e10683e3e2b8ca2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{demineur_8c_afa69eb8d56620bc1b8e77daca6250cc0}\label{demineur_8c_afa69eb8d56620bc1b8e77daca6250cc0}} 
+\index{demineur.\+c@{demineur.\+c}!init\+\_\+grille@{init\+\_\+grille}}
+\index{init\+\_\+grille@{init\+\_\+grille}!demineur.\+c@{demineur.\+c}}
+\subsubsection{\texorpdfstring{init\+\_\+grille()}{init\_grille()}}
+{\footnotesize\ttfamily void init\+\_\+grille (\begin{DoxyParamCaption}\item[{int}]{grille\mbox{[}\+T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+L\+I\+G\+N\+E\mbox{]}\mbox{[}\+T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+C\+O\+L\+O\+N\+N\+E\mbox{]},  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_afa69eb8d56620bc1b8e77daca6250cc0_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_afa69eb8d56620bc1b8e77daca6250cc0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{demineur_8c_ad29393d03041cbab1de2d78d8fd4bc69}\label{demineur_8c_ad29393d03041cbab1de2d78d8fd4bc69}} 
+\index{demineur.\+c@{demineur.\+c}!maximize\+Window@{maximize\+Window}}
+\index{maximize\+Window@{maximize\+Window}!demineur.\+c@{demineur.\+c}}
+\subsubsection{\texorpdfstring{maximize\+Window()}{maximizeWindow()}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Point maximize\+Window (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Rect}]{display\+Bounds,  }\item[{float $\ast$}]{ratio\+Window\+Size }\end{DoxyParamCaption})}
+
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_ad29393d03041cbab1de2d78d8fd4bc69_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{demineur_8c_a98ccc1d6ebce113643a26c9968dd5f58}\label{demineur_8c_a98ccc1d6ebce113643a26c9968dd5f58}} 
+\index{demineur.\+c@{demineur.\+c}!my\+Init@{my\+Init}}
+\index{my\+Init@{my\+Init}!demineur.\+c@{demineur.\+c}}
+\subsubsection{\texorpdfstring{my\+Init()}{myInit()}}
+{\footnotesize\ttfamily static void my\+Init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_a98ccc1d6ebce113643a26c9968dd5f58_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{demineur_8c_a216e830c55f7138da1627b29dac41b69}\label{demineur_8c_a216e830c55f7138da1627b29dac41b69}} 
+\index{demineur.\+c@{demineur.\+c}!nb\+\_\+bombes\+\_\+autour@{nb\+\_\+bombes\+\_\+autour}}
+\index{nb\+\_\+bombes\+\_\+autour@{nb\+\_\+bombes\+\_\+autour}!demineur.\+c@{demineur.\+c}}
+\subsubsection{\texorpdfstring{nb\+\_\+bombes\+\_\+autour()}{nb\_bombes\_autour()}}
+{\footnotesize\ttfamily int nb\+\_\+bombes\+\_\+autour (\begin{DoxyParamCaption}\item[{int}]{grille\mbox{[}\+T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+L\+I\+G\+N\+E\mbox{]}\mbox{[}\+T\+A\+I\+L\+L\+E\+\_\+\+G\+R\+I\+L\+L\+E\+\_\+\+C\+O\+L\+O\+N\+N\+E\mbox{]},  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=281pt]{demineur_8c_a216e830c55f7138da1627b29dac41b69_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{demineur_8c_a216e830c55f7138da1627b29dac41b69_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Documentation des variables}
+\mbox{\Hypertarget{demineur_8c_a968d31411239df4ea501d92b69ce6548}\label{demineur_8c_a968d31411239df4ea501d92b69ce6548}} 
+\index{demineur.\+c@{demineur.\+c}!E\+S\+P\+A\+C\+E\+\_\+\+D\+I\+S\+P\+L\+A\+Y\+\_\+\+W\+I\+N\+D\+OW@{E\+S\+P\+A\+C\+E\+\_\+\+D\+I\+S\+P\+L\+A\+Y\+\_\+\+W\+I\+N\+D\+OW}}
+\index{E\+S\+P\+A\+C\+E\+\_\+\+D\+I\+S\+P\+L\+A\+Y\+\_\+\+W\+I\+N\+D\+OW@{E\+S\+P\+A\+C\+E\+\_\+\+D\+I\+S\+P\+L\+A\+Y\+\_\+\+W\+I\+N\+D\+OW}!demineur.\+c@{demineur.\+c}}
+\subsubsection{\texorpdfstring{E\+S\+P\+A\+C\+E\+\_\+\+D\+I\+S\+P\+L\+A\+Y\+\_\+\+W\+I\+N\+D\+OW}{ESPACE\_DISPLAY\_WINDOW}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Point E\+S\+P\+A\+C\+E\+\_\+\+D\+I\+S\+P\+L\+A\+Y\+\_\+\+W\+I\+N\+D\+OW = \{ 100, 100\}\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{demineur_8c_a1563e736047cb57052434e132e4afac4}\label{demineur_8c_a1563e736047cb57052434e132e4afac4}} 
+\index{demineur.\+c@{demineur.\+c}!F\+R\+A\+M\+E\+\_\+\+T\+I\+ME@{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME}}
+\index{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME@{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME}!demineur.\+c@{demineur.\+c}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME}{FRAME\_TIME}}
+{\footnotesize\ttfamily const int F\+R\+A\+M\+E\+\_\+\+T\+I\+ME = 1000 / \hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}\hspace{0.3cm}{\ttfamily [static]}}
+

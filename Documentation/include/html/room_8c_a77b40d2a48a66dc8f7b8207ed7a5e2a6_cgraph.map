@@ -1,0 +1,6 @@
+<map id="SDL_GL_AppliquerScene" name="SDL_GL_AppliquerScene">
+<area shape="rect" id="node2" href="$room_8c.html#ac7fd25ceb1c11ba859983d8fc5b6e742" title="Permet de gerer les deplacements de la camera. " alt="" coords="224,5,360,32"/>
+<area shape="rect" id="node4" href="$room_8c.html#a9a783579e7576a7ebfb754ff6a95926b" title="permet de regler l&#39;intensiter de chaque lampe presente dans la salle " alt="" coords="245,56,339,83"/>
+<area shape="rect" id="node5" href="$room_8c.html#a2bbafc1b0562d4ee6d70364745714f89" title="Dessine un quadrilataire. " alt="" coords="233,107,351,133"/>
+<area shape="rect" id="node3" href="$room_8c.html#a3fb5d57c89ca3957fc124608dfcaf659" title="fonction de collision avec l&#39;environement " alt="" coords="408,5,571,32"/>
+</map>

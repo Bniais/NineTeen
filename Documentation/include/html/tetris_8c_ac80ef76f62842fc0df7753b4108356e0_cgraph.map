@@ -1,0 +1,10 @@
+<map id="updateFrames" name="updateFrames">
+<area shape="rect" id="node2" href="$tetris_8c.html#adc1d7245f0623a3b3fb9abd8bba6d767" title="Determine si une ligne est vide. " alt="" coords="165,5,245,32"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#a8575fd96b1d18f85055174a3fb96ea28" title="Vérifie si des lignes sont complétées. " alt="" coords="161,56,249,83"/>
+<area shape="rect" id="node7" href="$tetris_8c.html#a31bec3033665b189b54e32bfb0679091" title="Efface les attributs score d&#39;un score. " alt="" coords="163,107,247,133"/>
+<area shape="rect" id="node8" href="$tetris_8c.html#a9298fc462a64f832e03b46956ad0558d" title="Efface les attributs combo d&#39;un score. " alt="" coords="159,157,251,184"/>
+<area shape="rect" id="node9" href="$tetris_8c.html#aa8ef328fafd262cebaadf0517ec41d20" title="Supprime une ligne de la matrice et fait descendre celles au desus. " alt="" coords="165,208,244,235"/>
+<area shape="rect" id="node4" href="$tetris_8c.html#a43138d18461e67de234da3ba3948b780" title="Enclenche l&#39;animation de destruction de ligne et comptabilise les points rapportés et les bonus gagné..." alt="" coords="299,56,397,83"/>
+<area shape="rect" id="node5" href="$tetris_8c.html#ad3ffc7b35e2959c53ab338f9d12a529a" title="Obtient l&#39;id d&#39;une case de la matrice. " alt="" coords="447,31,531,57"/>
+<area shape="rect" id="node6" href="$tetris_8c.html#a602b2d26911345f5f9fc9c618332376d" title="Détermine l&#39;id du bonus d&#39;une case de la grille. " alt="" coords="445,81,533,108"/>
+</map>

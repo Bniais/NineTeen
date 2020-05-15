@@ -1,0 +1,11 @@
+<map id="interactionInterface" name="interactionInterface">
+<area shape="rect" id="node2" href="$leaderboard_8c.html#a8b9b72ad5c70dc9ed442cd734f2b3361" title="permet de charger les donner dans la structure " alt="" coords="187,56,319,83"/>
+<area shape="rect" id="node3" href="$lib_web_8c.html#a1f539ac35bb1d7222d32434ed795da30" title="recupere le classement des joueurs " alt="" coords="383,31,494,57"/>
+<area shape="rect" id="node10" href="$leaderboard_8c.html#ae7640fffad36983c36c0e8262770db4a" title="permet de copier une chaine au +n element de la chaine source " alt="" coords="367,81,511,108"/>
+<area shape="rect" id="node4" href="$lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="559,5,688,32"/>
+<area shape="rect" id="node6" href="$lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="875,56,989,83"/>
+<area shape="rect" id="node5" href="$lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="736,5,827,32"/>
+<area shape="rect" id="node9" href="$lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="893,5,971,32"/>
+<area shape="rect" id="node7" href="$lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="1037,31,1116,57"/>
+<area shape="rect" id="node8" href="$lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="1039,81,1114,108"/>
+</map>

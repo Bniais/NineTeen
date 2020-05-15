@@ -1,0 +1,1061 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Nineteen: Référence du fichier include/communFunctions.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="favicon.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Nineteen
+   </div>
+   <div id="projectbrief">The best of arcade games !</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Fonctions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle">
+<div class="title">Référence du fichier communFunctions.c</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>regroupe un certain nombre de fonction utiliser par different fichier  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL_ttf.h&gt;</code><br />
+<code>#include &quot;communFunctions.h&quot;</code><br />
+<code>#include &quot;../include/define.h&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Graphe des dépendances par inclusion de communFunctions.c:</div>
+<div class="dyncontent">
+<div class="center"><img src="commun_functions_8c__incl.jpg" border="0" usemap="#include_2commun_functions_8c" alt=""/></div>
+</div>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a2cbb87ef4aefed1eed287e5d4bbc70bb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#a2cbb87ef4aefed1eed287e5d4bbc70bb">LOADING_SIZE</a>&#160;&#160;&#160;54</td></tr>
+<tr class="separator:a2cbb87ef4aefed1eed287e5d4bbc70bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae12c130281355f85230a6d4d09e23e4a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#ae12c130281355f85230a6d4d09e23e4a">LOADING_ANGLE_PER_FRAME</a>&#160;&#160;&#160;(360/60)</td></tr>
+<tr class="separator:ae12c130281355f85230a6d4d09e23e4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af45019bab9f6d331aa2b764822d5d1f0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#af45019bab9f6d331aa2b764822d5d1f0">SIZE_ECHEC</a>&#160;&#160;&#160;62.</td></tr>
+<tr class="separator:af45019bab9f6d331aa2b764822d5d1f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b16a1176a3dadfdee5fa7a769ba40f8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#a1b16a1176a3dadfdee5fa7a769ba40f8">SIZE_REPLAY</a>&#160;&#160;&#160;43.</td></tr>
+<tr class="separator:a1b16a1176a3dadfdee5fa7a769ba40f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f19735ac01c0aa1b54d6ab5ced0cf9e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#a1f19735ac01c0aa1b54d6ab5ced0cf9e">SIZE_QUIT</a>&#160;&#160;&#160;28.</td></tr>
+<tr class="separator:a1f19735ac01c0aa1b54d6ab5ced0cf9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:ab497da0f3b8a639a9993a3aa10460c30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#ab497da0f3b8a639a9993a3aa10460c30">informationPreciseCPUGPU</a> ()</td></tr>
+<tr class="memdesc:ab497da0f3b8a639a9993a3aa10460c30"><td class="mdescLeft">&#160;</td><td class="mdescRight">permet d'afficher les info CPU/GPU  <a href="#ab497da0f3b8a639a9993a3aa10460c30">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ab497da0f3b8a639a9993a3aa10460c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1e4d4eaa8a0a9e3ba768193d58e2792"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#af1e4d4eaa8a0a9e3ba768193d58e2792">_malloc</a> (void **ptr, int type, int size, FILE *fp, Uint32 flags, const char *title, const char *message, SDL_Window *window)</td></tr>
+<tr class="memdesc:af1e4d4eaa8a0a9e3ba768193d58e2792"><td class="mdescLeft">&#160;</td><td class="mdescRight">permet de faire une allocation dynamqiue avec message d'erreur  <a href="#af1e4d4eaa8a0a9e3ba768193d58e2792">Plus de détails...</a><br /></td></tr>
+<tr class="separator:af1e4d4eaa8a0a9e3ba768193d58e2792"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7115d96f0ae2328db6b62564ece982d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#ad7115d96f0ae2328db6b62564ece982d">afficherMessageSysteme</a> (char message[])</td></tr>
+<tr class="memdesc:ad7115d96f0ae2328db6b62564ece982d"><td class="mdescLeft">&#160;</td><td class="mdescRight">affiche une popup systeme  <a href="#ad7115d96f0ae2328db6b62564ece982d">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ad7115d96f0ae2328db6b62564ece982d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0ed0fe31f27ac7898fd7c0d25f8d71c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#ad0ed0fe31f27ac7898fd7c0d25f8d71c">afficherLoading</a> (SDL_Renderer *renderer, SDL_Texture *loadingTexture, SDL_Color color, int shiftX, int shiftY, int frameAnim, int windowW, int windowH, int referenceW)</td></tr>
+<tr class="memdesc:ad0ed0fe31f27ac7898fd7c0d25f8d71c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche l'animation de chargement des envois de requêtes.  <a href="#ad0ed0fe31f27ac7898fd7c0d25f8d71c">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ad0ed0fe31f27ac7898fd7c0d25f8d71c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22549bc59dccb5f8748d72b9bec11512"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#a22549bc59dccb5f8748d72b9bec11512">afficherRetour</a> (SDL_Renderer *renderer, SDL_Texture *loadingTexture, TTF_Font *font, SDL_Color color, int shiftX, int shiftY, int frameAnim, int windowW, int windowH, int referenceW)</td></tr>
+<tr class="memdesc:a22549bc59dccb5f8748d72b9bec11512"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche l'animation de retour de requête.  <a href="#a22549bc59dccb5f8748d72b9bec11512">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a22549bc59dccb5f8748d72b9bec11512"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accb6052f792ce29f71e79866dff07a58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#accb6052f792ce29f71e79866dff07a58">drawReplay</a> (SDL_Renderer *renderer, TTF_Font *font, float posY, int viewW, int viewH)</td></tr>
+<tr class="memdesc:accb6052f792ce29f71e79866dff07a58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche un texte invitant le joueur à rejouer.  <a href="#accb6052f792ce29f71e79866dff07a58">Plus de détails...</a><br /></td></tr>
+<tr class="separator:accb6052f792ce29f71e79866dff07a58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab85a0d17357e8a27e2f77b3cd8d84027"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#ab85a0d17357e8a27e2f77b3cd8d84027">drawQuit</a> (SDL_Renderer *renderer, TTF_Font *font, float ratioWindowSize, SDL_Color color)</td></tr>
+<tr class="memdesc:ab85a0d17357e8a27e2f77b3cd8d84027"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche echap en haut a gauche.  <a href="#ab85a0d17357e8a27e2f77b3cd8d84027">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ab85a0d17357e8a27e2f77b3cd8d84027"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf7f536dbcc7c1704472de6c212b9eda"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#aaf7f536dbcc7c1704472de6c212b9eda">drawBeta</a> (SDL_Renderer *renderer, TTF_Font *font, float ratioWindowSize, SDL_Color color, int size)</td></tr>
+<tr class="memdesc:aaf7f536dbcc7c1704472de6c212b9eda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche beta en bas a droite.  <a href="#aaf7f536dbcc7c1704472de6c212b9eda">Plus de détails...</a><br /></td></tr>
+<tr class="separator:aaf7f536dbcc7c1704472de6c212b9eda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7abdc103877c16a5077411165bf8154d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#a7abdc103877c16a5077411165bf8154d">lenNum</a> (int n)</td></tr>
+<tr class="memdesc:a7abdc103877c16a5077411165bf8154d"><td class="mdescLeft">&#160;</td><td class="mdescRight">retourne la longueur d'un nombre  <a href="#a7abdc103877c16a5077411165bf8154d">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a7abdc103877c16a5077411165bf8154d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad2eabec61848c202dd8cf2a800d3398"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#aad2eabec61848c202dd8cf2a800d3398">randSign</a> ()</td></tr>
+<tr class="memdesc:aad2eabec61848c202dd8cf2a800d3398"><td class="mdescLeft">&#160;</td><td class="mdescRight">renvoie un signe aléatoire : soit 1 ou -1  <a href="#aad2eabec61848c202dd8cf2a800d3398">Plus de détails...</a><br /></td></tr>
+<tr class="separator:aad2eabec61848c202dd8cf2a800d3398"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:acc149d3bd8c6407d2c6e794a9b304939"><td class="memItemLeft" align="right" valign="top">const SDL_Rect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#acc149d3bd8c6407d2c6e794a9b304939">SRC_LOADING</a> = {0,0,222,222}</td></tr>
+<tr class="separator:acc149d3bd8c6407d2c6e794a9b304939"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30ee815d8c709aa66a576c66472d3a48"><td class="memItemLeft" align="right" valign="top">const SDL_Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#a30ee815d8c709aa66a576c66472d3a48">COLOR_ERROR_LOADING</a> = {0xfb,0x17,0x17}</td></tr>
+<tr class="separator:a30ee815d8c709aa66a576c66472d3a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af745d16273f663f1f64767cf64d09b02"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#af745d16273f663f1f64767cf64d09b02">ALPHA</a> [2 *(int) FRAME_ANIM_RETOUR] = { 10, 30, 55, 70, 100, 140, 170, 200, 220, 225, 230, 230, 230, 230, 230, 230,230, 230, 230, 230, 230,230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 225,220,200,170,140,100,70,55,30,10}</td></tr>
+<tr class="separator:af745d16273f663f1f64767cf64d09b02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ce6bb164d37e605aa60e94aefe73817"><td class="memItemLeft" align="right" valign="top">FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#a1ce6bb164d37e605aa60e94aefe73817">EXT_FILE</a></td></tr>
+<tr class="separator:a1ce6bb164d37e605aa60e94aefe73817"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd33db1ce94dcc227584c51133296222"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#afd33db1ce94dcc227584c51133296222">REPLAY</a> = &quot;Appuyer sur Espace pour jouer !&quot;</td></tr>
+<tr class="separator:afd33db1ce94dcc227584c51133296222"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9eb8c8fa86d54544ffd79802430bd4d0"><td class="memItemLeft" align="right" valign="top">SDL_Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#a9eb8c8fa86d54544ffd79802430bd4d0">WHITE</a> = {255,255,255,255}</td></tr>
+<tr class="separator:a9eb8c8fa86d54544ffd79802430bd4d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84e6cf274c3f2439ef3b1d386dc474c6"><td class="memItemLeft" align="right" valign="top">static char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#a84e6cf274c3f2439ef3b1d386dc474c6">QUIT</a> = &quot;Echap&quot;</td></tr>
+<tr class="separator:a84e6cf274c3f2439ef3b1d386dc474c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05dd6426be20d877029f9fff2f777951"><td class="memItemLeft" align="right" valign="top">static SDL_Rect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#a05dd6426be20d877029f9fff2f777951">QUIT_DEST</a> = {10,10,0,0}</td></tr>
+<tr class="separator:a05dd6426be20d877029f9fff2f777951"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3997e96387b98a69b49b99b07ca01be2"><td class="memItemLeft" align="right" valign="top">static char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#a3997e96387b98a69b49b99b07ca01be2">BETA</a> = &quot;(Beta)&quot;</td></tr>
+<tr class="separator:a3997e96387b98a69b49b99b07ca01be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af704eeb5ce2073cbf544ed0246c38096"><td class="memItemLeft" align="right" valign="top">static SDL_Rect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="commun_functions_8c.html#af704eeb5ce2073cbf544ed0246c38096">BASE_DEST</a> = {BASE_WINDOW_W-10, BASE_WINDOW_H-10, 0,0}</td></tr>
+<tr class="separator:af704eeb5ce2073cbf544ed0246c38096"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>regroupe un certain nombre de fonction utiliser par different fichier </p>
+<dl class="section author"><dt>Auteur</dt><dd>Samy M. </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>31 janvier 2020 </dd></dl>
+</div><h2 class="groupheader">Documentation des macros</h2>
+<a id="ae12c130281355f85230a6d4d09e23e4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae12c130281355f85230a6d4d09e23e4a">&#9670;&nbsp;</a></span>LOADING_ANGLE_PER_FRAME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LOADING_ANGLE_PER_FRAME&#160;&#160;&#160;(360/60)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2cbb87ef4aefed1eed287e5d4bbc70bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cbb87ef4aefed1eed287e5d4bbc70bb">&#9670;&nbsp;</a></span>LOADING_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LOADING_SIZE&#160;&#160;&#160;54</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af45019bab9f6d331aa2b764822d5d1f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af45019bab9f6d331aa2b764822d5d1f0">&#9670;&nbsp;</a></span>SIZE_ECHEC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIZE_ECHEC&#160;&#160;&#160;62.</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1f19735ac01c0aa1b54d6ab5ced0cf9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f19735ac01c0aa1b54d6ab5ced0cf9e">&#9670;&nbsp;</a></span>SIZE_QUIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIZE_QUIT&#160;&#160;&#160;28.</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1b16a1176a3dadfdee5fa7a769ba40f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b16a1176a3dadfdee5fa7a769ba40f8">&#9670;&nbsp;</a></span>SIZE_REPLAY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIZE_REPLAY&#160;&#160;&#160;43.</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des fonctions</h2>
+<a id="af1e4d4eaa8a0a9e3ba768193d58e2792"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1e4d4eaa8a0a9e3ba768193d58e2792">&#9670;&nbsp;</a></span>_malloc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int _malloc </td>
+          <td>(</td>
+          <td class="paramtype">void **&#160;</td>
+          <td class="paramname"><em>ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>fp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Uint32&#160;</td>
+          <td class="paramname"><em>flags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>title</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Window *&#160;</td>
+          <td class="paramname"><em>window</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>permet de faire une allocation dynamqiue avec message d'erreur </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">void</td><td>**ptr element a allouer </td></tr>
+    <tr><td class="paramname">int</td><td>type taille du type </td></tr>
+    <tr><td class="paramname">int</td><td>size nombre d element a allouer </td></tr>
+    <tr><td class="paramname">FILE</td><td>*fp pointeur sur element sorti erreur </td></tr>
+    <tr><td class="paramname">Uint32</td><td>flags flags message SDL  char *title if set NULL no message on SDL </td></tr>
+    <tr><td class="paramname">char</td><td>*message message pour fprintf </td></tr>
+    <tr><td class="paramname">SDL_Window</td><td>*window null si hors d'une fenetre</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS/EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="commun_functions_8c_af1e4d4eaa8a0a9e3ba768193d58e2792_icgraph.jpg" border="0" usemap="#commun_functions_8c_af1e4d4eaa8a0a9e3ba768193d58e2792_icgraph" alt=""/></div>
+<map name="commun_functions_8c_af1e4d4eaa8a0a9e3ba768193d58e2792_icgraph" id="commun_functions_8c_af1e4d4eaa8a0a9e3ba768193d58e2792_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="153,51,234,77"/>
+<area shape="rect" id="node4" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="745,76,796,103"/>
+<area shape="rect" id="node5" href="main_8c.html#a3980fa98fa4e25d3fd957ad815ed142c" title="verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores ..." alt="" coords="315,101,444,128"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="647,152,697,179"/>
+<area shape="rect" id="node7" href="room_8c.html#a70263633a7a137f37ff72e5cf71cc7eb" title="Mes a jours les donnees liee au score de la structure meilleureScore. " alt="" coords="120,203,267,229"/>
+<area shape="rect" id="node9" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="492,253,599,280"/>
+<area shape="rect" id="node3" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="510,76,581,103"/>
+<area shape="rect" id="node8" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="317,253,442,280"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ad0ed0fe31f27ac7898fd7c0d25f8d71c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0ed0fe31f27ac7898fd7c0d25f8d71c">&#9670;&nbsp;</a></span>afficherLoading()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void afficherLoading </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>loadingTexture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Color&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>shiftX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>shiftY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>frameAnim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>windowW</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>windowH</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>referenceW</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Affiche l'animation de chargement des envois de requêtes. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">loadingTexture</td><td>La texture de chargement </td></tr>
+    <tr><td class="paramname">color</td><td>La couleur de la texture chargement </td></tr>
+    <tr><td class="paramname">shiftX</td><td>Le décallage horizontal </td></tr>
+    <tr><td class="paramname">shiftY</td><td>Le décallage vertical </td></tr>
+    <tr><td class="paramname">frameAnim</td><td>La famr de l'animation </td></tr>
+    <tr><td class="paramname">windowW</td><td>La largeur de fenêtre </td></tr>
+    <tr><td class="paramname">windowH</td><td>La hauteur de fenêtre </td></tr>
+    <tr><td class="paramname">referenceW</td><td>La largeur de référence </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="commun_functions_8c_ad0ed0fe31f27ac7898fd7c0d25f8d71c_icgraph.jpg" border="0" usemap="#commun_functions_8c_ad0ed0fe31f27ac7898fd7c0d25f8d71c_icgraph" alt=""/></div>
+<map name="commun_functions_8c_ad0ed0fe31f27ac7898fd7c0d25f8d71c_icgraph" id="commun_functions_8c_ad0ed0fe31f27ac7898fd7c0d25f8d71c_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="317,5,374,32"/>
+<area shape="rect" id="node7" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="303,81,388,108"/>
+<area shape="rect" id="node8" href="flappy__bird_8c.html#a4858bca7396db08c9733a691a7d58f9c" title="regroupement de toute les fonctions d&#39;affichage pour afficher tous " alt="" coords="164,81,255,108"/>
+<area shape="rect" id="node9" href="tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="320,132,371,159"/>
+<area shape="rect" id="node10" href="asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="175,183,243,209"/>
+<area shape="rect" id="node11" href="main_8c.html#ac99b5b2ed70796b04227bea66568dd51" title="cette fonction permet d&#39;afficher tous les elements present dans le launcher. " alt="" coords="178,233,241,260"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="436,132,543,159"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="591,132,716,159"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="628,183,679,209"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="764,208,815,235"/>
+<area shape="rect" id="node12" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="305,233,386,260"/>
+<area shape="rect" id="node13" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="454,233,525,260"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ad7115d96f0ae2328db6b62564ece982d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7115d96f0ae2328db6b62564ece982d">&#9670;&nbsp;</a></span>afficherMessageSysteme()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">afficherMessageSysteme </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>message</em>[]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>affiche une popup systeme </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">char</td><td>message[] message a afficher a l'ecran </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="commun_functions_8c_ad7115d96f0ae2328db6b62564ece982d_icgraph.jpg" border="0" usemap="#commun_functions_8c_ad7115d96f0ae2328db6b62564ece982d_icgraph" alt=""/></div>
+<map name="commun_functions_8c_ad7115d96f0ae2328db6b62564ece982d_icgraph" id="commun_functions_8c_ad7115d96f0ae2328db6b62564ece982d_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#a94cac2e3d54b21d4e26db7f3d15e8e6a" title="permet de verifier la version du VERSION_LOGICIEL " alt="" coords="224,5,325,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="373,5,424,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a22549bc59dccb5f8748d72b9bec11512"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22549bc59dccb5f8748d72b9bec11512">&#9670;&nbsp;</a></span>afficherRetour()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void afficherRetour </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>loadingTexture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TTF_Font *&#160;</td>
+          <td class="paramname"><em>font</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Color&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>shiftX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>shiftY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>frameAnim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>windowW</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>windowH</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>referenceW</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Affiche l'animation de retour de requête. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">loadingTexture</td><td>La texture de retour </td></tr>
+    <tr><td class="paramname">font</td><td>La police d'écriture du message d'erreur </td></tr>
+    <tr><td class="paramname">color</td><td>La couleur de la texture chargement </td></tr>
+    <tr><td class="paramname">shiftX</td><td>Le décallage horizontal </td></tr>
+    <tr><td class="paramname">shiftY</td><td>Le décallage vertical </td></tr>
+    <tr><td class="paramname">frameAnim</td><td>La famr de l'animation </td></tr>
+    <tr><td class="paramname">windowW</td><td>La largeur de fenêtre </td></tr>
+    <tr><td class="paramname">windowH</td><td>La hauteur de fenêtre </td></tr>
+    <tr><td class="paramname">referenceW</td><td>La largeur de référence </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="commun_functions_8c_a22549bc59dccb5f8748d72b9bec11512_icgraph.jpg" border="0" usemap="#commun_functions_8c_a22549bc59dccb5f8748d72b9bec11512_icgraph" alt=""/></div>
+<map name="commun_functions_8c_a22549bc59dccb5f8748d72b9bec11512_icgraph" id="commun_functions_8c_a22549bc59dccb5f8748d72b9bec11512_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="310,5,367,32"/>
+<area shape="rect" id="node7" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="296,81,381,108"/>
+<area shape="rect" id="node8" href="flappy__bird_8c.html#a4858bca7396db08c9733a691a7d58f9c" title="regroupement de toute les fonctions d&#39;affichage pour afficher tous " alt="" coords="157,81,248,108"/>
+<area shape="rect" id="node9" href="tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="313,132,364,159"/>
+<area shape="rect" id="node10" href="asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="169,183,237,209"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="429,107,536,133"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="584,107,709,133"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="621,157,672,184"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="757,157,808,184"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="aaf7f536dbcc7c1704472de6c212b9eda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf7f536dbcc7c1704472de6c212b9eda">&#9670;&nbsp;</a></span>drawBeta()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void drawBeta </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TTF_Font *&#160;</td>
+          <td class="paramname"><em>font</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ratioWindowSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Color&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Affiche beta en bas a droite. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">font</td><td>La police d'écriture </td></tr>
+    <tr><td class="paramname">ratioWindowSize</td><td>ratio de l ecran </td></tr>
+    <tr><td class="paramname">color</td><td>couleur du text </td></tr>
+    <tr><td class="paramname">size</td><td>taille du text </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab85a0d17357e8a27e2f77b3cd8d84027"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab85a0d17357e8a27e2f77b3cd8d84027">&#9670;&nbsp;</a></span>drawQuit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void drawQuit </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TTF_Font *&#160;</td>
+          <td class="paramname"><em>font</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ratioWindowSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Color&#160;</td>
+          <td class="paramname"><em>color</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Affiche echap en haut a gauche. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">font</td><td>La police d'écriture </td></tr>
+    <tr><td class="paramname">ratioWindowSize</td><td>ratio de l ecran </td></tr>
+    <tr><td class="paramname">color</td><td>couleur du text </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="commun_functions_8c_ab85a0d17357e8a27e2f77b3cd8d84027_icgraph.jpg" border="0" usemap="#commun_functions_8c_ab85a0d17357e8a27e2f77b3cd8d84027_icgraph" alt=""/></div>
+<map name="commun_functions_8c_ab85a0d17357e8a27e2f77b3cd8d84027_icgraph" id="commun_functions_8c_ab85a0d17357e8a27e2f77b3cd8d84027_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="133,5,191,32"/>
+<area shape="rect" id="node7" href="tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="137,56,187,83"/>
+<area shape="rect" id="node8" href="asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="128,107,196,133"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="244,56,351,83"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="399,56,524,83"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="436,107,487,133"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="572,107,623,133"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="accb6052f792ce29f71e79866dff07a58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accb6052f792ce29f71e79866dff07a58">&#9670;&nbsp;</a></span>drawReplay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void drawReplay </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TTF_Font *&#160;</td>
+          <td class="paramname"><em>font</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>posY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>viewW</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>viewH</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Affiche un texte invitant le joueur à rejouer. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">font</td><td>La police d'écriture </td></tr>
+    <tr><td class="paramname">posY</td><td>position du text sur Y </td></tr>
+    <tr><td class="paramname">viewW</td><td>hauteur de la fenetre </td></tr>
+    <tr><td class="paramname">viewH</td><td>largueur de la fenetre </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="commun_functions_8c_accb6052f792ce29f71e79866dff07a58_icgraph.jpg" border="0" usemap="#commun_functions_8c_accb6052f792ce29f71e79866dff07a58_icgraph" alt=""/></div>
+<map name="commun_functions_8c_accb6052f792ce29f71e79866dff07a58_icgraph" id="commun_functions_8c_accb6052f792ce29f71e79866dff07a58_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="158,5,215,32"/>
+<area shape="rect" id="node7" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="144,56,229,83"/>
+<area shape="rect" id="node8" href="tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="161,107,212,133"/>
+<area shape="rect" id="node9" href="asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="153,157,221,184"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="277,81,384,108"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="432,81,557,108"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="469,132,520,159"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="605,132,656,159"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ab497da0f3b8a639a9993a3aa10460c30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab497da0f3b8a639a9993a3aa10460c30">&#9670;&nbsp;</a></span>informationPreciseCPUGPU()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void informationPreciseCPUGPU </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>permet d'afficher les info CPU/GPU </p>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="commun_functions_8c_ab497da0f3b8a639a9993a3aa10460c30_icgraph.jpg" border="0" usemap="#commun_functions_8c_ab497da0f3b8a639a9993a3aa10460c30_icgraph" alt=""/></div>
+<map name="commun_functions_8c_ab497da0f3b8a639a9993a3aa10460c30_icgraph" id="commun_functions_8c_ab497da0f3b8a639a9993a3aa10460c30_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="241,5,292,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a7abdc103877c16a5077411165bf8154d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7abdc103877c16a5077411165bf8154d">&#9670;&nbsp;</a></span>lenNum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int lenNum </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>retourne la longueur d'un nombre </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">n</td><td>Le nombre à examiner </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>longueur d'un chiffre </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="commun_functions_8c_a7abdc103877c16a5077411165bf8154d_icgraph.jpg" border="0" usemap="#commun_functions_8c_a7abdc103877c16a5077411165bf8154d_icgraph" alt=""/></div>
+<map name="commun_functions_8c_a7abdc103877c16a5077411165bf8154d_icgraph" id="commun_functions_8c_a7abdc103877c16a5077411165bf8154d_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ad19affe43f9c0e08c2e359c5d56ed59c" title="Affiche un score de terrain. " alt="" coords="131,5,215,32"/>
+<area shape="rect" id="node8" href="tetris_8c.html#ad89280f871b106975881d67c0482af34" title="Affiche les animations de score d&#39;une ligne. " alt="" coords="120,56,227,83"/>
+<area shape="rect" id="node3" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="275,5,332,32"/>
+<area shape="rect" id="node4" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="380,31,487,57"/>
+<area shape="rect" id="node5" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="535,31,660,57"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="572,81,623,108"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="708,81,759,108"/>
+<area shape="rect" id="node9" href="tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="278,56,329,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="aad2eabec61848c202dd8cf2a800d3398"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad2eabec61848c202dd8cf2a800d3398">&#9670;&nbsp;</a></span>randSign()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int randSign </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>renvoie un signe aléatoire : soit 1 ou -1 </p>
+<dl class="section return"><dt>Renvoie</dt><dd>1/-1 </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="commun_functions_8c_aad2eabec61848c202dd8cf2a800d3398_icgraph.jpg" border="0" usemap="#commun_functions_8c_aad2eabec61848c202dd8cf2a800d3398_icgraph" alt=""/></div>
+<map name="commun_functions_8c_aad2eabec61848c202dd8cf2a800d3398_icgraph" id="commun_functions_8c_aad2eabec61848c202dd8cf2a800d3398_icgraph">
+<area shape="rect" id="node2" href="asteroid_8c.html#a53204c929ab037429cac314a6c3d15e0" title="détruit un asteroid " alt="" coords="127,5,245,32"/>
+<area shape="rect" id="node8" href="asteroid_8c.html#a101a47caf287f1684d6d3f097446fd25" title="mouvement du missile en fonction de l&#39;arme, fait par Hugo " alt="" coords="132,56,240,83"/>
+<area shape="rect" id="node9" href="asteroid_8c.html#a07000afcd19ecd3a3f1e230a74eab955" title="apparation d&#39;un asteroide " alt="" coords="129,107,243,133"/>
+<area shape="rect" id="node3" href="asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="293,56,361,83"/>
+<area shape="rect" id="node4" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="409,56,516,83"/>
+<area shape="rect" id="node5" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="564,56,689,83"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="601,107,652,133"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="737,107,788,133"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des variables</h2>
+<a id="af745d16273f663f1f64767cf64d09b02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af745d16273f663f1f64767cf64d09b02">&#9670;&nbsp;</a></span>ALPHA</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int ALPHA[2 *(int) FRAME_ANIM_RETOUR] = { 10, 30, 55, 70, 100, 140, 170, 200, 220, 225, 230, 230, 230, 230, 230, 230,230, 230, 230, 230, 230,230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 225,220,200,170,140,100,70,55,30,10}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af704eeb5ce2073cbf544ed0246c38096"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af704eeb5ce2073cbf544ed0246c38096">&#9670;&nbsp;</a></span>BASE_DEST</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SDL_Rect BASE_DEST = {BASE_WINDOW_W-10, BASE_WINDOW_H-10, 0,0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3997e96387b98a69b49b99b07ca01be2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3997e96387b98a69b49b99b07ca01be2">&#9670;&nbsp;</a></span>BETA</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* BETA = &quot;(Beta)&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a30ee815d8c709aa66a576c66472d3a48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30ee815d8c709aa66a576c66472d3a48">&#9670;&nbsp;</a></span>COLOR_ERROR_LOADING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Color COLOR_ERROR_LOADING = {0xfb,0x17,0x17}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1ce6bb164d37e605aa60e94aefe73817"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ce6bb164d37e605aa60e94aefe73817">&#9670;&nbsp;</a></span>EXT_FILE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FILE* EXT_FILE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a84e6cf274c3f2439ef3b1d386dc474c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84e6cf274c3f2439ef3b1d386dc474c6">&#9670;&nbsp;</a></span>QUIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* QUIT = &quot;Echap&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a05dd6426be20d877029f9fff2f777951"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05dd6426be20d877029f9fff2f777951">&#9670;&nbsp;</a></span>QUIT_DEST</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SDL_Rect QUIT_DEST = {10,10,0,0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afd33db1ce94dcc227584c51133296222"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd33db1ce94dcc227584c51133296222">&#9670;&nbsp;</a></span>REPLAY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* REPLAY = &quot;Appuyer sur Espace pour jouer !&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acc149d3bd8c6407d2c6e794a9b304939"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc149d3bd8c6407d2c6e794a9b304939">&#9670;&nbsp;</a></span>SRC_LOADING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Rect SRC_LOADING = {0,0,222,222}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9eb8c8fa86d54544ffd79802430bd4d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9eb8c8fa86d54544ffd79802430bd4d0">&#9670;&nbsp;</a></span>WHITE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SDL_Color WHITE = {255,255,255,255}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>

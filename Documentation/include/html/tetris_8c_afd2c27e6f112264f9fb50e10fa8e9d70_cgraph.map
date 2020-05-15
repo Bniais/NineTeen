@@ -1,0 +1,6 @@
+<map id="getColRawInfos" name="getColRawInfos">
+<area shape="rect" id="node2" href="$tetris_8c.html#a247740fca8738ba272f965130ea77491" title="Calcule l&#39;indice de la première collone d&#39;une pièce. " alt="" coords="169,5,280,32"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#afa8c2cc6ef8499b8480402ff1aa27762" title="Calcule l&#39;indice de la dernière collone d&#39;une pièce. " alt="" coords="169,56,280,83"/>
+<area shape="rect" id="node4" href="$tetris_8c.html#a96e57a2ea28461c14cb723f46d8efd9f" title="Calcule l&#39;indice de la première ligne d&#39;une pièce. " alt="" coords="178,107,271,133"/>
+<area shape="rect" id="node5" href="$tetris_8c.html#ad09a602d0b6c16445fab969f701a7d06" title="Calcule l&#39;indice de la dernière ligne d&#39;une pièce. " alt="" coords="179,157,271,184"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="checkLines" name="checkLines">
+<area shape="rect" id="node2" href="$tetris_8c.html#ac80ef76f62842fc0df7753b4108356e0" title="Actualise toutes les animations et réagis lorsqu&#39;elles arrivent à certains moments. " alt="" coords="141,5,247,32"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#a68af011964beebd260253db3c077d170" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="295,31,345,57"/>
+</map>

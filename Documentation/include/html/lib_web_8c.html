@@ -1,0 +1,1324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Nineteen: Référence du fichier include/libWeb.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="favicon.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Nineteen
+   </div>
+   <div id="projectbrief">The best of arcade games !</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Structures de données</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Fonctions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle">
+<div class="title">Référence du fichier libWeb.c</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Regroupe les fonctions de connexion au serveur.  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
+<code>#include &lt;curl/curl.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL.h&gt;</code><br />
+<code>#include &lt;time.h&gt;</code><br />
+<code>#include &lt;openssl/md5.h&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Graphe des dépendances par inclusion de libWeb.c:</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c__incl.jpg" border="0" usemap="#include_2lib_web_8c" alt=""/></div>
+</div>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Structures de données</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstring.html">string</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">stock une chaine avec ca longueur  <a href="structstring.html#details">Plus de détails...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_connect_struct.html">ConnectStruct</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">information sur l'envoie de la requete connexion en structure pour le passer en param d'un thread SDL  <a href="struct_connect_struct.html#details">Plus de détails...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_envoi_score.html">EnvoiScore</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">information sur l'envoie d un score en structure pour le passer en param d'un thread SDL  <a href="struct_envoi_score.html#details">Plus de détails...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a5d158dacfa908e971b99a2f491afdf0d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a5d158dacfa908e971b99a2f491afdf0d">URL_CONNECT_EMAIL</a>&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/connect.php&quot;</td></tr>
+<tr class="separator:a5d158dacfa908e971b99a2f491afdf0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5e91dd969495cedbec6b89bd93b0f87"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#af5e91dd969495cedbec6b89bd93b0f87">URL_CONNECT_KEY</a>&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/connect.php&quot;</td></tr>
+<tr class="separator:af5e91dd969495cedbec6b89bd93b0f87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8e71a6a6170671ea1a85501c81db973"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#ab8e71a6a6170671ea1a85501c81db973">URL_UPDATE_SCORE</a>&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/updateYourScore.php&quot;</td></tr>
+<tr class="separator:ab8e71a6a6170671ea1a85501c81db973"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add9afc3d9692756cdded2becda68506f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#add9afc3d9692756cdded2becda68506f">URL_PING</a>&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/ping.php&quot;</td></tr>
+<tr class="separator:add9afc3d9692756cdded2becda68506f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59f5a5892df7f6b06ce3bdbfc60523a6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a59f5a5892df7f6b06ce3bdbfc60523a6">URL_TIMESTAMP</a>&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/include/timestamp.php&quot;</td></tr>
+<tr class="separator:a59f5a5892df7f6b06ce3bdbfc60523a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe8f4c4b118305055c41188bc20cdb3f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#abe8f4c4b118305055c41188bc20cdb3f">URL_GET_COINS</a>&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/coins.php&quot;</td></tr>
+<tr class="separator:abe8f4c4b118305055c41188bc20cdb3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3fac406371392fee5cbc71c4ddaa2d4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#ae3fac406371392fee5cbc71c4ddaa2d4">URL_CHECK_VERSION</a>&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/checkVersion.php&quot;</td></tr>
+<tr class="separator:ae3fac406371392fee5cbc71c4ddaa2d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ac320d59cafa999fc29a7d876c31dfd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a5ac320d59cafa999fc29a7d876c31dfd">URL_LEADERBOARD</a>&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/leaderboard.php&quot;</td></tr>
+<tr class="separator:a5ac320d59cafa999fc29a7d876c31dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb35a5421a9b8611bbb46841bfd3a9f4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#abb35a5421a9b8611bbb46841bfd3a9f4">ERR_REQUIERED_FIELD</a>&#160;&#160;&#160;-1</td></tr>
+<tr class="separator:abb35a5421a9b8611bbb46841bfd3a9f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a722fdc4bc3ab276503c67cefe8b710dc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a722fdc4bc3ab276503c67cefe8b710dc">ERR_SQL_FAILED</a>&#160;&#160;&#160;-2</td></tr>
+<tr class="separator:a722fdc4bc3ab276503c67cefe8b710dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f4ae9f5121c5f586cfd1ef50896e031"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a5f4ae9f5121c5f586cfd1ef50896e031">ERR_INCORRECT_ID_PW</a>&#160;&#160;&#160;-3</td></tr>
+<tr class="separator:a5f4ae9f5121c5f586cfd1ef50896e031"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31d53a8e759a27b07b2cb05b79e62904"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a31d53a8e759a27b07b2cb05b79e62904">ERR_INVALIDE_SECUR</a>&#160;&#160;&#160;-17</td></tr>
+<tr class="separator:a31d53a8e759a27b07b2cb05b79e62904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe1b38ab8f62912a9f1545e8b2d7cec8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#abe1b38ab8f62912a9f1545e8b2d7cec8">CLOCKS_PER_MS</a>&#160;&#160;&#160;1000</td></tr>
+<tr class="separator:abe1b38ab8f62912a9f1545e8b2d7cec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a346b45663bfa5a41fb49acad0845bfd8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a346b45663bfa5a41fb49acad0845bfd8">MD5_SIZE</a>&#160;&#160;&#160;32</td></tr>
+<tr class="separator:a346b45663bfa5a41fb49acad0845bfd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:a10b2e06c39458e351d7e94527bafd9a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9">init_string</a> (struct <a class="el" href="structstring.html">string</a> *s)</td></tr>
+<tr class="memdesc:a10b2e06c39458e351d7e94527bafd9a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">initilalise la structure qui contient la reponse  <a href="#a10b2e06c39458e351d7e94527bafd9a9">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a10b2e06c39458e351d7e94527bafd9a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d790f417b07791af6dd6e9e4717d36a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a">writefunc</a> (void *ptr, size_t size, size_t nmemb, struct <a class="el" href="structstring.html">string</a> *s)</td></tr>
+<tr class="memdesc:a7d790f417b07791af6dd6e9e4717d36a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit la reponse de la requete dans une chaine.  <a href="#a7d790f417b07791af6dd6e9e4717d36a">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a7d790f417b07791af6dd6e9e4717d36a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc91e4581d5b08881b24df3e7755922c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c">md5Hash</a> (char *<a class="el" href="structstring.html">string</a>, char *hash)</td></tr>
+<tr class="memdesc:acc91e4581d5b08881b24df3e7755922c"><td class="mdescLeft">&#160;</td><td class="mdescRight">hash la chaine en md5  <a href="#acc91e4581d5b08881b24df3e7755922c">Plus de détails...</a><br /></td></tr>
+<tr class="separator:acc91e4581d5b08881b24df3e7755922c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27e26af48346ad4ffbedb792ea9928ec"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec">envoyez_requet</a> (char **response, char *url, char *request)</td></tr>
+<tr class="memdesc:a27e26af48346ad4ffbedb792ea9928ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Envoi une requet et ecrit la reponse dans **response.  <a href="#a27e26af48346ad4ffbedb792ea9928ec">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a27e26af48346ad4ffbedb792ea9928ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1cd9df671d9ed2e6f502a489108e8a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0">securePass</a> (char secure[])</td></tr>
+<tr class="memdesc:af1cd9df671d9ed2e6f502a489108e8a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">securise la requete avec une cle unique  <a href="#af1cd9df671d9ed2e6f502a489108e8a0">Plus de détails...</a><br /></td></tr>
+<tr class="separator:af1cd9df671d9ed2e6f502a489108e8a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a645a96c1c84b1241792799dd13cf04a2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2">construire_requete</a> (char **dest, char *username, char *password, char *key, char *gameID, char *score, char *offset, char *limite)</td></tr>
+<tr class="memdesc:a645a96c1c84b1241792799dd13cf04a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permet de crée une requet dans *dest.  <a href="#a645a96c1c84b1241792799dd13cf04a2">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a645a96c1c84b1241792799dd13cf04a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5e65dfa5ba90c7499277657617194cf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#ab5e65dfa5ba90c7499277657617194cf">connectWithUsername</a> (<a class="el" href="struct_connect_struct.html">ConnectStruct</a> *connectStruct)</td></tr>
+<tr class="memdesc:ab5e65dfa5ba90c7499277657617194cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">connexion avec nom d'utilisateur  <a href="#ab5e65dfa5ba90c7499277657617194cf">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ab5e65dfa5ba90c7499277657617194cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e9a40cba3914561ea5795a6ef6f8394"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a7e9a40cba3914561ea5795a6ef6f8394">connectWithKey</a> (char *key)</td></tr>
+<tr class="memdesc:a7e9a40cba3914561ea5795a6ef6f8394"><td class="mdescLeft">&#160;</td><td class="mdescRight">connexion avec key  <a href="#a7e9a40cba3914561ea5795a6ef6f8394">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a7e9a40cba3914561ea5795a6ef6f8394"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a322c2dcd9e61a300f0c7dd217692ccca"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a322c2dcd9e61a300f0c7dd217692ccca">updateMeilleureScoreStruct</a> (char *key, char *retour)</td></tr>
+<tr class="memdesc:a322c2dcd9e61a300f0c7dd217692ccca"><td class="mdescLeft">&#160;</td><td class="mdescRight">recuperer les meilleures score  <a href="#a322c2dcd9e61a300f0c7dd217692ccca">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a322c2dcd9e61a300f0c7dd217692ccca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f539ac35bb1d7222d32434ed795da30"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a1f539ac35bb1d7222d32434ed795da30">getLeaderboard</a> (char *gameID, char *username, char *offset, char *limite, char *retour)</td></tr>
+<tr class="memdesc:a1f539ac35bb1d7222d32434ed795da30"><td class="mdescLeft">&#160;</td><td class="mdescRight">recupere le classement des joueurs  <a href="#a1f539ac35bb1d7222d32434ed795da30">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a1f539ac35bb1d7222d32434ed795da30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55c3e461f1c4f810c5a38eb74c219fae"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a55c3e461f1c4f810c5a38eb74c219fae">updateScore</a> (<a class="el" href="struct_envoi_score.html">EnvoiScore</a> *envoiScore)</td></tr>
+<tr class="memdesc:a55c3e461f1c4f810c5a38eb74c219fae"><td class="mdescLeft">&#160;</td><td class="mdescRight">update le score  <a href="#a55c3e461f1c4f810c5a38eb74c219fae">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a55c3e461f1c4f810c5a38eb74c219fae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a451154efd5a32b29897a04799a579fb1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a451154efd5a32b29897a04799a579fb1">ping</a> ()</td></tr>
+<tr class="memdesc:a451154efd5a32b29897a04799a579fb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">permet de calculer de delai de reponse du serveur  <a href="#a451154efd5a32b29897a04799a579fb1">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a451154efd5a32b29897a04799a579fb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e29e9eb16393df50ad9f677aa1ab1b8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a0e29e9eb16393df50ad9f677aa1ab1b8">checkVersionOnline</a> (char message[])</td></tr>
+<tr class="memdesc:a0e29e9eb16393df50ad9f677aa1ab1b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">permet de verifier la bonne version de l'utilisateur  <a href="#a0e29e9eb16393df50ad9f677aa1ab1b8">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a0e29e9eb16393df50ad9f677aa1ab1b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a1ce6bb164d37e605aa60e94aefe73817"><td class="memItemLeft" align="right" valign="top">FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a1ce6bb164d37e605aa60e94aefe73817">EXT_FILE</a></td></tr>
+<tr class="separator:a1ce6bb164d37e605aa60e94aefe73817"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a475b89cfe715cf08a050de5875525f14"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a475b89cfe715cf08a050de5875525f14">connectEnded</a></td></tr>
+<tr class="separator:a475b89cfe715cf08a050de5875525f14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30862aa51c2944f287c4445751341ee8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lib_web_8c.html#a30862aa51c2944f287c4445751341ee8">updateEnded</a></td></tr>
+<tr class="separator:a30862aa51c2944f287c4445751341ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Regroupe les fonctions de connexion au serveur. </p>
+<dl class="section author"><dt>Auteur</dt><dd>Samy M. </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>31 janvier 2020 </dd></dl>
+</div><h2 class="groupheader">Documentation des macros</h2>
+<a id="abe1b38ab8f62912a9f1545e8b2d7cec8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe1b38ab8f62912a9f1545e8b2d7cec8">&#9670;&nbsp;</a></span>CLOCKS_PER_MS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CLOCKS_PER_MS&#160;&#160;&#160;1000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5f4ae9f5121c5f586cfd1ef50896e031"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f4ae9f5121c5f586cfd1ef50896e031">&#9670;&nbsp;</a></span>ERR_INCORRECT_ID_PW</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ERR_INCORRECT_ID_PW&#160;&#160;&#160;-3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a31d53a8e759a27b07b2cb05b79e62904"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31d53a8e759a27b07b2cb05b79e62904">&#9670;&nbsp;</a></span>ERR_INVALIDE_SECUR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ERR_INVALIDE_SECUR&#160;&#160;&#160;-17</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abb35a5421a9b8611bbb46841bfd3a9f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb35a5421a9b8611bbb46841bfd3a9f4">&#9670;&nbsp;</a></span>ERR_REQUIERED_FIELD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ERR_REQUIERED_FIELD&#160;&#160;&#160;-1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a722fdc4bc3ab276503c67cefe8b710dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a722fdc4bc3ab276503c67cefe8b710dc">&#9670;&nbsp;</a></span>ERR_SQL_FAILED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ERR_SQL_FAILED&#160;&#160;&#160;-2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a346b45663bfa5a41fb49acad0845bfd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a346b45663bfa5a41fb49acad0845bfd8">&#9670;&nbsp;</a></span>MD5_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MD5_SIZE&#160;&#160;&#160;32</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae3fac406371392fee5cbc71c4ddaa2d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3fac406371392fee5cbc71c4ddaa2d4">&#9670;&nbsp;</a></span>URL_CHECK_VERSION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define URL_CHECK_VERSION&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/checkVersion.php&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5d158dacfa908e971b99a2f491afdf0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d158dacfa908e971b99a2f491afdf0d">&#9670;&nbsp;</a></span>URL_CONNECT_EMAIL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define URL_CONNECT_EMAIL&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/connect.php&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af5e91dd969495cedbec6b89bd93b0f87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5e91dd969495cedbec6b89bd93b0f87">&#9670;&nbsp;</a></span>URL_CONNECT_KEY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define URL_CONNECT_KEY&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/connect.php&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abe8f4c4b118305055c41188bc20cdb3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe8f4c4b118305055c41188bc20cdb3f">&#9670;&nbsp;</a></span>URL_GET_COINS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define URL_GET_COINS&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/coins.php&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5ac320d59cafa999fc29a7d876c31dfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ac320d59cafa999fc29a7d876c31dfd">&#9670;&nbsp;</a></span>URL_LEADERBOARD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define URL_LEADERBOARD&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/leaderboard.php&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="add9afc3d9692756cdded2becda68506f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add9afc3d9692756cdded2becda68506f">&#9670;&nbsp;</a></span>URL_PING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define URL_PING&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/ping.php&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a59f5a5892df7f6b06ce3bdbfc60523a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59f5a5892df7f6b06ce3bdbfc60523a6">&#9670;&nbsp;</a></span>URL_TIMESTAMP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define URL_TIMESTAMP&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/include/timestamp.php&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab8e71a6a6170671ea1a85501c81db973"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8e71a6a6170671ea1a85501c81db973">&#9670;&nbsp;</a></span>URL_UPDATE_SCORE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define URL_UPDATE_SCORE&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/updateYourScore.php&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a0e29e9eb16393df50ad9f677aa1ab1b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e29e9eb16393df50ad9f677aa1ab1b8">&#9670;&nbsp;</a></span>checkVersionOnline()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int checkVersionOnline </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>message</em>[]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>permet de verifier la bonne version de l'utilisateur </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">requete</td><td>construite comprenant la version du jeu</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>DELAY MS </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a0e29e9eb16393df50ad9f677aa1ab1b8_cgraph.jpg" border="0" usemap="#lib_web_8c_a0e29e9eb16393df50ad9f677aa1ab1b8_cgraph" alt=""/></div>
+<map name="lib_web_8c_a0e29e9eb16393df50ad9f677aa1ab1b8_cgraph" id="lib_web_8c_a0e29e9eb16393df50ad9f677aa1ab1b8_cgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="192,31,307,57"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="355,5,433,32"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="357,56,431,83"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a0e29e9eb16393df50ad9f677aa1ab1b8_icgraph.jpg" border="0" usemap="#lib_web_8c_a0e29e9eb16393df50ad9f677aa1ab1b8_icgraph" alt=""/></div>
+<map name="lib_web_8c_a0e29e9eb16393df50ad9f677aa1ab1b8_icgraph" id="lib_web_8c_a0e29e9eb16393df50ad9f677aa1ab1b8_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#a94cac2e3d54b21d4e26db7f3d15e8e6a" title="permet de verifier la version du VERSION_LOGICIEL " alt="" coords="192,5,293,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="341,5,392,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a7e9a40cba3914561ea5795a6ef6f8394"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e9a40cba3914561ea5795a6ef6f8394">&#9670;&nbsp;</a></span>connectWithKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int connectWithKey </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>connexion avec key </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>Ecriture de la clé dans key</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394_cgraph.jpg" border="0" usemap="#lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394_cgraph" alt=""/></div>
+<map name="lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394_cgraph" id="lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394_cgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="172,5,301,32"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="488,56,603,83"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="349,5,440,32"/>
+<area shape="rect" id="node7" href="lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="506,5,585,32"/>
+<area shape="rect" id="node5" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="651,31,729,57"/>
+<area shape="rect" id="node6" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="653,81,727,108"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394_icgraph.jpg" border="0" usemap="#lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394_icgraph" alt=""/></div>
+<map name="lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394_icgraph" id="lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#a11b331a93f323447a69e780284e8679d" title="verifie si l utilisateur est deja connecter " alt="" coords="172,5,285,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="333,5,404,32"/>
+<area shape="rect" id="node4" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="452,5,503,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ab5e65dfa5ba90c7499277657617194cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5e65dfa5ba90c7499277657617194cf">&#9670;&nbsp;</a></span>connectWithUsername()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int connectWithUsername </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_connect_struct.html">ConnectStruct</a> *&#160;</td>
+          <td class="paramname"><em>connectStruct</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>connexion avec nom d'utilisateur </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">connectStruct</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_ab5e65dfa5ba90c7499277657617194cf_cgraph.jpg" border="0" usemap="#lib_web_8c_ab5e65dfa5ba90c7499277657617194cf_cgraph" alt=""/></div>
+<map name="lib_web_8c_ab5e65dfa5ba90c7499277657617194cf_cgraph" id="lib_web_8c_ab5e65dfa5ba90c7499277657617194cf_cgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="208,5,337,32"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="524,56,639,83"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="385,5,476,32"/>
+<area shape="rect" id="node7" href="lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="542,5,621,32"/>
+<area shape="rect" id="node5" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="687,31,765,57"/>
+<area shape="rect" id="node6" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="689,81,763,108"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_ab5e65dfa5ba90c7499277657617194cf_icgraph.jpg" border="0" usemap="#lib_web_8c_ab5e65dfa5ba90c7499277657617194cf_icgraph" alt=""/></div>
+<map name="lib_web_8c_ab5e65dfa5ba90c7499277657617194cf_icgraph" id="lib_web_8c_ab5e65dfa5ba90c7499277657617194cf_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="208,5,289,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="337,5,408,32"/>
+<area shape="rect" id="node4" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="456,5,507,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a645a96c1c84b1241792799dd13cf04a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a645a96c1c84b1241792799dd13cf04a2">&#9670;&nbsp;</a></span>construire_requete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int construire_requete </td>
+          <td>(</td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>dest</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>username</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>password</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>gameID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>score</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>limite</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Permet de crée une requet dans *dest. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dest</td><td>Ecriture de la requet </td></tr>
+    <tr><td class="paramname">username</td><td>Username de connexion (Optionnal) </td></tr>
+    <tr><td class="paramname">password</td><td>Mot de passe de connexion (Optionnal) </td></tr>
+    <tr><td class="paramname">key</td><td>Key de connexion (Optionnal) </td></tr>
+    <tr><td class="paramname">gameID</td><td>id du jeux (Optional) </td></tr>
+    <tr><td class="paramname">score</td><td>score (Optional) </td></tr>
+    <tr><td class="paramname">offset</td><td>nombre d element recherche (Optional) </td></tr>
+    <tr><td class="paramname">limite</td><td>limit recherche score (Optional)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a645a96c1c84b1241792799dd13cf04a2_cgraph.jpg" border="0" usemap="#lib_web_8c_a645a96c1c84b1241792799dd13cf04a2_cgraph" alt=""/></div>
+<map name="lib_web_8c_a645a96c1c84b1241792799dd13cf04a2_cgraph" id="lib_web_8c_a645a96c1c84b1241792799dd13cf04a2_cgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="183,56,273,83"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="321,31,436,57"/>
+<area shape="rect" id="node6" href="lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="339,81,418,108"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="484,5,563,32"/>
+<area shape="rect" id="node5" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="486,56,561,83"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a645a96c1c84b1241792799dd13cf04a2_icgraph.jpg" border="0" usemap="#lib_web_8c_a645a96c1c84b1241792799dd13cf04a2_icgraph" alt=""/></div>
+<map name="lib_web_8c_a645a96c1c84b1241792799dd13cf04a2_icgraph" id="lib_web_8c_a645a96c1c84b1241792799dd13cf04a2_icgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#ab5e65dfa5ba90c7499277657617194cf" title="connexion avec nom d&#39;utilisateur " alt="" coords="197,5,351,32"/>
+<area shape="rect" id="node6" href="lib_web_8c.html#a7e9a40cba3914561ea5795a6ef6f8394" title="connexion avec key " alt="" coords="215,56,333,83"/>
+<area shape="rect" id="node8" href="lib_web_8c.html#a322c2dcd9e61a300f0c7dd217692ccca" title="recuperer les meilleures score " alt="" coords="183,107,365,133"/>
+<area shape="rect" id="node14" href="lib_web_8c.html#a1f539ac35bb1d7222d32434ed795da30" title="recupere le classement des joueurs " alt="" coords="219,195,329,221"/>
+<area shape="rect" id="node20" href="lib_web_8c.html#a55c3e461f1c4f810c5a38eb74c219fae" title="update le score " alt="" coords="619,360,714,387"/>
+<area shape="rect" id="node3" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="439,5,520,32"/>
+<area shape="rect" id="node4" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="983,81,1054,108"/>
+<area shape="rect" id="node5" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="1219,183,1269,209"/>
+<area shape="rect" id="node7" href="main_8c.html#a11b331a93f323447a69e780284e8679d" title="verifie si l utilisateur est deja connecter " alt="" coords="423,56,536,83"/>
+<area shape="rect" id="node9" href="room_8c.html#a70263633a7a137f37ff72e5cf71cc7eb" title="Mes a jours les donnees liee au score de la structure meilleureScore. " alt="" coords="593,107,740,133"/>
+<area shape="rect" id="node10" href="main_8c.html#a3980fa98fa4e25d3fd957ad815ed142c" title="verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores ..." alt="" coords="788,107,917,133"/>
+<area shape="rect" id="node11" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="790,157,915,184"/>
+<area shape="rect" id="node12" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="965,259,1072,285"/>
+<area shape="rect" id="node13" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="1120,208,1171,235"/>
+<area shape="rect" id="node15" href="leaderboard_8c.html#a8b9b72ad5c70dc9ed442cd734f2b3361" title="permet de charger les donner dans la structure " alt="" coords="413,208,545,235"/>
+<area shape="rect" id="node16" href="leaderboard_8c.html#ab1c772497e2229750ce69da0742fc217" title="permet de rechercher un joueur dans une structure de donner de type classement " alt="" coords="605,157,728,184"/>
+<area shape="rect" id="node17" href="leaderboard_8c.html#adb7c03fcec842fb68ec6523b538f5ff7" title="leaderboard" alt="" coords="808,259,897,285"/>
+<area shape="rect" id="node18" href="leaderboard_8c.html#a8aa1a5fcb4a3d825a4614dd3c9221233" title="permet de gerer tous les evenements liee au jeu " alt="" coords="601,259,732,285"/>
+<area shape="rect" id="node19" href="leaderboard_8c.html#a8cc8b08c1c9d8854a008e3fdb6cf091c" title="permet d&#39;interagire avec l&#39;interface " alt="" coords="600,309,733,336"/>
+<area shape="rect" id="node21" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="824,309,881,336"/>
+<area shape="rect" id="node22" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="810,360,895,387"/>
+<area shape="rect" id="node23" href="tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="827,411,878,437"/>
+<area shape="rect" id="node24" href="asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="819,461,887,488"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a27e26af48346ad4ffbedb792ea9928ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27e26af48346ad4ffbedb792ea9928ec">&#9670;&nbsp;</a></span>envoyez_requet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int envoyez_requet </td>
+          <td>(</td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>response</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>url</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>request</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Envoi une requet et ecrit la reponse dans **response. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">url</td><td>url de destination </td></tr>
+    <tr><td class="paramname">request</td><td>requete a envoyez</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec_cgraph.jpg" border="0" usemap="#lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec_cgraph" alt=""/></div>
+<map name="lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec_cgraph" id="lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec_cgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="168,5,247,32"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="170,56,245,83"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec_icgraph.jpg" border="0" usemap="#lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec_icgraph" alt=""/></div>
+<map name="lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec_icgraph" id="lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec_icgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="168,144,259,171"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#ab5e65dfa5ba90c7499277657617194cf" title="connexion avec nom d&#39;utilisateur " alt="" coords="507,43,662,69"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="1580,183,1631,209"/>
+<area shape="rect" id="node8" href="lib_web_8c.html#a7e9a40cba3914561ea5795a6ef6f8394" title="connexion avec key " alt="" coords="525,93,644,120"/>
+<area shape="rect" id="node10" href="lib_web_8c.html#a322c2dcd9e61a300f0c7dd217692ccca" title="recuperer les meilleures score " alt="" coords="493,195,676,221"/>
+<area shape="rect" id="node16" href="lib_web_8c.html#a1f539ac35bb1d7222d32434ed795da30" title="recupere le classement des joueurs " alt="" coords="529,245,640,272"/>
+<area shape="rect" id="node22" href="lib_web_8c.html#a55c3e461f1c4f810c5a38eb74c219fae" title="update le score " alt="" coords="930,296,1025,323"/>
+<area shape="rect" id="node27" href="lib_web_8c.html#a451154efd5a32b29897a04799a579fb1" title="permet de calculer de delai de reponse du serveur " alt="" coords="190,397,237,424"/>
+<area shape="rect" id="node28" href="lib_web_8c.html#a0e29e9eb16393df50ad9f677aa1ab1b8" title="permet de verifier la bonne version de l&#39;utilisateur " alt="" coords="307,448,445,475"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="311,144,441,171"/>
+<area shape="rect" id="node5" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="749,43,831,69"/>
+<area shape="rect" id="node6" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="1294,119,1365,145"/>
+<area shape="rect" id="node9" href="main_8c.html#a11b331a93f323447a69e780284e8679d" title="verifie si l utilisateur est deja connecter " alt="" coords="733,93,847,120"/>
+<area shape="rect" id="node11" href="room_8c.html#a70263633a7a137f37ff72e5cf71cc7eb" title="Mes a jours les donnees liee au score de la structure meilleureScore. " alt="" coords="904,195,1051,221"/>
+<area shape="rect" id="node12" href="main_8c.html#a3980fa98fa4e25d3fd957ad815ed142c" title="verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores ..." alt="" coords="1099,144,1228,171"/>
+<area shape="rect" id="node13" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="1101,245,1226,272"/>
+<area shape="rect" id="node14" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="1276,296,1383,323"/>
+<area shape="rect" id="node15" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="1456,259,1507,285"/>
+<area shape="rect" id="node17" href="leaderboard_8c.html#a8b9b72ad5c70dc9ed442cd734f2b3361" title="permet de charger les donner dans la structure " alt="" coords="724,397,856,424"/>
+<area shape="rect" id="node18" href="leaderboard_8c.html#ab1c772497e2229750ce69da0742fc217" title="permet de rechercher un joueur dans une structure de donner de type classement " alt="" coords="916,347,1039,373"/>
+<area shape="rect" id="node19" href="leaderboard_8c.html#adb7c03fcec842fb68ec6523b538f5ff7" title="leaderboard" alt="" coords="1119,499,1208,525"/>
+<area shape="rect" id="node20" href="leaderboard_8c.html#a8aa1a5fcb4a3d825a4614dd3c9221233" title="permet de gerer tous les evenements liee au jeu " alt="" coords="912,397,1043,424"/>
+<area shape="rect" id="node21" href="leaderboard_8c.html#a8cc8b08c1c9d8854a008e3fdb6cf091c" title="permet d&#39;interagire avec l&#39;interface " alt="" coords="911,448,1044,475"/>
+<area shape="rect" id="node23" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="1135,296,1192,323"/>
+<area shape="rect" id="node24" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="1121,347,1206,373"/>
+<area shape="rect" id="node25" href="tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="1138,397,1189,424"/>
+<area shape="rect" id="node26" href="asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="1129,448,1197,475"/>
+<area shape="rect" id="node29" href="main_8c.html#a94cac2e3d54b21d4e26db7f3d15e8e6a" title="permet de verifier la version du VERSION_LOGICIEL " alt="" coords="1431,411,1532,437"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a1f539ac35bb1d7222d32434ed795da30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f539ac35bb1d7222d32434ed795da30">&#9670;&nbsp;</a></span>getLeaderboard()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int getLeaderboard </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>gameID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>username</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>limite</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>retour</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>recupere le classement des joueurs </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gameID</td><td>identifiant du jeu (Optinal) </td></tr>
+    <tr><td class="paramname">username</td><td>non d utulisateur </td></tr>
+    <tr><td class="paramname">offset</td><td>specifier le debut des retour pour la requete sql </td></tr>
+    <tr><td class="paramname">limite</td><td>specifier la limite de la rpeonse sql </td></tr>
+    <tr><td class="paramname">retour</td><td>chaine de retour de la reponse</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a1f539ac35bb1d7222d32434ed795da30_cgraph.jpg" border="0" usemap="#lib_web_8c_a1f539ac35bb1d7222d32434ed795da30_cgraph" alt=""/></div>
+<map name="lib_web_8c_a1f539ac35bb1d7222d32434ed795da30_cgraph" id="lib_web_8c_a1f539ac35bb1d7222d32434ed795da30_cgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="164,5,293,32"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="480,56,595,83"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="341,5,432,32"/>
+<area shape="rect" id="node7" href="lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="498,5,577,32"/>
+<area shape="rect" id="node5" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="643,31,721,57"/>
+<area shape="rect" id="node6" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="645,81,719,108"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a1f539ac35bb1d7222d32434ed795da30_icgraph.jpg" border="0" usemap="#lib_web_8c_a1f539ac35bb1d7222d32434ed795da30_icgraph" alt=""/></div>
+<map name="lib_web_8c_a1f539ac35bb1d7222d32434ed795da30_icgraph" id="lib_web_8c_a1f539ac35bb1d7222d32434ed795da30_icgraph">
+<area shape="rect" id="node2" href="leaderboard_8c.html#a8b9b72ad5c70dc9ed442cd734f2b3361" title="permet de charger les donner dans la structure " alt="" coords="164,81,296,108"/>
+<area shape="rect" id="node3" href="leaderboard_8c.html#ab1c772497e2229750ce69da0742fc217" title="permet de rechercher un joueur dans une structure de donner de type classement " alt="" coords="349,5,472,32"/>
+<area shape="rect" id="node4" href="leaderboard_8c.html#adb7c03fcec842fb68ec6523b538f5ff7" title="leaderboard" alt="" coords="525,81,615,108"/>
+<area shape="rect" id="node9" href="leaderboard_8c.html#a8aa1a5fcb4a3d825a4614dd3c9221233" title="permet de gerer tous les evenements liee au jeu " alt="" coords="345,107,476,133"/>
+<area shape="rect" id="node10" href="leaderboard_8c.html#a8cc8b08c1c9d8854a008e3fdb6cf091c" title="permet d&#39;interagire avec l&#39;interface " alt="" coords="344,157,477,184"/>
+<area shape="rect" id="node5" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="663,81,769,108"/>
+<area shape="rect" id="node6" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="817,81,943,108"/>
+<area shape="rect" id="node7" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="855,132,905,159"/>
+<area shape="rect" id="node8" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="991,132,1041,159"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a10b2e06c39458e351d7e94527bafd9a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10b2e06c39458e351d7e94527bafd9a9">&#9670;&nbsp;</a></span>init_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void init_string </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structstring.html">string</a> *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>initilalise la structure qui contient la reponse </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>void </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a10b2e06c39458e351d7e94527bafd9a9_icgraph.jpg" border="0" usemap="#lib_web_8c_a10b2e06c39458e351d7e94527bafd9a9_icgraph" alt=""/></div>
+<map name="lib_web_8c_a10b2e06c39458e351d7e94527bafd9a9_icgraph" id="lib_web_8c_a10b2e06c39458e351d7e94527bafd9a9_icgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="132,195,247,221"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="295,144,385,171"/>
+<area shape="rect" id="node5" href="lib_web_8c.html#ab5e65dfa5ba90c7499277657617194cf" title="connexion avec nom d&#39;utilisateur " alt="" coords="634,43,789,69"/>
+<area shape="rect" id="node8" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="1707,183,1757,209"/>
+<area shape="rect" id="node9" href="lib_web_8c.html#a7e9a40cba3914561ea5795a6ef6f8394" title="connexion avec key " alt="" coords="652,93,771,120"/>
+<area shape="rect" id="node11" href="lib_web_8c.html#a322c2dcd9e61a300f0c7dd217692ccca" title="recuperer les meilleures score " alt="" coords="620,195,803,221"/>
+<area shape="rect" id="node17" href="lib_web_8c.html#a1f539ac35bb1d7222d32434ed795da30" title="recupere le classement des joueurs " alt="" coords="656,245,767,272"/>
+<area shape="rect" id="node23" href="lib_web_8c.html#a55c3e461f1c4f810c5a38eb74c219fae" title="update le score " alt="" coords="1057,296,1151,323"/>
+<area shape="rect" id="node28" href="lib_web_8c.html#a451154efd5a32b29897a04799a579fb1" title="permet de calculer de delai de reponse du serveur " alt="" coords="317,397,363,424"/>
+<area shape="rect" id="node29" href="lib_web_8c.html#a0e29e9eb16393df50ad9f677aa1ab1b8" title="permet de verifier la bonne version de l&#39;utilisateur " alt="" coords="433,448,572,475"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="438,144,567,171"/>
+<area shape="rect" id="node6" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="876,43,957,69"/>
+<area shape="rect" id="node7" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="1421,119,1491,145"/>
+<area shape="rect" id="node10" href="main_8c.html#a11b331a93f323447a69e780284e8679d" title="verifie si l utilisateur est deja connecter " alt="" coords="860,93,973,120"/>
+<area shape="rect" id="node12" href="room_8c.html#a70263633a7a137f37ff72e5cf71cc7eb" title="Mes a jours les donnees liee au score de la structure meilleureScore. " alt="" coords="1031,195,1177,221"/>
+<area shape="rect" id="node13" href="main_8c.html#a3980fa98fa4e25d3fd957ad815ed142c" title="verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores ..." alt="" coords="1225,144,1355,171"/>
+<area shape="rect" id="node14" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="1227,245,1353,272"/>
+<area shape="rect" id="node15" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="1403,296,1509,323"/>
+<area shape="rect" id="node16" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="1583,259,1633,285"/>
+<area shape="rect" id="node18" href="leaderboard_8c.html#a8b9b72ad5c70dc9ed442cd734f2b3361" title="permet de charger les donner dans la structure " alt="" coords="851,397,983,424"/>
+<area shape="rect" id="node19" href="leaderboard_8c.html#ab1c772497e2229750ce69da0742fc217" title="permet de rechercher un joueur dans une structure de donner de type classement " alt="" coords="1043,347,1165,373"/>
+<area shape="rect" id="node20" href="leaderboard_8c.html#adb7c03fcec842fb68ec6523b538f5ff7" title="leaderboard" alt="" coords="1245,499,1335,525"/>
+<area shape="rect" id="node21" href="leaderboard_8c.html#a8aa1a5fcb4a3d825a4614dd3c9221233" title="permet de gerer tous les evenements liee au jeu " alt="" coords="1039,397,1169,424"/>
+<area shape="rect" id="node22" href="leaderboard_8c.html#a8cc8b08c1c9d8854a008e3fdb6cf091c" title="permet d&#39;interagire avec l&#39;interface " alt="" coords="1037,448,1171,475"/>
+<area shape="rect" id="node24" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="1261,296,1319,323"/>
+<area shape="rect" id="node25" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="1247,347,1333,373"/>
+<area shape="rect" id="node26" href="tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="1265,397,1315,424"/>
+<area shape="rect" id="node27" href="asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="1256,448,1324,475"/>
+<area shape="rect" id="node30" href="main_8c.html#a94cac2e3d54b21d4e26db7f3d15e8e6a" title="permet de verifier la version du VERSION_LOGICIEL " alt="" coords="1557,411,1659,437"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="acc91e4581d5b08881b24df3e7755922c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc91e4581d5b08881b24df3e7755922c">&#9670;&nbsp;</a></span>md5Hash()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void md5Hash </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>string</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>hash</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>hash la chaine en md5 </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">string</td><td></td></tr>
+    <tr><td class="paramname">hash</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>void </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_acc91e4581d5b08881b24df3e7755922c_icgraph.jpg" border="0" usemap="#lib_web_8c_acc91e4581d5b08881b24df3e7755922c_icgraph" alt=""/></div>
+<map name="lib_web_8c_acc91e4581d5b08881b24df3e7755922c_icgraph" id="lib_web_8c_acc91e4581d5b08881b24df3e7755922c_icgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="132,107,223,133"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="271,107,400,133"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#ab5e65dfa5ba90c7499277657617194cf" title="connexion avec nom d&#39;utilisateur " alt="" coords="462,5,617,32"/>
+<area shape="rect" id="node8" href="lib_web_8c.html#a7e9a40cba3914561ea5795a6ef6f8394" title="connexion avec key " alt="" coords="480,56,599,83"/>
+<area shape="rect" id="node10" href="lib_web_8c.html#a322c2dcd9e61a300f0c7dd217692ccca" title="recuperer les meilleures score " alt="" coords="448,107,631,133"/>
+<area shape="rect" id="node16" href="lib_web_8c.html#a1f539ac35bb1d7222d32434ed795da30" title="recupere le classement des joueurs " alt="" coords="484,195,595,221"/>
+<area shape="rect" id="node22" href="lib_web_8c.html#a55c3e461f1c4f810c5a38eb74c219fae" title="update le score " alt="" coords="885,360,979,387"/>
+<area shape="rect" id="node5" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="704,5,785,32"/>
+<area shape="rect" id="node6" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="1249,81,1319,108"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="1484,183,1535,209"/>
+<area shape="rect" id="node9" href="main_8c.html#a11b331a93f323447a69e780284e8679d" title="verifie si l utilisateur est deja connecter " alt="" coords="688,56,801,83"/>
+<area shape="rect" id="node11" href="room_8c.html#a70263633a7a137f37ff72e5cf71cc7eb" title="Mes a jours les donnees liee au score de la structure meilleureScore. " alt="" coords="859,107,1005,133"/>
+<area shape="rect" id="node12" href="main_8c.html#a3980fa98fa4e25d3fd957ad815ed142c" title="verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores ..." alt="" coords="1053,107,1183,133"/>
+<area shape="rect" id="node13" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="1055,157,1181,184"/>
+<area shape="rect" id="node14" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="1231,259,1337,285"/>
+<area shape="rect" id="node15" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="1385,208,1436,235"/>
+<area shape="rect" id="node17" href="leaderboard_8c.html#a8b9b72ad5c70dc9ed442cd734f2b3361" title="permet de charger les donner dans la structure " alt="" coords="679,208,811,235"/>
+<area shape="rect" id="node18" href="leaderboard_8c.html#ab1c772497e2229750ce69da0742fc217" title="permet de rechercher un joueur dans une structure de donner de type classement " alt="" coords="871,157,993,184"/>
+<area shape="rect" id="node19" href="leaderboard_8c.html#adb7c03fcec842fb68ec6523b538f5ff7" title="leaderboard" alt="" coords="1073,259,1163,285"/>
+<area shape="rect" id="node20" href="leaderboard_8c.html#a8aa1a5fcb4a3d825a4614dd3c9221233" title="permet de gerer tous les evenements liee au jeu " alt="" coords="867,259,997,285"/>
+<area shape="rect" id="node21" href="leaderboard_8c.html#a8cc8b08c1c9d8854a008e3fdb6cf091c" title="permet d&#39;interagire avec l&#39;interface " alt="" coords="865,309,999,336"/>
+<area shape="rect" id="node23" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="1089,309,1147,336"/>
+<area shape="rect" id="node24" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="1075,360,1161,387"/>
+<area shape="rect" id="node25" href="tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="1093,411,1143,437"/>
+<area shape="rect" id="node26" href="asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="1084,461,1152,488"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a451154efd5a32b29897a04799a579fb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a451154efd5a32b29897a04799a579fb1">&#9670;&nbsp;</a></span>ping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ping </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>permet de calculer de delai de reponse du serveur </p>
+<dl class="section return"><dt>Renvoie</dt><dd>DELAY MS </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a451154efd5a32b29897a04799a579fb1_cgraph.jpg" border="0" usemap="#lib_web_8c_a451154efd5a32b29897a04799a579fb1_cgraph" alt=""/></div>
+<map name="lib_web_8c_a451154efd5a32b29897a04799a579fb1_cgraph" id="lib_web_8c_a451154efd5a32b29897a04799a579fb1_cgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="100,31,215,57"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="263,5,341,32"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="265,56,339,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="af1cd9df671d9ed2e6f502a489108e8a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1cd9df671d9ed2e6f502a489108e8a0">&#9670;&nbsp;</a></span>securePass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void securePass </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>secure</em>[]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>securise la requete avec une cle unique </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">secure</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>void </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_af1cd9df671d9ed2e6f502a489108e8a0_cgraph.jpg" border="0" usemap="#lib_web_8c_af1cd9df671d9ed2e6f502a489108e8a0_cgraph" alt=""/></div>
+<map name="lib_web_8c_af1cd9df671d9ed2e6f502a489108e8a0_cgraph" id="lib_web_8c_af1cd9df671d9ed2e6f502a489108e8a0_cgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="144,31,259,57"/>
+<area shape="rect" id="node5" href="lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="162,81,241,108"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="307,5,385,32"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="309,56,383,83"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_af1cd9df671d9ed2e6f502a489108e8a0_icgraph.jpg" border="0" usemap="#lib_web_8c_af1cd9df671d9ed2e6f502a489108e8a0_icgraph" alt=""/></div>
+<map name="lib_web_8c_af1cd9df671d9ed2e6f502a489108e8a0_icgraph" id="lib_web_8c_af1cd9df671d9ed2e6f502a489108e8a0_icgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="144,107,273,133"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#ab5e65dfa5ba90c7499277657617194cf" title="connexion avec nom d&#39;utilisateur " alt="" coords="335,5,490,32"/>
+<area shape="rect" id="node7" href="lib_web_8c.html#a7e9a40cba3914561ea5795a6ef6f8394" title="connexion avec key " alt="" coords="353,56,472,83"/>
+<area shape="rect" id="node9" href="lib_web_8c.html#a322c2dcd9e61a300f0c7dd217692ccca" title="recuperer les meilleures score " alt="" coords="321,107,504,133"/>
+<area shape="rect" id="node15" href="lib_web_8c.html#a1f539ac35bb1d7222d32434ed795da30" title="recupere le classement des joueurs " alt="" coords="357,195,468,221"/>
+<area shape="rect" id="node21" href="lib_web_8c.html#a55c3e461f1c4f810c5a38eb74c219fae" title="update le score " alt="" coords="758,360,853,387"/>
+<area shape="rect" id="node4" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="577,5,659,32"/>
+<area shape="rect" id="node5" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="1122,81,1193,108"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="1357,183,1408,209"/>
+<area shape="rect" id="node8" href="main_8c.html#a11b331a93f323447a69e780284e8679d" title="verifie si l utilisateur est deja connecter " alt="" coords="561,56,675,83"/>
+<area shape="rect" id="node10" href="room_8c.html#a70263633a7a137f37ff72e5cf71cc7eb" title="Mes a jours les donnees liee au score de la structure meilleureScore. " alt="" coords="732,107,879,133"/>
+<area shape="rect" id="node11" href="main_8c.html#a3980fa98fa4e25d3fd957ad815ed142c" title="verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores ..." alt="" coords="927,107,1056,133"/>
+<area shape="rect" id="node12" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="929,157,1054,184"/>
+<area shape="rect" id="node13" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="1104,259,1211,285"/>
+<area shape="rect" id="node14" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="1259,208,1309,235"/>
+<area shape="rect" id="node16" href="leaderboard_8c.html#a8b9b72ad5c70dc9ed442cd734f2b3361" title="permet de charger les donner dans la structure " alt="" coords="552,208,684,235"/>
+<area shape="rect" id="node17" href="leaderboard_8c.html#ab1c772497e2229750ce69da0742fc217" title="permet de rechercher un joueur dans une structure de donner de type classement " alt="" coords="744,157,867,184"/>
+<area shape="rect" id="node18" href="leaderboard_8c.html#adb7c03fcec842fb68ec6523b538f5ff7" title="leaderboard" alt="" coords="947,259,1036,285"/>
+<area shape="rect" id="node19" href="leaderboard_8c.html#a8aa1a5fcb4a3d825a4614dd3c9221233" title="permet de gerer tous les evenements liee au jeu " alt="" coords="740,259,871,285"/>
+<area shape="rect" id="node20" href="leaderboard_8c.html#a8cc8b08c1c9d8854a008e3fdb6cf091c" title="permet d&#39;interagire avec l&#39;interface " alt="" coords="739,309,872,336"/>
+<area shape="rect" id="node22" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="963,309,1020,336"/>
+<area shape="rect" id="node23" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="949,360,1034,387"/>
+<area shape="rect" id="node24" href="tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="966,411,1017,437"/>
+<area shape="rect" id="node25" href="asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="957,461,1025,488"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a322c2dcd9e61a300f0c7dd217692ccca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a322c2dcd9e61a300f0c7dd217692ccca">&#9670;&nbsp;</a></span>updateMeilleureScoreStruct()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int updateMeilleureScoreStruct </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>retour</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>recuperer les meilleures score </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>Ecriture de la clé dans key </td></tr>
+    <tr><td class="paramname">retour</td><td>reponse en retour</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a322c2dcd9e61a300f0c7dd217692ccca_cgraph.jpg" border="0" usemap="#lib_web_8c_a322c2dcd9e61a300f0c7dd217692ccca_cgraph" alt=""/></div>
+<map name="lib_web_8c_a322c2dcd9e61a300f0c7dd217692ccca_cgraph" id="lib_web_8c_a322c2dcd9e61a300f0c7dd217692ccca_cgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="236,5,365,32"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="552,56,667,83"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="413,5,504,32"/>
+<area shape="rect" id="node7" href="lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="570,5,649,32"/>
+<area shape="rect" id="node5" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="715,31,793,57"/>
+<area shape="rect" id="node6" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="717,81,791,108"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a322c2dcd9e61a300f0c7dd217692ccca_icgraph.jpg" border="0" usemap="#lib_web_8c_a322c2dcd9e61a300f0c7dd217692ccca_icgraph" alt=""/></div>
+<map name="lib_web_8c_a322c2dcd9e61a300f0c7dd217692ccca_icgraph" id="lib_web_8c_a322c2dcd9e61a300f0c7dd217692ccca_icgraph">
+<area shape="rect" id="node2" href="room_8c.html#a70263633a7a137f37ff72e5cf71cc7eb" title="Mes a jours les donnees liee au score de la structure meilleureScore. " alt="" coords="236,56,383,83"/>
+<area shape="rect" id="node3" href="main_8c.html#a3980fa98fa4e25d3fd957ad815ed142c" title="verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores ..." alt="" coords="431,5,560,32"/>
+<area shape="rect" id="node6" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="433,56,558,83"/>
+<area shape="rect" id="node7" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="608,56,715,83"/>
+<area shape="rect" id="node4" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="763,5,833,32"/>
+<area shape="rect" id="node5" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="881,31,932,57"/>
+<area shape="rect" id="node8" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="773,56,823,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a55c3e461f1c4f810c5a38eb74c219fae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55c3e461f1c4f810c5a38eb74c219fae">&#9670;&nbsp;</a></span>updateScore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int updateScore </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_envoi_score.html">EnvoiScore</a> *&#160;</td>
+          <td class="paramname"><em>envoiScore</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>update le score </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">envoiScore</td><td>structure comprenant les parametre necessaire a l envoo des scores</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a55c3e461f1c4f810c5a38eb74c219fae_cgraph.jpg" border="0" usemap="#lib_web_8c_a55c3e461f1c4f810c5a38eb74c219fae_cgraph" alt=""/></div>
+<map name="lib_web_8c_a55c3e461f1c4f810c5a38eb74c219fae_cgraph" id="lib_web_8c_a55c3e461f1c4f810c5a38eb74c219fae_cgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="148,5,277,32"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="464,56,579,83"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="325,5,416,32"/>
+<area shape="rect" id="node7" href="lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="482,5,561,32"/>
+<area shape="rect" id="node5" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="627,31,705,57"/>
+<area shape="rect" id="node6" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="629,81,703,108"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a55c3e461f1c4f810c5a38eb74c219fae_icgraph.jpg" border="0" usemap="#lib_web_8c_a55c3e461f1c4f810c5a38eb74c219fae_icgraph" alt=""/></div>
+<map name="lib_web_8c_a55c3e461f1c4f810c5a38eb74c219fae_icgraph" id="lib_web_8c_a55c3e461f1c4f810c5a38eb74c219fae_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="162,5,219,32"/>
+<area shape="rect" id="node7" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="148,56,233,83"/>
+<area shape="rect" id="node8" href="tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="165,107,216,133"/>
+<area shape="rect" id="node9" href="asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="157,157,225,184"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="281,81,388,108"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="436,81,561,108"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="473,132,524,159"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="609,132,660,159"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a7d790f417b07791af6dd6e9e4717d36a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d790f417b07791af6dd6e9e4717d36a">&#9670;&nbsp;</a></span>writefunc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t writefunc </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nmemb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structstring.html">string</a> *&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ecrit la reponse de la requete dans une chaine. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ptr</td><td></td></tr>
+    <tr><td class="paramname">size</td><td></td></tr>
+    <tr><td class="paramname">nmemb</td><td></td></tr>
+    <tr><td class="paramname">s</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>void </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="lib_web_8c_a7d790f417b07791af6dd6e9e4717d36a_icgraph.jpg" border="0" usemap="#lib_web_8c_a7d790f417b07791af6dd6e9e4717d36a_icgraph" alt=""/></div>
+<map name="lib_web_8c_a7d790f417b07791af6dd6e9e4717d36a_icgraph" id="lib_web_8c_a7d790f417b07791af6dd6e9e4717d36a_icgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="128,195,243,221"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="291,144,381,171"/>
+<area shape="rect" id="node5" href="lib_web_8c.html#ab5e65dfa5ba90c7499277657617194cf" title="connexion avec nom d&#39;utilisateur " alt="" coords="630,43,785,69"/>
+<area shape="rect" id="node8" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="1703,183,1753,209"/>
+<area shape="rect" id="node9" href="lib_web_8c.html#a7e9a40cba3914561ea5795a6ef6f8394" title="connexion avec key " alt="" coords="648,93,767,120"/>
+<area shape="rect" id="node11" href="lib_web_8c.html#a322c2dcd9e61a300f0c7dd217692ccca" title="recuperer les meilleures score " alt="" coords="616,195,799,221"/>
+<area shape="rect" id="node17" href="lib_web_8c.html#a1f539ac35bb1d7222d32434ed795da30" title="recupere le classement des joueurs " alt="" coords="652,245,763,272"/>
+<area shape="rect" id="node23" href="lib_web_8c.html#a55c3e461f1c4f810c5a38eb74c219fae" title="update le score " alt="" coords="1053,296,1147,323"/>
+<area shape="rect" id="node28" href="lib_web_8c.html#a451154efd5a32b29897a04799a579fb1" title="permet de calculer de delai de reponse du serveur " alt="" coords="313,397,359,424"/>
+<area shape="rect" id="node29" href="lib_web_8c.html#a0e29e9eb16393df50ad9f677aa1ab1b8" title="permet de verifier la bonne version de l&#39;utilisateur " alt="" coords="429,448,568,475"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="434,144,563,171"/>
+<area shape="rect" id="node6" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="872,43,953,69"/>
+<area shape="rect" id="node7" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="1417,119,1487,145"/>
+<area shape="rect" id="node10" href="main_8c.html#a11b331a93f323447a69e780284e8679d" title="verifie si l utilisateur est deja connecter " alt="" coords="856,93,969,120"/>
+<area shape="rect" id="node12" href="room_8c.html#a70263633a7a137f37ff72e5cf71cc7eb" title="Mes a jours les donnees liee au score de la structure meilleureScore. " alt="" coords="1027,195,1173,221"/>
+<area shape="rect" id="node13" href="main_8c.html#a3980fa98fa4e25d3fd957ad815ed142c" title="verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores ..." alt="" coords="1221,144,1351,171"/>
+<area shape="rect" id="node14" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="1223,245,1349,272"/>
+<area shape="rect" id="node15" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="1399,296,1505,323"/>
+<area shape="rect" id="node16" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="1579,259,1629,285"/>
+<area shape="rect" id="node18" href="leaderboard_8c.html#a8b9b72ad5c70dc9ed442cd734f2b3361" title="permet de charger les donner dans la structure " alt="" coords="847,397,979,424"/>
+<area shape="rect" id="node19" href="leaderboard_8c.html#ab1c772497e2229750ce69da0742fc217" title="permet de rechercher un joueur dans une structure de donner de type classement " alt="" coords="1039,347,1161,373"/>
+<area shape="rect" id="node20" href="leaderboard_8c.html#adb7c03fcec842fb68ec6523b538f5ff7" title="leaderboard" alt="" coords="1241,499,1331,525"/>
+<area shape="rect" id="node21" href="leaderboard_8c.html#a8aa1a5fcb4a3d825a4614dd3c9221233" title="permet de gerer tous les evenements liee au jeu " alt="" coords="1035,397,1165,424"/>
+<area shape="rect" id="node22" href="leaderboard_8c.html#a8cc8b08c1c9d8854a008e3fdb6cf091c" title="permet d&#39;interagire avec l&#39;interface " alt="" coords="1033,448,1167,475"/>
+<area shape="rect" id="node24" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="1257,296,1315,323"/>
+<area shape="rect" id="node25" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="1243,347,1329,373"/>
+<area shape="rect" id="node26" href="tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="1261,397,1311,424"/>
+<area shape="rect" id="node27" href="asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="1252,448,1320,475"/>
+<area shape="rect" id="node30" href="main_8c.html#a94cac2e3d54b21d4e26db7f3d15e8e6a" title="permet de verifier la version du VERSION_LOGICIEL " alt="" coords="1553,411,1655,437"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des variables</h2>
+<a id="a475b89cfe715cf08a050de5875525f14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a475b89cfe715cf08a050de5875525f14">&#9670;&nbsp;</a></span>connectEnded</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int connectEnded</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1ce6bb164d37e605aa60e94aefe73817"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ce6bb164d37e605aa60e94aefe73817">&#9670;&nbsp;</a></span>EXT_FILE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FILE* EXT_FILE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a30862aa51c2944f287c4445751341ee8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30862aa51c2944f287c4445751341ee8">&#9670;&nbsp;</a></span>updateEnded</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int updateEnded</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>

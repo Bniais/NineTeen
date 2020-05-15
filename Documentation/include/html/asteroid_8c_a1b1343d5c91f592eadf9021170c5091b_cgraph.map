@@ -1,0 +1,4 @@
+<map id="laser_touche" name="laser_touche">
+<area shape="rect" id="node2" href="$asteroid_8c.html#a8c5143e37a59f1139d5d88eaf252e176" title="détermine si une des lignes est en collision avec une autre ligne qui correspond au diamètre d&#39;un ast..." alt="" coords="149,5,224,32"/>
+<area shape="rect" id="node3" href="$asteroid_8c.html#a819087be58ea855b6d3cb7683ce78306" title="calcul le determinant " alt="" coords="272,5,312,32"/>
+</map>

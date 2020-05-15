@@ -1,0 +1,641 @@
+\hypertarget{lib_web_8c}{}\section{Référence du fichier include/lib\+Web.c}
+\label{lib_web_8c}\index{include/lib\+Web.\+c@{include/lib\+Web.\+c}}
+
+
+Regroupe les fonctions de connexion au serveur.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$curl/curl.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$openssl/md5.\+h$>$}\newline
+Graphe des dépendances par inclusion de lib\+Web.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Structures de données}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structstring}{string}
+\begin{DoxyCompactList}\small\item\em stock une chaine avec ca longueur \end{DoxyCompactList}\item 
+struct \hyperlink{struct_connect_struct}{Connect\+Struct}
+\begin{DoxyCompactList}\small\item\em information sur l\textquotesingle{}envoie de la requete connexion en structure pour le passer en param d\textquotesingle{}un thread S\+DL \end{DoxyCompactList}\item 
+struct \hyperlink{struct_envoi_score}{Envoi\+Score}
+\begin{DoxyCompactList}\small\item\em information sur l\textquotesingle{}envoie d un score en structure pour le passer en param d\textquotesingle{}un thread S\+DL \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{lib_web_8c_a5d158dacfa908e971b99a2f491afdf0d}{U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+E\+M\+A\+IL}~\char`\"{}https\+://nineteen.\+recognizer.\+fr/connect.\+php\char`\"{}
+\item 
+\#define \hyperlink{lib_web_8c_af5e91dd969495cedbec6b89bd93b0f87}{U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+K\+EY}~\char`\"{}https\+://nineteen.\+recognizer.\+fr/connect.\+php\char`\"{}
+\item 
+\#define \hyperlink{lib_web_8c_ab8e71a6a6170671ea1a85501c81db973}{U\+R\+L\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+S\+C\+O\+RE}~\char`\"{}https\+://nineteen.\+recognizer.\+fr/update\+Your\+Score.\+php\char`\"{}
+\item 
+\#define \hyperlink{lib_web_8c_add9afc3d9692756cdded2becda68506f}{U\+R\+L\+\_\+\+P\+I\+NG}~\char`\"{}https\+://nineteen.\+recognizer.\+fr/ping.\+php\char`\"{}
+\item 
+\#define \hyperlink{lib_web_8c_a59f5a5892df7f6b06ce3bdbfc60523a6}{U\+R\+L\+\_\+\+T\+I\+M\+E\+S\+T\+A\+MP}~\char`\"{}https\+://nineteen.\+recognizer.\+fr/include/timestamp.\+php\char`\"{}
+\item 
+\#define \hyperlink{lib_web_8c_abe8f4c4b118305055c41188bc20cdb3f}{U\+R\+L\+\_\+\+G\+E\+T\+\_\+\+C\+O\+I\+NS}~\char`\"{}https\+://nineteen.\+recognizer.\+fr/coins.\+php\char`\"{}
+\item 
+\#define \hyperlink{lib_web_8c_ae3fac406371392fee5cbc71c4ddaa2d4}{U\+R\+L\+\_\+\+C\+H\+E\+C\+K\+\_\+\+V\+E\+R\+S\+I\+ON}~\char`\"{}https\+://nineteen.\+recognizer.\+fr/check\+Version.\+php\char`\"{}
+\item 
+\#define \hyperlink{lib_web_8c_a5ac320d59cafa999fc29a7d876c31dfd}{U\+R\+L\+\_\+\+L\+E\+A\+D\+E\+R\+B\+O\+A\+RD}~\char`\"{}https\+://nineteen.\+recognizer.\+fr/leaderboard.\+php\char`\"{}
+\item 
+\#define \hyperlink{lib_web_8c_abb35a5421a9b8611bbb46841bfd3a9f4}{E\+R\+R\+\_\+\+R\+E\+Q\+U\+I\+E\+R\+E\+D\+\_\+\+F\+I\+E\+LD}~-\/1
+\item 
+\#define \hyperlink{lib_web_8c_a722fdc4bc3ab276503c67cefe8b710dc}{E\+R\+R\+\_\+\+S\+Q\+L\+\_\+\+F\+A\+I\+L\+ED}~-\/2
+\item 
+\#define \hyperlink{lib_web_8c_a5f4ae9f5121c5f586cfd1ef50896e031}{E\+R\+R\+\_\+\+I\+N\+C\+O\+R\+R\+E\+C\+T\+\_\+\+I\+D\+\_\+\+PW}~-\/3
+\item 
+\#define \hyperlink{lib_web_8c_a31d53a8e759a27b07b2cb05b79e62904}{E\+R\+R\+\_\+\+I\+N\+V\+A\+L\+I\+D\+E\+\_\+\+S\+E\+C\+UR}~-\/17
+\item 
+\#define \hyperlink{lib_web_8c_abe1b38ab8f62912a9f1545e8b2d7cec8}{C\+L\+O\+C\+K\+S\+\_\+\+P\+E\+R\+\_\+\+MS}~1000
+\item 
+\#define \hyperlink{lib_web_8c_a346b45663bfa5a41fb49acad0845bfd8}{M\+D5\+\_\+\+S\+I\+ZE}~32
+\end{DoxyCompactItemize}
+\subsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{lib_web_8c_a10b2e06c39458e351d7e94527bafd9a9}{init\+\_\+string} (struct \hyperlink{structstring}{string} $\ast$s)
+\begin{DoxyCompactList}\small\item\em initilalise la structure qui contient la reponse \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{lib_web_8c_a7d790f417b07791af6dd6e9e4717d36a}{writefunc} (void $\ast$ptr, size\+\_\+t size, size\+\_\+t nmemb, struct \hyperlink{structstring}{string} $\ast$s)
+\begin{DoxyCompactList}\small\item\em Ecrit la reponse de la requete dans une chaine. \end{DoxyCompactList}\item 
+void \hyperlink{lib_web_8c_acc91e4581d5b08881b24df3e7755922c}{md5\+Hash} (char $\ast$\hyperlink{structstring}{string}, char $\ast$hash)
+\begin{DoxyCompactList}\small\item\em hash la chaine en md5 \end{DoxyCompactList}\item 
+int \hyperlink{lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec}{envoyez\+\_\+requet} (char $\ast$$\ast$response, char $\ast$url, char $\ast$request)
+\begin{DoxyCompactList}\small\item\em Envoi une requet et ecrit la reponse dans $\ast$$\ast$response. \end{DoxyCompactList}\item 
+void \hyperlink{lib_web_8c_af1cd9df671d9ed2e6f502a489108e8a0}{secure\+Pass} (char secure\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em securise la requete avec une cle unique \end{DoxyCompactList}\item 
+int \hyperlink{lib_web_8c_a645a96c1c84b1241792799dd13cf04a2}{construire\+\_\+requete} (char $\ast$$\ast$dest, char $\ast$username, char $\ast$password, char $\ast$key, char $\ast$game\+ID, char $\ast$score, char $\ast$offset, char $\ast$limite)
+\begin{DoxyCompactList}\small\item\em Permet de crée une requet dans $\ast$dest. \end{DoxyCompactList}\item 
+int \hyperlink{lib_web_8c_ab5e65dfa5ba90c7499277657617194cf}{connect\+With\+Username} (\hyperlink{struct_connect_struct}{Connect\+Struct} $\ast$connect\+Struct)
+\begin{DoxyCompactList}\small\item\em connexion avec nom d\textquotesingle{}utilisateur \end{DoxyCompactList}\item 
+int \hyperlink{lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394}{connect\+With\+Key} (char $\ast$key)
+\begin{DoxyCompactList}\small\item\em connexion avec key \end{DoxyCompactList}\item 
+int \hyperlink{lib_web_8c_a322c2dcd9e61a300f0c7dd217692ccca}{update\+Meilleure\+Score\+Struct} (char $\ast$key, char $\ast$retour)
+\begin{DoxyCompactList}\small\item\em recuperer les meilleures score \end{DoxyCompactList}\item 
+int \hyperlink{lib_web_8c_a1f539ac35bb1d7222d32434ed795da30}{get\+Leaderboard} (char $\ast$game\+ID, char $\ast$username, char $\ast$offset, char $\ast$limite, char $\ast$retour)
+\begin{DoxyCompactList}\small\item\em recupere le classement des joueurs \end{DoxyCompactList}\item 
+int \hyperlink{lib_web_8c_a55c3e461f1c4f810c5a38eb74c219fae}{update\+Score} (\hyperlink{struct_envoi_score}{Envoi\+Score} $\ast$envoi\+Score)
+\begin{DoxyCompactList}\small\item\em update le score \end{DoxyCompactList}\item 
+int \hyperlink{lib_web_8c_a451154efd5a32b29897a04799a579fb1}{ping} ()
+\begin{DoxyCompactList}\small\item\em permet de calculer de delai de reponse du serveur \end{DoxyCompactList}\item 
+int \hyperlink{lib_web_8c_a0e29e9eb16393df50ad9f677aa1ab1b8}{check\+Version\+Online} (char message\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em permet de verifier la bonne version de l\textquotesingle{}utilisateur \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+F\+I\+LE $\ast$ \hyperlink{lib_web_8c_a1ce6bb164d37e605aa60e94aefe73817}{E\+X\+T\+\_\+\+F\+I\+LE}
+\item 
+int \hyperlink{lib_web_8c_a475b89cfe715cf08a050de5875525f14}{connect\+Ended}
+\item 
+int \hyperlink{lib_web_8c_a30862aa51c2944f287c4445751341ee8}{update\+Ended}
+\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+Regroupe les fonctions de connexion au serveur. 
+
+\begin{DoxyAuthor}{Auteur}
+Samy M. 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+31 janvier 2020 
+\end{DoxyDate}
+
+
+\subsection{Documentation des macros}
+\mbox{\Hypertarget{lib_web_8c_abe1b38ab8f62912a9f1545e8b2d7cec8}\label{lib_web_8c_abe1b38ab8f62912a9f1545e8b2d7cec8}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!C\+L\+O\+C\+K\+S\+\_\+\+P\+E\+R\+\_\+\+MS@{C\+L\+O\+C\+K\+S\+\_\+\+P\+E\+R\+\_\+\+MS}}
+\index{C\+L\+O\+C\+K\+S\+\_\+\+P\+E\+R\+\_\+\+MS@{C\+L\+O\+C\+K\+S\+\_\+\+P\+E\+R\+\_\+\+MS}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{C\+L\+O\+C\+K\+S\+\_\+\+P\+E\+R\+\_\+\+MS}{CLOCKS\_PER\_MS}}
+{\footnotesize\ttfamily \#define C\+L\+O\+C\+K\+S\+\_\+\+P\+E\+R\+\_\+\+MS~1000}
+
+\mbox{\Hypertarget{lib_web_8c_a5f4ae9f5121c5f586cfd1ef50896e031}\label{lib_web_8c_a5f4ae9f5121c5f586cfd1ef50896e031}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!E\+R\+R\+\_\+\+I\+N\+C\+O\+R\+R\+E\+C\+T\+\_\+\+I\+D\+\_\+\+PW@{E\+R\+R\+\_\+\+I\+N\+C\+O\+R\+R\+E\+C\+T\+\_\+\+I\+D\+\_\+\+PW}}
+\index{E\+R\+R\+\_\+\+I\+N\+C\+O\+R\+R\+E\+C\+T\+\_\+\+I\+D\+\_\+\+PW@{E\+R\+R\+\_\+\+I\+N\+C\+O\+R\+R\+E\+C\+T\+\_\+\+I\+D\+\_\+\+PW}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{E\+R\+R\+\_\+\+I\+N\+C\+O\+R\+R\+E\+C\+T\+\_\+\+I\+D\+\_\+\+PW}{ERR\_INCORRECT\_ID\_PW}}
+{\footnotesize\ttfamily \#define E\+R\+R\+\_\+\+I\+N\+C\+O\+R\+R\+E\+C\+T\+\_\+\+I\+D\+\_\+\+PW~-\/3}
+
+\mbox{\Hypertarget{lib_web_8c_a31d53a8e759a27b07b2cb05b79e62904}\label{lib_web_8c_a31d53a8e759a27b07b2cb05b79e62904}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!E\+R\+R\+\_\+\+I\+N\+V\+A\+L\+I\+D\+E\+\_\+\+S\+E\+C\+UR@{E\+R\+R\+\_\+\+I\+N\+V\+A\+L\+I\+D\+E\+\_\+\+S\+E\+C\+UR}}
+\index{E\+R\+R\+\_\+\+I\+N\+V\+A\+L\+I\+D\+E\+\_\+\+S\+E\+C\+UR@{E\+R\+R\+\_\+\+I\+N\+V\+A\+L\+I\+D\+E\+\_\+\+S\+E\+C\+UR}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{E\+R\+R\+\_\+\+I\+N\+V\+A\+L\+I\+D\+E\+\_\+\+S\+E\+C\+UR}{ERR\_INVALIDE\_SECUR}}
+{\footnotesize\ttfamily \#define E\+R\+R\+\_\+\+I\+N\+V\+A\+L\+I\+D\+E\+\_\+\+S\+E\+C\+UR~-\/17}
+
+\mbox{\Hypertarget{lib_web_8c_abb35a5421a9b8611bbb46841bfd3a9f4}\label{lib_web_8c_abb35a5421a9b8611bbb46841bfd3a9f4}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!E\+R\+R\+\_\+\+R\+E\+Q\+U\+I\+E\+R\+E\+D\+\_\+\+F\+I\+E\+LD@{E\+R\+R\+\_\+\+R\+E\+Q\+U\+I\+E\+R\+E\+D\+\_\+\+F\+I\+E\+LD}}
+\index{E\+R\+R\+\_\+\+R\+E\+Q\+U\+I\+E\+R\+E\+D\+\_\+\+F\+I\+E\+LD@{E\+R\+R\+\_\+\+R\+E\+Q\+U\+I\+E\+R\+E\+D\+\_\+\+F\+I\+E\+LD}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{E\+R\+R\+\_\+\+R\+E\+Q\+U\+I\+E\+R\+E\+D\+\_\+\+F\+I\+E\+LD}{ERR\_REQUIERED\_FIELD}}
+{\footnotesize\ttfamily \#define E\+R\+R\+\_\+\+R\+E\+Q\+U\+I\+E\+R\+E\+D\+\_\+\+F\+I\+E\+LD~-\/1}
+
+\mbox{\Hypertarget{lib_web_8c_a722fdc4bc3ab276503c67cefe8b710dc}\label{lib_web_8c_a722fdc4bc3ab276503c67cefe8b710dc}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!E\+R\+R\+\_\+\+S\+Q\+L\+\_\+\+F\+A\+I\+L\+ED@{E\+R\+R\+\_\+\+S\+Q\+L\+\_\+\+F\+A\+I\+L\+ED}}
+\index{E\+R\+R\+\_\+\+S\+Q\+L\+\_\+\+F\+A\+I\+L\+ED@{E\+R\+R\+\_\+\+S\+Q\+L\+\_\+\+F\+A\+I\+L\+ED}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{E\+R\+R\+\_\+\+S\+Q\+L\+\_\+\+F\+A\+I\+L\+ED}{ERR\_SQL\_FAILED}}
+{\footnotesize\ttfamily \#define E\+R\+R\+\_\+\+S\+Q\+L\+\_\+\+F\+A\+I\+L\+ED~-\/2}
+
+\mbox{\Hypertarget{lib_web_8c_a346b45663bfa5a41fb49acad0845bfd8}\label{lib_web_8c_a346b45663bfa5a41fb49acad0845bfd8}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!M\+D5\+\_\+\+S\+I\+ZE@{M\+D5\+\_\+\+S\+I\+ZE}}
+\index{M\+D5\+\_\+\+S\+I\+ZE@{M\+D5\+\_\+\+S\+I\+ZE}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{M\+D5\+\_\+\+S\+I\+ZE}{MD5\_SIZE}}
+{\footnotesize\ttfamily \#define M\+D5\+\_\+\+S\+I\+ZE~32}
+
+\mbox{\Hypertarget{lib_web_8c_ae3fac406371392fee5cbc71c4ddaa2d4}\label{lib_web_8c_ae3fac406371392fee5cbc71c4ddaa2d4}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!U\+R\+L\+\_\+\+C\+H\+E\+C\+K\+\_\+\+V\+E\+R\+S\+I\+ON@{U\+R\+L\+\_\+\+C\+H\+E\+C\+K\+\_\+\+V\+E\+R\+S\+I\+ON}}
+\index{U\+R\+L\+\_\+\+C\+H\+E\+C\+K\+\_\+\+V\+E\+R\+S\+I\+ON@{U\+R\+L\+\_\+\+C\+H\+E\+C\+K\+\_\+\+V\+E\+R\+S\+I\+ON}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{U\+R\+L\+\_\+\+C\+H\+E\+C\+K\+\_\+\+V\+E\+R\+S\+I\+ON}{URL\_CHECK\_VERSION}}
+{\footnotesize\ttfamily \#define U\+R\+L\+\_\+\+C\+H\+E\+C\+K\+\_\+\+V\+E\+R\+S\+I\+ON~\char`\"{}https\+://nineteen.\+recognizer.\+fr/check\+Version.\+php\char`\"{}}
+
+\mbox{\Hypertarget{lib_web_8c_a5d158dacfa908e971b99a2f491afdf0d}\label{lib_web_8c_a5d158dacfa908e971b99a2f491afdf0d}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+E\+M\+A\+IL@{U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+E\+M\+A\+IL}}
+\index{U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+E\+M\+A\+IL@{U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+E\+M\+A\+IL}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+E\+M\+A\+IL}{URL\_CONNECT\_EMAIL}}
+{\footnotesize\ttfamily \#define U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+E\+M\+A\+IL~\char`\"{}https\+://nineteen.\+recognizer.\+fr/connect.\+php\char`\"{}}
+
+\mbox{\Hypertarget{lib_web_8c_af5e91dd969495cedbec6b89bd93b0f87}\label{lib_web_8c_af5e91dd969495cedbec6b89bd93b0f87}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+K\+EY@{U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+K\+EY}}
+\index{U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+K\+EY@{U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+K\+EY}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+K\+EY}{URL\_CONNECT\_KEY}}
+{\footnotesize\ttfamily \#define U\+R\+L\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+K\+EY~\char`\"{}https\+://nineteen.\+recognizer.\+fr/connect.\+php\char`\"{}}
+
+\mbox{\Hypertarget{lib_web_8c_abe8f4c4b118305055c41188bc20cdb3f}\label{lib_web_8c_abe8f4c4b118305055c41188bc20cdb3f}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!U\+R\+L\+\_\+\+G\+E\+T\+\_\+\+C\+O\+I\+NS@{U\+R\+L\+\_\+\+G\+E\+T\+\_\+\+C\+O\+I\+NS}}
+\index{U\+R\+L\+\_\+\+G\+E\+T\+\_\+\+C\+O\+I\+NS@{U\+R\+L\+\_\+\+G\+E\+T\+\_\+\+C\+O\+I\+NS}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{U\+R\+L\+\_\+\+G\+E\+T\+\_\+\+C\+O\+I\+NS}{URL\_GET\_COINS}}
+{\footnotesize\ttfamily \#define U\+R\+L\+\_\+\+G\+E\+T\+\_\+\+C\+O\+I\+NS~\char`\"{}https\+://nineteen.\+recognizer.\+fr/coins.\+php\char`\"{}}
+
+\mbox{\Hypertarget{lib_web_8c_a5ac320d59cafa999fc29a7d876c31dfd}\label{lib_web_8c_a5ac320d59cafa999fc29a7d876c31dfd}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!U\+R\+L\+\_\+\+L\+E\+A\+D\+E\+R\+B\+O\+A\+RD@{U\+R\+L\+\_\+\+L\+E\+A\+D\+E\+R\+B\+O\+A\+RD}}
+\index{U\+R\+L\+\_\+\+L\+E\+A\+D\+E\+R\+B\+O\+A\+RD@{U\+R\+L\+\_\+\+L\+E\+A\+D\+E\+R\+B\+O\+A\+RD}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{U\+R\+L\+\_\+\+L\+E\+A\+D\+E\+R\+B\+O\+A\+RD}{URL\_LEADERBOARD}}
+{\footnotesize\ttfamily \#define U\+R\+L\+\_\+\+L\+E\+A\+D\+E\+R\+B\+O\+A\+RD~\char`\"{}https\+://nineteen.\+recognizer.\+fr/leaderboard.\+php\char`\"{}}
+
+\mbox{\Hypertarget{lib_web_8c_add9afc3d9692756cdded2becda68506f}\label{lib_web_8c_add9afc3d9692756cdded2becda68506f}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!U\+R\+L\+\_\+\+P\+I\+NG@{U\+R\+L\+\_\+\+P\+I\+NG}}
+\index{U\+R\+L\+\_\+\+P\+I\+NG@{U\+R\+L\+\_\+\+P\+I\+NG}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{U\+R\+L\+\_\+\+P\+I\+NG}{URL\_PING}}
+{\footnotesize\ttfamily \#define U\+R\+L\+\_\+\+P\+I\+NG~\char`\"{}https\+://nineteen.\+recognizer.\+fr/ping.\+php\char`\"{}}
+
+\mbox{\Hypertarget{lib_web_8c_a59f5a5892df7f6b06ce3bdbfc60523a6}\label{lib_web_8c_a59f5a5892df7f6b06ce3bdbfc60523a6}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!U\+R\+L\+\_\+\+T\+I\+M\+E\+S\+T\+A\+MP@{U\+R\+L\+\_\+\+T\+I\+M\+E\+S\+T\+A\+MP}}
+\index{U\+R\+L\+\_\+\+T\+I\+M\+E\+S\+T\+A\+MP@{U\+R\+L\+\_\+\+T\+I\+M\+E\+S\+T\+A\+MP}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{U\+R\+L\+\_\+\+T\+I\+M\+E\+S\+T\+A\+MP}{URL\_TIMESTAMP}}
+{\footnotesize\ttfamily \#define U\+R\+L\+\_\+\+T\+I\+M\+E\+S\+T\+A\+MP~\char`\"{}https\+://nineteen.\+recognizer.\+fr/include/timestamp.\+php\char`\"{}}
+
+\mbox{\Hypertarget{lib_web_8c_ab8e71a6a6170671ea1a85501c81db973}\label{lib_web_8c_ab8e71a6a6170671ea1a85501c81db973}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!U\+R\+L\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+S\+C\+O\+RE@{U\+R\+L\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+S\+C\+O\+RE}}
+\index{U\+R\+L\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+S\+C\+O\+RE@{U\+R\+L\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+S\+C\+O\+RE}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{U\+R\+L\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+S\+C\+O\+RE}{URL\_UPDATE\_SCORE}}
+{\footnotesize\ttfamily \#define U\+R\+L\+\_\+\+U\+P\+D\+A\+T\+E\+\_\+\+S\+C\+O\+RE~\char`\"{}https\+://nineteen.\+recognizer.\+fr/update\+Your\+Score.\+php\char`\"{}}
+
+
+
+\subsection{Documentation des fonctions}
+\mbox{\Hypertarget{lib_web_8c_a0e29e9eb16393df50ad9f677aa1ab1b8}\label{lib_web_8c_a0e29e9eb16393df50ad9f677aa1ab1b8}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!check\+Version\+Online@{check\+Version\+Online}}
+\index{check\+Version\+Online@{check\+Version\+Online}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{check\+Version\+Online()}{checkVersionOnline()}}
+{\footnotesize\ttfamily int check\+Version\+Online (\begin{DoxyParamCaption}\item[{char}]{message\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+permet de verifier la bonne version de l\textquotesingle{}utilisateur 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em requete} & construite comprenant la version du jeu\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+D\+E\+L\+AY MS 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a0e29e9eb16393df50ad9f677aa1ab1b8_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a0e29e9eb16393df50ad9f677aa1ab1b8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394}\label{lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!connect\+With\+Key@{connect\+With\+Key}}
+\index{connect\+With\+Key@{connect\+With\+Key}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{connect\+With\+Key()}{connectWithKey()}}
+{\footnotesize\ttfamily int connect\+With\+Key (\begin{DoxyParamCaption}\item[{char $\ast$}]{key }\end{DoxyParamCaption})}
+
+
+
+connexion avec key 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em key} & Ecriture de la clé dans key\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a7e9a40cba3914561ea5795a6ef6f8394_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lib_web_8c_ab5e65dfa5ba90c7499277657617194cf}\label{lib_web_8c_ab5e65dfa5ba90c7499277657617194cf}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!connect\+With\+Username@{connect\+With\+Username}}
+\index{connect\+With\+Username@{connect\+With\+Username}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{connect\+With\+Username()}{connectWithUsername()}}
+{\footnotesize\ttfamily int connect\+With\+Username (\begin{DoxyParamCaption}\item[{\hyperlink{struct_connect_struct}{Connect\+Struct} $\ast$}]{connect\+Struct }\end{DoxyParamCaption})}
+
+
+
+connexion avec nom d\textquotesingle{}utilisateur 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em connect\+Struct} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_ab5e65dfa5ba90c7499277657617194cf_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_ab5e65dfa5ba90c7499277657617194cf_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lib_web_8c_a645a96c1c84b1241792799dd13cf04a2}\label{lib_web_8c_a645a96c1c84b1241792799dd13cf04a2}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!construire\+\_\+requete@{construire\+\_\+requete}}
+\index{construire\+\_\+requete@{construire\+\_\+requete}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{construire\+\_\+requete()}{construire\_requete()}}
+{\footnotesize\ttfamily int construire\+\_\+requete (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{dest,  }\item[{char $\ast$}]{username,  }\item[{char $\ast$}]{password,  }\item[{char $\ast$}]{key,  }\item[{char $\ast$}]{game\+ID,  }\item[{char $\ast$}]{score,  }\item[{char $\ast$}]{offset,  }\item[{char $\ast$}]{limite }\end{DoxyParamCaption})}
+
+
+
+Permet de crée une requet dans $\ast$dest. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em dest} & Ecriture de la requet \\
+\hline
+{\em username} & Username de connexion (Optionnal) \\
+\hline
+{\em password} & Mot de passe de connexion (Optionnal) \\
+\hline
+{\em key} & Key de connexion (Optionnal) \\
+\hline
+{\em game\+ID} & id du jeux (Optional) \\
+\hline
+{\em score} & score (Optional) \\
+\hline
+{\em offset} & nombre d element recherche (Optional) \\
+\hline
+{\em limite} & limit recherche score (Optional)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a645a96c1c84b1241792799dd13cf04a2_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a645a96c1c84b1241792799dd13cf04a2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec}\label{lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!envoyez\+\_\+requet@{envoyez\+\_\+requet}}
+\index{envoyez\+\_\+requet@{envoyez\+\_\+requet}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{envoyez\+\_\+requet()}{envoyez\_requet()}}
+{\footnotesize\ttfamily int envoyez\+\_\+requet (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{response,  }\item[{char $\ast$}]{url,  }\item[{char $\ast$}]{request }\end{DoxyParamCaption})}
+
+
+
+Envoi une requet et ecrit la reponse dans $\ast$$\ast$response. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em url} & url de destination \\
+\hline
+{\em request} & requete a envoyez\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a27e26af48346ad4ffbedb792ea9928ec_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lib_web_8c_a1f539ac35bb1d7222d32434ed795da30}\label{lib_web_8c_a1f539ac35bb1d7222d32434ed795da30}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!get\+Leaderboard@{get\+Leaderboard}}
+\index{get\+Leaderboard@{get\+Leaderboard}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{get\+Leaderboard()}{getLeaderboard()}}
+{\footnotesize\ttfamily int get\+Leaderboard (\begin{DoxyParamCaption}\item[{char $\ast$}]{game\+ID,  }\item[{char $\ast$}]{username,  }\item[{char $\ast$}]{offset,  }\item[{char $\ast$}]{limite,  }\item[{char $\ast$}]{retour }\end{DoxyParamCaption})}
+
+
+
+recupere le classement des joueurs 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em game\+ID} & identifiant du jeu (Optinal) \\
+\hline
+{\em username} & non d utulisateur \\
+\hline
+{\em offset} & specifier le debut des retour pour la requete sql \\
+\hline
+{\em limite} & specifier la limite de la rpeonse sql \\
+\hline
+{\em retour} & chaine de retour de la reponse\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a1f539ac35bb1d7222d32434ed795da30_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a1f539ac35bb1d7222d32434ed795da30_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lib_web_8c_a10b2e06c39458e351d7e94527bafd9a9}\label{lib_web_8c_a10b2e06c39458e351d7e94527bafd9a9}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!init\+\_\+string@{init\+\_\+string}}
+\index{init\+\_\+string@{init\+\_\+string}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{init\+\_\+string()}{init\_string()}}
+{\footnotesize\ttfamily void init\+\_\+string (\begin{DoxyParamCaption}\item[{struct \hyperlink{structstring}{string} $\ast$}]{s }\end{DoxyParamCaption})}
+
+
+
+initilalise la structure qui contient la reponse 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em s} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a10b2e06c39458e351d7e94527bafd9a9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lib_web_8c_acc91e4581d5b08881b24df3e7755922c}\label{lib_web_8c_acc91e4581d5b08881b24df3e7755922c}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!md5\+Hash@{md5\+Hash}}
+\index{md5\+Hash@{md5\+Hash}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{md5\+Hash()}{md5Hash()}}
+{\footnotesize\ttfamily void md5\+Hash (\begin{DoxyParamCaption}\item[{char $\ast$}]{string,  }\item[{char $\ast$}]{hash }\end{DoxyParamCaption})}
+
+
+
+hash la chaine en md5 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em string} & \\
+\hline
+{\em hash} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_acc91e4581d5b08881b24df3e7755922c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lib_web_8c_a451154efd5a32b29897a04799a579fb1}\label{lib_web_8c_a451154efd5a32b29897a04799a579fb1}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!ping@{ping}}
+\index{ping@{ping}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{ping()}{ping()}}
+{\footnotesize\ttfamily int ping (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+permet de calculer de delai de reponse du serveur 
+
+\begin{DoxyReturn}{Renvoie}
+D\+E\+L\+AY MS 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=332pt]{lib_web_8c_a451154efd5a32b29897a04799a579fb1_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lib_web_8c_af1cd9df671d9ed2e6f502a489108e8a0}\label{lib_web_8c_af1cd9df671d9ed2e6f502a489108e8a0}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!secure\+Pass@{secure\+Pass}}
+\index{secure\+Pass@{secure\+Pass}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{secure\+Pass()}{securePass()}}
+{\footnotesize\ttfamily void secure\+Pass (\begin{DoxyParamCaption}\item[{char}]{secure\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+securise la requete avec une cle unique 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em secure} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_af1cd9df671d9ed2e6f502a489108e8a0_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_af1cd9df671d9ed2e6f502a489108e8a0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lib_web_8c_a322c2dcd9e61a300f0c7dd217692ccca}\label{lib_web_8c_a322c2dcd9e61a300f0c7dd217692ccca}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!update\+Meilleure\+Score\+Struct@{update\+Meilleure\+Score\+Struct}}
+\index{update\+Meilleure\+Score\+Struct@{update\+Meilleure\+Score\+Struct}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{update\+Meilleure\+Score\+Struct()}{updateMeilleureScoreStruct()}}
+{\footnotesize\ttfamily int update\+Meilleure\+Score\+Struct (\begin{DoxyParamCaption}\item[{char $\ast$}]{key,  }\item[{char $\ast$}]{retour }\end{DoxyParamCaption})}
+
+
+
+recuperer les meilleures score 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em key} & Ecriture de la clé dans key \\
+\hline
+{\em retour} & reponse en retour\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a322c2dcd9e61a300f0c7dd217692ccca_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a322c2dcd9e61a300f0c7dd217692ccca_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lib_web_8c_a55c3e461f1c4f810c5a38eb74c219fae}\label{lib_web_8c_a55c3e461f1c4f810c5a38eb74c219fae}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!update\+Score@{update\+Score}}
+\index{update\+Score@{update\+Score}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{update\+Score()}{updateScore()}}
+{\footnotesize\ttfamily int update\+Score (\begin{DoxyParamCaption}\item[{\hyperlink{struct_envoi_score}{Envoi\+Score} $\ast$}]{envoi\+Score }\end{DoxyParamCaption})}
+
+
+
+update le score 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em envoi\+Score} & structure comprenant les parametre necessaire a l envoo des scores\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a55c3e461f1c4f810c5a38eb74c219fae_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a55c3e461f1c4f810c5a38eb74c219fae_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{lib_web_8c_a7d790f417b07791af6dd6e9e4717d36a}\label{lib_web_8c_a7d790f417b07791af6dd6e9e4717d36a}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!writefunc@{writefunc}}
+\index{writefunc@{writefunc}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{writefunc()}{writefunc()}}
+{\footnotesize\ttfamily size\+\_\+t writefunc (\begin{DoxyParamCaption}\item[{void $\ast$}]{ptr,  }\item[{size\+\_\+t}]{size,  }\item[{size\+\_\+t}]{nmemb,  }\item[{struct \hyperlink{structstring}{string} $\ast$}]{s }\end{DoxyParamCaption})}
+
+
+
+Ecrit la reponse de la requete dans une chaine. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em ptr} & \\
+\hline
+{\em size} & \\
+\hline
+{\em nmemb} & \\
+\hline
+{\em s} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{lib_web_8c_a7d790f417b07791af6dd6e9e4717d36a_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Documentation des variables}
+\mbox{\Hypertarget{lib_web_8c_a475b89cfe715cf08a050de5875525f14}\label{lib_web_8c_a475b89cfe715cf08a050de5875525f14}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!connect\+Ended@{connect\+Ended}}
+\index{connect\+Ended@{connect\+Ended}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{connect\+Ended}{connectEnded}}
+{\footnotesize\ttfamily int connect\+Ended}
+
+\mbox{\Hypertarget{lib_web_8c_a1ce6bb164d37e605aa60e94aefe73817}\label{lib_web_8c_a1ce6bb164d37e605aa60e94aefe73817}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!E\+X\+T\+\_\+\+F\+I\+LE@{E\+X\+T\+\_\+\+F\+I\+LE}}
+\index{E\+X\+T\+\_\+\+F\+I\+LE@{E\+X\+T\+\_\+\+F\+I\+LE}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{E\+X\+T\+\_\+\+F\+I\+LE}{EXT\_FILE}}
+{\footnotesize\ttfamily F\+I\+LE$\ast$ E\+X\+T\+\_\+\+F\+I\+LE}
+
+\mbox{\Hypertarget{lib_web_8c_a30862aa51c2944f287c4445751341ee8}\label{lib_web_8c_a30862aa51c2944f287c4445751341ee8}} 
+\index{lib\+Web.\+c@{lib\+Web.\+c}!update\+Ended@{update\+Ended}}
+\index{update\+Ended@{update\+Ended}!lib\+Web.\+c@{lib\+Web.\+c}}
+\subsubsection{\texorpdfstring{update\+Ended}{updateEnded}}
+{\footnotesize\ttfamily int update\+Ended}
+

@@ -1,0 +1,4 @@
+<map id="tryShift" name="tryShift">
+<area shape="rect" id="node2" href="$tetris_8c.html#ab1f20fd2b247412fbface8ef523015d9" title="Détermine si une pièce dépasse des bords de la grille. " alt="" coords="122,5,253,32"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#a423d814944d7cdabae7238532af7399d" title="Teste si une pièce est en collision avec les pièces déjà inscrites dans la grille. " alt="" coords="117,56,257,83"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="rmBody" name="rmBody">
+<area shape="rect" id="node2" href="$snake_8c.html#a302fa1c00d3dfcf2e7deda97d2f86097" title="Décale le tableau de positions anciennes du serpent lors d&#39;une explosion de bombe. " alt="" coords="135,5,216,32"/>
+<area shape="rect" id="node3" href="$snake_8c.html#aad644da8ea3e101158c01657e4f38684" title="Décale le tableau de positions anciennes du serpent pour libérer de la place. " alt="" coords="120,56,231,83"/>
+</map>

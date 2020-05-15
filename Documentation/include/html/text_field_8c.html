@@ -1,0 +1,428 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Nineteen: Référence du fichier include/textField.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="favicon.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Nineteen
+   </div>
+   <div id="projectbrief">The best of arcade games !</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Fonctions</a>  </div>
+  <div class="headertitle">
+<div class="title">Référence du fichier textField.c</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Permet l'interaction avec une zone de saisi.  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL_ttf.h&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Graphe des dépendances par inclusion de textField.c:</div>
+<div class="dyncontent">
+<div class="center"><img src="text_field_8c__incl.jpg" border="0" usemap="#include_2text_field_8c" alt=""/></div>
+</div>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a0592dba56693fad79136250c11e5a7fe"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="text_field_8c.html#a0592dba56693fad79136250c11e5a7fe">MAX_SIZE</a>&#160;&#160;&#160;22</td></tr>
+<tr class="separator:a0592dba56693fad79136250c11e5a7fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ce282b7d7ce2928dba90bb2c9ca92f4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="text_field_8c.html#a6ce282b7d7ce2928dba90bb2c9ca92f4">TF_MOUSE_OUT_CLICK</a>&#160;&#160;&#160;10</td></tr>
+<tr class="separator:a6ce282b7d7ce2928dba90bb2c9ca92f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c8bb121cba5f013705b28dafca8639d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="text_field_8c.html#a2c8bb121cba5f013705b28dafca8639d">TF_RETURN</a>&#160;&#160;&#160;11</td></tr>
+<tr class="separator:a2c8bb121cba5f013705b28dafca8639d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d18d72c60ffa2018570c33773fa397a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="text_field_8c.html#a6d18d72c60ffa2018570c33773fa397a">TF_MAX_SIZE</a>&#160;&#160;&#160;12</td></tr>
+<tr class="separator:a6d18d72c60ffa2018570c33773fa397a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeec6a503973a3b980c97cb8ac88b1c26"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="text_field_8c.html#aeec6a503973a3b980c97cb8ac88b1c26">TF_TEXT_TYPED</a>&#160;&#160;&#160;13</td></tr>
+<tr class="separator:aeec6a503973a3b980c97cb8ac88b1c26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39a56932a3ef62c2db45eb98fe7d7acf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="text_field_8c.html#a39a56932a3ef62c2db45eb98fe7d7acf">TF_TAB</a>&#160;&#160;&#160;14</td></tr>
+<tr class="separator:a39a56932a3ef62c2db45eb98fe7d7acf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1bed4b914fce1f2dea9364eae9537e9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="text_field_8c.html#aa1bed4b914fce1f2dea9364eae9537e9">TF_QUIT</a>&#160;&#160;&#160;15</td></tr>
+<tr class="separator:aa1bed4b914fce1f2dea9364eae9537e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:ad0d72e48f0b4f55ed5077899e75da497"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="text_field_8c.html#ad0d72e48f0b4f55ed5077899e75da497">renduTextField</a> (SDL_Renderer *renderer, char *chaine, TTF_Font *font, SDL_Color color, SDL_Rect cible)</td></tr>
+<tr class="memdesc:ad0d72e48f0b4f55ed5077899e75da497"><td class="mdescLeft">&#160;</td><td class="mdescRight">sous fonction de <a class="el" href="text_field_8c.html#ae24b08bc0eb4bbc3320b264568532505" title="Recuperer une chaine de caractere saisi au clavier. ">textField()</a>  <a href="#ad0d72e48f0b4f55ed5077899e75da497">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ad0d72e48f0b4f55ed5077899e75da497"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae24b08bc0eb4bbc3320b264568532505"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="text_field_8c.html#ae24b08bc0eb4bbc3320b264568532505">textField</a> (SDL_Renderer *renderer, TTF_Font *police, SDL_Color color, char *chaine, int startWhere, SDL_Rect *cible, SDL_Point *mouse, int *pressMaj)</td></tr>
+<tr class="memdesc:ae24b08bc0eb4bbc3320b264568532505"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recuperer une chaine de caractere saisi au clavier.  <a href="#ae24b08bc0eb4bbc3320b264568532505">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ae24b08bc0eb4bbc3320b264568532505"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39611766c9d772094ce44edc915b6b50"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="text_field_8c.html#a39611766c9d772094ce44edc915b6b50">TF_ClickIn</a> (SDL_Rect rect, SDL_Point mouse)</td></tr>
+<tr class="memdesc:a39611766c9d772094ce44edc915b6b50"><td class="mdescLeft">&#160;</td><td class="mdescRight">test si la souris est positionner dans le rectangle  <a href="#a39611766c9d772094ce44edc915b6b50">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a39611766c9d772094ce44edc915b6b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Permet l'interaction avec une zone de saisi. </p>
+<dl class="section author"><dt>Auteur</dt><dd>Mahi S. </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>19 Janvier 2020 </dd></dl>
+</div><h2 class="groupheader">Documentation des macros</h2>
+<a id="a0592dba56693fad79136250c11e5a7fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0592dba56693fad79136250c11e5a7fe">&#9670;&nbsp;</a></span>MAX_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAX_SIZE&#160;&#160;&#160;22</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6d18d72c60ffa2018570c33773fa397a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d18d72c60ffa2018570c33773fa397a">&#9670;&nbsp;</a></span>TF_MAX_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TF_MAX_SIZE&#160;&#160;&#160;12</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6ce282b7d7ce2928dba90bb2c9ca92f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ce282b7d7ce2928dba90bb2c9ca92f4">&#9670;&nbsp;</a></span>TF_MOUSE_OUT_CLICK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TF_MOUSE_OUT_CLICK&#160;&#160;&#160;10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa1bed4b914fce1f2dea9364eae9537e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1bed4b914fce1f2dea9364eae9537e9">&#9670;&nbsp;</a></span>TF_QUIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TF_QUIT&#160;&#160;&#160;15</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2c8bb121cba5f013705b28dafca8639d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c8bb121cba5f013705b28dafca8639d">&#9670;&nbsp;</a></span>TF_RETURN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TF_RETURN&#160;&#160;&#160;11</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a39a56932a3ef62c2db45eb98fe7d7acf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39a56932a3ef62c2db45eb98fe7d7acf">&#9670;&nbsp;</a></span>TF_TAB</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TF_TAB&#160;&#160;&#160;14</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeec6a503973a3b980c97cb8ac88b1c26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeec6a503973a3b980c97cb8ac88b1c26">&#9670;&nbsp;</a></span>TF_TEXT_TYPED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TF_TEXT_TYPED&#160;&#160;&#160;13</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des fonctions</h2>
+<a id="ad0d72e48f0b4f55ed5077899e75da497"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0d72e48f0b4f55ed5077899e75da497">&#9670;&nbsp;</a></span>renduTextField()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void renduTextField </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>chaine</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TTF_Font *&#160;</td>
+          <td class="paramname"><em>font</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Color&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Rect&#160;</td>
+          <td class="paramname"><em>cible</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>sous fonction de <a class="el" href="text_field_8c.html#ae24b08bc0eb4bbc3320b264568532505" title="Recuperer une chaine de caractere saisi au clavier. ">textField()</a> </p>
+<p>Aucun parametre n'est a saisir, elle est appeler par <a class="el" href="text_field_8c.html#ae24b08bc0eb4bbc3320b264568532505" title="Recuperer une chaine de caractere saisi au clavier. ">textField()</a>. Elle permet de copier la texture dans la zone de rendu. </p>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="text_field_8c_ad0d72e48f0b4f55ed5077899e75da497_icgraph.jpg" border="0" usemap="#text_field_8c_ad0d72e48f0b4f55ed5077899e75da497_icgraph" alt=""/></div>
+<map name="text_field_8c_ad0d72e48f0b4f55ed5077899e75da497_icgraph" id="text_field_8c_ad0d72e48f0b4f55ed5077899e75da497_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#ac99b5b2ed70796b04227bea66568dd51" title="cette fonction permet d&#39;afficher tous les elements present dans le launcher. " alt="" coords="161,5,224,32"/>
+<area shape="rect" id="node3" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="272,31,353,57"/>
+<area shape="rect" id="node4" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="401,31,472,57"/>
+<area shape="rect" id="node5" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="520,31,571,57"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ae24b08bc0eb4bbc3320b264568532505"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae24b08bc0eb4bbc3320b264568532505">&#9670;&nbsp;</a></span>textField()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int textField </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TTF_Font *&#160;</td>
+          <td class="paramname"><em>police</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Color&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>chaine</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>startWhere</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Rect *&#160;</td>
+          <td class="paramname"><em>cible</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Point *&#160;</td>
+          <td class="paramname"><em>mouse</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>pressMaj</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Recuperer une chaine de caractere saisi au clavier. </p>
+<p>Copier la nouvelle texture dans SDL_Renderer, il est necessaire de realiser un RenderPresent().</p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">SDL_Renderer</td><td>*renderer Pointeur sur le rendu SDL. </td></tr>
+    <tr><td class="paramname">TTF_Font</td><td>*police Pointeur sur la police SDL. </td></tr>
+    <tr><td class="paramname">SDL_Color</td><td>color Couleur du texte a affichager. </td></tr>
+    <tr><td class="paramname">char</td><td>*chaine ecrit la chaine de caracatere dans la variable en entre. </td></tr>
+    <tr><td class="paramname">int</td><td>startWhere mettre strlen(chaine) pour reprendre a la fin de la chaine la saisi. </td></tr>
+    <tr><td class="paramname">SDL_Rect</td><td>*cible indiquer la cible ou afficher le resultat. </td></tr>
+    <tr><td class="paramname">SDL_Point</td><td>*mouse position de la souris </td></tr>
+    <tr><td class="paramname">int</td><td>*pressMaj bouton maj appuyer</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>retourne la raison de sorti (TF_MAX_SIZE, TF_TEXT_TYPED..). </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="text_field_8c_ae24b08bc0eb4bbc3320b264568532505_cgraph.jpg" border="0" usemap="#text_field_8c_ae24b08bc0eb4bbc3320b264568532505_cgraph" alt=""/></div>
+<map name="text_field_8c_ae24b08bc0eb4bbc3320b264568532505_cgraph" id="text_field_8c_ae24b08bc0eb4bbc3320b264568532505_cgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a96e403e8f6333abe2bee8d0429217c7c" title="remet les variables au DEFINE si on appui sur espace " alt="" coords="125,5,212,32"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="text_field_8c_ae24b08bc0eb4bbc3320b264568532505_icgraph.jpg" border="0" usemap="#text_field_8c_ae24b08bc0eb4bbc3320b264568532505_icgraph" alt=""/></div>
+<map name="text_field_8c_ae24b08bc0eb4bbc3320b264568532505_icgraph" id="text_field_8c_ae24b08bc0eb4bbc3320b264568532505_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="125,5,207,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="255,5,325,32"/>
+<area shape="rect" id="node4" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="373,5,424,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a39611766c9d772094ce44edc915b6b50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39611766c9d772094ce44edc915b6b50">&#9670;&nbsp;</a></span>TF_ClickIn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int TF_ClickIn </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Rect&#160;</td>
+          <td class="paramname"><em>rect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Point&#160;</td>
+          <td class="paramname"><em>mouse</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>test si la souris est positionner dans le rectangle </p>
+<dl class="section return"><dt>Renvoie</dt><dd>retourn VRAI/FAUX </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="text_field_8c_a39611766c9d772094ce44edc915b6b50_icgraph.jpg" border="0" usemap="#text_field_8c_a39611766c9d772094ce44edc915b6b50_icgraph" alt=""/></div>
+<map name="text_field_8c_a39611766c9d772094ce44edc915b6b50_icgraph" id="text_field_8c_a39611766c9d772094ce44edc915b6b50_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="140,5,221,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="269,5,340,32"/>
+<area shape="rect" id="node4" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="388,5,439,32"/>
+</map>
+</div>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>

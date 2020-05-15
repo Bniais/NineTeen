@@ -1,0 +1,11 @@
+<map id="afficherTout" name="afficherTout">
+<area shape="rect" id="node2" href="$flappy__bird_8c.html#a992ce3eab3b684a62428aff5a93ff1f8" title="affiche l&#39;image de fond " alt="" coords="149,5,283,32"/>
+<area shape="rect" id="node3" href="$flappy__bird_8c.html#ab428543af2e71cb1991d2d037299fbcd" title="affiche le OBSTACLE " alt="" coords="162,56,270,83"/>
+<area shape="rect" id="node4" href="$flappy__bird_8c.html#ad4157024daf3d9d27be448ccea30dda9" title="affiche le SOL DECORE " alt="" coords="174,107,258,133"/>
+<area shape="rect" id="node5" href="$flappy__bird_8c.html#a502412a10243d68aa0dcbd8e07e6edb2" title="affiche le personnage a l ecran " alt="" coords="148,157,284,184"/>
+<area shape="rect" id="node6" href="$flappy__bird_8c.html#a49aafde64b048663c89457ab94171d3e" title="affiche le score en cours a l ecran " alt="" coords="167,208,265,235"/>
+<area shape="rect" id="node8" href="$flappy__bird_8c.html#a470895aeba5741bc6e77bb164d42e836" title="affiche le meilleur score a l&#39;ecran " alt="" coords="144,259,288,285"/>
+<area shape="rect" id="node9" href="$commun_functions_8c.html#ad0ed0fe31f27ac7898fd7c0d25f8d71c" title="Affiche l&#39;animation de chargement des envois de requêtes. " alt="" coords="161,309,271,336"/>
+<area shape="rect" id="node10" href="$commun_functions_8c.html#a22549bc59dccb5f8748d72b9bec11512" title="Affiche l&#39;animation de retour de requête. " alt="" coords="164,360,268,387"/>
+<area shape="rect" id="node7" href="$flappy__bird_8c.html#ae61d8a4fce3f39ca4484ea102ea242c1" title="retourne la longueur d&#39;un nombre " alt="" coords="336,208,393,235"/>
+</map>

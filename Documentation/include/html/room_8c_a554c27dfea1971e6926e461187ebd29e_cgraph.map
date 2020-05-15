@@ -1,0 +1,7 @@
+<map id="messageMachine" name="messageMachine">
+<area shape="rect" id="node2" href="$room_8c.html#a784b5c81cdc56701d32c20fa9232ddf9" title="fonction qui detecte la proxmiter avec une machine de jeu " alt="" coords="203,5,321,32"/>
+<area shape="rect" id="node3" href="$room_8c.html#a47842a9ab60604cf3f40a87717aa685f" title="affichage de text sur un rendu OpenGL " alt="" coords="215,56,309,83"/>
+<area shape="rect" id="node4" href="$room_8c.html#a87f0edb1c54eefa26f857c4a4d530429" title="detection des toilettes h/f " alt="" coords="177,107,347,133"/>
+<area shape="rect" id="node5" href="$room_8c.html#a38dd7f392233bb41399b023bc2669249" title="detection radio a proximite " alt="" coords="211,157,313,184"/>
+<area shape="rect" id="node6" href="$room_8c.html#a2b408d60cd07c4117322cdbcc31fed7b" title="detection porte a proximite " alt="" coords="212,208,312,235"/>
+</map>

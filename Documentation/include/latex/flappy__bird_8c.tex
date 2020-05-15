@@ -1,0 +1,979 @@
+\hypertarget{flappy__bird_8c}{}\section{Référence du fichier games/3\+\_\+flappy\+\_\+bird/flappy\+\_\+bird.c}
+\label{flappy__bird_8c}\index{games/3\+\_\+flappy\+\_\+bird/flappy\+\_\+bird.\+c@{games/3\+\_\+flappy\+\_\+bird/flappy\+\_\+bird.\+c}}
+
+
+Jeu flappy bird.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+image.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+mixer.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../../include/commun\+Functions.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../include/lib\+Web.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../include/hashage.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../include/define.\+h\char`\"{}}\newline
+Graphe des dépendances par inclusion de flappy\+\_\+bird.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Structures de données}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structpilonne}{pilonne}
+\begin{DoxyCompactList}\small\item\em Stock la position d\textquotesingle{}un obstacle. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{flappy__bird_8c_ae0ceb0aa3313530aa5d72827ea1131c3}{W\+I\+N\+D\+O\+W\+\_\+L}~1920.
+\item 
+\#define \hyperlink{flappy__bird_8c_ac99e9b1c151b601470732c2c9ff9866f}{W\+I\+N\+D\+O\+W\+\_\+H}~1080.
+\item 
+\#define \hyperlink{flappy__bird_8c_ac92ca5ab87034a348decad7ee8d4bd1b}{F\+PS}~60
+\item 
+\#define \hyperlink{flappy__bird_8c_a4330090b097ea40d0041592c7c29fae7}{S\+C\+A\+L\+E\+\_\+\+T\+O\+\_\+\+F\+IT}~4
+\item 
+\#define \hyperlink{flappy__bird_8c_ac8a6f389427352d1e43f3e5909d7a8a8}{C\+O\+M\+P\+E\+N\+S\+A\+T\+I\+T\+I\+O\+N\+\_\+\+H\+I\+T\+B\+O\+X\+\_\+\+D\+O\+WN}~20
+\item 
+\#define \hyperlink{flappy__bird_8c_aad789c6c6cd9f5fb4148ee747630f2cc}{P\+R\+E\+L\+O\+A\+D\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE}~8
+\item 
+\#define \hyperlink{flappy__bird_8c_aec5e90c4c52efaf97874201e4bbb5a64}{N\+B\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE}~5
+\item 
+\#define \hyperlink{flappy__bird_8c_a5455cd891524aaefc0c4b03ceaaaeffa}{T\+R\+A\+N\+C\+H\+E\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE}~550
+\item 
+\#define \hyperlink{flappy__bird_8c_adda7fd42446641547476db3522b55a30}{U\+P\+P\+E\+R\+\_\+\+B\+Y\+\_\+\+S\+T\+EP}~30
+\item 
+\#define \hyperlink{flappy__bird_8c_ad81a2ab0303b14b1f6c567d6219c2d86}{A\+N\+G\+L\+E\+\_\+\+UP}~-\/30
+\item 
+\#define \hyperlink{flappy__bird_8c_a41081590f4c5b807082e9f7785d1eef9}{A\+N\+G\+L\+E\+\_\+\+D\+O\+WN}~90
+\item 
+\#define \hyperlink{flappy__bird_8c_ad77f4a1540f49629e52fe9ced51f8f6a}{A\+N\+G\+L\+E\+\_\+\+V\+I\+T\+E\+S\+SE}~8
+\item 
+\#define \hyperlink{flappy__bird_8c_a1cbcd5e1e513dba8fad4dde27417e221}{B\+A\+N\+\_\+\+C\+O\+DE}~123
+\item 
+\#define \hyperlink{flappy__bird_8c_ad4b85959fbfc73696e7f51a10c1ffcf3}{D\+I\+R\+\_\+\+F\+L\+A\+P\+\_\+\+W\+AV}~\char`\"{}../games/3\+\_\+flappy\+\_\+bird/\+Sounds/flap.\+wav\char`\"{}
+\item 
+\#define \hyperlink{flappy__bird_8c_a3d549bcf10a7f1847adae7ba3e71c1cc}{D\+I\+R\+\_\+\+H\+U\+R\+T\+\_\+\+W\+AV}~\char`\"{}../games/3\+\_\+flappy\+\_\+bird/\+Sounds/hurt.\+wav\char`\"{}
+\item 
+\#define \hyperlink{flappy__bird_8c_a92be272566261416972b218c223ceaea}{D\+I\+R\+\_\+\+S\+C\+O\+R\+E\+\_\+\+W\+AV}~\char`\"{}../games/3\+\_\+flappy\+\_\+bird/\+Sounds/score.\+wav\char`\"{}
+\item 
+\#define \hyperlink{flappy__bird_8c_ae70f8544bb0fda25dce0a93587d5c6c9}{I\+M\+A\+G\+E\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+AD}~-\/101
+\item 
+\#define \hyperlink{flappy__bird_8c_afb7ee9eee30279bf189e9757a1d28351}{S\+O\+U\+N\+D\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+AD}~-\/102
+\item 
+\#define \hyperlink{flappy__bird_8c_a253eadb4cc9a2d67e636933c9c5e8719}{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+ND}~-\/103
+\item 
+\#define \hyperlink{flappy__bird_8c_af33ac46adb014f8b74ad790e8bbb36f8}{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+O\+B\+S\+T\+A\+C\+LE}~-\/104
+\item 
+\#define \hyperlink{flappy__bird_8c_a0185ee5ddd06587fcc0e9d2b47773308}{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+S\+OL}~-\/105
+\item 
+\#define \hyperlink{flappy__bird_8c_a181905e89f47f1ae6874c5eb19d54fb6}{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+E\+R\+S\+O\+N\+N\+A\+GE}~-\/106
+\item 
+\#define \hyperlink{flappy__bird_8c_af4759c7c994c2126f49b584892178831}{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+R\+I\+N\+T\+\_\+\+S\+C\+O\+RE}~-\/107
+\item 
+\#define \hyperlink{flappy__bird_8c_af0547979266df72eec654c5552348319}{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+R\+I\+N\+T\+\_\+\+HS}~-\/108
+\end{DoxyCompactItemize}
+\subsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+static int \hyperlink{flappy__bird_8c_a992ce3eab3b684a62428aff5a93ff1f8}{afficher\+Background} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+background, int theme)
+\begin{DoxyCompactList}\small\item\em affiche l\textquotesingle{}image de fond \end{DoxyCompactList}\item 
+static int \hyperlink{flappy__bird_8c_ab428543af2e71cb1991d2d037299fbcd}{afficher\+Pilonne} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+pipes, int position, int position\+\_\+axe\+\_\+x, int theme)
+\begin{DoxyCompactList}\small\item\em affiche le O\+B\+S\+T\+A\+C\+LE \end{DoxyCompactList}\item 
+static int \hyperlink{flappy__bird_8c_ad4157024daf3d9d27be448ccea30dda9}{afficher\+Sol} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+sol, int target\+\_\+x)
+\begin{DoxyCompactList}\small\item\em affiche le S\+OL D\+E\+C\+O\+RE \end{DoxyCompactList}\item 
+static int \hyperlink{flappy__bird_8c_a502412a10243d68aa0dcbd8e07e6edb2}{Afficher\+Personnage} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+birds, S\+D\+L\+\_\+\+Point emplacement\+Personnage, int var\+Animation\+Personnage, double angle, int theme)
+\begin{DoxyCompactList}\small\item\em affiche le personnage a l ecran \end{DoxyCompactList}\item 
+static int \hyperlink{flappy__bird_8c_ae61d8a4fce3f39ca4484ea102ea242c1}{int\+Len} (int score)
+\begin{DoxyCompactList}\small\item\em retourne la longueur d\textquotesingle{}un nombre \end{DoxyCompactList}\item 
+static int \hyperlink{flappy__bird_8c_a49aafde64b048663c89457ab94171d3e}{afficher\+Score} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+chiffre, int score, int mode)
+\begin{DoxyCompactList}\small\item\em affiche le score en cours a l ecran \end{DoxyCompactList}\item 
+static int \hyperlink{flappy__bird_8c_a470895aeba5741bc6e77bb164d42e836}{afficher\+Meilleur\+Score} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+highscore, int score, int high\+\_\+score, int cible)
+\begin{DoxyCompactList}\small\item\em affiche le meilleur score a l\textquotesingle{}ecran \end{DoxyCompactList}\item 
+static int \hyperlink{flappy__bird_8c_a4858bca7396db08c9733a691a7d58f9c}{afficher\+Tout} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Thread $\ast$$\ast$\hyperlink{main_8c_a584962a25015c7d6e18e294f55a8bc2d}{thread}, T\+T\+F\+\_\+\+Font $\ast$my\+Font, int $\ast$retour, int $\ast$frame\+\_\+anim\+\_\+loading, int $\ast$frame\+Retour, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+loading, S\+D\+L\+\_\+\+Point emplacement\+Personnage, \hyperlink{structpilonne}{pilonne} $\ast$\hyperlink{structpilonne}{pilonne}, int score, int var\+Animation\+Personnage, int var\+Animation\+Sol, int cible, double angle, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+background, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+pipes, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+birds, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+medals, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+score\+Board, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+sol, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+chiffre, S\+D\+L\+\_\+\+Texture $\ast$texture\+\_\+highscore, int theme)
+\begin{DoxyCompactList}\small\item\em regroupement de toute les fonctions d\textquotesingle{}affichage pour afficher tous \end{DoxyCompactList}\item 
+static void \hyperlink{flappy__bird_8c_a5bc0848bb48b6c9265b8b87c7c09b841}{init\+\_\+pilonne} (\hyperlink{structpilonne}{pilonne} $\ast$\hyperlink{structpilonne}{pilonne}, int $\ast$var\+Animation\+Personnage, int $\ast$var\+Animation\+Sol, int $\ast$end, int $\ast$dead, int $\ast$traitement)
+\begin{DoxyCompactList}\small\item\em initialisation des pilonnes et des animation et de certaine variables liee au boucle du jeu \end{DoxyCompactList}\item 
+static int \hyperlink{flappy__bird_8c_a18e8671a141af5a89d184dd7dcdacc21}{traitement\+\_\+pilonne} (\hyperlink{structpilonne}{pilonne} $\ast$\hyperlink{structpilonne}{pilonne}, int traitement, int $\ast$score, long long $\ast$score\+\_\+hash, long keys\mbox{[}4\mbox{]}, Mix\+\_\+\+Chunk $\ast$score\+\_\+wav)
+\begin{DoxyCompactList}\small\item\em detecte le passage d\textquotesingle{}un pilonne et joue un son \end{DoxyCompactList}\item 
+static int \hyperlink{flappy__bird_8c_a8b820c5bc000a7a6b332e6cd9fc810fe}{collision} (\hyperlink{structpilonne}{pilonne} $\ast$\hyperlink{structpilonne}{pilonne}, S\+D\+L\+\_\+\+Point emplacement\+Personnage, Mix\+\_\+\+Chunk $\ast$hurt\+\_\+wav)
+\begin{DoxyCompactList}\small\item\em permet de detecter une collision et de jouer un son \end{DoxyCompactList}\item 
+static void \hyperlink{flappy__bird_8c_a93a55e5f40971511e088f2e52a654c57}{traitement\+Variable\+Animation} (int $\ast$var\+Animation\+Personnage, int $\ast$var\+Animation\+Sol)
+\begin{DoxyCompactList}\small\item\em mise a jours des variables liee a l\textquotesingle{}environement/decor \end{DoxyCompactList}\item 
+static int \hyperlink{flappy__bird_8c_a0ceb3de339eddf081185c52d40819193}{attendre\+Avant\+Depart} (Mix\+\_\+\+Chunk $\ast$flap\+\_\+wav, int $\ast$rdy\+To\+Space)
+\begin{DoxyCompactList}\small\item\em attend l\textquotesingle{}appui sur espace pour demarrer joue un son \end{DoxyCompactList}\item 
+static int \hyperlink{flappy__bird_8c_a96e403e8f6333abe2bee8d0429217c7c}{evenement} (int $\ast$upper, int $\ast$vitesse\+Graviter, int $\ast$nb\+\_\+boucle, Mix\+\_\+\+Chunk $\ast$flap\+\_\+wav, int $\ast$rdy\+To\+Space)
+\begin{DoxyCompactList}\small\item\em remet les variables au D\+E\+F\+I\+NE si on appui sur espace \end{DoxyCompactList}\item 
+static void \hyperlink{flappy__bird_8c_a09c69a458354e11a45af579085123048}{update\+Variable\+Environement} (S\+D\+L\+\_\+\+Point $\ast$emplacement\+Personnage, int $\ast$upper, double $\ast$angle, int $\ast$nb\+\_\+boucle, int $\ast$vitesse\+Graviter)
+\begin{DoxyCompactList}\small\item\em permet de mettre a jours les variables utilisez \end{DoxyCompactList}\item 
+int \hyperlink{flappy__bird_8c_a8f9872781c9ba0176a187193e39dde97}{flappy\+\_\+bird} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, int highscore, int send\+\_\+l, int send\+\_\+h, char $\ast$token, int hardcore, S\+D\+L\+\_\+\+Texture $\ast$$\ast$\hyperlink{room_8c_a158b90dfedb211efa4c317267c983dd2}{textures})
+\begin{DoxyCompactList}\small\item\em Fonction principale qui joue le jeu flappy bird. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const int \hyperlink{flappy__bird_8c_a1563e736047cb57052434e132e4afac4}{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME} = 1000/\hyperlink{flappy__bird_8c_ac92ca5ab87034a348decad7ee8d4bd1b}{F\+PS}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{flappy__bird_8c_adf971c6127777fea40325a6b3ccd5179}{B\+A\+C\+K\+G\+R\+O\+U\+ND} = \{0, 0, 144, 256\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{flappy__bird_8c_a871a57bee941abea2174acde4386b3e0}{O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+V\+E\+RT} = \{52,0, 26, 160\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{flappy__bird_8c_adbe7e4a5519e1ca76121ceecaf05c984}{O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+O\+R\+A\+N\+GE} = \{0,0, 26, 160\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{flappy__bird_8c_a086dc677d12a2ef003b8642fd875b470}{S\+OL} = \{0, 0, 168, 55\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{flappy__bird_8c_ae4eeb02b43aebb10a51d6d398895765e}{C\+H\+I\+F\+F\+RE} = \{0, 0, 12, 18\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{flappy__bird_8c_a7aa8f58e4691e6534d4ccae36b92e3e2}{P\+E\+R\+SO} = \{0, 0, 17, 12\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{flappy__bird_8c_a0d4958bc82151e228ae23dc448e879f2}{H\+I\+G\+H\+\_\+\+S\+C\+O\+RE} = \{0,0,512,512\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{flappy__bird_8c_a0e174c1b4b8f590a0ea2051e4918c2fe}{S\+C\+O\+R\+E\+B\+O\+A\+RD} = \{0,0,113,57\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{flappy__bird_8c_ab61fc499948fb2c97e86302b86fa07de}{M\+E\+D\+A\+LS} = \{0,0,22,22\}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{flappy__bird_8c_a093b04abda57654be8b6ece6e07ab06d}{C\+O\+L\+O\+R\+\_\+\+L\+O\+A\+D\+I\+NG} = \{0x22,0xf4,0x57\}
+\item 
+int \hyperlink{flappy__bird_8c_a3365e2a32bed45d73157a35657807826}{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+B\+E\+T\+W\+E\+E\+N\+\_\+\+O\+B\+S\+T\+A\+C\+LE} = 49
+\item 
+int \hyperlink{flappy__bird_8c_aefe71bca4c41eceec6c77b8d9addfb65}{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+U\+N\+D\+E\+R\+\_\+\+O\+B\+S\+T\+A\+C\+LE} = 100
+\item 
+const int \hyperlink{flappy__bird_8c_a676a51616828adeeea54883648de061b}{U\+P\+P\+E\+R\+\_\+\+S\+T\+EP} = 4 $\ast$ (\hyperlink{flappy__bird_8c_ac92ca5ab87034a348decad7ee8d4bd1b}{F\+PS}/30)
+\item 
+const int \hyperlink{flappy__bird_8c_a5c07d7d9d0c384ff87214edb5f44765b}{G\+R\+A\+V\+I\+T\+Y\+\_\+\+S\+P\+E\+ED} = 2 $\ast$ (\hyperlink{flappy__bird_8c_ac92ca5ab87034a348decad7ee8d4bd1b}{F\+PS}/30)
+\item 
+const int \hyperlink{flappy__bird_8c_a6d29d77d4db16afe3012ee7ab51f6878}{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+C\+OR} = 8 / (\hyperlink{flappy__bird_8c_ac92ca5ab87034a348decad7ee8d4bd1b}{F\+PS}/30)
+\item 
+int \hyperlink{flappy__bird_8c_a30862aa51c2944f287c4445751341ee8}{update\+Ended}
+\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+Jeu flappy bird. 
+
+\begin{DoxyAuthor}{Auteur}
+S.\+Mahi 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+10/01/2020 
+\end{DoxyDate}
+
+
+\subsection{Documentation des macros}
+\mbox{\Hypertarget{flappy__bird_8c_a41081590f4c5b807082e9f7785d1eef9}\label{flappy__bird_8c_a41081590f4c5b807082e9f7785d1eef9}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!A\+N\+G\+L\+E\+\_\+\+D\+O\+WN@{A\+N\+G\+L\+E\+\_\+\+D\+O\+WN}}
+\index{A\+N\+G\+L\+E\+\_\+\+D\+O\+WN@{A\+N\+G\+L\+E\+\_\+\+D\+O\+WN}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{A\+N\+G\+L\+E\+\_\+\+D\+O\+WN}{ANGLE\_DOWN}}
+{\footnotesize\ttfamily \#define A\+N\+G\+L\+E\+\_\+\+D\+O\+WN~90}
+
+\mbox{\Hypertarget{flappy__bird_8c_ad81a2ab0303b14b1f6c567d6219c2d86}\label{flappy__bird_8c_ad81a2ab0303b14b1f6c567d6219c2d86}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!A\+N\+G\+L\+E\+\_\+\+UP@{A\+N\+G\+L\+E\+\_\+\+UP}}
+\index{A\+N\+G\+L\+E\+\_\+\+UP@{A\+N\+G\+L\+E\+\_\+\+UP}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{A\+N\+G\+L\+E\+\_\+\+UP}{ANGLE\_UP}}
+{\footnotesize\ttfamily \#define A\+N\+G\+L\+E\+\_\+\+UP~-\/30}
+
+\mbox{\Hypertarget{flappy__bird_8c_ad77f4a1540f49629e52fe9ced51f8f6a}\label{flappy__bird_8c_ad77f4a1540f49629e52fe9ced51f8f6a}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!A\+N\+G\+L\+E\+\_\+\+V\+I\+T\+E\+S\+SE@{A\+N\+G\+L\+E\+\_\+\+V\+I\+T\+E\+S\+SE}}
+\index{A\+N\+G\+L\+E\+\_\+\+V\+I\+T\+E\+S\+SE@{A\+N\+G\+L\+E\+\_\+\+V\+I\+T\+E\+S\+SE}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{A\+N\+G\+L\+E\+\_\+\+V\+I\+T\+E\+S\+SE}{ANGLE\_VITESSE}}
+{\footnotesize\ttfamily \#define A\+N\+G\+L\+E\+\_\+\+V\+I\+T\+E\+S\+SE~8}
+
+\mbox{\Hypertarget{flappy__bird_8c_a1cbcd5e1e513dba8fad4dde27417e221}\label{flappy__bird_8c_a1cbcd5e1e513dba8fad4dde27417e221}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!B\+A\+N\+\_\+\+C\+O\+DE@{B\+A\+N\+\_\+\+C\+O\+DE}}
+\index{B\+A\+N\+\_\+\+C\+O\+DE@{B\+A\+N\+\_\+\+C\+O\+DE}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{B\+A\+N\+\_\+\+C\+O\+DE}{BAN\_CODE}}
+{\footnotesize\ttfamily \#define B\+A\+N\+\_\+\+C\+O\+DE~123}
+
+\mbox{\Hypertarget{flappy__bird_8c_ac8a6f389427352d1e43f3e5909d7a8a8}\label{flappy__bird_8c_ac8a6f389427352d1e43f3e5909d7a8a8}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!C\+O\+M\+P\+E\+N\+S\+A\+T\+I\+T\+I\+O\+N\+\_\+\+H\+I\+T\+B\+O\+X\+\_\+\+D\+O\+WN@{C\+O\+M\+P\+E\+N\+S\+A\+T\+I\+T\+I\+O\+N\+\_\+\+H\+I\+T\+B\+O\+X\+\_\+\+D\+O\+WN}}
+\index{C\+O\+M\+P\+E\+N\+S\+A\+T\+I\+T\+I\+O\+N\+\_\+\+H\+I\+T\+B\+O\+X\+\_\+\+D\+O\+WN@{C\+O\+M\+P\+E\+N\+S\+A\+T\+I\+T\+I\+O\+N\+\_\+\+H\+I\+T\+B\+O\+X\+\_\+\+D\+O\+WN}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{C\+O\+M\+P\+E\+N\+S\+A\+T\+I\+T\+I\+O\+N\+\_\+\+H\+I\+T\+B\+O\+X\+\_\+\+D\+O\+WN}{COMPENSATITION\_HITBOX\_DOWN}}
+{\footnotesize\ttfamily \#define C\+O\+M\+P\+E\+N\+S\+A\+T\+I\+T\+I\+O\+N\+\_\+\+H\+I\+T\+B\+O\+X\+\_\+\+D\+O\+WN~20}
+
+\mbox{\Hypertarget{flappy__bird_8c_ad4b85959fbfc73696e7f51a10c1ffcf3}\label{flappy__bird_8c_ad4b85959fbfc73696e7f51a10c1ffcf3}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!D\+I\+R\+\_\+\+F\+L\+A\+P\+\_\+\+W\+AV@{D\+I\+R\+\_\+\+F\+L\+A\+P\+\_\+\+W\+AV}}
+\index{D\+I\+R\+\_\+\+F\+L\+A\+P\+\_\+\+W\+AV@{D\+I\+R\+\_\+\+F\+L\+A\+P\+\_\+\+W\+AV}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+F\+L\+A\+P\+\_\+\+W\+AV}{DIR\_FLAP\_WAV}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+F\+L\+A\+P\+\_\+\+W\+AV~\char`\"{}../games/3\+\_\+flappy\+\_\+bird/\+Sounds/flap.\+wav\char`\"{}}
+
+\mbox{\Hypertarget{flappy__bird_8c_a3d549bcf10a7f1847adae7ba3e71c1cc}\label{flappy__bird_8c_a3d549bcf10a7f1847adae7ba3e71c1cc}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!D\+I\+R\+\_\+\+H\+U\+R\+T\+\_\+\+W\+AV@{D\+I\+R\+\_\+\+H\+U\+R\+T\+\_\+\+W\+AV}}
+\index{D\+I\+R\+\_\+\+H\+U\+R\+T\+\_\+\+W\+AV@{D\+I\+R\+\_\+\+H\+U\+R\+T\+\_\+\+W\+AV}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+H\+U\+R\+T\+\_\+\+W\+AV}{DIR\_HURT\_WAV}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+H\+U\+R\+T\+\_\+\+W\+AV~\char`\"{}../games/3\+\_\+flappy\+\_\+bird/\+Sounds/hurt.\+wav\char`\"{}}
+
+\mbox{\Hypertarget{flappy__bird_8c_a92be272566261416972b218c223ceaea}\label{flappy__bird_8c_a92be272566261416972b218c223ceaea}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!D\+I\+R\+\_\+\+S\+C\+O\+R\+E\+\_\+\+W\+AV@{D\+I\+R\+\_\+\+S\+C\+O\+R\+E\+\_\+\+W\+AV}}
+\index{D\+I\+R\+\_\+\+S\+C\+O\+R\+E\+\_\+\+W\+AV@{D\+I\+R\+\_\+\+S\+C\+O\+R\+E\+\_\+\+W\+AV}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+S\+C\+O\+R\+E\+\_\+\+W\+AV}{DIR\_SCORE\_WAV}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+S\+C\+O\+R\+E\+\_\+\+W\+AV~\char`\"{}../games/3\+\_\+flappy\+\_\+bird/\+Sounds/score.\+wav\char`\"{}}
+
+\mbox{\Hypertarget{flappy__bird_8c_ac92ca5ab87034a348decad7ee8d4bd1b}\label{flappy__bird_8c_ac92ca5ab87034a348decad7ee8d4bd1b}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!F\+PS@{F\+PS}}
+\index{F\+PS@{F\+PS}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{F\+PS}{FPS}}
+{\footnotesize\ttfamily \#define F\+PS~60}
+
+\mbox{\Hypertarget{flappy__bird_8c_ae70f8544bb0fda25dce0a93587d5c6c9}\label{flappy__bird_8c_ae70f8544bb0fda25dce0a93587d5c6c9}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!I\+M\+A\+G\+E\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+AD@{I\+M\+A\+G\+E\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+AD}}
+\index{I\+M\+A\+G\+E\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+AD@{I\+M\+A\+G\+E\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+AD}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{I\+M\+A\+G\+E\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+AD}{IMAGE\_ERROR\_LOAD}}
+{\footnotesize\ttfamily \#define I\+M\+A\+G\+E\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+AD~-\/101}
+
+\mbox{\Hypertarget{flappy__bird_8c_aec5e90c4c52efaf97874201e4bbb5a64}\label{flappy__bird_8c_aec5e90c4c52efaf97874201e4bbb5a64}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!N\+B\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE@{N\+B\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE}}
+\index{N\+B\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE@{N\+B\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE}{NB\_POS\_OBSTACLE}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE~5}
+
+\mbox{\Hypertarget{flappy__bird_8c_aad789c6c6cd9f5fb4148ee747630f2cc}\label{flappy__bird_8c_aad789c6c6cd9f5fb4148ee747630f2cc}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!P\+R\+E\+L\+O\+A\+D\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE@{P\+R\+E\+L\+O\+A\+D\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE}}
+\index{P\+R\+E\+L\+O\+A\+D\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE@{P\+R\+E\+L\+O\+A\+D\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{P\+R\+E\+L\+O\+A\+D\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE}{PRELOAD\_POS\_OBSTACLE}}
+{\footnotesize\ttfamily \#define P\+R\+E\+L\+O\+A\+D\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE~8}
+
+\mbox{\Hypertarget{flappy__bird_8c_a4330090b097ea40d0041592c7c29fae7}\label{flappy__bird_8c_a4330090b097ea40d0041592c7c29fae7}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!S\+C\+A\+L\+E\+\_\+\+T\+O\+\_\+\+F\+IT@{S\+C\+A\+L\+E\+\_\+\+T\+O\+\_\+\+F\+IT}}
+\index{S\+C\+A\+L\+E\+\_\+\+T\+O\+\_\+\+F\+IT@{S\+C\+A\+L\+E\+\_\+\+T\+O\+\_\+\+F\+IT}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{S\+C\+A\+L\+E\+\_\+\+T\+O\+\_\+\+F\+IT}{SCALE\_TO\_FIT}}
+{\footnotesize\ttfamily \#define S\+C\+A\+L\+E\+\_\+\+T\+O\+\_\+\+F\+IT~4}
+
+\mbox{\Hypertarget{flappy__bird_8c_a253eadb4cc9a2d67e636933c9c5e8719}\label{flappy__bird_8c_a253eadb4cc9a2d67e636933c9c5e8719}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+ND@{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+ND}}
+\index{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+ND@{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+ND}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+ND}{SDL\_RENDER\_ERROR\_BACKGROUND}}
+{\footnotesize\ttfamily \#define S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+ND~-\/103}
+
+\mbox{\Hypertarget{flappy__bird_8c_af33ac46adb014f8b74ad790e8bbb36f8}\label{flappy__bird_8c_af33ac46adb014f8b74ad790e8bbb36f8}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+O\+B\+S\+T\+A\+C\+LE@{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+O\+B\+S\+T\+A\+C\+LE}}
+\index{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+O\+B\+S\+T\+A\+C\+LE@{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+O\+B\+S\+T\+A\+C\+LE}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+O\+B\+S\+T\+A\+C\+LE}{SDL\_RENDER\_ERROR\_OBSTACLE}}
+{\footnotesize\ttfamily \#define S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+O\+B\+S\+T\+A\+C\+LE~-\/104}
+
+\mbox{\Hypertarget{flappy__bird_8c_a181905e89f47f1ae6874c5eb19d54fb6}\label{flappy__bird_8c_a181905e89f47f1ae6874c5eb19d54fb6}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+E\+R\+S\+O\+N\+N\+A\+GE@{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+E\+R\+S\+O\+N\+N\+A\+GE}}
+\index{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+E\+R\+S\+O\+N\+N\+A\+GE@{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+E\+R\+S\+O\+N\+N\+A\+GE}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+E\+R\+S\+O\+N\+N\+A\+GE}{SDL\_RENDER\_ERROR\_PERSONNAGE}}
+{\footnotesize\ttfamily \#define S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+E\+R\+S\+O\+N\+N\+A\+GE~-\/106}
+
+\mbox{\Hypertarget{flappy__bird_8c_af0547979266df72eec654c5552348319}\label{flappy__bird_8c_af0547979266df72eec654c5552348319}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+R\+I\+N\+T\+\_\+\+HS@{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+R\+I\+N\+T\+\_\+\+HS}}
+\index{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+R\+I\+N\+T\+\_\+\+HS@{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+R\+I\+N\+T\+\_\+\+HS}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+R\+I\+N\+T\+\_\+\+HS}{SDL\_RENDER\_ERROR\_PRINT\_HS}}
+{\footnotesize\ttfamily \#define S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+R\+I\+N\+T\+\_\+\+HS~-\/108}
+
+\mbox{\Hypertarget{flappy__bird_8c_af4759c7c994c2126f49b584892178831}\label{flappy__bird_8c_af4759c7c994c2126f49b584892178831}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+R\+I\+N\+T\+\_\+\+S\+C\+O\+RE@{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+R\+I\+N\+T\+\_\+\+S\+C\+O\+RE}}
+\index{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+R\+I\+N\+T\+\_\+\+S\+C\+O\+RE@{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+R\+I\+N\+T\+\_\+\+S\+C\+O\+RE}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+R\+I\+N\+T\+\_\+\+S\+C\+O\+RE}{SDL\_RENDER\_ERROR\_PRINT\_SCORE}}
+{\footnotesize\ttfamily \#define S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+P\+R\+I\+N\+T\+\_\+\+S\+C\+O\+RE~-\/107}
+
+\mbox{\Hypertarget{flappy__bird_8c_a0185ee5ddd06587fcc0e9d2b47773308}\label{flappy__bird_8c_a0185ee5ddd06587fcc0e9d2b47773308}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+S\+OL@{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+S\+OL}}
+\index{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+S\+OL@{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+S\+OL}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+S\+OL}{SDL\_RENDER\_ERROR\_SOL}}
+{\footnotesize\ttfamily \#define S\+D\+L\+\_\+\+R\+E\+N\+D\+E\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+S\+OL~-\/105}
+
+\mbox{\Hypertarget{flappy__bird_8c_afb7ee9eee30279bf189e9757a1d28351}\label{flappy__bird_8c_afb7ee9eee30279bf189e9757a1d28351}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!S\+O\+U\+N\+D\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+AD@{S\+O\+U\+N\+D\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+AD}}
+\index{S\+O\+U\+N\+D\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+AD@{S\+O\+U\+N\+D\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+AD}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{S\+O\+U\+N\+D\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+AD}{SOUND\_ERROR\_LOAD}}
+{\footnotesize\ttfamily \#define S\+O\+U\+N\+D\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+AD~-\/102}
+
+\mbox{\Hypertarget{flappy__bird_8c_a5455cd891524aaefc0c4b03ceaaaeffa}\label{flappy__bird_8c_a5455cd891524aaefc0c4b03ceaaaeffa}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!T\+R\+A\+N\+C\+H\+E\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE@{T\+R\+A\+N\+C\+H\+E\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE}}
+\index{T\+R\+A\+N\+C\+H\+E\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE@{T\+R\+A\+N\+C\+H\+E\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{T\+R\+A\+N\+C\+H\+E\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE}{TRANCHE\_POS\_OBSTACLE}}
+{\footnotesize\ttfamily \#define T\+R\+A\+N\+C\+H\+E\+\_\+\+P\+O\+S\+\_\+\+O\+B\+S\+T\+A\+C\+LE~550}
+
+\mbox{\Hypertarget{flappy__bird_8c_adda7fd42446641547476db3522b55a30}\label{flappy__bird_8c_adda7fd42446641547476db3522b55a30}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!U\+P\+P\+E\+R\+\_\+\+B\+Y\+\_\+\+S\+T\+EP@{U\+P\+P\+E\+R\+\_\+\+B\+Y\+\_\+\+S\+T\+EP}}
+\index{U\+P\+P\+E\+R\+\_\+\+B\+Y\+\_\+\+S\+T\+EP@{U\+P\+P\+E\+R\+\_\+\+B\+Y\+\_\+\+S\+T\+EP}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{U\+P\+P\+E\+R\+\_\+\+B\+Y\+\_\+\+S\+T\+EP}{UPPER\_BY\_STEP}}
+{\footnotesize\ttfamily \#define U\+P\+P\+E\+R\+\_\+\+B\+Y\+\_\+\+S\+T\+EP~30}
+
+\mbox{\Hypertarget{flappy__bird_8c_ac99e9b1c151b601470732c2c9ff9866f}\label{flappy__bird_8c_ac99e9b1c151b601470732c2c9ff9866f}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!W\+I\+N\+D\+O\+W\+\_\+H@{W\+I\+N\+D\+O\+W\+\_\+H}}
+\index{W\+I\+N\+D\+O\+W\+\_\+H@{W\+I\+N\+D\+O\+W\+\_\+H}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{W\+I\+N\+D\+O\+W\+\_\+H}{WINDOW\_H}}
+{\footnotesize\ttfamily \#define W\+I\+N\+D\+O\+W\+\_\+H~1080.}
+
+\mbox{\Hypertarget{flappy__bird_8c_ae0ceb0aa3313530aa5d72827ea1131c3}\label{flappy__bird_8c_ae0ceb0aa3313530aa5d72827ea1131c3}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!W\+I\+N\+D\+O\+W\+\_\+L@{W\+I\+N\+D\+O\+W\+\_\+L}}
+\index{W\+I\+N\+D\+O\+W\+\_\+L@{W\+I\+N\+D\+O\+W\+\_\+L}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{W\+I\+N\+D\+O\+W\+\_\+L}{WINDOW\_L}}
+{\footnotesize\ttfamily \#define W\+I\+N\+D\+O\+W\+\_\+L~1920.}
+
+
+
+\subsection{Documentation des fonctions}
+\mbox{\Hypertarget{flappy__bird_8c_a992ce3eab3b684a62428aff5a93ff1f8}\label{flappy__bird_8c_a992ce3eab3b684a62428aff5a93ff1f8}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!afficher\+Background@{afficher\+Background}}
+\index{afficher\+Background@{afficher\+Background}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Background()}{afficherBackground()}}
+{\footnotesize\ttfamily int afficher\+Background (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+background,  }\item[{int}]{theme }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+affiche l\textquotesingle{}image de fond 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & \\
+\hline
+{\em texture\+\_\+background} & \\
+\hline
+{\em theme} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a992ce3eab3b684a62428aff5a93ff1f8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_a470895aeba5741bc6e77bb164d42e836}\label{flappy__bird_8c_a470895aeba5741bc6e77bb164d42e836}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!afficher\+Meilleur\+Score@{afficher\+Meilleur\+Score}}
+\index{afficher\+Meilleur\+Score@{afficher\+Meilleur\+Score}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Meilleur\+Score()}{afficherMeilleurScore()}}
+{\footnotesize\ttfamily int afficher\+Meilleur\+Score (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+highscore,  }\item[{int}]{score,  }\item[{int}]{high\+\_\+score,  }\item[{int}]{cible }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+affiche le meilleur score a l\textquotesingle{}ecran 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & \\
+\hline
+{\em texture\+\_\+highscore} & \\
+\hline
+{\em score} & \\
+\hline
+{\em high\+\_\+score} & \\
+\hline
+{\em cible} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a470895aeba5741bc6e77bb164d42e836_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_a502412a10243d68aa0dcbd8e07e6edb2}\label{flappy__bird_8c_a502412a10243d68aa0dcbd8e07e6edb2}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!Afficher\+Personnage@{Afficher\+Personnage}}
+\index{Afficher\+Personnage@{Afficher\+Personnage}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{Afficher\+Personnage()}{AfficherPersonnage()}}
+{\footnotesize\ttfamily int Afficher\+Personnage (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+birds,  }\item[{S\+D\+L\+\_\+\+Point}]{emplacement\+Personnage,  }\item[{int}]{var\+Animation\+Personnage,  }\item[{double}]{angle,  }\item[{int}]{theme }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+affiche le personnage a l ecran 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & \\
+\hline
+{\em texture\+\_\+birds} & \\
+\hline
+{\em emplacement\+Personnage} & \\
+\hline
+{\em var\+Animation\+Personnage} & \\
+\hline
+{\em angle} & \\
+\hline
+{\em theme} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a502412a10243d68aa0dcbd8e07e6edb2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_ab428543af2e71cb1991d2d037299fbcd}\label{flappy__bird_8c_ab428543af2e71cb1991d2d037299fbcd}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!afficher\+Pilonne@{afficher\+Pilonne}}
+\index{afficher\+Pilonne@{afficher\+Pilonne}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Pilonne()}{afficherPilonne()}}
+{\footnotesize\ttfamily int afficher\+Pilonne (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+pipes,  }\item[{int}]{position,  }\item[{int}]{position\+\_\+axe\+\_\+x,  }\item[{int}]{theme }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+affiche le O\+B\+S\+T\+A\+C\+LE 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & \\
+\hline
+{\em texture\+\_\+pipes} & \\
+\hline
+{\em position} & \\
+\hline
+{\em position\+\_\+axe\+\_\+x} & \\
+\hline
+{\em theme} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_ab428543af2e71cb1991d2d037299fbcd_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_a49aafde64b048663c89457ab94171d3e}\label{flappy__bird_8c_a49aafde64b048663c89457ab94171d3e}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!afficher\+Score@{afficher\+Score}}
+\index{afficher\+Score@{afficher\+Score}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Score()}{afficherScore()}}
+{\footnotesize\ttfamily int afficher\+Score (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+chiffre,  }\item[{int}]{score,  }\item[{int}]{mode }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+affiche le score en cours a l ecran 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & \\
+\hline
+{\em texture\+\_\+chiffre} & \\
+\hline
+{\em score} & \\
+\hline
+{\em mode} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{flappy__bird_8c_a49aafde64b048663c89457ab94171d3e_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a49aafde64b048663c89457ab94171d3e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_ad4157024daf3d9d27be448ccea30dda9}\label{flappy__bird_8c_ad4157024daf3d9d27be448ccea30dda9}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!afficher\+Sol@{afficher\+Sol}}
+\index{afficher\+Sol@{afficher\+Sol}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Sol()}{afficherSol()}}
+{\footnotesize\ttfamily int afficher\+Sol (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+sol,  }\item[{int}]{target\+\_\+x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+affiche le S\+OL D\+E\+C\+O\+RE 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & \\
+\hline
+{\em texture\+\_\+sol} & \\
+\hline
+{\em target\+\_\+x} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_ad4157024daf3d9d27be448ccea30dda9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_a4858bca7396db08c9733a691a7d58f9c}\label{flappy__bird_8c_a4858bca7396db08c9733a691a7d58f9c}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!afficher\+Tout@{afficher\+Tout}}
+\index{afficher\+Tout@{afficher\+Tout}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Tout()}{afficherTout()}}
+{\footnotesize\ttfamily int afficher\+Tout (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Thread $\ast$$\ast$}]{thread,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{my\+Font,  }\item[{int $\ast$}]{retour,  }\item[{int $\ast$}]{frame\+\_\+anim\+\_\+loading,  }\item[{int $\ast$}]{frame\+Retour,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+loading,  }\item[{S\+D\+L\+\_\+\+Point}]{emplacement\+Personnage,  }\item[{\hyperlink{structpilonne}{pilonne} $\ast$}]{pilonne,  }\item[{int}]{score,  }\item[{int}]{var\+Animation\+Personnage,  }\item[{int}]{var\+Animation\+Sol,  }\item[{int}]{cible,  }\item[{double}]{angle,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+background,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+pipes,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+birds,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+medals,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+score\+Board,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+sol,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+chiffre,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+\_\+highscore,  }\item[{int}]{theme }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+regroupement de toute les fonctions d\textquotesingle{}affichage pour afficher tous 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & \\
+\hline
+{\em emplacement\+Personnage} & \\
+\hline
+{\em pilonne} & \\
+\hline
+{\em score} & \\
+\hline
+{\em var\+Animation\+Personnage} & \\
+\hline
+{\em cible} & \\
+\hline
+{\em angle} & \\
+\hline
+{\em texture\+\_\+background} & \\
+\hline
+{\em texture\+\_\+pipes} & \\
+\hline
+{\em texture\+\_\+birds} & \\
+\hline
+{\em texture\+\_\+medals} & \\
+\hline
+{\em texture\+\_\+score\+Board} & \\
+\hline
+{\em texture\+\_\+sol} & \\
+\hline
+{\em texture\+\_\+chiffre} & \\
+\hline
+{\em texture\+\_\+highscore)} & \\
+\hline
+{\em theme} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a4858bca7396db08c9733a691a7d58f9c_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a4858bca7396db08c9733a691a7d58f9c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_a0ceb3de339eddf081185c52d40819193}\label{flappy__bird_8c_a0ceb3de339eddf081185c52d40819193}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!attendre\+Avant\+Depart@{attendre\+Avant\+Depart}}
+\index{attendre\+Avant\+Depart@{attendre\+Avant\+Depart}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{attendre\+Avant\+Depart()}{attendreAvantDepart()}}
+{\footnotesize\ttfamily int attendre\+Avant\+Depart (\begin{DoxyParamCaption}\item[{Mix\+\_\+\+Chunk $\ast$}]{flap\+\_\+wav,  }\item[{int $\ast$}]{rdy\+To\+Space }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+attend l\textquotesingle{}appui sur espace pour demarrer joue un son 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em flap\+\_\+wav} & jouer le son passer en parametre \\
+\hline
+{\em Determine} & si la touche espace a été relachée\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+faux si le joueur quitte le jeu, sinon vrai 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a0ceb3de339eddf081185c52d40819193_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_a8b820c5bc000a7a6b332e6cd9fc810fe}\label{flappy__bird_8c_a8b820c5bc000a7a6b332e6cd9fc810fe}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!collision@{collision}}
+\index{collision@{collision}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{collision()}{collision()}}
+{\footnotesize\ttfamily int collision (\begin{DoxyParamCaption}\item[{\hyperlink{structpilonne}{pilonne} $\ast$}]{pilonne,  }\item[{S\+D\+L\+\_\+\+Point}]{emplacement\+Personnage,  }\item[{Mix\+\_\+\+Chunk $\ast$}]{hurt\+\_\+wav }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+permet de detecter une collision et de jouer un son 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em pilonne} & \\
+\hline
+{\em emplacement\+Personnage} & \\
+\hline
+{\em hurt\+\_\+wav} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+int T\+R\+U\+E/\+F\+A\+L\+SE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a8b820c5bc000a7a6b332e6cd9fc810fe_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_a96e403e8f6333abe2bee8d0429217c7c}\label{flappy__bird_8c_a96e403e8f6333abe2bee8d0429217c7c}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!evenement@{evenement}}
+\index{evenement@{evenement}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{evenement()}{evenement()}}
+{\footnotesize\ttfamily int evenement (\begin{DoxyParamCaption}\item[{int $\ast$}]{upper,  }\item[{int $\ast$}]{vitesse\+Graviter,  }\item[{int $\ast$}]{nb\+\_\+boucle,  }\item[{Mix\+\_\+\+Chunk $\ast$}]{flap\+\_\+wav,  }\item[{int $\ast$}]{rdy\+To\+Space }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+remet les variables au D\+E\+F\+I\+NE si on appui sur espace 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em upper} & \\
+\hline
+{\em vitesse\+Graviter} & \\
+\hline
+{\em nb\+\_\+boucle} & \\
+\hline
+{\em flap\+\_\+wav} & \\
+\hline
+{\em Determine} & si la touche espace a été relachée\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a96e403e8f6333abe2bee8d0429217c7c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_a8f9872781c9ba0176a187193e39dde97}\label{flappy__bird_8c_a8f9872781c9ba0176a187193e39dde97}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!flappy\+\_\+bird@{flappy\+\_\+bird}}
+\index{flappy\+\_\+bird@{flappy\+\_\+bird}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{flappy\+\_\+bird()}{flappy\_bird()}}
+{\footnotesize\ttfamily int flappy\+\_\+bird (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{int}]{highscore,  }\item[{int}]{send\+\_\+l,  }\item[{int}]{send\+\_\+h,  }\item[{char $\ast$}]{token,  }\item[{int}]{hardcore,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$$\ast$}]{textures }\end{DoxyParamCaption})}
+
+
+
+Fonction principale qui joue le jeu flappy bird. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher le jeu \\
+\hline
+{\em highscore} & le record du jeu \\
+\hline
+{\em send\+\_\+l} & La largeur d\textquotesingle{}écran \\
+\hline
+{\em send\+\_\+h} & La hauteur d\textquotesingle{}écran \\
+\hline
+{\em token} & La clé de connexion du joueur \\
+\hline
+{\em hardcore} & Le mode de jeu \\
+\hline
+{\em textures} & Les textures du jeu \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+L\textquotesingle{}erreur associée ou E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS si pas d\textquotesingle{}erreur 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a8f9872781c9ba0176a187193e39dde97_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a8f9872781c9ba0176a187193e39dde97_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_a5bc0848bb48b6c9265b8b87c7c09b841}\label{flappy__bird_8c_a5bc0848bb48b6c9265b8b87c7c09b841}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!init\+\_\+pilonne@{init\+\_\+pilonne}}
+\index{init\+\_\+pilonne@{init\+\_\+pilonne}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{init\+\_\+pilonne()}{init\_pilonne()}}
+{\footnotesize\ttfamily void init\+\_\+pilonne (\begin{DoxyParamCaption}\item[{\hyperlink{structpilonne}{pilonne} $\ast$}]{pilonne,  }\item[{int $\ast$}]{var\+Animation\+Personnage,  }\item[{int $\ast$}]{var\+Animation\+Sol,  }\item[{int $\ast$}]{end,  }\item[{int $\ast$}]{dead,  }\item[{int $\ast$}]{traitement }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+initialisation des pilonnes et des animation et de certaine variables liee au boucle du jeu 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em pilonne} & struct pilonne \\
+\hline
+{\em var\+Animation\+Personnage} & \\
+\hline
+{\em var\+Animation\+Sol} & \\
+\hline
+{\em end} & \\
+\hline
+{\em dead} & \\
+\hline
+{\em traitement} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a5bc0848bb48b6c9265b8b87c7c09b841_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_ae61d8a4fce3f39ca4484ea102ea242c1}\label{flappy__bird_8c_ae61d8a4fce3f39ca4484ea102ea242c1}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!int\+Len@{int\+Len}}
+\index{int\+Len@{int\+Len}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{int\+Len()}{intLen()}}
+{\footnotesize\ttfamily int int\+Len (\begin{DoxyParamCaption}\item[{int}]{score }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+retourne la longueur d\textquotesingle{}un nombre 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em score} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+int 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_ae61d8a4fce3f39ca4484ea102ea242c1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_a18e8671a141af5a89d184dd7dcdacc21}\label{flappy__bird_8c_a18e8671a141af5a89d184dd7dcdacc21}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!traitement\+\_\+pilonne@{traitement\+\_\+pilonne}}
+\index{traitement\+\_\+pilonne@{traitement\+\_\+pilonne}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{traitement\+\_\+pilonne()}{traitement\_pilonne()}}
+{\footnotesize\ttfamily int traitement\+\_\+pilonne (\begin{DoxyParamCaption}\item[{\hyperlink{structpilonne}{pilonne} $\ast$}]{pilonne,  }\item[{int}]{traitement,  }\item[{int $\ast$}]{score,  }\item[{long long $\ast$}]{score\+\_\+hash,  }\item[{long}]{keys\mbox{[}4\mbox{]},  }\item[{Mix\+\_\+\+Chunk $\ast$}]{score\+\_\+wav }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+detecte le passage d\textquotesingle{}un pilonne et joue un son 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em pilonne} & struct pilonne \\
+\hline
+{\em traitement} & pilonne a traiter \\
+\hline
+{\em score} & score a incrementer \\
+\hline
+{\em score\+\_\+hash} & liee a la securite \\
+\hline
+{\em keys} & liee a la securite \\
+\hline
+{\em score\+\_\+wav} & son a jouer\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+int T\+R\+U\+E/\+F\+A\+L\+SE 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a18e8671a141af5a89d184dd7dcdacc21_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a18e8671a141af5a89d184dd7dcdacc21_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_a93a55e5f40971511e088f2e52a654c57}\label{flappy__bird_8c_a93a55e5f40971511e088f2e52a654c57}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!traitement\+Variable\+Animation@{traitement\+Variable\+Animation}}
+\index{traitement\+Variable\+Animation@{traitement\+Variable\+Animation}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{traitement\+Variable\+Animation()}{traitementVariableAnimation()}}
+{\footnotesize\ttfamily void traitement\+Variable\+Animation (\begin{DoxyParamCaption}\item[{int $\ast$}]{var\+Animation\+Personnage,  }\item[{int $\ast$}]{var\+Animation\+Sol }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+mise a jours des variables liee a l\textquotesingle{}environement/decor 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em var\+Animation\+Personnage} & \\
+\hline
+{\em var\+Animation\+Sol} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a93a55e5f40971511e088f2e52a654c57_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{flappy__bird_8c_a09c69a458354e11a45af579085123048}\label{flappy__bird_8c_a09c69a458354e11a45af579085123048}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!update\+Variable\+Environement@{update\+Variable\+Environement}}
+\index{update\+Variable\+Environement@{update\+Variable\+Environement}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{update\+Variable\+Environement()}{updateVariableEnvironement()}}
+{\footnotesize\ttfamily void update\+Variable\+Environement (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Point $\ast$}]{emplacement\+Personnage,  }\item[{int $\ast$}]{upper,  }\item[{double $\ast$}]{angle,  }\item[{int $\ast$}]{nb\+\_\+boucle,  }\item[{int $\ast$}]{vitesse\+Graviter }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+permet de mettre a jours les variables utilisez 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em emplacement\+Personnage} & point X,Y sur la position de l\textquotesingle{}oiseau \\
+\hline
+{\em upper} & l\textquotesingle{}oiseau monte \\
+\hline
+{\em angle} & angle de l\textquotesingle{}oiseau \\
+\hline
+{\em nb\+\_\+boucle} & nombre de boucle \\
+\hline
+{\em vitesse\+Graviter} & vitesse de graviter\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{flappy__bird_8c_a09c69a458354e11a45af579085123048_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Documentation des variables}
+\mbox{\Hypertarget{flappy__bird_8c_adf971c6127777fea40325a6b3ccd5179}\label{flappy__bird_8c_adf971c6127777fea40325a6b3ccd5179}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!B\+A\+C\+K\+G\+R\+O\+U\+ND@{B\+A\+C\+K\+G\+R\+O\+U\+ND}}
+\index{B\+A\+C\+K\+G\+R\+O\+U\+ND@{B\+A\+C\+K\+G\+R\+O\+U\+ND}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{B\+A\+C\+K\+G\+R\+O\+U\+ND}{BACKGROUND}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect B\+A\+C\+K\+G\+R\+O\+U\+ND = \{0, 0, 144, 256\}}
+
+\mbox{\Hypertarget{flappy__bird_8c_ae4eeb02b43aebb10a51d6d398895765e}\label{flappy__bird_8c_ae4eeb02b43aebb10a51d6d398895765e}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!C\+H\+I\+F\+F\+RE@{C\+H\+I\+F\+F\+RE}}
+\index{C\+H\+I\+F\+F\+RE@{C\+H\+I\+F\+F\+RE}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{C\+H\+I\+F\+F\+RE}{CHIFFRE}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect C\+H\+I\+F\+F\+RE = \{0, 0, 12, 18\}}
+
+\mbox{\Hypertarget{flappy__bird_8c_a093b04abda57654be8b6ece6e07ab06d}\label{flappy__bird_8c_a093b04abda57654be8b6ece6e07ab06d}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!C\+O\+L\+O\+R\+\_\+\+L\+O\+A\+D\+I\+NG@{C\+O\+L\+O\+R\+\_\+\+L\+O\+A\+D\+I\+NG}}
+\index{C\+O\+L\+O\+R\+\_\+\+L\+O\+A\+D\+I\+NG@{C\+O\+L\+O\+R\+\_\+\+L\+O\+A\+D\+I\+NG}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{C\+O\+L\+O\+R\+\_\+\+L\+O\+A\+D\+I\+NG}{COLOR\_LOADING}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color C\+O\+L\+O\+R\+\_\+\+L\+O\+A\+D\+I\+NG = \{0x22,0xf4,0x57\}}
+
+\mbox{\Hypertarget{flappy__bird_8c_a3365e2a32bed45d73157a35657807826}\label{flappy__bird_8c_a3365e2a32bed45d73157a35657807826}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+B\+E\+T\+W\+E\+E\+N\+\_\+\+O\+B\+S\+T\+A\+C\+LE@{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+B\+E\+T\+W\+E\+E\+N\+\_\+\+O\+B\+S\+T\+A\+C\+LE}}
+\index{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+B\+E\+T\+W\+E\+E\+N\+\_\+\+O\+B\+S\+T\+A\+C\+LE@{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+B\+E\+T\+W\+E\+E\+N\+\_\+\+O\+B\+S\+T\+A\+C\+LE}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+B\+E\+T\+W\+E\+E\+N\+\_\+\+O\+B\+S\+T\+A\+C\+LE}{DISTANCE\_BETWEEN\_OBSTACLE}}
+{\footnotesize\ttfamily int D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+B\+E\+T\+W\+E\+E\+N\+\_\+\+O\+B\+S\+T\+A\+C\+LE = 49}
+
+\mbox{\Hypertarget{flappy__bird_8c_aefe71bca4c41eceec6c77b8d9addfb65}\label{flappy__bird_8c_aefe71bca4c41eceec6c77b8d9addfb65}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+U\+N\+D\+E\+R\+\_\+\+O\+B\+S\+T\+A\+C\+LE@{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+U\+N\+D\+E\+R\+\_\+\+O\+B\+S\+T\+A\+C\+LE}}
+\index{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+U\+N\+D\+E\+R\+\_\+\+O\+B\+S\+T\+A\+C\+LE@{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+U\+N\+D\+E\+R\+\_\+\+O\+B\+S\+T\+A\+C\+LE}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+U\+N\+D\+E\+R\+\_\+\+O\+B\+S\+T\+A\+C\+LE}{DISTANCE\_UNDER\_OBSTACLE}}
+{\footnotesize\ttfamily int D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+U\+N\+D\+E\+R\+\_\+\+O\+B\+S\+T\+A\+C\+LE = 100}
+
+\mbox{\Hypertarget{flappy__bird_8c_a1563e736047cb57052434e132e4afac4}\label{flappy__bird_8c_a1563e736047cb57052434e132e4afac4}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!F\+R\+A\+M\+E\+\_\+\+T\+I\+ME@{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME}}
+\index{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME@{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME}{FRAME\_TIME}}
+{\footnotesize\ttfamily const int F\+R\+A\+M\+E\+\_\+\+T\+I\+ME = 1000/\hyperlink{flappy__bird_8c_ac92ca5ab87034a348decad7ee8d4bd1b}{F\+PS}}
+
+\mbox{\Hypertarget{flappy__bird_8c_a5c07d7d9d0c384ff87214edb5f44765b}\label{flappy__bird_8c_a5c07d7d9d0c384ff87214edb5f44765b}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!G\+R\+A\+V\+I\+T\+Y\+\_\+\+S\+P\+E\+ED@{G\+R\+A\+V\+I\+T\+Y\+\_\+\+S\+P\+E\+ED}}
+\index{G\+R\+A\+V\+I\+T\+Y\+\_\+\+S\+P\+E\+ED@{G\+R\+A\+V\+I\+T\+Y\+\_\+\+S\+P\+E\+ED}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{G\+R\+A\+V\+I\+T\+Y\+\_\+\+S\+P\+E\+ED}{GRAVITY\_SPEED}}
+{\footnotesize\ttfamily const int G\+R\+A\+V\+I\+T\+Y\+\_\+\+S\+P\+E\+ED = 2 $\ast$ (\hyperlink{flappy__bird_8c_ac92ca5ab87034a348decad7ee8d4bd1b}{F\+PS}/30)}
+
+\mbox{\Hypertarget{flappy__bird_8c_a0d4958bc82151e228ae23dc448e879f2}\label{flappy__bird_8c_a0d4958bc82151e228ae23dc448e879f2}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!H\+I\+G\+H\+\_\+\+S\+C\+O\+RE@{H\+I\+G\+H\+\_\+\+S\+C\+O\+RE}}
+\index{H\+I\+G\+H\+\_\+\+S\+C\+O\+RE@{H\+I\+G\+H\+\_\+\+S\+C\+O\+RE}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{H\+I\+G\+H\+\_\+\+S\+C\+O\+RE}{HIGH\_SCORE}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect H\+I\+G\+H\+\_\+\+S\+C\+O\+RE = \{0,0,512,512\}}
+
+\mbox{\Hypertarget{flappy__bird_8c_ab61fc499948fb2c97e86302b86fa07de}\label{flappy__bird_8c_ab61fc499948fb2c97e86302b86fa07de}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!M\+E\+D\+A\+LS@{M\+E\+D\+A\+LS}}
+\index{M\+E\+D\+A\+LS@{M\+E\+D\+A\+LS}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{M\+E\+D\+A\+LS}{MEDALS}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect M\+E\+D\+A\+LS = \{0,0,22,22\}}
+
+\mbox{\Hypertarget{flappy__bird_8c_adbe7e4a5519e1ca76121ceecaf05c984}\label{flappy__bird_8c_adbe7e4a5519e1ca76121ceecaf05c984}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+O\+R\+A\+N\+GE@{O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+O\+R\+A\+N\+GE}}
+\index{O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+O\+R\+A\+N\+GE@{O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+O\+R\+A\+N\+GE}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+O\+R\+A\+N\+GE}{OBSTACLE\_ORANGE}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+O\+R\+A\+N\+GE = \{0,0, 26, 160\}}
+
+\mbox{\Hypertarget{flappy__bird_8c_a871a57bee941abea2174acde4386b3e0}\label{flappy__bird_8c_a871a57bee941abea2174acde4386b3e0}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+V\+E\+RT@{O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+V\+E\+RT}}
+\index{O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+V\+E\+RT@{O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+V\+E\+RT}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+V\+E\+RT}{OBSTACLE\_VERT}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect O\+B\+S\+T\+A\+C\+L\+E\+\_\+\+V\+E\+RT = \{52,0, 26, 160\}}
+
+\mbox{\Hypertarget{flappy__bird_8c_a7aa8f58e4691e6534d4ccae36b92e3e2}\label{flappy__bird_8c_a7aa8f58e4691e6534d4ccae36b92e3e2}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!P\+E\+R\+SO@{P\+E\+R\+SO}}
+\index{P\+E\+R\+SO@{P\+E\+R\+SO}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{P\+E\+R\+SO}{PERSO}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect P\+E\+R\+SO = \{0, 0, 17, 12\}}
+
+\mbox{\Hypertarget{flappy__bird_8c_a0e174c1b4b8f590a0ea2051e4918c2fe}\label{flappy__bird_8c_a0e174c1b4b8f590a0ea2051e4918c2fe}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!S\+C\+O\+R\+E\+B\+O\+A\+RD@{S\+C\+O\+R\+E\+B\+O\+A\+RD}}
+\index{S\+C\+O\+R\+E\+B\+O\+A\+RD@{S\+C\+O\+R\+E\+B\+O\+A\+RD}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{S\+C\+O\+R\+E\+B\+O\+A\+RD}{SCOREBOARD}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect S\+C\+O\+R\+E\+B\+O\+A\+RD = \{0,0,113,57\}}
+
+\mbox{\Hypertarget{flappy__bird_8c_a086dc677d12a2ef003b8642fd875b470}\label{flappy__bird_8c_a086dc677d12a2ef003b8642fd875b470}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!S\+OL@{S\+OL}}
+\index{S\+OL@{S\+OL}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{S\+OL}{SOL}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect S\+OL = \{0, 0, 168, 55\}}
+
+\mbox{\Hypertarget{flappy__bird_8c_a30862aa51c2944f287c4445751341ee8}\label{flappy__bird_8c_a30862aa51c2944f287c4445751341ee8}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!update\+Ended@{update\+Ended}}
+\index{update\+Ended@{update\+Ended}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{update\+Ended}{updateEnded}}
+{\footnotesize\ttfamily int update\+Ended}
+
+\mbox{\Hypertarget{flappy__bird_8c_a676a51616828adeeea54883648de061b}\label{flappy__bird_8c_a676a51616828adeeea54883648de061b}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!U\+P\+P\+E\+R\+\_\+\+S\+T\+EP@{U\+P\+P\+E\+R\+\_\+\+S\+T\+EP}}
+\index{U\+P\+P\+E\+R\+\_\+\+S\+T\+EP@{U\+P\+P\+E\+R\+\_\+\+S\+T\+EP}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{U\+P\+P\+E\+R\+\_\+\+S\+T\+EP}{UPPER\_STEP}}
+{\footnotesize\ttfamily const int U\+P\+P\+E\+R\+\_\+\+S\+T\+EP = 4 $\ast$ (\hyperlink{flappy__bird_8c_ac92ca5ab87034a348decad7ee8d4bd1b}{F\+PS}/30)}
+
+\mbox{\Hypertarget{flappy__bird_8c_a6d29d77d4db16afe3012ee7ab51f6878}\label{flappy__bird_8c_a6d29d77d4db16afe3012ee7ab51f6878}} 
+\index{flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}!V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+C\+OR@{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+C\+OR}}
+\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+C\+OR@{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+C\+OR}!flappy\+\_\+bird.\+c@{flappy\+\_\+bird.\+c}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+C\+OR}{VITESSE\_DEPLACEMENT\_DECOR}}
+{\footnotesize\ttfamily const int V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+C\+OR = 8 / (\hyperlink{flappy__bird_8c_ac92ca5ab87034a348decad7ee8d4bd1b}{F\+PS}/30)}
+

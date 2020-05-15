@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['background_5fcol',['BACKGROUND_COL',['../5__tetris_2config_8h.html#a959999e640c562f104d25e31946a92fd',1,'config.h']]],
+  ['background_5frow',['BACKGROUND_ROW',['../5__tetris_2config_8h.html#a786e68f96945f50342b7e48b1857a0a1',1,'config.h']]],
+  ['ban_5fcode',['BAN_CODE',['../flappy__bird_8c.html#a1cbcd5e1e513dba8fad4dde27417e221',1,'flappy_bird.c']]],
+  ['base_5fangle',['BASE_ANGLE',['../2__snake_2config_8h.html#a4e8a0f75f21e5116a77c9abead2a886d',1,'BASE_ANGLE():&#160;config.h'],['../7__asteroid_2config_8h.html#a4e8a0f75f21e5116a77c9abead2a886d',1,'BASE_ANGLE():&#160;config.h']]],
+  ['base_5fdegat_5fmissile',['BASE_DEGAT_MISSILE',['../7__asteroid_2config_8h.html#a153cf1d5572254c3b75196055e5b660e',1,'config.h']]],
+  ['base_5fjauge',['BASE_JAUGE',['../2__snake_2config_8h.html#aa8d0e37451abf27a2a1fd5a39e197877',1,'config.h']]],
+  ['base_5frota_5fspeed',['BASE_ROTA_SPEED',['../5__tetris_2config_8h.html#a2b861d30398a6170c894c30b6d278966',1,'config.h']]],
+  ['base_5fspeed',['BASE_SPEED',['../2__snake_2config_8h.html#ad9f1a713cff15b009f0d2918624db3f8',1,'config.h']]],
+  ['base_5ftaille_5fexplosion',['BASE_TAILLE_EXPLOSION',['../7__asteroid_2config_8h.html#af84625e32b007c66dad7b405c0885f5d',1,'config.h']]],
+  ['base_5fvitesse_5fmissile',['BASE_VITESSE_MISSILE',['../7__asteroid_2config_8h.html#a1fb05fa9aac1e8e1b3cdd9cf32a4cfc1',1,'config.h']]],
+  ['base_5fzigzag_5fangle',['BASE_ZIGZAG_ANGLE',['../7__asteroid_2config_8h.html#a042aff171ca8fc67ec290883be13e7f1',1,'config.h']]],
+  ['blocking_5fanim',['BLOCKING_ANIM',['../7__asteroid_2config_8h.html#ad3e3c131127104b015d71bb7da542039',1,'config.h']]],
+  ['body_5fdeath_5fhitbox',['BODY_DEATH_HITBOX',['../2__snake_2config_8h.html#af61077757735b912922d20b17bfe8355',1,'config.h']]],
+  ['body_5fradius',['BODY_RADIUS',['../2__snake_2config_8h.html#a63a41d21b92cf8804d741dd26d575e26',1,'config.h']]],
+  ['bomb_5ftexture_5frate',['BOMB_TEXTURE_RATE',['../2__snake_2config_8h.html#af4f0586763b18c7fbb87d7964f724dec',1,'config.h']]],
+  ['bonus_5facceleration_5fmissile',['BONUS_ACCELERATION_MISSILE',['../7__asteroid_2config_8h.html#a132c4d592b86925dca028243542435c6',1,'config.h']]],
+  ['bonus_5fdead_5fdeceleration',['BONUS_DEAD_DECELERATION',['../7__asteroid_2config_8h.html#a25355a725439afc1415c598a30cf3bc9',1,'config.h']]],
+  ['bonus_5ffrequence_5fmissile',['BONUS_FREQUENCE_MISSILE',['../7__asteroid_2config_8h.html#a7e64d280ad41a6e8860907d35dceee12',1,'config.h']]],
+  ['bonus_5fsize',['BONUS_SIZE',['../5__tetris_2config_8h.html#ad59c9ac89766941c0861f0afc858abe1',1,'config.h']]],
+  ['bonus_5ftri',['BONUS_TRI',['../5__tetris_2config_8h.html#aee437d1ea74908964820b500978d332f',1,'config.h']]]
+];

@@ -1,0 +1,9 @@
+<map id="completeLine" name="completeLine">
+<area shape="rect" id="node2" href="$tetris_8c.html#a029193d8f5afd44d43843ce0d27b7ff2" title="Vérifie si des lignes sont complétées. " alt="" coords="152,31,240,57"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#ae452df4bd2e58349e6350342b6153c61" title="Actualise toutes les animations et réagis lorsqu&#39;elles arrivent à certains moments. " alt="" coords="288,5,393,32"/>
+<area shape="rect" id="node4" href="$tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="441,31,492,57"/>
+<area shape="rect" id="node5" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="540,31,647,57"/>
+<area shape="rect" id="node6" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="695,31,820,57"/>
+<area shape="rect" id="node7" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="732,81,783,108"/>
+<area shape="rect" id="node8" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="868,81,919,108"/>
+</map>

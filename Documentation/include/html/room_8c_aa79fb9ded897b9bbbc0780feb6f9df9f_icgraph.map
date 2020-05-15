@@ -1,0 +1,6 @@
+<map id="InitCamera" name="InitCamera">
+<area shape="rect" id="node2" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="140,5,265,32"/>
+<area shape="rect" id="node4" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="468,31,519,57"/>
+<area shape="rect" id="node3" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="313,5,420,32"/>
+<area shape="rect" id="node5" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="567,31,617,57"/>
+</map>

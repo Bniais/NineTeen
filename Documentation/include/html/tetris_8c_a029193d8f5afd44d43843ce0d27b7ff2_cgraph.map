@@ -1,0 +1,7 @@
+<map id="checkLines" name="checkLines">
+<area shape="rect" id="node2" href="$tetris_8c.html#a3b39445f6b4c0418ce1dd739518dec67" title="Enclenche l&#39;animation de destruction de ligne et comptabilise les points rapportés et les bonus gagné..." alt="" coords="141,56,240,83"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#ad3ffc7b35e2959c53ab338f9d12a529a" title="Obtient l&#39;id d&#39;une case de la matrice. " alt="" coords="316,5,400,32"/>
+<area shape="rect" id="node4" href="$tetris_8c.html#a602b2d26911345f5f9fc9c618332376d" title="Détermine l&#39;id du bonus d&#39;une case de la grille. " alt="" coords="314,56,402,83"/>
+<area shape="rect" id="node5" href="$hashage_8c.html#a00612e598dd430b4d0cabdd3bd9f4ea4" title="Verifie que la valeur correspond a une valeur et re met a jours les constants pour un prochain hasaha..." alt="" coords="288,107,428,133"/>
+<area shape="rect" id="node6" href="$hashage_8c.html#a52777186f55107ffa1460ab92c79ede4" title="retourne une valeur hasher de la valeur d&#39;entrer. " alt="" coords="476,107,547,133"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="afficherMeilleurScore" name="afficherMeilleurScore">
+<area shape="rect" id="node2" href="$flappy__bird_8c.html#a4858bca7396db08c9733a691a7d58f9c" title="regroupement de toute les fonctions d&#39;affichage pour afficher tous " alt="" coords="197,5,288,32"/>
+<area shape="rect" id="node3" href="$flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="336,5,421,32"/>
+<area shape="rect" id="node4" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="469,5,576,32"/>
+<area shape="rect" id="node5" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="624,5,749,32"/>
+<area shape="rect" id="node6" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="661,56,712,83"/>
+<area shape="rect" id="node7" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="797,56,848,83"/>
+</map>

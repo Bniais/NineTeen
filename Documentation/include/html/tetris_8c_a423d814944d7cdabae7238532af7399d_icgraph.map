@@ -1,0 +1,12 @@
+<map id="tooCloseFromMatrix" name="tooCloseFromMatrix">
+<area shape="rect" id="node2" href="$tetris_8c.html#ab05c527bd8b667fd4f52638458a25511" title="Met une pièce en haut de la grille en vérifiant que c&#39;est possible. " alt="" coords="336,5,411,32"/>
+<area shape="rect" id="node8" href="$tetris_8c.html#a05bef1cab76ded2320a764674b4c3641" title="Essaye de déplacer une pièce en vérifiant si elle est dans un emplacement valide. ..." alt="" coords="205,31,269,57"/>
+<area shape="rect" id="node9" href="$tetris_8c.html#ac768d060dc9bea4735aeab56c4ff699f" title="Essaye de tourner une pièce, en la déplaçant si besoin. " alt="" coords="329,81,417,108"/>
+<area shape="rect" id="node10" href="$tetris_8c.html#ab7aa50536fa477c472edb9a29654a2c4" title="Déplace la pièce sur le côté " alt="" coords="333,132,413,159"/>
+<area shape="rect" id="node11" href="$tetris_8c.html#a5100e6c3d9135456bac8660e84ccb4c0" title="Déplace la pièce vers le bas. " alt="" coords="193,183,281,209"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="465,107,516,133"/>
+<area shape="rect" id="node4" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="564,107,671,133"/>
+<area shape="rect" id="node5" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="719,107,844,133"/>
+<area shape="rect" id="node6" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="756,157,807,184"/>
+<area shape="rect" id="node7" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="892,157,943,184"/>
+</map>

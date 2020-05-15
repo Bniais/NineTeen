@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['sauvegardertoken',['sauvegarderToken',['../main_8c.html#a564bb0fc612137f87ebe7ad1614e975a',1,'main.c']]],
+  ['savepiece',['savePiece',['../tetris_8c.html#ad7ebe9a4463636c9cea0d518d550ddbb',1,'tetris.c']]],
+  ['scoresize',['scoreSize',['../snake_8c.html#a01d32a4e465831ff02093a975fc19cfc',1,'snake.c']]],
+  ['sdl_5fgl_5fappliquerscene',['SDL_GL_AppliquerScene',['../room_8c.html#a77b40d2a48a66dc8f7b8207ed7a5e2a6',1,'room.c']]],
+  ['securepass',['securePass',['../lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0',1,'libWeb.c']]],
+  ['shiftbomb',['shiftBomb',['../snake_8c.html#a302fa1c00d3dfcf2e7deda97d2f86097',1,'snake.c']]],
+  ['shiftfreespace',['shiftFreeSpace',['../snake_8c.html#aad644da8ea3e101158c01657e4f38684',1,'snake.c']]],
+  ['shiftradius',['shiftRadius',['../snake_8c.html#ac19669d13e8261ca407db47f062b9518',1,'snake.c']]],
+  ['shiftrefresh',['shiftRefresh',['../snake_8c.html#aa7aa21dd7d83b069bbcb2cffe3bf64d2',1,'snake.c']]],
+  ['signof',['signOf',['../asteroid_8c.html#a40b9be6b54a4d2f3963a4f6dee4214e2',1,'asteroid.c']]],
+  ['snake',['snake',['../snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5',1,'snake.c']]],
+  ['snakeinit',['snakeInit',['../snake_8c.html#a3feffd5962865fbe7950d3bbe71ba771',1,'snake.c']]],
+  ['spawn_5fasteroid',['spawn_asteroid',['../asteroid_8c.html#a07000afcd19ecd3a3f1e230a74eab955',1,'asteroid.c']]],
+  ['spawnbonus',['spawnBonus',['../snake_8c.html#a358f322aca8a33648ffc238cd821caca',1,'snake.c']]],
+  ['spawnfruit',['spawnFruit',['../snake_8c.html#a25fd68046ffe688449023d7d4d75c95a',1,'snake.c']]],
+  ['sur_5fasteroid',['sur_asteroid',['../asteroid_8c.html#a3538049a3870b4c1d926aa49b647e126',1,'asteroid.c']]]
+];

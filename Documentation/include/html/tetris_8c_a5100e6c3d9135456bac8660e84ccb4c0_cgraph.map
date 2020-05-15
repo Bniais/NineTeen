@@ -1,0 +1,5 @@
+<map id="moveDown" name="moveDown">
+<area shape="rect" id="node2" href="$tetris_8c.html#acad90996b6179ce8c1cc27590aa36339" title="Determine si un float est proche d&#39;un entier ou non. " alt="" coords="162,5,261,32"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#ab1f20fd2b247412fbface8ef523015d9" title="Détermine si une pièce dépasse des bords de la grille. " alt="" coords="146,56,277,83"/>
+<area shape="rect" id="node4" href="$tetris_8c.html#a423d814944d7cdabae7238532af7399d" title="Teste si une pièce est en collision avec les pièces déjà inscrites dans la grille. " alt="" coords="141,107,281,133"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="randSign" name="randSign">
+<area shape="rect" id="node2" href="$asteroid_8c.html#a53204c929ab037429cac314a6c3d15e0" title="détruit un asteroid " alt="" coords="127,5,245,32"/>
+<area shape="rect" id="node8" href="$asteroid_8c.html#a101a47caf287f1684d6d3f097446fd25" title="mouvement du missile en fonction de l&#39;arme, fait par Hugo " alt="" coords="132,56,240,83"/>
+<area shape="rect" id="node9" href="$asteroid_8c.html#a07000afcd19ecd3a3f1e230a74eab955" title="apparation d&#39;un asteroide " alt="" coords="129,107,243,133"/>
+<area shape="rect" id="node3" href="$asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="293,56,361,83"/>
+<area shape="rect" id="node4" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="409,56,516,83"/>
+<area shape="rect" id="node5" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="564,56,689,83"/>
+<area shape="rect" id="node6" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="601,107,652,133"/>
+<area shape="rect" id="node7" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="737,107,788,133"/>
+</map>

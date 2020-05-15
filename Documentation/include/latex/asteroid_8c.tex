@@ -1,0 +1,1738 @@
+\hypertarget{asteroid_8c}{}\section{Référence du fichier games/7\+\_\+asteroid/asteroid.c}
+\label{asteroid_8c}\index{games/7\+\_\+asteroid/asteroid.\+c@{games/7\+\_\+asteroid/asteroid.\+c}}
+
+
+Jeu asteroid avec bonus.  
+
+
+{\ttfamily \#include \char`\"{}config.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+ttf.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+image.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+mixer.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+Graphe des dépendances par inclusion de asteroid.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{asteroid_8c_a3a184c708af68d910117f14273865ac2}{asteroid\+Init} ()
+\begin{DoxyCompactList}\small\item\em Initialise l\textquotesingle{}environement S\+DL, T\+TF et rand. \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_aa37281f406a30b81049914f769c536d5}{use\+Nuclear} (\hyperlink{struct_asteroid}{Asteroid} $\ast$$\ast$asteroides, int $\ast$nb\+\_\+asteroid, \hyperlink{struct_explosion}{Explosion} $\ast$$\ast$explosions, int $\ast$nb\+\_\+explosions, \hyperlink{struct_score_total}{Score\+Total} $\ast$score, long keys\mbox{[}4\mbox{]}, long long $\ast$score\+\_\+hash, int done, Mix\+\_\+\+Chunk $\ast$explo\+Sound)
+\begin{DoxyCompactList}\small\item\em Utilisation de la bombe nucléaire. \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_a82e39f46660ec017b69ead766e2debc9}{recoit\+\_\+bonus} (int id\+\_\+bonus, \hyperlink{struct_vaiss}{Vaiss} $\ast$vaisseau, int $\ast$nb\+Bombe\+Nucleaire, \hyperlink{struct_score_total}{Score\+Total} $\ast$score, float munitions\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]}, long keys\mbox{[}4\mbox{]}, long long $\ast$score\+\_\+hash, Mix\+\_\+\+Chunk $\ast$bonus\+Sound)
+\begin{DoxyCompactList}\small\item\em Applique les changements en fonction des bonus. \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a76ce3f66ea9e6eb596b1f4a5060e663a}{collision\+\_\+mur} (float $\ast$x\+To\+Move, float $\ast$y\+To\+Move, float x, float y, float rayon, int hardcore)
+\begin{DoxyCompactList}\small\item\em collision avec les côtés de l\textquotesingle{}écran \end{DoxyCompactList}\item 
+float \hyperlink{asteroid_8c_a9138b5f165178cf613ff96f2307a0fec}{dist\+\_\+2f} (float x1, float y1, float x2, float y2)
+\begin{DoxyCompactList}\small\item\em calcul la distance entre deux points \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_a0ab4528a5507e3a0f816d4c596c59f16}{trop\+\_\+pres} (float x1, float y1, float x2, float y2, float dist, int cote\+\_\+spawn)
+\begin{DoxyCompactList}\small\item\em vaisseau trop\+\_\+pres ou non \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_a3538049a3870b4c1d926aa49b647e126}{sur\+\_\+asteroid} (\hyperlink{struct_asteroid}{Asteroid} $\ast$asteroides, int nb\+\_\+asteroid, int i\+\_\+asteroid)
+\begin{DoxyCompactList}\small\item\em test si un asteroide est sur un autre asteroide \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_a0e1887200685ed69b76a90ecfc3139a2}{vaisseau\+\_\+touche} (\hyperlink{struct_vaiss}{Vaiss} vaisseau, \hyperlink{struct_asteroid}{Asteroid} $\ast$asteroides, int nb\+\_\+asteroid)
+\begin{DoxyCompactList}\small\item\em test si le vaisseau a touché un asteroid \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_a2b28935e7423bac6746116db768f6416}{asteroid\+\_\+touche} (\hyperlink{struct_asteroid}{Asteroid} \hyperlink{asteroid_8c_a837acea2c89acb4633fd60dbde2edc81}{asteroid}, \hyperlink{struct_missile}{Missile} $\ast$missiles, int nb\+\_\+missiles)
+\begin{DoxyCompactList}\small\item\em test si un asteroide est sur un autre asteroide \end{DoxyCompactList}\item 
+float \hyperlink{asteroid_8c_a819087be58ea855b6d3cb7683ce78306}{det} (float x1, float y1, float x2, float y2)
+\begin{DoxyCompactList}\small\item\em calcul le determinant \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_a8c5143e37a59f1139d5d88eaf252e176}{ligne\+Colli} (S\+D\+L\+\_\+\+Point lignes\+\_\+laser\mbox{[}5\mbox{]}\mbox{[}2\mbox{]}, S\+D\+L\+\_\+\+Point asteroid\+\_\+diametre\mbox{[}2\mbox{]})
+\begin{DoxyCompactList}\small\item\em détermine si une des lignes est en collision avec une autre ligne qui correspond au diamètre d\textquotesingle{}un asteroid perpendiculaire aux lignes du laser \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_a1b1343d5c91f592eadf9021170c5091b}{laser\+\_\+touche} (\hyperlink{struct_asteroid}{Asteroid} \hyperlink{asteroid_8c_a837acea2c89acb4633fd60dbde2edc81}{asteroid}, \hyperlink{struct_vaiss}{Vaiss} vaisseau)
+\begin{DoxyCompactList}\small\item\em test si le laser touche un asteroide \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_ab0979c8b8eefd21986a1baf5d117f767}{decaler\+\_\+gauche\+\_\+a} (\hyperlink{struct_asteroid}{Asteroid} $\ast$tab, int taille\+\_\+tab, int i)
+\begin{DoxyCompactList}\small\item\em decale de 1 les valeurs d\textquotesingle{}un tableau d\textquotesingle{}asteroide \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a91a80ee19fa1be3608f9207d8305d1b9}{decaler\+\_\+gauche\+\_\+m} (\hyperlink{struct_missile}{Missile} $\ast$tab, int taille\+\_\+tab, int i)
+\begin{DoxyCompactList}\small\item\em decale de 1 les valeurs d\textquotesingle{}un tableau de missile \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_aab8f6f614b01bd2ee29805c47ebd1c5c}{decaler\+\_\+gauche\+\_\+e} (\hyperlink{struct_explosion}{Explosion} $\ast$tab, int taille\+\_\+tab, int i)
+\begin{DoxyCompactList}\small\item\em decale de 1 les valeurs d\textquotesingle{}un tableau d\textquotesingle{}explosion \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_ad96122b5bb822d796493573a197f7148}{asteroid\+\_\+cpy} (\hyperlink{struct_asteroid}{Asteroid} $\ast$asteroid\+\_\+src, \hyperlink{struct_asteroid}{Asteroid} $\ast$asteroid\+\_\+dest)
+\begin{DoxyCompactList}\small\item\em copie de la source au destinataire \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_aae510378b3640b0555b51bd5fe428470}{get\+First\+Null\+Text} (\hyperlink{struct_text_bonus}{Text\+Bonus} texts\+Bonus\mbox{[}\hyperlink{7__asteroid_2config_8h_ad1ceaf0f3d078698c1f9cb967b6b2bcc}{M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+US}\mbox{]})
+\begin{DoxyCompactList}\small\item\em détermine à quel endroit le texte va s\textquotesingle{}afficher \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_a8b1c0436c52bee1861a64bb6f0ee2945}{is\+Obtainable} (int id\+\_\+bonus, \hyperlink{struct_vaiss}{Vaiss} vaisseau, float munitions\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]}, int nb\+Bombe\+Nucleaire)
+\begin{DoxyCompactList}\small\item\em test si un bonus peut être obtenu \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_af1f3f4f317dd71e9379a6e19ad0cb303}{get\+\_\+bonus} (\hyperlink{struct_vaiss}{Vaiss} vaisseau, float munitions\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]}, int nb\+Bombe\+Nucleaire)
+\begin{DoxyCompactList}\small\item\em attribue un bonus au hasard \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_a53204c929ab037429cac314a6c3d15e0}{detruire\+\_\+asteroid} (\hyperlink{struct_asteroid}{Asteroid} $\ast$$\ast$asteroides, int $\ast$nb\+\_\+asteroid, int i\+\_\+asteroid, \hyperlink{struct_vaiss}{Vaiss} $\ast$vaisseau, int touche\+\_\+bouclier, \hyperlink{struct_score_total}{Score\+Total} $\ast$score, int $\ast$nb\+Bombe\+Nucleaire, float angle\+Missile, \hyperlink{struct_text_bonus}{Text\+Bonus} bonus\+Texts\mbox{[}\hyperlink{7__asteroid_2config_8h_ad1ceaf0f3d078698c1f9cb967b6b2bcc}{M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+US}\mbox{]}, float munitions\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]}, long keys\mbox{[}4\mbox{]}, long long $\ast$score\+\_\+hash, Mix\+\_\+\+Chunk $\ast$bonus\+Sound, Mix\+\_\+\+Chunk $\ast$explo\+Sound, int done)
+\begin{DoxyCompactList}\small\item\em détruit un asteroid \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a2385e0c0b8de75a5c621570a06520cdf}{turn\+\_\+vaiss} (\hyperlink{struct_vaiss}{Vaiss} $\ast$vaisseau, int turn, Vector2f $\ast$accelerate)
+\begin{DoxyCompactList}\small\item\em permet au vaisseau de tourner \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_aa0467114112d0369fa1a050653be7622}{acceleration} (Vector2f $\ast$accelerate, \hyperlink{struct_vaiss}{Vaiss} vaisseau)
+\begin{DoxyCompactList}\small\item\em augmente la vitesse de déplacement du vaisseau \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a359d37801486bc8b873330e2f38187a7}{move} (\hyperlink{struct_vaiss}{Vaiss} $\ast$vaisseau, Vector2f accelerate)
+\begin{DoxyCompactList}\small\item\em permet au vaisseau d\textquotesingle{}avancer \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_ae270a6bc7db68768f40d9bd0d444c283}{afficher\+\_\+texture\+\_\+vaisseau} (\hyperlink{struct_vaiss}{Vaiss} vaisseau, S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$vaisseau\+\_\+texture, S\+D\+L\+\_\+\+Texture $\ast$gem\+\_\+texture, S\+D\+L\+\_\+\+Texture $\ast$thrust\+\_\+texture)
+\begin{DoxyCompactList}\small\item\em affichage de la texture du vaisseau \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_acdf005b216cf770c1657aab94c30d0e2}{afficher\+\_\+vaisseau} (\hyperlink{struct_vaiss}{Vaiss} vaisseau, S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$vaisseau\+\_\+texture, S\+D\+L\+\_\+\+Texture $\ast$gem\+\_\+texture, S\+D\+L\+\_\+\+Texture $\ast$thrust\+\_\+texture)
+\begin{DoxyCompactList}\small\item\em affichage du vaisseau \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a0b9a37b334abe6f9195fdce4ac512f12}{afficher\+\_\+explosion} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, \hyperlink{struct_explosion}{Explosion} explosion, S\+D\+L\+\_\+\+Texture $\ast$explo\+\_\+texture)
+\begin{DoxyCompactList}\small\item\em affichage de d\textquotesingle{}explosion \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a09f365c61d7cf76edd0e56197e2a6593}{afficher\+\_\+laser} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$laser\+\_\+texture, \hyperlink{struct_vaiss}{Vaiss} vaisseau, int frame, \hyperlink{struct_asteroid}{Asteroid} \hyperlink{asteroid_8c_a837acea2c89acb4633fd60dbde2edc81}{asteroid})
+\begin{DoxyCompactList}\small\item\em affichage du laser, fait par Hugo \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a85e5b6d9c82951c74934aca9862755d1}{afficher\+\_\+text\+\_\+bonus} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, \hyperlink{struct_text_bonus}{Text\+Bonus} text\+Bonus\mbox{[}\hyperlink{7__asteroid_2config_8h_ad1ceaf0f3d078698c1f9cb967b6b2bcc}{M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+US}\mbox{]}, T\+T\+F\+\_\+\+Font $\ast$font)
+\begin{DoxyCompactList}\small\item\em affichage du texte des bonus, fait par Hugo \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a3d885d724b2a7cbf3c5c78f8e0715179}{tirer} (\hyperlink{struct_vaiss}{Vaiss} $\ast$vaisseau, \hyperlink{struct_missile}{Missile} $\ast$$\ast$missiles, int $\ast$nb\+\_\+missiles, Mix\+\_\+\+Chunk $\ast$shoot\+Sound)
+\begin{DoxyCompactList}\small\item\em permet de tirer \end{DoxyCompactList}\item 
+float \hyperlink{asteroid_8c_abd7ff0453e88ebfbe0e59ae81332e9b8}{calculer\+\_\+angle} (float x1, float y1, float x2, float y2)
+\begin{DoxyCompactList}\small\item\em calcul de l\textquotesingle{}angle \end{DoxyCompactList}\item 
+float \hyperlink{asteroid_8c_a9e184f3776d22bb0073ae0809903b4f3}{base\+Pi} (float angle)
+\begin{DoxyCompactList}\small\item\em converti un angle en base Pi \end{DoxyCompactList}\item 
+float \hyperlink{asteroid_8c_ab5c4442597505f0363a1029a3ed4b209}{base360} (float angle)
+\begin{DoxyCompactList}\small\item\em converti un angle en base 360 \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_a854c8ef061e5631af14c0005eb37eb67}{asteroid\+\_\+plus\+\_\+proche} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, \hyperlink{struct_asteroid}{Asteroid} $\ast$asteroides, int nb\+\_\+asteroid, \hyperlink{struct_missile}{Missile} missile, float $\ast$best\+\_\+angle\+\_\+between)
+\begin{DoxyCompactList}\small\item\em cherche l\textquotesingle{}asteroid le plus proche \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_a40b9be6b54a4d2f3963a4f6dee4214e2}{sign\+Of} (float f)
+\begin{DoxyCompactList}\small\item\em Détermine le signe d\textquotesingle{}un float. \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a101a47caf287f1684d6d3f097446fd25}{mouvement\+\_\+tir} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, \hyperlink{struct_missile}{Missile} $\ast$shot, \hyperlink{struct_asteroid}{Asteroid} $\ast$asteroides, int nb\+\_\+asteroid)
+\begin{DoxyCompactList}\small\item\em mouvement du missile en fonction de l\textquotesingle{}arme, fait par Hugo \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a85a54a09151852d5c2835934487573ed}{rotate\+Asteroides} (\hyperlink{struct_asteroid}{Asteroid} $\ast$asteroides, int nb\+\_\+asteroid)
+\begin{DoxyCompactList}\small\item\em permet la rotation de l\textquotesingle{}asteroide sur lui même \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_aee7336d05eea818be4effbb0be52a28f}{update\+\_\+frame} (\hyperlink{struct_missile}{Missile} $\ast$$\ast$missiles, int $\ast$nb\+\_\+missiles, \hyperlink{struct_vaiss}{Vaiss} $\ast$vaisseau, long int $\ast$frame, int $\ast$frame\+\_\+apparition\+\_\+asteroid, float $\ast$vitesse\+\_\+spawn, int $\ast$frame\+\_\+2asteroid)
+\begin{DoxyCompactList}\small\item\em mise à jour à chaque frame \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_aac0cd6c8838c9841581e87308d650cdc}{afficher\+\_\+tir} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, \hyperlink{struct_missile}{Missile} shot, S\+D\+L\+\_\+\+Texture $\ast$missile\+Texture)
+\begin{DoxyCompactList}\small\item\em affichage du tir \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a07000afcd19ecd3a3f1e230a74eab955}{spawn\+\_\+asteroid} (\hyperlink{struct_vaiss}{Vaiss} vaisseau, \hyperlink{struct_asteroid}{Asteroid} $\ast$$\ast$asteroides, int $\ast$nb\+\_\+asteroid, float difficulte, float munitions\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]}, int hardcore)
+\begin{DoxyCompactList}\small\item\em apparation d\textquotesingle{}un asteroide \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_ab7e034368a87a4cf1934653c13b73cce}{mouvement\+\_\+asteroid} (\hyperlink{struct_asteroid}{Asteroid} $\ast$\hyperlink{asteroid_8c_a837acea2c89acb4633fd60dbde2edc81}{asteroid}, int hardcore)
+\begin{DoxyCompactList}\small\item\em mouvement d\textquotesingle{}un asteroide \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a321b2b12a314e5ed3acce3d2e87550b0}{afficher\+\_\+texture\+\_\+asteroid} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$texture\+Asteroid, S\+D\+L\+\_\+\+Texture $\ast$texture\+Fissure, S\+D\+L\+\_\+\+Texture $\ast$texture\+Bonus, S\+D\+L\+\_\+\+Texture $\ast$texture\+Glace, S\+D\+L\+\_\+\+Rect src, S\+D\+L\+\_\+\+Rect dest, S\+D\+L\+\_\+\+Rect src\+Fissure, S\+D\+L\+\_\+\+Rect src\+Glace, \hyperlink{struct_asteroid}{Asteroid} \hyperlink{asteroid_8c_a837acea2c89acb4633fd60dbde2edc81}{asteroid})
+\begin{DoxyCompactList}\small\item\em affichage de la texture de l\textquotesingle{}asteroide \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a060add53e2ef7fcb080dc8d8bf168c6f}{afficher\+\_\+asteroid} (\hyperlink{struct_asteroid}{Asteroid} \hyperlink{asteroid_8c_a837acea2c89acb4633fd60dbde2edc81}{asteroid}, S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$texture\+Asteroid, S\+D\+L\+\_\+\+Texture $\ast$texture\+Fissure, S\+D\+L\+\_\+\+Texture $\ast$texture\+Bonus, S\+D\+L\+\_\+\+Texture $\ast$texture\+Glace, int hardcore)
+\begin{DoxyCompactList}\small\item\em affichage de l\textquotesingle{}asteroide \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a14aa545592a35e8013794b215cc98986}{init\+Text} (\hyperlink{struct_text_bonus}{Text\+Bonus} texts\+Bonus\mbox{[}\hyperlink{7__asteroid_2config_8h_ad1ceaf0f3d078698c1f9cb967b6b2bcc}{M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+US}\mbox{]})
+\begin{DoxyCompactList}\small\item\em initialiser du texte \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_acb05cb2dcafbfb5006fa087c13161a58}{afficher\+Jauge} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$texture\+Jauge, float ratio\+Window\+Size, \hyperlink{struct_jauge}{Jauge} jauge)
+\begin{DoxyCompactList}\small\item\em afficher la jauge de munitions \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a4b23e63f882f196347d741b9a9ec915b}{afficher\+Roue} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$texture\+Roue, float ratio\+Window\+Size, float munitions\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]}, \hyperlink{struct_roue}{Roue} roue, int current\+Id, S\+D\+L\+\_\+\+Color center\+Color)
+\begin{DoxyCompactList}\small\item\em afficher de la roue de munitions \end{DoxyCompactList}\item 
+static void \hyperlink{asteroid_8c_a8de8434798d8dc4874a10b5406c3d644}{afficher\+Score\+Total} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, T\+T\+F\+\_\+\+Font $\ast$font, int score\+Show, float ratio\+Window\+Size)
+\begin{DoxyCompactList}\small\item\em affichage du score total \end{DoxyCompactList}\item 
+void \hyperlink{asteroid_8c_a088caf6d8af588f8921f83166fa27ea4}{afficher\+Bomb\+Icon} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$texture\+Bomb\+Icon, int nb\+Bombe\+Nucleaire, float ratio\+Window\+Size)
+\begin{DoxyCompactList}\small\item\em afficher de l\textquotesingle{}icone de la bombe \end{DoxyCompactList}\item 
+static void \hyperlink{asteroid_8c_a2b23ddbd5e6d0eaa6a1ba0b0a2498208}{my\+Frees} (\hyperlink{struct_missile}{Missile} $\ast$$\ast$missiles, \hyperlink{struct_asteroid}{Asteroid} $\ast$$\ast$asteroides, \hyperlink{struct_explosion}{Explosion} $\ast$$\ast$explosions, T\+T\+F\+\_\+\+Font $\ast$$\ast$fonts, S\+D\+L\+\_\+\+Thread $\ast$$\ast$\hyperlink{main_8c_a584962a25015c7d6e18e294f55a8bc2d}{thread}, Mix\+\_\+\+Chunk $\ast$$\ast$sounds)
+\begin{DoxyCompactList}\small\item\em Libère la mémoire. \end{DoxyCompactList}\item 
+static void \hyperlink{asteroid_8c_ac8ec2ad7fb99fe1b0eeeeaf70504fc4f}{draw\+Help\+Text} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$fleche\+Texture, int hardcore)
+\begin{DoxyCompactList}\small\item\em Affiche les commandes et explications des bonus. \end{DoxyCompactList}\item 
+int \hyperlink{asteroid_8c_a837acea2c89acb4633fd60dbde2edc81}{asteroid} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, int highscore, int \hyperlink{room_8c_a7bc33449edbe70d0faa8d9b08ac317e7}{Win\+Width}, int \hyperlink{room_8c_a14d631ded45fe3c6396d41f0b31a8aba}{Win\+Height}, char $\ast$token, int hardcore, S\+D\+L\+\_\+\+Texture $\ast$$\ast$\hyperlink{room_8c_a158b90dfedb211efa4c317267c983dd2}{textures}, int fullscreen)
+\begin{DoxyCompactList}\small\item\em La fonction principale \+: Lance et fait tourner le jeu asteroid. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{asteroid_8c_a30862aa51c2944f287c4445751341ee8}{update\+Ended}
+\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+Jeu asteroid avec bonus. 
+
+\begin{DoxyAuthor}{Auteur}
+Rayyan L\+A\+J\+N\+EF 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+12/05/2020 
+\end{DoxyDate}
+
+
+\subsection{Documentation des fonctions}
+\mbox{\Hypertarget{asteroid_8c_aa0467114112d0369fa1a050653be7622}\label{asteroid_8c_aa0467114112d0369fa1a050653be7622}} 
+\index{asteroid.\+c@{asteroid.\+c}!acceleration@{acceleration}}
+\index{acceleration@{acceleration}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{acceleration()}{acceleration()}}
+{\footnotesize\ttfamily void acceleration (\begin{DoxyParamCaption}\item[{Vector2f $\ast$}]{accelerate,  }\item[{\hyperlink{struct_vaiss}{Vaiss}}]{vaisseau }\end{DoxyParamCaption})}
+
+
+
+augmente la vitesse de déplacement du vaisseau 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em accelerate} & acceleration du vaisseau \\
+\hline
+{\em vaisseau} & le vaisseau \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_aa0467114112d0369fa1a050653be7622_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a060add53e2ef7fcb080dc8d8bf168c6f}\label{asteroid_8c_a060add53e2ef7fcb080dc8d8bf168c6f}} 
+\index{asteroid.\+c@{asteroid.\+c}!afficher\+\_\+asteroid@{afficher\+\_\+asteroid}}
+\index{afficher\+\_\+asteroid@{afficher\+\_\+asteroid}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{afficher\+\_\+asteroid()}{afficher\_asteroid()}}
+{\footnotesize\ttfamily void afficher\+\_\+asteroid (\begin{DoxyParamCaption}\item[{\hyperlink{struct_asteroid}{Asteroid}}]{asteroid,  }\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+Asteroid,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+Fissure,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+Bonus,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+Glace,  }\item[{int}]{hardcore }\end{DoxyParamCaption})}
+
+
+
+affichage de l\textquotesingle{}asteroide 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em asteroid} & un asteroid \\
+\hline
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em texture\+Asteroid} & texture de l\textquotesingle{}asteroid \\
+\hline
+{\em texture\+Fissure} & texture de la fissure \\
+\hline
+{\em texture\+Bonus} & texture du bonus \\
+\hline
+{\em texture\+Glace} & texture de la glace \\
+\hline
+{\em hardcore} & mode de jeu hardcore ou non \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=329pt]{asteroid_8c_a060add53e2ef7fcb080dc8d8bf168c6f_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a060add53e2ef7fcb080dc8d8bf168c6f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a0b9a37b334abe6f9195fdce4ac512f12}\label{asteroid_8c_a0b9a37b334abe6f9195fdce4ac512f12}} 
+\index{asteroid.\+c@{asteroid.\+c}!afficher\+\_\+explosion@{afficher\+\_\+explosion}}
+\index{afficher\+\_\+explosion@{afficher\+\_\+explosion}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{afficher\+\_\+explosion()}{afficher\_explosion()}}
+{\footnotesize\ttfamily void afficher\+\_\+explosion (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{\hyperlink{struct_explosion}{Explosion}}]{explosion,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{explo\+\_\+texture }\end{DoxyParamCaption})}
+
+
+
+affichage de d\textquotesingle{}explosion 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em explosion} & explosion de la bombe \\
+\hline
+{\em explo\+\_\+texture} & texture de l\textquotesingle{}explosion \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a0b9a37b334abe6f9195fdce4ac512f12_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a09f365c61d7cf76edd0e56197e2a6593}\label{asteroid_8c_a09f365c61d7cf76edd0e56197e2a6593}} 
+\index{asteroid.\+c@{asteroid.\+c}!afficher\+\_\+laser@{afficher\+\_\+laser}}
+\index{afficher\+\_\+laser@{afficher\+\_\+laser}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{afficher\+\_\+laser()}{afficher\_laser()}}
+{\footnotesize\ttfamily void afficher\+\_\+laser (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{laser\+\_\+texture,  }\item[{\hyperlink{struct_vaiss}{Vaiss}}]{vaisseau,  }\item[{int}]{frame,  }\item[{\hyperlink{struct_asteroid}{Asteroid}}]{asteroid }\end{DoxyParamCaption})}
+
+
+
+affichage du laser, fait par Hugo 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em laser\+\_\+texture} & texture du laser \\
+\hline
+{\em vaisseau} & le vaisseau \\
+\hline
+{\em frame} & \\
+\hline
+{\em asteroid} & un asteroide \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a09f365c61d7cf76edd0e56197e2a6593_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a85e5b6d9c82951c74934aca9862755d1}\label{asteroid_8c_a85e5b6d9c82951c74934aca9862755d1}} 
+\index{asteroid.\+c@{asteroid.\+c}!afficher\+\_\+text\+\_\+bonus@{afficher\+\_\+text\+\_\+bonus}}
+\index{afficher\+\_\+text\+\_\+bonus@{afficher\+\_\+text\+\_\+bonus}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{afficher\+\_\+text\+\_\+bonus()}{afficher\_text\_bonus()}}
+{\footnotesize\ttfamily void afficher\+\_\+text\+\_\+bonus (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{\hyperlink{struct_text_bonus}{Text\+Bonus}}]{text\+Bonus\mbox{[}\+M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+U\+S\mbox{]},  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font }\end{DoxyParamCaption})}
+
+
+
+affichage du texte des bonus, fait par Hugo 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em text\+Bonus\mbox{[}\+M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+U\+S\mbox{]}} & \\
+\hline
+{\em font} & Les polices \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a85e5b6d9c82951c74934aca9862755d1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a321b2b12a314e5ed3acce3d2e87550b0}\label{asteroid_8c_a321b2b12a314e5ed3acce3d2e87550b0}} 
+\index{asteroid.\+c@{asteroid.\+c}!afficher\+\_\+texture\+\_\+asteroid@{afficher\+\_\+texture\+\_\+asteroid}}
+\index{afficher\+\_\+texture\+\_\+asteroid@{afficher\+\_\+texture\+\_\+asteroid}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{afficher\+\_\+texture\+\_\+asteroid()}{afficher\_texture\_asteroid()}}
+{\footnotesize\ttfamily void afficher\+\_\+texture\+\_\+asteroid (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+Asteroid,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+Fissure,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+Bonus,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+Glace,  }\item[{S\+D\+L\+\_\+\+Rect}]{src,  }\item[{S\+D\+L\+\_\+\+Rect}]{dest,  }\item[{S\+D\+L\+\_\+\+Rect}]{src\+Fissure,  }\item[{S\+D\+L\+\_\+\+Rect}]{src\+Glace,  }\item[{\hyperlink{struct_asteroid}{Asteroid}}]{asteroid }\end{DoxyParamCaption})}
+
+
+
+affichage de la texture de l\textquotesingle{}asteroide 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em texture\+Asteroid} & texture de l\textquotesingle{}asteroid \\
+\hline
+{\em texture\+Fissure} & texture de la fissure \\
+\hline
+{\em texture\+Bonus} & texture du bonus \\
+\hline
+{\em texture\+Glace} & texture de la glace \\
+\hline
+{\em src} & Rect source \\
+\hline
+{\em dest} & Rect destinataire \\
+\hline
+{\em src\+Fissure} & Fissure source \\
+\hline
+{\em src\+Glace} & Glace source \\
+\hline
+{\em asteroid} & un asteroid \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a321b2b12a314e5ed3acce3d2e87550b0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_ae270a6bc7db68768f40d9bd0d444c283}\label{asteroid_8c_ae270a6bc7db68768f40d9bd0d444c283}} 
+\index{asteroid.\+c@{asteroid.\+c}!afficher\+\_\+texture\+\_\+vaisseau@{afficher\+\_\+texture\+\_\+vaisseau}}
+\index{afficher\+\_\+texture\+\_\+vaisseau@{afficher\+\_\+texture\+\_\+vaisseau}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{afficher\+\_\+texture\+\_\+vaisseau()}{afficher\_texture\_vaisseau()}}
+{\footnotesize\ttfamily void afficher\+\_\+texture\+\_\+vaisseau (\begin{DoxyParamCaption}\item[{\hyperlink{struct_vaiss}{Vaiss}}]{vaisseau,  }\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{vaisseau\+\_\+texture,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{gem\+\_\+texture,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{thrust\+\_\+texture }\end{DoxyParamCaption})}
+
+
+
+affichage de la texture du vaisseau 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em vaisseau} & le vaisseau \\
+\hline
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em vaisseau\+\_\+texture} & texture du vaisseau \\
+\hline
+{\em gem\+\_\+texture} & texture de la gemme sur le vaisseau \\
+\hline
+{\em thrust\+\_\+texture} & texture des flammes du vaisseau \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_ae270a6bc7db68768f40d9bd0d444c283_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_aac0cd6c8838c9841581e87308d650cdc}\label{asteroid_8c_aac0cd6c8838c9841581e87308d650cdc}} 
+\index{asteroid.\+c@{asteroid.\+c}!afficher\+\_\+tir@{afficher\+\_\+tir}}
+\index{afficher\+\_\+tir@{afficher\+\_\+tir}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{afficher\+\_\+tir()}{afficher\_tir()}}
+{\footnotesize\ttfamily void afficher\+\_\+tir (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{\hyperlink{struct_missile}{Missile}}]{shot,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{missile\+Texture }\end{DoxyParamCaption})}
+
+
+
+affichage du tir 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em shot} & un tir \\
+\hline
+{\em missile\+Texture} & texture du missile \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_aac0cd6c8838c9841581e87308d650cdc_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_acdf005b216cf770c1657aab94c30d0e2}\label{asteroid_8c_acdf005b216cf770c1657aab94c30d0e2}} 
+\index{asteroid.\+c@{asteroid.\+c}!afficher\+\_\+vaisseau@{afficher\+\_\+vaisseau}}
+\index{afficher\+\_\+vaisseau@{afficher\+\_\+vaisseau}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{afficher\+\_\+vaisseau()}{afficher\_vaisseau()}}
+{\footnotesize\ttfamily void afficher\+\_\+vaisseau (\begin{DoxyParamCaption}\item[{\hyperlink{struct_vaiss}{Vaiss}}]{vaisseau,  }\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{vaisseau\+\_\+texture,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{gem\+\_\+texture,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{thrust\+\_\+texture }\end{DoxyParamCaption})}
+
+
+
+affichage du vaisseau 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em vaisseau} & le vaisseau \\
+\hline
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em vaisseau\+\_\+texture} & texture du vaisseau \\
+\hline
+{\em gem\+\_\+texture} & texture de la gemme sur le vaisseau \\
+\hline
+{\em thrust\+\_\+texture} & texture des flammes du vaisseau \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=337pt]{asteroid_8c_acdf005b216cf770c1657aab94c30d0e2_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_acdf005b216cf770c1657aab94c30d0e2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a088caf6d8af588f8921f83166fa27ea4}\label{asteroid_8c_a088caf6d8af588f8921f83166fa27ea4}} 
+\index{asteroid.\+c@{asteroid.\+c}!afficher\+Bomb\+Icon@{afficher\+Bomb\+Icon}}
+\index{afficher\+Bomb\+Icon@{afficher\+Bomb\+Icon}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Bomb\+Icon()}{afficherBombIcon()}}
+{\footnotesize\ttfamily void afficher\+Bomb\+Icon (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+Bomb\+Icon,  }\item[{int}]{nb\+Bombe\+Nucleaire,  }\item[{float}]{ratio\+Window\+Size }\end{DoxyParamCaption})}
+
+
+
+afficher de l\textquotesingle{}icone de la bombe 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em texture\+Bomb\+Icon} & texture de l\textquotesingle{}icone de bombe \\
+\hline
+{\em nb\+Bombe\+Nucleaire} & nombre de bombe nucleaire \\
+\hline
+{\em ratio\+Window\+Size} & Le ratio de la taille de fenetre par rapport à la taille max \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a088caf6d8af588f8921f83166fa27ea4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_acb05cb2dcafbfb5006fa087c13161a58}\label{asteroid_8c_acb05cb2dcafbfb5006fa087c13161a58}} 
+\index{asteroid.\+c@{asteroid.\+c}!afficher\+Jauge@{afficher\+Jauge}}
+\index{afficher\+Jauge@{afficher\+Jauge}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Jauge()}{afficherJauge()}}
+{\footnotesize\ttfamily void afficher\+Jauge (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+Jauge,  }\item[{float}]{ratio\+Window\+Size,  }\item[{\hyperlink{struct_jauge}{Jauge}}]{jauge }\end{DoxyParamCaption})}
+
+
+
+afficher la jauge de munitions 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em texture\+Jauge} & texture de la jauge \\
+\hline
+{\em ratio\+Window\+Size} & Le ratio de la taille de fenetre par rapport à la taille max \\
+\hline
+{\em jauge} & la jauge à dessiner \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_acb05cb2dcafbfb5006fa087c13161a58_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a4b23e63f882f196347d741b9a9ec915b}\label{asteroid_8c_a4b23e63f882f196347d741b9a9ec915b}} 
+\index{asteroid.\+c@{asteroid.\+c}!afficher\+Roue@{afficher\+Roue}}
+\index{afficher\+Roue@{afficher\+Roue}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Roue()}{afficherRoue()}}
+{\footnotesize\ttfamily void afficher\+Roue (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture\+Roue,  }\item[{float}]{ratio\+Window\+Size,  }\item[{float}]{munitions\mbox{[}\+N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+E\+S\mbox{]},  }\item[{\hyperlink{struct_roue}{Roue}}]{roue,  }\item[{int}]{current\+Id,  }\item[{S\+D\+L\+\_\+\+Color}]{center\+Color }\end{DoxyParamCaption})}
+
+
+
+afficher de la roue de munitions 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em texture\+Roue} & texture de la roue \\
+\hline
+{\em ratio\+Window\+Size} & Le ratio de la taille de fenetre par rapport à la taille max \\
+\hline
+{\em munitions\mbox{[}\+N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+E\+S\mbox{]}} & liste des munitions \\
+\hline
+{\em roue} & la roue à dessiner \\
+\hline
+{\em current\+Id} & \\
+\hline
+{\em center\+Color} & couleur du centre \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a4b23e63f882f196347d741b9a9ec915b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a8de8434798d8dc4874a10b5406c3d644}\label{asteroid_8c_a8de8434798d8dc4874a10b5406c3d644}} 
+\index{asteroid.\+c@{asteroid.\+c}!afficher\+Score\+Total@{afficher\+Score\+Total}}
+\index{afficher\+Score\+Total@{afficher\+Score\+Total}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Score\+Total()}{afficherScoreTotal()}}
+{\footnotesize\ttfamily static void afficher\+Score\+Total (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font,  }\item[{int}]{score\+Show,  }\item[{float}]{ratio\+Window\+Size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+affichage du score total 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em font} & Les polices \\
+\hline
+{\em score\+Show} & \\
+\hline
+{\em ratio\+Window\+Size} & Le ratio de la taille de fenetre par rapport à la taille max \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a8de8434798d8dc4874a10b5406c3d644_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a837acea2c89acb4633fd60dbde2edc81}\label{asteroid_8c_a837acea2c89acb4633fd60dbde2edc81}} 
+\index{asteroid.\+c@{asteroid.\+c}!asteroid@{asteroid}}
+\index{asteroid@{asteroid}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{asteroid()}{asteroid()}}
+{\footnotesize\ttfamily int asteroid (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{int}]{highscore,  }\item[{int}]{Win\+Width,  }\item[{int}]{Win\+Height,  }\item[{char $\ast$}]{token,  }\item[{int}]{hardcore,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$$\ast$}]{textures,  }\item[{int}]{fullscreen }\end{DoxyParamCaption})}
+
+
+
+La fonction principale \+: Lance et fait tourner le jeu asteroid. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em highscore} & Le meilleur score fait par le joueur \\
+\hline
+{\em Win\+Width} & Largeur de la fenêtre \\
+\hline
+{\em Win\+Height} & Hauteur de la fenêtre \\
+\hline
+{\em token} & Le token du joueur pour les requêtes \\
+\hline
+{\em hardcore} & Le niveau de difficulté du jeu \\
+\hline
+{\em textures} & tableau de textures \\
+\hline
+{\em fullscreen} & pleine écran \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+0 en cas de retour normal 
+\end{DoxyReturn}
+M\+I\+SE EN P\+L\+A\+CE ///``
+
+Vars ///`
+
+Vars ///`
+
+Initialize vars ///`
+
+B\+O\+U\+C\+LE DU J\+EU ///``Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{asteroid_8c_a837acea2c89acb4633fd60dbde2edc81_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a837acea2c89acb4633fd60dbde2edc81_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_ad96122b5bb822d796493573a197f7148}\label{asteroid_8c_ad96122b5bb822d796493573a197f7148}} 
+\index{asteroid.\+c@{asteroid.\+c}!asteroid\+\_\+cpy@{asteroid\+\_\+cpy}}
+\index{asteroid\+\_\+cpy@{asteroid\+\_\+cpy}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{asteroid\+\_\+cpy()}{asteroid\_cpy()}}
+{\footnotesize\ttfamily void asteroid\+\_\+cpy (\begin{DoxyParamCaption}\item[{\hyperlink{struct_asteroid}{Asteroid} $\ast$}]{asteroid\+\_\+src,  }\item[{\hyperlink{struct_asteroid}{Asteroid} $\ast$}]{asteroid\+\_\+dest }\end{DoxyParamCaption})}
+
+
+
+copie de la source au destinataire 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em asteroid\+\_\+src} & à copier \\
+\hline
+{\em asteroid\+\_\+dest} & reçoit les valeurs \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_ad96122b5bb822d796493573a197f7148_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a854c8ef061e5631af14c0005eb37eb67}\label{asteroid_8c_a854c8ef061e5631af14c0005eb37eb67}} 
+\index{asteroid.\+c@{asteroid.\+c}!asteroid\+\_\+plus\+\_\+proche@{asteroid\+\_\+plus\+\_\+proche}}
+\index{asteroid\+\_\+plus\+\_\+proche@{asteroid\+\_\+plus\+\_\+proche}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{asteroid\+\_\+plus\+\_\+proche()}{asteroid\_plus\_proche()}}
+{\footnotesize\ttfamily int asteroid\+\_\+plus\+\_\+proche (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{\hyperlink{struct_asteroid}{Asteroid} $\ast$}]{asteroides,  }\item[{int}]{nb\+\_\+asteroid,  }\item[{\hyperlink{struct_missile}{Missile}}]{missile,  }\item[{float $\ast$}]{best\+\_\+angle\+\_\+between }\end{DoxyParamCaption})}
+
+
+
+cherche l\textquotesingle{}asteroid le plus proche 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em asteroides} & liste d\textquotesingle{}asteroides \\
+\hline
+{\em nb\+\_\+asteroid} & nombre d\textquotesingle{}asteroides \\
+\hline
+{\em best\+\_\+angle\+\_\+between} & meilleur\+\_\+angle\+\_\+possible \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+imin\+\_\+asteroid indice de l\textquotesingle{}asteroide 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{asteroid_8c_a854c8ef061e5631af14c0005eb37eb67_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a854c8ef061e5631af14c0005eb37eb67_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a2b28935e7423bac6746116db768f6416}\label{asteroid_8c_a2b28935e7423bac6746116db768f6416}} 
+\index{asteroid.\+c@{asteroid.\+c}!asteroid\+\_\+touche@{asteroid\+\_\+touche}}
+\index{asteroid\+\_\+touche@{asteroid\+\_\+touche}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{asteroid\+\_\+touche()}{asteroid\_touche()}}
+{\footnotesize\ttfamily int asteroid\+\_\+touche (\begin{DoxyParamCaption}\item[{\hyperlink{struct_asteroid}{Asteroid}}]{asteroid,  }\item[{\hyperlink{struct_missile}{Missile} $\ast$}]{missiles,  }\item[{int}]{nb\+\_\+missiles }\end{DoxyParamCaption})}
+
+
+
+test si un asteroide est sur un autre asteroide 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em asteroid} & un asteroide \\
+\hline
+{\em missiles} & liste des missiles \\
+\hline
+{\em nb\+\_\+missiles} & nombre de missile \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+return l\textquotesingle{}indice de l\textquotesingle{}asteroide sinon return -\/1 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=341pt]{asteroid_8c_a2b28935e7423bac6746116db768f6416_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a2b28935e7423bac6746116db768f6416_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a3a184c708af68d910117f14273865ac2}\label{asteroid_8c_a3a184c708af68d910117f14273865ac2}} 
+\index{asteroid.\+c@{asteroid.\+c}!asteroid\+Init@{asteroid\+Init}}
+\index{asteroid\+Init@{asteroid\+Init}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{asteroid\+Init()}{asteroidInit()}}
+{\footnotesize\ttfamily void asteroid\+Init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialise l\textquotesingle{}environement S\+DL, T\+TF et rand. 
+
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a3a184c708af68d910117f14273865ac2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_ab5c4442597505f0363a1029a3ed4b209}\label{asteroid_8c_ab5c4442597505f0363a1029a3ed4b209}} 
+\index{asteroid.\+c@{asteroid.\+c}!base360@{base360}}
+\index{base360@{base360}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{base360()}{base360()}}
+{\footnotesize\ttfamily float base360 (\begin{DoxyParamCaption}\item[{float}]{angle }\end{DoxyParamCaption})}
+
+
+
+converti un angle en base 360 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em angle} & l\textquotesingle{}angle à convertir \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{asteroid_8c_a9e184f3776d22bb0073ae0809903b4f3}\label{asteroid_8c_a9e184f3776d22bb0073ae0809903b4f3}} 
+\index{asteroid.\+c@{asteroid.\+c}!base\+Pi@{base\+Pi}}
+\index{base\+Pi@{base\+Pi}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{base\+Pi()}{basePi()}}
+{\footnotesize\ttfamily float base\+Pi (\begin{DoxyParamCaption}\item[{float}]{angle }\end{DoxyParamCaption})}
+
+
+
+converti un angle en base Pi 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em angle} & l\textquotesingle{}angle à convertir \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a9e184f3776d22bb0073ae0809903b4f3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_abd7ff0453e88ebfbe0e59ae81332e9b8}\label{asteroid_8c_abd7ff0453e88ebfbe0e59ae81332e9b8}} 
+\index{asteroid.\+c@{asteroid.\+c}!calculer\+\_\+angle@{calculer\+\_\+angle}}
+\index{calculer\+\_\+angle@{calculer\+\_\+angle}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{calculer\+\_\+angle()}{calculer\_angle()}}
+{\footnotesize\ttfamily float calculer\+\_\+angle (\begin{DoxyParamCaption}\item[{float}]{x1,  }\item[{float}]{y1,  }\item[{float}]{x2,  }\item[{float}]{y2 }\end{DoxyParamCaption})}
+
+
+
+calcul de l\textquotesingle{}angle 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em x1} & coord en x \\
+\hline
+{\em y1} & coord en y \\
+\hline
+{\em x2} & coord en x \\
+\hline
+{\em y2} & coord en y \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+le resultat du calcul 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_abd7ff0453e88ebfbe0e59ae81332e9b8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a76ce3f66ea9e6eb596b1f4a5060e663a}\label{asteroid_8c_a76ce3f66ea9e6eb596b1f4a5060e663a}} 
+\index{asteroid.\+c@{asteroid.\+c}!collision\+\_\+mur@{collision\+\_\+mur}}
+\index{collision\+\_\+mur@{collision\+\_\+mur}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{collision\+\_\+mur()}{collision\_mur()}}
+{\footnotesize\ttfamily void collision\+\_\+mur (\begin{DoxyParamCaption}\item[{float $\ast$}]{x\+To\+Move,  }\item[{float $\ast$}]{y\+To\+Move,  }\item[{float}]{x,  }\item[{float}]{y,  }\item[{float}]{rayon,  }\item[{int}]{hardcore }\end{DoxyParamCaption})}
+
+
+
+collision avec les côtés de l\textquotesingle{}écran 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em x\+To\+Move} & coord en x \\
+\hline
+{\em y\+To\+Move} & coord en y \\
+\hline
+{\em x} & coord en x \\
+\hline
+{\em y} & coord en y \\
+\hline
+{\em rayon} & \\
+\hline
+{\em hardcore} & mode hardcore activé \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a76ce3f66ea9e6eb596b1f4a5060e663a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_ab0979c8b8eefd21986a1baf5d117f767}\label{asteroid_8c_ab0979c8b8eefd21986a1baf5d117f767}} 
+\index{asteroid.\+c@{asteroid.\+c}!decaler\+\_\+gauche\+\_\+a@{decaler\+\_\+gauche\+\_\+a}}
+\index{decaler\+\_\+gauche\+\_\+a@{decaler\+\_\+gauche\+\_\+a}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{decaler\+\_\+gauche\+\_\+a()}{decaler\_gauche\_a()}}
+{\footnotesize\ttfamily void decaler\+\_\+gauche\+\_\+a (\begin{DoxyParamCaption}\item[{\hyperlink{struct_asteroid}{Asteroid} $\ast$}]{tab,  }\item[{int}]{taille\+\_\+tab,  }\item[{int}]{i }\end{DoxyParamCaption})}
+
+
+
+decale de 1 les valeurs d\textquotesingle{}un tableau d\textquotesingle{}asteroide 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em tab} & tab d\textquotesingle{}asteroide \\
+\hline
+{\em taille\+\_\+tab} & taille du tableau \\
+\hline
+{\em i} & indice de début \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_ab0979c8b8eefd21986a1baf5d117f767_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_aab8f6f614b01bd2ee29805c47ebd1c5c}\label{asteroid_8c_aab8f6f614b01bd2ee29805c47ebd1c5c}} 
+\index{asteroid.\+c@{asteroid.\+c}!decaler\+\_\+gauche\+\_\+e@{decaler\+\_\+gauche\+\_\+e}}
+\index{decaler\+\_\+gauche\+\_\+e@{decaler\+\_\+gauche\+\_\+e}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{decaler\+\_\+gauche\+\_\+e()}{decaler\_gauche\_e()}}
+{\footnotesize\ttfamily void decaler\+\_\+gauche\+\_\+e (\begin{DoxyParamCaption}\item[{\hyperlink{struct_explosion}{Explosion} $\ast$}]{tab,  }\item[{int}]{taille\+\_\+tab,  }\item[{int}]{i }\end{DoxyParamCaption})}
+
+
+
+decale de 1 les valeurs d\textquotesingle{}un tableau d\textquotesingle{}explosion 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em tab} & tab d\textquotesingle{}explosion \\
+\hline
+{\em taille\+\_\+tab} & taille du tableau \\
+\hline
+{\em i} & indice de début \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_aab8f6f614b01bd2ee29805c47ebd1c5c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a91a80ee19fa1be3608f9207d8305d1b9}\label{asteroid_8c_a91a80ee19fa1be3608f9207d8305d1b9}} 
+\index{asteroid.\+c@{asteroid.\+c}!decaler\+\_\+gauche\+\_\+m@{decaler\+\_\+gauche\+\_\+m}}
+\index{decaler\+\_\+gauche\+\_\+m@{decaler\+\_\+gauche\+\_\+m}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{decaler\+\_\+gauche\+\_\+m()}{decaler\_gauche\_m()}}
+{\footnotesize\ttfamily void decaler\+\_\+gauche\+\_\+m (\begin{DoxyParamCaption}\item[{\hyperlink{struct_missile}{Missile} $\ast$}]{tab,  }\item[{int}]{taille\+\_\+tab,  }\item[{int}]{i }\end{DoxyParamCaption})}
+
+
+
+decale de 1 les valeurs d\textquotesingle{}un tableau de missile 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em tab} & tab de missile \\
+\hline
+{\em taille\+\_\+tab} & taille du tableau \\
+\hline
+{\em i} & indice de début \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a91a80ee19fa1be3608f9207d8305d1b9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a819087be58ea855b6d3cb7683ce78306}\label{asteroid_8c_a819087be58ea855b6d3cb7683ce78306}} 
+\index{asteroid.\+c@{asteroid.\+c}!det@{det}}
+\index{det@{det}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{det()}{det()}}
+{\footnotesize\ttfamily float det (\begin{DoxyParamCaption}\item[{float}]{x1,  }\item[{float}]{y1,  }\item[{float}]{x2,  }\item[{float}]{y2 }\end{DoxyParamCaption})}
+
+
+
+calcul le determinant 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em x1} & coord en x \\
+\hline
+{\em y1} & coord en y \\
+\hline
+{\em x2} & coord en x \\
+\hline
+{\em y2} & coord en y \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+le determinant 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a819087be58ea855b6d3cb7683ce78306_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a53204c929ab037429cac314a6c3d15e0}\label{asteroid_8c_a53204c929ab037429cac314a6c3d15e0}} 
+\index{asteroid.\+c@{asteroid.\+c}!detruire\+\_\+asteroid@{detruire\+\_\+asteroid}}
+\index{detruire\+\_\+asteroid@{detruire\+\_\+asteroid}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{detruire\+\_\+asteroid()}{detruire\_asteroid()}}
+{\footnotesize\ttfamily int detruire\+\_\+asteroid (\begin{DoxyParamCaption}\item[{\hyperlink{struct_asteroid}{Asteroid} $\ast$$\ast$}]{asteroides,  }\item[{int $\ast$}]{nb\+\_\+asteroid,  }\item[{int}]{i\+\_\+asteroid,  }\item[{\hyperlink{struct_vaiss}{Vaiss} $\ast$}]{vaisseau,  }\item[{int}]{touche\+\_\+bouclier,  }\item[{\hyperlink{struct_score_total}{Score\+Total} $\ast$}]{score,  }\item[{int $\ast$}]{nb\+Bombe\+Nucleaire,  }\item[{float}]{angle\+Missile,  }\item[{\hyperlink{struct_text_bonus}{Text\+Bonus}}]{bonus\+Texts\mbox{[}\+M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+U\+S\mbox{]},  }\item[{float}]{munitions\mbox{[}\+N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+E\+S\mbox{]},  }\item[{long}]{keys\mbox{[}4\mbox{]},  }\item[{long long $\ast$}]{score\+\_\+hash,  }\item[{Mix\+\_\+\+Chunk $\ast$}]{bonus\+Sound,  }\item[{Mix\+\_\+\+Chunk $\ast$}]{explo\+Sound,  }\item[{int}]{done }\end{DoxyParamCaption})}
+
+
+
+détruit un asteroid 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em asteroides} & liste d\textquotesingle{}asteroides \\
+\hline
+{\em nb\+\_\+asteroid} & nombre d\textquotesingle{}asteroides \\
+\hline
+{\em i\+\_\+asteroid} & indice de l\textquotesingle{}asteroide \\
+\hline
+{\em vaisseau} & le vaisseau \\
+\hline
+{\em touche\+\_\+bouclier} & indique si il y a un bouclier \\
+\hline
+{\em score} & score total \\
+\hline
+{\em nb\+Bombe\+Nucleaire} & nombre de Bombe Nucléaire \\
+\hline
+{\em angle\+Missile} & angle du missile \\
+\hline
+{\em bonus\+Texts\mbox{[}\+M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+U\+S\mbox{]}} & texte du bonus affiché à l\textquotesingle{}écran \\
+\hline
+{\em munitions\mbox{[}\+N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+E\+S\mbox{]}} & liste de munitions \\
+\hline
+{\em keys\mbox{[}4\mbox{]}} & clé du hashage \\
+\hline
+{\em score\+\_\+hash} & score hashé \\
+\hline
+{\em bonus\+Sound} & son du bonus \\
+\hline
+{\em explo\+Sound} & son de l\textquotesingle{}explosion \\
+\hline
+{\em done} & indique si le jeu est fini \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+0 si il n\textquotesingle{}y a pas de problème sinon return H\+A\+C\+K\+ED 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a53204c929ab037429cac314a6c3d15e0_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a53204c929ab037429cac314a6c3d15e0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a9138b5f165178cf613ff96f2307a0fec}\label{asteroid_8c_a9138b5f165178cf613ff96f2307a0fec}} 
+\index{asteroid.\+c@{asteroid.\+c}!dist\+\_\+2f@{dist\+\_\+2f}}
+\index{dist\+\_\+2f@{dist\+\_\+2f}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{dist\+\_\+2f()}{dist\_2f()}}
+{\footnotesize\ttfamily float dist\+\_\+2f (\begin{DoxyParamCaption}\item[{float}]{x1,  }\item[{float}]{y1,  }\item[{float}]{x2,  }\item[{float}]{y2 }\end{DoxyParamCaption})}
+
+
+
+calcul la distance entre deux points 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em x1} & coord en x \\
+\hline
+{\em y1} & coord en y \\
+\hline
+{\em x2} & coord en x \\
+\hline
+{\em y2} & coord en y \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+la distance entre deux points 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a9138b5f165178cf613ff96f2307a0fec_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_ac8ec2ad7fb99fe1b0eeeeaf70504fc4f}\label{asteroid_8c_ac8ec2ad7fb99fe1b0eeeeaf70504fc4f}} 
+\index{asteroid.\+c@{asteroid.\+c}!draw\+Help\+Text@{draw\+Help\+Text}}
+\index{draw\+Help\+Text@{draw\+Help\+Text}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{draw\+Help\+Text()}{drawHelpText()}}
+{\footnotesize\ttfamily static void draw\+Help\+Text (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{fleche\+Texture,  }\item[{int}]{hardcore }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Affiche les commandes et explications des bonus. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em fleche\+Texture} & La texture des flèches directionelles \\
+\hline
+{\em hardcore} & mode de jeu hardcore ou non \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_ac8ec2ad7fb99fe1b0eeeeaf70504fc4f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_af1f3f4f317dd71e9379a6e19ad0cb303}\label{asteroid_8c_af1f3f4f317dd71e9379a6e19ad0cb303}} 
+\index{asteroid.\+c@{asteroid.\+c}!get\+\_\+bonus@{get\+\_\+bonus}}
+\index{get\+\_\+bonus@{get\+\_\+bonus}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{get\+\_\+bonus()}{get\_bonus()}}
+{\footnotesize\ttfamily int get\+\_\+bonus (\begin{DoxyParamCaption}\item[{\hyperlink{struct_vaiss}{Vaiss}}]{vaisseau,  }\item[{float}]{munitions\mbox{[}\+N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+E\+S\mbox{]},  }\item[{int}]{nb\+Bombe\+Nucleaire }\end{DoxyParamCaption})}
+
+
+
+attribue un bonus au hasard 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em vaisseau} & le vaisseau \\
+\hline
+{\em munitions\mbox{[}\+N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+E\+S\mbox{]}} & munitions des missiles \\
+\hline
+{\em nb\+Bombe\+Nucleaire} & nombre de bombe nucleaire stocké \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+l\textquotesingle{}indice du bonus 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=249pt]{asteroid_8c_af1f3f4f317dd71e9379a6e19ad0cb303_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_af1f3f4f317dd71e9379a6e19ad0cb303_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_aae510378b3640b0555b51bd5fe428470}\label{asteroid_8c_aae510378b3640b0555b51bd5fe428470}} 
+\index{asteroid.\+c@{asteroid.\+c}!get\+First\+Null\+Text@{get\+First\+Null\+Text}}
+\index{get\+First\+Null\+Text@{get\+First\+Null\+Text}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{get\+First\+Null\+Text()}{getFirstNullText()}}
+{\footnotesize\ttfamily int get\+First\+Null\+Text (\begin{DoxyParamCaption}\item[{\hyperlink{struct_text_bonus}{Text\+Bonus}}]{texts\+Bonus\mbox{[}\+M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+U\+S\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+détermine à quel endroit le texte va s\textquotesingle{}afficher 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em texts\+Bonus\mbox{[}\+M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+U\+S\mbox{]}} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+l\textquotesingle{}indice 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_aae510378b3640b0555b51bd5fe428470_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a14aa545592a35e8013794b215cc98986}\label{asteroid_8c_a14aa545592a35e8013794b215cc98986}} 
+\index{asteroid.\+c@{asteroid.\+c}!init\+Text@{init\+Text}}
+\index{init\+Text@{init\+Text}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{init\+Text()}{initText()}}
+{\footnotesize\ttfamily void init\+Text (\begin{DoxyParamCaption}\item[{\hyperlink{struct_text_bonus}{Text\+Bonus}}]{texts\+Bonus\mbox{[}\+M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+U\+S\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+initialiser du texte 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em texts\+Bonus} & \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a14aa545592a35e8013794b215cc98986_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a8b1c0436c52bee1861a64bb6f0ee2945}\label{asteroid_8c_a8b1c0436c52bee1861a64bb6f0ee2945}} 
+\index{asteroid.\+c@{asteroid.\+c}!is\+Obtainable@{is\+Obtainable}}
+\index{is\+Obtainable@{is\+Obtainable}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{is\+Obtainable()}{isObtainable()}}
+{\footnotesize\ttfamily int is\+Obtainable (\begin{DoxyParamCaption}\item[{int}]{id\+\_\+bonus,  }\item[{\hyperlink{struct_vaiss}{Vaiss}}]{vaisseau,  }\item[{float}]{munitions\mbox{[}\+N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+E\+S\mbox{]},  }\item[{int}]{nb\+Bombe\+Nucleaire }\end{DoxyParamCaption})}
+
+
+
+test si un bonus peut être obtenu 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em id\+\_\+bonus} & indice du bonus \\
+\hline
+{\em vaisseau} & le vaisseau \\
+\hline
+{\em munitions\mbox{[}\+N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+E\+S\mbox{]}} & munitions des missiles \\
+\hline
+{\em nb\+Bombe\+Nucleaire} & nombre de bombe nucleaire stocké \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si le bonus est possible à obtenir sinon F\+A\+UX 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a8b1c0436c52bee1861a64bb6f0ee2945_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a1b1343d5c91f592eadf9021170c5091b}\label{asteroid_8c_a1b1343d5c91f592eadf9021170c5091b}} 
+\index{asteroid.\+c@{asteroid.\+c}!laser\+\_\+touche@{laser\+\_\+touche}}
+\index{laser\+\_\+touche@{laser\+\_\+touche}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{laser\+\_\+touche()}{laser\_touche()}}
+{\footnotesize\ttfamily int laser\+\_\+touche (\begin{DoxyParamCaption}\item[{\hyperlink{struct_asteroid}{Asteroid}}]{asteroid,  }\item[{\hyperlink{struct_vaiss}{Vaiss}}]{vaisseau }\end{DoxyParamCaption})}
+
+
+
+test si le laser touche un asteroide 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em asteroid} & un asteroide \\
+\hline
+{\em vaisseau} & le vaisseau \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si le laser touche l\textquotesingle{}asteroid sinon Faux 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=310pt]{asteroid_8c_a1b1343d5c91f592eadf9021170c5091b_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a1b1343d5c91f592eadf9021170c5091b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a8c5143e37a59f1139d5d88eaf252e176}\label{asteroid_8c_a8c5143e37a59f1139d5d88eaf252e176}} 
+\index{asteroid.\+c@{asteroid.\+c}!ligne\+Colli@{ligne\+Colli}}
+\index{ligne\+Colli@{ligne\+Colli}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{ligne\+Colli()}{ligneColli()}}
+{\footnotesize\ttfamily int ligne\+Colli (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Point}]{lignes\+\_\+laser\mbox{[}5\mbox{]}\mbox{[}2\mbox{]},  }\item[{S\+D\+L\+\_\+\+Point}]{asteroid\+\_\+diametre\mbox{[}2\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+détermine si une des lignes est en collision avec une autre ligne qui correspond au diamètre d\textquotesingle{}un asteroid perpendiculaire aux lignes du laser 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em ligne\+\_\+laser\mbox{[}5\mbox{]}\mbox{[}2\mbox{]}} & tableau de ligne du laser \\
+\hline
+{\em asteroid\+\_\+diametre\mbox{[}2\mbox{]}} & diametre de l\textquotesingle{}asteroide \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai sinon Faux 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=202pt]{asteroid_8c_a8c5143e37a59f1139d5d88eaf252e176_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a8c5143e37a59f1139d5d88eaf252e176_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_ab7e034368a87a4cf1934653c13b73cce}\label{asteroid_8c_ab7e034368a87a4cf1934653c13b73cce}} 
+\index{asteroid.\+c@{asteroid.\+c}!mouvement\+\_\+asteroid@{mouvement\+\_\+asteroid}}
+\index{mouvement\+\_\+asteroid@{mouvement\+\_\+asteroid}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{mouvement\+\_\+asteroid()}{mouvement\_asteroid()}}
+{\footnotesize\ttfamily void mouvement\+\_\+asteroid (\begin{DoxyParamCaption}\item[{\hyperlink{struct_asteroid}{Asteroid} $\ast$}]{asteroid,  }\item[{int}]{hardcore }\end{DoxyParamCaption})}
+
+
+
+mouvement d\textquotesingle{}un asteroide 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em asteroid} & un asteroide \\
+\hline
+{\em hardcore} & mode de jeu hardcore ou non \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_ab7e034368a87a4cf1934653c13b73cce_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a101a47caf287f1684d6d3f097446fd25}\label{asteroid_8c_a101a47caf287f1684d6d3f097446fd25}} 
+\index{asteroid.\+c@{asteroid.\+c}!mouvement\+\_\+tir@{mouvement\+\_\+tir}}
+\index{mouvement\+\_\+tir@{mouvement\+\_\+tir}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{mouvement\+\_\+tir()}{mouvement\_tir()}}
+{\footnotesize\ttfamily void mouvement\+\_\+tir (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{\hyperlink{struct_missile}{Missile} $\ast$}]{shot,  }\item[{\hyperlink{struct_asteroid}{Asteroid} $\ast$}]{asteroides,  }\item[{int}]{nb\+\_\+asteroid }\end{DoxyParamCaption})}
+
+
+
+mouvement du missile en fonction de l\textquotesingle{}arme, fait par Hugo 
+
+\hyperlink{asteroid_8c_a101a47caf287f1684d6d3f097446fd25}{mouvement\+\_\+tir(\+S\+D\+L\+\_\+\+Renderer $\ast$renderer,\+Missile $\ast$ shot, Asteroid $\ast$ asteroides, int nb\+\_\+asteroid)} 
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em shot} & un tir de missile \\
+\hline
+{\em asteroides} & liste d\textquotesingle{}asteroides \\
+\hline
+{\em nb\+\_\+asteroid} & nombre d\textquotesingle{}asteroides \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a101a47caf287f1684d6d3f097446fd25_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a101a47caf287f1684d6d3f097446fd25_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a359d37801486bc8b873330e2f38187a7}\label{asteroid_8c_a359d37801486bc8b873330e2f38187a7}} 
+\index{asteroid.\+c@{asteroid.\+c}!move@{move}}
+\index{move@{move}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{move()}{move()}}
+{\footnotesize\ttfamily void move (\begin{DoxyParamCaption}\item[{\hyperlink{struct_vaiss}{Vaiss} $\ast$}]{vaisseau,  }\item[{Vector2f}]{accelerate }\end{DoxyParamCaption})}
+
+
+
+permet au vaisseau d\textquotesingle{}avancer 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em vaisseau} & le vaisseau \\
+\hline
+{\em accelerate} & acceleration du vaisseau \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a359d37801486bc8b873330e2f38187a7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a2b23ddbd5e6d0eaa6a1ba0b0a2498208}\label{asteroid_8c_a2b23ddbd5e6d0eaa6a1ba0b0a2498208}} 
+\index{asteroid.\+c@{asteroid.\+c}!my\+Frees@{my\+Frees}}
+\index{my\+Frees@{my\+Frees}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{my\+Frees()}{myFrees()}}
+{\footnotesize\ttfamily static void my\+Frees (\begin{DoxyParamCaption}\item[{\hyperlink{struct_missile}{Missile} $\ast$$\ast$}]{missiles,  }\item[{\hyperlink{struct_asteroid}{Asteroid} $\ast$$\ast$}]{asteroides,  }\item[{\hyperlink{struct_explosion}{Explosion} $\ast$$\ast$}]{explosions,  }\item[{T\+T\+F\+\_\+\+Font $\ast$$\ast$}]{fonts,  }\item[{S\+D\+L\+\_\+\+Thread $\ast$$\ast$}]{thread,  }\item[{Mix\+\_\+\+Chunk $\ast$$\ast$}]{sounds }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Libère la mémoire. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em missiles} & liste de missiles \\
+\hline
+{\em asteroides} & liste d\textquotesingle{}asteroides \\
+\hline
+{\em explosions} & liste d\textquotesingle{}explosions \\
+\hline
+{\em fonts} & Les polices \\
+\hline
+{\em thread} & Le thread d\textquotesingle{}envoi de score \\
+\hline
+{\em sounds} & liste des sons \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a2b23ddbd5e6d0eaa6a1ba0b0a2498208_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a82e39f46660ec017b69ead766e2debc9}\label{asteroid_8c_a82e39f46660ec017b69ead766e2debc9}} 
+\index{asteroid.\+c@{asteroid.\+c}!recoit\+\_\+bonus@{recoit\+\_\+bonus}}
+\index{recoit\+\_\+bonus@{recoit\+\_\+bonus}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{recoit\+\_\+bonus()}{recoit\_bonus()}}
+{\footnotesize\ttfamily int recoit\+\_\+bonus (\begin{DoxyParamCaption}\item[{int}]{id\+\_\+bonus,  }\item[{\hyperlink{struct_vaiss}{Vaiss} $\ast$}]{vaisseau,  }\item[{int $\ast$}]{nb\+Bombe\+Nucleaire,  }\item[{\hyperlink{struct_score_total}{Score\+Total} $\ast$}]{score,  }\item[{float}]{munitions\mbox{[}\+N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+E\+S\mbox{]},  }\item[{long}]{keys\mbox{[}4\mbox{]},  }\item[{long long $\ast$}]{score\+\_\+hash,  }\item[{Mix\+\_\+\+Chunk $\ast$}]{bonus\+Sound }\end{DoxyParamCaption})}
+
+
+
+Applique les changements en fonction des bonus. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em id\+\_\+bonus} & id du bonus \\
+\hline
+{\em vaisseau} & Le vaisseau \\
+\hline
+{\em nb\+Bombe\+Nucleaire} & Nombre de bombe nucléaire en notre possession \\
+\hline
+{\em score} & Le score total \\
+\hline
+{\em munitions\mbox{[}\+N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+E\+S\mbox{]}} & munitions des missiles \\
+\hline
+{\em keys} & Les clés de hashage \\
+\hline
+{\em score\+\_\+hash} & Le score hashé \\
+\hline
+{\em bonus\+Sound} & Son des bonus \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+0 si pas de problème sinon return H\+A\+C\+K\+ED 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a82e39f46660ec017b69ead766e2debc9_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a82e39f46660ec017b69ead766e2debc9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a85a54a09151852d5c2835934487573ed}\label{asteroid_8c_a85a54a09151852d5c2835934487573ed}} 
+\index{asteroid.\+c@{asteroid.\+c}!rotate\+Asteroides@{rotate\+Asteroides}}
+\index{rotate\+Asteroides@{rotate\+Asteroides}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{rotate\+Asteroides()}{rotateAsteroides()}}
+{\footnotesize\ttfamily void rotate\+Asteroides (\begin{DoxyParamCaption}\item[{\hyperlink{struct_asteroid}{Asteroid} $\ast$}]{asteroides,  }\item[{int}]{nb\+\_\+asteroid }\end{DoxyParamCaption})}
+
+
+
+permet la rotation de l\textquotesingle{}asteroide sur lui même 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em asteroides} & liste d\textquotesingle{}asteroides \\
+\hline
+{\em nb\+\_\+asteroid} & nombre d\textquotesingle{}asteroides \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a85a54a09151852d5c2835934487573ed_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a40b9be6b54a4d2f3963a4f6dee4214e2}\label{asteroid_8c_a40b9be6b54a4d2f3963a4f6dee4214e2}} 
+\index{asteroid.\+c@{asteroid.\+c}!sign\+Of@{sign\+Of}}
+\index{sign\+Of@{sign\+Of}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{sign\+Of()}{signOf()}}
+{\footnotesize\ttfamily int sign\+Of (\begin{DoxyParamCaption}\item[{float}]{f }\end{DoxyParamCaption})}
+
+
+
+Détermine le signe d\textquotesingle{}un float. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em f} & Le float \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Le signe de ce float 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a40b9be6b54a4d2f3963a4f6dee4214e2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a07000afcd19ecd3a3f1e230a74eab955}\label{asteroid_8c_a07000afcd19ecd3a3f1e230a74eab955}} 
+\index{asteroid.\+c@{asteroid.\+c}!spawn\+\_\+asteroid@{spawn\+\_\+asteroid}}
+\index{spawn\+\_\+asteroid@{spawn\+\_\+asteroid}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{spawn\+\_\+asteroid()}{spawn\_asteroid()}}
+{\footnotesize\ttfamily void spawn\+\_\+asteroid (\begin{DoxyParamCaption}\item[{\hyperlink{struct_vaiss}{Vaiss}}]{vaisseau,  }\item[{\hyperlink{struct_asteroid}{Asteroid} $\ast$$\ast$}]{asteroides,  }\item[{int $\ast$}]{nb\+\_\+asteroid,  }\item[{float}]{difficulte,  }\item[{float}]{munitions\mbox{[}\+N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+E\+S\mbox{]},  }\item[{int}]{hardcore }\end{DoxyParamCaption})}
+
+
+
+apparation d\textquotesingle{}un asteroide 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em vaisseau} & le vaisseau \\
+\hline
+{\em asteroides} & liste d\textquotesingle{}asteroides \\
+\hline
+{\em nb\+\_\+asteroid} & nombre d\textquotesingle{}asteroid \\
+\hline
+{\em difficulte} & difficulte du jeu \\
+\hline
+{\em munitions\mbox{[}\+N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+E\+S\mbox{]}} & liste des munitions \\
+\hline
+{\em hardcore} & mode de jeu hardcore ou non \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a07000afcd19ecd3a3f1e230a74eab955_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a07000afcd19ecd3a3f1e230a74eab955_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a3538049a3870b4c1d926aa49b647e126}\label{asteroid_8c_a3538049a3870b4c1d926aa49b647e126}} 
+\index{asteroid.\+c@{asteroid.\+c}!sur\+\_\+asteroid@{sur\+\_\+asteroid}}
+\index{sur\+\_\+asteroid@{sur\+\_\+asteroid}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{sur\+\_\+asteroid()}{sur\_asteroid()}}
+{\footnotesize\ttfamily int sur\+\_\+asteroid (\begin{DoxyParamCaption}\item[{\hyperlink{struct_asteroid}{Asteroid} $\ast$}]{asteroides,  }\item[{int}]{nb\+\_\+asteroid,  }\item[{int}]{i\+\_\+asteroid }\end{DoxyParamCaption})}
+
+
+
+test si un asteroide est sur un autre asteroide 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em asteroides} & liste des asteroides \\
+\hline
+{\em nb\+\_\+asteroid} & nombre d\textquotesingle{}asteroide \\
+\hline
+{\em i\+\_\+asteroid} & indice de l\textquotesingle{}asteroide \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+return V\+R\+AI si sur un asteroid sinon F\+A\+UX 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=325pt]{asteroid_8c_a3538049a3870b4c1d926aa49b647e126_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a3538049a3870b4c1d926aa49b647e126_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a3d885d724b2a7cbf3c5c78f8e0715179}\label{asteroid_8c_a3d885d724b2a7cbf3c5c78f8e0715179}} 
+\index{asteroid.\+c@{asteroid.\+c}!tirer@{tirer}}
+\index{tirer@{tirer}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{tirer()}{tirer()}}
+{\footnotesize\ttfamily void tirer (\begin{DoxyParamCaption}\item[{\hyperlink{struct_vaiss}{Vaiss} $\ast$}]{vaisseau,  }\item[{\hyperlink{struct_missile}{Missile} $\ast$$\ast$}]{missiles,  }\item[{int $\ast$}]{nb\+\_\+missiles,  }\item[{Mix\+\_\+\+Chunk $\ast$}]{shoot\+Sound }\end{DoxyParamCaption})}
+
+
+
+permet de tirer 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em vaisseau} & le vaisseau \\
+\hline
+{\em missile} & liste de missiles \\
+\hline
+{\em nb\+\_\+missiles} & nombre de missiles \\
+\hline
+{\em shoot\+Sound} & son du tir \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a3d885d724b2a7cbf3c5c78f8e0715179_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a0ab4528a5507e3a0f816d4c596c59f16}\label{asteroid_8c_a0ab4528a5507e3a0f816d4c596c59f16}} 
+\index{asteroid.\+c@{asteroid.\+c}!trop\+\_\+pres@{trop\+\_\+pres}}
+\index{trop\+\_\+pres@{trop\+\_\+pres}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{trop\+\_\+pres()}{trop\_pres()}}
+{\footnotesize\ttfamily int trop\+\_\+pres (\begin{DoxyParamCaption}\item[{float}]{x1,  }\item[{float}]{y1,  }\item[{float}]{x2,  }\item[{float}]{y2,  }\item[{float}]{dist,  }\item[{int}]{cote\+\_\+spawn }\end{DoxyParamCaption})}
+
+
+
+vaisseau trop\+\_\+pres ou non 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em x1} & coord en x \\
+\hline
+{\em y1} & coord en y \\
+\hline
+{\em x2} & coord en x \\
+\hline
+{\em y2} & coord en y \\
+\hline
+{\em dist} & distance \\
+\hline
+{\em cote\+\_\+spawn} & côté de spawn des asteroides \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+si oui ou non les deux points sont trop près 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=219pt]{asteroid_8c_a0ab4528a5507e3a0f816d4c596c59f16_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a0ab4528a5507e3a0f816d4c596c59f16_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a2385e0c0b8de75a5c621570a06520cdf}\label{asteroid_8c_a2385e0c0b8de75a5c621570a06520cdf}} 
+\index{asteroid.\+c@{asteroid.\+c}!turn\+\_\+vaiss@{turn\+\_\+vaiss}}
+\index{turn\+\_\+vaiss@{turn\+\_\+vaiss}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{turn\+\_\+vaiss()}{turn\_vaiss()}}
+{\footnotesize\ttfamily void turn\+\_\+vaiss (\begin{DoxyParamCaption}\item[{\hyperlink{struct_vaiss}{Vaiss} $\ast$}]{vaisseau,  }\item[{int}]{turn,  }\item[{Vector2f $\ast$}]{accelerate }\end{DoxyParamCaption})}
+
+
+
+permet au vaisseau de tourner 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em vaisseau} & le vaisseau \\
+\hline
+{\em turn} & indique si l\textquotesingle{}on doit tourner à gauche ou à droite \\
+\hline
+{\em accelerate} & acceleration du vaisseau \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a2385e0c0b8de75a5c621570a06520cdf_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_aee7336d05eea818be4effbb0be52a28f}\label{asteroid_8c_aee7336d05eea818be4effbb0be52a28f}} 
+\index{asteroid.\+c@{asteroid.\+c}!update\+\_\+frame@{update\+\_\+frame}}
+\index{update\+\_\+frame@{update\+\_\+frame}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{update\+\_\+frame()}{update\_frame()}}
+{\footnotesize\ttfamily void update\+\_\+frame (\begin{DoxyParamCaption}\item[{\hyperlink{struct_missile}{Missile} $\ast$$\ast$}]{missiles,  }\item[{int $\ast$}]{nb\+\_\+missiles,  }\item[{\hyperlink{struct_vaiss}{Vaiss} $\ast$}]{vaisseau,  }\item[{long int $\ast$}]{frame,  }\item[{int $\ast$}]{frame\+\_\+apparition\+\_\+asteroid,  }\item[{float $\ast$}]{vitesse\+\_\+spawn,  }\item[{int $\ast$}]{frame\+\_\+2asteroid }\end{DoxyParamCaption})}
+
+
+
+mise à jour à chaque frame 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em missiles} & liste de missiles \\
+\hline
+{\em nb\+\_\+missiles} & nombre de missiles \\
+\hline
+{\em vaisseau} & le vaisseau \\
+\hline
+{\em frame} & \\
+\hline
+{\em frame\+\_\+apparition\+\_\+asteroid} & \\
+\hline
+{\em vitesse\+\_\+spawn} & vitesse à laquelle spawn les astéroides \\
+\hline
+{\em frame\+\_\+2asteroid} & \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=290pt]{asteroid_8c_aee7336d05eea818be4effbb0be52a28f_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_aee7336d05eea818be4effbb0be52a28f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_aa37281f406a30b81049914f769c536d5}\label{asteroid_8c_aa37281f406a30b81049914f769c536d5}} 
+\index{asteroid.\+c@{asteroid.\+c}!use\+Nuclear@{use\+Nuclear}}
+\index{use\+Nuclear@{use\+Nuclear}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{use\+Nuclear()}{useNuclear()}}
+{\footnotesize\ttfamily int use\+Nuclear (\begin{DoxyParamCaption}\item[{\hyperlink{struct_asteroid}{Asteroid} $\ast$$\ast$}]{asteroides,  }\item[{int $\ast$}]{nb\+\_\+asteroid,  }\item[{\hyperlink{struct_explosion}{Explosion} $\ast$$\ast$}]{explosions,  }\item[{int $\ast$}]{nb\+\_\+explosions,  }\item[{\hyperlink{struct_score_total}{Score\+Total} $\ast$}]{score,  }\item[{long}]{keys\mbox{[}4\mbox{]},  }\item[{long long $\ast$}]{score\+\_\+hash,  }\item[{int}]{done,  }\item[{Mix\+\_\+\+Chunk $\ast$}]{explo\+Sound }\end{DoxyParamCaption})}
+
+
+
+Utilisation de la bombe nucléaire. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em asteroides} & la liste des asteroides \\
+\hline
+{\em nb\+\_\+asteroid} & le nombre d\textquotesingle{}asteroide \\
+\hline
+{\em explosions} & les explosions \\
+\hline
+{\em nb\+\_\+explosions} & le nombre d\textquotesingle{}explosion \\
+\hline
+{\em score} & Le score total \\
+\hline
+{\em keys} & Les clés de hashage \\
+\hline
+{\em score\+\_\+hash} & Le score hashé \\
+\hline
+{\em done} & indique si le jeu est fini \\
+\hline
+{\em explo\+Sound} & Son d\textquotesingle{}explosion \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+0 si pas de problème sinon return H\+A\+C\+K\+ED 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_aa37281f406a30b81049914f769c536d5_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_aa37281f406a30b81049914f769c536d5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{asteroid_8c_a0e1887200685ed69b76a90ecfc3139a2}\label{asteroid_8c_a0e1887200685ed69b76a90ecfc3139a2}} 
+\index{asteroid.\+c@{asteroid.\+c}!vaisseau\+\_\+touche@{vaisseau\+\_\+touche}}
+\index{vaisseau\+\_\+touche@{vaisseau\+\_\+touche}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{vaisseau\+\_\+touche()}{vaisseau\_touche()}}
+{\footnotesize\ttfamily int vaisseau\+\_\+touche (\begin{DoxyParamCaption}\item[{\hyperlink{struct_vaiss}{Vaiss}}]{vaisseau,  }\item[{\hyperlink{struct_asteroid}{Asteroid} $\ast$}]{asteroides,  }\item[{int}]{nb\+\_\+asteroid }\end{DoxyParamCaption})}
+
+
+
+test si le vaisseau a touché un asteroid 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em vaisseau} & structure du vaisseau \\
+\hline
+{\em asteroides} & liste des asteroides \\
+\hline
+{\em nb\+\_\+asteroid} & nombre d\textquotesingle{}asteroides \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+return l\textquotesingle{}indice de l\textquotesingle{}asteroide sinon return -\/1 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=345pt]{asteroid_8c_a0e1887200685ed69b76a90ecfc3139a2_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{asteroid_8c_a0e1887200685ed69b76a90ecfc3139a2_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Documentation des variables}
+\mbox{\Hypertarget{asteroid_8c_a30862aa51c2944f287c4445751341ee8}\label{asteroid_8c_a30862aa51c2944f287c4445751341ee8}} 
+\index{asteroid.\+c@{asteroid.\+c}!update\+Ended@{update\+Ended}}
+\index{update\+Ended@{update\+Ended}!asteroid.\+c@{asteroid.\+c}}
+\subsubsection{\texorpdfstring{update\+Ended}{updateEnded}}
+{\footnotesize\ttfamily int update\+Ended}
+

@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Nineteen: Référence du fichier include/fullpath.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="favicon.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Nineteen
+   </div>
+   <div id="projectbrief">The best of arcade games !</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Fonctions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle">
+<div class="title">Référence du fichier fullpath.c</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>permet de reconstruire un lien de fichier complet sur mac OS  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
+<code>#include &lt;limits.h&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Graphe des dépendances par inclusion de fullpath.c:</div>
+<div class="dyncontent">
+<div class="center"><img src="fullpath_8c__incl.jpg" border="0" usemap="#include_2fullpath_8c" alt=""/></div>
+</div>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:a971aa46d4b8a983073ebca2f29b47d7e"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fullpath_8c.html#a971aa46d4b8a983073ebca2f29b47d7e">nbOccurence</a> (char s[], char c)</td></tr>
+<tr class="memdesc:a971aa46d4b8a983073ebca2f29b47d7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">compte le nombre d occurence d un caractere  <a href="#a971aa46d4b8a983073ebca2f29b47d7e">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a971aa46d4b8a983073ebca2f29b47d7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71d5e4ed9d9f73471cfc48a943e2c290"><td class="memItemLeft" align="right" valign="top">static char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fullpath_8c.html#a71d5e4ed9d9f73471cfc48a943e2c290">completPathOf</a> (char s[], int mode)</td></tr>
+<tr class="memdesc:a71d5e4ed9d9f73471cfc48a943e2c290"><td class="mdescLeft">&#160;</td><td class="mdescRight">complete le path  <a href="#a71d5e4ed9d9f73471cfc48a943e2c290">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a71d5e4ed9d9f73471cfc48a943e2c290"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3957a3f02a1e6b683d02405d47f92126"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fullpath_8c.html#a3957a3f02a1e6b683d02405d47f92126">detectionMode</a> (char s[])</td></tr>
+<tr class="memdesc:a3957a3f02a1e6b683d02405d47f92126"><td class="mdescLeft">&#160;</td><td class="mdescRight">detecte le mode si besoin ou non  <a href="#a3957a3f02a1e6b683d02405d47f92126">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a3957a3f02a1e6b683d02405d47f92126"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02e9398e99a0a3837bae3d6f2d2a0687"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fullpath_8c.html#a02e9398e99a0a3837bae3d6f2d2a0687">fullPath</a> (char s[])</td></tr>
+<tr class="memdesc:a02e9398e99a0a3837bae3d6f2d2a0687"><td class="mdescLeft">&#160;</td><td class="mdescRight">fonction principal que ce charge de faire l appel de chaque fonction  <a href="#a02e9398e99a0a3837bae3d6f2d2a0687">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a02e9398e99a0a3837bae3d6f2d2a0687"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a1ce6bb164d37e605aa60e94aefe73817"><td class="memItemLeft" align="right" valign="top">FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fullpath_8c.html#a1ce6bb164d37e605aa60e94aefe73817">EXT_FILE</a></td></tr>
+<tr class="separator:a1ce6bb164d37e605aa60e94aefe73817"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>permet de reconstruire un lien de fichier complet sur mac OS </p>
+<dl class="section author"><dt>Auteur</dt><dd>Samy M. </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>31 janvier 2020 </dd></dl>
+</div><h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a71d5e4ed9d9f73471cfc48a943e2c290"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71d5e4ed9d9f73471cfc48a943e2c290">&#9670;&nbsp;</a></span>completPathOf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char * completPathOf </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>s</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>mode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>complete le path </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>Le chemin d'execution </td></tr>
+    <tr><td class="paramname">mode</td><td>Détermine si c'est ./ ou a/a</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>la nouvelle chaine </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="fullpath_8c_a71d5e4ed9d9f73471cfc48a943e2c290_icgraph.jpg" border="0" usemap="#fullpath_8c_a71d5e4ed9d9f73471cfc48a943e2c290_icgraph" alt=""/></div>
+<map name="fullpath_8c_a71d5e4ed9d9f73471cfc48a943e2c290_icgraph" id="fullpath_8c_a71d5e4ed9d9f73471cfc48a943e2c290_icgraph">
+<area shape="rect" id="node2" href="fullpath_8c.html#a02e9398e99a0a3837bae3d6f2d2a0687" title="fonction principal que ce charge de faire l appel de chaque fonction " alt="" coords="163,5,229,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="277,5,328,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a3957a3f02a1e6b683d02405d47f92126"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3957a3f02a1e6b683d02405d47f92126">&#9670;&nbsp;</a></span>detectionMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int detectionMode </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>s</em>[]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>detecte le mode si besoin ou non </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>Détecte le mode du chemin ( ./ ou a/a )</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>1/0 </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="fullpath_8c_a3957a3f02a1e6b683d02405d47f92126_icgraph.jpg" border="0" usemap="#fullpath_8c_a3957a3f02a1e6b683d02405d47f92126_icgraph" alt=""/></div>
+<map name="fullpath_8c_a3957a3f02a1e6b683d02405d47f92126_icgraph" id="fullpath_8c_a3957a3f02a1e6b683d02405d47f92126_icgraph">
+<area shape="rect" id="node2" href="fullpath_8c.html#a02e9398e99a0a3837bae3d6f2d2a0687" title="fonction principal que ce charge de faire l appel de chaque fonction " alt="" coords="160,5,227,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="275,5,325,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a02e9398e99a0a3837bae3d6f2d2a0687"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02e9398e99a0a3837bae3d6f2d2a0687">&#9670;&nbsp;</a></span>fullPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char * fullPath </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>s</em>[]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>fonction principal que ce charge de faire l appel de chaque fonction </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>Le chemin d'exectution</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>nouvelle chaine avec le path complet pour mac </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="fullpath_8c_a02e9398e99a0a3837bae3d6f2d2a0687_cgraph.jpg" border="0" usemap="#fullpath_8c_a02e9398e99a0a3837bae3d6f2d2a0687_cgraph" alt=""/></div>
+<map name="fullpath_8c_a02e9398e99a0a3837bae3d6f2d2a0687_cgraph" id="fullpath_8c_a02e9398e99a0a3837bae3d6f2d2a0687_cgraph">
+<area shape="rect" id="node2" href="fullpath_8c.html#a971aa46d4b8a983073ebca2f29b47d7e" title="compte le nombre d occurence d un caractere " alt="" coords="125,5,224,32"/>
+<area shape="rect" id="node3" href="fullpath_8c.html#a3957a3f02a1e6b683d02405d47f92126" title="detecte le mode si besoin ou non " alt="" coords="121,56,228,83"/>
+<area shape="rect" id="node4" href="fullpath_8c.html#a71d5e4ed9d9f73471cfc48a943e2c290" title="complete le path " alt="" coords="120,107,229,133"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="fullpath_8c_a02e9398e99a0a3837bae3d6f2d2a0687_icgraph.jpg" border="0" usemap="#fullpath_8c_a02e9398e99a0a3837bae3d6f2d2a0687_icgraph" alt=""/></div>
+<map name="fullpath_8c_a02e9398e99a0a3837bae3d6f2d2a0687_icgraph" id="fullpath_8c_a02e9398e99a0a3837bae3d6f2d2a0687_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="120,5,171,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a971aa46d4b8a983073ebca2f29b47d7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a971aa46d4b8a983073ebca2f29b47d7e">&#9670;&nbsp;</a></span>nbOccurence()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int nbOccurence </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>s</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>c</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>compte le nombre d occurence d un caractere </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>La chaine à examiner </td></tr>
+    <tr><td class="paramname">c</td><td>Le caractère à compter</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>retourne le nombre d occurence d un caractere </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="fullpath_8c_a971aa46d4b8a983073ebca2f29b47d7e_icgraph.jpg" border="0" usemap="#fullpath_8c_a971aa46d4b8a983073ebca2f29b47d7e_icgraph" alt=""/></div>
+<map name="fullpath_8c_a971aa46d4b8a983073ebca2f29b47d7e_icgraph" id="fullpath_8c_a971aa46d4b8a983073ebca2f29b47d7e_icgraph">
+<area shape="rect" id="node2" href="fullpath_8c.html#a02e9398e99a0a3837bae3d6f2d2a0687" title="fonction principal que ce charge de faire l appel de chaque fonction " alt="" coords="152,5,219,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="267,5,317,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des variables</h2>
+<a id="a1ce6bb164d37e605aa60e94aefe73817"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ce6bb164d37e605aa60e94aefe73817">&#9670;&nbsp;</a></span>EXT_FILE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FILE* EXT_FILE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>

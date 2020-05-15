@@ -1,0 +1,10 @@
+<map id="evenement" name="evenement">
+<area shape="rect" id="node2" href="$flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="140,16,225,43"/>
+<area shape="rect" id="node7" href="$text_field_8c.html#ae24b08bc0eb4bbc3320b264568532505" title="Recuperer une chaine de caractere saisi au clavier. " alt="" coords="147,79,219,105"/>
+<area shape="rect" id="node3" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="273,9,380,36"/>
+<area shape="rect" id="node4" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="428,5,553,32"/>
+<area shape="rect" id="node5" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="465,56,516,83"/>
+<area shape="rect" id="node6" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="601,81,652,108"/>
+<area shape="rect" id="node8" href="$main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="286,104,367,131"/>
+<area shape="rect" id="node9" href="$main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="455,107,526,133"/>
+</map>

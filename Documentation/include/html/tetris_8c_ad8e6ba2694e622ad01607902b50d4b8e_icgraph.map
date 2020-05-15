@@ -1,0 +1,7 @@
+<map id="putAtNextPiece" name="putAtNextPiece">
+<area shape="rect" id="node2" href="$tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="168,5,219,32"/>
+<area shape="rect" id="node3" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="267,5,373,32"/>
+<area shape="rect" id="node4" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="421,5,547,32"/>
+<area shape="rect" id="node5" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="459,56,509,83"/>
+<area shape="rect" id="node6" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="595,56,645,83"/>
+</map>

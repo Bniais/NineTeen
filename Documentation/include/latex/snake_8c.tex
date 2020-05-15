@@ -1,0 +1,1273 @@
+\hypertarget{snake_8c}{}\section{Référence du fichier games/2\+\_\+snake/snake.c}
+\label{snake_8c}\index{games/2\+\_\+snake/snake.\+c@{games/2\+\_\+snake/snake.\+c}}
+
+
+Jeu snake avec bonus.  
+
+
+{\ttfamily \#include \char`\"{}../../include/define.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../include/hashage.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../include/lib\+Web.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../include/commun\+Functions.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}config.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+ttf.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+mixer.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+image.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+Graphe des dépendances par inclusion de snake.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{snake_8c_a3feffd5962865fbe7950d3bbe71ba771}{snake\+Init} ()
+\begin{DoxyCompactList}\small\item\em Initialise l\textquotesingle{}environement de snake. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_a75101518da20974c59b9d79e7f740e25}{init\+Fruit} (\hyperlink{struct_fruit}{Fruit} $\ast$$\ast$fruit)
+\begin{DoxyCompactList}\small\item\em Initialise le tableau dynamique de fruits. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_a4ec9d201bf0b449acfc67afdfaf10609}{init\+Bonus} (\hyperlink{struct_fruit}{Fruit} $\ast$bonus)
+\begin{DoxyCompactList}\small\item\em Initialise le bonus. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_a739086fd85b17cc39593a193118b0682}{turn\+Left} (double $\ast$angle)
+\begin{DoxyCompactList}\small\item\em Tourne le serpent vers la gauche. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_ae92e302f554e9e33c5a52e6251106a89}{turn\+Right} (double $\ast$angle)
+\begin{DoxyCompactList}\small\item\em Tourne le serpent vers la droite. \end{DoxyCompactList}\item 
+double \hyperlink{snake_8c_ae38231a62f58e817c8a5d5c0e65d81c7}{norme} (Vector2f v)
+\begin{DoxyCompactList}\small\item\em Calcule la norme d\textquotesingle{}un vecteur. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_a2fa90be2b2e8c929c669e9f1d6fe57f6}{init\+Body} (size\+\_\+t $\ast$size, \hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$\hyperlink{snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5}{snake})
+\begin{DoxyCompactList}\small\item\em Initialise le corps du serpent. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_a8daf9d3a8712f036f94adbef24b45e71}{init\+ToV} (Vector2f $\ast$v\+Tab, Vector2f v, int i\+Start, int i\+End)
+\begin{DoxyCompactList}\small\item\em Initialise une portion de tableau de vecteur. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_aa7aa21dd7d83b069bbcb2cffe3bf64d2}{shift\+Refresh} (Vector2f past\+Body\mbox{[}\hyperlink{2__snake_2config_8h_affb807bf09880ade28c8c9dc7b67b71b}{R\+E\+M\+I\+N\+D\+\_\+\+B\+O\+DY}\mbox{]}, int nb\+Decale)
+\begin{DoxyCompactList}\small\item\em Décale le tableau de positions anciennes du serpent pour en ajouter de nouvelles. \end{DoxyCompactList}\item 
+int \hyperlink{snake_8c_ad306e9c3cf09adcb1846c4f888957eec}{add\+Body} (\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$\hyperlink{snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5}{snake}, size\+\_\+t $\ast$size, Vector2f past\+Body\mbox{[}\hyperlink{2__snake_2config_8h_affb807bf09880ade28c8c9dc7b67b71b}{R\+E\+M\+I\+N\+D\+\_\+\+B\+O\+DY}\mbox{]}, float $\ast$radius\+Restant)
+\begin{DoxyCompactList}\small\item\em Ajoute des parties de corps au serpent. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_aad644da8ea3e101158c01657e4f38684}{shift\+Free\+Space} (Vector2f $\ast$past\+Body)
+\begin{DoxyCompactList}\small\item\em Décale le tableau de positions anciennes du serpent pour libérer de la place. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_a302fa1c00d3dfcf2e7deda97d2f86097}{shift\+Bomb} (Vector2f $\ast$past\+Body)
+\begin{DoxyCompactList}\small\item\em Décale le tableau de positions anciennes du serpent lors d\textquotesingle{}une explosion de bombe. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_a24e583790e5d49a5e6fa3d179ea4ae53}{rm\+Body} (\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$\hyperlink{snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5}{snake}, size\+\_\+t $\ast$size, int nb\+Rm, Vector2f $\ast$past\+Body, \hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$dead\+Bodies, size\+\_\+t $\ast$nb\+Dead\+Bodies, int deadly, int ratio\+Texture, int init\+Frame)
+\begin{DoxyCompactList}\small\item\em Suprimme des parties du serpent. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_a0e42dbadd8f1b2e7eea7f50643e21130}{draw\+Body} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$snake\+Texture, \hyperlink{struct_snake_part}{Snake\+Part} $\ast$\hyperlink{snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5}{snake}, size\+\_\+t size, int frame\+Unkillable)
+\begin{DoxyCompactList}\small\item\em Affiche le serpent. \end{DoxyCompactList}\item 
+int \hyperlink{snake_8c_a78044bb5fe3a0f72b7777dbe1f4e2d82}{hitbox\+Tail} (\hyperlink{struct_snake_part}{Snake\+Part} $\ast$\hyperlink{snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5}{snake}, size\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Détermine si la tête du serpent touche sa queue. \end{DoxyCompactList}\item 
+int \hyperlink{snake_8c_aa9234d8c6419bdecdd99e4e9596fdbde}{too\+Close\+From\+Head} (\hyperlink{struct_snake_part}{Snake\+Part} head, \hyperlink{struct_fruit}{Fruit} fruit)
+\begin{DoxyCompactList}\small\item\em Détermine si un fruit est trop proche de la tête pour pouvoir apparaître. \end{DoxyCompactList}\item 
+static int \hyperlink{snake_8c_a88e97e8f14fe02486dcdafa98c1c1da5}{too\+Close\+From\+Wall} (Vector2f point, int dist)
+\begin{DoxyCompactList}\small\item\em Détermine si un point est trop proche d\textquotesingle{}un mur par rapport à une distance donnée. \end{DoxyCompactList}\item 
+int \hyperlink{snake_8c_a5ab96fad579ff79a2df0bb06e86cb7d0}{too\+Close\+From\+Corner} (\hyperlink{struct_fruit}{Fruit} fruit)
+\begin{DoxyCompactList}\small\item\em Détermine si un fruit est trop proche d\textquotesingle{}un coin pour pouvoir apparaître. \end{DoxyCompactList}\item 
+int \hyperlink{snake_8c_a707860ff76b3c064c97abfb3aa3562d1}{too\+Close\+From\+Fruit} (\hyperlink{struct_fruit}{Fruit} $\ast$fruit\+Rang, int rang, \hyperlink{struct_fruit}{Fruit} $\ast$fruit\+Search, int nb\+Fruit\+Search)
+\begin{DoxyCompactList}\small\item\em Détermine si un fruit est trop d\textquotesingle{}un autre ou d\textquotesingle{}un bonus pour pouvoir apparaître. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_a25fd68046ffe688449023d7d4d75c95a}{spawn\+Fruit} (\hyperlink{struct_snake_part}{Snake\+Part} head, \hyperlink{struct_fruit}{Fruit} $\ast$fruit, int rang, int nb\+Fruits, float nb\+Fruit\+Eaten, \hyperlink{struct_fruit}{Fruit} $\ast$bonus, Vector2f spawn, int spawn\+Condition, int retard\+Frame, Mix\+\_\+\+Chunk $\ast$sound\+Appear, int hardcore)
+\begin{DoxyCompactList}\small\item\em Fait apparaître un fruit. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_a358f322aca8a33648ffc238cd821caca}{spawn\+Bonus} (\hyperlink{struct_snake_part}{Snake\+Part} head, \hyperlink{struct_fruit}{Fruit} $\ast$bonus, float nb\+Fruit\+Eaten, \hyperlink{struct_fruit}{Fruit} $\ast$fruit, int nb\+Fruits)
+\begin{DoxyCompactList}\small\item\em Fait apparaître un bonus. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_a1b081f3bfec305b13e9f0791605451c8}{reach\+Dest} (\hyperlink{struct_fruit}{Fruit} $\ast$fruit, size\+\_\+t nb\+Fruits)
+\begin{DoxyCompactList}\small\item\em Déplace les fruits lors de l\textquotesingle{}animation de coffre. \end{DoxyCompactList}\item 
+int \hyperlink{snake_8c_a7f4d06dd5298cf3c4dc09b54867c1b3f}{hitbox\+Fruit} (\hyperlink{struct_fruit}{Fruit} fruit, \hyperlink{struct_snake_part}{Snake\+Part} head)
+\begin{DoxyCompactList}\small\item\em Détermine si la tête du serpent est sur un fruit. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_a8abf206e978ebd4f4d9ac075d0a2e01c}{draw\+Fruit} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$fruit\+Texture, S\+D\+L\+\_\+\+Texture $\ast$spawn\+Texture, \hyperlink{struct_fruit}{Fruit} fruit, int hardcore)
+\begin{DoxyCompactList}\small\item\em Affiche un fruit. \end{DoxyCompactList}\item 
+static void \hyperlink{snake_8c_a40cfb6ec79f225241ad8047cda42c6ea}{draw\+Help\+Text} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$fleche\+Texture)
+\begin{DoxyCompactList}\small\item\em Affiche les commandes. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_a3ffbfa8da628fe1de8480152fa600f38}{draw\+Potions} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, int nb\+Potion, S\+D\+L\+\_\+\+Texture $\ast$fruit\+Texture, float ratio\+Window\+Size)
+\begin{DoxyCompactList}\small\item\em Affiche les potions possédés ou non. \end{DoxyCompactList}\item 
+static void \hyperlink{snake_8c_ab3596b36513da05776c4e30e6e4a2cde}{draw\+Jauge} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$basket\+Texture, float ratio\+Window\+Size, float jauge\+Value)
+\begin{DoxyCompactList}\small\item\em Affiche la jauge. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_abb567930c2685b3e7802f60895a70b62}{draw\+Dead\+Body} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$dead\+Body\+Texture, \hyperlink{struct_snake_part}{Snake\+Part} dead\+Body)
+\begin{DoxyCompactList}\small\item\em Affiche une animation de partie de serpent morte. \end{DoxyCompactList}\item 
+static void \hyperlink{snake_8c_a24a99c463dabaf629aacbc6581772e12}{draw\+Total\+Score} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, T\+T\+F\+\_\+\+Font $\ast$font, int score\+Show, float ratio\+Window\+Size)
+\begin{DoxyCompactList}\small\item\em Affiche une animation de partie de serpent morte. \end{DoxyCompactList}\item 
+void \hyperlink{snake_8c_ac19669d13e8261ca407db47f062b9518}{shift\+Radius} (\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$\hyperlink{snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5}{snake}, size\+\_\+t $\ast$size, Vector2f past\+Body\mbox{[}\hyperlink{2__snake_2config_8h_affb807bf09880ade28c8c9dc7b67b71b}{R\+E\+M\+I\+N\+D\+\_\+\+B\+O\+DY}\mbox{]}, float $\ast$radius\+Restant)
+\begin{DoxyCompactList}\small\item\em Décalle la taille des parties de serpents (digestion) \end{DoxyCompactList}\item 
+float \hyperlink{snake_8c_abf27e85aa2f853848d38330822cbf27b}{move\+Snake} (\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$\hyperlink{snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5}{snake}, Vector2f past\+Body\mbox{[}\hyperlink{2__snake_2config_8h_affb807bf09880ade28c8c9dc7b67b71b}{R\+E\+M\+I\+N\+D\+\_\+\+B\+O\+DY}\mbox{]}, size\+\_\+t $\ast$size, float speed, double dir, \hyperlink{struct_fruit}{Fruit} $\ast$fruit, size\+\_\+t nb\+Fruits, \hyperlink{struct_fruit}{Fruit} $\ast$bonus, float $\ast$radius\+Restant, int hardcore)
+\begin{DoxyCompactList}\small\item\em Décalle la taille des parties de serpents (digestion) \end{DoxyCompactList}\item 
+int \hyperlink{snake_8c_a01d32a4e465831ff02093a975fc19cfc}{score\+Size} (\hyperlink{struct_fruit}{Fruit} fruit)
+\begin{DoxyCompactList}\small\item\em Détermine la taille d\textquotesingle{}affichage du score d\textquotesingle{}un fruit. \end{DoxyCompactList}\item 
+int \hyperlink{snake_8c_a79a3ba2cf055230de7d78992630f3acc}{eat\+Fruit} (\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$\hyperlink{snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5}{snake}, size\+\_\+t $\ast$size, \hyperlink{struct_fruit}{Fruit} $\ast$$\ast$fruit\+Tab, size\+\_\+t $\ast$nb\+Fruits, \hyperlink{struct_fruit}{Fruit} fruit, float $\ast$speed, \hyperlink{struct_score_total}{Score\+Total} $\ast$score, float $\ast$nb\+Fruit\+Eaten, int $\ast$frame\+Jauge\+Anim, Vector2f $\ast$past\+Body, \hyperlink{struct_fruit}{Fruit} $\ast$bonus, \hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$dead\+Bodies, size\+\_\+t $\ast$nb\+Dead\+Bodies, int $\ast$nb\+Potion, float $\ast$poisoned, \hyperlink{struct_score}{Score} $\ast$$\ast$score\+Affichage, size\+\_\+t $\ast$nb\+Score\+Affichage, int $\ast$frame\+Acce, Mix\+\_\+\+Chunk $\ast$$\ast$sounds, long long $\ast$score\+\_\+hash, long keys\mbox{[}4\mbox{]}, int hardcore)
+\begin{DoxyCompactList}\small\item\em Mange un fruit. \end{DoxyCompactList}\item 
+static void \hyperlink{snake_8c_ad19affe43f9c0e08c2e359c5d56ed59c}{draw\+Score} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$score\+Texture, \hyperlink{struct_score}{Score} score\+Affichage)
+\begin{DoxyCompactList}\small\item\em Affiche un score de terrain. \end{DoxyCompactList}\item 
+static void \hyperlink{snake_8c_ae7a3606e921e095262b200e3b103ca87}{my\+Frees} (\hyperlink{struct_fruit}{Fruit} $\ast$$\ast$fruits, \hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$dead\+Bodies, \hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$snake\+Body, \hyperlink{struct_score}{Score} $\ast$$\ast$score\+Affichage, Mix\+\_\+\+Chunk $\ast$$\ast$sounds, S\+D\+L\+\_\+\+Texture $\ast$\hyperlink{room_8c_a158b90dfedb211efa4c317267c983dd2}{textures}\mbox{[}N\+B\+\_\+\+S\+N\+A\+K\+E\+\_\+\+T\+E\+X\+T\+U\+R\+ES\mbox{]}, T\+T\+F\+\_\+\+Font $\ast$fonts\mbox{[}\hyperlink{2__snake_2config_8h_a017842361bde423abc80e430f9777fe6}{N\+B\+\_\+\+S\+N\+A\+K\+E\+\_\+\+F\+O\+N\+TS}\mbox{]}, S\+D\+L\+\_\+\+Thread $\ast$$\ast$\hyperlink{main_8c_a584962a25015c7d6e18e294f55a8bc2d}{thread})
+\begin{DoxyCompactList}\small\item\em Affiche un score de terrain. \end{DoxyCompactList}\item 
+int \hyperlink{snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5}{snake} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, int highscore, int \hyperlink{room_8c_a7bc33449edbe70d0faa8d9b08ac317e7}{Win\+Width}, int \hyperlink{room_8c_a14d631ded45fe3c6396d41f0b31a8aba}{Win\+Height}, char $\ast$token, int hardcore, S\+D\+L\+\_\+\+Texture $\ast$$\ast$\hyperlink{room_8c_a158b90dfedb211efa4c317267c983dd2}{textures})
+\begin{DoxyCompactList}\small\item\em Affiche un score de terrain. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{snake_8c_a30862aa51c2944f287c4445751341ee8}{update\+Ended}
+\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+Jeu snake avec bonus. 
+
+\begin{DoxyAuthor}{Auteur}
+Hugo Lecomte 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+25/04/2020 
+\end{DoxyDate}
+
+
+\subsection{Documentation des fonctions}
+\mbox{\Hypertarget{snake_8c_ad306e9c3cf09adcb1846c4f888957eec}\label{snake_8c_ad306e9c3cf09adcb1846c4f888957eec}} 
+\index{snake.\+c@{snake.\+c}!add\+Body@{add\+Body}}
+\index{add\+Body@{add\+Body}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{add\+Body()}{addBody()}}
+{\footnotesize\ttfamily int add\+Body (\begin{DoxyParamCaption}\item[{\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$}]{snake,  }\item[{size\+\_\+t $\ast$}]{size,  }\item[{Vector2f}]{past\+Body\mbox{[}\+R\+E\+M\+I\+N\+D\+\_\+\+B\+O\+D\+Y\mbox{]},  }\item[{float $\ast$}]{radius\+Restant }\end{DoxyParamCaption})}
+
+
+
+Ajoute des parties de corps au serpent. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em snake} & Le tableau de parties de corps \\
+\hline
+{\em size} & La taille du serpent \\
+\hline
+{\em past\+Body} & Les positions anciennes du serpent \\
+\hline
+{\em radius\+Restant} & La taille excedante de la dernière partie de queue \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Le nombre de parties de corps ajoutées 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{snake_8c_ad306e9c3cf09adcb1846c4f888957eec_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_ad306e9c3cf09adcb1846c4f888957eec_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a0e42dbadd8f1b2e7eea7f50643e21130}\label{snake_8c_a0e42dbadd8f1b2e7eea7f50643e21130}} 
+\index{snake.\+c@{snake.\+c}!draw\+Body@{draw\+Body}}
+\index{draw\+Body@{draw\+Body}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{draw\+Body()}{drawBody()}}
+{\footnotesize\ttfamily void draw\+Body (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{snake\+Texture,  }\item[{\hyperlink{struct_snake_part}{Snake\+Part} $\ast$}]{snake,  }\item[{size\+\_\+t}]{size,  }\item[{int}]{frame\+Unkillable }\end{DoxyParamCaption})}
+
+
+
+Affiche le serpent. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em snake\+Texture} & La texture du serpent \\
+\hline
+{\em snake} & Le serpent \\
+\hline
+{\em size} & La taille du serpent \\
+\hline
+{\em frame\+Unkillable} & Le nombre de frame où le serpent est invulnérable \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a0e42dbadd8f1b2e7eea7f50643e21130_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_abb567930c2685b3e7802f60895a70b62}\label{snake_8c_abb567930c2685b3e7802f60895a70b62}} 
+\index{snake.\+c@{snake.\+c}!draw\+Dead\+Body@{draw\+Dead\+Body}}
+\index{draw\+Dead\+Body@{draw\+Dead\+Body}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{draw\+Dead\+Body()}{drawDeadBody()}}
+{\footnotesize\ttfamily void draw\+Dead\+Body (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{dead\+Body\+Texture,  }\item[{\hyperlink{struct_snake_part}{Snake\+Part}}]{dead\+Body }\end{DoxyParamCaption})}
+
+
+
+Affiche une animation de partie de serpent morte. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em dead\+Body\+Texture} & La texture d\textquotesingle{}animation de mort \\
+\hline
+{\em dead\+Body} & La partie morte à afficher \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_abb567930c2685b3e7802f60895a70b62_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a8abf206e978ebd4f4d9ac075d0a2e01c}\label{snake_8c_a8abf206e978ebd4f4d9ac075d0a2e01c}} 
+\index{snake.\+c@{snake.\+c}!draw\+Fruit@{draw\+Fruit}}
+\index{draw\+Fruit@{draw\+Fruit}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{draw\+Fruit()}{drawFruit()}}
+{\footnotesize\ttfamily void draw\+Fruit (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{fruit\+Texture,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{spawn\+Texture,  }\item[{\hyperlink{struct_fruit}{Fruit}}]{fruit,  }\item[{int}]{hardcore }\end{DoxyParamCaption})}
+
+
+
+Affiche un fruit. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em fruit\+Texture} & La texture de fruits \\
+\hline
+{\em spawn\+Texture} & La texture d\textquotesingle{}animation d\textquotesingle{}apparition \\
+\hline
+{\em fruit} & Le fruit à afficher \\
+\hline
+{\em hardcore} & La difficulté du jeu \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a8abf206e978ebd4f4d9ac075d0a2e01c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a40cfb6ec79f225241ad8047cda42c6ea}\label{snake_8c_a40cfb6ec79f225241ad8047cda42c6ea}} 
+\index{snake.\+c@{snake.\+c}!draw\+Help\+Text@{draw\+Help\+Text}}
+\index{draw\+Help\+Text@{draw\+Help\+Text}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{draw\+Help\+Text()}{drawHelpText()}}
+{\footnotesize\ttfamily static void draw\+Help\+Text (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{fleche\+Texture }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Affiche les commandes. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em fleche\+Texture} & La texture des flèches \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a40cfb6ec79f225241ad8047cda42c6ea_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_ab3596b36513da05776c4e30e6e4a2cde}\label{snake_8c_ab3596b36513da05776c4e30e6e4a2cde}} 
+\index{snake.\+c@{snake.\+c}!draw\+Jauge@{draw\+Jauge}}
+\index{draw\+Jauge@{draw\+Jauge}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{draw\+Jauge()}{drawJauge()}}
+{\footnotesize\ttfamily static void draw\+Jauge (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{basket\+Texture,  }\item[{float}]{ratio\+Window\+Size,  }\item[{float}]{jauge\+Value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Affiche la jauge. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em basket\+Texture} & La texture de la jauge \\
+\hline
+{\em ratio\+Window\+Size} & Le ratio taille\+Base/taille\+Actuelle \\
+\hline
+{\em jauge\+Value} & La valeur de la jauge \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_ab3596b36513da05776c4e30e6e4a2cde_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a3ffbfa8da628fe1de8480152fa600f38}\label{snake_8c_a3ffbfa8da628fe1de8480152fa600f38}} 
+\index{snake.\+c@{snake.\+c}!draw\+Potions@{draw\+Potions}}
+\index{draw\+Potions@{draw\+Potions}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{draw\+Potions()}{drawPotions()}}
+{\footnotesize\ttfamily void draw\+Potions (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{int}]{nb\+Potion,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{fruit\+Texture,  }\item[{float}]{ratio\+Window\+Size }\end{DoxyParamCaption})}
+
+
+
+Affiche les potions possédés ou non. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em nb\+Potion} & Le nombre de potions \\
+\hline
+{\em fruit\+Texture} & La texture des fruits \\
+\hline
+{\em ratio\+Window\+Size} & Le ratio taille\+Base/taille\+Actuelle \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a3ffbfa8da628fe1de8480152fa600f38_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_ad19affe43f9c0e08c2e359c5d56ed59c}\label{snake_8c_ad19affe43f9c0e08c2e359c5d56ed59c}} 
+\index{snake.\+c@{snake.\+c}!draw\+Score@{draw\+Score}}
+\index{draw\+Score@{draw\+Score}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{draw\+Score()}{drawScore()}}
+{\footnotesize\ttfamily static void draw\+Score (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{score\+Texture,  }\item[{\hyperlink{struct_score}{Score}}]{score\+Affichage }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Affiche un score de terrain. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em score\+Texture} & La texture de score \\
+\hline
+{\em score\+Affichage} & Le score à afficher \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=229pt]{snake_8c_ad19affe43f9c0e08c2e359c5d56ed59c_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_ad19affe43f9c0e08c2e359c5d56ed59c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a24a99c463dabaf629aacbc6581772e12}\label{snake_8c_a24a99c463dabaf629aacbc6581772e12}} 
+\index{snake.\+c@{snake.\+c}!draw\+Total\+Score@{draw\+Total\+Score}}
+\index{draw\+Total\+Score@{draw\+Total\+Score}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{draw\+Total\+Score()}{drawTotalScore()}}
+{\footnotesize\ttfamily static void draw\+Total\+Score (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font,  }\item[{int}]{score\+Show,  }\item[{float}]{ratio\+Window\+Size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Affiche une animation de partie de serpent morte. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em font} & La police d\textquotesingle{}écriture \\
+\hline
+{\em score\+Show} & Le score total à afficher \\
+\hline
+{\em ratio\+Window\+Size} & Le ratio taille\+Base/taille\+Actuelle \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a24a99c463dabaf629aacbc6581772e12_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a79a3ba2cf055230de7d78992630f3acc}\label{snake_8c_a79a3ba2cf055230de7d78992630f3acc}} 
+\index{snake.\+c@{snake.\+c}!eat\+Fruit@{eat\+Fruit}}
+\index{eat\+Fruit@{eat\+Fruit}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{eat\+Fruit()}{eatFruit()}}
+{\footnotesize\ttfamily int eat\+Fruit (\begin{DoxyParamCaption}\item[{\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$}]{snake,  }\item[{size\+\_\+t $\ast$}]{size,  }\item[{\hyperlink{struct_fruit}{Fruit} $\ast$$\ast$}]{fruit\+Tab,  }\item[{size\+\_\+t $\ast$}]{nb\+Fruits,  }\item[{\hyperlink{struct_fruit}{Fruit}}]{fruit,  }\item[{float $\ast$}]{speed,  }\item[{\hyperlink{struct_score_total}{Score\+Total} $\ast$}]{score,  }\item[{float $\ast$}]{nb\+Fruit\+Eaten,  }\item[{int $\ast$}]{frame\+Jauge\+Anim,  }\item[{Vector2f $\ast$}]{past\+Body,  }\item[{\hyperlink{struct_fruit}{Fruit} $\ast$}]{bonus,  }\item[{\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$}]{dead\+Bodies,  }\item[{size\+\_\+t $\ast$}]{nb\+Dead\+Bodies,  }\item[{int $\ast$}]{nb\+Potion,  }\item[{float $\ast$}]{poisoned,  }\item[{\hyperlink{struct_score}{Score} $\ast$$\ast$}]{score\+Affichage,  }\item[{size\+\_\+t $\ast$}]{nb\+Score\+Affichage,  }\item[{int $\ast$}]{frame\+Acce,  }\item[{Mix\+\_\+\+Chunk $\ast$$\ast$}]{sounds,  }\item[{long long $\ast$}]{score\+\_\+hash,  }\item[{long}]{keys\mbox{[}4\mbox{]},  }\item[{int}]{hardcore }\end{DoxyParamCaption})}
+
+
+
+Mange un fruit. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em snake} & Le serpent \\
+\hline
+{\em size} & La taille du serpent \\
+\hline
+{\em fruit\+Tab} & Les fruits \\
+\hline
+{\em nb\+Fruits} & Le nombre de fruits \\
+\hline
+{\em fruit} & Le fruit à manger \\
+\hline
+{\em speed} & La vitesse du serpent \\
+\hline
+{\em score} & Le score total \\
+\hline
+{\em nb\+Fruit\+Eaten} & Le nombre de fruits mangés \\
+\hline
+{\em frame\+Jauge\+Anim} & Le nombre de frame pour l\textquotesingle{}animation de jauge \\
+\hline
+{\em past\+Body} & Les anciennes positions du serpent \\
+\hline
+{\em bonus} & Le nonus \\
+\hline
+{\em dead\+Bodies} & Les animations de mort des parties du serpent \\
+\hline
+{\em nb\+Dead\+Bodies} & Le nombre d\textquotesingle{}animations de mort des parties du serpent \\
+\hline
+{\em nb\+Potion} & Le nombre de potions \\
+\hline
+{\em poisoned} & La quantité de poison ingéré \\
+\hline
+{\em score\+Affichage} & Les affichages de scores \\
+\hline
+{\em nb\+Score\+Affichage} & Le nombre d\textquotesingle{}affichage de scores \\
+\hline
+{\em frame\+Acce} & Le nombre de frame où l\textquotesingle{}accélération est forcée \\
+\hline
+{\em flap\+\_\+wav} & Le son de manger fruit \\
+\hline
+{\em score\+\_\+hash} & Le score hashé \\
+\hline
+{\em keys} & Les clés de hashage \\
+\hline
+{\em hardcore} & La difficulté du jeu \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Faux en cas de problème dans le hashage, sinon vrai 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a79a3ba2cf055230de7d78992630f3acc_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a79a3ba2cf055230de7d78992630f3acc_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a7f4d06dd5298cf3c4dc09b54867c1b3f}\label{snake_8c_a7f4d06dd5298cf3c4dc09b54867c1b3f}} 
+\index{snake.\+c@{snake.\+c}!hitbox\+Fruit@{hitbox\+Fruit}}
+\index{hitbox\+Fruit@{hitbox\+Fruit}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{hitbox\+Fruit()}{hitboxFruit()}}
+{\footnotesize\ttfamily int hitbox\+Fruit (\begin{DoxyParamCaption}\item[{\hyperlink{struct_fruit}{Fruit}}]{fruit,  }\item[{\hyperlink{struct_snake_part}{Snake\+Part}}]{head }\end{DoxyParamCaption})}
+
+
+
+Détermine si la tête du serpent est sur un fruit. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em fruit} & Le fruit à tester \\
+\hline
+{\em head} & La tête du serpent \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si collision, sinon faux 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=222pt]{snake_8c_a7f4d06dd5298cf3c4dc09b54867c1b3f_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a7f4d06dd5298cf3c4dc09b54867c1b3f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a78044bb5fe3a0f72b7777dbe1f4e2d82}\label{snake_8c_a78044bb5fe3a0f72b7777dbe1f4e2d82}} 
+\index{snake.\+c@{snake.\+c}!hitbox\+Tail@{hitbox\+Tail}}
+\index{hitbox\+Tail@{hitbox\+Tail}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{hitbox\+Tail()}{hitboxTail()}}
+{\footnotesize\ttfamily int hitbox\+Tail (\begin{DoxyParamCaption}\item[{\hyperlink{struct_snake_part}{Snake\+Part} $\ast$}]{snake,  }\item[{size\+\_\+t}]{size }\end{DoxyParamCaption})}
+
+
+
+Détermine si la tête du serpent touche sa queue. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em snake} & Le serpent \\
+\hline
+{\em size} & La taille du serpent \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si il touche sa queue, sinon faux 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=219pt]{snake_8c_a78044bb5fe3a0f72b7777dbe1f4e2d82_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a78044bb5fe3a0f72b7777dbe1f4e2d82_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a2fa90be2b2e8c929c669e9f1d6fe57f6}\label{snake_8c_a2fa90be2b2e8c929c669e9f1d6fe57f6}} 
+\index{snake.\+c@{snake.\+c}!init\+Body@{init\+Body}}
+\index{init\+Body@{init\+Body}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{init\+Body()}{initBody()}}
+{\footnotesize\ttfamily void init\+Body (\begin{DoxyParamCaption}\item[{size\+\_\+t $\ast$}]{size,  }\item[{\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$}]{snake }\end{DoxyParamCaption})}
+
+
+
+Initialise le corps du serpent. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em size} & La taille du serpent \\
+\hline
+{\em snake} & Le coprs du serpent (tableau de parties de corps) \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a2fa90be2b2e8c929c669e9f1d6fe57f6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a4ec9d201bf0b449acfc67afdfaf10609}\label{snake_8c_a4ec9d201bf0b449acfc67afdfaf10609}} 
+\index{snake.\+c@{snake.\+c}!init\+Bonus@{init\+Bonus}}
+\index{init\+Bonus@{init\+Bonus}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{init\+Bonus()}{initBonus()}}
+{\footnotesize\ttfamily void init\+Bonus (\begin{DoxyParamCaption}\item[{\hyperlink{struct_fruit}{Fruit} $\ast$}]{bonus }\end{DoxyParamCaption})}
+
+
+
+Initialise le bonus. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em bonus} & Le bonus à initialise \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a4ec9d201bf0b449acfc67afdfaf10609_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a75101518da20974c59b9d79e7f740e25}\label{snake_8c_a75101518da20974c59b9d79e7f740e25}} 
+\index{snake.\+c@{snake.\+c}!init\+Fruit@{init\+Fruit}}
+\index{init\+Fruit@{init\+Fruit}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{init\+Fruit()}{initFruit()}}
+{\footnotesize\ttfamily void init\+Fruit (\begin{DoxyParamCaption}\item[{\hyperlink{struct_fruit}{Fruit} $\ast$$\ast$}]{fruit }\end{DoxyParamCaption})}
+
+
+
+Initialise le tableau dynamique de fruits. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em fruit} & Le tableau dynamique de fruits \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a75101518da20974c59b9d79e7f740e25_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a8daf9d3a8712f036f94adbef24b45e71}\label{snake_8c_a8daf9d3a8712f036f94adbef24b45e71}} 
+\index{snake.\+c@{snake.\+c}!init\+ToV@{init\+ToV}}
+\index{init\+ToV@{init\+ToV}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{init\+To\+V()}{initToV()}}
+{\footnotesize\ttfamily void init\+ToV (\begin{DoxyParamCaption}\item[{Vector2f $\ast$}]{v\+Tab,  }\item[{Vector2f}]{v,  }\item[{int}]{i\+Start,  }\item[{int}]{i\+End }\end{DoxyParamCaption})}
+
+
+
+Initialise une portion de tableau de vecteur. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em v\+Tab} & Le tableau de vecteur \\
+\hline
+{\em v} & Le vecteur pour l\textquotesingle{}initialisation \\
+\hline
+{\em i\+Start} & Le premier indice du tableau à initialiser (inclus) \\
+\hline
+{\em i\+End} & Le dernier indice du tableau à initialiser (exclus) \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a8daf9d3a8712f036f94adbef24b45e71_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_abf27e85aa2f853848d38330822cbf27b}\label{snake_8c_abf27e85aa2f853848d38330822cbf27b}} 
+\index{snake.\+c@{snake.\+c}!move\+Snake@{move\+Snake}}
+\index{move\+Snake@{move\+Snake}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{move\+Snake()}{moveSnake()}}
+{\footnotesize\ttfamily float move\+Snake (\begin{DoxyParamCaption}\item[{\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$}]{snake,  }\item[{Vector2f}]{past\+Body\mbox{[}\+R\+E\+M\+I\+N\+D\+\_\+\+B\+O\+D\+Y\mbox{]},  }\item[{size\+\_\+t $\ast$}]{size,  }\item[{float}]{speed,  }\item[{double}]{dir,  }\item[{\hyperlink{struct_fruit}{Fruit} $\ast$}]{fruit,  }\item[{size\+\_\+t}]{nb\+Fruits,  }\item[{\hyperlink{struct_fruit}{Fruit} $\ast$}]{bonus,  }\item[{float $\ast$}]{radius\+Restant,  }\item[{int}]{hardcore }\end{DoxyParamCaption})}
+
+
+
+Décalle la taille des parties de serpents (digestion) 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em snake} & Le serpent \\
+\hline
+{\em past\+Body} & Les anciennes positions du serpent \\
+\hline
+{\em size} & La taille du serpent \\
+\hline
+{\em speed} & La vitesse du serpent \\
+\hline
+{\em dir} & La direction du serpent \\
+\hline
+{\em fruit} & Le tableau de fruits \\
+\hline
+{\em nb\+Fruits} & Le nombre de fruits \\
+\hline
+{\em bonus} & Le bonus \\
+\hline
+{\em radius\+Restant} & La taille de la dernière partie de la queue du serpent \\
+\hline
+{\em hardcore} & La difficulté du jeu \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+La distance qui n\textquotesingle{}a pas été parcourue 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_abf27e85aa2f853848d38330822cbf27b_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_abf27e85aa2f853848d38330822cbf27b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_ae7a3606e921e095262b200e3b103ca87}\label{snake_8c_ae7a3606e921e095262b200e3b103ca87}} 
+\index{snake.\+c@{snake.\+c}!my\+Frees@{my\+Frees}}
+\index{my\+Frees@{my\+Frees}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{my\+Frees()}{myFrees()}}
+{\footnotesize\ttfamily static void my\+Frees (\begin{DoxyParamCaption}\item[{\hyperlink{struct_fruit}{Fruit} $\ast$$\ast$}]{fruits,  }\item[{\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$}]{dead\+Bodies,  }\item[{\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$}]{snake\+Body,  }\item[{\hyperlink{struct_score}{Score} $\ast$$\ast$}]{score\+Affichage,  }\item[{Mix\+\_\+\+Chunk $\ast$$\ast$}]{sounds,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{textures\mbox{[}\+N\+B\+\_\+\+S\+N\+A\+K\+E\+\_\+\+T\+E\+X\+T\+U\+R\+E\+S\mbox{]},  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{fonts\mbox{[}\+N\+B\+\_\+\+S\+N\+A\+K\+E\+\_\+\+F\+O\+N\+T\+S\mbox{]},  }\item[{S\+D\+L\+\_\+\+Thread $\ast$$\ast$}]{thread }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Affiche un score de terrain. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em fruits} & Le tableau de fruits \\
+\hline
+{\em dead\+Bodies} & Le tableau de parties de serpent mortes \\
+\hline
+{\em snake\+Body} & Le tableau de parties de serpent \\
+\hline
+{\em score\+Affichage} & Le tableau de score à afficher \\
+\hline
+{\em sound} & Le tableau de sons \\
+\hline
+{\em textures} & Le tableau de textures \\
+\hline
+{\em fonts} & Le tableau de polices \\
+\hline
+{\em thread} & Le thread \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_ae7a3606e921e095262b200e3b103ca87_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_ae38231a62f58e817c8a5d5c0e65d81c7}\label{snake_8c_ae38231a62f58e817c8a5d5c0e65d81c7}} 
+\index{snake.\+c@{snake.\+c}!norme@{norme}}
+\index{norme@{norme}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{norme()}{norme()}}
+{\footnotesize\ttfamily double norme (\begin{DoxyParamCaption}\item[{Vector2f}]{v }\end{DoxyParamCaption})}
+
+
+
+Calcule la norme d\textquotesingle{}un vecteur. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em v} & Le vecteur \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+La norme de ce vecteur 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_ae38231a62f58e817c8a5d5c0e65d81c7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a1b081f3bfec305b13e9f0791605451c8}\label{snake_8c_a1b081f3bfec305b13e9f0791605451c8}} 
+\index{snake.\+c@{snake.\+c}!reach\+Dest@{reach\+Dest}}
+\index{reach\+Dest@{reach\+Dest}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{reach\+Dest()}{reachDest()}}
+{\footnotesize\ttfamily void reach\+Dest (\begin{DoxyParamCaption}\item[{\hyperlink{struct_fruit}{Fruit} $\ast$}]{fruit,  }\item[{size\+\_\+t}]{nb\+Fruits }\end{DoxyParamCaption})}
+
+
+
+Déplace les fruits lors de l\textquotesingle{}animation de coffre. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em fruit} & Le tableau de fruits \\
+\hline
+{\em nb\+Fruits} & Le nombre de fruits mangés (réduit par les fruits expirés) \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a1b081f3bfec305b13e9f0791605451c8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a24e583790e5d49a5e6fa3d179ea4ae53}\label{snake_8c_a24e583790e5d49a5e6fa3d179ea4ae53}} 
+\index{snake.\+c@{snake.\+c}!rm\+Body@{rm\+Body}}
+\index{rm\+Body@{rm\+Body}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{rm\+Body()}{rmBody()}}
+{\footnotesize\ttfamily void rm\+Body (\begin{DoxyParamCaption}\item[{\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$}]{snake,  }\item[{size\+\_\+t $\ast$}]{size,  }\item[{int}]{nb\+Rm,  }\item[{Vector2f $\ast$}]{past\+Body,  }\item[{\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$}]{dead\+Bodies,  }\item[{size\+\_\+t $\ast$}]{nb\+Dead\+Bodies,  }\item[{int}]{deadly,  }\item[{int}]{ratio\+Texture,  }\item[{int}]{init\+Frame }\end{DoxyParamCaption})}
+
+
+
+Suprimme des parties du serpent. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em snake} & Le serpent \\
+\hline
+{\em size} & La taille du serpent \\
+\hline
+{\em nb\+Rm} & Le nombre de parties à supprimer \\
+\hline
+{\em past\+Body} & Le tableau de positions anciennes \\
+\hline
+{\em dead\+Bodies} & Le tableau de parties de serpent détruites \\
+\hline
+{\em nb\+Dead\+Bodies} & Le nombre de parties de serpent détruites \\
+\hline
+{\em deadly} & Détermine si cette supression peut tuer le serpent \\
+\hline
+{\em ratio\+Texture} & Détermine tous les combien de parties supprimées il faut afficher l\textquotesingle{}animation \\
+\hline
+{\em init\+Frame} & Détermine combien de parties sont passées sans afficher d\textquotesingle{}animation de mort de partie de serpent (animation de mort) \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=249pt]{snake_8c_a24e583790e5d49a5e6fa3d179ea4ae53_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a24e583790e5d49a5e6fa3d179ea4ae53_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a01d32a4e465831ff02093a975fc19cfc}\label{snake_8c_a01d32a4e465831ff02093a975fc19cfc}} 
+\index{snake.\+c@{snake.\+c}!score\+Size@{score\+Size}}
+\index{score\+Size@{score\+Size}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{score\+Size()}{scoreSize()}}
+{\footnotesize\ttfamily int score\+Size (\begin{DoxyParamCaption}\item[{\hyperlink{struct_fruit}{Fruit}}]{fruit }\end{DoxyParamCaption})}
+
+
+
+Détermine la taille d\textquotesingle{}affichage du score d\textquotesingle{}un fruit. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em fruit} & Le fruit \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Sa taille d\textquotesingle{}affichage de score 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a01d32a4e465831ff02093a975fc19cfc_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a302fa1c00d3dfcf2e7deda97d2f86097}\label{snake_8c_a302fa1c00d3dfcf2e7deda97d2f86097}} 
+\index{snake.\+c@{snake.\+c}!shift\+Bomb@{shift\+Bomb}}
+\index{shift\+Bomb@{shift\+Bomb}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{shift\+Bomb()}{shiftBomb()}}
+{\footnotesize\ttfamily void shift\+Bomb (\begin{DoxyParamCaption}\item[{Vector2f $\ast$}]{past\+Body }\end{DoxyParamCaption})}
+
+
+
+Décale le tableau de positions anciennes du serpent lors d\textquotesingle{}une explosion de bombe. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em past\+Body} & Le tableau de positions anciennes \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a302fa1c00d3dfcf2e7deda97d2f86097_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_aad644da8ea3e101158c01657e4f38684}\label{snake_8c_aad644da8ea3e101158c01657e4f38684}} 
+\index{snake.\+c@{snake.\+c}!shift\+Free\+Space@{shift\+Free\+Space}}
+\index{shift\+Free\+Space@{shift\+Free\+Space}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{shift\+Free\+Space()}{shiftFreeSpace()}}
+{\footnotesize\ttfamily void shift\+Free\+Space (\begin{DoxyParamCaption}\item[{Vector2f $\ast$}]{past\+Body }\end{DoxyParamCaption})}
+
+
+
+Décale le tableau de positions anciennes du serpent pour libérer de la place. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em past\+Body} & Le tableau de positions anciennes \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_aad644da8ea3e101158c01657e4f38684_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_ac19669d13e8261ca407db47f062b9518}\label{snake_8c_ac19669d13e8261ca407db47f062b9518}} 
+\index{snake.\+c@{snake.\+c}!shift\+Radius@{shift\+Radius}}
+\index{shift\+Radius@{shift\+Radius}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{shift\+Radius()}{shiftRadius()}}
+{\footnotesize\ttfamily void shift\+Radius (\begin{DoxyParamCaption}\item[{\hyperlink{struct_snake_part}{Snake\+Part} $\ast$$\ast$}]{snake,  }\item[{size\+\_\+t $\ast$}]{size,  }\item[{Vector2f}]{past\+Body\mbox{[}\+R\+E\+M\+I\+N\+D\+\_\+\+B\+O\+D\+Y\mbox{]},  }\item[{float $\ast$}]{radius\+Restant }\end{DoxyParamCaption})}
+
+
+
+Décalle la taille des parties de serpents (digestion) 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em snake} & Le serpent \\
+\hline
+{\em size} & La taille du serpent \\
+\hline
+{\em past\+Body} & Les anciennes positions du serpent \\
+\hline
+{\em radius\+Restant} & La taille de la dernière partie de la queue du serpent \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_ac19669d13e8261ca407db47f062b9518_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_ac19669d13e8261ca407db47f062b9518_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_aa7aa21dd7d83b069bbcb2cffe3bf64d2}\label{snake_8c_aa7aa21dd7d83b069bbcb2cffe3bf64d2}} 
+\index{snake.\+c@{snake.\+c}!shift\+Refresh@{shift\+Refresh}}
+\index{shift\+Refresh@{shift\+Refresh}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{shift\+Refresh()}{shiftRefresh()}}
+{\footnotesize\ttfamily void shift\+Refresh (\begin{DoxyParamCaption}\item[{Vector2f}]{past\+Body\mbox{[}\+R\+E\+M\+I\+N\+D\+\_\+\+B\+O\+D\+Y\mbox{]},  }\item[{int}]{nb\+Decale }\end{DoxyParamCaption})}
+
+
+
+Décale le tableau de positions anciennes du serpent pour en ajouter de nouvelles. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em past\+Body} & Le tableau de positiones anciennes \\
+\hline
+{\em nb\+Decale} & La quantité de décalage \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{snake_8c_aa7aa21dd7d83b069bbcb2cffe3bf64d2_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_aa7aa21dd7d83b069bbcb2cffe3bf64d2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5}\label{snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5}} 
+\index{snake.\+c@{snake.\+c}!snake@{snake}}
+\index{snake@{snake}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{snake()}{snake()}}
+{\footnotesize\ttfamily int snake (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{int}]{highscore,  }\item[{int}]{Win\+Width,  }\item[{int}]{Win\+Height,  }\item[{char $\ast$}]{token,  }\item[{int}]{hardcore,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$$\ast$}]{textures }\end{DoxyParamCaption})}
+
+
+
+Affiche un score de terrain. 
+
+$<$ Changée dans le thread pour savoir s\textquotesingle{}il est finit $>$
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer \\
+\hline
+{\em highscore} & Le meilleur score personnel \\
+\hline
+{\em Win\+Width} & La largeur de la fenêtre \\
+\hline
+{\em Win\+Height} & La hauteur de la fenêtre \\
+\hline
+{\em token} & Le token pour l\textquotesingle{}envoi des scores \\
+\hline
+{\em hardcore} & Le difficulté du jeu \\
+\hline
+\end{DoxyParams}
+M\+I\+SE EN P\+L\+A\+CE ///``
+
+Vars ///`
+
+B\+O\+U\+C\+LE DU J\+EU ///``Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a3feffd5962865fbe7950d3bbe71ba771}\label{snake_8c_a3feffd5962865fbe7950d3bbe71ba771}} 
+\index{snake.\+c@{snake.\+c}!snake\+Init@{snake\+Init}}
+\index{snake\+Init@{snake\+Init}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{snake\+Init()}{snakeInit()}}
+{\footnotesize\ttfamily void snake\+Init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialise l\textquotesingle{}environement de snake. 
+
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a3feffd5962865fbe7950d3bbe71ba771_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a358f322aca8a33648ffc238cd821caca}\label{snake_8c_a358f322aca8a33648ffc238cd821caca}} 
+\index{snake.\+c@{snake.\+c}!spawn\+Bonus@{spawn\+Bonus}}
+\index{spawn\+Bonus@{spawn\+Bonus}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{spawn\+Bonus()}{spawnBonus()}}
+{\footnotesize\ttfamily void spawn\+Bonus (\begin{DoxyParamCaption}\item[{\hyperlink{struct_snake_part}{Snake\+Part}}]{head,  }\item[{\hyperlink{struct_fruit}{Fruit} $\ast$}]{bonus,  }\item[{float}]{nb\+Fruit\+Eaten,  }\item[{\hyperlink{struct_fruit}{Fruit} $\ast$}]{fruit,  }\item[{int}]{nb\+Fruits }\end{DoxyParamCaption})}
+
+
+
+Fait apparaître un bonus. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em head} & La tête du serpent \\
+\hline
+{\em bonus} & Le bonus \\
+\hline
+{\em nb\+Fruit\+Eaten} & Le nombre d\textquotesingle{}élément dans ce tableau \\
+\hline
+{\em fruit} & Le tableau de fruits \\
+\hline
+{\em nb\+Fruits} & Le nombre de fruits mangés (réduit par les fruits expirés) \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a358f322aca8a33648ffc238cd821caca_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a358f322aca8a33648ffc238cd821caca_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a25fd68046ffe688449023d7d4d75c95a}\label{snake_8c_a25fd68046ffe688449023d7d4d75c95a}} 
+\index{snake.\+c@{snake.\+c}!spawn\+Fruit@{spawn\+Fruit}}
+\index{spawn\+Fruit@{spawn\+Fruit}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{spawn\+Fruit()}{spawnFruit()}}
+{\footnotesize\ttfamily void spawn\+Fruit (\begin{DoxyParamCaption}\item[{\hyperlink{struct_snake_part}{Snake\+Part}}]{head,  }\item[{\hyperlink{struct_fruit}{Fruit} $\ast$}]{fruit,  }\item[{int}]{rang,  }\item[{int}]{nb\+Fruits,  }\item[{float}]{nb\+Fruit\+Eaten,  }\item[{\hyperlink{struct_fruit}{Fruit} $\ast$}]{bonus,  }\item[{Vector2f}]{spawn,  }\item[{int}]{spawn\+Condition,  }\item[{int}]{retard\+Frame,  }\item[{Mix\+\_\+\+Chunk $\ast$}]{sound\+Appear,  }\item[{int}]{hardcore }\end{DoxyParamCaption})}
+
+
+
+Fait apparaître un fruit. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em head} & La tête du serpent \\
+\hline
+{\em fruit} & Le tableau de fruit \\
+\hline
+{\em rang} & Le rang du fruit à faire apparaître \\
+\hline
+{\em nb\+Fruits} & Le nombre de fruits mangés (réduit par les fruits expirés) \\
+\hline
+{\em nb\+Fruit\+Eaten} & Le nombre d\textquotesingle{}élément dans ce tableau \\
+\hline
+{\em bonus} & Le bonus \\
+\hline
+{\em spawn} & La position d\textquotesingle{}apparition si elle n\textquotesingle{}est pas aléatoire \\
+\hline
+{\em spawn\+Condition} & La condition d\textquotesingle{}apparition ( naturelle, coffre...) \\
+\hline
+{\em retard\+Frame} & Le nombre de frame avant que l\textquotesingle{}apparition du fruit commence \\
+\hline
+{\em sound\+Appear} & Le son d\textquotesingle{}apparition des fruits \\
+\hline
+{\em hardcore} & Le mode de jeu \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a25fd68046ffe688449023d7d4d75c95a_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a25fd68046ffe688449023d7d4d75c95a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a5ab96fad579ff79a2df0bb06e86cb7d0}\label{snake_8c_a5ab96fad579ff79a2df0bb06e86cb7d0}} 
+\index{snake.\+c@{snake.\+c}!too\+Close\+From\+Corner@{too\+Close\+From\+Corner}}
+\index{too\+Close\+From\+Corner@{too\+Close\+From\+Corner}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{too\+Close\+From\+Corner()}{tooCloseFromCorner()}}
+{\footnotesize\ttfamily int too\+Close\+From\+Corner (\begin{DoxyParamCaption}\item[{\hyperlink{struct_fruit}{Fruit}}]{fruit }\end{DoxyParamCaption})}
+
+
+
+Détermine si un fruit est trop proche d\textquotesingle{}un coin pour pouvoir apparaître. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em fruit} & Un fruit \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si il est trop proche, sinon faux 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=267pt]{snake_8c_a5ab96fad579ff79a2df0bb06e86cb7d0_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a5ab96fad579ff79a2df0bb06e86cb7d0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a707860ff76b3c064c97abfb3aa3562d1}\label{snake_8c_a707860ff76b3c064c97abfb3aa3562d1}} 
+\index{snake.\+c@{snake.\+c}!too\+Close\+From\+Fruit@{too\+Close\+From\+Fruit}}
+\index{too\+Close\+From\+Fruit@{too\+Close\+From\+Fruit}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{too\+Close\+From\+Fruit()}{tooCloseFromFruit()}}
+{\footnotesize\ttfamily int too\+Close\+From\+Fruit (\begin{DoxyParamCaption}\item[{\hyperlink{struct_fruit}{Fruit} $\ast$}]{fruit\+Rang,  }\item[{int}]{rang,  }\item[{\hyperlink{struct_fruit}{Fruit} $\ast$}]{fruit\+Search,  }\item[{int}]{nb\+Fruit\+Search }\end{DoxyParamCaption})}
+
+
+
+Détermine si un fruit est trop d\textquotesingle{}un autre ou d\textquotesingle{}un bonus pour pouvoir apparaître. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em fruit\+Rang} & Le tableau de fruit \\
+\hline
+{\em rang} & Le rang du fruit \\
+\hline
+{\em fruit\+Search} & Le tableau de fruit/bonus où vérifier la proximité \\
+\hline
+{\em nb\+Fruit\+Search} & Le nombre d\textquotesingle{}élément dans ce tableau \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si il est trop proche, sinon faux 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=258pt]{snake_8c_a707860ff76b3c064c97abfb3aa3562d1_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a707860ff76b3c064c97abfb3aa3562d1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_aa9234d8c6419bdecdd99e4e9596fdbde}\label{snake_8c_aa9234d8c6419bdecdd99e4e9596fdbde}} 
+\index{snake.\+c@{snake.\+c}!too\+Close\+From\+Head@{too\+Close\+From\+Head}}
+\index{too\+Close\+From\+Head@{too\+Close\+From\+Head}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{too\+Close\+From\+Head()}{tooCloseFromHead()}}
+{\footnotesize\ttfamily int too\+Close\+From\+Head (\begin{DoxyParamCaption}\item[{\hyperlink{struct_snake_part}{Snake\+Part}}]{head,  }\item[{\hyperlink{struct_fruit}{Fruit}}]{fruit }\end{DoxyParamCaption})}
+
+
+
+Détermine si un fruit est trop proche de la tête pour pouvoir apparaître. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em head} & La tête du serpent \\
+\hline
+{\em fruit} & Un fruit \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si il est trop proche, sinon faux 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{snake_8c_aa9234d8c6419bdecdd99e4e9596fdbde_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_aa9234d8c6419bdecdd99e4e9596fdbde_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a88e97e8f14fe02486dcdafa98c1c1da5}\label{snake_8c_a88e97e8f14fe02486dcdafa98c1c1da5}} 
+\index{snake.\+c@{snake.\+c}!too\+Close\+From\+Wall@{too\+Close\+From\+Wall}}
+\index{too\+Close\+From\+Wall@{too\+Close\+From\+Wall}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{too\+Close\+From\+Wall()}{tooCloseFromWall()}}
+{\footnotesize\ttfamily static int too\+Close\+From\+Wall (\begin{DoxyParamCaption}\item[{Vector2f}]{fruit,  }\item[{int}]{dist }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Détermine si un point est trop proche d\textquotesingle{}un mur par rapport à une distance donnée. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em point} & Un point \\
+\hline
+{\em dist} & La distance maximale autorisée \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si il est trop proche, sinon faux 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a88e97e8f14fe02486dcdafa98c1c1da5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_a739086fd85b17cc39593a193118b0682}\label{snake_8c_a739086fd85b17cc39593a193118b0682}} 
+\index{snake.\+c@{snake.\+c}!turn\+Left@{turn\+Left}}
+\index{turn\+Left@{turn\+Left}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{turn\+Left()}{turnLeft()}}
+{\footnotesize\ttfamily void turn\+Left (\begin{DoxyParamCaption}\item[{double $\ast$}]{angle }\end{DoxyParamCaption})}
+
+
+
+Tourne le serpent vers la gauche. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em angle} & La direction du serpent \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_a739086fd85b17cc39593a193118b0682_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{snake_8c_ae92e302f554e9e33c5a52e6251106a89}\label{snake_8c_ae92e302f554e9e33c5a52e6251106a89}} 
+\index{snake.\+c@{snake.\+c}!turn\+Right@{turn\+Right}}
+\index{turn\+Right@{turn\+Right}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{turn\+Right()}{turnRight()}}
+{\footnotesize\ttfamily void turn\+Right (\begin{DoxyParamCaption}\item[{double $\ast$}]{angle }\end{DoxyParamCaption})}
+
+
+
+Tourne le serpent vers la droite. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em angle} & La direction du serpent \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{snake_8c_ae92e302f554e9e33c5a52e6251106a89_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Documentation des variables}
+\mbox{\Hypertarget{snake_8c_a30862aa51c2944f287c4445751341ee8}\label{snake_8c_a30862aa51c2944f287c4445751341ee8}} 
+\index{snake.\+c@{snake.\+c}!update\+Ended@{update\+Ended}}
+\index{update\+Ended@{update\+Ended}!snake.\+c@{snake.\+c}}
+\subsubsection{\texorpdfstring{update\+Ended}{updateEnded}}
+{\footnotesize\ttfamily int update\+Ended}
+

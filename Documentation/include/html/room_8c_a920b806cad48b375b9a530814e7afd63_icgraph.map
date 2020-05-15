@@ -1,0 +1,7 @@
+<map id="reglageVolume" name="reglageVolume">
+<area shape="rect" id="node2" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="361,37,487,64"/>
+<area shape="rect" id="node4" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="689,37,740,64"/>
+<area shape="rect" id="node6" href="$room_8c.html#a22b155abc1008cd51da9718d8dff813e" title="permet de gerer les evenements liee au porte des toilettes " alt="" coords="161,88,313,115"/>
+<area shape="rect" id="node3" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="535,37,641,64"/>
+<area shape="rect" id="node5" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="788,37,839,64"/>
+</map>

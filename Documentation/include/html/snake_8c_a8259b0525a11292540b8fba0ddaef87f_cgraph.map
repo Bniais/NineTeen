@@ -1,0 +1,12 @@
+<map id="eat_fruit" name="eat_fruit">
+<area shape="rect" id="node2" href="$snake_8c.html#a01d32a4e465831ff02093a975fc19cfc" title="scoreSize" alt="" coords="126,5,206,32"/>
+<area shape="rect" id="node3" href="$snake_8c.html#ac030d8f271704f0537b458e3d6b500cb" title="rm_body" alt="" coords="130,56,202,83"/>
+<area shape="rect" id="node6" href="$snake_8c.html#aa18e911b4be3a77b0127c5d82a1e64b0" title="spawnFruit" alt="" coords="123,208,209,235"/>
+<area shape="rect" id="node8" href="$snake_8c.html#ae38231a62f58e817c8a5d5c0e65d81c7" title="norme" alt="" coords="529,183,588,209"/>
+<area shape="rect" id="node10" href="$tetris_8c.html#ab1f20fd2b247412fbface8ef523015d9" title="Détermine si une pièce dépasse des bords de la grille. " alt="" coords="493,309,624,336"/>
+<area shape="rect" id="node4" href="$snake_8c.html#a764bae72ba9baa4cd7a557452ff01fab" title="decale_pastBody_Bomb" alt="" coords="270,5,433,32"/>
+<area shape="rect" id="node5" href="$snake_8c.html#a4ef957563bc327dedd6726cedc910ccc" title="decale_pastBody_freeSpace" alt="" coords="257,56,445,83"/>
+<area shape="rect" id="node7" href="$snake_8c.html#a707860ff76b3c064c97abfb3aa3562d1" title="tooCloseFromFruit" alt="" coords="286,208,417,235"/>
+<area shape="rect" id="node9" href="$snake_8c.html#aa9234d8c6419bdecdd99e4e9596fdbde" title="tooCloseFromHead" alt="" coords="284,259,419,285"/>
+<area shape="rect" id="node11" href="$snake_8c.html#a5ab96fad579ff79a2df0bb06e86cb7d0" title="tooCloseFromCorner" alt="" coords="280,157,423,184"/>
+</map>

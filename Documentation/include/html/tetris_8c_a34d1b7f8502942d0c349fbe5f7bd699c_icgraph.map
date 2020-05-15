@@ -1,0 +1,5 @@
+<map id="drawQuit" name="drawQuit">
+<area shape="rect" id="node2" href="$snake_8c.html#a99af732d269592331ad517eb5500a539" title="afficherPotions" alt="" coords="128,5,237,32"/>
+<area shape="rect" id="node3" href="$snake_8c.html#a0d195fc2e338a489acaa254db3a2d44e" title="snake" alt="" coords="285,31,343,57"/>
+<area shape="rect" id="node4" href="$tetris_8c.html#a68af011964beebd260253db3c077d170" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="157,107,208,133"/>
+</map>

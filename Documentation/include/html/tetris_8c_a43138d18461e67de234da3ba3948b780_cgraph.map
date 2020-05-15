@@ -1,0 +1,4 @@
+<map id="completeLine" name="completeLine">
+<area shape="rect" id="node2" href="$tetris_8c.html#ad3ffc7b35e2959c53ab338f9d12a529a" title="Obtient l&#39;id d&#39;une case de la matrice. " alt="" coords="154,5,238,32"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#a602b2d26911345f5f9fc9c618332376d" title="Détermine l&#39;id du bonus d&#39;une case de la grille. " alt="" coords="152,56,240,83"/>
+</map>

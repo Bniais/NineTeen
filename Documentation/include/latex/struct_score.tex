@@ -1,0 +1,183 @@
+\hypertarget{struct_score}{}\section{Référence de la structure Score}
+\label{struct_score}\index{Score@{Score}}
+
+
+Contient des informations sur les affichages de scores individuels.  
+
+
+
+
+{\ttfamily \#include $<$config.\+h$>$}
+
+\subsection*{Champs de données}
+\begin{DoxyCompactItemize}
+\item 
+float \hyperlink{struct_score_a950587a996128c5cf8899382bb811448}{x}
+\begin{DoxyCompactList}\small\item\em Position en x. \end{DoxyCompactList}\item 
+float \hyperlink{struct_score_a6e160578d4db594b629b9b01c6e041b8}{y}
+\begin{DoxyCompactList}\small\item\em Position en y. \end{DoxyCompactList}\item 
+int \hyperlink{struct_score_a331b0927105c83ba760954eff6cf9fe9}{score}
+\begin{DoxyCompactList}\small\item\em Valeur du score. \end{DoxyCompactList}\item 
+int \hyperlink{struct_score_a4203bd2c8f75b527367569fad5af22e8}{frame}
+\begin{DoxyCompactList}\small\item\em Frame de l\textquotesingle{}animation. \end{DoxyCompactList}\item 
+int \hyperlink{struct_score_aeb05476bfb3d5448f117479a0d5c1bf9}{size}
+\begin{DoxyCompactList}\small\item\em Taille d\textquotesingle{}affichage. \end{DoxyCompactList}\item 
+int \hyperlink{struct_score_a38bc0a53e2cd2f80b8db25ec7ba1c452}{from\+Time\+Out}
+\begin{DoxyCompactList}\small\item\em Détermine si le score est obtenu avec l\textquotesingle{}expiration d\textquotesingle{}un fruit. \end{DoxyCompactList}\item 
+int \hyperlink{struct_score_abe66f83d6c5bc7b3f0696b964e634f13}{frame\+Combo}
+\begin{DoxyCompactList}\small\item\em La frame d\textquotesingle{}animation d\textquotesingle{}affichage du combo. \end{DoxyCompactList}\item 
+int \hyperlink{struct_score_ae91e6e17b08d8e57fa76ef5d876d3159}{score\+Dest}
+\begin{DoxyCompactList}\small\item\em Le score total visé \end{DoxyCompactList}\item 
+int \hyperlink{struct_score_ae22d389a99bf914464ec06fbda7ccf0d}{combo}
+\begin{DoxyCompactList}\small\item\em Le coefficient de combo basique (plusieurs lignes en même temps) \end{DoxyCompactList}\item 
+int \hyperlink{struct_score_a66bc112fd9a6ba0826960e9d5bf3913b}{flat}
+\begin{DoxyCompactList}\small\item\em Le nombre affiché de points ajoutés par le bonus flat (tend vers flat\+Dest) \end{DoxyCompactList}\item 
+int \hyperlink{struct_score_acf6a92022c51593eea83f33aced7f0a9}{flat\+Dest}
+\begin{DoxyCompactList}\small\item\em Le nombre de points total ajoutés par le bonus flat. \end{DoxyCompactList}\item 
+int \hyperlink{struct_score_af57d7784cef50f04c462c81b01d20c41}{multi}
+\begin{DoxyCompactList}\small\item\em Le coefficient du bonus multi. \end{DoxyCompactList}\item 
+int \hyperlink{struct_score_a91ef7ce4e1bd708788a6b42cccdc298a}{same\+Color}
+\begin{DoxyCompactList}\small\item\em La couleur de la ligne, vaut -\/1 si ligne de différentes couleurs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+Contient des informations sur les affichages de scores individuels. 
+
+Contient des informations sur les scores et combos des lignes. 
+
+\subsection{Documentation des champs}
+\mbox{\Hypertarget{struct_score_ae22d389a99bf914464ec06fbda7ccf0d}\label{struct_score_ae22d389a99bf914464ec06fbda7ccf0d}} 
+\index{Score@{Score}!combo@{combo}}
+\index{combo@{combo}!Score@{Score}}
+\subsubsection{\texorpdfstring{combo}{combo}}
+{\footnotesize\ttfamily int Score\+::combo}
+
+
+
+Le coefficient de combo basique (plusieurs lignes en même temps) 
+
+\mbox{\Hypertarget{struct_score_a66bc112fd9a6ba0826960e9d5bf3913b}\label{struct_score_a66bc112fd9a6ba0826960e9d5bf3913b}} 
+\index{Score@{Score}!flat@{flat}}
+\index{flat@{flat}!Score@{Score}}
+\subsubsection{\texorpdfstring{flat}{flat}}
+{\footnotesize\ttfamily int Score\+::flat}
+
+
+
+Le nombre affiché de points ajoutés par le bonus flat (tend vers flat\+Dest) 
+
+\mbox{\Hypertarget{struct_score_acf6a92022c51593eea83f33aced7f0a9}\label{struct_score_acf6a92022c51593eea83f33aced7f0a9}} 
+\index{Score@{Score}!flat\+Dest@{flat\+Dest}}
+\index{flat\+Dest@{flat\+Dest}!Score@{Score}}
+\subsubsection{\texorpdfstring{flat\+Dest}{flatDest}}
+{\footnotesize\ttfamily int Score\+::flat\+Dest}
+
+
+
+Le nombre de points total ajoutés par le bonus flat. 
+
+\mbox{\Hypertarget{struct_score_a4203bd2c8f75b527367569fad5af22e8}\label{struct_score_a4203bd2c8f75b527367569fad5af22e8}} 
+\index{Score@{Score}!frame@{frame}}
+\index{frame@{frame}!Score@{Score}}
+\subsubsection{\texorpdfstring{frame}{frame}}
+{\footnotesize\ttfamily int Score\+::frame}
+
+
+
+Frame de l\textquotesingle{}animation. 
+
+La frame d\textquotesingle{}animation d\textquotesingle{}affichage du score. \mbox{\Hypertarget{struct_score_abe66f83d6c5bc7b3f0696b964e634f13}\label{struct_score_abe66f83d6c5bc7b3f0696b964e634f13}} 
+\index{Score@{Score}!frame\+Combo@{frame\+Combo}}
+\index{frame\+Combo@{frame\+Combo}!Score@{Score}}
+\subsubsection{\texorpdfstring{frame\+Combo}{frameCombo}}
+{\footnotesize\ttfamily int Score\+::frame\+Combo}
+
+
+
+La frame d\textquotesingle{}animation d\textquotesingle{}affichage du combo. 
+
+\mbox{\Hypertarget{struct_score_a38bc0a53e2cd2f80b8db25ec7ba1c452}\label{struct_score_a38bc0a53e2cd2f80b8db25ec7ba1c452}} 
+\index{Score@{Score}!from\+Time\+Out@{from\+Time\+Out}}
+\index{from\+Time\+Out@{from\+Time\+Out}!Score@{Score}}
+\subsubsection{\texorpdfstring{from\+Time\+Out}{fromTimeOut}}
+{\footnotesize\ttfamily int Score\+::from\+Time\+Out}
+
+
+
+Détermine si le score est obtenu avec l\textquotesingle{}expiration d\textquotesingle{}un fruit. 
+
+\mbox{\Hypertarget{struct_score_af57d7784cef50f04c462c81b01d20c41}\label{struct_score_af57d7784cef50f04c462c81b01d20c41}} 
+\index{Score@{Score}!multi@{multi}}
+\index{multi@{multi}!Score@{Score}}
+\subsubsection{\texorpdfstring{multi}{multi}}
+{\footnotesize\ttfamily int Score\+::multi}
+
+
+
+Le coefficient du bonus multi. 
+
+\mbox{\Hypertarget{struct_score_a91ef7ce4e1bd708788a6b42cccdc298a}\label{struct_score_a91ef7ce4e1bd708788a6b42cccdc298a}} 
+\index{Score@{Score}!same\+Color@{same\+Color}}
+\index{same\+Color@{same\+Color}!Score@{Score}}
+\subsubsection{\texorpdfstring{same\+Color}{sameColor}}
+{\footnotesize\ttfamily int Score\+::same\+Color}
+
+
+
+La couleur de la ligne, vaut -\/1 si ligne de différentes couleurs. 
+
+\mbox{\Hypertarget{struct_score_a331b0927105c83ba760954eff6cf9fe9}\label{struct_score_a331b0927105c83ba760954eff6cf9fe9}} 
+\index{Score@{Score}!score@{score}}
+\index{score@{score}!Score@{Score}}
+\subsubsection{\texorpdfstring{score}{score}}
+{\footnotesize\ttfamily int Score\+::score}
+
+
+
+Valeur du score. 
+
+Le score affiché (tend vers score\+Dest) \mbox{\Hypertarget{struct_score_ae91e6e17b08d8e57fa76ef5d876d3159}\label{struct_score_ae91e6e17b08d8e57fa76ef5d876d3159}} 
+\index{Score@{Score}!score\+Dest@{score\+Dest}}
+\index{score\+Dest@{score\+Dest}!Score@{Score}}
+\subsubsection{\texorpdfstring{score\+Dest}{scoreDest}}
+{\footnotesize\ttfamily int Score\+::score\+Dest}
+
+
+
+Le score total visé 
+
+\mbox{\Hypertarget{struct_score_aeb05476bfb3d5448f117479a0d5c1bf9}\label{struct_score_aeb05476bfb3d5448f117479a0d5c1bf9}} 
+\index{Score@{Score}!size@{size}}
+\index{size@{size}!Score@{Score}}
+\subsubsection{\texorpdfstring{size}{size}}
+{\footnotesize\ttfamily int Score\+::size}
+
+
+
+Taille d\textquotesingle{}affichage. 
+
+\mbox{\Hypertarget{struct_score_a950587a996128c5cf8899382bb811448}\label{struct_score_a950587a996128c5cf8899382bb811448}} 
+\index{Score@{Score}!x@{x}}
+\index{x@{x}!Score@{Score}}
+\subsubsection{\texorpdfstring{x}{x}}
+{\footnotesize\ttfamily float Score\+::x}
+
+
+
+Position en x. 
+
+\mbox{\Hypertarget{struct_score_a6e160578d4db594b629b9b01c6e041b8}\label{struct_score_a6e160578d4db594b629b9b01c6e041b8}} 
+\index{Score@{Score}!y@{y}}
+\index{y@{y}!Score@{Score}}
+\subsubsection{\texorpdfstring{y}{y}}
+{\footnotesize\ttfamily float Score\+::y}
+
+
+
+Position en y. 
+
+
+
+La documentation de cette structure a été générée à partir du fichier suivant \+:\begin{DoxyCompactItemize}
+\item 
+games/2\+\_\+snake/\hyperlink{2__snake_2config_8h}{config.\+h}\end{DoxyCompactItemize}

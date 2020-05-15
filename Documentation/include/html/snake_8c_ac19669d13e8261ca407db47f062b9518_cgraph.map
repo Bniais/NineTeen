@@ -1,0 +1,5 @@
+<map id="shiftRadius" name="shiftRadius">
+<area shape="rect" id="node2" href="$snake_8c.html#ad306e9c3cf09adcb1846c4f888957eec" title="Ajoute des parties de corps au serpent. " alt="" coords="141,5,215,32"/>
+<area shape="rect" id="node3" href="$snake_8c.html#aa7aa21dd7d83b069bbcb2cffe3bf64d2" title="Décale le tableau de positions anciennes du serpent pour en ajouter de nouvelles. ..." alt="" coords="263,5,356,32"/>
+<area shape="rect" id="node4" href="$snake_8c.html#a8daf9d3a8712f036f94adbef24b45e71" title="Initialise une portion de tableau de vecteur. " alt="" coords="404,5,467,32"/>
+</map>

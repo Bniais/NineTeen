@@ -1,0 +1,5 @@
+<map id="spawn_asteroid" name="spawn_asteroid">
+<area shape="rect" id="node2" href="$asteroid_8c.html#aad2eabec61848c202dd8cf2a800d3398" title="randSign" alt="" coords="168,5,241,32"/>
+<area shape="rect" id="node3" href="$asteroid_8c.html#af6864d59a772bb90984692866080e0f4" title="trop_pres" alt="" coords="167,56,243,83"/>
+<area shape="rect" id="node4" href="$asteroid_8c.html#a9138b5f165178cf613ff96f2307a0fec" title="dist_2f" alt="" coords="291,56,352,83"/>
+</map>

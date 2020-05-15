@@ -1,0 +1,8 @@
+<map id="mouvement_tir" name="mouvement_tir">
+<area shape="rect" id="node2" href="$commun_functions_8c.html#aad2eabec61848c202dd8cf2a800d3398" title="renvoie un signe aléatoire : soit 1 ou &#45;1 " alt="" coords="197,5,271,32"/>
+<area shape="rect" id="node3" href="$asteroid_8c.html#a854c8ef061e5631af14c0005eb37eb67" title="cherche l&#39;asteroid le plus proche " alt="" coords="161,56,307,83"/>
+<area shape="rect" id="node7" href="$asteroid_8c.html#a40b9be6b54a4d2f3963a4f6dee4214e2" title="Détermine le signe d&#39;un float. " alt="" coords="204,107,264,133"/>
+<area shape="rect" id="node4" href="$asteroid_8c.html#a9e184f3776d22bb0073ae0809903b4f3" title="converti un angle en base Pi " alt="" coords="376,5,439,32"/>
+<area shape="rect" id="node5" href="$asteroid_8c.html#abd7ff0453e88ebfbe0e59ae81332e9b8" title="calcul de l&#39;angle " alt="" coords="355,56,460,83"/>
+<area shape="rect" id="node6" href="$asteroid_8c.html#a9138b5f165178cf613ff96f2307a0fec" title="calcul la distance entre deux points " alt="" coords="377,107,438,133"/>
+</map>

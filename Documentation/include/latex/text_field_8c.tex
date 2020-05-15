@@ -1,0 +1,190 @@
+\hypertarget{text_field_8c}{}\section{Référence du fichier include/text\+Field.c}
+\label{text_field_8c}\index{include/text\+Field.\+c@{include/text\+Field.\+c}}
+
+
+Permet l\textquotesingle{}interaction avec une zone de saisi.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+ttf.\+h$>$}\newline
+Graphe des dépendances par inclusion de text\+Field.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{text_field_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{text_field_8c_a0592dba56693fad79136250c11e5a7fe}{M\+A\+X\+\_\+\+S\+I\+ZE}~22
+\item 
+\#define \hyperlink{text_field_8c_a6ce282b7d7ce2928dba90bb2c9ca92f4}{T\+F\+\_\+\+M\+O\+U\+S\+E\+\_\+\+O\+U\+T\+\_\+\+C\+L\+I\+CK}~10
+\item 
+\#define \hyperlink{text_field_8c_a2c8bb121cba5f013705b28dafca8639d}{T\+F\+\_\+\+R\+E\+T\+U\+RN}~11
+\item 
+\#define \hyperlink{text_field_8c_a6d18d72c60ffa2018570c33773fa397a}{T\+F\+\_\+\+M\+A\+X\+\_\+\+S\+I\+ZE}~12
+\item 
+\#define \hyperlink{text_field_8c_aeec6a503973a3b980c97cb8ac88b1c26}{T\+F\+\_\+\+T\+E\+X\+T\+\_\+\+T\+Y\+P\+ED}~13
+\item 
+\#define \hyperlink{text_field_8c_a39a56932a3ef62c2db45eb98fe7d7acf}{T\+F\+\_\+\+T\+AB}~14
+\item 
+\#define \hyperlink{text_field_8c_aa1bed4b914fce1f2dea9364eae9537e9}{T\+F\+\_\+\+Q\+U\+IT}~15
+\end{DoxyCompactItemize}
+\subsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{text_field_8c_ad0d72e48f0b4f55ed5077899e75da497}{rendu\+Text\+Field} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, char $\ast$chaine, T\+T\+F\+\_\+\+Font $\ast$font, S\+D\+L\+\_\+\+Color color, S\+D\+L\+\_\+\+Rect cible)
+\begin{DoxyCompactList}\small\item\em sous fonction de \hyperlink{text_field_8c_ae24b08bc0eb4bbc3320b264568532505}{text\+Field()} \end{DoxyCompactList}\item 
+int \hyperlink{text_field_8c_ae24b08bc0eb4bbc3320b264568532505}{text\+Field} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, T\+T\+F\+\_\+\+Font $\ast$police, S\+D\+L\+\_\+\+Color color, char $\ast$chaine, int start\+Where, S\+D\+L\+\_\+\+Rect $\ast$cible, S\+D\+L\+\_\+\+Point $\ast$mouse, int $\ast$press\+Maj)
+\begin{DoxyCompactList}\small\item\em Recuperer une chaine de caractere saisi au clavier. \end{DoxyCompactList}\item 
+int \hyperlink{text_field_8c_a39611766c9d772094ce44edc915b6b50}{T\+F\+\_\+\+Click\+In} (S\+D\+L\+\_\+\+Rect rect, S\+D\+L\+\_\+\+Point mouse)
+\begin{DoxyCompactList}\small\item\em test si la souris est positionner dans le rectangle \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+Permet l\textquotesingle{}interaction avec une zone de saisi. 
+
+\begin{DoxyAuthor}{Auteur}
+Mahi S. 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+19 Janvier 2020 
+\end{DoxyDate}
+
+
+\subsection{Documentation des macros}
+\mbox{\Hypertarget{text_field_8c_a0592dba56693fad79136250c11e5a7fe}\label{text_field_8c_a0592dba56693fad79136250c11e5a7fe}} 
+\index{text\+Field.\+c@{text\+Field.\+c}!M\+A\+X\+\_\+\+S\+I\+ZE@{M\+A\+X\+\_\+\+S\+I\+ZE}}
+\index{M\+A\+X\+\_\+\+S\+I\+ZE@{M\+A\+X\+\_\+\+S\+I\+ZE}!text\+Field.\+c@{text\+Field.\+c}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+S\+I\+ZE}{MAX\_SIZE}}
+{\footnotesize\ttfamily \#define M\+A\+X\+\_\+\+S\+I\+ZE~22}
+
+\mbox{\Hypertarget{text_field_8c_a6d18d72c60ffa2018570c33773fa397a}\label{text_field_8c_a6d18d72c60ffa2018570c33773fa397a}} 
+\index{text\+Field.\+c@{text\+Field.\+c}!T\+F\+\_\+\+M\+A\+X\+\_\+\+S\+I\+ZE@{T\+F\+\_\+\+M\+A\+X\+\_\+\+S\+I\+ZE}}
+\index{T\+F\+\_\+\+M\+A\+X\+\_\+\+S\+I\+ZE@{T\+F\+\_\+\+M\+A\+X\+\_\+\+S\+I\+ZE}!text\+Field.\+c@{text\+Field.\+c}}
+\subsubsection{\texorpdfstring{T\+F\+\_\+\+M\+A\+X\+\_\+\+S\+I\+ZE}{TF\_MAX\_SIZE}}
+{\footnotesize\ttfamily \#define T\+F\+\_\+\+M\+A\+X\+\_\+\+S\+I\+ZE~12}
+
+\mbox{\Hypertarget{text_field_8c_a6ce282b7d7ce2928dba90bb2c9ca92f4}\label{text_field_8c_a6ce282b7d7ce2928dba90bb2c9ca92f4}} 
+\index{text\+Field.\+c@{text\+Field.\+c}!T\+F\+\_\+\+M\+O\+U\+S\+E\+\_\+\+O\+U\+T\+\_\+\+C\+L\+I\+CK@{T\+F\+\_\+\+M\+O\+U\+S\+E\+\_\+\+O\+U\+T\+\_\+\+C\+L\+I\+CK}}
+\index{T\+F\+\_\+\+M\+O\+U\+S\+E\+\_\+\+O\+U\+T\+\_\+\+C\+L\+I\+CK@{T\+F\+\_\+\+M\+O\+U\+S\+E\+\_\+\+O\+U\+T\+\_\+\+C\+L\+I\+CK}!text\+Field.\+c@{text\+Field.\+c}}
+\subsubsection{\texorpdfstring{T\+F\+\_\+\+M\+O\+U\+S\+E\+\_\+\+O\+U\+T\+\_\+\+C\+L\+I\+CK}{TF\_MOUSE\_OUT\_CLICK}}
+{\footnotesize\ttfamily \#define T\+F\+\_\+\+M\+O\+U\+S\+E\+\_\+\+O\+U\+T\+\_\+\+C\+L\+I\+CK~10}
+
+\mbox{\Hypertarget{text_field_8c_aa1bed4b914fce1f2dea9364eae9537e9}\label{text_field_8c_aa1bed4b914fce1f2dea9364eae9537e9}} 
+\index{text\+Field.\+c@{text\+Field.\+c}!T\+F\+\_\+\+Q\+U\+IT@{T\+F\+\_\+\+Q\+U\+IT}}
+\index{T\+F\+\_\+\+Q\+U\+IT@{T\+F\+\_\+\+Q\+U\+IT}!text\+Field.\+c@{text\+Field.\+c}}
+\subsubsection{\texorpdfstring{T\+F\+\_\+\+Q\+U\+IT}{TF\_QUIT}}
+{\footnotesize\ttfamily \#define T\+F\+\_\+\+Q\+U\+IT~15}
+
+\mbox{\Hypertarget{text_field_8c_a2c8bb121cba5f013705b28dafca8639d}\label{text_field_8c_a2c8bb121cba5f013705b28dafca8639d}} 
+\index{text\+Field.\+c@{text\+Field.\+c}!T\+F\+\_\+\+R\+E\+T\+U\+RN@{T\+F\+\_\+\+R\+E\+T\+U\+RN}}
+\index{T\+F\+\_\+\+R\+E\+T\+U\+RN@{T\+F\+\_\+\+R\+E\+T\+U\+RN}!text\+Field.\+c@{text\+Field.\+c}}
+\subsubsection{\texorpdfstring{T\+F\+\_\+\+R\+E\+T\+U\+RN}{TF\_RETURN}}
+{\footnotesize\ttfamily \#define T\+F\+\_\+\+R\+E\+T\+U\+RN~11}
+
+\mbox{\Hypertarget{text_field_8c_a39a56932a3ef62c2db45eb98fe7d7acf}\label{text_field_8c_a39a56932a3ef62c2db45eb98fe7d7acf}} 
+\index{text\+Field.\+c@{text\+Field.\+c}!T\+F\+\_\+\+T\+AB@{T\+F\+\_\+\+T\+AB}}
+\index{T\+F\+\_\+\+T\+AB@{T\+F\+\_\+\+T\+AB}!text\+Field.\+c@{text\+Field.\+c}}
+\subsubsection{\texorpdfstring{T\+F\+\_\+\+T\+AB}{TF\_TAB}}
+{\footnotesize\ttfamily \#define T\+F\+\_\+\+T\+AB~14}
+
+\mbox{\Hypertarget{text_field_8c_aeec6a503973a3b980c97cb8ac88b1c26}\label{text_field_8c_aeec6a503973a3b980c97cb8ac88b1c26}} 
+\index{text\+Field.\+c@{text\+Field.\+c}!T\+F\+\_\+\+T\+E\+X\+T\+\_\+\+T\+Y\+P\+ED@{T\+F\+\_\+\+T\+E\+X\+T\+\_\+\+T\+Y\+P\+ED}}
+\index{T\+F\+\_\+\+T\+E\+X\+T\+\_\+\+T\+Y\+P\+ED@{T\+F\+\_\+\+T\+E\+X\+T\+\_\+\+T\+Y\+P\+ED}!text\+Field.\+c@{text\+Field.\+c}}
+\subsubsection{\texorpdfstring{T\+F\+\_\+\+T\+E\+X\+T\+\_\+\+T\+Y\+P\+ED}{TF\_TEXT\_TYPED}}
+{\footnotesize\ttfamily \#define T\+F\+\_\+\+T\+E\+X\+T\+\_\+\+T\+Y\+P\+ED~13}
+
+
+
+\subsection{Documentation des fonctions}
+\mbox{\Hypertarget{text_field_8c_ad0d72e48f0b4f55ed5077899e75da497}\label{text_field_8c_ad0d72e48f0b4f55ed5077899e75da497}} 
+\index{text\+Field.\+c@{text\+Field.\+c}!rendu\+Text\+Field@{rendu\+Text\+Field}}
+\index{rendu\+Text\+Field@{rendu\+Text\+Field}!text\+Field.\+c@{text\+Field.\+c}}
+\subsubsection{\texorpdfstring{rendu\+Text\+Field()}{renduTextField()}}
+{\footnotesize\ttfamily void rendu\+Text\+Field (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{char $\ast$}]{chaine,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font,  }\item[{S\+D\+L\+\_\+\+Color}]{color,  }\item[{S\+D\+L\+\_\+\+Rect}]{cible }\end{DoxyParamCaption})}
+
+
+
+sous fonction de \hyperlink{text_field_8c_ae24b08bc0eb4bbc3320b264568532505}{text\+Field()} 
+
+Aucun parametre n\textquotesingle{}est a saisir, elle est appeler par \hyperlink{text_field_8c_ae24b08bc0eb4bbc3320b264568532505}{text\+Field()}. Elle permet de copier la texture dans la zone de rendu. Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{text_field_8c_ad0d72e48f0b4f55ed5077899e75da497_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{text_field_8c_ae24b08bc0eb4bbc3320b264568532505}\label{text_field_8c_ae24b08bc0eb4bbc3320b264568532505}} 
+\index{text\+Field.\+c@{text\+Field.\+c}!text\+Field@{text\+Field}}
+\index{text\+Field@{text\+Field}!text\+Field.\+c@{text\+Field.\+c}}
+\subsubsection{\texorpdfstring{text\+Field()}{textField()}}
+{\footnotesize\ttfamily int text\+Field (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{police,  }\item[{S\+D\+L\+\_\+\+Color}]{color,  }\item[{char $\ast$}]{chaine,  }\item[{int}]{start\+Where,  }\item[{S\+D\+L\+\_\+\+Rect $\ast$}]{cible,  }\item[{S\+D\+L\+\_\+\+Point $\ast$}]{mouse,  }\item[{int $\ast$}]{press\+Maj }\end{DoxyParamCaption})}
+
+
+
+Recuperer une chaine de caractere saisi au clavier. 
+
+Copier la nouvelle texture dans S\+D\+L\+\_\+\+Renderer, il est necessaire de realiser un Render\+Present().
+
+
+\begin{DoxyParams}{Paramètres}
+{\em S\+D\+L\+\_\+\+Renderer} & $\ast$renderer Pointeur sur le rendu S\+DL. \\
+\hline
+{\em T\+T\+F\+\_\+\+Font} & $\ast$police Pointeur sur la police S\+DL. \\
+\hline
+{\em S\+D\+L\+\_\+\+Color} & color Couleur du texte a affichager. \\
+\hline
+{\em char} & $\ast$chaine ecrit la chaine de caracatere dans la variable en entre. \\
+\hline
+{\em int} & start\+Where mettre strlen(chaine) pour reprendre a la fin de la chaine la saisi. \\
+\hline
+{\em S\+D\+L\+\_\+\+Rect} & $\ast$cible indiquer la cible ou afficher le resultat. \\
+\hline
+{\em S\+D\+L\+\_\+\+Point} & $\ast$mouse position de la souris \\
+\hline
+{\em int} & $\ast$press\+Maj bouton maj appuyer\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+retourne la raison de sorti (T\+F\+\_\+\+M\+A\+X\+\_\+\+S\+I\+ZE, T\+F\+\_\+\+T\+E\+X\+T\+\_\+\+T\+Y\+P\+ED..). 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=235pt]{text_field_8c_ae24b08bc0eb4bbc3320b264568532505_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{text_field_8c_ae24b08bc0eb4bbc3320b264568532505_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{text_field_8c_a39611766c9d772094ce44edc915b6b50}\label{text_field_8c_a39611766c9d772094ce44edc915b6b50}} 
+\index{text\+Field.\+c@{text\+Field.\+c}!T\+F\+\_\+\+Click\+In@{T\+F\+\_\+\+Click\+In}}
+\index{T\+F\+\_\+\+Click\+In@{T\+F\+\_\+\+Click\+In}!text\+Field.\+c@{text\+Field.\+c}}
+\subsubsection{\texorpdfstring{T\+F\+\_\+\+Click\+In()}{TF\_ClickIn()}}
+{\footnotesize\ttfamily int T\+F\+\_\+\+Click\+In (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Rect}]{rect,  }\item[{S\+D\+L\+\_\+\+Point}]{mouse }\end{DoxyParamCaption})}
+
+
+
+test si la souris est positionner dans le rectangle 
+
+\begin{DoxyReturn}{Renvoie}
+retourn V\+R\+A\+I/\+F\+A\+UX 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{text_field_8c_a39611766c9d772094ce44edc915b6b50_icgraph}
+\end{center}
+\end{figure}

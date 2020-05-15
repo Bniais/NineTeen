@@ -1,0 +1,5 @@
+<map id="decale_pastBody_Bomb" name="decale_pastBody_Bomb">
+<area shape="rect" id="node2" href="$snake_8c.html#ac030d8f271704f0537b458e3d6b500cb" title="rm_body" alt="" coords="216,31,288,57"/>
+<area shape="rect" id="node3" href="$snake_8c.html#a8259b0525a11292540b8fba0ddaef87f" title="eat_fruit" alt="" coords="336,5,405,32"/>
+<area shape="rect" id="node4" href="$snake_8c.html#a0d195fc2e338a489acaa254db3a2d44e" title="snake" alt="" coords="453,31,511,57"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="decale_pastBody_freeSpace" name="decale_pastBody_freeSpace">
+<area shape="rect" id="node2" href="$snake_8c.html#ac030d8f271704f0537b458e3d6b500cb" title="rm_body" alt="" coords="241,56,313,83"/>
+<area shape="rect" id="node5" href="$snake_8c.html#a4f298de700239013f24be70effe74258" title="move_snake" alt="" coords="361,107,457,133"/>
+<area shape="rect" id="node3" href="$snake_8c.html#a8259b0525a11292540b8fba0ddaef87f" title="eat_fruit" alt="" coords="375,5,444,32"/>
+<area shape="rect" id="node4" href="$snake_8c.html#a0d195fc2e338a489acaa254db3a2d44e" title="snake" alt="" coords="505,56,563,83"/>
+</map>

@@ -1,0 +1,2195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Nineteen: Référence du fichier games/3_flappy_bird/flappy_bird.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="favicon.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Nineteen
+   </div>
+   <div id="projectbrief">The best of arcade games !</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_4b6f782e158b0b98da980a0e11a23a15.html">games</a></li><li class="navelem"><a class="el" href="dir_f02cab5a8c7b0187d73b5166425c594b.html">3_flappy_bird</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Structures de données</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Fonctions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle">
+<div class="title">Référence du fichier flappy_bird.c</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Jeu flappy bird.  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;time.h&gt;</code><br />
+<code>#include &lt;math.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL_image.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL_mixer.h&gt;</code><br />
+<code>#include &quot;../../include/communFunctions.h&quot;</code><br />
+<code>#include &quot;../../include/libWeb.h&quot;</code><br />
+<code>#include &quot;../../include/hashage.h&quot;</code><br />
+<code>#include &quot;../../include/define.h&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Graphe des dépendances par inclusion de flappy_bird.c:</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c__incl.jpg" border="0" usemap="#games_23__flappy__bird_2flappy__bird_8c" alt=""/></div>
+</div>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Structures de données</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structpilonne.html">pilonne</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stock la position d'un obstacle.  <a href="structpilonne.html#details">Plus de détails...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ae0ceb0aa3313530aa5d72827ea1131c3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#ae0ceb0aa3313530aa5d72827ea1131c3">WINDOW_L</a>&#160;&#160;&#160;1920.</td></tr>
+<tr class="separator:ae0ceb0aa3313530aa5d72827ea1131c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac99e9b1c151b601470732c2c9ff9866f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#ac99e9b1c151b601470732c2c9ff9866f">WINDOW_H</a>&#160;&#160;&#160;1080.</td></tr>
+<tr class="separator:ac99e9b1c151b601470732c2c9ff9866f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac92ca5ab87034a348decad7ee8d4bd1b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#ac92ca5ab87034a348decad7ee8d4bd1b">FPS</a>&#160;&#160;&#160;60</td></tr>
+<tr class="separator:ac92ca5ab87034a348decad7ee8d4bd1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4330090b097ea40d0041592c7c29fae7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a4330090b097ea40d0041592c7c29fae7">SCALE_TO_FIT</a>&#160;&#160;&#160;4</td></tr>
+<tr class="separator:a4330090b097ea40d0041592c7c29fae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8a6f389427352d1e43f3e5909d7a8a8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#ac8a6f389427352d1e43f3e5909d7a8a8">COMPENSATITION_HITBOX_DOWN</a>&#160;&#160;&#160;20</td></tr>
+<tr class="separator:ac8a6f389427352d1e43f3e5909d7a8a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad789c6c6cd9f5fb4148ee747630f2cc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#aad789c6c6cd9f5fb4148ee747630f2cc">PRELOAD_POS_OBSTACLE</a>&#160;&#160;&#160;8</td></tr>
+<tr class="separator:aad789c6c6cd9f5fb4148ee747630f2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec5e90c4c52efaf97874201e4bbb5a64"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#aec5e90c4c52efaf97874201e4bbb5a64">NB_POS_OBSTACLE</a>&#160;&#160;&#160;5</td></tr>
+<tr class="separator:aec5e90c4c52efaf97874201e4bbb5a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5455cd891524aaefc0c4b03ceaaaeffa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a5455cd891524aaefc0c4b03ceaaaeffa">TRANCHE_POS_OBSTACLE</a>&#160;&#160;&#160;550</td></tr>
+<tr class="separator:a5455cd891524aaefc0c4b03ceaaaeffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adda7fd42446641547476db3522b55a30"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#adda7fd42446641547476db3522b55a30">UPPER_BY_STEP</a>&#160;&#160;&#160;30</td></tr>
+<tr class="separator:adda7fd42446641547476db3522b55a30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad81a2ab0303b14b1f6c567d6219c2d86"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#ad81a2ab0303b14b1f6c567d6219c2d86">ANGLE_UP</a>&#160;&#160;&#160;-30</td></tr>
+<tr class="separator:ad81a2ab0303b14b1f6c567d6219c2d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41081590f4c5b807082e9f7785d1eef9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a41081590f4c5b807082e9f7785d1eef9">ANGLE_DOWN</a>&#160;&#160;&#160;90</td></tr>
+<tr class="separator:a41081590f4c5b807082e9f7785d1eef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad77f4a1540f49629e52fe9ced51f8f6a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#ad77f4a1540f49629e52fe9ced51f8f6a">ANGLE_VITESSE</a>&#160;&#160;&#160;8</td></tr>
+<tr class="separator:ad77f4a1540f49629e52fe9ced51f8f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cbcd5e1e513dba8fad4dde27417e221"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a1cbcd5e1e513dba8fad4dde27417e221">BAN_CODE</a>&#160;&#160;&#160;123</td></tr>
+<tr class="separator:a1cbcd5e1e513dba8fad4dde27417e221"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4b85959fbfc73696e7f51a10c1ffcf3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#ad4b85959fbfc73696e7f51a10c1ffcf3">DIR_FLAP_WAV</a>&#160;&#160;&#160;&quot;../games/3_flappy_bird/Sounds/flap.wav&quot;</td></tr>
+<tr class="separator:ad4b85959fbfc73696e7f51a10c1ffcf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d549bcf10a7f1847adae7ba3e71c1cc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a3d549bcf10a7f1847adae7ba3e71c1cc">DIR_HURT_WAV</a>&#160;&#160;&#160;&quot;../games/3_flappy_bird/Sounds/hurt.wav&quot;</td></tr>
+<tr class="separator:a3d549bcf10a7f1847adae7ba3e71c1cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92be272566261416972b218c223ceaea"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a92be272566261416972b218c223ceaea">DIR_SCORE_WAV</a>&#160;&#160;&#160;&quot;../games/3_flappy_bird/Sounds/score.wav&quot;</td></tr>
+<tr class="separator:a92be272566261416972b218c223ceaea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae70f8544bb0fda25dce0a93587d5c6c9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#ae70f8544bb0fda25dce0a93587d5c6c9">IMAGE_ERROR_LOAD</a>&#160;&#160;&#160;-101</td></tr>
+<tr class="separator:ae70f8544bb0fda25dce0a93587d5c6c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb7ee9eee30279bf189e9757a1d28351"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#afb7ee9eee30279bf189e9757a1d28351">SOUND_ERROR_LOAD</a>&#160;&#160;&#160;-102</td></tr>
+<tr class="separator:afb7ee9eee30279bf189e9757a1d28351"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a253eadb4cc9a2d67e636933c9c5e8719"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a253eadb4cc9a2d67e636933c9c5e8719">SDL_RENDER_ERROR_BACKGROUND</a>&#160;&#160;&#160;-103</td></tr>
+<tr class="separator:a253eadb4cc9a2d67e636933c9c5e8719"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af33ac46adb014f8b74ad790e8bbb36f8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#af33ac46adb014f8b74ad790e8bbb36f8">SDL_RENDER_ERROR_OBSTACLE</a>&#160;&#160;&#160;-104</td></tr>
+<tr class="separator:af33ac46adb014f8b74ad790e8bbb36f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0185ee5ddd06587fcc0e9d2b47773308"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a0185ee5ddd06587fcc0e9d2b47773308">SDL_RENDER_ERROR_SOL</a>&#160;&#160;&#160;-105</td></tr>
+<tr class="separator:a0185ee5ddd06587fcc0e9d2b47773308"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a181905e89f47f1ae6874c5eb19d54fb6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a181905e89f47f1ae6874c5eb19d54fb6">SDL_RENDER_ERROR_PERSONNAGE</a>&#160;&#160;&#160;-106</td></tr>
+<tr class="separator:a181905e89f47f1ae6874c5eb19d54fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4759c7c994c2126f49b584892178831"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#af4759c7c994c2126f49b584892178831">SDL_RENDER_ERROR_PRINT_SCORE</a>&#160;&#160;&#160;-107</td></tr>
+<tr class="separator:af4759c7c994c2126f49b584892178831"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0547979266df72eec654c5552348319"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#af0547979266df72eec654c5552348319">SDL_RENDER_ERROR_PRINT_HS</a>&#160;&#160;&#160;-108</td></tr>
+<tr class="separator:af0547979266df72eec654c5552348319"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:a992ce3eab3b684a62428aff5a93ff1f8"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a992ce3eab3b684a62428aff5a93ff1f8">afficherBackground</a> (SDL_Renderer *renderer, SDL_Texture *texture_background, int theme)</td></tr>
+<tr class="memdesc:a992ce3eab3b684a62428aff5a93ff1f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">affiche l'image de fond  <a href="#a992ce3eab3b684a62428aff5a93ff1f8">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a992ce3eab3b684a62428aff5a93ff1f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab428543af2e71cb1991d2d037299fbcd"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#ab428543af2e71cb1991d2d037299fbcd">afficherPilonne</a> (SDL_Renderer *renderer, SDL_Texture *texture_pipes, int position, int position_axe_x, int theme)</td></tr>
+<tr class="memdesc:ab428543af2e71cb1991d2d037299fbcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">affiche le OBSTACLE  <a href="#ab428543af2e71cb1991d2d037299fbcd">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ab428543af2e71cb1991d2d037299fbcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4157024daf3d9d27be448ccea30dda9"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#ad4157024daf3d9d27be448ccea30dda9">afficherSol</a> (SDL_Renderer *renderer, SDL_Texture *texture_sol, int target_x)</td></tr>
+<tr class="memdesc:ad4157024daf3d9d27be448ccea30dda9"><td class="mdescLeft">&#160;</td><td class="mdescRight">affiche le SOL DECORE  <a href="#ad4157024daf3d9d27be448ccea30dda9">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ad4157024daf3d9d27be448ccea30dda9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a502412a10243d68aa0dcbd8e07e6edb2"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a502412a10243d68aa0dcbd8e07e6edb2">AfficherPersonnage</a> (SDL_Renderer *renderer, SDL_Texture *texture_birds, SDL_Point emplacementPersonnage, int varAnimationPersonnage, double angle, int theme)</td></tr>
+<tr class="memdesc:a502412a10243d68aa0dcbd8e07e6edb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">affiche le personnage a l ecran  <a href="#a502412a10243d68aa0dcbd8e07e6edb2">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a502412a10243d68aa0dcbd8e07e6edb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae61d8a4fce3f39ca4484ea102ea242c1"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#ae61d8a4fce3f39ca4484ea102ea242c1">intLen</a> (int score)</td></tr>
+<tr class="memdesc:ae61d8a4fce3f39ca4484ea102ea242c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">retourne la longueur d'un nombre  <a href="#ae61d8a4fce3f39ca4484ea102ea242c1">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ae61d8a4fce3f39ca4484ea102ea242c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49aafde64b048663c89457ab94171d3e"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a49aafde64b048663c89457ab94171d3e">afficherScore</a> (SDL_Renderer *renderer, SDL_Texture *texture_chiffre, int score, int mode)</td></tr>
+<tr class="memdesc:a49aafde64b048663c89457ab94171d3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">affiche le score en cours a l ecran  <a href="#a49aafde64b048663c89457ab94171d3e">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a49aafde64b048663c89457ab94171d3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a470895aeba5741bc6e77bb164d42e836"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a470895aeba5741bc6e77bb164d42e836">afficherMeilleurScore</a> (SDL_Renderer *renderer, SDL_Texture *texture_highscore, int score, int high_score, int cible)</td></tr>
+<tr class="memdesc:a470895aeba5741bc6e77bb164d42e836"><td class="mdescLeft">&#160;</td><td class="mdescRight">affiche le meilleur score a l'ecran  <a href="#a470895aeba5741bc6e77bb164d42e836">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a470895aeba5741bc6e77bb164d42e836"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4858bca7396db08c9733a691a7d58f9c"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a4858bca7396db08c9733a691a7d58f9c">afficherTout</a> (SDL_Renderer *renderer, SDL_Thread **<a class="el" href="main_8c.html#a584962a25015c7d6e18e294f55a8bc2d">thread</a>, TTF_Font *myFont, int *retour, int *frame_anim_loading, int *frameRetour, SDL_Texture *texture_loading, SDL_Point emplacementPersonnage, <a class="el" href="structpilonne.html">pilonne</a> *<a class="el" href="structpilonne.html">pilonne</a>, int score, int varAnimationPersonnage, int varAnimationSol, int cible, double angle, SDL_Texture *texture_background, SDL_Texture *texture_pipes, SDL_Texture *texture_birds, SDL_Texture *texture_medals, SDL_Texture *texture_scoreBoard, SDL_Texture *texture_sol, SDL_Texture *texture_chiffre, SDL_Texture *texture_highscore, int theme)</td></tr>
+<tr class="memdesc:a4858bca7396db08c9733a691a7d58f9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">regroupement de toute les fonctions d'affichage pour afficher tous  <a href="#a4858bca7396db08c9733a691a7d58f9c">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a4858bca7396db08c9733a691a7d58f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bc0848bb48b6c9265b8b87c7c09b841"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a5bc0848bb48b6c9265b8b87c7c09b841">init_pilonne</a> (<a class="el" href="structpilonne.html">pilonne</a> *<a class="el" href="structpilonne.html">pilonne</a>, int *varAnimationPersonnage, int *varAnimationSol, int *end, int *dead, int *traitement)</td></tr>
+<tr class="memdesc:a5bc0848bb48b6c9265b8b87c7c09b841"><td class="mdescLeft">&#160;</td><td class="mdescRight">initialisation des pilonnes et des animation et de certaine variables liee au boucle du jeu  <a href="#a5bc0848bb48b6c9265b8b87c7c09b841">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a5bc0848bb48b6c9265b8b87c7c09b841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18e8671a141af5a89d184dd7dcdacc21"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a18e8671a141af5a89d184dd7dcdacc21">traitement_pilonne</a> (<a class="el" href="structpilonne.html">pilonne</a> *<a class="el" href="structpilonne.html">pilonne</a>, int traitement, int *score, long long *score_hash, long keys[4], Mix_Chunk *score_wav)</td></tr>
+<tr class="memdesc:a18e8671a141af5a89d184dd7dcdacc21"><td class="mdescLeft">&#160;</td><td class="mdescRight">detecte le passage d'un pilonne et joue un son  <a href="#a18e8671a141af5a89d184dd7dcdacc21">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a18e8671a141af5a89d184dd7dcdacc21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b820c5bc000a7a6b332e6cd9fc810fe"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a8b820c5bc000a7a6b332e6cd9fc810fe">collision</a> (<a class="el" href="structpilonne.html">pilonne</a> *<a class="el" href="structpilonne.html">pilonne</a>, SDL_Point emplacementPersonnage, Mix_Chunk *hurt_wav)</td></tr>
+<tr class="memdesc:a8b820c5bc000a7a6b332e6cd9fc810fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">permet de detecter une collision et de jouer un son  <a href="#a8b820c5bc000a7a6b332e6cd9fc810fe">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a8b820c5bc000a7a6b332e6cd9fc810fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93a55e5f40971511e088f2e52a654c57"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a93a55e5f40971511e088f2e52a654c57">traitementVariableAnimation</a> (int *varAnimationPersonnage, int *varAnimationSol)</td></tr>
+<tr class="memdesc:a93a55e5f40971511e088f2e52a654c57"><td class="mdescLeft">&#160;</td><td class="mdescRight">mise a jours des variables liee a l'environement/decor  <a href="#a93a55e5f40971511e088f2e52a654c57">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a93a55e5f40971511e088f2e52a654c57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ceb3de339eddf081185c52d40819193"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a0ceb3de339eddf081185c52d40819193">attendreAvantDepart</a> (Mix_Chunk *flap_wav, int *rdyToSpace)</td></tr>
+<tr class="memdesc:a0ceb3de339eddf081185c52d40819193"><td class="mdescLeft">&#160;</td><td class="mdescRight">attend l'appui sur espace pour demarrer joue un son  <a href="#a0ceb3de339eddf081185c52d40819193">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a0ceb3de339eddf081185c52d40819193"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96e403e8f6333abe2bee8d0429217c7c"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a96e403e8f6333abe2bee8d0429217c7c">evenement</a> (int *upper, int *vitesseGraviter, int *nb_boucle, Mix_Chunk *flap_wav, int *rdyToSpace)</td></tr>
+<tr class="memdesc:a96e403e8f6333abe2bee8d0429217c7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">remet les variables au DEFINE si on appui sur espace  <a href="#a96e403e8f6333abe2bee8d0429217c7c">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a96e403e8f6333abe2bee8d0429217c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09c69a458354e11a45af579085123048"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a09c69a458354e11a45af579085123048">updateVariableEnvironement</a> (SDL_Point *emplacementPersonnage, int *upper, double *angle, int *nb_boucle, int *vitesseGraviter)</td></tr>
+<tr class="memdesc:a09c69a458354e11a45af579085123048"><td class="mdescLeft">&#160;</td><td class="mdescRight">permet de mettre a jours les variables utilisez  <a href="#a09c69a458354e11a45af579085123048">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a09c69a458354e11a45af579085123048"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f9872781c9ba0176a187193e39dde97"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97">flappy_bird</a> (SDL_Renderer *renderer, int highscore, int send_l, int send_h, char *token, int hardcore, SDL_Texture **<a class="el" href="room_8c.html#a158b90dfedb211efa4c317267c983dd2">textures</a>)</td></tr>
+<tr class="memdesc:a8f9872781c9ba0176a187193e39dde97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fonction principale qui joue le jeu flappy bird.  <a href="#a8f9872781c9ba0176a187193e39dde97">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a8f9872781c9ba0176a187193e39dde97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a1563e736047cb57052434e132e4afac4"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a1563e736047cb57052434e132e4afac4">FRAME_TIME</a> = 1000/<a class="el" href="flappy__bird_8c.html#ac92ca5ab87034a348decad7ee8d4bd1b">FPS</a></td></tr>
+<tr class="separator:a1563e736047cb57052434e132e4afac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf971c6127777fea40325a6b3ccd5179"><td class="memItemLeft" align="right" valign="top">const SDL_Rect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#adf971c6127777fea40325a6b3ccd5179">BACKGROUND</a> = {0, 0, 144, 256}</td></tr>
+<tr class="separator:adf971c6127777fea40325a6b3ccd5179"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a871a57bee941abea2174acde4386b3e0"><td class="memItemLeft" align="right" valign="top">const SDL_Rect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a871a57bee941abea2174acde4386b3e0">OBSTACLE_VERT</a> = {52,0, 26, 160}</td></tr>
+<tr class="separator:a871a57bee941abea2174acde4386b3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbe7e4a5519e1ca76121ceecaf05c984"><td class="memItemLeft" align="right" valign="top">const SDL_Rect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#adbe7e4a5519e1ca76121ceecaf05c984">OBSTACLE_ORANGE</a> = {0,0, 26, 160}</td></tr>
+<tr class="separator:adbe7e4a5519e1ca76121ceecaf05c984"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a086dc677d12a2ef003b8642fd875b470"><td class="memItemLeft" align="right" valign="top">const SDL_Rect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a086dc677d12a2ef003b8642fd875b470">SOL</a> = {0, 0, 168, 55}</td></tr>
+<tr class="separator:a086dc677d12a2ef003b8642fd875b470"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4eeb02b43aebb10a51d6d398895765e"><td class="memItemLeft" align="right" valign="top">const SDL_Rect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#ae4eeb02b43aebb10a51d6d398895765e">CHIFFRE</a> = {0, 0, 12, 18}</td></tr>
+<tr class="separator:ae4eeb02b43aebb10a51d6d398895765e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7aa8f58e4691e6534d4ccae36b92e3e2"><td class="memItemLeft" align="right" valign="top">const SDL_Rect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a7aa8f58e4691e6534d4ccae36b92e3e2">PERSO</a> = {0, 0, 17, 12}</td></tr>
+<tr class="separator:a7aa8f58e4691e6534d4ccae36b92e3e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d4958bc82151e228ae23dc448e879f2"><td class="memItemLeft" align="right" valign="top">const SDL_Rect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a0d4958bc82151e228ae23dc448e879f2">HIGH_SCORE</a> = {0,0,512,512}</td></tr>
+<tr class="separator:a0d4958bc82151e228ae23dc448e879f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e174c1b4b8f590a0ea2051e4918c2fe"><td class="memItemLeft" align="right" valign="top">const SDL_Rect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a0e174c1b4b8f590a0ea2051e4918c2fe">SCOREBOARD</a> = {0,0,113,57}</td></tr>
+<tr class="separator:a0e174c1b4b8f590a0ea2051e4918c2fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab61fc499948fb2c97e86302b86fa07de"><td class="memItemLeft" align="right" valign="top">const SDL_Rect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#ab61fc499948fb2c97e86302b86fa07de">MEDALS</a> = {0,0,22,22}</td></tr>
+<tr class="separator:ab61fc499948fb2c97e86302b86fa07de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a093b04abda57654be8b6ece6e07ab06d"><td class="memItemLeft" align="right" valign="top">const SDL_Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a093b04abda57654be8b6ece6e07ab06d">COLOR_LOADING</a> = {0x22,0xf4,0x57}</td></tr>
+<tr class="separator:a093b04abda57654be8b6ece6e07ab06d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3365e2a32bed45d73157a35657807826"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a3365e2a32bed45d73157a35657807826">DISTANCE_BETWEEN_OBSTACLE</a> = 49</td></tr>
+<tr class="separator:a3365e2a32bed45d73157a35657807826"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefe71bca4c41eceec6c77b8d9addfb65"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#aefe71bca4c41eceec6c77b8d9addfb65">DISTANCE_UNDER_OBSTACLE</a> = 100</td></tr>
+<tr class="separator:aefe71bca4c41eceec6c77b8d9addfb65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a676a51616828adeeea54883648de061b"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a676a51616828adeeea54883648de061b">UPPER_STEP</a> = 4 * (<a class="el" href="flappy__bird_8c.html#ac92ca5ab87034a348decad7ee8d4bd1b">FPS</a>/30)</td></tr>
+<tr class="separator:a676a51616828adeeea54883648de061b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c07d7d9d0c384ff87214edb5f44765b"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a5c07d7d9d0c384ff87214edb5f44765b">GRAVITY_SPEED</a> = 2 * (<a class="el" href="flappy__bird_8c.html#ac92ca5ab87034a348decad7ee8d4bd1b">FPS</a>/30)</td></tr>
+<tr class="separator:a5c07d7d9d0c384ff87214edb5f44765b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d29d77d4db16afe3012ee7ab51f6878"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a6d29d77d4db16afe3012ee7ab51f6878">VITESSE_DEPLACEMENT_DECOR</a> = 8 / (<a class="el" href="flappy__bird_8c.html#ac92ca5ab87034a348decad7ee8d4bd1b">FPS</a>/30)</td></tr>
+<tr class="separator:a6d29d77d4db16afe3012ee7ab51f6878"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30862aa51c2944f287c4445751341ee8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flappy__bird_8c.html#a30862aa51c2944f287c4445751341ee8">updateEnded</a></td></tr>
+<tr class="separator:a30862aa51c2944f287c4445751341ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Jeu flappy bird. </p>
+<dl class="section author"><dt>Auteur</dt><dd>S.Mahi </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>10/01/2020 </dd></dl>
+</div><h2 class="groupheader">Documentation des macros</h2>
+<a id="a41081590f4c5b807082e9f7785d1eef9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41081590f4c5b807082e9f7785d1eef9">&#9670;&nbsp;</a></span>ANGLE_DOWN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ANGLE_DOWN&#160;&#160;&#160;90</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad81a2ab0303b14b1f6c567d6219c2d86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad81a2ab0303b14b1f6c567d6219c2d86">&#9670;&nbsp;</a></span>ANGLE_UP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ANGLE_UP&#160;&#160;&#160;-30</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad77f4a1540f49629e52fe9ced51f8f6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad77f4a1540f49629e52fe9ced51f8f6a">&#9670;&nbsp;</a></span>ANGLE_VITESSE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ANGLE_VITESSE&#160;&#160;&#160;8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1cbcd5e1e513dba8fad4dde27417e221"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cbcd5e1e513dba8fad4dde27417e221">&#9670;&nbsp;</a></span>BAN_CODE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BAN_CODE&#160;&#160;&#160;123</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac8a6f389427352d1e43f3e5909d7a8a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8a6f389427352d1e43f3e5909d7a8a8">&#9670;&nbsp;</a></span>COMPENSATITION_HITBOX_DOWN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMPENSATITION_HITBOX_DOWN&#160;&#160;&#160;20</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad4b85959fbfc73696e7f51a10c1ffcf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4b85959fbfc73696e7f51a10c1ffcf3">&#9670;&nbsp;</a></span>DIR_FLAP_WAV</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DIR_FLAP_WAV&#160;&#160;&#160;&quot;../games/3_flappy_bird/Sounds/flap.wav&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3d549bcf10a7f1847adae7ba3e71c1cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d549bcf10a7f1847adae7ba3e71c1cc">&#9670;&nbsp;</a></span>DIR_HURT_WAV</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DIR_HURT_WAV&#160;&#160;&#160;&quot;../games/3_flappy_bird/Sounds/hurt.wav&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a92be272566261416972b218c223ceaea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92be272566261416972b218c223ceaea">&#9670;&nbsp;</a></span>DIR_SCORE_WAV</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DIR_SCORE_WAV&#160;&#160;&#160;&quot;../games/3_flappy_bird/Sounds/score.wav&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac92ca5ab87034a348decad7ee8d4bd1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac92ca5ab87034a348decad7ee8d4bd1b">&#9670;&nbsp;</a></span>FPS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FPS&#160;&#160;&#160;60</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae70f8544bb0fda25dce0a93587d5c6c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae70f8544bb0fda25dce0a93587d5c6c9">&#9670;&nbsp;</a></span>IMAGE_ERROR_LOAD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define IMAGE_ERROR_LOAD&#160;&#160;&#160;-101</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aec5e90c4c52efaf97874201e4bbb5a64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec5e90c4c52efaf97874201e4bbb5a64">&#9670;&nbsp;</a></span>NB_POS_OBSTACLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NB_POS_OBSTACLE&#160;&#160;&#160;5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aad789c6c6cd9f5fb4148ee747630f2cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad789c6c6cd9f5fb4148ee747630f2cc">&#9670;&nbsp;</a></span>PRELOAD_POS_OBSTACLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PRELOAD_POS_OBSTACLE&#160;&#160;&#160;8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4330090b097ea40d0041592c7c29fae7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4330090b097ea40d0041592c7c29fae7">&#9670;&nbsp;</a></span>SCALE_TO_FIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SCALE_TO_FIT&#160;&#160;&#160;4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a253eadb4cc9a2d67e636933c9c5e8719"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a253eadb4cc9a2d67e636933c9c5e8719">&#9670;&nbsp;</a></span>SDL_RENDER_ERROR_BACKGROUND</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL_RENDER_ERROR_BACKGROUND&#160;&#160;&#160;-103</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af33ac46adb014f8b74ad790e8bbb36f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af33ac46adb014f8b74ad790e8bbb36f8">&#9670;&nbsp;</a></span>SDL_RENDER_ERROR_OBSTACLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL_RENDER_ERROR_OBSTACLE&#160;&#160;&#160;-104</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a181905e89f47f1ae6874c5eb19d54fb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a181905e89f47f1ae6874c5eb19d54fb6">&#9670;&nbsp;</a></span>SDL_RENDER_ERROR_PERSONNAGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL_RENDER_ERROR_PERSONNAGE&#160;&#160;&#160;-106</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af0547979266df72eec654c5552348319"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0547979266df72eec654c5552348319">&#9670;&nbsp;</a></span>SDL_RENDER_ERROR_PRINT_HS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL_RENDER_ERROR_PRINT_HS&#160;&#160;&#160;-108</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af4759c7c994c2126f49b584892178831"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4759c7c994c2126f49b584892178831">&#9670;&nbsp;</a></span>SDL_RENDER_ERROR_PRINT_SCORE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL_RENDER_ERROR_PRINT_SCORE&#160;&#160;&#160;-107</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0185ee5ddd06587fcc0e9d2b47773308"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0185ee5ddd06587fcc0e9d2b47773308">&#9670;&nbsp;</a></span>SDL_RENDER_ERROR_SOL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL_RENDER_ERROR_SOL&#160;&#160;&#160;-105</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afb7ee9eee30279bf189e9757a1d28351"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb7ee9eee30279bf189e9757a1d28351">&#9670;&nbsp;</a></span>SOUND_ERROR_LOAD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SOUND_ERROR_LOAD&#160;&#160;&#160;-102</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5455cd891524aaefc0c4b03ceaaaeffa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5455cd891524aaefc0c4b03ceaaaeffa">&#9670;&nbsp;</a></span>TRANCHE_POS_OBSTACLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TRANCHE_POS_OBSTACLE&#160;&#160;&#160;550</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adda7fd42446641547476db3522b55a30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adda7fd42446641547476db3522b55a30">&#9670;&nbsp;</a></span>UPPER_BY_STEP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UPPER_BY_STEP&#160;&#160;&#160;30</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac99e9b1c151b601470732c2c9ff9866f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac99e9b1c151b601470732c2c9ff9866f">&#9670;&nbsp;</a></span>WINDOW_H</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WINDOW_H&#160;&#160;&#160;1080.</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae0ceb0aa3313530aa5d72827ea1131c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0ceb0aa3313530aa5d72827ea1131c3">&#9670;&nbsp;</a></span>WINDOW_L</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WINDOW_L&#160;&#160;&#160;1920.</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a992ce3eab3b684a62428aff5a93ff1f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a992ce3eab3b684a62428aff5a93ff1f8">&#9670;&nbsp;</a></span>afficherBackground()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int afficherBackground </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_background</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>theme</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>affiche l'image de fond </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td></td></tr>
+    <tr><td class="paramname">texture_background</td><td></td></tr>
+    <tr><td class="paramname">theme</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a992ce3eab3b684a62428aff5a93ff1f8_icgraph.jpg" border="0" usemap="#flappy__bird_8c_a992ce3eab3b684a62428aff5a93ff1f8_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_a992ce3eab3b684a62428aff5a93ff1f8_icgraph" id="flappy__bird_8c_a992ce3eab3b684a62428aff5a93ff1f8_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a4858bca7396db08c9733a691a7d58f9c" title="regroupement de toute les fonctions d&#39;affichage pour afficher tous " alt="" coords="188,5,279,32"/>
+<area shape="rect" id="node3" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="327,5,412,32"/>
+<area shape="rect" id="node4" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="460,5,567,32"/>
+<area shape="rect" id="node5" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="615,5,740,32"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="652,56,703,83"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="788,56,839,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a470895aeba5741bc6e77bb164d42e836"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a470895aeba5741bc6e77bb164d42e836">&#9670;&nbsp;</a></span>afficherMeilleurScore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int afficherMeilleurScore </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_highscore</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>score</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>high_score</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cible</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>affiche le meilleur score a l'ecran </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td></td></tr>
+    <tr><td class="paramname">texture_highscore</td><td></td></tr>
+    <tr><td class="paramname">score</td><td></td></tr>
+    <tr><td class="paramname">high_score</td><td></td></tr>
+    <tr><td class="paramname">cible</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a470895aeba5741bc6e77bb164d42e836_icgraph.jpg" border="0" usemap="#flappy__bird_8c_a470895aeba5741bc6e77bb164d42e836_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_a470895aeba5741bc6e77bb164d42e836_icgraph" id="flappy__bird_8c_a470895aeba5741bc6e77bb164d42e836_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a4858bca7396db08c9733a691a7d58f9c" title="regroupement de toute les fonctions d&#39;affichage pour afficher tous " alt="" coords="197,5,288,32"/>
+<area shape="rect" id="node3" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="336,5,421,32"/>
+<area shape="rect" id="node4" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="469,5,576,32"/>
+<area shape="rect" id="node5" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="624,5,749,32"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="661,56,712,83"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="797,56,848,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a502412a10243d68aa0dcbd8e07e6edb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a502412a10243d68aa0dcbd8e07e6edb2">&#9670;&nbsp;</a></span>AfficherPersonnage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int AfficherPersonnage </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_birds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Point&#160;</td>
+          <td class="paramname"><em>emplacementPersonnage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>varAnimationPersonnage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>theme</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>affiche le personnage a l ecran </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td></td></tr>
+    <tr><td class="paramname">texture_birds</td><td></td></tr>
+    <tr><td class="paramname">emplacementPersonnage</td><td></td></tr>
+    <tr><td class="paramname">varAnimationPersonnage</td><td></td></tr>
+    <tr><td class="paramname">angle</td><td></td></tr>
+    <tr><td class="paramname">theme</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a502412a10243d68aa0dcbd8e07e6edb2_icgraph.jpg" border="0" usemap="#flappy__bird_8c_a502412a10243d68aa0dcbd8e07e6edb2_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_a502412a10243d68aa0dcbd8e07e6edb2_icgraph" id="flappy__bird_8c_a502412a10243d68aa0dcbd8e07e6edb2_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a4858bca7396db08c9733a691a7d58f9c" title="regroupement de toute les fonctions d&#39;affichage pour afficher tous " alt="" coords="189,5,280,32"/>
+<area shape="rect" id="node3" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="328,5,413,32"/>
+<area shape="rect" id="node4" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="461,5,568,32"/>
+<area shape="rect" id="node5" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="616,5,741,32"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="653,56,704,83"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="789,56,840,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ab428543af2e71cb1991d2d037299fbcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab428543af2e71cb1991d2d037299fbcd">&#9670;&nbsp;</a></span>afficherPilonne()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int afficherPilonne </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_pipes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>position_axe_x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>theme</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>affiche le OBSTACLE </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td></td></tr>
+    <tr><td class="paramname">texture_pipes</td><td></td></tr>
+    <tr><td class="paramname">position</td><td></td></tr>
+    <tr><td class="paramname">position_axe_x</td><td></td></tr>
+    <tr><td class="paramname">theme</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_ab428543af2e71cb1991d2d037299fbcd_icgraph.jpg" border="0" usemap="#flappy__bird_8c_ab428543af2e71cb1991d2d037299fbcd_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_ab428543af2e71cb1991d2d037299fbcd_icgraph" id="flappy__bird_8c_ab428543af2e71cb1991d2d037299fbcd_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a4858bca7396db08c9733a691a7d58f9c" title="regroupement de toute les fonctions d&#39;affichage pour afficher tous " alt="" coords="161,5,252,32"/>
+<area shape="rect" id="node3" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="300,5,385,32"/>
+<area shape="rect" id="node4" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="433,5,540,32"/>
+<area shape="rect" id="node5" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="588,5,713,32"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="625,56,676,83"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="761,56,812,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a49aafde64b048663c89457ab94171d3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49aafde64b048663c89457ab94171d3e">&#9670;&nbsp;</a></span>afficherScore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int afficherScore </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_chiffre</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>score</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>mode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>affiche le score en cours a l ecran </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td></td></tr>
+    <tr><td class="paramname">texture_chiffre</td><td></td></tr>
+    <tr><td class="paramname">score</td><td></td></tr>
+    <tr><td class="paramname">mode</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a49aafde64b048663c89457ab94171d3e_cgraph.jpg" border="0" usemap="#flappy__bird_8c_a49aafde64b048663c89457ab94171d3e_cgraph" alt=""/></div>
+<map name="flappy__bird_8c_a49aafde64b048663c89457ab94171d3e_cgraph" id="flappy__bird_8c_a49aafde64b048663c89457ab94171d3e_cgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#ae61d8a4fce3f39ca4484ea102ea242c1" title="retourne la longueur d&#39;un nombre " alt="" coords="152,5,209,32"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a49aafde64b048663c89457ab94171d3e_icgraph.jpg" border="0" usemap="#flappy__bird_8c_a49aafde64b048663c89457ab94171d3e_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_a49aafde64b048663c89457ab94171d3e_icgraph" id="flappy__bird_8c_a49aafde64b048663c89457ab94171d3e_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="291,5,376,32"/>
+<area shape="rect" id="node7" href="flappy__bird_8c.html#a4858bca7396db08c9733a691a7d58f9c" title="regroupement de toute les fonctions d&#39;affichage pour afficher tous " alt="" coords="152,31,243,57"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="424,5,531,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="579,5,704,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="616,56,667,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="752,56,803,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ad4157024daf3d9d27be448ccea30dda9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4157024daf3d9d27be448ccea30dda9">&#9670;&nbsp;</a></span>afficherSol()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int afficherSol </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_sol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>target_x</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>affiche le SOL DECORE </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td></td></tr>
+    <tr><td class="paramname">texture_sol</td><td></td></tr>
+    <tr><td class="paramname">target_x</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_ad4157024daf3d9d27be448ccea30dda9_icgraph.jpg" border="0" usemap="#flappy__bird_8c_ad4157024daf3d9d27be448ccea30dda9_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_ad4157024daf3d9d27be448ccea30dda9_icgraph" id="flappy__bird_8c_ad4157024daf3d9d27be448ccea30dda9_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a4858bca7396db08c9733a691a7d58f9c" title="regroupement de toute les fonctions d&#39;affichage pour afficher tous " alt="" coords="137,5,228,32"/>
+<area shape="rect" id="node3" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="276,5,361,32"/>
+<area shape="rect" id="node4" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="409,5,516,32"/>
+<area shape="rect" id="node5" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="564,5,689,32"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="601,56,652,83"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="737,56,788,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a4858bca7396db08c9733a691a7d58f9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4858bca7396db08c9733a691a7d58f9c">&#9670;&nbsp;</a></span>afficherTout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int afficherTout </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Thread **&#160;</td>
+          <td class="paramname"><em>thread</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TTF_Font *&#160;</td>
+          <td class="paramname"><em>myFont</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>retour</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>frame_anim_loading</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>frameRetour</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_loading</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Point&#160;</td>
+          <td class="paramname"><em>emplacementPersonnage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structpilonne.html">pilonne</a> *&#160;</td>
+          <td class="paramname"><em>pilonne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>score</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>varAnimationPersonnage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>varAnimationSol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cible</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_background</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_pipes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_birds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_medals</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_scoreBoard</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_sol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_chiffre</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>texture_highscore</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>theme</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>regroupement de toute les fonctions d'affichage pour afficher tous </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td></td></tr>
+    <tr><td class="paramname">emplacementPersonnage</td><td></td></tr>
+    <tr><td class="paramname">pilonne</td><td></td></tr>
+    <tr><td class="paramname">score</td><td></td></tr>
+    <tr><td class="paramname">varAnimationPersonnage</td><td></td></tr>
+    <tr><td class="paramname">cible</td><td></td></tr>
+    <tr><td class="paramname">angle</td><td></td></tr>
+    <tr><td class="paramname">texture_background</td><td></td></tr>
+    <tr><td class="paramname">texture_pipes</td><td></td></tr>
+    <tr><td class="paramname">texture_birds</td><td></td></tr>
+    <tr><td class="paramname">texture_medals</td><td></td></tr>
+    <tr><td class="paramname">texture_scoreBoard</td><td></td></tr>
+    <tr><td class="paramname">texture_sol</td><td></td></tr>
+    <tr><td class="paramname">texture_chiffre</td><td></td></tr>
+    <tr><td class="paramname">texture_highscore)</td><td></td></tr>
+    <tr><td class="paramname">theme</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>void </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a4858bca7396db08c9733a691a7d58f9c_cgraph.jpg" border="0" usemap="#flappy__bird_8c_a4858bca7396db08c9733a691a7d58f9c_cgraph" alt=""/></div>
+<map name="flappy__bird_8c_a4858bca7396db08c9733a691a7d58f9c_cgraph" id="flappy__bird_8c_a4858bca7396db08c9733a691a7d58f9c_cgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a992ce3eab3b684a62428aff5a93ff1f8" title="affiche l&#39;image de fond " alt="" coords="149,5,283,32"/>
+<area shape="rect" id="node3" href="flappy__bird_8c.html#ab428543af2e71cb1991d2d037299fbcd" title="affiche le OBSTACLE " alt="" coords="162,56,270,83"/>
+<area shape="rect" id="node4" href="flappy__bird_8c.html#ad4157024daf3d9d27be448ccea30dda9" title="affiche le SOL DECORE " alt="" coords="174,107,258,133"/>
+<area shape="rect" id="node5" href="flappy__bird_8c.html#a502412a10243d68aa0dcbd8e07e6edb2" title="affiche le personnage a l ecran " alt="" coords="148,157,284,184"/>
+<area shape="rect" id="node6" href="flappy__bird_8c.html#a49aafde64b048663c89457ab94171d3e" title="affiche le score en cours a l ecran " alt="" coords="167,208,265,235"/>
+<area shape="rect" id="node8" href="flappy__bird_8c.html#a470895aeba5741bc6e77bb164d42e836" title="affiche le meilleur score a l&#39;ecran " alt="" coords="144,259,288,285"/>
+<area shape="rect" id="node9" href="commun_functions_8c.html#ad0ed0fe31f27ac7898fd7c0d25f8d71c" title="Affiche l&#39;animation de chargement des envois de requêtes. " alt="" coords="161,309,271,336"/>
+<area shape="rect" id="node10" href="commun_functions_8c.html#a22549bc59dccb5f8748d72b9bec11512" title="Affiche l&#39;animation de retour de requête. " alt="" coords="164,360,268,387"/>
+<area shape="rect" id="node7" href="flappy__bird_8c.html#ae61d8a4fce3f39ca4484ea102ea242c1" title="retourne la longueur d&#39;un nombre " alt="" coords="336,208,393,235"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a4858bca7396db08c9733a691a7d58f9c_icgraph.jpg" border="0" usemap="#flappy__bird_8c_a4858bca7396db08c9733a691a7d58f9c_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_a4858bca7396db08c9733a691a7d58f9c_icgraph" id="flappy__bird_8c_a4858bca7396db08c9733a691a7d58f9c_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="144,5,229,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="277,5,384,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="432,5,557,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="469,56,520,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="605,56,656,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a0ceb3de339eddf081185c52d40819193"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ceb3de339eddf081185c52d40819193">&#9670;&nbsp;</a></span>attendreAvantDepart()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int attendreAvantDepart </td>
+          <td>(</td>
+          <td class="paramtype">Mix_Chunk *&#160;</td>
+          <td class="paramname"><em>flap_wav</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>rdyToSpace</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>attend l'appui sur espace pour demarrer joue un son </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">flap_wav</td><td>jouer le son passer en parametre </td></tr>
+    <tr><td class="paramname">Determine</td><td>si la touche espace a été relachée</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>faux si le joueur quitte le jeu, sinon vrai </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a0ceb3de339eddf081185c52d40819193_icgraph.jpg" border="0" usemap="#flappy__bird_8c_a0ceb3de339eddf081185c52d40819193_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_a0ceb3de339eddf081185c52d40819193_icgraph" id="flappy__bird_8c_a0ceb3de339eddf081185c52d40819193_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="196,5,281,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="329,5,436,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="484,5,609,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="521,56,572,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="657,56,708,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a8b820c5bc000a7a6b332e6cd9fc810fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b820c5bc000a7a6b332e6cd9fc810fe">&#9670;&nbsp;</a></span>collision()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int collision </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structpilonne.html">pilonne</a> *&#160;</td>
+          <td class="paramname"><em>pilonne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Point&#160;</td>
+          <td class="paramname"><em>emplacementPersonnage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Mix_Chunk *&#160;</td>
+          <td class="paramname"><em>hurt_wav</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>permet de detecter une collision et de jouer un son </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pilonne</td><td></td></tr>
+    <tr><td class="paramname">emplacementPersonnage</td><td></td></tr>
+    <tr><td class="paramname">hurt_wav</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>int TRUE/FALSE </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a8b820c5bc000a7a6b332e6cd9fc810fe_icgraph.jpg" border="0" usemap="#flappy__bird_8c_a8b820c5bc000a7a6b332e6cd9fc810fe_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_a8b820c5bc000a7a6b332e6cd9fc810fe_icgraph" id="flappy__bird_8c_a8b820c5bc000a7a6b332e6cd9fc810fe_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="123,5,208,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="256,5,363,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="411,5,536,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="448,56,499,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="584,56,635,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a96e403e8f6333abe2bee8d0429217c7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96e403e8f6333abe2bee8d0429217c7c">&#9670;&nbsp;</a></span>evenement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int evenement </td>
+          <td>(</td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>upper</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>vitesseGraviter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>nb_boucle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Mix_Chunk *&#160;</td>
+          <td class="paramname"><em>flap_wav</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>rdyToSpace</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>remet les variables au DEFINE si on appui sur espace </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">upper</td><td></td></tr>
+    <tr><td class="paramname">vitesseGraviter</td><td></td></tr>
+    <tr><td class="paramname">nb_boucle</td><td></td></tr>
+    <tr><td class="paramname">flap_wav</td><td></td></tr>
+    <tr><td class="paramname">Determine</td><td>si la touche espace a été relachée</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>void </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a96e403e8f6333abe2bee8d0429217c7c_icgraph.jpg" border="0" usemap="#flappy__bird_8c_a96e403e8f6333abe2bee8d0429217c7c_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_a96e403e8f6333abe2bee8d0429217c7c_icgraph" id="flappy__bird_8c_a96e403e8f6333abe2bee8d0429217c7c_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="140,16,225,43"/>
+<area shape="rect" id="node7" href="text_field_8c.html#ae24b08bc0eb4bbc3320b264568532505" title="Recuperer une chaine de caractere saisi au clavier. " alt="" coords="147,79,219,105"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="273,9,380,36"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="428,5,553,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="465,56,516,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="601,81,652,108"/>
+<area shape="rect" id="node8" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="286,104,367,131"/>
+<area shape="rect" id="node9" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="455,107,526,133"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a8f9872781c9ba0176a187193e39dde97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f9872781c9ba0176a187193e39dde97">&#9670;&nbsp;</a></span>flappy_bird()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int flappy_bird </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>highscore</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>send_l</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>send_h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>token</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>hardcore</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture **&#160;</td>
+          <td class="paramname"><em>textures</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fonction principale qui joue le jeu flappy bird. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher le jeu </td></tr>
+    <tr><td class="paramname">highscore</td><td>le record du jeu </td></tr>
+    <tr><td class="paramname">send_l</td><td>La largeur d'écran </td></tr>
+    <tr><td class="paramname">send_h</td><td>La hauteur d'écran </td></tr>
+    <tr><td class="paramname">token</td><td>La clé de connexion du joueur </td></tr>
+    <tr><td class="paramname">hardcore</td><td>Le mode de jeu </td></tr>
+    <tr><td class="paramname">textures</td><td>Les textures du jeu </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>L'erreur associée ou EXIT_SUCCESS si pas d'erreur </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a8f9872781c9ba0176a187193e39dde97_cgraph.jpg" border="0" usemap="#flappy__bird_8c_a8f9872781c9ba0176a187193e39dde97_cgraph" alt=""/></div>
+<map name="flappy__bird_8c_a8f9872781c9ba0176a187193e39dde97_cgraph" id="flappy__bird_8c_a8f9872781c9ba0176a187193e39dde97_cgraph">
+<area shape="rect" id="node2" href="hashage_8c.html#a7bd85e927ff61bf409ab315791552391" title="initialise des valeurs aleatoire pour le hashage " alt="" coords="139,5,333,32"/>
+<area shape="rect" id="node3" href="hashage_8c.html#a52777186f55107ffa1460ab92c79ede4" title="retourne une valeur hasher de la valeur d&#39;entrer. " alt="" coords="583,81,654,108"/>
+<area shape="rect" id="node4" href="flappy__bird_8c.html#a5bc0848bb48b6c9265b8b87c7c09b841" title="initialisation des pilonnes et des animation et de certaine variables liee au boucle du jeu ..." alt="" coords="193,284,279,311"/>
+<area shape="rect" id="node5" href="flappy__bird_8c.html#a4858bca7396db08c9733a691a7d58f9c" title="regroupement de toute les fonctions d&#39;affichage pour afficher tous " alt="" coords="191,335,281,361"/>
+<area shape="rect" id="node10" href="flappy__bird_8c.html#a49aafde64b048663c89457ab94171d3e" title="affiche le score en cours a l ecran " alt="" coords="404,411,503,437"/>
+<area shape="rect" id="node13" href="commun_functions_8c.html#ad0ed0fe31f27ac7898fd7c0d25f8d71c" title="Affiche l&#39;animation de chargement des envois de requêtes. " alt="" coords="398,461,509,488"/>
+<area shape="rect" id="node14" href="commun_functions_8c.html#a22549bc59dccb5f8748d72b9bec11512" title="Affiche l&#39;animation de retour de requête. " alt="" coords="401,512,505,539"/>
+<area shape="rect" id="node15" href="commun_functions_8c.html#accb6052f792ce29f71e79866dff07a58" title="Affiche un texte invitant le joueur à rejouer. " alt="" coords="191,537,281,564"/>
+<area shape="rect" id="node16" href="flappy__bird_8c.html#a0ceb3de339eddf081185c52d40819193" title="attend l&#39;appui sur espace pour demarrer joue un son " alt="" coords="165,588,307,615"/>
+<area shape="rect" id="node17" href="flappy__bird_8c.html#a96e403e8f6333abe2bee8d0429217c7c" title="remet les variables au DEFINE si on appui sur espace " alt="" coords="193,639,279,665"/>
+<area shape="rect" id="node18" href="flappy__bird_8c.html#a09c69a458354e11a45af579085123048" title="permet de mettre a jours les variables utilisez " alt="" coords="142,689,330,716"/>
+<area shape="rect" id="node19" href="flappy__bird_8c.html#a18e8671a141af5a89d184dd7dcdacc21" title="detecte le passage d&#39;un pilonne et joue un son " alt="" coords="172,157,300,184"/>
+<area shape="rect" id="node21" href="flappy__bird_8c.html#a93a55e5f40971511e088f2e52a654c57" title="mise a jours des variables liee a l&#39;environement/decor " alt="" coords="143,740,329,767"/>
+<area shape="rect" id="node22" href="flappy__bird_8c.html#a8b820c5bc000a7a6b332e6cd9fc810fe" title="permet de detecter une collision et de jouer un son " alt="" coords="201,791,271,817"/>
+<area shape="rect" id="node23" href="lib_web_8c.html#a55c3e461f1c4f810c5a38eb74c219fae" title="update le score " alt="" coords="189,841,283,868"/>
+<area shape="rect" id="node6" href="flappy__bird_8c.html#a992ce3eab3b684a62428aff5a93ff1f8" title="affiche l&#39;image de fond " alt="" coords="386,208,521,235"/>
+<area shape="rect" id="node7" href="flappy__bird_8c.html#ab428543af2e71cb1991d2d037299fbcd" title="affiche le OBSTACLE " alt="" coords="399,259,507,285"/>
+<area shape="rect" id="node8" href="flappy__bird_8c.html#ad4157024daf3d9d27be448ccea30dda9" title="affiche le SOL DECORE " alt="" coords="411,309,495,336"/>
+<area shape="rect" id="node9" href="flappy__bird_8c.html#a502412a10243d68aa0dcbd8e07e6edb2" title="affiche le personnage a l ecran " alt="" coords="385,360,521,387"/>
+<area shape="rect" id="node12" href="flappy__bird_8c.html#a470895aeba5741bc6e77bb164d42e836" title="affiche le meilleur score a l&#39;ecran " alt="" coords="381,157,525,184"/>
+<area shape="rect" id="node11" href="flappy__bird_8c.html#ae61d8a4fce3f39ca4484ea102ea242c1" title="retourne la longueur d&#39;un nombre " alt="" coords="590,411,647,437"/>
+<area shape="rect" id="node20" href="hashage_8c.html#a00612e598dd430b4d0cabdd3bd9f4ea4" title="Verifie que la valeur correspond a une valeur et re met a jours les constants pour un prochain hasaha..." alt="" coords="383,107,523,133"/>
+<area shape="rect" id="node24" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="389,867,518,893"/>
+<area shape="rect" id="node26" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="712,816,827,843"/>
+<area shape="rect" id="node25" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="573,867,664,893"/>
+<area shape="rect" id="node29" href="lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="730,867,809,893"/>
+<area shape="rect" id="node27" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="875,791,953,817"/>
+<area shape="rect" id="node28" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="877,841,951,868"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a8f9872781c9ba0176a187193e39dde97_icgraph.jpg" border="0" usemap="#flappy__bird_8c_a8f9872781c9ba0176a187193e39dde97_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_a8f9872781c9ba0176a187193e39dde97_icgraph" id="flappy__bird_8c_a8f9872781c9ba0176a187193e39dde97_icgraph">
+<area shape="rect" id="node2" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="139,5,245,32"/>
+<area shape="rect" id="node3" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="293,5,419,32"/>
+<area shape="rect" id="node4" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="331,56,381,83"/>
+<area shape="rect" id="node5" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="467,56,517,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a5bc0848bb48b6c9265b8b87c7c09b841"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bc0848bb48b6c9265b8b87c7c09b841">&#9670;&nbsp;</a></span>init_pilonne()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void init_pilonne </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structpilonne.html">pilonne</a> *&#160;</td>
+          <td class="paramname"><em>pilonne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>varAnimationPersonnage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>varAnimationSol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>end</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>dead</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>traitement</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>initialisation des pilonnes et des animation et de certaine variables liee au boucle du jeu </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pilonne</td><td>struct pilonne </td></tr>
+    <tr><td class="paramname">varAnimationPersonnage</td><td></td></tr>
+    <tr><td class="paramname">varAnimationSol</td><td></td></tr>
+    <tr><td class="paramname">end</td><td></td></tr>
+    <tr><td class="paramname">dead</td><td></td></tr>
+    <tr><td class="paramname">traitement</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>void </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a5bc0848bb48b6c9265b8b87c7c09b841_icgraph.jpg" border="0" usemap="#flappy__bird_8c_a5bc0848bb48b6c9265b8b87c7c09b841_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_a5bc0848bb48b6c9265b8b87c7c09b841_icgraph" id="flappy__bird_8c_a5bc0848bb48b6c9265b8b87c7c09b841_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="140,5,225,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="273,5,380,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="428,5,553,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="465,56,516,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="601,56,652,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ae61d8a4fce3f39ca4484ea102ea242c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae61d8a4fce3f39ca4484ea102ea242c1">&#9670;&nbsp;</a></span>intLen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int intLen </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>score</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>retourne la longueur d'un nombre </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">score</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>int </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_ae61d8a4fce3f39ca4484ea102ea242c1_icgraph.jpg" border="0" usemap="#flappy__bird_8c_ae61d8a4fce3f39ca4484ea102ea242c1_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_ae61d8a4fce3f39ca4484ea102ea242c1_icgraph" id="flappy__bird_8c_ae61d8a4fce3f39ca4484ea102ea242c1_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a49aafde64b048663c89457ab94171d3e" title="affiche le score en cours a l ecran " alt="" coords="111,5,209,32"/>
+<area shape="rect" id="node3" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="396,5,481,32"/>
+<area shape="rect" id="node8" href="flappy__bird_8c.html#a4858bca7396db08c9733a691a7d58f9c" title="regroupement de toute les fonctions d&#39;affichage pour afficher tous " alt="" coords="257,31,348,57"/>
+<area shape="rect" id="node4" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="529,5,636,32"/>
+<area shape="rect" id="node5" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="684,5,809,32"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="721,56,772,83"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="857,56,908,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a18e8671a141af5a89d184dd7dcdacc21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18e8671a141af5a89d184dd7dcdacc21">&#9670;&nbsp;</a></span>traitement_pilonne()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int traitement_pilonne </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structpilonne.html">pilonne</a> *&#160;</td>
+          <td class="paramname"><em>pilonne</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>traitement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>score</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long long *&#160;</td>
+          <td class="paramname"><em>score_hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>keys</em>[4], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Mix_Chunk *&#160;</td>
+          <td class="paramname"><em>score_wav</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>detecte le passage d'un pilonne et joue un son </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pilonne</td><td>struct pilonne </td></tr>
+    <tr><td class="paramname">traitement</td><td>pilonne a traiter </td></tr>
+    <tr><td class="paramname">score</td><td>score a incrementer </td></tr>
+    <tr><td class="paramname">score_hash</td><td>liee a la securite </td></tr>
+    <tr><td class="paramname">keys</td><td>liee a la securite </td></tr>
+    <tr><td class="paramname">score_wav</td><td>son a jouer</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>int TRUE/FALSE </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a18e8671a141af5a89d184dd7dcdacc21_cgraph.jpg" border="0" usemap="#flappy__bird_8c_a18e8671a141af5a89d184dd7dcdacc21_cgraph" alt=""/></div>
+<map name="flappy__bird_8c_a18e8671a141af5a89d184dd7dcdacc21_cgraph" id="flappy__bird_8c_a18e8671a141af5a89d184dd7dcdacc21_cgraph">
+<area shape="rect" id="node2" href="hashage_8c.html#a00612e598dd430b4d0cabdd3bd9f4ea4" title="Verifie que la valeur correspond a une valeur et re met a jours les constants pour un prochain hasaha..." alt="" coords="181,5,321,32"/>
+<area shape="rect" id="node3" href="hashage_8c.html#a52777186f55107ffa1460ab92c79ede4" title="retourne une valeur hasher de la valeur d&#39;entrer. " alt="" coords="369,5,440,32"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a18e8671a141af5a89d184dd7dcdacc21_icgraph.jpg" border="0" usemap="#flappy__bird_8c_a18e8671a141af5a89d184dd7dcdacc21_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_a18e8671a141af5a89d184dd7dcdacc21_icgraph" id="flappy__bird_8c_a18e8671a141af5a89d184dd7dcdacc21_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="181,5,267,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="315,5,421,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="469,5,595,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="507,56,557,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="643,56,693,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a93a55e5f40971511e088f2e52a654c57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93a55e5f40971511e088f2e52a654c57">&#9670;&nbsp;</a></span>traitementVariableAnimation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void traitementVariableAnimation </td>
+          <td>(</td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>varAnimationPersonnage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>varAnimationSol</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>mise a jours des variables liee a l'environement/decor </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">varAnimationPersonnage</td><td></td></tr>
+    <tr><td class="paramname">varAnimationSol</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>void </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a93a55e5f40971511e088f2e52a654c57_icgraph.jpg" border="0" usemap="#flappy__bird_8c_a93a55e5f40971511e088f2e52a654c57_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_a93a55e5f40971511e088f2e52a654c57_icgraph" id="flappy__bird_8c_a93a55e5f40971511e088f2e52a654c57_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="239,5,324,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="372,5,479,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="527,5,652,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="564,56,615,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="700,56,751,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a09c69a458354e11a45af579085123048"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09c69a458354e11a45af579085123048">&#9670;&nbsp;</a></span>updateVariableEnvironement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void updateVariableEnvironement </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Point *&#160;</td>
+          <td class="paramname"><em>emplacementPersonnage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>upper</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>angle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>nb_boucle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>vitesseGraviter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>permet de mettre a jours les variables utilisez </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">emplacementPersonnage</td><td>point X,Y sur la position de l'oiseau </td></tr>
+    <tr><td class="paramname">upper</td><td>l'oiseau monte </td></tr>
+    <tr><td class="paramname">angle</td><td>angle de l'oiseau </td></tr>
+    <tr><td class="paramname">nb_boucle</td><td>nombre de boucle </td></tr>
+    <tr><td class="paramname">vitesseGraviter</td><td>vitesse de graviter</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>void </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="flappy__bird_8c_a09c69a458354e11a45af579085123048_icgraph.jpg" border="0" usemap="#flappy__bird_8c_a09c69a458354e11a45af579085123048_icgraph" alt=""/></div>
+<map name="flappy__bird_8c_a09c69a458354e11a45af579085123048_icgraph" id="flappy__bird_8c_a09c69a458354e11a45af579085123048_icgraph">
+<area shape="rect" id="node2" href="flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="241,5,327,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="375,5,481,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="529,5,655,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="567,56,617,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="703,56,753,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des variables</h2>
+<a id="adf971c6127777fea40325a6b3ccd5179"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf971c6127777fea40325a6b3ccd5179">&#9670;&nbsp;</a></span>BACKGROUND</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Rect BACKGROUND = {0, 0, 144, 256}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae4eeb02b43aebb10a51d6d398895765e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4eeb02b43aebb10a51d6d398895765e">&#9670;&nbsp;</a></span>CHIFFRE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Rect CHIFFRE = {0, 0, 12, 18}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a093b04abda57654be8b6ece6e07ab06d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a093b04abda57654be8b6ece6e07ab06d">&#9670;&nbsp;</a></span>COLOR_LOADING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Color COLOR_LOADING = {0x22,0xf4,0x57}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3365e2a32bed45d73157a35657807826"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3365e2a32bed45d73157a35657807826">&#9670;&nbsp;</a></span>DISTANCE_BETWEEN_OBSTACLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int DISTANCE_BETWEEN_OBSTACLE = 49</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aefe71bca4c41eceec6c77b8d9addfb65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefe71bca4c41eceec6c77b8d9addfb65">&#9670;&nbsp;</a></span>DISTANCE_UNDER_OBSTACLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int DISTANCE_UNDER_OBSTACLE = 100</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1563e736047cb57052434e132e4afac4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1563e736047cb57052434e132e4afac4">&#9670;&nbsp;</a></span>FRAME_TIME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int FRAME_TIME = 1000/<a class="el" href="flappy__bird_8c.html#ac92ca5ab87034a348decad7ee8d4bd1b">FPS</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5c07d7d9d0c384ff87214edb5f44765b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c07d7d9d0c384ff87214edb5f44765b">&#9670;&nbsp;</a></span>GRAVITY_SPEED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int GRAVITY_SPEED = 2 * (<a class="el" href="flappy__bird_8c.html#ac92ca5ab87034a348decad7ee8d4bd1b">FPS</a>/30)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0d4958bc82151e228ae23dc448e879f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d4958bc82151e228ae23dc448e879f2">&#9670;&nbsp;</a></span>HIGH_SCORE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Rect HIGH_SCORE = {0,0,512,512}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab61fc499948fb2c97e86302b86fa07de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab61fc499948fb2c97e86302b86fa07de">&#9670;&nbsp;</a></span>MEDALS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Rect MEDALS = {0,0,22,22}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adbe7e4a5519e1ca76121ceecaf05c984"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbe7e4a5519e1ca76121ceecaf05c984">&#9670;&nbsp;</a></span>OBSTACLE_ORANGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Rect OBSTACLE_ORANGE = {0,0, 26, 160}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a871a57bee941abea2174acde4386b3e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a871a57bee941abea2174acde4386b3e0">&#9670;&nbsp;</a></span>OBSTACLE_VERT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Rect OBSTACLE_VERT = {52,0, 26, 160}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7aa8f58e4691e6534d4ccae36b92e3e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7aa8f58e4691e6534d4ccae36b92e3e2">&#9670;&nbsp;</a></span>PERSO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Rect PERSO = {0, 0, 17, 12}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0e174c1b4b8f590a0ea2051e4918c2fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e174c1b4b8f590a0ea2051e4918c2fe">&#9670;&nbsp;</a></span>SCOREBOARD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Rect SCOREBOARD = {0,0,113,57}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a086dc677d12a2ef003b8642fd875b470"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a086dc677d12a2ef003b8642fd875b470">&#9670;&nbsp;</a></span>SOL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Rect SOL = {0, 0, 168, 55}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a30862aa51c2944f287c4445751341ee8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30862aa51c2944f287c4445751341ee8">&#9670;&nbsp;</a></span>updateEnded</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int updateEnded</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a676a51616828adeeea54883648de061b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a676a51616828adeeea54883648de061b">&#9670;&nbsp;</a></span>UPPER_STEP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int UPPER_STEP = 4 * (<a class="el" href="flappy__bird_8c.html#ac92ca5ab87034a348decad7ee8d4bd1b">FPS</a>/30)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6d29d77d4db16afe3012ee7ab51f6878"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d29d77d4db16afe3012ee7ab51f6878">&#9670;&nbsp;</a></span>VITESSE_DEPLACEMENT_DECOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int VITESSE_DEPLACEMENT_DECOR = 8 / (<a class="el" href="flappy__bird_8c.html#ac92ca5ab87034a348decad7ee8d4bd1b">FPS</a>/30)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>

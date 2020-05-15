@@ -1,0 +1,2748 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Nineteen: Référence du fichier games/2_snake/snake.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="favicon.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Nineteen
+   </div>
+   <div id="projectbrief">The best of arcade games !</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_4b6f782e158b0b98da980a0e11a23a15.html">games</a></li><li class="navelem"><a class="el" href="dir_fb0388ad491dd56be04156f352b75a3d.html">2_snake</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Fonctions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle">
+<div class="title">Référence du fichier snake.c</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Jeu snake avec bonus.  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &quot;../../include/define.h&quot;</code><br />
+<code>#include &quot;../../include/hashage.h&quot;</code><br />
+<code>#include &quot;../../include/libWeb.h&quot;</code><br />
+<code>#include &quot;../../include/communFunctions.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="2__snake_2config_8h_source.html">config.h</a>&quot;</code><br />
+<code>#include &lt;time.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL_ttf.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL_mixer.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL_image.h&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &lt;math.h&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Graphe des dépendances par inclusion de snake.c:</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c__incl.jpg" border="0" usemap="#games_22__snake_2snake_8c" alt=""/></div>
+<map name="games_22__snake_2snake_8c" id="games_22__snake_2snake_8c">
+<area shape="rect" id="node7" href="2__snake_2config_8h.html" title="config.h" alt="" coords="828,80,896,107"/>
+</map>
+</div>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:a3feffd5962865fbe7950d3bbe71ba771"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a3feffd5962865fbe7950d3bbe71ba771">snakeInit</a> ()</td></tr>
+<tr class="memdesc:a3feffd5962865fbe7950d3bbe71ba771"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise l'environement de snake.  <a href="#a3feffd5962865fbe7950d3bbe71ba771">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a3feffd5962865fbe7950d3bbe71ba771"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75101518da20974c59b9d79e7f740e25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a75101518da20974c59b9d79e7f740e25">initFruit</a> (<a class="el" href="struct_fruit.html">Fruit</a> **fruit)</td></tr>
+<tr class="memdesc:a75101518da20974c59b9d79e7f740e25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise le tableau dynamique de fruits.  <a href="#a75101518da20974c59b9d79e7f740e25">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a75101518da20974c59b9d79e7f740e25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ec9d201bf0b449acfc67afdfaf10609"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a4ec9d201bf0b449acfc67afdfaf10609">initBonus</a> (<a class="el" href="struct_fruit.html">Fruit</a> *bonus)</td></tr>
+<tr class="memdesc:a4ec9d201bf0b449acfc67afdfaf10609"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise le bonus.  <a href="#a4ec9d201bf0b449acfc67afdfaf10609">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a4ec9d201bf0b449acfc67afdfaf10609"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a739086fd85b17cc39593a193118b0682"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a739086fd85b17cc39593a193118b0682">turnLeft</a> (double *angle)</td></tr>
+<tr class="memdesc:a739086fd85b17cc39593a193118b0682"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tourne le serpent vers la gauche.  <a href="#a739086fd85b17cc39593a193118b0682">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a739086fd85b17cc39593a193118b0682"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae92e302f554e9e33c5a52e6251106a89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#ae92e302f554e9e33c5a52e6251106a89">turnRight</a> (double *angle)</td></tr>
+<tr class="memdesc:ae92e302f554e9e33c5a52e6251106a89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tourne le serpent vers la droite.  <a href="#ae92e302f554e9e33c5a52e6251106a89">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ae92e302f554e9e33c5a52e6251106a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae38231a62f58e817c8a5d5c0e65d81c7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#ae38231a62f58e817c8a5d5c0e65d81c7">norme</a> (Vector2f v)</td></tr>
+<tr class="memdesc:ae38231a62f58e817c8a5d5c0e65d81c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule la norme d'un vecteur.  <a href="#ae38231a62f58e817c8a5d5c0e65d81c7">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ae38231a62f58e817c8a5d5c0e65d81c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fa90be2b2e8c929c669e9f1d6fe57f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a2fa90be2b2e8c929c669e9f1d6fe57f6">initBody</a> (size_t *size, <a class="el" href="struct_snake_part.html">SnakePart</a> **<a class="el" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5">snake</a>)</td></tr>
+<tr class="memdesc:a2fa90be2b2e8c929c669e9f1d6fe57f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise le corps du serpent.  <a href="#a2fa90be2b2e8c929c669e9f1d6fe57f6">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a2fa90be2b2e8c929c669e9f1d6fe57f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8daf9d3a8712f036f94adbef24b45e71"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a8daf9d3a8712f036f94adbef24b45e71">initToV</a> (Vector2f *vTab, Vector2f v, int iStart, int iEnd)</td></tr>
+<tr class="memdesc:a8daf9d3a8712f036f94adbef24b45e71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise une portion de tableau de vecteur.  <a href="#a8daf9d3a8712f036f94adbef24b45e71">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a8daf9d3a8712f036f94adbef24b45e71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7aa21dd7d83b069bbcb2cffe3bf64d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#aa7aa21dd7d83b069bbcb2cffe3bf64d2">shiftRefresh</a> (Vector2f pastBody[<a class="el" href="2__snake_2config_8h.html#affb807bf09880ade28c8c9dc7b67b71b">REMIND_BODY</a>], int nbDecale)</td></tr>
+<tr class="memdesc:aa7aa21dd7d83b069bbcb2cffe3bf64d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décale le tableau de positions anciennes du serpent pour en ajouter de nouvelles.  <a href="#aa7aa21dd7d83b069bbcb2cffe3bf64d2">Plus de détails...</a><br /></td></tr>
+<tr class="separator:aa7aa21dd7d83b069bbcb2cffe3bf64d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad306e9c3cf09adcb1846c4f888957eec"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#ad306e9c3cf09adcb1846c4f888957eec">addBody</a> (<a class="el" href="struct_snake_part.html">SnakePart</a> **<a class="el" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5">snake</a>, size_t *size, Vector2f pastBody[<a class="el" href="2__snake_2config_8h.html#affb807bf09880ade28c8c9dc7b67b71b">REMIND_BODY</a>], float *radiusRestant)</td></tr>
+<tr class="memdesc:ad306e9c3cf09adcb1846c4f888957eec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ajoute des parties de corps au serpent.  <a href="#ad306e9c3cf09adcb1846c4f888957eec">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ad306e9c3cf09adcb1846c4f888957eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad644da8ea3e101158c01657e4f38684"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#aad644da8ea3e101158c01657e4f38684">shiftFreeSpace</a> (Vector2f *pastBody)</td></tr>
+<tr class="memdesc:aad644da8ea3e101158c01657e4f38684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décale le tableau de positions anciennes du serpent pour libérer de la place.  <a href="#aad644da8ea3e101158c01657e4f38684">Plus de détails...</a><br /></td></tr>
+<tr class="separator:aad644da8ea3e101158c01657e4f38684"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a302fa1c00d3dfcf2e7deda97d2f86097"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a302fa1c00d3dfcf2e7deda97d2f86097">shiftBomb</a> (Vector2f *pastBody)</td></tr>
+<tr class="memdesc:a302fa1c00d3dfcf2e7deda97d2f86097"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décale le tableau de positions anciennes du serpent lors d'une explosion de bombe.  <a href="#a302fa1c00d3dfcf2e7deda97d2f86097">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a302fa1c00d3dfcf2e7deda97d2f86097"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24e583790e5d49a5e6fa3d179ea4ae53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a24e583790e5d49a5e6fa3d179ea4ae53">rmBody</a> (<a class="el" href="struct_snake_part.html">SnakePart</a> **<a class="el" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5">snake</a>, size_t *size, int nbRm, Vector2f *pastBody, <a class="el" href="struct_snake_part.html">SnakePart</a> **deadBodies, size_t *nbDeadBodies, int deadly, int ratioTexture, int initFrame)</td></tr>
+<tr class="memdesc:a24e583790e5d49a5e6fa3d179ea4ae53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suprimme des parties du serpent.  <a href="#a24e583790e5d49a5e6fa3d179ea4ae53">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a24e583790e5d49a5e6fa3d179ea4ae53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e42dbadd8f1b2e7eea7f50643e21130"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a0e42dbadd8f1b2e7eea7f50643e21130">drawBody</a> (SDL_Renderer *renderer, SDL_Texture *snakeTexture, <a class="el" href="struct_snake_part.html">SnakePart</a> *<a class="el" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5">snake</a>, size_t size, int frameUnkillable)</td></tr>
+<tr class="memdesc:a0e42dbadd8f1b2e7eea7f50643e21130"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche le serpent.  <a href="#a0e42dbadd8f1b2e7eea7f50643e21130">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a0e42dbadd8f1b2e7eea7f50643e21130"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78044bb5fe3a0f72b7777dbe1f4e2d82"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a78044bb5fe3a0f72b7777dbe1f4e2d82">hitboxTail</a> (<a class="el" href="struct_snake_part.html">SnakePart</a> *<a class="el" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5">snake</a>, size_t size)</td></tr>
+<tr class="memdesc:a78044bb5fe3a0f72b7777dbe1f4e2d82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Détermine si la tête du serpent touche sa queue.  <a href="#a78044bb5fe3a0f72b7777dbe1f4e2d82">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a78044bb5fe3a0f72b7777dbe1f4e2d82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9234d8c6419bdecdd99e4e9596fdbde"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#aa9234d8c6419bdecdd99e4e9596fdbde">tooCloseFromHead</a> (<a class="el" href="struct_snake_part.html">SnakePart</a> head, <a class="el" href="struct_fruit.html">Fruit</a> fruit)</td></tr>
+<tr class="memdesc:aa9234d8c6419bdecdd99e4e9596fdbde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Détermine si un fruit est trop proche de la tête pour pouvoir apparaître.  <a href="#aa9234d8c6419bdecdd99e4e9596fdbde">Plus de détails...</a><br /></td></tr>
+<tr class="separator:aa9234d8c6419bdecdd99e4e9596fdbde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88e97e8f14fe02486dcdafa98c1c1da5"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a88e97e8f14fe02486dcdafa98c1c1da5">tooCloseFromWall</a> (Vector2f point, int dist)</td></tr>
+<tr class="memdesc:a88e97e8f14fe02486dcdafa98c1c1da5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Détermine si un point est trop proche d'un mur par rapport à une distance donnée.  <a href="#a88e97e8f14fe02486dcdafa98c1c1da5">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a88e97e8f14fe02486dcdafa98c1c1da5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ab96fad579ff79a2df0bb06e86cb7d0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a5ab96fad579ff79a2df0bb06e86cb7d0">tooCloseFromCorner</a> (<a class="el" href="struct_fruit.html">Fruit</a> fruit)</td></tr>
+<tr class="memdesc:a5ab96fad579ff79a2df0bb06e86cb7d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Détermine si un fruit est trop proche d'un coin pour pouvoir apparaître.  <a href="#a5ab96fad579ff79a2df0bb06e86cb7d0">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a5ab96fad579ff79a2df0bb06e86cb7d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a707860ff76b3c064c97abfb3aa3562d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a707860ff76b3c064c97abfb3aa3562d1">tooCloseFromFruit</a> (<a class="el" href="struct_fruit.html">Fruit</a> *fruitRang, int rang, <a class="el" href="struct_fruit.html">Fruit</a> *fruitSearch, int nbFruitSearch)</td></tr>
+<tr class="memdesc:a707860ff76b3c064c97abfb3aa3562d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Détermine si un fruit est trop d'un autre ou d'un bonus pour pouvoir apparaître.  <a href="#a707860ff76b3c064c97abfb3aa3562d1">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a707860ff76b3c064c97abfb3aa3562d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25fd68046ffe688449023d7d4d75c95a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a25fd68046ffe688449023d7d4d75c95a">spawnFruit</a> (<a class="el" href="struct_snake_part.html">SnakePart</a> head, <a class="el" href="struct_fruit.html">Fruit</a> *fruit, int rang, int nbFruits, float nbFruitEaten, <a class="el" href="struct_fruit.html">Fruit</a> *bonus, Vector2f spawn, int spawnCondition, int retardFrame, Mix_Chunk *soundAppear, int hardcore)</td></tr>
+<tr class="memdesc:a25fd68046ffe688449023d7d4d75c95a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait apparaître un fruit.  <a href="#a25fd68046ffe688449023d7d4d75c95a">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a25fd68046ffe688449023d7d4d75c95a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a358f322aca8a33648ffc238cd821caca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a358f322aca8a33648ffc238cd821caca">spawnBonus</a> (<a class="el" href="struct_snake_part.html">SnakePart</a> head, <a class="el" href="struct_fruit.html">Fruit</a> *bonus, float nbFruitEaten, <a class="el" href="struct_fruit.html">Fruit</a> *fruit, int nbFruits)</td></tr>
+<tr class="memdesc:a358f322aca8a33648ffc238cd821caca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait apparaître un bonus.  <a href="#a358f322aca8a33648ffc238cd821caca">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a358f322aca8a33648ffc238cd821caca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b081f3bfec305b13e9f0791605451c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a1b081f3bfec305b13e9f0791605451c8">reachDest</a> (<a class="el" href="struct_fruit.html">Fruit</a> *fruit, size_t nbFruits)</td></tr>
+<tr class="memdesc:a1b081f3bfec305b13e9f0791605451c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Déplace les fruits lors de l'animation de coffre.  <a href="#a1b081f3bfec305b13e9f0791605451c8">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a1b081f3bfec305b13e9f0791605451c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f4d06dd5298cf3c4dc09b54867c1b3f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a7f4d06dd5298cf3c4dc09b54867c1b3f">hitboxFruit</a> (<a class="el" href="struct_fruit.html">Fruit</a> fruit, <a class="el" href="struct_snake_part.html">SnakePart</a> head)</td></tr>
+<tr class="memdesc:a7f4d06dd5298cf3c4dc09b54867c1b3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Détermine si la tête du serpent est sur un fruit.  <a href="#a7f4d06dd5298cf3c4dc09b54867c1b3f">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a7f4d06dd5298cf3c4dc09b54867c1b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8abf206e978ebd4f4d9ac075d0a2e01c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a8abf206e978ebd4f4d9ac075d0a2e01c">drawFruit</a> (SDL_Renderer *renderer, SDL_Texture *fruitTexture, SDL_Texture *spawnTexture, <a class="el" href="struct_fruit.html">Fruit</a> fruit, int hardcore)</td></tr>
+<tr class="memdesc:a8abf206e978ebd4f4d9ac075d0a2e01c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche un fruit.  <a href="#a8abf206e978ebd4f4d9ac075d0a2e01c">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a8abf206e978ebd4f4d9ac075d0a2e01c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40cfb6ec79f225241ad8047cda42c6ea"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a40cfb6ec79f225241ad8047cda42c6ea">drawHelpText</a> (SDL_Renderer *renderer, SDL_Texture *flecheTexture)</td></tr>
+<tr class="memdesc:a40cfb6ec79f225241ad8047cda42c6ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche les commandes.  <a href="#a40cfb6ec79f225241ad8047cda42c6ea">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a40cfb6ec79f225241ad8047cda42c6ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ffbfa8da628fe1de8480152fa600f38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a3ffbfa8da628fe1de8480152fa600f38">drawPotions</a> (SDL_Renderer *renderer, int nbPotion, SDL_Texture *fruitTexture, float ratioWindowSize)</td></tr>
+<tr class="memdesc:a3ffbfa8da628fe1de8480152fa600f38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche les potions possédés ou non.  <a href="#a3ffbfa8da628fe1de8480152fa600f38">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a3ffbfa8da628fe1de8480152fa600f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3596b36513da05776c4e30e6e4a2cde"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#ab3596b36513da05776c4e30e6e4a2cde">drawJauge</a> (SDL_Renderer *renderer, SDL_Texture *basketTexture, float ratioWindowSize, float jaugeValue)</td></tr>
+<tr class="memdesc:ab3596b36513da05776c4e30e6e4a2cde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche la jauge.  <a href="#ab3596b36513da05776c4e30e6e4a2cde">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ab3596b36513da05776c4e30e6e4a2cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb567930c2685b3e7802f60895a70b62"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#abb567930c2685b3e7802f60895a70b62">drawDeadBody</a> (SDL_Renderer *renderer, SDL_Texture *deadBodyTexture, <a class="el" href="struct_snake_part.html">SnakePart</a> deadBody)</td></tr>
+<tr class="memdesc:abb567930c2685b3e7802f60895a70b62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche une animation de partie de serpent morte.  <a href="#abb567930c2685b3e7802f60895a70b62">Plus de détails...</a><br /></td></tr>
+<tr class="separator:abb567930c2685b3e7802f60895a70b62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24a99c463dabaf629aacbc6581772e12"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a24a99c463dabaf629aacbc6581772e12">drawTotalScore</a> (SDL_Renderer *renderer, TTF_Font *font, int scoreShow, float ratioWindowSize)</td></tr>
+<tr class="memdesc:a24a99c463dabaf629aacbc6581772e12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche une animation de partie de serpent morte.  <a href="#a24a99c463dabaf629aacbc6581772e12">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a24a99c463dabaf629aacbc6581772e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac19669d13e8261ca407db47f062b9518"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#ac19669d13e8261ca407db47f062b9518">shiftRadius</a> (<a class="el" href="struct_snake_part.html">SnakePart</a> **<a class="el" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5">snake</a>, size_t *size, Vector2f pastBody[<a class="el" href="2__snake_2config_8h.html#affb807bf09880ade28c8c9dc7b67b71b">REMIND_BODY</a>], float *radiusRestant)</td></tr>
+<tr class="memdesc:ac19669d13e8261ca407db47f062b9518"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décalle la taille des parties de serpents (digestion)  <a href="#ac19669d13e8261ca407db47f062b9518">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ac19669d13e8261ca407db47f062b9518"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf27e85aa2f853848d38330822cbf27b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#abf27e85aa2f853848d38330822cbf27b">moveSnake</a> (<a class="el" href="struct_snake_part.html">SnakePart</a> **<a class="el" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5">snake</a>, Vector2f pastBody[<a class="el" href="2__snake_2config_8h.html#affb807bf09880ade28c8c9dc7b67b71b">REMIND_BODY</a>], size_t *size, float speed, double dir, <a class="el" href="struct_fruit.html">Fruit</a> *fruit, size_t nbFruits, <a class="el" href="struct_fruit.html">Fruit</a> *bonus, float *radiusRestant, int hardcore)</td></tr>
+<tr class="memdesc:abf27e85aa2f853848d38330822cbf27b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décalle la taille des parties de serpents (digestion)  <a href="#abf27e85aa2f853848d38330822cbf27b">Plus de détails...</a><br /></td></tr>
+<tr class="separator:abf27e85aa2f853848d38330822cbf27b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01d32a4e465831ff02093a975fc19cfc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a01d32a4e465831ff02093a975fc19cfc">scoreSize</a> (<a class="el" href="struct_fruit.html">Fruit</a> fruit)</td></tr>
+<tr class="memdesc:a01d32a4e465831ff02093a975fc19cfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Détermine la taille d'affichage du score d'un fruit.  <a href="#a01d32a4e465831ff02093a975fc19cfc">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a01d32a4e465831ff02093a975fc19cfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79a3ba2cf055230de7d78992630f3acc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a79a3ba2cf055230de7d78992630f3acc">eatFruit</a> (<a class="el" href="struct_snake_part.html">SnakePart</a> **<a class="el" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5">snake</a>, size_t *size, <a class="el" href="struct_fruit.html">Fruit</a> **fruitTab, size_t *nbFruits, <a class="el" href="struct_fruit.html">Fruit</a> fruit, float *speed, <a class="el" href="struct_score_total.html">ScoreTotal</a> *score, float *nbFruitEaten, int *frameJaugeAnim, Vector2f *pastBody, <a class="el" href="struct_fruit.html">Fruit</a> *bonus, <a class="el" href="struct_snake_part.html">SnakePart</a> **deadBodies, size_t *nbDeadBodies, int *nbPotion, float *poisoned, <a class="el" href="struct_score.html">Score</a> **scoreAffichage, size_t *nbScoreAffichage, int *frameAcce, Mix_Chunk **sounds, long long *score_hash, long keys[4], int hardcore)</td></tr>
+<tr class="memdesc:a79a3ba2cf055230de7d78992630f3acc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mange un fruit.  <a href="#a79a3ba2cf055230de7d78992630f3acc">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a79a3ba2cf055230de7d78992630f3acc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad19affe43f9c0e08c2e359c5d56ed59c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#ad19affe43f9c0e08c2e359c5d56ed59c">drawScore</a> (SDL_Renderer *renderer, SDL_Texture *scoreTexture, <a class="el" href="struct_score.html">Score</a> scoreAffichage)</td></tr>
+<tr class="memdesc:ad19affe43f9c0e08c2e359c5d56ed59c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche un score de terrain.  <a href="#ad19affe43f9c0e08c2e359c5d56ed59c">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ad19affe43f9c0e08c2e359c5d56ed59c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7a3606e921e095262b200e3b103ca87"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#ae7a3606e921e095262b200e3b103ca87">myFrees</a> (<a class="el" href="struct_fruit.html">Fruit</a> **fruits, <a class="el" href="struct_snake_part.html">SnakePart</a> **deadBodies, <a class="el" href="struct_snake_part.html">SnakePart</a> **snakeBody, <a class="el" href="struct_score.html">Score</a> **scoreAffichage, Mix_Chunk **sounds, SDL_Texture *<a class="el" href="room_8c.html#a158b90dfedb211efa4c317267c983dd2">textures</a>[NB_SNAKE_TEXTURES], TTF_Font *fonts[<a class="el" href="2__snake_2config_8h.html#a017842361bde423abc80e430f9777fe6">NB_SNAKE_FONTS</a>], SDL_Thread **<a class="el" href="main_8c.html#a584962a25015c7d6e18e294f55a8bc2d">thread</a>)</td></tr>
+<tr class="memdesc:ae7a3606e921e095262b200e3b103ca87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche un score de terrain.  <a href="#ae7a3606e921e095262b200e3b103ca87">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ae7a3606e921e095262b200e3b103ca87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade7b297c3e6ac4e9ba64a21163eec9b5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5">snake</a> (SDL_Renderer *renderer, int highscore, int <a class="el" href="room_8c.html#a7bc33449edbe70d0faa8d9b08ac317e7">WinWidth</a>, int <a class="el" href="room_8c.html#a14d631ded45fe3c6396d41f0b31a8aba">WinHeight</a>, char *token, int hardcore, SDL_Texture **<a class="el" href="room_8c.html#a158b90dfedb211efa4c317267c983dd2">textures</a>)</td></tr>
+<tr class="memdesc:ade7b297c3e6ac4e9ba64a21163eec9b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche un score de terrain.  <a href="#ade7b297c3e6ac4e9ba64a21163eec9b5">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ade7b297c3e6ac4e9ba64a21163eec9b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a30862aa51c2944f287c4445751341ee8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="snake_8c.html#a30862aa51c2944f287c4445751341ee8">updateEnded</a></td></tr>
+<tr class="separator:a30862aa51c2944f287c4445751341ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>Jeu snake avec bonus. </p>
+<dl class="section author"><dt>Auteur</dt><dd>Hugo Lecomte </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>25/04/2020 </dd></dl>
+</div><h2 class="groupheader">Documentation des fonctions</h2>
+<a id="ad306e9c3cf09adcb1846c4f888957eec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad306e9c3cf09adcb1846c4f888957eec">&#9670;&nbsp;</a></span>addBody()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int addBody </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a> **&#160;</td>
+          <td class="paramname"><em>snake</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2f&#160;</td>
+          <td class="paramname"><em>pastBody</em>[REMIND_BODY], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>radiusRestant</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ajoute des parties de corps au serpent. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">snake</td><td>Le tableau de parties de corps </td></tr>
+    <tr><td class="paramname">size</td><td>La taille du serpent </td></tr>
+    <tr><td class="paramname">pastBody</td><td>Les positions anciennes du serpent </td></tr>
+    <tr><td class="paramname">radiusRestant</td><td>La taille excedante de la dernière partie de queue </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>Le nombre de parties de corps ajoutées </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_ad306e9c3cf09adcb1846c4f888957eec_cgraph.jpg" border="0" usemap="#snake_8c_ad306e9c3cf09adcb1846c4f888957eec_cgraph" alt=""/></div>
+<map name="snake_8c_ad306e9c3cf09adcb1846c4f888957eec_cgraph" id="snake_8c_ad306e9c3cf09adcb1846c4f888957eec_cgraph">
+<area shape="rect" id="node2" href="snake_8c.html#aa7aa21dd7d83b069bbcb2cffe3bf64d2" title="Décale le tableau de positions anciennes du serpent pour en ajouter de nouvelles. ..." alt="" coords="127,5,220,32"/>
+<area shape="rect" id="node3" href="snake_8c.html#a8daf9d3a8712f036f94adbef24b45e71" title="Initialise une portion de tableau de vecteur. " alt="" coords="268,5,331,32"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_ad306e9c3cf09adcb1846c4f888957eec_icgraph.jpg" border="0" usemap="#snake_8c_ad306e9c3cf09adcb1846c4f888957eec_icgraph" alt=""/></div>
+<map name="snake_8c_ad306e9c3cf09adcb1846c4f888957eec_icgraph" id="snake_8c_ad306e9c3cf09adcb1846c4f888957eec_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ac19669d13e8261ca407db47f062b9518" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="127,5,215,32"/>
+<area shape="rect" id="node3" href="snake_8c.html#abf27e85aa2f853848d38330822cbf27b" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="263,5,353,32"/>
+<area shape="rect" id="node4" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="401,5,459,32"/>
+<area shape="rect" id="node5" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="507,5,613,32"/>
+<area shape="rect" id="node6" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="661,5,787,32"/>
+<area shape="rect" id="node7" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="699,56,749,83"/>
+<area shape="rect" id="node8" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="835,56,885,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a0e42dbadd8f1b2e7eea7f50643e21130"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e42dbadd8f1b2e7eea7f50643e21130">&#9670;&nbsp;</a></span>drawBody()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void drawBody </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>snakeTexture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a> *&#160;</td>
+          <td class="paramname"><em>snake</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>frameUnkillable</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Affiche le serpent. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">snakeTexture</td><td>La texture du serpent </td></tr>
+    <tr><td class="paramname">snake</td><td>Le serpent </td></tr>
+    <tr><td class="paramname">size</td><td>La taille du serpent </td></tr>
+    <tr><td class="paramname">frameUnkillable</td><td>Le nombre de frame où le serpent est invulnérable </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a0e42dbadd8f1b2e7eea7f50643e21130_icgraph.jpg" border="0" usemap="#snake_8c_a0e42dbadd8f1b2e7eea7f50643e21130_icgraph" alt=""/></div>
+<map name="snake_8c_a0e42dbadd8f1b2e7eea7f50643e21130_icgraph" id="snake_8c_a0e42dbadd8f1b2e7eea7f50643e21130_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="133,5,191,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="239,5,345,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="393,5,519,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="431,56,481,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="567,56,617,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="abb567930c2685b3e7802f60895a70b62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb567930c2685b3e7802f60895a70b62">&#9670;&nbsp;</a></span>drawDeadBody()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void drawDeadBody </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>deadBodyTexture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a>&#160;</td>
+          <td class="paramname"><em>deadBody</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Affiche une animation de partie de serpent morte. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">deadBodyTexture</td><td>La texture d'animation de mort </td></tr>
+    <tr><td class="paramname">deadBody</td><td>La partie morte à afficher </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_abb567930c2685b3e7802f60895a70b62_icgraph.jpg" border="0" usemap="#snake_8c_abb567930c2685b3e7802f60895a70b62_icgraph" alt=""/></div>
+<map name="snake_8c_abb567930c2685b3e7802f60895a70b62_icgraph" id="snake_8c_abb567930c2685b3e7802f60895a70b62_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="164,5,221,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="269,5,376,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="424,5,549,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="461,56,512,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="597,56,648,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a8abf206e978ebd4f4d9ac075d0a2e01c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8abf206e978ebd4f4d9ac075d0a2e01c">&#9670;&nbsp;</a></span>drawFruit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void drawFruit </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>fruitTexture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>spawnTexture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a>&#160;</td>
+          <td class="paramname"><em>fruit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>hardcore</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Affiche un fruit. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">fruitTexture</td><td>La texture de fruits </td></tr>
+    <tr><td class="paramname">spawnTexture</td><td>La texture d'animation d'apparition </td></tr>
+    <tr><td class="paramname">fruit</td><td>Le fruit à afficher </td></tr>
+    <tr><td class="paramname">hardcore</td><td>La difficulté du jeu </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a8abf206e978ebd4f4d9ac075d0a2e01c_icgraph.jpg" border="0" usemap="#snake_8c_a8abf206e978ebd4f4d9ac075d0a2e01c_icgraph" alt=""/></div>
+<map name="snake_8c_a8abf206e978ebd4f4d9ac075d0a2e01c_icgraph" id="snake_8c_a8abf206e978ebd4f4d9ac075d0a2e01c_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="129,5,187,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="235,5,341,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="389,5,515,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="427,56,477,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="563,56,613,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a40cfb6ec79f225241ad8047cda42c6ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40cfb6ec79f225241ad8047cda42c6ea">&#9670;&nbsp;</a></span>drawHelpText()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void drawHelpText </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>flecheTexture</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Affiche les commandes. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">flecheTexture</td><td>La texture des flèches </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a40cfb6ec79f225241ad8047cda42c6ea_icgraph.jpg" border="0" usemap="#snake_8c_a40cfb6ec79f225241ad8047cda42c6ea_icgraph" alt=""/></div>
+<map name="snake_8c_a40cfb6ec79f225241ad8047cda42c6ea_icgraph" id="snake_8c_a40cfb6ec79f225241ad8047cda42c6ea_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="156,5,213,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="261,5,368,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="416,5,541,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="453,56,504,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="589,56,640,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ab3596b36513da05776c4e30e6e4a2cde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3596b36513da05776c4e30e6e4a2cde">&#9670;&nbsp;</a></span>drawJauge()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void drawJauge </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>basketTexture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ratioWindowSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>jaugeValue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Affiche la jauge. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">basketTexture</td><td>La texture de la jauge </td></tr>
+    <tr><td class="paramname">ratioWindowSize</td><td>Le ratio tailleBase/tailleActuelle </td></tr>
+    <tr><td class="paramname">jaugeValue</td><td>La valeur de la jauge </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_ab3596b36513da05776c4e30e6e4a2cde_icgraph.jpg" border="0" usemap="#snake_8c_ab3596b36513da05776c4e30e6e4a2cde_icgraph" alt=""/></div>
+<map name="snake_8c_ab3596b36513da05776c4e30e6e4a2cde_icgraph" id="snake_8c_ab3596b36513da05776c4e30e6e4a2cde_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="139,5,196,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="244,5,351,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="399,5,524,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="436,56,487,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="572,56,623,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a3ffbfa8da628fe1de8480152fa600f38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ffbfa8da628fe1de8480152fa600f38">&#9670;&nbsp;</a></span>drawPotions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void drawPotions </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nbPotion</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>fruitTexture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ratioWindowSize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Affiche les potions possédés ou non. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">nbPotion</td><td>Le nombre de potions </td></tr>
+    <tr><td class="paramname">fruitTexture</td><td>La texture des fruits </td></tr>
+    <tr><td class="paramname">ratioWindowSize</td><td>Le ratio tailleBase/tailleActuelle </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a3ffbfa8da628fe1de8480152fa600f38_icgraph.jpg" border="0" usemap="#snake_8c_a3ffbfa8da628fe1de8480152fa600f38_icgraph" alt=""/></div>
+<map name="snake_8c_a3ffbfa8da628fe1de8480152fa600f38_icgraph" id="snake_8c_a3ffbfa8da628fe1de8480152fa600f38_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="148,5,205,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="253,5,360,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="408,5,533,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="445,56,496,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="581,56,632,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ad19affe43f9c0e08c2e359c5d56ed59c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad19affe43f9c0e08c2e359c5d56ed59c">&#9670;&nbsp;</a></span>drawScore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void drawScore </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>scoreTexture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_score.html">Score</a>&#160;</td>
+          <td class="paramname"><em>scoreAffichage</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Affiche un score de terrain. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">scoreTexture</td><td>La texture de score </td></tr>
+    <tr><td class="paramname">scoreAffichage</td><td>Le score à afficher </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_ad19affe43f9c0e08c2e359c5d56ed59c_cgraph.jpg" border="0" usemap="#snake_8c_ad19affe43f9c0e08c2e359c5d56ed59c_cgraph" alt=""/></div>
+<map name="snake_8c_ad19affe43f9c0e08c2e359c5d56ed59c_cgraph" id="snake_8c_ad19affe43f9c0e08c2e359c5d56ed59c_cgraph">
+<area shape="rect" id="node2" href="commun_functions_8c.html#a7abdc103877c16a5077411165bf8154d" title="retourne la longueur d&#39;un nombre " alt="" coords="137,5,204,32"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_ad19affe43f9c0e08c2e359c5d56ed59c_icgraph.jpg" border="0" usemap="#snake_8c_ad19affe43f9c0e08c2e359c5d56ed59c_icgraph" alt=""/></div>
+<map name="snake_8c_ad19affe43f9c0e08c2e359c5d56ed59c_icgraph" id="snake_8c_ad19affe43f9c0e08c2e359c5d56ed59c_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="137,5,195,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="243,5,349,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="397,5,523,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="435,56,485,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="571,56,621,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a24a99c463dabaf629aacbc6581772e12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24a99c463dabaf629aacbc6581772e12">&#9670;&nbsp;</a></span>drawTotalScore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void drawTotalScore </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TTF_Font *&#160;</td>
+          <td class="paramname"><em>font</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>scoreShow</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ratioWindowSize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Affiche une animation de partie de serpent morte. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">font</td><td>La police d'écriture </td></tr>
+    <tr><td class="paramname">scoreShow</td><td>Le score total à afficher </td></tr>
+    <tr><td class="paramname">ratioWindowSize</td><td>Le ratio tailleBase/tailleActuelle </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a24a99c463dabaf629aacbc6581772e12_icgraph.jpg" border="0" usemap="#snake_8c_a24a99c463dabaf629aacbc6581772e12_icgraph" alt=""/></div>
+<map name="snake_8c_a24a99c463dabaf629aacbc6581772e12_icgraph" id="snake_8c_a24a99c463dabaf629aacbc6581772e12_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="167,5,224,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="272,5,379,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="427,5,552,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="464,56,515,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="600,56,651,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a79a3ba2cf055230de7d78992630f3acc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79a3ba2cf055230de7d78992630f3acc">&#9670;&nbsp;</a></span>eatFruit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int eatFruit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a> **&#160;</td>
+          <td class="paramname"><em>snake</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a> **&#160;</td>
+          <td class="paramname"><em>fruitTab</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>nbFruits</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a>&#160;</td>
+          <td class="paramname"><em>fruit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>speed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_score_total.html">ScoreTotal</a> *&#160;</td>
+          <td class="paramname"><em>score</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>nbFruitEaten</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>frameJaugeAnim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2f *&#160;</td>
+          <td class="paramname"><em>pastBody</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a> *&#160;</td>
+          <td class="paramname"><em>bonus</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a> **&#160;</td>
+          <td class="paramname"><em>deadBodies</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>nbDeadBodies</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>nbPotion</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>poisoned</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_score.html">Score</a> **&#160;</td>
+          <td class="paramname"><em>scoreAffichage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>nbScoreAffichage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>frameAcce</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Mix_Chunk **&#160;</td>
+          <td class="paramname"><em>sounds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long long *&#160;</td>
+          <td class="paramname"><em>score_hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>keys</em>[4], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>hardcore</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Mange un fruit. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">snake</td><td>Le serpent </td></tr>
+    <tr><td class="paramname">size</td><td>La taille du serpent </td></tr>
+    <tr><td class="paramname">fruitTab</td><td>Les fruits </td></tr>
+    <tr><td class="paramname">nbFruits</td><td>Le nombre de fruits </td></tr>
+    <tr><td class="paramname">fruit</td><td>Le fruit à manger </td></tr>
+    <tr><td class="paramname">speed</td><td>La vitesse du serpent </td></tr>
+    <tr><td class="paramname">score</td><td>Le score total </td></tr>
+    <tr><td class="paramname">nbFruitEaten</td><td>Le nombre de fruits mangés </td></tr>
+    <tr><td class="paramname">frameJaugeAnim</td><td>Le nombre de frame pour l'animation de jauge </td></tr>
+    <tr><td class="paramname">pastBody</td><td>Les anciennes positions du serpent </td></tr>
+    <tr><td class="paramname">bonus</td><td>Le nonus </td></tr>
+    <tr><td class="paramname">deadBodies</td><td>Les animations de mort des parties du serpent </td></tr>
+    <tr><td class="paramname">nbDeadBodies</td><td>Le nombre d'animations de mort des parties du serpent </td></tr>
+    <tr><td class="paramname">nbPotion</td><td>Le nombre de potions </td></tr>
+    <tr><td class="paramname">poisoned</td><td>La quantité de poison ingéré </td></tr>
+    <tr><td class="paramname">scoreAffichage</td><td>Les affichages de scores </td></tr>
+    <tr><td class="paramname">nbScoreAffichage</td><td>Le nombre d'affichage de scores </td></tr>
+    <tr><td class="paramname">frameAcce</td><td>Le nombre de frame où l'accélération est forcée </td></tr>
+    <tr><td class="paramname">flap_wav</td><td>Le son de manger fruit </td></tr>
+    <tr><td class="paramname">score_hash</td><td>Le score hashé </td></tr>
+    <tr><td class="paramname">keys</td><td>Les clés de hashage </td></tr>
+    <tr><td class="paramname">hardcore</td><td>La difficulté du jeu </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>Faux en cas de problème dans le hashage, sinon vrai </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a79a3ba2cf055230de7d78992630f3acc_cgraph.jpg" border="0" usemap="#snake_8c_a79a3ba2cf055230de7d78992630f3acc_cgraph" alt=""/></div>
+<map name="snake_8c_a79a3ba2cf055230de7d78992630f3acc_cgraph" id="snake_8c_a79a3ba2cf055230de7d78992630f3acc_cgraph">
+<area shape="rect" id="node2" href="hashage_8c.html#a00612e598dd430b4d0cabdd3bd9f4ea4" title="Verifie que la valeur correspond a une valeur et re met a jours les constants pour un prochain hasaha..." alt="" coords="120,19,260,45"/>
+<area shape="rect" id="node4" href="snake_8c.html#a01d32a4e465831ff02093a975fc19cfc" title="Détermine la taille d&#39;affichage du score d&#39;un fruit. " alt="" coords="150,81,230,108"/>
+<area shape="rect" id="node5" href="snake_8c.html#a24e583790e5d49a5e6fa3d179ea4ae53" title="Suprimme des parties du serpent. " alt="" coords="157,132,223,159"/>
+<area shape="rect" id="node8" href="snake_8c.html#a25fd68046ffe688449023d7d4d75c95a" title="Fait apparaître un fruit. " alt="" coords="147,208,233,235"/>
+<area shape="rect" id="node10" href="snake_8c.html#ae38231a62f58e817c8a5d5c0e65d81c7" title="Calcule la norme d&#39;un vecteur. " alt="" coords="499,233,557,260"/>
+<area shape="rect" id="node12" href="snake_8c.html#a88e97e8f14fe02486dcdafa98c1c1da5" title="Détermine si un point est trop proche d&#39;un mur par rapport à une distance donnée. ..." alt="" coords="314,309,445,336"/>
+<area shape="rect" id="node3" href="hashage_8c.html#a52777186f55107ffa1460ab92c79ede4" title="retourne une valeur hasher de la valeur d&#39;entrer. " alt="" coords="344,5,415,32"/>
+<area shape="rect" id="node6" href="snake_8c.html#a302fa1c00d3dfcf2e7deda97d2f86097" title="Décale le tableau de positions anciennes du serpent lors d&#39;une explosion de bombe. " alt="" coords="339,56,420,83"/>
+<area shape="rect" id="node7" href="snake_8c.html#aad644da8ea3e101158c01657e4f38684" title="Décale le tableau de positions anciennes du serpent pour libérer de la place. " alt="" coords="324,107,435,133"/>
+<area shape="rect" id="node9" href="snake_8c.html#a707860ff76b3c064c97abfb3aa3562d1" title="Détermine si un fruit est trop d&#39;un autre ou d&#39;un bonus pour pouvoir apparaître. " alt="" coords="314,157,445,184"/>
+<area shape="rect" id="node11" href="snake_8c.html#aa9234d8c6419bdecdd99e4e9596fdbde" title="Détermine si un fruit est trop proche de la tête pour pouvoir apparaître. " alt="" coords="312,208,447,235"/>
+<area shape="rect" id="node13" href="snake_8c.html#a5ab96fad579ff79a2df0bb06e86cb7d0" title="Détermine si un fruit est trop proche d&#39;un coin pour pouvoir apparaître. " alt="" coords="308,259,451,285"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a79a3ba2cf055230de7d78992630f3acc_icgraph.jpg" border="0" usemap="#snake_8c_a79a3ba2cf055230de7d78992630f3acc_icgraph" alt=""/></div>
+<map name="snake_8c_a79a3ba2cf055230de7d78992630f3acc_icgraph" id="snake_8c_a79a3ba2cf055230de7d78992630f3acc_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="120,5,177,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="225,5,332,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="380,5,505,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="417,56,468,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="553,56,604,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a7f4d06dd5298cf3c4dc09b54867c1b3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f4d06dd5298cf3c4dc09b54867c1b3f">&#9670;&nbsp;</a></span>hitboxFruit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int hitboxFruit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a>&#160;</td>
+          <td class="paramname"><em>fruit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a>&#160;</td>
+          <td class="paramname"><em>head</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Détermine si la tête du serpent est sur un fruit. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fruit</td><td>Le fruit à tester </td></tr>
+    <tr><td class="paramname">head</td><td>La tête du serpent </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>Vrai si collision, sinon faux </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a7f4d06dd5298cf3c4dc09b54867c1b3f_cgraph.jpg" border="0" usemap="#snake_8c_a7f4d06dd5298cf3c4dc09b54867c1b3f_cgraph" alt=""/></div>
+<map name="snake_8c_a7f4d06dd5298cf3c4dc09b54867c1b3f_cgraph" id="snake_8c_a7f4d06dd5298cf3c4dc09b54867c1b3f_cgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ae38231a62f58e817c8a5d5c0e65d81c7" title="Calcule la norme d&#39;un vecteur. " alt="" coords="136,5,195,32"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a7f4d06dd5298cf3c4dc09b54867c1b3f_icgraph.jpg" border="0" usemap="#snake_8c_a7f4d06dd5298cf3c4dc09b54867c1b3f_icgraph" alt=""/></div>
+<map name="snake_8c_a7f4d06dd5298cf3c4dc09b54867c1b3f_icgraph" id="snake_8c_a7f4d06dd5298cf3c4dc09b54867c1b3f_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#abf27e85aa2f853848d38330822cbf27b" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="136,5,227,32"/>
+<area shape="rect" id="node3" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="275,5,332,32"/>
+<area shape="rect" id="node4" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="380,5,487,32"/>
+<area shape="rect" id="node5" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="535,5,660,32"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="572,56,623,83"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="708,56,759,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a78044bb5fe3a0f72b7777dbe1f4e2d82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78044bb5fe3a0f72b7777dbe1f4e2d82">&#9670;&nbsp;</a></span>hitboxTail()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int hitboxTail </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a> *&#160;</td>
+          <td class="paramname"><em>snake</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Détermine si la tête du serpent touche sa queue. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">snake</td><td>Le serpent </td></tr>
+    <tr><td class="paramname">size</td><td>La taille du serpent </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>Vrai si il touche sa queue, sinon faux </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a78044bb5fe3a0f72b7777dbe1f4e2d82_cgraph.jpg" border="0" usemap="#snake_8c_a78044bb5fe3a0f72b7777dbe1f4e2d82_cgraph" alt=""/></div>
+<map name="snake_8c_a78044bb5fe3a0f72b7777dbe1f4e2d82_cgraph" id="snake_8c_a78044bb5fe3a0f72b7777dbe1f4e2d82_cgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ae38231a62f58e817c8a5d5c0e65d81c7" title="Calcule la norme d&#39;un vecteur. " alt="" coords="132,5,191,32"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a78044bb5fe3a0f72b7777dbe1f4e2d82_icgraph.jpg" border="0" usemap="#snake_8c_a78044bb5fe3a0f72b7777dbe1f4e2d82_icgraph" alt=""/></div>
+<map name="snake_8c_a78044bb5fe3a0f72b7777dbe1f4e2d82_icgraph" id="snake_8c_a78044bb5fe3a0f72b7777dbe1f4e2d82_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="132,5,189,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="237,5,344,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="392,5,517,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="429,56,480,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="565,56,616,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a2fa90be2b2e8c929c669e9f1d6fe57f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fa90be2b2e8c929c669e9f1d6fe57f6">&#9670;&nbsp;</a></span>initBody()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void initBody </td>
+          <td>(</td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a> **&#160;</td>
+          <td class="paramname"><em>snake</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialise le corps du serpent. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">size</td><td>La taille du serpent </td></tr>
+    <tr><td class="paramname">snake</td><td>Le coprs du serpent (tableau de parties de corps) </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a2fa90be2b2e8c929c669e9f1d6fe57f6_icgraph.jpg" border="0" usemap="#snake_8c_a2fa90be2b2e8c929c669e9f1d6fe57f6_icgraph" alt=""/></div>
+<map name="snake_8c_a2fa90be2b2e8c929c669e9f1d6fe57f6_icgraph" id="snake_8c_a2fa90be2b2e8c929c669e9f1d6fe57f6_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="123,5,180,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="228,5,335,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="383,5,508,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="420,56,471,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="556,56,607,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a4ec9d201bf0b449acfc67afdfaf10609"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ec9d201bf0b449acfc67afdfaf10609">&#9670;&nbsp;</a></span>initBonus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void initBonus </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a> *&#160;</td>
+          <td class="paramname"><em>bonus</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialise le bonus. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bonus</td><td>Le bonus à initialise </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a4ec9d201bf0b449acfc67afdfaf10609_icgraph.jpg" border="0" usemap="#snake_8c_a4ec9d201bf0b449acfc67afdfaf10609_icgraph" alt=""/></div>
+<map name="snake_8c_a4ec9d201bf0b449acfc67afdfaf10609_icgraph" id="snake_8c_a4ec9d201bf0b449acfc67afdfaf10609_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="129,5,187,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="235,5,341,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="389,5,515,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="427,56,477,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="563,56,613,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a75101518da20974c59b9d79e7f740e25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75101518da20974c59b9d79e7f740e25">&#9670;&nbsp;</a></span>initFruit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void initFruit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a> **&#160;</td>
+          <td class="paramname"><em>fruit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialise le tableau dynamique de fruits. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fruit</td><td>Le tableau dynamique de fruits </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a75101518da20974c59b9d79e7f740e25_icgraph.jpg" border="0" usemap="#snake_8c_a75101518da20974c59b9d79e7f740e25_icgraph" alt=""/></div>
+<map name="snake_8c_a75101518da20974c59b9d79e7f740e25_icgraph" id="snake_8c_a75101518da20974c59b9d79e7f740e25_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="119,5,176,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="224,5,331,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="379,5,504,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="416,56,467,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="552,56,603,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a8daf9d3a8712f036f94adbef24b45e71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8daf9d3a8712f036f94adbef24b45e71">&#9670;&nbsp;</a></span>initToV()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void initToV </td>
+          <td>(</td>
+          <td class="paramtype">Vector2f *&#160;</td>
+          <td class="paramname"><em>vTab</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2f&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>iStart</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>iEnd</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialise une portion de tableau de vecteur. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vTab</td><td>Le tableau de vecteur </td></tr>
+    <tr><td class="paramname">v</td><td>Le vecteur pour l'initialisation </td></tr>
+    <tr><td class="paramname">iStart</td><td>Le premier indice du tableau à initialiser (inclus) </td></tr>
+    <tr><td class="paramname">iEnd</td><td>Le dernier indice du tableau à initialiser (exclus) </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a8daf9d3a8712f036f94adbef24b45e71_icgraph.jpg" border="0" usemap="#snake_8c_a8daf9d3a8712f036f94adbef24b45e71_icgraph" alt=""/></div>
+<map name="snake_8c_a8daf9d3a8712f036f94adbef24b45e71_icgraph" id="snake_8c_a8daf9d3a8712f036f94adbef24b45e71_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#aa7aa21dd7d83b069bbcb2cffe3bf64d2" title="Décale le tableau de positions anciennes du serpent pour en ajouter de nouvelles. ..." alt="" coords="116,5,209,32"/>
+<area shape="rect" id="node6" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="653,31,711,57"/>
+<area shape="rect" id="node3" href="snake_8c.html#ad306e9c3cf09adcb1846c4f888957eec" title="Ajoute des parties de corps au serpent. " alt="" coords="257,5,331,32"/>
+<area shape="rect" id="node4" href="snake_8c.html#ac19669d13e8261ca407db47f062b9518" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="379,5,467,32"/>
+<area shape="rect" id="node5" href="snake_8c.html#abf27e85aa2f853848d38330822cbf27b" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="515,5,605,32"/>
+<area shape="rect" id="node7" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="759,31,865,57"/>
+<area shape="rect" id="node8" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="913,31,1039,57"/>
+<area shape="rect" id="node9" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="951,81,1001,108"/>
+<area shape="rect" id="node10" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="1087,81,1137,108"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="abf27e85aa2f853848d38330822cbf27b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf27e85aa2f853848d38330822cbf27b">&#9670;&nbsp;</a></span>moveSnake()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float moveSnake </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a> **&#160;</td>
+          <td class="paramname"><em>snake</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2f&#160;</td>
+          <td class="paramname"><em>pastBody</em>[REMIND_BODY], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>speed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a> *&#160;</td>
+          <td class="paramname"><em>fruit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nbFruits</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a> *&#160;</td>
+          <td class="paramname"><em>bonus</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>radiusRestant</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>hardcore</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Décalle la taille des parties de serpents (digestion) </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">snake</td><td>Le serpent </td></tr>
+    <tr><td class="paramname">pastBody</td><td>Les anciennes positions du serpent </td></tr>
+    <tr><td class="paramname">size</td><td>La taille du serpent </td></tr>
+    <tr><td class="paramname">speed</td><td>La vitesse du serpent </td></tr>
+    <tr><td class="paramname">dir</td><td>La direction du serpent </td></tr>
+    <tr><td class="paramname">fruit</td><td>Le tableau de fruits </td></tr>
+    <tr><td class="paramname">nbFruits</td><td>Le nombre de fruits </td></tr>
+    <tr><td class="paramname">bonus</td><td>Le bonus </td></tr>
+    <tr><td class="paramname">radiusRestant</td><td>La taille de la dernière partie de la queue du serpent </td></tr>
+    <tr><td class="paramname">hardcore</td><td>La difficulté du jeu </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>La distance qui n'a pas été parcourue </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_abf27e85aa2f853848d38330822cbf27b_cgraph.jpg" border="0" usemap="#snake_8c_abf27e85aa2f853848d38330822cbf27b_cgraph" alt=""/></div>
+<map name="snake_8c_abf27e85aa2f853848d38330822cbf27b_cgraph" id="snake_8c_abf27e85aa2f853848d38330822cbf27b_cgraph">
+<area shape="rect" id="node2" href="snake_8c.html#aad644da8ea3e101158c01657e4f38684" title="Décale le tableau de positions anciennes du serpent pour libérer de la place. " alt="" coords="144,5,255,32"/>
+<area shape="rect" id="node3" href="snake_8c.html#a7f4d06dd5298cf3c4dc09b54867c1b3f" title="Détermine si la tête du serpent est sur un fruit. " alt="" coords="158,56,241,83"/>
+<area shape="rect" id="node5" href="snake_8c.html#ac19669d13e8261ca407db47f062b9518" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="155,107,243,133"/>
+<area shape="rect" id="node4" href="snake_8c.html#ae38231a62f58e817c8a5d5c0e65d81c7" title="Calcule la norme d&#39;un vecteur. " alt="" coords="310,56,369,83"/>
+<area shape="rect" id="node6" href="snake_8c.html#ad306e9c3cf09adcb1846c4f888957eec" title="Ajoute des parties de corps au serpent. " alt="" coords="303,107,376,133"/>
+<area shape="rect" id="node7" href="snake_8c.html#aa7aa21dd7d83b069bbcb2cffe3bf64d2" title="Décale le tableau de positions anciennes du serpent pour en ajouter de nouvelles. ..." alt="" coords="424,107,517,133"/>
+<area shape="rect" id="node8" href="snake_8c.html#a8daf9d3a8712f036f94adbef24b45e71" title="Initialise une portion de tableau de vecteur. " alt="" coords="565,107,628,133"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_abf27e85aa2f853848d38330822cbf27b_icgraph.jpg" border="0" usemap="#snake_8c_abf27e85aa2f853848d38330822cbf27b_icgraph" alt=""/></div>
+<map name="snake_8c_abf27e85aa2f853848d38330822cbf27b_icgraph" id="snake_8c_abf27e85aa2f853848d38330822cbf27b_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="144,5,201,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="249,5,356,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="404,5,529,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="441,56,492,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="577,56,628,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ae7a3606e921e095262b200e3b103ca87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7a3606e921e095262b200e3b103ca87">&#9670;&nbsp;</a></span>myFrees()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void myFrees </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a> **&#160;</td>
+          <td class="paramname"><em>fruits</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a> **&#160;</td>
+          <td class="paramname"><em>deadBodies</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a> **&#160;</td>
+          <td class="paramname"><em>snakeBody</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_score.html">Score</a> **&#160;</td>
+          <td class="paramname"><em>scoreAffichage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Mix_Chunk **&#160;</td>
+          <td class="paramname"><em>sounds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>textures</em>[NB_SNAKE_TEXTURES], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TTF_Font *&#160;</td>
+          <td class="paramname"><em>fonts</em>[NB_SNAKE_FONTS], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Thread **&#160;</td>
+          <td class="paramname"><em>thread</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Affiche un score de terrain. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fruits</td><td>Le tableau de fruits </td></tr>
+    <tr><td class="paramname">deadBodies</td><td>Le tableau de parties de serpent mortes </td></tr>
+    <tr><td class="paramname">snakeBody</td><td>Le tableau de parties de serpent </td></tr>
+    <tr><td class="paramname">scoreAffichage</td><td>Le tableau de score à afficher </td></tr>
+    <tr><td class="paramname">sound</td><td>Le tableau de sons </td></tr>
+    <tr><td class="paramname">textures</td><td>Le tableau de textures </td></tr>
+    <tr><td class="paramname">fonts</td><td>Le tableau de polices </td></tr>
+    <tr><td class="paramname">thread</td><td>Le thread </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_ae7a3606e921e095262b200e3b103ca87_icgraph.jpg" border="0" usemap="#snake_8c_ae7a3606e921e095262b200e3b103ca87_icgraph" alt=""/></div>
+<map name="snake_8c_ae7a3606e921e095262b200e3b103ca87_icgraph" id="snake_8c_ae7a3606e921e095262b200e3b103ca87_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="127,5,184,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="232,5,339,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="387,5,512,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="424,56,475,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="560,56,611,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ae38231a62f58e817c8a5d5c0e65d81c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae38231a62f58e817c8a5d5c0e65d81c7">&#9670;&nbsp;</a></span>norme()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double norme </td>
+          <td>(</td>
+          <td class="paramtype">Vector2f&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calcule la norme d'un vecteur. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">v</td><td>Le vecteur </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>La norme de ce vecteur </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_ae38231a62f58e817c8a5d5c0e65d81c7_icgraph.jpg" border="0" usemap="#snake_8c_ae38231a62f58e817c8a5d5c0e65d81c7_icgraph" alt=""/></div>
+<map name="snake_8c_ae38231a62f58e817c8a5d5c0e65d81c7_icgraph" id="snake_8c_ae38231a62f58e817c8a5d5c0e65d81c7_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a78044bb5fe3a0f72b7777dbe1f4e2d82" title="Détermine si la tête du serpent touche sa queue. " alt="" coords="454,26,533,52"/>
+<area shape="rect" id="node8" href="snake_8c.html#aa9234d8c6419bdecdd99e4e9596fdbde" title="Détermine si un fruit est trop proche de la tête pour pouvoir apparaître. " alt="" coords="116,51,251,78"/>
+<area shape="rect" id="node10" href="snake_8c.html#a79a3ba2cf055230de7d78992630f3acc" title="Mange un fruit. " alt="" coords="460,203,527,230"/>
+<area shape="rect" id="node12" href="snake_8c.html#a5ab96fad579ff79a2df0bb06e86cb7d0" title="Détermine si un fruit est trop proche d&#39;un coin pour pouvoir apparaître. " alt="" coords="112,102,255,128"/>
+<area shape="rect" id="node13" href="snake_8c.html#a707860ff76b3c064c97abfb3aa3562d1" title="Détermine si un fruit est trop d&#39;un autre ou d&#39;un bonus pour pouvoir apparaître. " alt="" coords="118,152,249,179"/>
+<area shape="rect" id="node14" href="snake_8c.html#a7f4d06dd5298cf3c4dc09b54867c1b3f" title="Détermine si la tête du serpent est sur un fruit. " alt="" coords="310,254,393,280"/>
+<area shape="rect" id="node3" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="587,152,644,179"/>
+<area shape="rect" id="node4" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="692,152,799,179"/>
+<area shape="rect" id="node5" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="847,152,972,179"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="884,203,935,230"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="1020,203,1071,230"/>
+<area shape="rect" id="node9" href="snake_8c.html#a25fd68046ffe688449023d7d4d75c95a" title="Fait apparaître un fruit. " alt="" coords="308,152,395,179"/>
+<area shape="rect" id="node11" href="snake_8c.html#a358f322aca8a33648ffc238cd821caca" title="Fait apparaître un bonus. " alt="" coords="303,102,400,128"/>
+<area shape="rect" id="node15" href="snake_8c.html#abf27e85aa2f853848d38330822cbf27b" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="448,254,539,280"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a1b081f3bfec305b13e9f0791605451c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b081f3bfec305b13e9f0791605451c8">&#9670;&nbsp;</a></span>reachDest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void reachDest </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a> *&#160;</td>
+          <td class="paramname"><em>fruit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nbFruits</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Déplace les fruits lors de l'animation de coffre. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fruit</td><td>Le tableau de fruits </td></tr>
+    <tr><td class="paramname">nbFruits</td><td>Le nombre de fruits mangés (réduit par les fruits expirés) </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a1b081f3bfec305b13e9f0791605451c8_icgraph.jpg" border="0" usemap="#snake_8c_a1b081f3bfec305b13e9f0791605451c8_icgraph" alt=""/></div>
+<map name="snake_8c_a1b081f3bfec305b13e9f0791605451c8_icgraph" id="snake_8c_a1b081f3bfec305b13e9f0791605451c8_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="136,5,193,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="241,5,348,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="396,5,521,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="433,56,484,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="569,56,620,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a24e583790e5d49a5e6fa3d179ea4ae53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24e583790e5d49a5e6fa3d179ea4ae53">&#9670;&nbsp;</a></span>rmBody()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rmBody </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a> **&#160;</td>
+          <td class="paramname"><em>snake</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nbRm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2f *&#160;</td>
+          <td class="paramname"><em>pastBody</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a> **&#160;</td>
+          <td class="paramname"><em>deadBodies</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>nbDeadBodies</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>deadly</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ratioTexture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>initFrame</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Suprimme des parties du serpent. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">snake</td><td>Le serpent </td></tr>
+    <tr><td class="paramname">size</td><td>La taille du serpent </td></tr>
+    <tr><td class="paramname">nbRm</td><td>Le nombre de parties à supprimer </td></tr>
+    <tr><td class="paramname">pastBody</td><td>Le tableau de positions anciennes </td></tr>
+    <tr><td class="paramname">deadBodies</td><td>Le tableau de parties de serpent détruites </td></tr>
+    <tr><td class="paramname">nbDeadBodies</td><td>Le nombre de parties de serpent détruites </td></tr>
+    <tr><td class="paramname">deadly</td><td>Détermine si cette supression peut tuer le serpent </td></tr>
+    <tr><td class="paramname">ratioTexture</td><td>Détermine tous les combien de parties supprimées il faut afficher l'animation </td></tr>
+    <tr><td class="paramname">initFrame</td><td>Détermine combien de parties sont passées sans afficher d'animation de mort de partie de serpent (animation de mort) </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a24e583790e5d49a5e6fa3d179ea4ae53_cgraph.jpg" border="0" usemap="#snake_8c_a24e583790e5d49a5e6fa3d179ea4ae53_cgraph" alt=""/></div>
+<map name="snake_8c_a24e583790e5d49a5e6fa3d179ea4ae53_cgraph" id="snake_8c_a24e583790e5d49a5e6fa3d179ea4ae53_cgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a302fa1c00d3dfcf2e7deda97d2f86097" title="Décale le tableau de positions anciennes du serpent lors d&#39;une explosion de bombe. " alt="" coords="135,5,216,32"/>
+<area shape="rect" id="node3" href="snake_8c.html#aad644da8ea3e101158c01657e4f38684" title="Décale le tableau de positions anciennes du serpent pour libérer de la place. " alt="" coords="120,56,231,83"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a24e583790e5d49a5e6fa3d179ea4ae53_icgraph.jpg" border="0" usemap="#snake_8c_a24e583790e5d49a5e6fa3d179ea4ae53_icgraph" alt=""/></div>
+<map name="snake_8c_a24e583790e5d49a5e6fa3d179ea4ae53_icgraph" id="snake_8c_a24e583790e5d49a5e6fa3d179ea4ae53_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a79a3ba2cf055230de7d78992630f3acc" title="Mange un fruit. " alt="" coords="120,5,187,32"/>
+<area shape="rect" id="node3" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="235,31,292,57"/>
+<area shape="rect" id="node4" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="340,31,447,57"/>
+<area shape="rect" id="node5" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="495,31,620,57"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="532,81,583,108"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="668,81,719,108"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a01d32a4e465831ff02093a975fc19cfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01d32a4e465831ff02093a975fc19cfc">&#9670;&nbsp;</a></span>scoreSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int scoreSize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a>&#160;</td>
+          <td class="paramname"><em>fruit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Détermine la taille d'affichage du score d'un fruit. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fruit</td><td>Le fruit </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>Sa taille d'affichage de score </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a01d32a4e465831ff02093a975fc19cfc_icgraph.jpg" border="0" usemap="#snake_8c_a01d32a4e465831ff02093a975fc19cfc_icgraph" alt=""/></div>
+<map name="snake_8c_a01d32a4e465831ff02093a975fc19cfc_icgraph" id="snake_8c_a01d32a4e465831ff02093a975fc19cfc_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a79a3ba2cf055230de7d78992630f3acc" title="Mange un fruit. " alt="" coords="133,5,200,32"/>
+<area shape="rect" id="node3" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="248,31,305,57"/>
+<area shape="rect" id="node4" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="353,31,460,57"/>
+<area shape="rect" id="node5" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="508,31,633,57"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="545,81,596,108"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="681,81,732,108"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a302fa1c00d3dfcf2e7deda97d2f86097"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a302fa1c00d3dfcf2e7deda97d2f86097">&#9670;&nbsp;</a></span>shiftBomb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void shiftBomb </td>
+          <td>(</td>
+          <td class="paramtype">Vector2f *&#160;</td>
+          <td class="paramname"><em>pastBody</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Décale le tableau de positions anciennes du serpent lors d'une explosion de bombe. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pastBody</td><td>Le tableau de positions anciennes </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a302fa1c00d3dfcf2e7deda97d2f86097_icgraph.jpg" border="0" usemap="#snake_8c_a302fa1c00d3dfcf2e7deda97d2f86097_icgraph" alt=""/></div>
+<map name="snake_8c_a302fa1c00d3dfcf2e7deda97d2f86097_icgraph" id="snake_8c_a302fa1c00d3dfcf2e7deda97d2f86097_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a24e583790e5d49a5e6fa3d179ea4ae53" title="Suprimme des parties du serpent. " alt="" coords="135,31,201,57"/>
+<area shape="rect" id="node3" href="snake_8c.html#a79a3ba2cf055230de7d78992630f3acc" title="Mange un fruit. " alt="" coords="249,5,316,32"/>
+<area shape="rect" id="node4" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="364,31,421,57"/>
+<area shape="rect" id="node5" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="469,31,576,57"/>
+<area shape="rect" id="node6" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="624,31,749,57"/>
+<area shape="rect" id="node7" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="661,81,712,108"/>
+<area shape="rect" id="node8" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="797,81,848,108"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="aad644da8ea3e101158c01657e4f38684"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad644da8ea3e101158c01657e4f38684">&#9670;&nbsp;</a></span>shiftFreeSpace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void shiftFreeSpace </td>
+          <td>(</td>
+          <td class="paramtype">Vector2f *&#160;</td>
+          <td class="paramname"><em>pastBody</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Décale le tableau de positions anciennes du serpent pour libérer de la place. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pastBody</td><td>Le tableau de positions anciennes </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_aad644da8ea3e101158c01657e4f38684_icgraph.jpg" border="0" usemap="#snake_8c_aad644da8ea3e101158c01657e4f38684_icgraph" alt=""/></div>
+<map name="snake_8c_aad644da8ea3e101158c01657e4f38684_icgraph" id="snake_8c_aad644da8ea3e101158c01657e4f38684_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a24e583790e5d49a5e6fa3d179ea4ae53" title="Suprimme des parties du serpent. " alt="" coords="164,56,231,83"/>
+<area shape="rect" id="node9" href="snake_8c.html#abf27e85aa2f853848d38330822cbf27b" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="279,107,369,133"/>
+<area shape="rect" id="node3" href="snake_8c.html#a79a3ba2cf055230de7d78992630f3acc" title="Mange un fruit. " alt="" coords="291,5,357,32"/>
+<area shape="rect" id="node4" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="417,56,475,83"/>
+<area shape="rect" id="node5" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="523,56,629,83"/>
+<area shape="rect" id="node6" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="677,56,803,83"/>
+<area shape="rect" id="node7" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="715,107,765,133"/>
+<area shape="rect" id="node8" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="851,107,901,133"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ac19669d13e8261ca407db47f062b9518"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac19669d13e8261ca407db47f062b9518">&#9670;&nbsp;</a></span>shiftRadius()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void shiftRadius </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a> **&#160;</td>
+          <td class="paramname"><em>snake</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2f&#160;</td>
+          <td class="paramname"><em>pastBody</em>[REMIND_BODY], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>radiusRestant</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Décalle la taille des parties de serpents (digestion) </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">snake</td><td>Le serpent </td></tr>
+    <tr><td class="paramname">size</td><td>La taille du serpent </td></tr>
+    <tr><td class="paramname">pastBody</td><td>Les anciennes positions du serpent </td></tr>
+    <tr><td class="paramname">radiusRestant</td><td>La taille de la dernière partie de la queue du serpent </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_ac19669d13e8261ca407db47f062b9518_cgraph.jpg" border="0" usemap="#snake_8c_ac19669d13e8261ca407db47f062b9518_cgraph" alt=""/></div>
+<map name="snake_8c_ac19669d13e8261ca407db47f062b9518_cgraph" id="snake_8c_ac19669d13e8261ca407db47f062b9518_cgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ad306e9c3cf09adcb1846c4f888957eec" title="Ajoute des parties de corps au serpent. " alt="" coords="141,5,215,32"/>
+<area shape="rect" id="node3" href="snake_8c.html#aa7aa21dd7d83b069bbcb2cffe3bf64d2" title="Décale le tableau de positions anciennes du serpent pour en ajouter de nouvelles. ..." alt="" coords="263,5,356,32"/>
+<area shape="rect" id="node4" href="snake_8c.html#a8daf9d3a8712f036f94adbef24b45e71" title="Initialise une portion de tableau de vecteur. " alt="" coords="404,5,467,32"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_ac19669d13e8261ca407db47f062b9518_icgraph.jpg" border="0" usemap="#snake_8c_ac19669d13e8261ca407db47f062b9518_icgraph" alt=""/></div>
+<map name="snake_8c_ac19669d13e8261ca407db47f062b9518_icgraph" id="snake_8c_ac19669d13e8261ca407db47f062b9518_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#abf27e85aa2f853848d38330822cbf27b" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="141,5,232,32"/>
+<area shape="rect" id="node3" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="280,5,337,32"/>
+<area shape="rect" id="node4" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="385,5,492,32"/>
+<area shape="rect" id="node5" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="540,5,665,32"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="577,56,628,83"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="713,56,764,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="aa7aa21dd7d83b069bbcb2cffe3bf64d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7aa21dd7d83b069bbcb2cffe3bf64d2">&#9670;&nbsp;</a></span>shiftRefresh()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void shiftRefresh </td>
+          <td>(</td>
+          <td class="paramtype">Vector2f&#160;</td>
+          <td class="paramname"><em>pastBody</em>[REMIND_BODY], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nbDecale</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Décale le tableau de positions anciennes du serpent pour en ajouter de nouvelles. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pastBody</td><td>Le tableau de positiones anciennes </td></tr>
+    <tr><td class="paramname">nbDecale</td><td>La quantité de décalage </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_aa7aa21dd7d83b069bbcb2cffe3bf64d2_cgraph.jpg" border="0" usemap="#snake_8c_aa7aa21dd7d83b069bbcb2cffe3bf64d2_cgraph" alt=""/></div>
+<map name="snake_8c_aa7aa21dd7d83b069bbcb2cffe3bf64d2_cgraph" id="snake_8c_aa7aa21dd7d83b069bbcb2cffe3bf64d2_cgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a8daf9d3a8712f036f94adbef24b45e71" title="Initialise une portion de tableau de vecteur. " alt="" coords="147,5,209,32"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_aa7aa21dd7d83b069bbcb2cffe3bf64d2_icgraph.jpg" border="0" usemap="#snake_8c_aa7aa21dd7d83b069bbcb2cffe3bf64d2_icgraph" alt=""/></div>
+<map name="snake_8c_aa7aa21dd7d83b069bbcb2cffe3bf64d2_icgraph" id="snake_8c_aa7aa21dd7d83b069bbcb2cffe3bf64d2_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ad306e9c3cf09adcb1846c4f888957eec" title="Ajoute des parties de corps au serpent. " alt="" coords="147,5,220,32"/>
+<area shape="rect" id="node3" href="snake_8c.html#ac19669d13e8261ca407db47f062b9518" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="268,5,356,32"/>
+<area shape="rect" id="node4" href="snake_8c.html#abf27e85aa2f853848d38330822cbf27b" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="404,5,495,32"/>
+<area shape="rect" id="node5" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="543,5,600,32"/>
+<area shape="rect" id="node6" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="648,5,755,32"/>
+<area shape="rect" id="node7" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="803,5,928,32"/>
+<area shape="rect" id="node8" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="840,56,891,83"/>
+<area shape="rect" id="node9" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="976,56,1027,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ade7b297c3e6ac4e9ba64a21163eec9b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade7b297c3e6ac4e9ba64a21163eec9b5">&#9670;&nbsp;</a></span>snake()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int snake </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>highscore</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>WinWidth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>WinHeight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>token</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>hardcore</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture **&#160;</td>
+          <td class="paramname"><em>textures</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Affiche un score de terrain. </p>
+<p>&lt; Changée dans le thread pour savoir s'il est finit &gt;</p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer </td></tr>
+    <tr><td class="paramname">highscore</td><td>Le meilleur score personnel </td></tr>
+    <tr><td class="paramname">WinWidth</td><td>La largeur de la fenêtre </td></tr>
+    <tr><td class="paramname">WinHeight</td><td>La hauteur de la fenêtre </td></tr>
+    <tr><td class="paramname">token</td><td>Le token pour l'envoi des scores </td></tr>
+    <tr><td class="paramname">hardcore</td><td>Le difficulté du jeu </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>MISE EN PLACE ///``</p>
+<p>Vars ///`</p>
+<p>BOUCLE DU JEU ///``</p>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5_cgraph.jpg" border="0" usemap="#snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5_cgraph" alt=""/></div>
+<map name="snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5_cgraph" id="snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5_cgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a3feffd5962865fbe7950d3bbe71ba771" title="Initialise l&#39;environement de snake. " alt="" coords="171,5,245,32"/>
+<area shape="rect" id="node3" href="snake_8c.html#a75101518da20974c59b9d79e7f740e25" title="Initialise le tableau dynamique de fruits. " alt="" coords="175,56,241,83"/>
+<area shape="rect" id="node4" href="snake_8c.html#a2fa90be2b2e8c929c669e9f1d6fe57f6" title="Initialise le corps du serpent. " alt="" coords="173,107,243,133"/>
+<area shape="rect" id="node5" href="snake_8c.html#a8daf9d3a8712f036f94adbef24b45e71" title="Initialise une portion de tableau de vecteur. " alt="" coords="903,144,965,171"/>
+<area shape="rect" id="node6" href="hashage_8c.html#a7bd85e927ff61bf409ab315791552391" title="initialise des valeurs aleatoire pour le hashage " alt="" coords="111,777,305,804"/>
+<area shape="rect" id="node7" href="hashage_8c.html#a52777186f55107ffa1460ab92c79ede4" title="retourne une valeur hasher de la valeur d&#39;entrer. " alt="" coords="577,752,648,779"/>
+<area shape="rect" id="node8" href="snake_8c.html#a25fd68046ffe688449023d7d4d75c95a" title="Fait apparaître un fruit. " alt="" coords="380,423,467,449"/>
+<area shape="rect" id="node12" href="snake_8c.html#a88e97e8f14fe02486dcdafa98c1c1da5" title="Détermine si un point est trop proche d&#39;un mur par rapport à une distance donnée. ..." alt="" coords="547,524,678,551"/>
+<area shape="rect" id="node14" href="snake_8c.html#ae7a3606e921e095262b200e3b103ca87" title="Affiche un score de terrain. " alt="" coords="171,828,245,855"/>
+<area shape="rect" id="node15" href="snake_8c.html#a24e583790e5d49a5e6fa3d179ea4ae53" title="Suprimme des parties du serpent. " alt="" coords="390,321,457,348"/>
+<area shape="rect" id="node18" href="snake_8c.html#a739086fd85b17cc39593a193118b0682" title="Tourne le serpent vers la gauche. " alt="" coords="175,879,241,905"/>
+<area shape="rect" id="node19" href="snake_8c.html#ae92e302f554e9e33c5a52e6251106a89" title="Tourne le serpent vers la droite. " alt="" coords="171,929,245,956"/>
+<area shape="rect" id="node20" href="snake_8c.html#abf27e85aa2f853848d38330822cbf27b" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="163,245,253,272"/>
+<area shape="rect" id="node25" href="snake_8c.html#a358f322aca8a33648ffc238cd821caca" title="Fait apparaître un bonus. " alt="" coords="375,372,472,399"/>
+<area shape="rect" id="node26" href="snake_8c.html#a1b081f3bfec305b13e9f0791605451c8" title="Déplace les fruits lors de l&#39;animation de coffre. " alt="" coords="167,980,249,1007"/>
+<area shape="rect" id="node27" href="snake_8c.html#a78044bb5fe3a0f72b7777dbe1f4e2d82" title="Détermine si la tête du serpent touche sa queue. " alt="" coords="384,676,463,703"/>
+<area shape="rect" id="node28" href="snake_8c.html#a79a3ba2cf055230de7d78992630f3acc" title="Mange un fruit. " alt="" coords="175,524,241,551"/>
+<area shape="rect" id="node29" href="hashage_8c.html#a00612e598dd430b4d0cabdd3bd9f4ea4" title="Verifie que la valeur correspond a une valeur et re met a jours les constants pour un prochain hasaha..." alt="" coords="353,727,493,753"/>
+<area shape="rect" id="node30" href="snake_8c.html#a01d32a4e465831ff02093a975fc19cfc" title="Détermine la taille d&#39;affichage du score d&#39;un fruit. " alt="" coords="383,625,463,652"/>
+<area shape="rect" id="node31" href="lib_web_8c.html#a55c3e461f1c4f810c5a38eb74c219fae" title="update le score " alt="" coords="161,1031,255,1057"/>
+<area shape="rect" id="node37" href="snake_8c.html#a0e42dbadd8f1b2e7eea7f50643e21130" title="Affiche le serpent. " alt="" coords="168,1081,248,1108"/>
+<area shape="rect" id="node38" href="snake_8c.html#abb567930c2685b3e7802f60895a70b62" title="Affiche une animation de partie de serpent morte. " alt="" coords="153,1132,263,1159"/>
+<area shape="rect" id="node39" href="snake_8c.html#a8abf206e978ebd4f4d9ac075d0a2e01c" title="Affiche un fruit. " alt="" coords="170,1183,246,1209"/>
+<area shape="rect" id="node40" href="snake_8c.html#ad19affe43f9c0e08c2e359c5d56ed59c" title="Affiche un score de terrain. " alt="" coords="166,1233,250,1260"/>
+<area shape="rect" id="node42" href="commun_functions_8c.html#accb6052f792ce29f71e79866dff07a58" title="Affiche un texte invitant le joueur à rejouer. " alt="" coords="163,1284,253,1311"/>
+<area shape="rect" id="node43" href="snake_8c.html#a40cfb6ec79f225241ad8047cda42c6ea" title="Affiche les commandes. " alt="" coords="157,1335,259,1361"/>
+<area shape="rect" id="node44" href="snake_8c.html#a3ffbfa8da628fe1de8480152fa600f38" title="Affiche les potions possédés ou non. " alt="" coords="161,1385,255,1412"/>
+<area shape="rect" id="node45" href="commun_functions_8c.html#ab85a0d17357e8a27e2f77b3cd8d84027" title="Affiche echap en haut a gauche. " alt="" coords="171,1436,245,1463"/>
+<area shape="rect" id="node46" href="snake_8c.html#ab3596b36513da05776c4e30e6e4a2cde" title="Affiche la jauge. " alt="" coords="165,1487,251,1513"/>
+<area shape="rect" id="node47" href="snake_8c.html#a24a99c463dabaf629aacbc6581772e12" title="Affiche une animation de partie de serpent morte. " alt="" coords="151,1537,265,1564"/>
+<area shape="rect" id="node48" href="commun_functions_8c.html#ad0ed0fe31f27ac7898fd7c0d25f8d71c" title="Affiche l&#39;animation de chargement des envois de requêtes. " alt="" coords="153,1588,263,1615"/>
+<area shape="rect" id="node49" href="commun_functions_8c.html#a22549bc59dccb5f8748d72b9bec11512" title="Affiche l&#39;animation de retour de requête. " alt="" coords="156,1639,260,1665"/>
+<area shape="rect" id="node50" href="snake_8c.html#a4ec9d201bf0b449acfc67afdfaf10609" title="Initialise le bonus. " alt="" coords="170,1689,246,1716"/>
+<area shape="rect" id="node9" href="snake_8c.html#a707860ff76b3c064c97abfb3aa3562d1" title="Détermine si un fruit est trop d&#39;un autre ou d&#39;un bonus pour pouvoir apparaître. " alt="" coords="547,423,678,449"/>
+<area shape="rect" id="node11" href="snake_8c.html#aa9234d8c6419bdecdd99e4e9596fdbde" title="Détermine si un fruit est trop proche de la tête pour pouvoir apparaître. " alt="" coords="545,473,680,500"/>
+<area shape="rect" id="node13" href="snake_8c.html#a5ab96fad579ff79a2df0bb06e86cb7d0" title="Détermine si un fruit est trop proche d&#39;un coin pour pouvoir apparaître. " alt="" coords="541,372,684,399"/>
+<area shape="rect" id="node10" href="snake_8c.html#ae38231a62f58e817c8a5d5c0e65d81c7" title="Calcule la norme d&#39;un vecteur. " alt="" coords="760,448,819,475"/>
+<area shape="rect" id="node16" href="snake_8c.html#a302fa1c00d3dfcf2e7deda97d2f86097" title="Décale le tableau de positions anciennes du serpent lors d&#39;une explosion de bombe. " alt="" coords="572,321,653,348"/>
+<area shape="rect" id="node17" href="snake_8c.html#aad644da8ea3e101158c01657e4f38684" title="Décale le tableau de positions anciennes du serpent pour libérer de la place. " alt="" coords="557,271,668,297"/>
+<area shape="rect" id="node21" href="snake_8c.html#a7f4d06dd5298cf3c4dc09b54867c1b3f" title="Détermine si la tête du serpent est sur un fruit. " alt="" coords="382,220,465,247"/>
+<area shape="rect" id="node22" href="snake_8c.html#ac19669d13e8261ca407db47f062b9518" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="379,169,467,196"/>
+<area shape="rect" id="node23" href="snake_8c.html#ad306e9c3cf09adcb1846c4f888957eec" title="Ajoute des parties de corps au serpent. " alt="" coords="576,169,649,196"/>
+<area shape="rect" id="node24" href="snake_8c.html#aa7aa21dd7d83b069bbcb2cffe3bf64d2" title="Décale le tableau de positions anciennes du serpent pour en ajouter de nouvelles. ..." alt="" coords="743,169,836,196"/>
+<area shape="rect" id="node32" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="359,1056,488,1083"/>
+<area shape="rect" id="node34" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="732,1031,847,1057"/>
+<area shape="rect" id="node33" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="567,1056,658,1083"/>
+<area shape="rect" id="node35" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="895,1005,973,1032"/>
+<area shape="rect" id="node36" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="897,1056,971,1083"/>
+<area shape="rect" id="node41" href="commun_functions_8c.html#a7abdc103877c16a5077411165bf8154d" title="retourne la longueur d&#39;un nombre " alt="" coords="390,1233,457,1260"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5_icgraph.jpg" border="0" usemap="#snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5_icgraph" alt=""/></div>
+<map name="snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5_icgraph" id="snake_8c_ade7b297c3e6ac4e9ba64a21163eec9b5_icgraph">
+<area shape="rect" id="node2" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="111,5,217,32"/>
+<area shape="rect" id="node3" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="265,5,391,32"/>
+<area shape="rect" id="node4" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="303,56,353,83"/>
+<area shape="rect" id="node5" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="439,56,489,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a3feffd5962865fbe7950d3bbe71ba771"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3feffd5962865fbe7950d3bbe71ba771">&#9670;&nbsp;</a></span>snakeInit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void snakeInit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialise l'environement de snake. </p>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a3feffd5962865fbe7950d3bbe71ba771_icgraph.jpg" border="0" usemap="#snake_8c_a3feffd5962865fbe7950d3bbe71ba771_icgraph" alt=""/></div>
+<map name="snake_8c_a3feffd5962865fbe7950d3bbe71ba771_icgraph" id="snake_8c_a3feffd5962865fbe7950d3bbe71ba771_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="128,5,185,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="233,5,340,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="388,5,513,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="425,56,476,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="561,56,612,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a358f322aca8a33648ffc238cd821caca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a358f322aca8a33648ffc238cd821caca">&#9670;&nbsp;</a></span>spawnBonus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spawnBonus </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a>&#160;</td>
+          <td class="paramname"><em>head</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a> *&#160;</td>
+          <td class="paramname"><em>bonus</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>nbFruitEaten</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a> *&#160;</td>
+          <td class="paramname"><em>fruit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nbFruits</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fait apparaître un bonus. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">head</td><td>La tête du serpent </td></tr>
+    <tr><td class="paramname">bonus</td><td>Le bonus </td></tr>
+    <tr><td class="paramname">nbFruitEaten</td><td>Le nombre d'élément dans ce tableau </td></tr>
+    <tr><td class="paramname">fruit</td><td>Le tableau de fruits </td></tr>
+    <tr><td class="paramname">nbFruits</td><td>Le nombre de fruits mangés (réduit par les fruits expirés) </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a358f322aca8a33648ffc238cd821caca_cgraph.jpg" border="0" usemap="#snake_8c_a358f322aca8a33648ffc238cd821caca_cgraph" alt=""/></div>
+<map name="snake_8c_a358f322aca8a33648ffc238cd821caca_cgraph" id="snake_8c_a358f322aca8a33648ffc238cd821caca_cgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a707860ff76b3c064c97abfb3aa3562d1" title="Détermine si un fruit est trop d&#39;un autre ou d&#39;un bonus pour pouvoir apparaître. " alt="" coords="157,5,287,32"/>
+<area shape="rect" id="node4" href="snake_8c.html#aa9234d8c6419bdecdd99e4e9596fdbde" title="Détermine si un fruit est trop proche de la tête pour pouvoir apparaître. " alt="" coords="155,56,289,83"/>
+<area shape="rect" id="node5" href="snake_8c.html#a88e97e8f14fe02486dcdafa98c1c1da5" title="Détermine si un point est trop proche d&#39;un mur par rapport à une distance donnée. ..." alt="" coords="157,107,287,133"/>
+<area shape="rect" id="node6" href="snake_8c.html#a5ab96fad579ff79a2df0bb06e86cb7d0" title="Détermine si un fruit est trop proche d&#39;un coin pour pouvoir apparaître. " alt="" coords="151,157,293,184"/>
+<area shape="rect" id="node3" href="snake_8c.html#ae38231a62f58e817c8a5d5c0e65d81c7" title="Calcule la norme d&#39;un vecteur. " alt="" coords="341,56,400,83"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a358f322aca8a33648ffc238cd821caca_icgraph.jpg" border="0" usemap="#snake_8c_a358f322aca8a33648ffc238cd821caca_icgraph" alt=""/></div>
+<map name="snake_8c_a358f322aca8a33648ffc238cd821caca_icgraph" id="snake_8c_a358f322aca8a33648ffc238cd821caca_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="151,5,208,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="256,5,363,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="411,5,536,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="448,56,499,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="584,56,635,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a25fd68046ffe688449023d7d4d75c95a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25fd68046ffe688449023d7d4d75c95a">&#9670;&nbsp;</a></span>spawnFruit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void spawnFruit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a>&#160;</td>
+          <td class="paramname"><em>head</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a> *&#160;</td>
+          <td class="paramname"><em>fruit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>rang</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nbFruits</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>nbFruitEaten</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a> *&#160;</td>
+          <td class="paramname"><em>bonus</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2f&#160;</td>
+          <td class="paramname"><em>spawn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>spawnCondition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>retardFrame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Mix_Chunk *&#160;</td>
+          <td class="paramname"><em>soundAppear</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>hardcore</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fait apparaître un fruit. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">head</td><td>La tête du serpent </td></tr>
+    <tr><td class="paramname">fruit</td><td>Le tableau de fruit </td></tr>
+    <tr><td class="paramname">rang</td><td>Le rang du fruit à faire apparaître </td></tr>
+    <tr><td class="paramname">nbFruits</td><td>Le nombre de fruits mangés (réduit par les fruits expirés) </td></tr>
+    <tr><td class="paramname">nbFruitEaten</td><td>Le nombre d'élément dans ce tableau </td></tr>
+    <tr><td class="paramname">bonus</td><td>Le bonus </td></tr>
+    <tr><td class="paramname">spawn</td><td>La position d'apparition si elle n'est pas aléatoire </td></tr>
+    <tr><td class="paramname">spawnCondition</td><td>La condition d'apparition ( naturelle, coffre...) </td></tr>
+    <tr><td class="paramname">retardFrame</td><td>Le nombre de frame avant que l'apparition du fruit commence </td></tr>
+    <tr><td class="paramname">soundAppear</td><td>Le son d'apparition des fruits </td></tr>
+    <tr><td class="paramname">hardcore</td><td>Le mode de jeu </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a25fd68046ffe688449023d7d4d75c95a_cgraph.jpg" border="0" usemap="#snake_8c_a25fd68046ffe688449023d7d4d75c95a_cgraph" alt=""/></div>
+<map name="snake_8c_a25fd68046ffe688449023d7d4d75c95a_cgraph" id="snake_8c_a25fd68046ffe688449023d7d4d75c95a_cgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a707860ff76b3c064c97abfb3aa3562d1" title="Détermine si un fruit est trop d&#39;un autre ou d&#39;un bonus pour pouvoir apparaître. " alt="" coords="146,5,277,32"/>
+<area shape="rect" id="node4" href="snake_8c.html#aa9234d8c6419bdecdd99e4e9596fdbde" title="Détermine si un fruit est trop proche de la tête pour pouvoir apparaître. " alt="" coords="144,56,279,83"/>
+<area shape="rect" id="node5" href="snake_8c.html#a88e97e8f14fe02486dcdafa98c1c1da5" title="Détermine si un point est trop proche d&#39;un mur par rapport à une distance donnée. ..." alt="" coords="146,107,277,133"/>
+<area shape="rect" id="node6" href="snake_8c.html#a5ab96fad579ff79a2df0bb06e86cb7d0" title="Détermine si un fruit est trop proche d&#39;un coin pour pouvoir apparaître. " alt="" coords="140,157,283,184"/>
+<area shape="rect" id="node3" href="snake_8c.html#ae38231a62f58e817c8a5d5c0e65d81c7" title="Calcule la norme d&#39;un vecteur. " alt="" coords="331,56,389,83"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a25fd68046ffe688449023d7d4d75c95a_icgraph.jpg" border="0" usemap="#snake_8c_a25fd68046ffe688449023d7d4d75c95a_icgraph" alt=""/></div>
+<map name="snake_8c_a25fd68046ffe688449023d7d4d75c95a_icgraph" id="snake_8c_a25fd68046ffe688449023d7d4d75c95a_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a79a3ba2cf055230de7d78992630f3acc" title="Mange un fruit. " alt="" coords="140,5,207,32"/>
+<area shape="rect" id="node3" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="255,31,312,57"/>
+<area shape="rect" id="node4" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="360,31,467,57"/>
+<area shape="rect" id="node5" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="515,31,640,57"/>
+<area shape="rect" id="node6" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="552,81,603,108"/>
+<area shape="rect" id="node7" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="688,81,739,108"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a5ab96fad579ff79a2df0bb06e86cb7d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ab96fad579ff79a2df0bb06e86cb7d0">&#9670;&nbsp;</a></span>tooCloseFromCorner()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int tooCloseFromCorner </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a>&#160;</td>
+          <td class="paramname"><em>fruit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Détermine si un fruit est trop proche d'un coin pour pouvoir apparaître. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fruit</td><td>Un fruit </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>Vrai si il est trop proche, sinon faux </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a5ab96fad579ff79a2df0bb06e86cb7d0_cgraph.jpg" border="0" usemap="#snake_8c_a5ab96fad579ff79a2df0bb06e86cb7d0_cgraph" alt=""/></div>
+<map name="snake_8c_a5ab96fad579ff79a2df0bb06e86cb7d0_cgraph" id="snake_8c_a5ab96fad579ff79a2df0bb06e86cb7d0_cgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ae38231a62f58e817c8a5d5c0e65d81c7" title="Calcule la norme d&#39;un vecteur. " alt="" coords="196,5,255,32"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a5ab96fad579ff79a2df0bb06e86cb7d0_icgraph.jpg" border="0" usemap="#snake_8c_a5ab96fad579ff79a2df0bb06e86cb7d0_icgraph" alt=""/></div>
+<map name="snake_8c_a5ab96fad579ff79a2df0bb06e86cb7d0_icgraph" id="snake_8c_a5ab96fad579ff79a2df0bb06e86cb7d0_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a25fd68046ffe688449023d7d4d75c95a" title="Fait apparaître un fruit. " alt="" coords="196,56,283,83"/>
+<area shape="rect" id="node9" href="snake_8c.html#a358f322aca8a33648ffc238cd821caca" title="Fait apparaître un bonus. " alt="" coords="331,107,428,133"/>
+<area shape="rect" id="node3" href="snake_8c.html#a79a3ba2cf055230de7d78992630f3acc" title="Mange un fruit. " alt="" coords="346,5,413,32"/>
+<area shape="rect" id="node4" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="476,56,533,83"/>
+<area shape="rect" id="node5" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="581,56,688,83"/>
+<area shape="rect" id="node6" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="736,56,861,83"/>
+<area shape="rect" id="node7" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="773,107,824,133"/>
+<area shape="rect" id="node8" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="909,107,960,133"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a707860ff76b3c064c97abfb3aa3562d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a707860ff76b3c064c97abfb3aa3562d1">&#9670;&nbsp;</a></span>tooCloseFromFruit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int tooCloseFromFruit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a> *&#160;</td>
+          <td class="paramname"><em>fruitRang</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>rang</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a> *&#160;</td>
+          <td class="paramname"><em>fruitSearch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nbFruitSearch</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Détermine si un fruit est trop d'un autre ou d'un bonus pour pouvoir apparaître. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fruitRang</td><td>Le tableau de fruit </td></tr>
+    <tr><td class="paramname">rang</td><td>Le rang du fruit </td></tr>
+    <tr><td class="paramname">fruitSearch</td><td>Le tableau de fruit/bonus où vérifier la proximité </td></tr>
+    <tr><td class="paramname">nbFruitSearch</td><td>Le nombre d'élément dans ce tableau </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>Vrai si il est trop proche, sinon faux </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a707860ff76b3c064c97abfb3aa3562d1_cgraph.jpg" border="0" usemap="#snake_8c_a707860ff76b3c064c97abfb3aa3562d1_cgraph" alt=""/></div>
+<map name="snake_8c_a707860ff76b3c064c97abfb3aa3562d1_cgraph" id="snake_8c_a707860ff76b3c064c97abfb3aa3562d1_cgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ae38231a62f58e817c8a5d5c0e65d81c7" title="Calcule la norme d&#39;un vecteur. " alt="" coords="184,5,243,32"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a707860ff76b3c064c97abfb3aa3562d1_icgraph.jpg" border="0" usemap="#snake_8c_a707860ff76b3c064c97abfb3aa3562d1_icgraph" alt=""/></div>
+<map name="snake_8c_a707860ff76b3c064c97abfb3aa3562d1_icgraph" id="snake_8c_a707860ff76b3c064c97abfb3aa3562d1_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a25fd68046ffe688449023d7d4d75c95a" title="Fait apparaître un fruit. " alt="" coords="184,56,271,83"/>
+<area shape="rect" id="node9" href="snake_8c.html#a358f322aca8a33648ffc238cd821caca" title="Fait apparaître un bonus. " alt="" coords="319,107,416,133"/>
+<area shape="rect" id="node3" href="snake_8c.html#a79a3ba2cf055230de7d78992630f3acc" title="Mange un fruit. " alt="" coords="334,5,401,32"/>
+<area shape="rect" id="node4" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="464,56,521,83"/>
+<area shape="rect" id="node5" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="569,56,676,83"/>
+<area shape="rect" id="node6" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="724,56,849,83"/>
+<area shape="rect" id="node7" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="761,107,812,133"/>
+<area shape="rect" id="node8" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="897,107,948,133"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="aa9234d8c6419bdecdd99e4e9596fdbde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9234d8c6419bdecdd99e4e9596fdbde">&#9670;&nbsp;</a></span>tooCloseFromHead()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int tooCloseFromHead </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_snake_part.html">SnakePart</a>&#160;</td>
+          <td class="paramname"><em>head</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_fruit.html">Fruit</a>&#160;</td>
+          <td class="paramname"><em>fruit</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Détermine si un fruit est trop proche de la tête pour pouvoir apparaître. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">head</td><td>La tête du serpent </td></tr>
+    <tr><td class="paramname">fruit</td><td>Un fruit </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>Vrai si il est trop proche, sinon faux </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_aa9234d8c6419bdecdd99e4e9596fdbde_cgraph.jpg" border="0" usemap="#snake_8c_aa9234d8c6419bdecdd99e4e9596fdbde_cgraph" alt=""/></div>
+<map name="snake_8c_aa9234d8c6419bdecdd99e4e9596fdbde_cgraph" id="snake_8c_aa9234d8c6419bdecdd99e4e9596fdbde_cgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ae38231a62f58e817c8a5d5c0e65d81c7" title="Calcule la norme d&#39;un vecteur. " alt="" coords="188,5,247,32"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_aa9234d8c6419bdecdd99e4e9596fdbde_icgraph.jpg" border="0" usemap="#snake_8c_aa9234d8c6419bdecdd99e4e9596fdbde_icgraph" alt=""/></div>
+<map name="snake_8c_aa9234d8c6419bdecdd99e4e9596fdbde_icgraph" id="snake_8c_aa9234d8c6419bdecdd99e4e9596fdbde_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a25fd68046ffe688449023d7d4d75c95a" title="Fait apparaître un fruit. " alt="" coords="188,56,275,83"/>
+<area shape="rect" id="node9" href="snake_8c.html#a358f322aca8a33648ffc238cd821caca" title="Fait apparaître un bonus. " alt="" coords="323,107,420,133"/>
+<area shape="rect" id="node3" href="snake_8c.html#a79a3ba2cf055230de7d78992630f3acc" title="Mange un fruit. " alt="" coords="338,5,405,32"/>
+<area shape="rect" id="node4" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="468,56,525,83"/>
+<area shape="rect" id="node5" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="573,56,680,83"/>
+<area shape="rect" id="node6" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="728,56,853,83"/>
+<area shape="rect" id="node7" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="765,107,816,133"/>
+<area shape="rect" id="node8" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="901,107,952,133"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a88e97e8f14fe02486dcdafa98c1c1da5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88e97e8f14fe02486dcdafa98c1c1da5">&#9670;&nbsp;</a></span>tooCloseFromWall()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int tooCloseFromWall </td>
+          <td>(</td>
+          <td class="paramtype">Vector2f&#160;</td>
+          <td class="paramname"><em>fruit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dist</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Détermine si un point est trop proche d'un mur par rapport à une distance donnée. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">point</td><td>Un point </td></tr>
+    <tr><td class="paramname">dist</td><td>La distance maximale autorisée </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>Vrai si il est trop proche, sinon faux </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a88e97e8f14fe02486dcdafa98c1c1da5_icgraph.jpg" border="0" usemap="#snake_8c_a88e97e8f14fe02486dcdafa98c1c1da5_icgraph" alt=""/></div>
+<map name="snake_8c_a88e97e8f14fe02486dcdafa98c1c1da5_icgraph" id="snake_8c_a88e97e8f14fe02486dcdafa98c1c1da5_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#a25fd68046ffe688449023d7d4d75c95a" title="Fait apparaître un fruit. " alt="" coords="184,56,271,83"/>
+<area shape="rect" id="node3" href="snake_8c.html#a79a3ba2cf055230de7d78992630f3acc" title="Mange un fruit. " alt="" coords="334,5,401,32"/>
+<area shape="rect" id="node4" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="464,81,521,108"/>
+<area shape="rect" id="node9" href="snake_8c.html#a358f322aca8a33648ffc238cd821caca" title="Fait apparaître un bonus. " alt="" coords="319,157,416,184"/>
+<area shape="rect" id="node5" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="569,81,676,108"/>
+<area shape="rect" id="node6" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="724,81,849,108"/>
+<area shape="rect" id="node7" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="761,132,812,159"/>
+<area shape="rect" id="node8" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="897,132,948,159"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a739086fd85b17cc39593a193118b0682"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a739086fd85b17cc39593a193118b0682">&#9670;&nbsp;</a></span>turnLeft()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void turnLeft </td>
+          <td>(</td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>angle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Tourne le serpent vers la gauche. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">angle</td><td>La direction du serpent </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_a739086fd85b17cc39593a193118b0682_icgraph.jpg" border="0" usemap="#snake_8c_a739086fd85b17cc39593a193118b0682_icgraph" alt=""/></div>
+<map name="snake_8c_a739086fd85b17cc39593a193118b0682_icgraph" id="snake_8c_a739086fd85b17cc39593a193118b0682_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="120,5,177,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="225,5,332,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="380,5,505,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="417,56,468,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="553,56,604,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ae92e302f554e9e33c5a52e6251106a89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae92e302f554e9e33c5a52e6251106a89">&#9670;&nbsp;</a></span>turnRight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void turnRight </td>
+          <td>(</td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>angle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Tourne le serpent vers la droite. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">angle</td><td>La direction du serpent </td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="snake_8c_ae92e302f554e9e33c5a52e6251106a89_icgraph.jpg" border="0" usemap="#snake_8c_ae92e302f554e9e33c5a52e6251106a89_icgraph" alt=""/></div>
+<map name="snake_8c_ae92e302f554e9e33c5a52e6251106a89_icgraph" id="snake_8c_ae92e302f554e9e33c5a52e6251106a89_icgraph">
+<area shape="rect" id="node2" href="snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="128,5,185,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="233,5,340,32"/>
+<area shape="rect" id="node4" href="room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="388,5,513,32"/>
+<area shape="rect" id="node5" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="425,56,476,83"/>
+<area shape="rect" id="node6" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="561,56,612,83"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des variables</h2>
+<a id="a30862aa51c2944f287c4445751341ee8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30862aa51c2944f287c4445751341ee8">&#9670;&nbsp;</a></span>updateEnded</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int updateEnded</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>

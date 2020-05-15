@@ -1,0 +1,7 @@
+<map id="spawnFruit" name="spawnFruit">
+<area shape="rect" id="node2" href="$snake_8c.html#a707860ff76b3c064c97abfb3aa3562d1" title="Détermine si un fruit est trop d&#39;un autre ou d&#39;un bonus pour pouvoir apparaître. " alt="" coords="146,5,277,32"/>
+<area shape="rect" id="node4" href="$snake_8c.html#aa9234d8c6419bdecdd99e4e9596fdbde" title="Détermine si un fruit est trop proche de la tête pour pouvoir apparaître. " alt="" coords="144,107,279,133"/>
+<area shape="rect" id="node5" href="$tetris_8c.html#ab1f20fd2b247412fbface8ef523015d9" title="Détermine si une pièce dépasse des bords de la grille. " alt="" coords="331,132,461,159"/>
+<area shape="rect" id="node6" href="$snake_8c.html#a5ab96fad579ff79a2df0bb06e86cb7d0" title="Détermine si un fruit est trop proche d&#39;un coin pour pouvoir apparaître. " alt="" coords="140,56,283,83"/>
+<area shape="rect" id="node3" href="$snake_8c.html#ae38231a62f58e817c8a5d5c0e65d81c7" title="Calcule la norme d&#39;un vecteur. " alt="" coords="367,56,425,83"/>
+</map>

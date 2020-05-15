@@ -1,0 +1,10 @@
+<map id="shiftRefresh" name="shiftRefresh">
+<area shape="rect" id="node2" href="$snake_8c.html#ad306e9c3cf09adcb1846c4f888957eec" title="Ajoute des parties de corps au serpent. " alt="" coords="147,5,220,32"/>
+<area shape="rect" id="node3" href="$snake_8c.html#ac19669d13e8261ca407db47f062b9518" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="268,5,356,32"/>
+<area shape="rect" id="node4" href="$snake_8c.html#abf27e85aa2f853848d38330822cbf27b" title="Décalle la taille des parties de serpents (digestion) " alt="" coords="404,5,495,32"/>
+<area shape="rect" id="node5" href="$snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="543,5,600,32"/>
+<area shape="rect" id="node6" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="648,5,755,32"/>
+<area shape="rect" id="node7" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="803,5,928,32"/>
+<area shape="rect" id="node8" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="840,56,891,83"/>
+<area shape="rect" id="node9" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="976,56,1027,83"/>
+</map>

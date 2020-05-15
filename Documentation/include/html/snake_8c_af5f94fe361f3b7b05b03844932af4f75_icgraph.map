@@ -1,0 +1,5 @@
+<map id="afficherScoreTotal" name="afficherScoreTotal">
+<area shape="rect" id="node2" href="$snake_8c.html#a0d195fc2e338a489acaa254db3a2d44e" title="snake" alt="" coords="201,5,258,32"/>
+<area shape="rect" id="node3" href="$asteroid_8c.html#a4b23e63f882f196347d741b9a9ec915b" title="afficherRoue" alt="" coords="181,56,277,83"/>
+<area shape="rect" id="node4" href="$asteroid_8c.html#a7c77cd484439e0aa7e7758525457bee8" title="asteroid" alt="" coords="325,81,393,108"/>
+</map>

@@ -1,0 +1,473 @@
+\hypertarget{commun_functions_8c}{}\section{Référence du fichier include/commun\+Functions.c}
+\label{commun_functions_8c}\index{include/commun\+Functions.\+c@{include/commun\+Functions.\+c}}
+
+
+regroupe un certain nombre de fonction utiliser par different fichier  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+ttf.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}commun\+Functions.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../include/define.\+h\char`\"{}}\newline
+Graphe des dépendances par inclusion de commun\+Functions.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{commun_functions_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{commun_functions_8c_a2cbb87ef4aefed1eed287e5d4bbc70bb}{L\+O\+A\+D\+I\+N\+G\+\_\+\+S\+I\+ZE}~54
+\item 
+\#define \hyperlink{commun_functions_8c_ae12c130281355f85230a6d4d09e23e4a}{L\+O\+A\+D\+I\+N\+G\+\_\+\+A\+N\+G\+L\+E\+\_\+\+P\+E\+R\+\_\+\+F\+R\+A\+ME}~(360/60)
+\item 
+\#define \hyperlink{commun_functions_8c_af45019bab9f6d331aa2b764822d5d1f0}{S\+I\+Z\+E\+\_\+\+E\+C\+H\+EC}~62.
+\item 
+\#define \hyperlink{commun_functions_8c_a1b16a1176a3dadfdee5fa7a769ba40f8}{S\+I\+Z\+E\+\_\+\+R\+E\+P\+L\+AY}~43.
+\item 
+\#define \hyperlink{commun_functions_8c_a1f19735ac01c0aa1b54d6ab5ced0cf9e}{S\+I\+Z\+E\+\_\+\+Q\+U\+IT}~28.
+\end{DoxyCompactItemize}
+\subsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{commun_functions_8c_ab497da0f3b8a639a9993a3aa10460c30}{information\+Precise\+C\+P\+U\+G\+PU} ()
+\begin{DoxyCompactList}\small\item\em permet d\textquotesingle{}afficher les info C\+P\+U/\+G\+PU \end{DoxyCompactList}\item 
+int \hyperlink{commun_functions_8c_af1e4d4eaa8a0a9e3ba768193d58e2792}{\+\_\+malloc} (void $\ast$$\ast$ptr, int type, int size, F\+I\+LE $\ast$fp, Uint32 flags, const char $\ast$title, const char $\ast$message, S\+D\+L\+\_\+\+Window $\ast$window)
+\begin{DoxyCompactList}\small\item\em permet de faire une allocation dynamqiue avec message d\textquotesingle{}erreur \end{DoxyCompactList}\item 
+void \hyperlink{commun_functions_8c_ad7115d96f0ae2328db6b62564ece982d}{afficher\+Message\+Systeme} (char message\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em affiche une popup systeme \end{DoxyCompactList}\item 
+void \hyperlink{commun_functions_8c_ad0ed0fe31f27ac7898fd7c0d25f8d71c}{afficher\+Loading} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$loading\+Texture, S\+D\+L\+\_\+\+Color color, int shiftX, int shiftY, int frame\+Anim, int windowW, int windowH, int referenceW)
+\begin{DoxyCompactList}\small\item\em Affiche l\textquotesingle{}animation de chargement des envois de requêtes. \end{DoxyCompactList}\item 
+void \hyperlink{commun_functions_8c_a22549bc59dccb5f8748d72b9bec11512}{afficher\+Retour} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$loading\+Texture, T\+T\+F\+\_\+\+Font $\ast$font, S\+D\+L\+\_\+\+Color color, int shiftX, int shiftY, int frame\+Anim, int windowW, int windowH, int referenceW)
+\begin{DoxyCompactList}\small\item\em Affiche l\textquotesingle{}animation de retour de requête. \end{DoxyCompactList}\item 
+void \hyperlink{commun_functions_8c_accb6052f792ce29f71e79866dff07a58}{draw\+Replay} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, T\+T\+F\+\_\+\+Font $\ast$font, float posY, int viewW, int viewH)
+\begin{DoxyCompactList}\small\item\em Affiche un texte invitant le joueur à rejouer. \end{DoxyCompactList}\item 
+void \hyperlink{commun_functions_8c_ab85a0d17357e8a27e2f77b3cd8d84027}{draw\+Quit} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, T\+T\+F\+\_\+\+Font $\ast$font, float ratio\+Window\+Size, S\+D\+L\+\_\+\+Color color)
+\begin{DoxyCompactList}\small\item\em Affiche echap en haut a gauche. \end{DoxyCompactList}\item 
+void \hyperlink{commun_functions_8c_aaf7f536dbcc7c1704472de6c212b9eda}{draw\+Beta} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, T\+T\+F\+\_\+\+Font $\ast$font, float ratio\+Window\+Size, S\+D\+L\+\_\+\+Color color, int size)
+\begin{DoxyCompactList}\small\item\em Affiche beta en bas a droite. \end{DoxyCompactList}\item 
+int \hyperlink{commun_functions_8c_a7abdc103877c16a5077411165bf8154d}{len\+Num} (int n)
+\begin{DoxyCompactList}\small\item\em retourne la longueur d\textquotesingle{}un nombre \end{DoxyCompactList}\item 
+int \hyperlink{commun_functions_8c_aad2eabec61848c202dd8cf2a800d3398}{rand\+Sign} ()
+\begin{DoxyCompactList}\small\item\em renvoie un signe aléatoire \+: soit 1 ou -\/1 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{commun_functions_8c_acc149d3bd8c6407d2c6e794a9b304939}{S\+R\+C\+\_\+\+L\+O\+A\+D\+I\+NG} = \{0,0,222,222\}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{commun_functions_8c_a30ee815d8c709aa66a576c66472d3a48}{C\+O\+L\+O\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+A\+D\+I\+NG} = \{0xfb,0x17,0x17\}
+\item 
+const int \hyperlink{commun_functions_8c_af745d16273f663f1f64767cf64d09b02}{A\+L\+P\+HA} \mbox{[}2 $\ast$(int) F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+R\+E\+T\+O\+UR\mbox{]} = \{ 10, 30, 55, 70, 100, 140, 170, 200, 220, 225, 230, 230, 230, 230, 230, 230,230, 230, 230, 230, 230,230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 225,220,200,170,140,100,70,55,30,10\}
+\item 
+F\+I\+LE $\ast$ \hyperlink{commun_functions_8c_a1ce6bb164d37e605aa60e94aefe73817}{E\+X\+T\+\_\+\+F\+I\+LE}
+\item 
+char $\ast$ \hyperlink{commun_functions_8c_afd33db1ce94dcc227584c51133296222}{R\+E\+P\+L\+AY} = \char`\"{}Appuyer sur Espace pour jouer !\char`\"{}
+\item 
+S\+D\+L\+\_\+\+Color \hyperlink{commun_functions_8c_a9eb8c8fa86d54544ffd79802430bd4d0}{W\+H\+I\+TE} = \{255,255,255,255\}
+\item 
+static char $\ast$ \hyperlink{commun_functions_8c_a84e6cf274c3f2439ef3b1d386dc474c6}{Q\+U\+IT} = \char`\"{}Echap\char`\"{}
+\item 
+static S\+D\+L\+\_\+\+Rect \hyperlink{commun_functions_8c_a05dd6426be20d877029f9fff2f777951}{Q\+U\+I\+T\+\_\+\+D\+E\+ST} = \{10,10,0,0\}
+\item 
+static char $\ast$ \hyperlink{commun_functions_8c_a3997e96387b98a69b49b99b07ca01be2}{B\+E\+TA} = \char`\"{}(Beta)\char`\"{}
+\item 
+static S\+D\+L\+\_\+\+Rect \hyperlink{commun_functions_8c_af704eeb5ce2073cbf544ed0246c38096}{B\+A\+S\+E\+\_\+\+D\+E\+ST} = \{B\+A\+S\+E\+\_\+\+W\+I\+N\+D\+O\+W\+\_\+W-\/10, B\+A\+S\+E\+\_\+\+W\+I\+N\+D\+O\+W\+\_\+H-\/10, 0,0\}
+\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+regroupe un certain nombre de fonction utiliser par different fichier 
+
+\begin{DoxyAuthor}{Auteur}
+Samy M. 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+31 janvier 2020 
+\end{DoxyDate}
+
+
+\subsection{Documentation des macros}
+\mbox{\Hypertarget{commun_functions_8c_ae12c130281355f85230a6d4d09e23e4a}\label{commun_functions_8c_ae12c130281355f85230a6d4d09e23e4a}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!L\+O\+A\+D\+I\+N\+G\+\_\+\+A\+N\+G\+L\+E\+\_\+\+P\+E\+R\+\_\+\+F\+R\+A\+ME@{L\+O\+A\+D\+I\+N\+G\+\_\+\+A\+N\+G\+L\+E\+\_\+\+P\+E\+R\+\_\+\+F\+R\+A\+ME}}
+\index{L\+O\+A\+D\+I\+N\+G\+\_\+\+A\+N\+G\+L\+E\+\_\+\+P\+E\+R\+\_\+\+F\+R\+A\+ME@{L\+O\+A\+D\+I\+N\+G\+\_\+\+A\+N\+G\+L\+E\+\_\+\+P\+E\+R\+\_\+\+F\+R\+A\+ME}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{L\+O\+A\+D\+I\+N\+G\+\_\+\+A\+N\+G\+L\+E\+\_\+\+P\+E\+R\+\_\+\+F\+R\+A\+ME}{LOADING\_ANGLE\_PER\_FRAME}}
+{\footnotesize\ttfamily \#define L\+O\+A\+D\+I\+N\+G\+\_\+\+A\+N\+G\+L\+E\+\_\+\+P\+E\+R\+\_\+\+F\+R\+A\+ME~(360/60)}
+
+\mbox{\Hypertarget{commun_functions_8c_a2cbb87ef4aefed1eed287e5d4bbc70bb}\label{commun_functions_8c_a2cbb87ef4aefed1eed287e5d4bbc70bb}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!L\+O\+A\+D\+I\+N\+G\+\_\+\+S\+I\+ZE@{L\+O\+A\+D\+I\+N\+G\+\_\+\+S\+I\+ZE}}
+\index{L\+O\+A\+D\+I\+N\+G\+\_\+\+S\+I\+ZE@{L\+O\+A\+D\+I\+N\+G\+\_\+\+S\+I\+ZE}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{L\+O\+A\+D\+I\+N\+G\+\_\+\+S\+I\+ZE}{LOADING\_SIZE}}
+{\footnotesize\ttfamily \#define L\+O\+A\+D\+I\+N\+G\+\_\+\+S\+I\+ZE~54}
+
+\mbox{\Hypertarget{commun_functions_8c_af45019bab9f6d331aa2b764822d5d1f0}\label{commun_functions_8c_af45019bab9f6d331aa2b764822d5d1f0}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!S\+I\+Z\+E\+\_\+\+E\+C\+H\+EC@{S\+I\+Z\+E\+\_\+\+E\+C\+H\+EC}}
+\index{S\+I\+Z\+E\+\_\+\+E\+C\+H\+EC@{S\+I\+Z\+E\+\_\+\+E\+C\+H\+EC}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{S\+I\+Z\+E\+\_\+\+E\+C\+H\+EC}{SIZE\_ECHEC}}
+{\footnotesize\ttfamily \#define S\+I\+Z\+E\+\_\+\+E\+C\+H\+EC~62.}
+
+\mbox{\Hypertarget{commun_functions_8c_a1f19735ac01c0aa1b54d6ab5ced0cf9e}\label{commun_functions_8c_a1f19735ac01c0aa1b54d6ab5ced0cf9e}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!S\+I\+Z\+E\+\_\+\+Q\+U\+IT@{S\+I\+Z\+E\+\_\+\+Q\+U\+IT}}
+\index{S\+I\+Z\+E\+\_\+\+Q\+U\+IT@{S\+I\+Z\+E\+\_\+\+Q\+U\+IT}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{S\+I\+Z\+E\+\_\+\+Q\+U\+IT}{SIZE\_QUIT}}
+{\footnotesize\ttfamily \#define S\+I\+Z\+E\+\_\+\+Q\+U\+IT~28.}
+
+\mbox{\Hypertarget{commun_functions_8c_a1b16a1176a3dadfdee5fa7a769ba40f8}\label{commun_functions_8c_a1b16a1176a3dadfdee5fa7a769ba40f8}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!S\+I\+Z\+E\+\_\+\+R\+E\+P\+L\+AY@{S\+I\+Z\+E\+\_\+\+R\+E\+P\+L\+AY}}
+\index{S\+I\+Z\+E\+\_\+\+R\+E\+P\+L\+AY@{S\+I\+Z\+E\+\_\+\+R\+E\+P\+L\+AY}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{S\+I\+Z\+E\+\_\+\+R\+E\+P\+L\+AY}{SIZE\_REPLAY}}
+{\footnotesize\ttfamily \#define S\+I\+Z\+E\+\_\+\+R\+E\+P\+L\+AY~43.}
+
+
+
+\subsection{Documentation des fonctions}
+\mbox{\Hypertarget{commun_functions_8c_af1e4d4eaa8a0a9e3ba768193d58e2792}\label{commun_functions_8c_af1e4d4eaa8a0a9e3ba768193d58e2792}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!\+\_\+malloc@{\+\_\+malloc}}
+\index{\+\_\+malloc@{\+\_\+malloc}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{\+\_\+malloc()}{\_malloc()}}
+{\footnotesize\ttfamily int \+\_\+malloc (\begin{DoxyParamCaption}\item[{void $\ast$$\ast$}]{ptr,  }\item[{int}]{type,  }\item[{int}]{size,  }\item[{F\+I\+LE $\ast$}]{fp,  }\item[{Uint32}]{flags,  }\item[{const char $\ast$}]{title,  }\item[{const char $\ast$}]{message,  }\item[{S\+D\+L\+\_\+\+Window $\ast$}]{window }\end{DoxyParamCaption})}
+
+
+
+permet de faire une allocation dynamqiue avec message d\textquotesingle{}erreur 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em void} & $\ast$$\ast$ptr element a allouer \\
+\hline
+{\em int} & type taille du type \\
+\hline
+{\em int} & size nombre d element a allouer \\
+\hline
+{\em F\+I\+LE} & $\ast$fp pointeur sur element sorti erreur \\
+\hline
+{\em Uint32} & flags flags message S\+DL  char $\ast$title if set N\+U\+LL no message on S\+DL \\
+\hline
+{\em char} & $\ast$message message pour fprintf \\
+\hline
+{\em S\+D\+L\+\_\+\+Window} & $\ast$window null si hors d\textquotesingle{}une fenetre\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+S\+S/\+E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{commun_functions_8c_af1e4d4eaa8a0a9e3ba768193d58e2792_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{commun_functions_8c_ad0ed0fe31f27ac7898fd7c0d25f8d71c}\label{commun_functions_8c_ad0ed0fe31f27ac7898fd7c0d25f8d71c}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!afficher\+Loading@{afficher\+Loading}}
+\index{afficher\+Loading@{afficher\+Loading}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Loading()}{afficherLoading()}}
+{\footnotesize\ttfamily void afficher\+Loading (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{loading\+Texture,  }\item[{S\+D\+L\+\_\+\+Color}]{color,  }\item[{int}]{shiftX,  }\item[{int}]{shiftY,  }\item[{int}]{frame\+Anim,  }\item[{int}]{windowW,  }\item[{int}]{windowH,  }\item[{int}]{referenceW }\end{DoxyParamCaption})}
+
+
+
+Affiche l\textquotesingle{}animation de chargement des envois de requêtes. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em loading\+Texture} & La texture de chargement \\
+\hline
+{\em color} & La couleur de la texture chargement \\
+\hline
+{\em shiftX} & Le décallage horizontal \\
+\hline
+{\em shiftY} & Le décallage vertical \\
+\hline
+{\em frame\+Anim} & La famr de l\textquotesingle{}animation \\
+\hline
+{\em windowW} & La largeur de fenêtre \\
+\hline
+{\em windowH} & La hauteur de fenêtre \\
+\hline
+{\em referenceW} & La largeur de référence \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{commun_functions_8c_ad0ed0fe31f27ac7898fd7c0d25f8d71c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{commun_functions_8c_ad7115d96f0ae2328db6b62564ece982d}\label{commun_functions_8c_ad7115d96f0ae2328db6b62564ece982d}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!afficher\+Message\+Systeme@{afficher\+Message\+Systeme}}
+\index{afficher\+Message\+Systeme@{afficher\+Message\+Systeme}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Message\+Systeme()}{afficherMessageSysteme()}}
+{\footnotesize\ttfamily afficher\+Message\+Systeme (\begin{DoxyParamCaption}\item[{char}]{message\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+affiche une popup systeme 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em char} & message\mbox{[}\mbox{]} message a afficher a l\textquotesingle{}ecran \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{commun_functions_8c_ad7115d96f0ae2328db6b62564ece982d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{commun_functions_8c_a22549bc59dccb5f8748d72b9bec11512}\label{commun_functions_8c_a22549bc59dccb5f8748d72b9bec11512}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!afficher\+Retour@{afficher\+Retour}}
+\index{afficher\+Retour@{afficher\+Retour}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Retour()}{afficherRetour()}}
+{\footnotesize\ttfamily void afficher\+Retour (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{loading\+Texture,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font,  }\item[{S\+D\+L\+\_\+\+Color}]{color,  }\item[{int}]{shiftX,  }\item[{int}]{shiftY,  }\item[{int}]{frame\+Anim,  }\item[{int}]{windowW,  }\item[{int}]{windowH,  }\item[{int}]{referenceW }\end{DoxyParamCaption})}
+
+
+
+Affiche l\textquotesingle{}animation de retour de requête. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em loading\+Texture} & La texture de retour \\
+\hline
+{\em font} & La police d\textquotesingle{}écriture du message d\textquotesingle{}erreur \\
+\hline
+{\em color} & La couleur de la texture chargement \\
+\hline
+{\em shiftX} & Le décallage horizontal \\
+\hline
+{\em shiftY} & Le décallage vertical \\
+\hline
+{\em frame\+Anim} & La famr de l\textquotesingle{}animation \\
+\hline
+{\em windowW} & La largeur de fenêtre \\
+\hline
+{\em windowH} & La hauteur de fenêtre \\
+\hline
+{\em referenceW} & La largeur de référence \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{commun_functions_8c_a22549bc59dccb5f8748d72b9bec11512_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{commun_functions_8c_aaf7f536dbcc7c1704472de6c212b9eda}\label{commun_functions_8c_aaf7f536dbcc7c1704472de6c212b9eda}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!draw\+Beta@{draw\+Beta}}
+\index{draw\+Beta@{draw\+Beta}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{draw\+Beta()}{drawBeta()}}
+{\footnotesize\ttfamily void draw\+Beta (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font,  }\item[{float}]{ratio\+Window\+Size,  }\item[{S\+D\+L\+\_\+\+Color}]{color,  }\item[{int}]{size }\end{DoxyParamCaption})}
+
+
+
+Affiche beta en bas a droite. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em font} & La police d\textquotesingle{}écriture \\
+\hline
+{\em ratio\+Window\+Size} & ratio de l ecran \\
+\hline
+{\em color} & couleur du text \\
+\hline
+{\em size} & taille du text \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{commun_functions_8c_ab85a0d17357e8a27e2f77b3cd8d84027}\label{commun_functions_8c_ab85a0d17357e8a27e2f77b3cd8d84027}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!draw\+Quit@{draw\+Quit}}
+\index{draw\+Quit@{draw\+Quit}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{draw\+Quit()}{drawQuit()}}
+{\footnotesize\ttfamily void draw\+Quit (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font,  }\item[{float}]{ratio\+Window\+Size,  }\item[{S\+D\+L\+\_\+\+Color}]{color }\end{DoxyParamCaption})}
+
+
+
+Affiche echap en haut a gauche. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em font} & La police d\textquotesingle{}écriture \\
+\hline
+{\em ratio\+Window\+Size} & ratio de l ecran \\
+\hline
+{\em color} & couleur du text \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{commun_functions_8c_ab85a0d17357e8a27e2f77b3cd8d84027_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{commun_functions_8c_accb6052f792ce29f71e79866dff07a58}\label{commun_functions_8c_accb6052f792ce29f71e79866dff07a58}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!draw\+Replay@{draw\+Replay}}
+\index{draw\+Replay@{draw\+Replay}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{draw\+Replay()}{drawReplay()}}
+{\footnotesize\ttfamily void draw\+Replay (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font,  }\item[{float}]{posY,  }\item[{int}]{viewW,  }\item[{int}]{viewH }\end{DoxyParamCaption})}
+
+
+
+Affiche un texte invitant le joueur à rejouer. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em font} & La police d\textquotesingle{}écriture \\
+\hline
+{\em posY} & position du text sur Y \\
+\hline
+{\em viewW} & hauteur de la fenetre \\
+\hline
+{\em viewH} & largueur de la fenetre \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{commun_functions_8c_accb6052f792ce29f71e79866dff07a58_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{commun_functions_8c_ab497da0f3b8a639a9993a3aa10460c30}\label{commun_functions_8c_ab497da0f3b8a639a9993a3aa10460c30}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!information\+Precise\+C\+P\+U\+G\+PU@{information\+Precise\+C\+P\+U\+G\+PU}}
+\index{information\+Precise\+C\+P\+U\+G\+PU@{information\+Precise\+C\+P\+U\+G\+PU}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{information\+Precise\+C\+P\+U\+G\+P\+U()}{informationPreciseCPUGPU()}}
+{\footnotesize\ttfamily void information\+Precise\+C\+P\+U\+G\+PU (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+permet d\textquotesingle{}afficher les info C\+P\+U/\+G\+PU 
+
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=295pt]{commun_functions_8c_ab497da0f3b8a639a9993a3aa10460c30_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{commun_functions_8c_a7abdc103877c16a5077411165bf8154d}\label{commun_functions_8c_a7abdc103877c16a5077411165bf8154d}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!len\+Num@{len\+Num}}
+\index{len\+Num@{len\+Num}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{len\+Num()}{lenNum()}}
+{\footnotesize\ttfamily int len\+Num (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+retourne la longueur d\textquotesingle{}un nombre 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em n} & Le nombre à examiner \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+longueur d\textquotesingle{}un chiffre 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{commun_functions_8c_a7abdc103877c16a5077411165bf8154d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{commun_functions_8c_aad2eabec61848c202dd8cf2a800d3398}\label{commun_functions_8c_aad2eabec61848c202dd8cf2a800d3398}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!rand\+Sign@{rand\+Sign}}
+\index{rand\+Sign@{rand\+Sign}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{rand\+Sign()}{randSign()}}
+{\footnotesize\ttfamily int rand\+Sign (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+renvoie un signe aléatoire \+: soit 1 ou -\/1 
+
+\begin{DoxyReturn}{Renvoie}
+1/-\/1 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{commun_functions_8c_aad2eabec61848c202dd8cf2a800d3398_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Documentation des variables}
+\mbox{\Hypertarget{commun_functions_8c_af745d16273f663f1f64767cf64d09b02}\label{commun_functions_8c_af745d16273f663f1f64767cf64d09b02}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!A\+L\+P\+HA@{A\+L\+P\+HA}}
+\index{A\+L\+P\+HA@{A\+L\+P\+HA}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{A\+L\+P\+HA}{ALPHA}}
+{\footnotesize\ttfamily const int A\+L\+P\+HA\mbox{[}2 $\ast$(int) F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+R\+E\+T\+O\+UR\mbox{]} = \{ 10, 30, 55, 70, 100, 140, 170, 200, 220, 225, 230, 230, 230, 230, 230, 230,230, 230, 230, 230, 230,230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 230, 225,220,200,170,140,100,70,55,30,10\}}
+
+\mbox{\Hypertarget{commun_functions_8c_af704eeb5ce2073cbf544ed0246c38096}\label{commun_functions_8c_af704eeb5ce2073cbf544ed0246c38096}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!B\+A\+S\+E\+\_\+\+D\+E\+ST@{B\+A\+S\+E\+\_\+\+D\+E\+ST}}
+\index{B\+A\+S\+E\+\_\+\+D\+E\+ST@{B\+A\+S\+E\+\_\+\+D\+E\+ST}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{B\+A\+S\+E\+\_\+\+D\+E\+ST}{BASE\_DEST}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect B\+A\+S\+E\+\_\+\+D\+E\+ST = \{B\+A\+S\+E\+\_\+\+W\+I\+N\+D\+O\+W\+\_\+W-\/10, B\+A\+S\+E\+\_\+\+W\+I\+N\+D\+O\+W\+\_\+H-\/10, 0,0\}\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{commun_functions_8c_a3997e96387b98a69b49b99b07ca01be2}\label{commun_functions_8c_a3997e96387b98a69b49b99b07ca01be2}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!B\+E\+TA@{B\+E\+TA}}
+\index{B\+E\+TA@{B\+E\+TA}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{B\+E\+TA}{BETA}}
+{\footnotesize\ttfamily char$\ast$ B\+E\+TA = \char`\"{}(Beta)\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{commun_functions_8c_a30ee815d8c709aa66a576c66472d3a48}\label{commun_functions_8c_a30ee815d8c709aa66a576c66472d3a48}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!C\+O\+L\+O\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+A\+D\+I\+NG@{C\+O\+L\+O\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+A\+D\+I\+NG}}
+\index{C\+O\+L\+O\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+A\+D\+I\+NG@{C\+O\+L\+O\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+A\+D\+I\+NG}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{C\+O\+L\+O\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+A\+D\+I\+NG}{COLOR\_ERROR\_LOADING}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color C\+O\+L\+O\+R\+\_\+\+E\+R\+R\+O\+R\+\_\+\+L\+O\+A\+D\+I\+NG = \{0xfb,0x17,0x17\}}
+
+\mbox{\Hypertarget{commun_functions_8c_a1ce6bb164d37e605aa60e94aefe73817}\label{commun_functions_8c_a1ce6bb164d37e605aa60e94aefe73817}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!E\+X\+T\+\_\+\+F\+I\+LE@{E\+X\+T\+\_\+\+F\+I\+LE}}
+\index{E\+X\+T\+\_\+\+F\+I\+LE@{E\+X\+T\+\_\+\+F\+I\+LE}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{E\+X\+T\+\_\+\+F\+I\+LE}{EXT\_FILE}}
+{\footnotesize\ttfamily F\+I\+LE$\ast$ E\+X\+T\+\_\+\+F\+I\+LE}
+
+\mbox{\Hypertarget{commun_functions_8c_a84e6cf274c3f2439ef3b1d386dc474c6}\label{commun_functions_8c_a84e6cf274c3f2439ef3b1d386dc474c6}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!Q\+U\+IT@{Q\+U\+IT}}
+\index{Q\+U\+IT@{Q\+U\+IT}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{Q\+U\+IT}{QUIT}}
+{\footnotesize\ttfamily char$\ast$ Q\+U\+IT = \char`\"{}Echap\char`\"{}\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{commun_functions_8c_a05dd6426be20d877029f9fff2f777951}\label{commun_functions_8c_a05dd6426be20d877029f9fff2f777951}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!Q\+U\+I\+T\+\_\+\+D\+E\+ST@{Q\+U\+I\+T\+\_\+\+D\+E\+ST}}
+\index{Q\+U\+I\+T\+\_\+\+D\+E\+ST@{Q\+U\+I\+T\+\_\+\+D\+E\+ST}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{Q\+U\+I\+T\+\_\+\+D\+E\+ST}{QUIT\_DEST}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect Q\+U\+I\+T\+\_\+\+D\+E\+ST = \{10,10,0,0\}\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{commun_functions_8c_afd33db1ce94dcc227584c51133296222}\label{commun_functions_8c_afd33db1ce94dcc227584c51133296222}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!R\+E\+P\+L\+AY@{R\+E\+P\+L\+AY}}
+\index{R\+E\+P\+L\+AY@{R\+E\+P\+L\+AY}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{R\+E\+P\+L\+AY}{REPLAY}}
+{\footnotesize\ttfamily char$\ast$ R\+E\+P\+L\+AY = \char`\"{}Appuyer sur Espace pour jouer !\char`\"{}}
+
+\mbox{\Hypertarget{commun_functions_8c_acc149d3bd8c6407d2c6e794a9b304939}\label{commun_functions_8c_acc149d3bd8c6407d2c6e794a9b304939}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!S\+R\+C\+\_\+\+L\+O\+A\+D\+I\+NG@{S\+R\+C\+\_\+\+L\+O\+A\+D\+I\+NG}}
+\index{S\+R\+C\+\_\+\+L\+O\+A\+D\+I\+NG@{S\+R\+C\+\_\+\+L\+O\+A\+D\+I\+NG}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{S\+R\+C\+\_\+\+L\+O\+A\+D\+I\+NG}{SRC\_LOADING}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect S\+R\+C\+\_\+\+L\+O\+A\+D\+I\+NG = \{0,0,222,222\}}
+
+\mbox{\Hypertarget{commun_functions_8c_a9eb8c8fa86d54544ffd79802430bd4d0}\label{commun_functions_8c_a9eb8c8fa86d54544ffd79802430bd4d0}} 
+\index{commun\+Functions.\+c@{commun\+Functions.\+c}!W\+H\+I\+TE@{W\+H\+I\+TE}}
+\index{W\+H\+I\+TE@{W\+H\+I\+TE}!commun\+Functions.\+c@{commun\+Functions.\+c}}
+\subsubsection{\texorpdfstring{W\+H\+I\+TE}{WHITE}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Color W\+H\+I\+TE = \{255,255,255,255\}}
+

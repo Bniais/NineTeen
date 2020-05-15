@@ -1,0 +1,7 @@
+<map id="checkVersion" name="checkVersion">
+<area shape="rect" id="node2" href="$lib_web_8c.html#a0e29e9eb16393df50ad9f677aa1ab1b8" title="permet de verifier la bonne version de l&#39;utilisateur " alt="" coords="171,31,309,57"/>
+<area shape="rect" id="node6" href="$commun_functions_8c.html#ad7115d96f0ae2328db6b62564ece982d" title="affiche une popup systeme " alt="" coords="155,81,325,108"/>
+<area shape="rect" id="node3" href="$lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="373,31,488,57"/>
+<area shape="rect" id="node4" href="$lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="536,5,615,32"/>
+<area shape="rect" id="node5" href="$lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="538,56,613,83"/>
+</map>

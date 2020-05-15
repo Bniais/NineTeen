@@ -1,0 +1,6 @@
+<map id="animationPorteToilette" name="animationPorteToilette">
+<area shape="rect" id="node2" href="$room_8c.html#a920b806cad48b375b9a530814e7afd63" title="regle le volume de l&#39;environement sur un channel particuliere " alt="" coords="236,31,344,57"/>
+<area shape="rect" id="node5" href="$room_8c.html#a87f0edb1c54eefa26f857c4a4d530429" title="detection des toilettes h/f " alt="" coords="205,81,375,108"/>
+<area shape="rect" id="node3" href="$room_8c.html#a99f0807856f649ff729b7924e125dcdf" title="renvoi la distance entre deux point " alt="" coords="423,5,524,32"/>
+<area shape="rect" id="node4" href="$room_8c.html#a6e52b9bce2208dbc639e5a979b15ca35" title="renvoi l&#39;angle entre 3 points " alt="" coords="429,56,518,83"/>
+</map>

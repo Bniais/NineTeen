@@ -1,0 +1,6 @@
+<map id="spawn_asteroid" name="spawn_asteroid">
+<area shape="rect" id="node2" href="$commun_functions_8c.html#aad2eabec61848c202dd8cf2a800d3398" title="renvoie un signe aléatoire : soit 1 ou &#45;1 " alt="" coords="177,5,250,32"/>
+<area shape="rect" id="node3" href="$asteroid_8c.html#a0ab4528a5507e3a0f816d4c596c59f16" title="vaisseau trop_pres ou non " alt="" coords="308,81,384,108"/>
+<area shape="rect" id="node5" href="$asteroid_8c.html#a3538049a3870b4c1d926aa49b647e126" title="test si un asteroide est sur un autre asteroide " alt="" coords="167,107,260,133"/>
+<area shape="rect" id="node4" href="$asteroid_8c.html#a9138b5f165178cf613ff96f2307a0fec" title="calcul la distance entre deux points " alt="" coords="432,81,493,108"/>
+</map>

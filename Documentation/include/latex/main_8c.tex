@@ -1,0 +1,702 @@
+\hypertarget{main_8c}{}\section{Référence du fichier main.\+c}
+\label{main_8c}\index{main.\+c@{main.\+c}}
+
+
+regroupe le launcher ainsi que le programme principal du jeu  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}S\+D\+L2/\+S\+D\+L\+\_\+thread.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+image.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+ttf.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+mixer.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}include/text\+Field.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/fullpath.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/commun\+Functions.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/lib\+Web.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}room/room.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/define.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}main.\+h\char`\"{}}\newline
+Graphe des dépendances par inclusion de main.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{main_8c_a9361d8eed5c24ffb8cb9b33510254c3c}{V\+E\+R\+S\+I\+O\+N\+\_\+\+L\+O\+G\+I\+C\+I\+EL}~\char`\"{}version=1.\+1.\+0\char`\"{}
+\item 
+\#define \hyperlink{main_8c_a1c6d5de492ac61ad29aec7aa9a436bbf}{V\+E\+R\+S\+I\+ON}~\char`\"{}1.\+1.\+0\char`\"{}
+\item 
+\#define \hyperlink{main_8c_a88d81692d057903aae74292f1cbacf63}{M\+O\+D\+E\+\_\+\+D\+EV}~0
+\item 
+\#define \hyperlink{main_8c_a79eb567e00b5f977f2c6da15d4bd8bee}{D\+I\+R\+\_\+\+O\+B\+J\+\_\+\+L\+O\+AD}~\char`\"{}../room/\hyperlink{room_8c_a158b90dfedb211efa4c317267c983dd2}{textures}/salle.\+obj\char`\"{}
+\item 
+\#define \hyperlink{main_8c_aa8cecfc5c5c054d2875c03e77b7be15d}{T\+R\+UE}~1
+\item 
+\#define \hyperlink{main_8c_aa93f0eb578d23995850d61f7d61c55c1}{F\+A\+L\+SE}~0
+\item 
+\#define \hyperlink{main_8c_a4afb31b8aaad24ca6e4133e9e0ffd0f2}{D\+I\+R\+\_\+\+T\+O\+K\+E\+N\+\_\+\+F\+I\+LE}~\char`\"{}/tmp/.Nineteen\char`\"{}
+\item 
+\#define \hyperlink{main_8c_aafef6d4375464be2b7a38db96d988e9c}{D\+I\+R\+\_\+\+L\+OG}~\char`\"{}/tmp/\char`\"{}
+\item 
+\#define \hyperlink{main_8c_a4413ffd2f789046586a88484c418f293}{D\+I\+R\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+I\+LE}~\char`\"{}../launcher/.config\char`\"{}
+\item 
+\#define \hyperlink{main_8c_af834322a79297b37a702c15ff8d5e9a7}{D\+I\+R\+\_\+\+M\+U\+S\+I\+C\+\_\+\+F\+I\+LE}~\char`\"{}../assets/background.\+wav\char`\"{}
+\item 
+\#define \hyperlink{main_8c_ac4ed2c9ae8305de141ba75c7463f9cb9}{D\+I\+R\+\_\+\+I\+M\+G\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+ND}~\char`\"{}../assets/image/launcher\+\_\+no\+\_\+font.\+png\char`\"{}
+\item 
+\#define \hyperlink{main_8c_acfaac3661bc8a9372f5f3d18f659b729}{D\+I\+R\+\_\+\+I\+N\+G\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+\+T\+XT}~\char`\"{}../assets/image/launcher.\+png\char`\"{}
+\item 
+\#define \hyperlink{main_8c_a7981074131f353a5ca7c3e6856e534e3}{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+O\+L\+I\+CE}~\char`\"{}../assets/font/police.\+ttf\char`\"{}
+\item 
+\#define \hyperlink{main_8c_a55d8694bd7ea090acb049a56696fd302}{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+S\+S\+W\+O\+RD}~\char`\"{}../assets/font/password.\+ttf\char`\"{}
+\item 
+\#define \hyperlink{main_8c_a03d93415faa3cd067a351e8f4acd9c20}{W\+I\+N\+\_\+\+L\+A\+R\+G\+U\+E\+UR}~1440
+\item 
+\#define \hyperlink{main_8c_ac8abfb90ac6568bcbbb4ba2b110b4a4c}{W\+I\+N\+\_\+\+H\+A\+U\+T\+E\+UR}~960
+\item 
+\#define \hyperlink{main_8c_a0a6fb7b67c59a8855baf8c2e6e5a688a}{S\+I\+Z\+E\+\_\+\+S\+E\+S\+S\+I\+ON}~256
+\item 
+\#define \hyperlink{main_8c_a945799255af1aa39ad44df8381bf49e1}{U\+R\+L\+\_\+\+R\+E\+G\+I\+S\+T\+R\+A\+T\+I\+ON}~\char`\"{}https\+://nineteen.\+recognizer.\+fr/inscription.\+php\char`\"{}
+\item 
+\#define \hyperlink{main_8c_ae4bbae07a5e67f0fd458079869a81f67}{U\+R\+L\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+I\+LE}~\char`\"{}https\+://nineteen.\+recognizer.\+fr/include/\hyperlink{main_8c_a17ecaa560299c190b6147a919ffed8c5}{launcher}/config.\+php\char`\"{}
+\item 
+\#define \hyperlink{main_8c_ac92ca5ab87034a348decad7ee8d4bd1b}{F\+PS}~30
+\item 
+\#define \hyperlink{main_8c_a328cf88337238d427844d1ee37699a49}{N\+B\+\_\+\+A\+N\+IM}~5
+\item 
+\#define \hyperlink{main_8c_a2786ece3997254fbce0fa58b34a9ad7d}{F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+M\+AX}~5
+\item 
+\#define \hyperlink{main_8c_a4b5a38c9ee4b5e3fcceb8872f756c307}{R\+A\+T\+I\+O\+\_\+\+A\+N\+IM}~10
+\end{DoxyCompactItemize}
+\subsection*{Énumérations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{main_8c_a19291dd688f513ad08659e2258d30860}{anims} \{ \newline
+\hyperlink{main_8c_a19291dd688f513ad08659e2258d30860a122a036b86991a14e7f912c77d36f36b}{A\+N\+I\+M\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+ON}, 
+\hyperlink{main_8c_a19291dd688f513ad08659e2258d30860a5862b81b22cd08f7859da3eb25d142e5}{A\+N\+I\+M\+\_\+\+H\+O\+V\+E\+R\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+ON}, 
+\hyperlink{main_8c_a19291dd688f513ad08659e2258d30860a740220367226b3e18a3090396edc3437}{A\+N\+I\+M\+\_\+\+I\+N\+S\+C\+R\+I\+P\+T\+I\+ON}, 
+\hyperlink{main_8c_a19291dd688f513ad08659e2258d30860a568400f385743a489009ab0170f3927e}{A\+N\+I\+M\+\_\+\+H\+O\+V\+E\+R\+\_\+\+I\+N\+S\+C\+R\+I\+P\+T\+I\+ON}, 
+\newline
+\hyperlink{main_8c_a19291dd688f513ad08659e2258d30860af035749994f3a7885ecedc8bd4a9bc8b}{A\+N\+I\+M\+\_\+\+L\+O\+A\+D\+I\+NG}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{main_8c_a94cac2e3d54b21d4e26db7f3d15e8e6a}{check\+Version} (char version\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em permet de verifier la version du V\+E\+R\+S\+I\+O\+N\+\_\+\+L\+O\+G\+I\+C\+I\+EL \end{DoxyCompactList}\item 
+int \hyperlink{main_8c_a11b331a93f323447a69e780284e8679d}{deja\+Conneceter} (char $\ast$token)
+\begin{DoxyCompactList}\small\item\em verifie si l utilisateur est deja connecter \end{DoxyCompactList}\item 
+int \hyperlink{main_8c_a564bb0fc612137f87ebe7ad1614e975a}{sauvegarder\+Token} (char $\ast$token)
+\begin{DoxyCompactList}\small\item\em permet de sauvegarder le token dans un fichier \end{DoxyCompactList}\item 
+void \hyperlink{main_8c_ac99b5b2ed70796b04227bea66568dd51}{print\+All} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$background, S\+D\+L\+\_\+\+Texture $\ast$loading, T\+T\+F\+\_\+\+Font $\ast$police, S\+D\+L\+\_\+\+Rect target\+Id, S\+D\+L\+\_\+\+Rect target\+Pwd, S\+D\+L\+\_\+\+Rect target\+Connect, S\+D\+L\+\_\+\+Rect target\+Inscription, int frame\+\_\+anims\mbox{[}\hyperlink{main_8c_a328cf88337238d427844d1ee37699a49}{N\+B\+\_\+\+A\+N\+IM}\mbox{]}, int valeur\+Retour)
+\begin{DoxyCompactList}\small\item\em cette fonction permet d\textquotesingle{}afficher tous les elements present dans le launcher. \end{DoxyCompactList}\item 
+void \hyperlink{main_8c_ad3fffe2a92945f4ee0723a625a624af6}{ouvrir\+Url\+Registration} ()
+\begin{DoxyCompactList}\small\item\em permet d\textquotesingle{}ouvrir une page web sur les 3 OS \end{DoxyCompactList}\item 
+int \hyperlink{main_8c_afd0ee7e952eb3dba3ddb634d77c1eb72}{connexion} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, char $\ast$token, char $\ast$token\+Cpy, char path\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em la fonction gere l\textquotesingle{}interaction globale de la vue, elle envoie les requetes de connexion et traite les retour \end{DoxyCompactList}\item 
+int \hyperlink{main_8c_a3980fa98fa4e25d3fd957ad815ed142c}{chargement\+Fichier} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, struct Meilleure\+Score\+\_\+s meilleure\+Score\mbox{[}$\,$\mbox{]}, char $\ast$token, const C\+\_\+\+S\+T\+R\+U\+CT ai\+Scene $\ast$$\ast$scene, char $\ast$path)
+\begin{DoxyCompactList}\small\item\em verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores \end{DoxyCompactList}\item 
+int \hyperlink{main_8c_a17ecaa560299c190b6147a919ffed8c5}{launcher} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, char $\ast$token, char $\ast$token\+Cpy, struct Meilleure\+Score\+\_\+s meilleure\+Score\mbox{[}$\,$\mbox{]}, const C\+\_\+\+S\+T\+R\+U\+CT ai\+Scene $\ast$$\ast$scene, char path\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargement fichier \end{DoxyCompactList}\item 
+int \hyperlink{main_8c_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+F\+I\+LE $\ast$ \hyperlink{main_8c_a1ce6bb164d37e605aa60e94aefe73817}{E\+X\+T\+\_\+\+F\+I\+LE}
+\item 
+int \hyperlink{main_8c_adc21c1c3300d8c04ce517d937b335899}{M\+A\+C\+O\+S\+\_\+\+V\+ER}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{main_8c_a33b1cfe3eb56da056f6d75a43b775d66}{rouge} = \{255,0,0\}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{main_8c_a95b503131dd43adcf828e3d6d0d01e70}{rouge\+Foncer} = \{209,52,52\}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{main_8c_a8bd51316bd9fd18abbd48cf5d2e349af}{noir} = \{0,0,0\}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{main_8c_a6b299368d2c300ee04efec5b598c5a01}{blanc} = \{255,255,255\}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{main_8c_a83aaa2b5a427d2cb849b4b938eb25b74}{blanc\+\_\+foncer} = \{200,200,200\}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{main_8c_aa5b606884a90085a380a2eb389db22ee}{vert} = \{76,196,66\}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{main_8c_abf782b0c1074443a21be0c3a84221f07}{bleu\+\_\+foncer} = \{66,100,196\}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{main_8c_a57f58d1b1b9d954235bef55feff5e840}{cyan} = \{0x38,0xf9,0xff\}
+\item 
+int \hyperlink{main_8c_ae8a35cc9f4c3f7d430225aa3a8cfca70}{L\+A\+R\+G\+U\+E\+UR} = 0
+\item 
+int \hyperlink{main_8c_a51b9d4c6450445338971fcc9618cc0c6}{H\+A\+U\+T\+E\+UR} = 0
+\item 
+const int \hyperlink{main_8c_a799de9c46efe68a74d1a79c080150921}{D\+E\+L\+AY} = 200
+\item 
+const int \hyperlink{main_8c_a0ae61f000fdcba1ec78e43c56673d2d6}{T\+E\+N\+T\+A\+T\+I\+VE} = 8
+\item 
+const int \hyperlink{main_8c_acc60231d174bc3d6f1419ed073a44850}{R\+A\+T\+I\+O\+\_\+\+C\+L\+I\+CK} \mbox{[}\hyperlink{main_8c_a2786ece3997254fbce0fa58b34a9ad7d}{F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+M\+AX}\mbox{]} = \{-\/5, -\/20, -\/50, -\/55, -\/30\}
+\item 
+S\+D\+L\+\_\+\+Thread $\ast$ \hyperlink{main_8c_a584962a25015c7d6e18e294f55a8bc2d}{thread} = N\+U\+LL
+\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+regroupe le launcher ainsi que le programme principal du jeu 
+
+\begin{DoxyAuthor}{Auteur}
+Samy M. 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+31 janvier 2020 
+\end{DoxyDate}
+
+
+\subsection{Documentation des macros}
+\mbox{\Hypertarget{main_8c_a4413ffd2f789046586a88484c418f293}\label{main_8c_a4413ffd2f789046586a88484c418f293}} 
+\index{main.\+c@{main.\+c}!D\+I\+R\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+I\+LE@{D\+I\+R\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+I\+LE}}
+\index{D\+I\+R\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+I\+LE@{D\+I\+R\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+I\+LE}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+I\+LE}{DIR\_CONFIG\_FILE}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+I\+LE~\char`\"{}../launcher/.config\char`\"{}}
+
+\mbox{\Hypertarget{main_8c_a55d8694bd7ea090acb049a56696fd302}\label{main_8c_a55d8694bd7ea090acb049a56696fd302}} 
+\index{main.\+c@{main.\+c}!D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+S\+S\+W\+O\+RD@{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+S\+S\+W\+O\+RD}}
+\index{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+S\+S\+W\+O\+RD@{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+S\+S\+W\+O\+RD}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+S\+S\+W\+O\+RD}{DIR\_FONT\_PASSWORD}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+S\+S\+W\+O\+RD~\char`\"{}../assets/font/password.\+ttf\char`\"{}}
+
+\mbox{\Hypertarget{main_8c_a7981074131f353a5ca7c3e6856e534e3}\label{main_8c_a7981074131f353a5ca7c3e6856e534e3}} 
+\index{main.\+c@{main.\+c}!D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+O\+L\+I\+CE@{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+O\+L\+I\+CE}}
+\index{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+O\+L\+I\+CE@{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+O\+L\+I\+CE}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+O\+L\+I\+CE}{DIR\_FONT\_POLICE}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+O\+L\+I\+CE~\char`\"{}../assets/font/police.\+ttf\char`\"{}}
+
+\mbox{\Hypertarget{main_8c_ac4ed2c9ae8305de141ba75c7463f9cb9}\label{main_8c_ac4ed2c9ae8305de141ba75c7463f9cb9}} 
+\index{main.\+c@{main.\+c}!D\+I\+R\+\_\+\+I\+M\+G\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+ND@{D\+I\+R\+\_\+\+I\+M\+G\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+ND}}
+\index{D\+I\+R\+\_\+\+I\+M\+G\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+ND@{D\+I\+R\+\_\+\+I\+M\+G\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+ND}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+I\+M\+G\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+ND}{DIR\_IMG\_BACKGROUND}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+I\+M\+G\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+ND~\char`\"{}../assets/image/launcher\+\_\+no\+\_\+font.\+png\char`\"{}}
+
+\mbox{\Hypertarget{main_8c_acfaac3661bc8a9372f5f3d18f659b729}\label{main_8c_acfaac3661bc8a9372f5f3d18f659b729}} 
+\index{main.\+c@{main.\+c}!D\+I\+R\+\_\+\+I\+N\+G\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+\+T\+XT@{D\+I\+R\+\_\+\+I\+N\+G\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+\+T\+XT}}
+\index{D\+I\+R\+\_\+\+I\+N\+G\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+\+T\+XT@{D\+I\+R\+\_\+\+I\+N\+G\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+\+T\+XT}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+I\+N\+G\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+\+T\+XT}{DIR\_ING\_BACKGROUND\_TXT}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+I\+N\+G\+\_\+\+B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+\+T\+XT~\char`\"{}../assets/image/launcher.\+png\char`\"{}}
+
+\mbox{\Hypertarget{main_8c_aafef6d4375464be2b7a38db96d988e9c}\label{main_8c_aafef6d4375464be2b7a38db96d988e9c}} 
+\index{main.\+c@{main.\+c}!D\+I\+R\+\_\+\+L\+OG@{D\+I\+R\+\_\+\+L\+OG}}
+\index{D\+I\+R\+\_\+\+L\+OG@{D\+I\+R\+\_\+\+L\+OG}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+L\+OG}{DIR\_LOG}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+L\+OG~\char`\"{}/tmp/\char`\"{}}
+
+\mbox{\Hypertarget{main_8c_af834322a79297b37a702c15ff8d5e9a7}\label{main_8c_af834322a79297b37a702c15ff8d5e9a7}} 
+\index{main.\+c@{main.\+c}!D\+I\+R\+\_\+\+M\+U\+S\+I\+C\+\_\+\+F\+I\+LE@{D\+I\+R\+\_\+\+M\+U\+S\+I\+C\+\_\+\+F\+I\+LE}}
+\index{D\+I\+R\+\_\+\+M\+U\+S\+I\+C\+\_\+\+F\+I\+LE@{D\+I\+R\+\_\+\+M\+U\+S\+I\+C\+\_\+\+F\+I\+LE}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+M\+U\+S\+I\+C\+\_\+\+F\+I\+LE}{DIR\_MUSIC\_FILE}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+M\+U\+S\+I\+C\+\_\+\+F\+I\+LE~\char`\"{}../assets/background.\+wav\char`\"{}}
+
+\mbox{\Hypertarget{main_8c_a79eb567e00b5f977f2c6da15d4bd8bee}\label{main_8c_a79eb567e00b5f977f2c6da15d4bd8bee}} 
+\index{main.\+c@{main.\+c}!D\+I\+R\+\_\+\+O\+B\+J\+\_\+\+L\+O\+AD@{D\+I\+R\+\_\+\+O\+B\+J\+\_\+\+L\+O\+AD}}
+\index{D\+I\+R\+\_\+\+O\+B\+J\+\_\+\+L\+O\+AD@{D\+I\+R\+\_\+\+O\+B\+J\+\_\+\+L\+O\+AD}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+O\+B\+J\+\_\+\+L\+O\+AD}{DIR\_OBJ\_LOAD}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+O\+B\+J\+\_\+\+L\+O\+AD~\char`\"{}../room/\hyperlink{room_8c_a158b90dfedb211efa4c317267c983dd2}{textures}/salle.\+obj\char`\"{}}
+
+\mbox{\Hypertarget{main_8c_a4afb31b8aaad24ca6e4133e9e0ffd0f2}\label{main_8c_a4afb31b8aaad24ca6e4133e9e0ffd0f2}} 
+\index{main.\+c@{main.\+c}!D\+I\+R\+\_\+\+T\+O\+K\+E\+N\+\_\+\+F\+I\+LE@{D\+I\+R\+\_\+\+T\+O\+K\+E\+N\+\_\+\+F\+I\+LE}}
+\index{D\+I\+R\+\_\+\+T\+O\+K\+E\+N\+\_\+\+F\+I\+LE@{D\+I\+R\+\_\+\+T\+O\+K\+E\+N\+\_\+\+F\+I\+LE}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+T\+O\+K\+E\+N\+\_\+\+F\+I\+LE}{DIR\_TOKEN\_FILE}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+T\+O\+K\+E\+N\+\_\+\+F\+I\+LE~\char`\"{}/tmp/.Nineteen\char`\"{}}
+
+\mbox{\Hypertarget{main_8c_aa93f0eb578d23995850d61f7d61c55c1}\label{main_8c_aa93f0eb578d23995850d61f7d61c55c1}} 
+\index{main.\+c@{main.\+c}!F\+A\+L\+SE@{F\+A\+L\+SE}}
+\index{F\+A\+L\+SE@{F\+A\+L\+SE}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{F\+A\+L\+SE}{FALSE}}
+{\footnotesize\ttfamily \#define F\+A\+L\+SE~0}
+
+\mbox{\Hypertarget{main_8c_ac92ca5ab87034a348decad7ee8d4bd1b}\label{main_8c_ac92ca5ab87034a348decad7ee8d4bd1b}} 
+\index{main.\+c@{main.\+c}!F\+PS@{F\+PS}}
+\index{F\+PS@{F\+PS}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{F\+PS}{FPS}}
+{\footnotesize\ttfamily \#define F\+PS~30}
+
+\mbox{\Hypertarget{main_8c_a2786ece3997254fbce0fa58b34a9ad7d}\label{main_8c_a2786ece3997254fbce0fa58b34a9ad7d}} 
+\index{main.\+c@{main.\+c}!F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+M\+AX@{F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+M\+AX}}
+\index{F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+M\+AX@{F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+M\+AX}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+M\+AX}{FRAME\_ANIM\_MAX}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+M\+AX~5}
+
+\mbox{\Hypertarget{main_8c_a88d81692d057903aae74292f1cbacf63}\label{main_8c_a88d81692d057903aae74292f1cbacf63}} 
+\index{main.\+c@{main.\+c}!M\+O\+D\+E\+\_\+\+D\+EV@{M\+O\+D\+E\+\_\+\+D\+EV}}
+\index{M\+O\+D\+E\+\_\+\+D\+EV@{M\+O\+D\+E\+\_\+\+D\+EV}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{M\+O\+D\+E\+\_\+\+D\+EV}{MODE\_DEV}}
+{\footnotesize\ttfamily \#define M\+O\+D\+E\+\_\+\+D\+EV~0}
+
+\mbox{\Hypertarget{main_8c_a328cf88337238d427844d1ee37699a49}\label{main_8c_a328cf88337238d427844d1ee37699a49}} 
+\index{main.\+c@{main.\+c}!N\+B\+\_\+\+A\+N\+IM@{N\+B\+\_\+\+A\+N\+IM}}
+\index{N\+B\+\_\+\+A\+N\+IM@{N\+B\+\_\+\+A\+N\+IM}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+A\+N\+IM}{NB\_ANIM}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+A\+N\+IM~5}
+
+\mbox{\Hypertarget{main_8c_a4b5a38c9ee4b5e3fcceb8872f756c307}\label{main_8c_a4b5a38c9ee4b5e3fcceb8872f756c307}} 
+\index{main.\+c@{main.\+c}!R\+A\+T\+I\+O\+\_\+\+A\+N\+IM@{R\+A\+T\+I\+O\+\_\+\+A\+N\+IM}}
+\index{R\+A\+T\+I\+O\+\_\+\+A\+N\+IM@{R\+A\+T\+I\+O\+\_\+\+A\+N\+IM}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{R\+A\+T\+I\+O\+\_\+\+A\+N\+IM}{RATIO\_ANIM}}
+{\footnotesize\ttfamily \#define R\+A\+T\+I\+O\+\_\+\+A\+N\+IM~10}
+
+\mbox{\Hypertarget{main_8c_a0a6fb7b67c59a8855baf8c2e6e5a688a}\label{main_8c_a0a6fb7b67c59a8855baf8c2e6e5a688a}} 
+\index{main.\+c@{main.\+c}!S\+I\+Z\+E\+\_\+\+S\+E\+S\+S\+I\+ON@{S\+I\+Z\+E\+\_\+\+S\+E\+S\+S\+I\+ON}}
+\index{S\+I\+Z\+E\+\_\+\+S\+E\+S\+S\+I\+ON@{S\+I\+Z\+E\+\_\+\+S\+E\+S\+S\+I\+ON}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{S\+I\+Z\+E\+\_\+\+S\+E\+S\+S\+I\+ON}{SIZE\_SESSION}}
+{\footnotesize\ttfamily \#define S\+I\+Z\+E\+\_\+\+S\+E\+S\+S\+I\+ON~256}
+
+\mbox{\Hypertarget{main_8c_aa8cecfc5c5c054d2875c03e77b7be15d}\label{main_8c_aa8cecfc5c5c054d2875c03e77b7be15d}} 
+\index{main.\+c@{main.\+c}!T\+R\+UE@{T\+R\+UE}}
+\index{T\+R\+UE@{T\+R\+UE}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{T\+R\+UE}{TRUE}}
+{\footnotesize\ttfamily \#define T\+R\+UE~1}
+
+\mbox{\Hypertarget{main_8c_ae4bbae07a5e67f0fd458079869a81f67}\label{main_8c_ae4bbae07a5e67f0fd458079869a81f67}} 
+\index{main.\+c@{main.\+c}!U\+R\+L\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+I\+LE@{U\+R\+L\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+I\+LE}}
+\index{U\+R\+L\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+I\+LE@{U\+R\+L\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+I\+LE}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{U\+R\+L\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+I\+LE}{URL\_CONFIG\_FILE}}
+{\footnotesize\ttfamily \#define U\+R\+L\+\_\+\+C\+O\+N\+F\+I\+G\+\_\+\+F\+I\+LE~\char`\"{}https\+://nineteen.\+recognizer.\+fr/include/\hyperlink{main_8c_a17ecaa560299c190b6147a919ffed8c5}{launcher}/config.\+php\char`\"{}}
+
+\mbox{\Hypertarget{main_8c_a945799255af1aa39ad44df8381bf49e1}\label{main_8c_a945799255af1aa39ad44df8381bf49e1}} 
+\index{main.\+c@{main.\+c}!U\+R\+L\+\_\+\+R\+E\+G\+I\+S\+T\+R\+A\+T\+I\+ON@{U\+R\+L\+\_\+\+R\+E\+G\+I\+S\+T\+R\+A\+T\+I\+ON}}
+\index{U\+R\+L\+\_\+\+R\+E\+G\+I\+S\+T\+R\+A\+T\+I\+ON@{U\+R\+L\+\_\+\+R\+E\+G\+I\+S\+T\+R\+A\+T\+I\+ON}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{U\+R\+L\+\_\+\+R\+E\+G\+I\+S\+T\+R\+A\+T\+I\+ON}{URL\_REGISTRATION}}
+{\footnotesize\ttfamily \#define U\+R\+L\+\_\+\+R\+E\+G\+I\+S\+T\+R\+A\+T\+I\+ON~\char`\"{}https\+://nineteen.\+recognizer.\+fr/inscription.\+php\char`\"{}}
+
+\mbox{\Hypertarget{main_8c_a1c6d5de492ac61ad29aec7aa9a436bbf}\label{main_8c_a1c6d5de492ac61ad29aec7aa9a436bbf}} 
+\index{main.\+c@{main.\+c}!V\+E\+R\+S\+I\+ON@{V\+E\+R\+S\+I\+ON}}
+\index{V\+E\+R\+S\+I\+ON@{V\+E\+R\+S\+I\+ON}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{V\+E\+R\+S\+I\+ON}{VERSION}}
+{\footnotesize\ttfamily \#define V\+E\+R\+S\+I\+ON~\char`\"{}1.\+1.\+0\char`\"{}}
+
+\mbox{\Hypertarget{main_8c_a9361d8eed5c24ffb8cb9b33510254c3c}\label{main_8c_a9361d8eed5c24ffb8cb9b33510254c3c}} 
+\index{main.\+c@{main.\+c}!V\+E\+R\+S\+I\+O\+N\+\_\+\+L\+O\+G\+I\+C\+I\+EL@{V\+E\+R\+S\+I\+O\+N\+\_\+\+L\+O\+G\+I\+C\+I\+EL}}
+\index{V\+E\+R\+S\+I\+O\+N\+\_\+\+L\+O\+G\+I\+C\+I\+EL@{V\+E\+R\+S\+I\+O\+N\+\_\+\+L\+O\+G\+I\+C\+I\+EL}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{V\+E\+R\+S\+I\+O\+N\+\_\+\+L\+O\+G\+I\+C\+I\+EL}{VERSION\_LOGICIEL}}
+{\footnotesize\ttfamily \#define V\+E\+R\+S\+I\+O\+N\+\_\+\+L\+O\+G\+I\+C\+I\+EL~\char`\"{}version=1.\+1.\+0\char`\"{}}
+
+\mbox{\Hypertarget{main_8c_ac8abfb90ac6568bcbbb4ba2b110b4a4c}\label{main_8c_ac8abfb90ac6568bcbbb4ba2b110b4a4c}} 
+\index{main.\+c@{main.\+c}!W\+I\+N\+\_\+\+H\+A\+U\+T\+E\+UR@{W\+I\+N\+\_\+\+H\+A\+U\+T\+E\+UR}}
+\index{W\+I\+N\+\_\+\+H\+A\+U\+T\+E\+UR@{W\+I\+N\+\_\+\+H\+A\+U\+T\+E\+UR}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{W\+I\+N\+\_\+\+H\+A\+U\+T\+E\+UR}{WIN\_HAUTEUR}}
+{\footnotesize\ttfamily \#define W\+I\+N\+\_\+\+H\+A\+U\+T\+E\+UR~960}
+
+\mbox{\Hypertarget{main_8c_a03d93415faa3cd067a351e8f4acd9c20}\label{main_8c_a03d93415faa3cd067a351e8f4acd9c20}} 
+\index{main.\+c@{main.\+c}!W\+I\+N\+\_\+\+L\+A\+R\+G\+U\+E\+UR@{W\+I\+N\+\_\+\+L\+A\+R\+G\+U\+E\+UR}}
+\index{W\+I\+N\+\_\+\+L\+A\+R\+G\+U\+E\+UR@{W\+I\+N\+\_\+\+L\+A\+R\+G\+U\+E\+UR}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{W\+I\+N\+\_\+\+L\+A\+R\+G\+U\+E\+UR}{WIN\_LARGUEUR}}
+{\footnotesize\ttfamily \#define W\+I\+N\+\_\+\+L\+A\+R\+G\+U\+E\+UR~1440}
+
+
+
+\subsection{Documentation du type de l\textquotesingle{}énumération}
+\mbox{\Hypertarget{main_8c_a19291dd688f513ad08659e2258d30860}\label{main_8c_a19291dd688f513ad08659e2258d30860}} 
+\index{main.\+c@{main.\+c}!anims@{anims}}
+\index{anims@{anims}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{anims}{anims}}
+{\footnotesize\ttfamily enum \hyperlink{main_8c_a19291dd688f513ad08659e2258d30860}{anims}}
+
+\begin{DoxyEnumFields}{Valeurs énumérées}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+N\+I\+M\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+ON@{A\+N\+I\+M\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+ON}!main.\+c@{main.\+c}}\index{main.\+c@{main.\+c}!A\+N\+I\+M\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+ON@{A\+N\+I\+M\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+ON}}}\mbox{\Hypertarget{main_8c_a19291dd688f513ad08659e2258d30860a122a036b86991a14e7f912c77d36f36b}\label{main_8c_a19291dd688f513ad08659e2258d30860a122a036b86991a14e7f912c77d36f36b}} 
+A\+N\+I\+M\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+ON&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+N\+I\+M\+\_\+\+H\+O\+V\+E\+R\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+ON@{A\+N\+I\+M\+\_\+\+H\+O\+V\+E\+R\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+ON}!main.\+c@{main.\+c}}\index{main.\+c@{main.\+c}!A\+N\+I\+M\+\_\+\+H\+O\+V\+E\+R\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+ON@{A\+N\+I\+M\+\_\+\+H\+O\+V\+E\+R\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+ON}}}\mbox{\Hypertarget{main_8c_a19291dd688f513ad08659e2258d30860a5862b81b22cd08f7859da3eb25d142e5}\label{main_8c_a19291dd688f513ad08659e2258d30860a5862b81b22cd08f7859da3eb25d142e5}} 
+A\+N\+I\+M\+\_\+\+H\+O\+V\+E\+R\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+ON&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+N\+I\+M\+\_\+\+I\+N\+S\+C\+R\+I\+P\+T\+I\+ON@{A\+N\+I\+M\+\_\+\+I\+N\+S\+C\+R\+I\+P\+T\+I\+ON}!main.\+c@{main.\+c}}\index{main.\+c@{main.\+c}!A\+N\+I\+M\+\_\+\+I\+N\+S\+C\+R\+I\+P\+T\+I\+ON@{A\+N\+I\+M\+\_\+\+I\+N\+S\+C\+R\+I\+P\+T\+I\+ON}}}\mbox{\Hypertarget{main_8c_a19291dd688f513ad08659e2258d30860a740220367226b3e18a3090396edc3437}\label{main_8c_a19291dd688f513ad08659e2258d30860a740220367226b3e18a3090396edc3437}} 
+A\+N\+I\+M\+\_\+\+I\+N\+S\+C\+R\+I\+P\+T\+I\+ON&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+N\+I\+M\+\_\+\+H\+O\+V\+E\+R\+\_\+\+I\+N\+S\+C\+R\+I\+P\+T\+I\+ON@{A\+N\+I\+M\+\_\+\+H\+O\+V\+E\+R\+\_\+\+I\+N\+S\+C\+R\+I\+P\+T\+I\+ON}!main.\+c@{main.\+c}}\index{main.\+c@{main.\+c}!A\+N\+I\+M\+\_\+\+H\+O\+V\+E\+R\+\_\+\+I\+N\+S\+C\+R\+I\+P\+T\+I\+ON@{A\+N\+I\+M\+\_\+\+H\+O\+V\+E\+R\+\_\+\+I\+N\+S\+C\+R\+I\+P\+T\+I\+ON}}}\mbox{\Hypertarget{main_8c_a19291dd688f513ad08659e2258d30860a568400f385743a489009ab0170f3927e}\label{main_8c_a19291dd688f513ad08659e2258d30860a568400f385743a489009ab0170f3927e}} 
+A\+N\+I\+M\+\_\+\+H\+O\+V\+E\+R\+\_\+\+I\+N\+S\+C\+R\+I\+P\+T\+I\+ON&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+N\+I\+M\+\_\+\+L\+O\+A\+D\+I\+NG@{A\+N\+I\+M\+\_\+\+L\+O\+A\+D\+I\+NG}!main.\+c@{main.\+c}}\index{main.\+c@{main.\+c}!A\+N\+I\+M\+\_\+\+L\+O\+A\+D\+I\+NG@{A\+N\+I\+M\+\_\+\+L\+O\+A\+D\+I\+NG}}}\mbox{\Hypertarget{main_8c_a19291dd688f513ad08659e2258d30860af035749994f3a7885ecedc8bd4a9bc8b}\label{main_8c_a19291dd688f513ad08659e2258d30860af035749994f3a7885ecedc8bd4a9bc8b}} 
+A\+N\+I\+M\+\_\+\+L\+O\+A\+D\+I\+NG&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Documentation des fonctions}
+\mbox{\Hypertarget{main_8c_a3980fa98fa4e25d3fd957ad815ed142c}\label{main_8c_a3980fa98fa4e25d3fd957ad815ed142c}} 
+\index{main.\+c@{main.\+c}!chargement\+Fichier@{chargement\+Fichier}}
+\index{chargement\+Fichier@{chargement\+Fichier}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{chargement\+Fichier()}{chargementFichier()}}
+{\footnotesize\ttfamily int chargement\+Fichier (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{struct Meilleure\+Score\+\_\+s}]{meilleure\+Score\mbox{[}$\,$\mbox{]},  }\item[{char $\ast$}]{token,  }\item[{const C\+\_\+\+S\+T\+R\+U\+CT ai\+Scene $\ast$$\ast$}]{scene,  }\item[{char $\ast$}]{path }\end{DoxyParamCaption})}
+
+
+
+verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em meilleure\+Score} & Le tableau de records \\
+\hline
+{\em token} & La clé de connexion de l\textquotesingle{}utilisateur \\
+\hline
+{\em scene} & La scène opengl \\
+\hline
+{\em path} & Le chemin d\textquotesingle{}execution\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+R\+E/\+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c_a3980fa98fa4e25d3fd957ad815ed142c_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=340pt]{main_8c_a3980fa98fa4e25d3fd957ad815ed142c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{main_8c_a94cac2e3d54b21d4e26db7f3d15e8e6a}\label{main_8c_a94cac2e3d54b21d4e26db7f3d15e8e6a}} 
+\index{main.\+c@{main.\+c}!check\+Version@{check\+Version}}
+\index{check\+Version@{check\+Version}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{check\+Version()}{checkVersion()}}
+{\footnotesize\ttfamily int check\+Version (\begin{DoxyParamCaption}\item[{char}]{version\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+permet de verifier la version du V\+E\+R\+S\+I\+O\+N\+\_\+\+L\+O\+G\+I\+C\+I\+EL 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em version} & La version du jeu\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c_a94cac2e3d54b21d4e26db7f3d15e8e6a_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=230pt]{main_8c_a94cac2e3d54b21d4e26db7f3d15e8e6a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{main_8c_afd0ee7e952eb3dba3ddb634d77c1eb72}\label{main_8c_afd0ee7e952eb3dba3ddb634d77c1eb72}} 
+\index{main.\+c@{main.\+c}!connexion@{connexion}}
+\index{connexion@{connexion}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{connexion()}{connexion()}}
+{\footnotesize\ttfamily int connexion (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{char $\ast$}]{token,  }\item[{char $\ast$}]{token\+Cpy,  }\item[{char}]{path\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+la fonction gere l\textquotesingle{}interaction globale de la vue, elle envoie les requetes de connexion et traite les retour 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em token} & La clé de connexion de l\textquotesingle{}utilisateur \\
+\hline
+{\em token\+Cpy} & La copie de la clé de connexion de l\textquotesingle{}utilisateur \\
+\hline
+{\em path} & Le chemin d\textquotesingle{}execution\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+R\+E/\+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c_afd0ee7e952eb3dba3ddb634d77c1eb72_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{main_8c_afd0ee7e952eb3dba3ddb634d77c1eb72_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{main_8c_a11b331a93f323447a69e780284e8679d}\label{main_8c_a11b331a93f323447a69e780284e8679d}} 
+\index{main.\+c@{main.\+c}!deja\+Conneceter@{deja\+Conneceter}}
+\index{deja\+Conneceter@{deja\+Conneceter}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{deja\+Conneceter()}{dejaConneceter()}}
+{\footnotesize\ttfamily int deja\+Conneceter (\begin{DoxyParamCaption}\item[{char $\ast$}]{token }\end{DoxyParamCaption})}
+
+
+
+verifie si l utilisateur est deja connecter 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em token} & La clé de connexion de l\textquotesingle{}utilisateur\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c_a11b331a93f323447a69e780284e8679d_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=328pt]{main_8c_a11b331a93f323447a69e780284e8679d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{main_8c_a17ecaa560299c190b6147a919ffed8c5}\label{main_8c_a17ecaa560299c190b6147a919ffed8c5}} 
+\index{main.\+c@{main.\+c}!launcher@{launcher}}
+\index{launcher@{launcher}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{launcher()}{launcher()}}
+{\footnotesize\ttfamily int launcher (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{char $\ast$}]{token,  }\item[{char $\ast$}]{token\+Cpy,  }\item[{struct Meilleure\+Score\+\_\+s}]{meilleure\+Score\mbox{[}$\,$\mbox{]},  }\item[{const C\+\_\+\+S\+T\+R\+U\+CT ai\+Scene $\ast$$\ast$}]{scene,  }\item[{char}]{path\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargement fichier 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em token} & La clé de connexion de l\textquotesingle{}utilisateur \\
+\hline
+{\em token\+Cpy} & La copie clé de connexion de l\textquotesingle{}utilisateur \\
+\hline
+{\em meilleure\+Score} & Le tableaud de records \\
+\hline
+{\em scene} & La scène opengl \\
+\hline
+{\em path} & Le chemin d\textquotesingle{}execution\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+R\+E/\+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c_a17ecaa560299c190b6147a919ffed8c5_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=207pt]{main_8c_a17ecaa560299c190b6147a919ffed8c5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{main_8c_a0ddf1224851353fc92bfbff6f499fa97}\label{main_8c_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{main.\+c@{main.\+c}!main@{main}}
+\index{main@{main}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c_a0ddf1224851353fc92bfbff6f499fa97_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{main_8c_ad3fffe2a92945f4ee0723a625a624af6}\label{main_8c_ad3fffe2a92945f4ee0723a625a624af6}} 
+\index{main.\+c@{main.\+c}!ouvrir\+Url\+Registration@{ouvrir\+Url\+Registration}}
+\index{ouvrir\+Url\+Registration@{ouvrir\+Url\+Registration}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{ouvrir\+Url\+Registration()}{ouvrirUrlRegistration()}}
+{\footnotesize\ttfamily void ouvrir\+Url\+Registration (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+permet d\textquotesingle{}ouvrir une page web sur les 3 OS 
+
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c_ad3fffe2a92945f4ee0723a625a624af6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{main_8c_ac99b5b2ed70796b04227bea66568dd51}\label{main_8c_ac99b5b2ed70796b04227bea66568dd51}} 
+\index{main.\+c@{main.\+c}!print\+All@{print\+All}}
+\index{print\+All@{print\+All}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{print\+All()}{printAll()}}
+{\footnotesize\ttfamily void print\+All (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{background,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{loading,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{police,  }\item[{S\+D\+L\+\_\+\+Rect}]{target\+Id,  }\item[{S\+D\+L\+\_\+\+Rect}]{target\+Pwd,  }\item[{S\+D\+L\+\_\+\+Rect}]{target\+Connect,  }\item[{S\+D\+L\+\_\+\+Rect}]{target\+Inscription,  }\item[{int}]{frame\+\_\+anims\mbox{[}\+N\+B\+\_\+\+A\+N\+I\+M\mbox{]},  }\item[{int}]{valeur\+Retour }\end{DoxyParamCaption})}
+
+
+
+cette fonction permet d\textquotesingle{}afficher tous les elements present dans le launcher. 
+
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{main_8c_ac99b5b2ed70796b04227bea66568dd51_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c_ac99b5b2ed70796b04227bea66568dd51_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{main_8c_a564bb0fc612137f87ebe7ad1614e975a}\label{main_8c_a564bb0fc612137f87ebe7ad1614e975a}} 
+\index{main.\+c@{main.\+c}!sauvegarder\+Token@{sauvegarder\+Token}}
+\index{sauvegarder\+Token@{sauvegarder\+Token}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{sauvegarder\+Token()}{sauvegarderToken()}}
+{\footnotesize\ttfamily int sauvegarder\+Token (\begin{DoxyParamCaption}\item[{char $\ast$}]{token }\end{DoxyParamCaption})}
+
+
+
+permet de sauvegarder le token dans un fichier 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em token} & La clé de connexion de l\textquotesingle{}utilisateur\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=340pt]{main_8c_a564bb0fc612137f87ebe7ad1614e975a_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Documentation des variables}
+\mbox{\Hypertarget{main_8c_a6b299368d2c300ee04efec5b598c5a01}\label{main_8c_a6b299368d2c300ee04efec5b598c5a01}} 
+\index{main.\+c@{main.\+c}!blanc@{blanc}}
+\index{blanc@{blanc}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{blanc}{blanc}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color blanc = \{255,255,255\}}
+
+\mbox{\Hypertarget{main_8c_a83aaa2b5a427d2cb849b4b938eb25b74}\label{main_8c_a83aaa2b5a427d2cb849b4b938eb25b74}} 
+\index{main.\+c@{main.\+c}!blanc\+\_\+foncer@{blanc\+\_\+foncer}}
+\index{blanc\+\_\+foncer@{blanc\+\_\+foncer}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{blanc\+\_\+foncer}{blanc\_foncer}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color blanc\+\_\+foncer = \{200,200,200\}}
+
+\mbox{\Hypertarget{main_8c_abf782b0c1074443a21be0c3a84221f07}\label{main_8c_abf782b0c1074443a21be0c3a84221f07}} 
+\index{main.\+c@{main.\+c}!bleu\+\_\+foncer@{bleu\+\_\+foncer}}
+\index{bleu\+\_\+foncer@{bleu\+\_\+foncer}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{bleu\+\_\+foncer}{bleu\_foncer}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color bleu\+\_\+foncer = \{66,100,196\}}
+
+\mbox{\Hypertarget{main_8c_a57f58d1b1b9d954235bef55feff5e840}\label{main_8c_a57f58d1b1b9d954235bef55feff5e840}} 
+\index{main.\+c@{main.\+c}!cyan@{cyan}}
+\index{cyan@{cyan}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{cyan}{cyan}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color cyan = \{0x38,0xf9,0xff\}}
+
+\mbox{\Hypertarget{main_8c_a799de9c46efe68a74d1a79c080150921}\label{main_8c_a799de9c46efe68a74d1a79c080150921}} 
+\index{main.\+c@{main.\+c}!D\+E\+L\+AY@{D\+E\+L\+AY}}
+\index{D\+E\+L\+AY@{D\+E\+L\+AY}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{D\+E\+L\+AY}{DELAY}}
+{\footnotesize\ttfamily const int D\+E\+L\+AY = 200}
+
+\mbox{\Hypertarget{main_8c_a1ce6bb164d37e605aa60e94aefe73817}\label{main_8c_a1ce6bb164d37e605aa60e94aefe73817}} 
+\index{main.\+c@{main.\+c}!E\+X\+T\+\_\+\+F\+I\+LE@{E\+X\+T\+\_\+\+F\+I\+LE}}
+\index{E\+X\+T\+\_\+\+F\+I\+LE@{E\+X\+T\+\_\+\+F\+I\+LE}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{E\+X\+T\+\_\+\+F\+I\+LE}{EXT\_FILE}}
+{\footnotesize\ttfamily F\+I\+LE$\ast$ E\+X\+T\+\_\+\+F\+I\+LE}
+
+\mbox{\Hypertarget{main_8c_a51b9d4c6450445338971fcc9618cc0c6}\label{main_8c_a51b9d4c6450445338971fcc9618cc0c6}} 
+\index{main.\+c@{main.\+c}!H\+A\+U\+T\+E\+UR@{H\+A\+U\+T\+E\+UR}}
+\index{H\+A\+U\+T\+E\+UR@{H\+A\+U\+T\+E\+UR}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{H\+A\+U\+T\+E\+UR}{HAUTEUR}}
+{\footnotesize\ttfamily int H\+A\+U\+T\+E\+UR = 0}
+
+\mbox{\Hypertarget{main_8c_ae8a35cc9f4c3f7d430225aa3a8cfca70}\label{main_8c_ae8a35cc9f4c3f7d430225aa3a8cfca70}} 
+\index{main.\+c@{main.\+c}!L\+A\+R\+G\+U\+E\+UR@{L\+A\+R\+G\+U\+E\+UR}}
+\index{L\+A\+R\+G\+U\+E\+UR@{L\+A\+R\+G\+U\+E\+UR}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{L\+A\+R\+G\+U\+E\+UR}{LARGUEUR}}
+{\footnotesize\ttfamily int L\+A\+R\+G\+U\+E\+UR = 0}
+
+\mbox{\Hypertarget{main_8c_adc21c1c3300d8c04ce517d937b335899}\label{main_8c_adc21c1c3300d8c04ce517d937b335899}} 
+\index{main.\+c@{main.\+c}!M\+A\+C\+O\+S\+\_\+\+V\+ER@{M\+A\+C\+O\+S\+\_\+\+V\+ER}}
+\index{M\+A\+C\+O\+S\+\_\+\+V\+ER@{M\+A\+C\+O\+S\+\_\+\+V\+ER}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{M\+A\+C\+O\+S\+\_\+\+V\+ER}{MACOS\_VER}}
+{\footnotesize\ttfamily int M\+A\+C\+O\+S\+\_\+\+V\+ER}
+
+\mbox{\Hypertarget{main_8c_a8bd51316bd9fd18abbd48cf5d2e349af}\label{main_8c_a8bd51316bd9fd18abbd48cf5d2e349af}} 
+\index{main.\+c@{main.\+c}!noir@{noir}}
+\index{noir@{noir}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{noir}{noir}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color noir = \{0,0,0\}}
+
+\mbox{\Hypertarget{main_8c_acc60231d174bc3d6f1419ed073a44850}\label{main_8c_acc60231d174bc3d6f1419ed073a44850}} 
+\index{main.\+c@{main.\+c}!R\+A\+T\+I\+O\+\_\+\+C\+L\+I\+CK@{R\+A\+T\+I\+O\+\_\+\+C\+L\+I\+CK}}
+\index{R\+A\+T\+I\+O\+\_\+\+C\+L\+I\+CK@{R\+A\+T\+I\+O\+\_\+\+C\+L\+I\+CK}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{R\+A\+T\+I\+O\+\_\+\+C\+L\+I\+CK}{RATIO\_CLICK}}
+{\footnotesize\ttfamily const int R\+A\+T\+I\+O\+\_\+\+C\+L\+I\+CK\mbox{[}\hyperlink{main_8c_a2786ece3997254fbce0fa58b34a9ad7d}{F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+M\+AX}\mbox{]} = \{-\/5, -\/20, -\/50, -\/55, -\/30\}}
+
+\mbox{\Hypertarget{main_8c_a33b1cfe3eb56da056f6d75a43b775d66}\label{main_8c_a33b1cfe3eb56da056f6d75a43b775d66}} 
+\index{main.\+c@{main.\+c}!rouge@{rouge}}
+\index{rouge@{rouge}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{rouge}{rouge}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color rouge = \{255,0,0\}}
+
+\mbox{\Hypertarget{main_8c_a95b503131dd43adcf828e3d6d0d01e70}\label{main_8c_a95b503131dd43adcf828e3d6d0d01e70}} 
+\index{main.\+c@{main.\+c}!rouge\+Foncer@{rouge\+Foncer}}
+\index{rouge\+Foncer@{rouge\+Foncer}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{rouge\+Foncer}{rougeFoncer}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color rouge\+Foncer = \{209,52,52\}}
+
+\mbox{\Hypertarget{main_8c_a0ae61f000fdcba1ec78e43c56673d2d6}\label{main_8c_a0ae61f000fdcba1ec78e43c56673d2d6}} 
+\index{main.\+c@{main.\+c}!T\+E\+N\+T\+A\+T\+I\+VE@{T\+E\+N\+T\+A\+T\+I\+VE}}
+\index{T\+E\+N\+T\+A\+T\+I\+VE@{T\+E\+N\+T\+A\+T\+I\+VE}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{T\+E\+N\+T\+A\+T\+I\+VE}{TENTATIVE}}
+{\footnotesize\ttfamily const int T\+E\+N\+T\+A\+T\+I\+VE = 8}
+
+\mbox{\Hypertarget{main_8c_a584962a25015c7d6e18e294f55a8bc2d}\label{main_8c_a584962a25015c7d6e18e294f55a8bc2d}} 
+\index{main.\+c@{main.\+c}!thread@{thread}}
+\index{thread@{thread}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{thread}{thread}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Thread$\ast$ thread = N\+U\+LL}
+
+\mbox{\Hypertarget{main_8c_aa5b606884a90085a380a2eb389db22ee}\label{main_8c_aa5b606884a90085a380a2eb389db22ee}} 
+\index{main.\+c@{main.\+c}!vert@{vert}}
+\index{vert@{vert}!main.\+c@{main.\+c}}
+\subsubsection{\texorpdfstring{vert}{vert}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color vert = \{76,196,66\}}
+

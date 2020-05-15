@@ -1,0 +1,4 @@
+<map id="asteroid_touche" name="asteroid_touche">
+<area shape="rect" id="node2" href="$asteroid_8c.html#a0ab4528a5507e3a0f816d4c596c59f16" title="vaisseau trop_pres ou non " alt="" coords="168,5,244,32"/>
+<area shape="rect" id="node3" href="$asteroid_8c.html#a9138b5f165178cf613ff96f2307a0fec" title="calcul la distance entre deux points " alt="" coords="292,5,353,32"/>
+</map>

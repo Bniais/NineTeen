@@ -1,0 +1,51 @@
+<map id="room" name="room">
+<area shape="rect" id="node2" href="$room_8c.html#a6746abb0b96cc3e013944163c053a0a3" title="fonction qui charge fixe la taille max de la fenetre " alt="" coords="471,166,588,193"/>
+<area shape="rect" id="node3" href="$room_8c.html#aa79fb9ded897b9bbbc0780feb6f9df9f" title="initialisation des variables lier au camera joueur et machines " alt="" coords="486,217,573,243"/>
+<area shape="rect" id="node4" href="$room_8c.html#a81296eac8fa7bcdd021c45e5c8e0921c" title="initalisation du volume " alt="" coords="493,267,565,294"/>
+<area shape="rect" id="node5" href="$commun_functions_8c.html#af1e4d4eaa8a0a9e3ba768193d58e2792" title="permet de faire une allocation dynamqiue avec message d&#39;erreur " alt="" coords="726,1129,793,1155"/>
+<area shape="rect" id="node6" href="$room_8c.html#a77b40d2a48a66dc8f7b8207ed7a5e2a6" title="permet d&#39;appliquer la scene dans la window + mouvement camera " alt="" coords="444,470,615,497"/>
+<area shape="rect" id="node11" href="$room_8c.html#a494760108e4661303a77ba7fb1122006" title="regle le mode de vue voulu et les lummiere de opengl " alt="" coords="680,394,839,421"/>
+<area shape="rect" id="node12" href="$room_8c.html#a920b806cad48b375b9a530814e7afd63" title="regle le volume de l&#39;environement sur un channel particuliere " alt="" coords="705,1027,813,1054"/>
+<area shape="rect" id="node15" href="$room_8c.html#a3ea615b7ff319d3bef6227857ce52786" title="permet de deplacer la source du son des pas et de le jouer " alt="" coords="484,318,575,345"/>
+<area shape="rect" id="node16" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="104,1230,211,1257"/>
+<area shape="rect" id="node21" href="$room_8c.html#aeb8bbd97cb6c720ffda7f7a9606e1b45" title="detruit les elements initaliser " alt="" coords="475,571,584,598"/>
+<area shape="rect" id="node23" href="$room_8c.html#a88eaba9341fa844401d12a78679830dc" title="permet de mettre un nombre d&#39;image max et reglger la vitesse de deplacement en fonction des ips ..." alt="" coords="482,1737,577,1763"/>
+<area shape="rect" id="node24" href="$room_8c.html#a901691690957fae9daa5d3d331da8ec7" title="permet d&#39;attendre avant d&#39;afficher message CLIGNOTANT affiche egalement les IPS " alt="" coords="439,1787,619,1814"/>
+<area shape="rect" id="node27" href="$room_8c.html#a47842a9ab60604cf3f40a87717aa685f" title="affichage de text sur un rendu OpenGL " alt="" coords="713,1686,806,1713"/>
+<area shape="rect" id="node28" href="$room_8c.html#a554c27dfea1971e6926e461187ebd29e" title="affichage un message propre a chaque machine " alt="" coords="467,1534,591,1561"/>
+<area shape="rect" id="node31" href="$room_8c.html#a22b155abc1008cd51da9718d8dff813e" title="permet de gerer les evenements liee au porte des toilettes " alt="" coords="453,1483,605,1510"/>
+<area shape="rect" id="node32" href="$room_8c.html#ade7156d63e39a5b65ec2247840d9c381" title="afficher un background au classement pour qu&#39;il soit plus facilement visible " alt="" coords="450,1838,609,1865"/>
+<area shape="rect" id="node7" href="$room_8c.html#ac7fd25ceb1c11ba859983d8fc5b6e742" title="Permet de gerer les deplacements de la camera. " alt="" coords="691,774,827,801"/>
+<area shape="rect" id="node9" href="$room_8c.html#a9a783579e7576a7ebfb754ff6a95926b" title="permet de regler l&#39;intensiter de chaque lampe presente dans la salle " alt="" coords="712,470,807,497"/>
+<area shape="rect" id="node10" href="$room_8c.html#a2bbafc1b0562d4ee6d70364745714f89" title="Dessine un quadrilataire. " alt="" coords="700,825,819,851"/>
+<area shape="rect" id="node8" href="$room_8c.html#a3fb5d57c89ca3957fc124608dfcaf659" title="fonction de collision avec l&#39;environement " alt="" coords="892,825,1055,851"/>
+<area shape="rect" id="node13" href="$room_8c.html#a99f0807856f649ff729b7924e125dcdf" title="renvoi la distance entre deux point " alt="" coords="923,926,1024,953"/>
+<area shape="rect" id="node14" href="$room_8c.html#a6e52b9bce2208dbc639e5a979b15ca35" title="renvoi l&#39;angle entre 3 points " alt="" coords="929,1053,1018,1079"/>
+<area shape="rect" id="node17" href="$room_8c.html#a2b408d60cd07c4117322cdbcc31fed7b" title="detection porte a proximite " alt="" coords="709,1281,809,1307"/>
+<area shape="rect" id="node18" href="$room_8c.html#abc49a289020f817b90aae10c27ae1c5b" title="permet d&#39;afficher le message avant de quitter ou au chargement de la room " alt="" coords="455,622,604,649"/>
+<area shape="rect" id="node19" href="$room_8c.html#a784b5c81cdc56701d32c20fa9232ddf9" title="fonction qui detecte la proxmiter avec une machine de jeu " alt="" coords="700,1382,819,1409"/>
+<area shape="rect" id="node20" href="$room_8c.html#aaa0228d441c082bc57e7abb2e4c68ffc" title="permet d&#39;animer le lancement et retour des machines " alt="" coords="446,419,613,446"/>
+<area shape="rect" id="node22" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="259,1002,384,1029"/>
+<area shape="rect" id="node25" href="$room_8c.html#a38dd7f392233bb41399b023bc2669249" title="detection radio a proximite " alt="" coords="708,1534,811,1561"/>
+<area shape="rect" id="node26" href="$room_8c.html#a87f0edb1c54eefa26f857c4a4d530429" title="detection des toilettes h/f " alt="" coords="675,1610,844,1637"/>
+<area shape="rect" id="node30" href="$room_8c.html#a70263633a7a137f37ff72e5cf71cc7eb" title="Mes a jours les donnees liee au score de la structure meilleureScore. " alt="" coords="456,1129,603,1155"/>
+<area shape="rect" id="node33" href="$flappy__bird_8c.html#a8f9872781c9ba0176a187193e39dde97" title="Fonction principale qui joue le jeu flappy bird. " alt="" coords="279,2167,364,2194"/>
+<area shape="rect" id="node47" href="$tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="296,1889,347,1915"/>
+<area shape="rect" id="node48" href="$asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="287,1939,355,1966"/>
+<area shape="rect" id="node49" href="$snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="293,1990,350,2017"/>
+<area shape="rect" id="node50" href="$leaderboard_8c.html#adb7c03fcec842fb68ec6523b538f5ff7" title="leaderboard" alt="" coords="277,1483,366,1510"/>
+<area shape="rect" id="node29" href="$room_8c.html#a9d5eda0e789a5fc236195e2b0f605aaa" title="initialise la strcuture MeilleureScore_s avec le nom des jeux " alt="" coords="466,977,593,1003"/>
+<area shape="rect" id="node34" href="$hashage_8c.html#a7bd85e927ff61bf409ab315791552391" title="initialise des valeurs aleatoire pour le hashage " alt="" coords="432,2041,627,2067"/>
+<area shape="rect" id="node35" href="$hashage_8c.html#a52777186f55107ffa1460ab92c79ede4" title="retourne une valeur hasher de la valeur d&#39;entrer. " alt="" coords="494,1990,565,2017"/>
+<area shape="rect" id="node36" href="$flappy__bird_8c.html#a5bc0848bb48b6c9265b8b87c7c09b841" title="initialisation des pilonnes et des animation et de certaine variables liee au boucle du jeu ..." alt="" coords="486,2395,573,2422"/>
+<area shape="rect" id="node37" href="$flappy__bird_8c.html#a4858bca7396db08c9733a691a7d58f9c" title="regroupement de toute les fonctions d&#39;affichage pour afficher tous " alt="" coords="484,2446,575,2473"/>
+<area shape="rect" id="node38" href="$flappy__bird_8c.html#a49aafde64b048663c89457ab94171d3e" title="affiche le score en cours a l ecran " alt="" coords="710,2471,809,2498"/>
+<area shape="rect" id="node39" href="$commun_functions_8c.html#accb6052f792ce29f71e79866dff07a58" title="Affiche un texte invitant le joueur à rejouer. " alt="" coords="484,1939,575,1966"/>
+<area shape="rect" id="node40" href="$flappy__bird_8c.html#a0ceb3de339eddf081185c52d40819193" title="attend l&#39;appui sur espace pour demarrer joue un son " alt="" coords="458,2091,601,2118"/>
+<area shape="rect" id="node41" href="$flappy__bird_8c.html#a96e403e8f6333abe2bee8d0429217c7c" title="remet les variables au DEFINE si on appui sur espace " alt="" coords="486,2142,573,2169"/>
+<area shape="rect" id="node42" href="$flappy__bird_8c.html#a09c69a458354e11a45af579085123048" title="permet de mettre a jours les variables utilisez " alt="" coords="435,2193,623,2219"/>
+<area shape="rect" id="node43" href="$flappy__bird_8c.html#a18e8671a141af5a89d184dd7dcdacc21" title="detecte le passage d&#39;un pilonne et joue un son " alt="" coords="465,2243,593,2270"/>
+<area shape="rect" id="node44" href="$flappy__bird_8c.html#a93a55e5f40971511e088f2e52a654c57" title="mise a jours des variables liee a l&#39;environement/decor " alt="" coords="437,2294,622,2321"/>
+<area shape="rect" id="node45" href="$flappy__bird_8c.html#a8b820c5bc000a7a6b332e6cd9fc810fe" title="permet de detecter une collision et de jouer un son " alt="" coords="495,2345,564,2371"/>
+<area shape="rect" id="node46" href="$lib_web_8c.html#a55c3e461f1c4f810c5a38eb74c219fae" title="update le score " alt="" coords="482,1889,577,1915"/>
+</map>

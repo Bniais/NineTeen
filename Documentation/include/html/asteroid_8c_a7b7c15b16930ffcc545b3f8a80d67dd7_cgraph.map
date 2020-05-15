@@ -1,0 +1,9 @@
+<map id="detruire_asteroid" name="detruire_asteroid">
+<area shape="rect" id="node2" href="$asteroid_8c.html#aad2eabec61848c202dd8cf2a800d3398" title="randSign" alt="" coords="199,5,272,32"/>
+<area shape="rect" id="node3" href="$asteroid_8c.html#ad96122b5bb822d796493573a197f7148" title="asteroid_cpy" alt="" coords="187,56,283,83"/>
+<area shape="rect" id="node4" href="$asteroid_8c.html#ab0979c8b8eefd21986a1baf5d117f767" title="decaler_gauche_a" alt="" coords="172,107,299,133"/>
+<area shape="rect" id="node5" href="$asteroid_8c.html#af1f3f4f317dd71e9379a6e19ad0cb303" title="get_bonus" alt="" coords="194,157,277,184"/>
+<area shape="rect" id="node7" href="$asteroid_8c.html#a776f16ec050b2aa8b8498022d8c6ae21" title="recoit_bonus" alt="" coords="187,208,283,235"/>
+<area shape="rect" id="node8" href="$asteroid_8c.html#aae510378b3640b0555b51bd5fe428470" title="getFirstNullText" alt="" coords="178,259,293,285"/>
+<area shape="rect" id="node6" href="$asteroid_8c.html#a8b1c0436c52bee1861a64bb6f0ee2945" title="isObtainable" alt="" coords="347,157,441,184"/>
+</map>

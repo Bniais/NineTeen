@@ -1,0 +1,1422 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Nineteen: Référence du fichier main.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="favicon.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Nineteen
+   </div>
+   <div id="projectbrief">The best of arcade games !</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#define-members">Macros</a> &#124;
+<a href="#enum-members">Énumérations</a> &#124;
+<a href="#func-members">Fonctions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle">
+<div class="title">Référence du fichier main.c</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>regroupe le launcher ainsi que le programme principal du jeu  
+<a href="#details">Plus de détails...</a></p>
+<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;stdlib.h&gt;</code><br />
+<code>#include &quot;SDL2/SDL_thread.h&quot;</code><br />
+<code>#include &lt;SDL2/SDL.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL_image.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL_ttf.h&gt;</code><br />
+<code>#include &lt;SDL2/SDL_mixer.h&gt;</code><br />
+<code>#include &quot;include/textField.h&quot;</code><br />
+<code>#include &quot;include/fullpath.h&quot;</code><br />
+<code>#include &quot;include/communFunctions.h&quot;</code><br />
+<code>#include &quot;include/libWeb.h&quot;</code><br />
+<code>#include &quot;room/room.h&quot;</code><br />
+<code>#include &quot;include/define.h&quot;</code><br />
+<code>#include &quot;main.h&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Graphe des dépendances par inclusion de main.c:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c__incl.jpg" border="0" usemap="#main_8c" alt=""/></div>
+</div>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a9361d8eed5c24ffb8cb9b33510254c3c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a9361d8eed5c24ffb8cb9b33510254c3c">VERSION_LOGICIEL</a>&#160;&#160;&#160;&quot;version=1.1.0&quot;</td></tr>
+<tr class="separator:a9361d8eed5c24ffb8cb9b33510254c3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c6d5de492ac61ad29aec7aa9a436bbf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a1c6d5de492ac61ad29aec7aa9a436bbf">VERSION</a>&#160;&#160;&#160;&quot;1.1.0&quot;</td></tr>
+<tr class="separator:a1c6d5de492ac61ad29aec7aa9a436bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88d81692d057903aae74292f1cbacf63"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a88d81692d057903aae74292f1cbacf63">MODE_DEV</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a88d81692d057903aae74292f1cbacf63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79eb567e00b5f977f2c6da15d4bd8bee"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a79eb567e00b5f977f2c6da15d4bd8bee">DIR_OBJ_LOAD</a>&#160;&#160;&#160;&quot;../room/<a class="el" href="room_8c.html#a158b90dfedb211efa4c317267c983dd2">textures</a>/salle.obj&quot;</td></tr>
+<tr class="separator:a79eb567e00b5f977f2c6da15d4bd8bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8cecfc5c5c054d2875c03e77b7be15d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:aa8cecfc5c5c054d2875c03e77b7be15d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa93f0eb578d23995850d61f7d61c55c1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:aa93f0eb578d23995850d61f7d61c55c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4afb31b8aaad24ca6e4133e9e0ffd0f2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a4afb31b8aaad24ca6e4133e9e0ffd0f2">DIR_TOKEN_FILE</a>&#160;&#160;&#160;&quot;/tmp/.Nineteen&quot;</td></tr>
+<tr class="separator:a4afb31b8aaad24ca6e4133e9e0ffd0f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafef6d4375464be2b7a38db96d988e9c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aafef6d4375464be2b7a38db96d988e9c">DIR_LOG</a>&#160;&#160;&#160;&quot;/tmp/&quot;</td></tr>
+<tr class="separator:aafef6d4375464be2b7a38db96d988e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4413ffd2f789046586a88484c418f293"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a4413ffd2f789046586a88484c418f293">DIR_CONFIG_FILE</a>&#160;&#160;&#160;&quot;../launcher/.config&quot;</td></tr>
+<tr class="separator:a4413ffd2f789046586a88484c418f293"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af834322a79297b37a702c15ff8d5e9a7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#af834322a79297b37a702c15ff8d5e9a7">DIR_MUSIC_FILE</a>&#160;&#160;&#160;&quot;../assets/background.wav&quot;</td></tr>
+<tr class="separator:af834322a79297b37a702c15ff8d5e9a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4ed2c9ae8305de141ba75c7463f9cb9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ac4ed2c9ae8305de141ba75c7463f9cb9">DIR_IMG_BACKGROUND</a>&#160;&#160;&#160;&quot;../assets/image/launcher_no_font.png&quot;</td></tr>
+<tr class="separator:ac4ed2c9ae8305de141ba75c7463f9cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfaac3661bc8a9372f5f3d18f659b729"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#acfaac3661bc8a9372f5f3d18f659b729">DIR_ING_BACKGROUND_TXT</a>&#160;&#160;&#160;&quot;../assets/image/launcher.png&quot;</td></tr>
+<tr class="separator:acfaac3661bc8a9372f5f3d18f659b729"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7981074131f353a5ca7c3e6856e534e3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a7981074131f353a5ca7c3e6856e534e3">DIR_FONT_POLICE</a>&#160;&#160;&#160;&quot;../assets/font/police.ttf&quot;</td></tr>
+<tr class="separator:a7981074131f353a5ca7c3e6856e534e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55d8694bd7ea090acb049a56696fd302"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a55d8694bd7ea090acb049a56696fd302">DIR_FONT_PASSWORD</a>&#160;&#160;&#160;&quot;../assets/font/password.ttf&quot;</td></tr>
+<tr class="separator:a55d8694bd7ea090acb049a56696fd302"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03d93415faa3cd067a351e8f4acd9c20"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a03d93415faa3cd067a351e8f4acd9c20">WIN_LARGUEUR</a>&#160;&#160;&#160;1440</td></tr>
+<tr class="separator:a03d93415faa3cd067a351e8f4acd9c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8abfb90ac6568bcbbb4ba2b110b4a4c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ac8abfb90ac6568bcbbb4ba2b110b4a4c">WIN_HAUTEUR</a>&#160;&#160;&#160;960</td></tr>
+<tr class="separator:ac8abfb90ac6568bcbbb4ba2b110b4a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a6fb7b67c59a8855baf8c2e6e5a688a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a0a6fb7b67c59a8855baf8c2e6e5a688a">SIZE_SESSION</a>&#160;&#160;&#160;256</td></tr>
+<tr class="separator:a0a6fb7b67c59a8855baf8c2e6e5a688a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a945799255af1aa39ad44df8381bf49e1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a945799255af1aa39ad44df8381bf49e1">URL_REGISTRATION</a>&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/inscription.php&quot;</td></tr>
+<tr class="separator:a945799255af1aa39ad44df8381bf49e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4bbae07a5e67f0fd458079869a81f67"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ae4bbae07a5e67f0fd458079869a81f67">URL_CONFIG_FILE</a>&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/include/<a class="el" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5">launcher</a>/config.php&quot;</td></tr>
+<tr class="separator:ae4bbae07a5e67f0fd458079869a81f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac92ca5ab87034a348decad7ee8d4bd1b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ac92ca5ab87034a348decad7ee8d4bd1b">FPS</a>&#160;&#160;&#160;30</td></tr>
+<tr class="separator:ac92ca5ab87034a348decad7ee8d4bd1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a328cf88337238d427844d1ee37699a49"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a328cf88337238d427844d1ee37699a49">NB_ANIM</a>&#160;&#160;&#160;5</td></tr>
+<tr class="separator:a328cf88337238d427844d1ee37699a49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2786ece3997254fbce0fa58b34a9ad7d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a2786ece3997254fbce0fa58b34a9ad7d">FRAME_ANIM_MAX</a>&#160;&#160;&#160;5</td></tr>
+<tr class="separator:a2786ece3997254fbce0fa58b34a9ad7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b5a38c9ee4b5e3fcceb8872f756c307"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a4b5a38c9ee4b5e3fcceb8872f756c307">RATIO_ANIM</a>&#160;&#160;&#160;10</td></tr>
+<tr class="separator:a4b5a38c9ee4b5e3fcceb8872f756c307"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Énumérations</h2></td></tr>
+<tr class="memitem:a19291dd688f513ad08659e2258d30860"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a19291dd688f513ad08659e2258d30860">anims</a> { <br />
+&#160;&#160;<a class="el" href="main_8c.html#a19291dd688f513ad08659e2258d30860a122a036b86991a14e7f912c77d36f36b">ANIM_CONNECTION</a>, 
+<a class="el" href="main_8c.html#a19291dd688f513ad08659e2258d30860a5862b81b22cd08f7859da3eb25d142e5">ANIM_HOVER_CONNECTION</a>, 
+<a class="el" href="main_8c.html#a19291dd688f513ad08659e2258d30860a740220367226b3e18a3090396edc3437">ANIM_INSCRIPTION</a>, 
+<a class="el" href="main_8c.html#a19291dd688f513ad08659e2258d30860a568400f385743a489009ab0170f3927e">ANIM_HOVER_INSCRIPTION</a>, 
+<br />
+&#160;&#160;<a class="el" href="main_8c.html#a19291dd688f513ad08659e2258d30860af035749994f3a7885ecedc8bd4a9bc8b">ANIM_LOADING</a>
+<br />
+ }</td></tr>
+<tr class="separator:a19291dd688f513ad08659e2258d30860"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Fonctions</h2></td></tr>
+<tr class="memitem:a94cac2e3d54b21d4e26db7f3d15e8e6a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a94cac2e3d54b21d4e26db7f3d15e8e6a">checkVersion</a> (char version[])</td></tr>
+<tr class="memdesc:a94cac2e3d54b21d4e26db7f3d15e8e6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">permet de verifier la version du VERSION_LOGICIEL  <a href="#a94cac2e3d54b21d4e26db7f3d15e8e6a">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a94cac2e3d54b21d4e26db7f3d15e8e6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11b331a93f323447a69e780284e8679d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a11b331a93f323447a69e780284e8679d">dejaConneceter</a> (char *token)</td></tr>
+<tr class="memdesc:a11b331a93f323447a69e780284e8679d"><td class="mdescLeft">&#160;</td><td class="mdescRight">verifie si l utilisateur est deja connecter  <a href="#a11b331a93f323447a69e780284e8679d">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a11b331a93f323447a69e780284e8679d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a564bb0fc612137f87ebe7ad1614e975a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a564bb0fc612137f87ebe7ad1614e975a">sauvegarderToken</a> (char *token)</td></tr>
+<tr class="memdesc:a564bb0fc612137f87ebe7ad1614e975a"><td class="mdescLeft">&#160;</td><td class="mdescRight">permet de sauvegarder le token dans un fichier  <a href="#a564bb0fc612137f87ebe7ad1614e975a">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a564bb0fc612137f87ebe7ad1614e975a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac99b5b2ed70796b04227bea66568dd51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ac99b5b2ed70796b04227bea66568dd51">printAll</a> (SDL_Renderer *renderer, SDL_Texture *background, SDL_Texture *loading, TTF_Font *police, SDL_Rect targetId, SDL_Rect targetPwd, SDL_Rect targetConnect, SDL_Rect targetInscription, int frame_anims[<a class="el" href="main_8c.html#a328cf88337238d427844d1ee37699a49">NB_ANIM</a>], int valeurRetour)</td></tr>
+<tr class="memdesc:ac99b5b2ed70796b04227bea66568dd51"><td class="mdescLeft">&#160;</td><td class="mdescRight">cette fonction permet d'afficher tous les elements present dans le launcher.  <a href="#ac99b5b2ed70796b04227bea66568dd51">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ac99b5b2ed70796b04227bea66568dd51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3fffe2a92945f4ee0723a625a624af6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ad3fffe2a92945f4ee0723a625a624af6">ouvrirUrlRegistration</a> ()</td></tr>
+<tr class="memdesc:ad3fffe2a92945f4ee0723a625a624af6"><td class="mdescLeft">&#160;</td><td class="mdescRight">permet d'ouvrir une page web sur les 3 OS  <a href="#ad3fffe2a92945f4ee0723a625a624af6">Plus de détails...</a><br /></td></tr>
+<tr class="separator:ad3fffe2a92945f4ee0723a625a624af6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd0ee7e952eb3dba3ddb634d77c1eb72"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72">connexion</a> (SDL_Renderer *renderer, char *token, char *tokenCpy, char path[])</td></tr>
+<tr class="memdesc:afd0ee7e952eb3dba3ddb634d77c1eb72"><td class="mdescLeft">&#160;</td><td class="mdescRight">la fonction gere l'interaction globale de la vue, elle envoie les requetes de connexion et traite les retour  <a href="#afd0ee7e952eb3dba3ddb634d77c1eb72">Plus de détails...</a><br /></td></tr>
+<tr class="separator:afd0ee7e952eb3dba3ddb634d77c1eb72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3980fa98fa4e25d3fd957ad815ed142c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a3980fa98fa4e25d3fd957ad815ed142c">chargementFichier</a> (SDL_Renderer *renderer, struct MeilleureScore_s meilleureScore[], char *token, const C_STRUCT aiScene **scene, char *path)</td></tr>
+<tr class="memdesc:a3980fa98fa4e25d3fd957ad815ed142c"><td class="mdescLeft">&#160;</td><td class="mdescRight">verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores  <a href="#a3980fa98fa4e25d3fd957ad815ed142c">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a3980fa98fa4e25d3fd957ad815ed142c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17ecaa560299c190b6147a919ffed8c5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5">launcher</a> (SDL_Renderer *renderer, char *token, char *tokenCpy, struct MeilleureScore_s meilleureScore[], const C_STRUCT aiScene **scene, char path[])</td></tr>
+<tr class="memdesc:a17ecaa560299c190b6147a919ffed8c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargement fichier  <a href="#a17ecaa560299c190b6147a919ffed8c5">Plus de détails...</a><br /></td></tr>
+<tr class="separator:a17ecaa560299c190b6147a919ffed8c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ddf1224851353fc92bfbff6f499fa97"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97">main</a> (int argc, char *argv[])</td></tr>
+<tr class="separator:a0ddf1224851353fc92bfbff6f499fa97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a1ce6bb164d37e605aa60e94aefe73817"><td class="memItemLeft" align="right" valign="top">FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a1ce6bb164d37e605aa60e94aefe73817">EXT_FILE</a></td></tr>
+<tr class="separator:a1ce6bb164d37e605aa60e94aefe73817"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc21c1c3300d8c04ce517d937b335899"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#adc21c1c3300d8c04ce517d937b335899">MACOS_VER</a></td></tr>
+<tr class="separator:adc21c1c3300d8c04ce517d937b335899"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33b1cfe3eb56da056f6d75a43b775d66"><td class="memItemLeft" align="right" valign="top">const SDL_Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a33b1cfe3eb56da056f6d75a43b775d66">rouge</a> = {255,0,0}</td></tr>
+<tr class="separator:a33b1cfe3eb56da056f6d75a43b775d66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95b503131dd43adcf828e3d6d0d01e70"><td class="memItemLeft" align="right" valign="top">const SDL_Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a95b503131dd43adcf828e3d6d0d01e70">rougeFoncer</a> = {209,52,52}</td></tr>
+<tr class="separator:a95b503131dd43adcf828e3d6d0d01e70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bd51316bd9fd18abbd48cf5d2e349af"><td class="memItemLeft" align="right" valign="top">const SDL_Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a8bd51316bd9fd18abbd48cf5d2e349af">noir</a> = {0,0,0}</td></tr>
+<tr class="separator:a8bd51316bd9fd18abbd48cf5d2e349af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b299368d2c300ee04efec5b598c5a01"><td class="memItemLeft" align="right" valign="top">const SDL_Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a6b299368d2c300ee04efec5b598c5a01">blanc</a> = {255,255,255}</td></tr>
+<tr class="separator:a6b299368d2c300ee04efec5b598c5a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83aaa2b5a427d2cb849b4b938eb25b74"><td class="memItemLeft" align="right" valign="top">const SDL_Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a83aaa2b5a427d2cb849b4b938eb25b74">blanc_foncer</a> = {200,200,200}</td></tr>
+<tr class="separator:a83aaa2b5a427d2cb849b4b938eb25b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5b606884a90085a380a2eb389db22ee"><td class="memItemLeft" align="right" valign="top">const SDL_Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aa5b606884a90085a380a2eb389db22ee">vert</a> = {76,196,66}</td></tr>
+<tr class="separator:aa5b606884a90085a380a2eb389db22ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf782b0c1074443a21be0c3a84221f07"><td class="memItemLeft" align="right" valign="top">const SDL_Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#abf782b0c1074443a21be0c3a84221f07">bleu_foncer</a> = {66,100,196}</td></tr>
+<tr class="separator:abf782b0c1074443a21be0c3a84221f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57f58d1b1b9d954235bef55feff5e840"><td class="memItemLeft" align="right" valign="top">const SDL_Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a57f58d1b1b9d954235bef55feff5e840">cyan</a> = {0x38,0xf9,0xff}</td></tr>
+<tr class="separator:a57f58d1b1b9d954235bef55feff5e840"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8a35cc9f4c3f7d430225aa3a8cfca70"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ae8a35cc9f4c3f7d430225aa3a8cfca70">LARGUEUR</a> = 0</td></tr>
+<tr class="separator:ae8a35cc9f4c3f7d430225aa3a8cfca70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51b9d4c6450445338971fcc9618cc0c6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a51b9d4c6450445338971fcc9618cc0c6">HAUTEUR</a> = 0</td></tr>
+<tr class="separator:a51b9d4c6450445338971fcc9618cc0c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a799de9c46efe68a74d1a79c080150921"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a799de9c46efe68a74d1a79c080150921">DELAY</a> = 200</td></tr>
+<tr class="separator:a799de9c46efe68a74d1a79c080150921"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ae61f000fdcba1ec78e43c56673d2d6"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a0ae61f000fdcba1ec78e43c56673d2d6">TENTATIVE</a> = 8</td></tr>
+<tr class="separator:a0ae61f000fdcba1ec78e43c56673d2d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc60231d174bc3d6f1419ed073a44850"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#acc60231d174bc3d6f1419ed073a44850">RATIO_CLICK</a> [<a class="el" href="main_8c.html#a2786ece3997254fbce0fa58b34a9ad7d">FRAME_ANIM_MAX</a>] = {-5, -20, -50, -55, -30}</td></tr>
+<tr class="separator:acc60231d174bc3d6f1419ed073a44850"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a584962a25015c7d6e18e294f55a8bc2d"><td class="memItemLeft" align="right" valign="top">SDL_Thread *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a584962a25015c7d6e18e294f55a8bc2d">thread</a> = NULL</td></tr>
+<tr class="separator:a584962a25015c7d6e18e294f55a8bc2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Description détaillée</h2>
+<div class="textblock"><p>regroupe le launcher ainsi que le programme principal du jeu </p>
+<dl class="section author"><dt>Auteur</dt><dd>Samy M. </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>31 janvier 2020 </dd></dl>
+</div><h2 class="groupheader">Documentation des macros</h2>
+<a id="a4413ffd2f789046586a88484c418f293"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4413ffd2f789046586a88484c418f293">&#9670;&nbsp;</a></span>DIR_CONFIG_FILE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DIR_CONFIG_FILE&#160;&#160;&#160;&quot;../launcher/.config&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a55d8694bd7ea090acb049a56696fd302"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55d8694bd7ea090acb049a56696fd302">&#9670;&nbsp;</a></span>DIR_FONT_PASSWORD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DIR_FONT_PASSWORD&#160;&#160;&#160;&quot;../assets/font/password.ttf&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7981074131f353a5ca7c3e6856e534e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7981074131f353a5ca7c3e6856e534e3">&#9670;&nbsp;</a></span>DIR_FONT_POLICE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DIR_FONT_POLICE&#160;&#160;&#160;&quot;../assets/font/police.ttf&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac4ed2c9ae8305de141ba75c7463f9cb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4ed2c9ae8305de141ba75c7463f9cb9">&#9670;&nbsp;</a></span>DIR_IMG_BACKGROUND</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DIR_IMG_BACKGROUND&#160;&#160;&#160;&quot;../assets/image/launcher_no_font.png&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acfaac3661bc8a9372f5f3d18f659b729"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfaac3661bc8a9372f5f3d18f659b729">&#9670;&nbsp;</a></span>DIR_ING_BACKGROUND_TXT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DIR_ING_BACKGROUND_TXT&#160;&#160;&#160;&quot;../assets/image/launcher.png&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aafef6d4375464be2b7a38db96d988e9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafef6d4375464be2b7a38db96d988e9c">&#9670;&nbsp;</a></span>DIR_LOG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DIR_LOG&#160;&#160;&#160;&quot;/tmp/&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af834322a79297b37a702c15ff8d5e9a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af834322a79297b37a702c15ff8d5e9a7">&#9670;&nbsp;</a></span>DIR_MUSIC_FILE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DIR_MUSIC_FILE&#160;&#160;&#160;&quot;../assets/background.wav&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a79eb567e00b5f977f2c6da15d4bd8bee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79eb567e00b5f977f2c6da15d4bd8bee">&#9670;&nbsp;</a></span>DIR_OBJ_LOAD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DIR_OBJ_LOAD&#160;&#160;&#160;&quot;../room/<a class="el" href="room_8c.html#a158b90dfedb211efa4c317267c983dd2">textures</a>/salle.obj&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4afb31b8aaad24ca6e4133e9e0ffd0f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4afb31b8aaad24ca6e4133e9e0ffd0f2">&#9670;&nbsp;</a></span>DIR_TOKEN_FILE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DIR_TOKEN_FILE&#160;&#160;&#160;&quot;/tmp/.Nineteen&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa93f0eb578d23995850d61f7d61c55c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa93f0eb578d23995850d61f7d61c55c1">&#9670;&nbsp;</a></span>FALSE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FALSE&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac92ca5ab87034a348decad7ee8d4bd1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac92ca5ab87034a348decad7ee8d4bd1b">&#9670;&nbsp;</a></span>FPS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FPS&#160;&#160;&#160;30</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2786ece3997254fbce0fa58b34a9ad7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2786ece3997254fbce0fa58b34a9ad7d">&#9670;&nbsp;</a></span>FRAME_ANIM_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FRAME_ANIM_MAX&#160;&#160;&#160;5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a88d81692d057903aae74292f1cbacf63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88d81692d057903aae74292f1cbacf63">&#9670;&nbsp;</a></span>MODE_DEV</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MODE_DEV&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a328cf88337238d427844d1ee37699a49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a328cf88337238d427844d1ee37699a49">&#9670;&nbsp;</a></span>NB_ANIM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define NB_ANIM&#160;&#160;&#160;5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4b5a38c9ee4b5e3fcceb8872f756c307"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b5a38c9ee4b5e3fcceb8872f756c307">&#9670;&nbsp;</a></span>RATIO_ANIM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RATIO_ANIM&#160;&#160;&#160;10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0a6fb7b67c59a8855baf8c2e6e5a688a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a6fb7b67c59a8855baf8c2e6e5a688a">&#9670;&nbsp;</a></span>SIZE_SESSION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SIZE_SESSION&#160;&#160;&#160;256</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa8cecfc5c5c054d2875c03e77b7be15d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8cecfc5c5c054d2875c03e77b7be15d">&#9670;&nbsp;</a></span>TRUE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TRUE&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae4bbae07a5e67f0fd458079869a81f67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4bbae07a5e67f0fd458079869a81f67">&#9670;&nbsp;</a></span>URL_CONFIG_FILE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define URL_CONFIG_FILE&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/include/<a class="el" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5">launcher</a>/config.php&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a945799255af1aa39ad44df8381bf49e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a945799255af1aa39ad44df8381bf49e1">&#9670;&nbsp;</a></span>URL_REGISTRATION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define URL_REGISTRATION&#160;&#160;&#160;&quot;https://nineteen.recognizer.fr/inscription.php&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1c6d5de492ac61ad29aec7aa9a436bbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c6d5de492ac61ad29aec7aa9a436bbf">&#9670;&nbsp;</a></span>VERSION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define VERSION&#160;&#160;&#160;&quot;1.1.0&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9361d8eed5c24ffb8cb9b33510254c3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9361d8eed5c24ffb8cb9b33510254c3c">&#9670;&nbsp;</a></span>VERSION_LOGICIEL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define VERSION_LOGICIEL&#160;&#160;&#160;&quot;version=1.1.0&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac8abfb90ac6568bcbbb4ba2b110b4a4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8abfb90ac6568bcbbb4ba2b110b4a4c">&#9670;&nbsp;</a></span>WIN_HAUTEUR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WIN_HAUTEUR&#160;&#160;&#160;960</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a03d93415faa3cd067a351e8f4acd9c20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03d93415faa3cd067a351e8f4acd9c20">&#9670;&nbsp;</a></span>WIN_LARGUEUR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WIN_LARGUEUR&#160;&#160;&#160;1440</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentation du type de l'énumération</h2>
+<a id="a19291dd688f513ad08659e2258d30860"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19291dd688f513ad08659e2258d30860">&#9670;&nbsp;</a></span>anims</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="main_8c.html#a19291dd688f513ad08659e2258d30860">anims</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Valeurs énumérées</th></tr><tr><td class="fieldname"><a id="a19291dd688f513ad08659e2258d30860a122a036b86991a14e7f912c77d36f36b"></a>ANIM_CONNECTION&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a19291dd688f513ad08659e2258d30860a5862b81b22cd08f7859da3eb25d142e5"></a>ANIM_HOVER_CONNECTION&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a19291dd688f513ad08659e2258d30860a740220367226b3e18a3090396edc3437"></a>ANIM_INSCRIPTION&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a19291dd688f513ad08659e2258d30860a568400f385743a489009ab0170f3927e"></a>ANIM_HOVER_INSCRIPTION&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a19291dd688f513ad08659e2258d30860af035749994f3a7885ecedc8bd4a9bc8b"></a>ANIM_LOADING&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des fonctions</h2>
+<a id="a3980fa98fa4e25d3fd957ad815ed142c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3980fa98fa4e25d3fd957ad815ed142c">&#9670;&nbsp;</a></span>chargementFichier()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int chargementFichier </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct MeilleureScore_s&#160;</td>
+          <td class="paramname"><em>meilleureScore</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>token</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const C_STRUCT aiScene **&#160;</td>
+          <td class="paramname"><em>scene</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>path</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">meilleureScore</td><td>Le tableau de records </td></tr>
+    <tr><td class="paramname">token</td><td>La clé de connexion de l'utilisateur </td></tr>
+    <tr><td class="paramname">scene</td><td>La scène opengl </td></tr>
+    <tr><td class="paramname">path</td><td>Le chemin d'execution</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_FAILURE/EXIT_SUCCESS </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a3980fa98fa4e25d3fd957ad815ed142c_cgraph.jpg" border="0" usemap="#main_8c_a3980fa98fa4e25d3fd957ad815ed142c_cgraph" alt=""/></div>
+<map name="main_8c_a3980fa98fa4e25d3fd957ad815ed142c_cgraph" id="main_8c_a3980fa98fa4e25d3fd957ad815ed142c_cgraph">
+<area shape="rect" id="node2" href="commun_functions_8c.html#af1e4d4eaa8a0a9e3ba768193d58e2792" title="permet de faire une allocation dynamqiue avec message d&#39;erreur " alt="" coords="435,5,502,32"/>
+<area shape="rect" id="node3" href="room_8c.html#a9d5eda0e789a5fc236195e2b0f605aaa" title="initialise la strcuture MeilleureScore_s avec le nom des jeux " alt="" coords="193,31,319,57"/>
+<area shape="rect" id="node4" href="room_8c.html#a70263633a7a137f37ff72e5cf71cc7eb" title="Mes a jours les donnees liee au score de la structure meilleureScore. " alt="" coords="183,81,329,108"/>
+<area shape="rect" id="node5" href="lib_web_8c.html#a322c2dcd9e61a300f0c7dd217692ccca" title="recuperer les meilleures score " alt="" coords="377,81,560,108"/>
+<area shape="rect" id="node6" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="608,56,737,83"/>
+<area shape="rect" id="node8" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="924,107,1039,133"/>
+<area shape="rect" id="node7" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="785,56,876,83"/>
+<area shape="rect" id="node11" href="lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="942,56,1021,83"/>
+<area shape="rect" id="node9" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="1087,81,1165,108"/>
+<area shape="rect" id="node10" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="1089,132,1163,159"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a3980fa98fa4e25d3fd957ad815ed142c_icgraph.jpg" border="0" usemap="#main_8c_a3980fa98fa4e25d3fd957ad815ed142c_icgraph" alt=""/></div>
+<map name="main_8c_a3980fa98fa4e25d3fd957ad815ed142c_icgraph" id="main_8c_a3980fa98fa4e25d3fd957ad815ed142c_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="183,5,253,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="301,5,352,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a94cac2e3d54b21d4e26db7f3d15e8e6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94cac2e3d54b21d4e26db7f3d15e8e6a">&#9670;&nbsp;</a></span>checkVersion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int checkVersion </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>version</em>[]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>permet de verifier la version du VERSION_LOGICIEL </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">version</td><td>La version du jeu</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a94cac2e3d54b21d4e26db7f3d15e8e6a_cgraph.jpg" border="0" usemap="#main_8c_a94cac2e3d54b21d4e26db7f3d15e8e6a_cgraph" alt=""/></div>
+<map name="main_8c_a94cac2e3d54b21d4e26db7f3d15e8e6a_cgraph" id="main_8c_a94cac2e3d54b21d4e26db7f3d15e8e6a_cgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a0e29e9eb16393df50ad9f677aa1ab1b8" title="permet de verifier la bonne version de l&#39;utilisateur " alt="" coords="171,31,309,57"/>
+<area shape="rect" id="node6" href="commun_functions_8c.html#ad7115d96f0ae2328db6b62564ece982d" title="affiche une popup systeme " alt="" coords="155,81,325,108"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="373,31,488,57"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="536,5,615,32"/>
+<area shape="rect" id="node5" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="538,56,613,83"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a94cac2e3d54b21d4e26db7f3d15e8e6a_icgraph.jpg" border="0" usemap="#main_8c_a94cac2e3d54b21d4e26db7f3d15e8e6a_icgraph" alt=""/></div>
+<map name="main_8c_a94cac2e3d54b21d4e26db7f3d15e8e6a_icgraph" id="main_8c_a94cac2e3d54b21d4e26db7f3d15e8e6a_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="155,5,205,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="afd0ee7e952eb3dba3ddb634d77c1eb72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd0ee7e952eb3dba3ddb634d77c1eb72">&#9670;&nbsp;</a></span>connexion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int connexion </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>token</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>tokenCpy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>path</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>la fonction gere l'interaction globale de la vue, elle envoie les requetes de connexion et traite les retour </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">token</td><td>La clé de connexion de l'utilisateur </td></tr>
+    <tr><td class="paramname">tokenCpy</td><td>La copie de la clé de connexion de l'utilisateur </td></tr>
+    <tr><td class="paramname">path</td><td>Le chemin d'execution</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_FAILURE/EXIT_SUCCESS </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_afd0ee7e952eb3dba3ddb634d77c1eb72_cgraph.jpg" border="0" usemap="#main_8c_afd0ee7e952eb3dba3ddb634d77c1eb72_cgraph" alt=""/></div>
+<map name="main_8c_afd0ee7e952eb3dba3ddb634d77c1eb72_cgraph" id="main_8c_afd0ee7e952eb3dba3ddb634d77c1eb72_cgraph">
+<area shape="rect" id="node2" href="commun_functions_8c.html#af1e4d4eaa8a0a9e3ba768193d58e2792" title="permet de faire une allocation dynamqiue avec message d&#39;erreur " alt="" coords="179,5,245,32"/>
+<area shape="rect" id="node3" href="text_field_8c.html#a39611766c9d772094ce44edc915b6b50" title="test si la souris est positionner dans le rectangle " alt="" coords="169,56,255,83"/>
+<area shape="rect" id="node4" href="text_field_8c.html#ae24b08bc0eb4bbc3320b264568532505" title="Recuperer une chaine de caractere saisi au clavier. " alt="" coords="176,107,248,133"/>
+<area shape="rect" id="node6" href="lib_web_8c.html#ab5e65dfa5ba90c7499277657617194cf" title="connexion avec nom d&#39;utilisateur " alt="" coords="135,157,289,184"/>
+<area shape="rect" id="node13" href="main_8c.html#ad3fffe2a92945f4ee0723a625a624af6" title="permet d&#39;ouvrir une page web sur les 3 OS " alt="" coords="141,208,283,235"/>
+<area shape="rect" id="node14" href="main_8c.html#ac99b5b2ed70796b04227bea66568dd51" title="cette fonction permet d&#39;afficher tous les elements present dans le launcher. " alt="" coords="181,259,243,285"/>
+<area shape="rect" id="node16" href="text_field_8c.html#ad0d72e48f0b4f55ed5077899e75da497" title="sous fonction de textField() " alt="" coords="348,309,456,336"/>
+<area shape="rect" id="node5" href="flappy__bird_8c.html#a96e403e8f6333abe2bee8d0429217c7c" title="remet les variables au DEFINE si on appui sur espace " alt="" coords="359,107,445,133"/>
+<area shape="rect" id="node7" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="337,157,467,184"/>
+<area shape="rect" id="node9" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="653,208,768,235"/>
+<area shape="rect" id="node8" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="515,157,605,184"/>
+<area shape="rect" id="node12" href="lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="671,157,750,184"/>
+<area shape="rect" id="node10" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="816,183,895,209"/>
+<area shape="rect" id="node11" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="818,233,893,260"/>
+<area shape="rect" id="node15" href="commun_functions_8c.html#ad0ed0fe31f27ac7898fd7c0d25f8d71c" title="Affiche l&#39;animation de chargement des envois de requêtes. " alt="" coords="347,259,457,285"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_afd0ee7e952eb3dba3ddb634d77c1eb72_icgraph.jpg" border="0" usemap="#main_8c_afd0ee7e952eb3dba3ddb634d77c1eb72_icgraph" alt=""/></div>
+<map name="main_8c_afd0ee7e952eb3dba3ddb634d77c1eb72_icgraph" id="main_8c_afd0ee7e952eb3dba3ddb634d77c1eb72_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="135,5,205,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="253,5,304,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a11b331a93f323447a69e780284e8679d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11b331a93f323447a69e780284e8679d">&#9670;&nbsp;</a></span>dejaConneceter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int dejaConneceter </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>token</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>verifie si l utilisateur est deja connecter </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>La clé de connexion de l'utilisateur</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a11b331a93f323447a69e780284e8679d_cgraph.jpg" border="0" usemap="#main_8c_a11b331a93f323447a69e780284e8679d_cgraph" alt=""/></div>
+<map name="main_8c_a11b331a93f323447a69e780284e8679d_cgraph" id="main_8c_a11b331a93f323447a69e780284e8679d_cgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a7e9a40cba3914561ea5795a6ef6f8394" title="connexion avec key " alt="" coords="167,31,285,57"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="333,5,463,32"/>
+<area shape="rect" id="node5" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="649,56,764,83"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="511,5,601,32"/>
+<area shape="rect" id="node8" href="lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="667,5,746,32"/>
+<area shape="rect" id="node6" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="812,31,891,57"/>
+<area shape="rect" id="node7" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="814,81,889,108"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a11b331a93f323447a69e780284e8679d_icgraph.jpg" border="0" usemap="#main_8c_a11b331a93f323447a69e780284e8679d_icgraph" alt=""/></div>
+<map name="main_8c_a11b331a93f323447a69e780284e8679d_icgraph" id="main_8c_a11b331a93f323447a69e780284e8679d_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="167,5,237,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="285,5,336,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a17ecaa560299c190b6147a919ffed8c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17ecaa560299c190b6147a919ffed8c5">&#9670;&nbsp;</a></span>launcher()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int launcher </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>token</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>tokenCpy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct MeilleureScore_s&#160;</td>
+          <td class="paramname"><em>meilleureScore</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const C_STRUCT aiScene **&#160;</td>
+          <td class="paramname"><em>scene</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>path</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargement fichier </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderer</td><td>Le renderer où afficher </td></tr>
+    <tr><td class="paramname">token</td><td>La clé de connexion de l'utilisateur </td></tr>
+    <tr><td class="paramname">tokenCpy</td><td>La copie clé de connexion de l'utilisateur </td></tr>
+    <tr><td class="paramname">meilleureScore</td><td>Le tableaud de records </td></tr>
+    <tr><td class="paramname">scene</td><td>La scène opengl </td></tr>
+    <tr><td class="paramname">path</td><td>Le chemin d'execution</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_FAILURE/EXIT_SUCCESS </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a17ecaa560299c190b6147a919ffed8c5_cgraph.jpg" border="0" usemap="#main_8c_a17ecaa560299c190b6147a919ffed8c5_cgraph" alt=""/></div>
+<map name="main_8c_a17ecaa560299c190b6147a919ffed8c5_cgraph" id="main_8c_a17ecaa560299c190b6147a919ffed8c5_cgraph">
+<area shape="rect" id="node2" href="main_8c.html#a11b331a93f323447a69e780284e8679d" title="verifie si l utilisateur est deja connecter " alt="" coords="132,81,245,108"/>
+<area shape="rect" id="node10" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="334,284,415,311"/>
+<area shape="rect" id="node20" href="main_8c.html#a564bb0fc612137f87ebe7ad1614e975a" title="permet de sauvegarder le token dans un fichier " alt="" coords="124,259,253,285"/>
+<area shape="rect" id="node21" href="main_8c.html#a3980fa98fa4e25d3fd957ad815ed142c" title="verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores ..." alt="" coords="124,157,253,184"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#a7e9a40cba3914561ea5795a6ef6f8394" title="connexion avec key " alt="" coords="528,56,647,83"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="727,107,856,133"/>
+<area shape="rect" id="node6" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="1043,107,1157,133"/>
+<area shape="rect" id="node5" href="lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="904,5,995,32"/>
+<area shape="rect" id="node9" href="lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="1061,5,1139,32"/>
+<area shape="rect" id="node7" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="1205,81,1284,108"/>
+<area shape="rect" id="node8" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="1207,132,1282,159"/>
+<area shape="rect" id="node11" href="commun_functions_8c.html#af1e4d4eaa8a0a9e3ba768193d58e2792" title="permet de faire une allocation dynamqiue avec message d&#39;erreur " alt="" coords="554,157,621,184"/>
+<area shape="rect" id="node12" href="text_field_8c.html#a39611766c9d772094ce44edc915b6b50" title="test si la souris est positionner dans le rectangle " alt="" coords="544,411,631,437"/>
+<area shape="rect" id="node13" href="text_field_8c.html#ae24b08bc0eb4bbc3320b264568532505" title="Recuperer une chaine de caractere saisi au clavier. " alt="" coords="551,461,623,488"/>
+<area shape="rect" id="node15" href="lib_web_8c.html#ab5e65dfa5ba90c7499277657617194cf" title="connexion avec nom d&#39;utilisateur " alt="" coords="510,208,665,235"/>
+<area shape="rect" id="node16" href="main_8c.html#ad3fffe2a92945f4ee0723a625a624af6" title="permet d&#39;ouvrir une page web sur les 3 OS " alt="" coords="517,259,658,285"/>
+<area shape="rect" id="node17" href="main_8c.html#ac99b5b2ed70796b04227bea66568dd51" title="cette fonction permet d&#39;afficher tous les elements present dans le launcher. " alt="" coords="556,309,619,336"/>
+<area shape="rect" id="node19" href="text_field_8c.html#ad0d72e48f0b4f55ed5077899e75da497" title="sous fonction de textField() " alt="" coords="737,360,845,387"/>
+<area shape="rect" id="node14" href="flappy__bird_8c.html#a96e403e8f6333abe2bee8d0429217c7c" title="remet les variables au DEFINE si on appui sur espace " alt="" coords="748,461,835,488"/>
+<area shape="rect" id="node18" href="commun_functions_8c.html#ad0ed0fe31f27ac7898fd7c0d25f8d71c" title="Affiche l&#39;animation de chargement des envois de requêtes. " alt="" coords="736,309,847,336"/>
+<area shape="rect" id="node22" href="room_8c.html#a9d5eda0e789a5fc236195e2b0f605aaa" title="initialise la strcuture MeilleureScore_s avec le nom des jeux " alt="" coords="311,157,438,184"/>
+<area shape="rect" id="node23" href="room_8c.html#a70263633a7a137f37ff72e5cf71cc7eb" title="Mes a jours les donnees liee au score de la structure meilleureScore. " alt="" coords="301,107,448,133"/>
+<area shape="rect" id="node24" href="lib_web_8c.html#a322c2dcd9e61a300f0c7dd217692ccca" title="recuperer les meilleures score " alt="" coords="496,107,679,133"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a17ecaa560299c190b6147a919ffed8c5_icgraph.jpg" border="0" usemap="#main_8c_a17ecaa560299c190b6147a919ffed8c5_icgraph" alt=""/></div>
+<map name="main_8c_a17ecaa560299c190b6147a919ffed8c5_icgraph" id="main_8c_a17ecaa560299c190b6147a919ffed8c5_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="124,5,175,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a0ddf1224851353fc92bfbff6f499fa97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ddf1224851353fc92bfbff6f499fa97">&#9670;&nbsp;</a></span>main()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int main </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a0ddf1224851353fc92bfbff6f499fa97_cgraph.jpg" border="0" usemap="#main_8c_a0ddf1224851353fc92bfbff6f499fa97_cgraph" alt=""/></div>
+<map name="main_8c_a0ddf1224851353fc92bfbff6f499fa97_cgraph" id="main_8c_a0ddf1224851353fc92bfbff6f499fa97_cgraph">
+<area shape="rect" id="node2" href="lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="797,103,912,130"/>
+<area shape="rect" id="node5" href="commun_functions_8c.html#af1e4d4eaa8a0a9e3ba768193d58e2792" title="permet de faire une allocation dynamqiue avec message d&#39;erreur " alt="" coords="821,660,888,687"/>
+<area shape="rect" id="node6" href="commun_functions_8c.html#ab497da0f3b8a639a9993a3aa10460c30" title="permet d&#39;afficher les info CPU/GPU " alt="" coords="104,1116,292,1143"/>
+<area shape="rect" id="node7" href="main_8c.html#a94cac2e3d54b21d4e26db7f3d15e8e6a" title="permet de verifier la version du VERSION_LOGICIEL " alt="" coords="147,154,249,180"/>
+<area shape="rect" id="node10" href="fullpath_8c.html#a02e9398e99a0a3837bae3d6f2d2a0687" title="fonction principal que ce charge de faire l appel de chaque fonction " alt="" coords="165,1572,231,1599"/>
+<area shape="rect" id="node14" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="163,356,233,383"/>
+<area shape="rect" id="node28" href="room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="173,1066,223,1092"/>
+<area shape="rect" id="node3" href="lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="971,78,1049,104"/>
+<area shape="rect" id="node4" href="lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="973,128,1047,155"/>
+<area shape="rect" id="node8" href="lib_web_8c.html#a0e29e9eb16393df50ad9f677aa1ab1b8" title="permet de verifier la bonne version de l&#39;utilisateur " alt="" coords="584,78,723,104"/>
+<area shape="rect" id="node9" href="commun_functions_8c.html#ad7115d96f0ae2328db6b62564ece982d" title="affiche une popup systeme " alt="" coords="345,154,515,180"/>
+<area shape="rect" id="node11" href="fullpath_8c.html#a971aa46d4b8a983073ebca2f29b47d7e" title="compte le nombre d occurence d un caractere " alt="" coords="381,1547,479,1574"/>
+<area shape="rect" id="node12" href="fullpath_8c.html#a3957a3f02a1e6b683d02405d47f92126" title="detecte le mode si besoin ou non " alt="" coords="377,1598,483,1624"/>
+<area shape="rect" id="node13" href="fullpath_8c.html#a71d5e4ed9d9f73471cfc48a943e2c290" title="complete le path " alt="" coords="375,1648,485,1675"/>
+<area shape="rect" id="node15" href="main_8c.html#a11b331a93f323447a69e780284e8679d" title="verifie si l utilisateur est deja connecter " alt="" coords="373,306,487,332"/>
+<area shape="rect" id="node17" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="389,356,471,383"/>
+<area shape="rect" id="node24" href="main_8c.html#a564bb0fc612137f87ebe7ad1614e975a" title="permet de sauvegarder le token dans un fichier " alt="" coords="365,255,495,282"/>
+<area shape="rect" id="node25" href="main_8c.html#a3980fa98fa4e25d3fd957ad815ed142c" title="verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores ..." alt="" coords="365,559,495,586"/>
+<area shape="rect" id="node16" href="lib_web_8c.html#a7e9a40cba3914561ea5795a6ef6f8394" title="connexion avec key " alt="" coords="594,128,713,155"/>
+<area shape="rect" id="node18" href="text_field_8c.html#a39611766c9d772094ce44edc915b6b50" title="test si la souris est positionner dans le rectangle " alt="" coords="610,432,697,459"/>
+<area shape="rect" id="node19" href="text_field_8c.html#ae24b08bc0eb4bbc3320b264568532505" title="Recuperer une chaine de caractere saisi au clavier. " alt="" coords="617,179,689,206"/>
+<area shape="rect" id="node20" href="lib_web_8c.html#ab5e65dfa5ba90c7499277657617194cf" title="connexion avec nom d&#39;utilisateur " alt="" coords="576,280,731,307"/>
+<area shape="rect" id="node21" href="main_8c.html#ad3fffe2a92945f4ee0723a625a624af6" title="permet d&#39;ouvrir une page web sur les 3 OS " alt="" coords="583,230,724,256"/>
+<area shape="rect" id="node22" href="main_8c.html#ac99b5b2ed70796b04227bea66568dd51" title="cette fonction permet d&#39;afficher tous les elements present dans le launcher. " alt="" coords="622,382,685,408"/>
+<area shape="rect" id="node23" href="text_field_8c.html#ad0d72e48f0b4f55ed5077899e75da497" title="sous fonction de textField() " alt="" coords="801,356,909,383"/>
+<area shape="rect" id="node26" href="room_8c.html#a9d5eda0e789a5fc236195e2b0f605aaa" title="initialise la strcuture MeilleureScore_s avec le nom des jeux " alt="" coords="590,584,717,611"/>
+<area shape="rect" id="node27" href="room_8c.html#a70263633a7a137f37ff72e5cf71cc7eb" title="Mes a jours les donnees liee au score de la structure meilleureScore. " alt="" coords="580,635,727,662"/>
+<area shape="rect" id="node29" href="room_8c.html#a6746abb0b96cc3e013944163c053a0a3" title="fonction qui charge fixe la taille max de la fenetre " alt="" coords="371,1496,489,1523"/>
+<area shape="rect" id="node30" href="room_8c.html#aa79fb9ded897b9bbbc0780feb6f9df9f" title="initialisation des variables lier au camera joueur et machines " alt="" coords="387,787,473,814"/>
+<area shape="rect" id="node31" href="room_8c.html#a81296eac8fa7bcdd021c45e5c8e0921c" title="initalisation du volume " alt="" coords="394,838,466,864"/>
+<area shape="rect" id="node32" href="room_8c.html#a77b40d2a48a66dc8f7b8207ed7a5e2a6" title="permet d&#39;appliquer la scene dans la window + mouvement camera " alt="" coords="568,990,739,1016"/>
+<area shape="rect" id="node36" href="room_8c.html#a494760108e4661303a77ba7fb1122006" title="regle le mode de vue voulu et les lummiere de opengl " alt="" coords="574,838,733,864"/>
+<area shape="rect" id="node37" href="room_8c.html#a920b806cad48b375b9a530814e7afd63" title="regle le volume de l&#39;environement sur un channel particuliere " alt="" coords="599,1192,707,1219"/>
+<area shape="rect" id="node40" href="room_8c.html#a3ea615b7ff319d3bef6227857ce52786" title="permet de deplacer la source du son des pas et de le jouer " alt="" coords="608,1432,699,1459"/>
+<area shape="rect" id="node41" href="room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="377,939,483,966"/>
+<area shape="rect" id="node44" href="room_8c.html#aeb8bbd97cb6c720ffda7f7a9606e1b45" title="detruit les elements initaliser " alt="" coords="599,1040,708,1067"/>
+<area shape="rect" id="node45" href="room_8c.html#ade7156d63e39a5b65ec2247840d9c381" title="afficher un background au classement pour qu&#39;il soit plus facilement visible " alt="" coords="351,1091,509,1118"/>
+<area shape="rect" id="node46" href="room_8c.html#a47842a9ab60604cf3f40a87717aa685f" title="affichage de text sur un rendu OpenGL " alt="" coords="607,1370,700,1396"/>
+<area shape="rect" id="node47" href="room_8c.html#a554c27dfea1971e6926e461187ebd29e" title="affichage un message propre a chaque machine " alt="" coords="368,1344,492,1371"/>
+<area shape="rect" id="node48" href="room_8c.html#a22b155abc1008cd51da9718d8dff813e" title="permet de gerer les evenements liee au porte des toilettes " alt="" coords="354,1142,506,1168"/>
+<area shape="rect" id="node49" href="room_8c.html#a901691690957fae9daa5d3d331da8ec7" title="permet d&#39;attendre avant d&#39;afficher message CLIGNOTANT affiche egalement les IPS " alt="" coords="340,1243,520,1270"/>
+<area shape="rect" id="node50" href="room_8c.html#a88eaba9341fa844401d12a78679830dc" title="permet de mettre un nombre d&#39;image max et reglger la vitesse de deplacement en fonction des ips ..." alt="" coords="383,1294,477,1320"/>
+<area shape="rect" id="node33" href="room_8c.html#ac7fd25ceb1c11ba859983d8fc5b6e742" title="Permet de gerer les deplacements de la camera. " alt="" coords="787,939,923,966"/>
+<area shape="rect" id="node34" href="room_8c.html#a9a783579e7576a7ebfb754ff6a95926b" title="permet de regler l&#39;intensiter de chaque lampe presente dans la salle " alt="" coords="807,990,902,1016"/>
+<area shape="rect" id="node35" href="room_8c.html#a2bbafc1b0562d4ee6d70364745714f89" title="Dessine un quadrilataire. " alt="" coords="795,1040,914,1067"/>
+<area shape="rect" id="node38" href="room_8c.html#a99f0807856f649ff729b7924e125dcdf" title="renvoi la distance entre deux point " alt="" coords="804,1344,905,1371"/>
+<area shape="rect" id="node39" href="room_8c.html#a6e52b9bce2208dbc639e5a979b15ca35" title="renvoi l&#39;angle entre 3 points " alt="" coords="810,1192,899,1219"/>
+<area shape="rect" id="node42" href="room_8c.html#a2b408d60cd07c4117322cdbcc31fed7b" title="detection porte a proximite " alt="" coords="603,1116,703,1143"/>
+<area shape="rect" id="node43" href="room_8c.html#abc49a289020f817b90aae10c27ae1c5b" title="permet d&#39;afficher le message avant de quitter ou au chargement de la room " alt="" coords="579,939,728,966"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ad3fffe2a92945f4ee0723a625a624af6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3fffe2a92945f4ee0723a625a624af6">&#9670;&nbsp;</a></span>ouvrirUrlRegistration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ouvrirUrlRegistration </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>permet d'ouvrir une page web sur les 3 OS </p>
+<dl class="section return"><dt>Renvoie</dt><dd>void </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_ad3fffe2a92945f4ee0723a625a624af6_icgraph.jpg" border="0" usemap="#main_8c_ad3fffe2a92945f4ee0723a625a624af6_icgraph" alt=""/></div>
+<map name="main_8c_ad3fffe2a92945f4ee0723a625a624af6_icgraph" id="main_8c_ad3fffe2a92945f4ee0723a625a624af6_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="195,5,276,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="324,5,395,32"/>
+<area shape="rect" id="node4" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="443,5,493,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ac99b5b2ed70796b04227bea66568dd51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac99b5b2ed70796b04227bea66568dd51">&#9670;&nbsp;</a></span>printAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void printAll </td>
+          <td>(</td>
+          <td class="paramtype">SDL_Renderer *&#160;</td>
+          <td class="paramname"><em>renderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>background</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Texture *&#160;</td>
+          <td class="paramname"><em>loading</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TTF_Font *&#160;</td>
+          <td class="paramname"><em>police</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Rect&#160;</td>
+          <td class="paramname"><em>targetId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Rect&#160;</td>
+          <td class="paramname"><em>targetPwd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Rect&#160;</td>
+          <td class="paramname"><em>targetConnect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_Rect&#160;</td>
+          <td class="paramname"><em>targetInscription</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>frame_anims</em>[NB_ANIM], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>valeurRetour</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>cette fonction permet d'afficher tous les elements present dans le launcher. </p>
+<dl class="section return"><dt>Renvoie</dt><dd>void </dd></dl>
+<div class="dynheader">
+Voici le graphe d'appel pour cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_ac99b5b2ed70796b04227bea66568dd51_cgraph.jpg" border="0" usemap="#main_8c_ac99b5b2ed70796b04227bea66568dd51_cgraph" alt=""/></div>
+<map name="main_8c_ac99b5b2ed70796b04227bea66568dd51_cgraph" id="main_8c_ac99b5b2ed70796b04227bea66568dd51_cgraph">
+<area shape="rect" id="node2" href="commun_functions_8c.html#ad0ed0fe31f27ac7898fd7c0d25f8d71c" title="Affiche l&#39;animation de chargement des envois de requêtes. " alt="" coords="116,5,227,32"/>
+<area shape="rect" id="node3" href="text_field_8c.html#ad0d72e48f0b4f55ed5077899e75da497" title="sous fonction de textField() " alt="" coords="117,56,225,83"/>
+</map>
+</div>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_ac99b5b2ed70796b04227bea66568dd51_icgraph.jpg" border="0" usemap="#main_8c_ac99b5b2ed70796b04227bea66568dd51_icgraph" alt=""/></div>
+<map name="main_8c_ac99b5b2ed70796b04227bea66568dd51_icgraph" id="main_8c_ac99b5b2ed70796b04227bea66568dd51_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="116,5,197,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="245,5,316,32"/>
+<area shape="rect" id="node4" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="364,5,415,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a564bb0fc612137f87ebe7ad1614e975a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a564bb0fc612137f87ebe7ad1614e975a">&#9670;&nbsp;</a></span>sauvegarderToken()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int sauvegarderToken </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>token</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>permet de sauvegarder le token dans un fichier </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>La clé de connexion de l'utilisateur</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>EXIT_SUCCESS / EXIT_FAILURE </dd></dl>
+<div class="dynheader">
+Voici le graphe des appelants de cette fonction :</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8c_a564bb0fc612137f87ebe7ad1614e975a_icgraph.jpg" border="0" usemap="#main_8c_a564bb0fc612137f87ebe7ad1614e975a_icgraph" alt=""/></div>
+<map name="main_8c_a564bb0fc612137f87ebe7ad1614e975a_icgraph" id="main_8c_a564bb0fc612137f87ebe7ad1614e975a_icgraph">
+<area shape="rect" id="node2" href="main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="183,5,253,32"/>
+<area shape="rect" id="node3" href="main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="301,5,352,32"/>
+</map>
+</div>
+
+</div>
+</div>
+<h2 class="groupheader">Documentation des variables</h2>
+<a id="a6b299368d2c300ee04efec5b598c5a01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b299368d2c300ee04efec5b598c5a01">&#9670;&nbsp;</a></span>blanc</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Color blanc = {255,255,255}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a83aaa2b5a427d2cb849b4b938eb25b74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83aaa2b5a427d2cb849b4b938eb25b74">&#9670;&nbsp;</a></span>blanc_foncer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Color blanc_foncer = {200,200,200}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abf782b0c1074443a21be0c3a84221f07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf782b0c1074443a21be0c3a84221f07">&#9670;&nbsp;</a></span>bleu_foncer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Color bleu_foncer = {66,100,196}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a57f58d1b1b9d954235bef55feff5e840"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57f58d1b1b9d954235bef55feff5e840">&#9670;&nbsp;</a></span>cyan</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Color cyan = {0x38,0xf9,0xff}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a799de9c46efe68a74d1a79c080150921"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a799de9c46efe68a74d1a79c080150921">&#9670;&nbsp;</a></span>DELAY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int DELAY = 200</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1ce6bb164d37e605aa60e94aefe73817"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ce6bb164d37e605aa60e94aefe73817">&#9670;&nbsp;</a></span>EXT_FILE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FILE* EXT_FILE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a51b9d4c6450445338971fcc9618cc0c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51b9d4c6450445338971fcc9618cc0c6">&#9670;&nbsp;</a></span>HAUTEUR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int HAUTEUR = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae8a35cc9f4c3f7d430225aa3a8cfca70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8a35cc9f4c3f7d430225aa3a8cfca70">&#9670;&nbsp;</a></span>LARGUEUR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int LARGUEUR = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adc21c1c3300d8c04ce517d937b335899"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc21c1c3300d8c04ce517d937b335899">&#9670;&nbsp;</a></span>MACOS_VER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MACOS_VER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8bd51316bd9fd18abbd48cf5d2e349af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bd51316bd9fd18abbd48cf5d2e349af">&#9670;&nbsp;</a></span>noir</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Color noir = {0,0,0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acc60231d174bc3d6f1419ed073a44850"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc60231d174bc3d6f1419ed073a44850">&#9670;&nbsp;</a></span>RATIO_CLICK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int RATIO_CLICK[<a class="el" href="main_8c.html#a2786ece3997254fbce0fa58b34a9ad7d">FRAME_ANIM_MAX</a>] = {-5, -20, -50, -55, -30}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a33b1cfe3eb56da056f6d75a43b775d66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33b1cfe3eb56da056f6d75a43b775d66">&#9670;&nbsp;</a></span>rouge</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Color rouge = {255,0,0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a95b503131dd43adcf828e3d6d0d01e70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95b503131dd43adcf828e3d6d0d01e70">&#9670;&nbsp;</a></span>rougeFoncer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Color rougeFoncer = {209,52,52}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0ae61f000fdcba1ec78e43c56673d2d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ae61f000fdcba1ec78e43c56673d2d6">&#9670;&nbsp;</a></span>TENTATIVE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int TENTATIVE = 8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a584962a25015c7d6e18e294f55a8bc2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a584962a25015c7d6e18e294f55a8bc2d">&#9670;&nbsp;</a></span>thread</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SDL_Thread* thread = NULL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa5b606884a90085a380a2eb389db22ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5b606884a90085a380a2eb389db22ee">&#9670;&nbsp;</a></span>vert</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SDL_Color vert = {76,196,66}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Généré par &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>

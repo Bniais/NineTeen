@@ -1,0 +1,1925 @@
+\hypertarget{tetris_8c}{}\section{Référence du fichier games/5\+\_\+tetris/tetris.c}
+\label{tetris_8c}\index{games/5\+\_\+tetris/tetris.\+c@{games/5\+\_\+tetris/tetris.\+c}}
+
+
+Jeu tetris avec bonus.  
+
+
+{\ttfamily \#include \char`\"{}../../include/commun\+Functions.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../include/define.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../include/hashage.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../include/lib\+Web.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}config.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+ttf.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+mixer.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+image.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+Graphe des dépendances par inclusion de tetris.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{tetris_8c_a207a70e671ee880269d8a9fc96a39087}{my\+Init} ()
+\begin{DoxyCompactList}\small\item\em Initialise l\textquotesingle{}environement S\+DL, T\+TF et rand. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_ae85620c9aeca2e9c18acf776f00fdffc}{init\+Matrix} (int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int init)
+\begin{DoxyCompactList}\small\item\em Initialise les cases de la matrice. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_a179fed1118dad2056fe4ae7a1278de73}{init\+Piece} (\hyperlink{struct_piece}{Piece} $\ast$piece)
+\begin{DoxyCompactList}\small\item\em Initialise une pièce. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_a9298fc462a64f832e03b46956ad0558d}{clear\+Combo} (\hyperlink{struct_score}{Score} $\ast$score\+To\+Clear)
+\begin{DoxyCompactList}\small\item\em Efface les attributs combo d\textquotesingle{}un score. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_a31bec3033665b189b54e32bfb0679091}{clear\+Score} (\hyperlink{struct_score}{Score} $\ast$score\+To\+Clear)
+\begin{DoxyCompactList}\small\item\em Efface les attributs score d\textquotesingle{}un score. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_aa3b0b0ae919c820fe907aa5587f99fcf}{init\+Score} (\hyperlink{struct_score}{Score} $\ast$score)
+\begin{DoxyCompactList}\small\item\em Initialise un tableau de scores. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_ab86835b7f6bddb7b5ef9fa6295b30484}{update\+Distances} (float frame\mbox{[}\hyperlink{5__tetris_2config_8h_a467e0edbc93466648e5a4efac6a5f36b}{N\+B\+\_\+\+F\+R\+A\+M\+ES}\mbox{]}, float distances\mbox{[}\hyperlink{5__tetris_2config_8h_a42dccc970b97115fb931fe416e49d0e5}{N\+B\+\_\+\+D\+I\+S\+T\+A\+N\+C\+ES}\mbox{]}, int $\ast$frame\+Passed, int $\ast$frame\+Dest\+Jauge, long int $\ast$frame\+Total\+Speed)
+\begin{DoxyCompactList}\small\item\em Met à jour les distances et frames de déplacement, d\textquotesingle{}arrêt et de départ des pièces selon le nombre de frames qui se sont passées depuis le dernier appel. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_a423d814944d7cdabae7238532af7399d}{too\+Close\+From\+Matrix} (\hyperlink{struct_piece}{Piece} piece, int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]})
+\begin{DoxyCompactList}\small\item\em Teste si une pièce est en collision avec les pièces déjà inscrites dans la grille. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_a247740fca8738ba272f965130ea77491}{get\+First\+Column} (\hyperlink{struct_piece}{Piece} piece)
+\begin{DoxyCompactList}\small\item\em Calcule l\textquotesingle{}indice de la première collone d\textquotesingle{}une pièce. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_afa8c2cc6ef8499b8480402ff1aa27762}{get\+Last\+Column} (\hyperlink{struct_piece}{Piece} piece)
+\begin{DoxyCompactList}\small\item\em Calcule l\textquotesingle{}indice de la dernière collone d\textquotesingle{}une pièce. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_a96e57a2ea28461c14cb723f46d8efd9f}{get\+First\+Row} (\hyperlink{struct_piece}{Piece} piece)
+\begin{DoxyCompactList}\small\item\em Calcule l\textquotesingle{}indice de la première ligne d\textquotesingle{}une pièce. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_ad09a602d0b6c16445fab969f701a7d06}{get\+Last\+Row} (\hyperlink{struct_piece}{Piece} piece)
+\begin{DoxyCompactList}\small\item\em Calcule l\textquotesingle{}indice de la dernière ligne d\textquotesingle{}une pièce. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_afd2c27e6f112264f9fb50e10fa8e9d70}{get\+Col\+Raw\+Infos} (\hyperlink{struct_piece}{Piece} $\ast$piece)
+\begin{DoxyCompactList}\small\item\em Met à jour les informations de premières et dernière ligne et collone d\textquotesingle{}une pièce. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_a33a2ebbffb42b551f6c1a4a1a1ad30af}{update\+Grille} (\hyperlink{struct_piece}{Piece} $\ast$piece, int hardcore)
+\begin{DoxyCompactList}\small\item\em Met à jour les informations de la grille de la pièce selon son id, sa rotation et le fait qu\textquotesingle{}elle soit géante ou non. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_afcb86b88f9ff5bb73f44c78f48230203}{get\+New\+Piece} (\hyperlink{struct_piece}{Piece} $\ast$piece, int giant, int hardcore)
+\begin{DoxyCompactList}\small\item\em Obtient une nouvelle pièce aléatoire. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_acad90996b6179ce8c1cc27590aa36339}{almost\+Round} (float f)
+\begin{DoxyCompactList}\small\item\em Determine si un float est proche d\textquotesingle{}un entier ou non. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_ab05c527bd8b667fd4f52638458a25511}{put\+At\+Top} (\hyperlink{struct_piece}{Piece} $\ast$piece, int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int frame\+To\+Go, int hardcore)
+\begin{DoxyCompactList}\small\item\em Met une pièce en haut de la grille en vérifiant que c\textquotesingle{}est possible. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_ad8e6ba2694e622ad01607902b50d4b8e}{put\+At\+Next\+Piece} (\hyperlink{struct_piece}{Piece} $\ast$piece)
+\begin{DoxyCompactList}\small\item\em Met une pièce dans l\textquotesingle{}emplacement qui indique la prochaine pièce. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_a51259113cdc6787fdf3d0286e6ada2ac}{draw\+Piece} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, \hyperlink{struct_piece}{Piece} piece, S\+D\+L\+\_\+\+Texture $\ast$brick\+Texture, S\+D\+L\+\_\+\+Texture $\ast$bonus\+Texture, int is\+Next\+Piece, int hardcore)
+\begin{DoxyCompactList}\small\item\em Dessine une pièce (en train de tomber ou à venir) \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_ab1f20fd2b247412fbface8ef523015d9}{too\+Close\+From\+Wall} (\hyperlink{struct_piece}{Piece} piece)
+\begin{DoxyCompactList}\small\item\em Détermine si une pièce dépasse des bords de la grille. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_a05bef1cab76ded2320a764674b4c3641}{try\+Shift} (int shift\+Init, int max\+Shift, \hyperlink{struct_piece}{Piece} $\ast$piece, float $\ast$piece\+Coor, int sign, int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]})
+\begin{DoxyCompactList}\small\item\em Essaye de déplacer une pièce en vérifiant si elle est dans un emplacement valide. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_ac768d060dc9bea4735aeab56c4ff699f}{rotate\+Piece} (\hyperlink{struct_piece}{Piece} $\ast$piece, int rotate\+Sens, int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int hardcore, Mix\+\_\+\+Chunk $\ast$$\ast$sounds)
+\begin{DoxyCompactList}\small\item\em Essaye de tourner une pièce, en la déplaçant si besoin. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_ab7aa50536fa477c472edb9a29654a2c4}{move\+Side} (\hyperlink{struct_piece}{Piece} $\ast$piece, int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, float distance\+Lateral)
+\begin{DoxyCompactList}\small\item\em Déplace la pièce sur le côté \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_a5100e6c3d9135456bac8660e84ccb4c0}{move\+Down} (\hyperlink{struct_piece}{Piece} $\ast$piece, int accelerate, int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, float distance\+Down, int frame\+Stop, int max\+Down)
+\begin{DoxyCompactList}\small\item\em Déplace la pièce vers le bas. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_acdf0ae318e2e7c1db6c48843ae1b9395}{change\+Dir} (\hyperlink{struct_piece}{Piece} $\ast$piece, int lateral\+Move, int frame\+Lateral)
+\begin{DoxyCompactList}\small\item\em Change la direction horizontale d\textquotesingle{}une pièce. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_ad3ffc7b35e2959c53ab338f9d12a529a}{get\+Piece\+Id} (int n)
+\begin{DoxyCompactList}\small\item\em Obtient l\textquotesingle{}id d\textquotesingle{}une case de la matrice. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_a49d0b949731101f357ce5aafaef2df95}{compare\+Int\+\_\+i} (const int $\ast$a, const int $\ast$b)
+\begin{DoxyCompactList}\small\item\em Fonction de comparaison de deux entiers. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_a7a29731af8ff6915956e89fdb1279459}{compare\+Int} (const void $\ast$a, const void $\ast$b)
+\begin{DoxyCompactList}\small\item\em Fonction de comparaison inversée de deux entiers avec types adaptés pour qsort. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_a1adafabaf31e498f7300d45adc48759e}{is\+On\+Array} (int n, int array\mbox{[}$\,$\mbox{]}, int size)
+\begin{DoxyCompactList}\small\item\em Détermine si un nombre n est présent dans un tableau. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_af86b25e15fa31154f643aafa348509d5}{get\+Fill\+Places} (int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int matrix\+Fill\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int nb\+Fill)
+\begin{DoxyCompactList}\small\item\em Détermine aléatoirement quelles cases de la matrices doivent être replies par le bonus F\+I\+LL et enclenche l\textquotesingle{}animation. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_a602b2d26911345f5f9fc9c618332376d}{get\+Bonus\+Id} (int n)
+\begin{DoxyCompactList}\small\item\em Détermine l\textquotesingle{}id du bonus d\textquotesingle{}une case de la grille. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_a3b39445f6b4c0418ce1dd739518dec67}{complete\+Line} (int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int frame\+Complete\+Line\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int line, int last\+Line, int bonus\+Activate\mbox{[}\hyperlink{5__tetris_2config_8h_aa5c414cc45eec8bd806bec316d058444}{N\+B\+\_\+\+B\+O\+N\+U\+S\+ES}\mbox{]}, int get\+Bonuses, \hyperlink{struct_score}{Score} score\+Add\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int combo\+Line, \hyperlink{struct_score_total}{Score\+Total} $\ast$score\+Total, long long $\ast$score\+\_\+hash, long keys\mbox{[}4\mbox{]}, Mix\+\_\+\+Chunk $\ast$sound\+Line)
+\begin{DoxyCompactList}\small\item\em Enclenche l\textquotesingle{}animation de destruction de ligne et comptabilise les points rapportés et les bonus gagnés. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_a545126c622dbde4ab4a8541dc5e3fef3}{use\+Bonus} (int bonus\+Id, int frame\+Laser\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int $\ast$frame\+Passed, int nb\+Use, int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int matrix\+Fill\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int $\ast$next\+Is\+Giant)
+\begin{DoxyCompactList}\small\item\em Effectue l\textquotesingle{}action d\textquotesingle{}un bonus. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_aba5eccd8ab2578d308652afa73c71549}{draw\+Matrix} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int frame\+Complete\+Line\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, \hyperlink{struct_piece}{Piece} current\+Piece, S\+D\+L\+\_\+\+Texture $\ast$brick\+Texture, S\+D\+L\+\_\+\+Texture $\ast$bonus\+Texture)
+\begin{DoxyCompactList}\small\item\em Dessine la grille et son contenu. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_a0ce334d5a3d0fd238859631357e2d6c7}{draw\+Laser} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, int frame\+Laser\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, S\+D\+L\+\_\+\+Texture $\ast$laser\+Texture, Mix\+\_\+\+Chunk $\ast$sound\+Laser)
+\begin{DoxyCompactList}\small\item\em Dessine l\textquotesingle{}animation du bonus L\+A\+S\+ER. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_abfb76f2f7b406230d830482342382fb8}{draw\+Fill} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, int matrix\+Fill\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, S\+D\+L\+\_\+\+Texture $\ast$brick\+Texture)
+\begin{DoxyCompactList}\small\item\em Dessine l\textquotesingle{}animation du bonus F\+I\+LL. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_ad7ebe9a4463636c9cea0d518d550ddbb}{save\+Piece} (\hyperlink{struct_piece}{Piece} piece, int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]})
+\begin{DoxyCompactList}\small\item\em Inscrit une pièce dans la matrice. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_aa8ef328fafd262cebaadf0517ec41d20}{erase\+Line} (int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int line, int matrix\+Fill\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int frame\+Laser\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int frame\+Complete\+Line\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, \hyperlink{struct_score}{Score} $\ast$score\+Affichage)
+\begin{DoxyCompactList}\small\item\em Supprime une ligne de la matrice et fait descendre celles au desus. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_a029193d8f5afd44d43843ce0d27b7ff2}{check\+Lines} (int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int frame\+Complete\+Line\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int bonus\+Activate\mbox{[}\hyperlink{5__tetris_2config_8h_aa5c414cc45eec8bd806bec316d058444}{N\+B\+\_\+\+B\+O\+N\+U\+S\+ES}\mbox{]}, int get\+Bonus, \hyperlink{struct_score}{Score} score\+Add\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, \hyperlink{struct_score_total}{Score\+Total} $\ast$score\+Total, long long $\ast$score\+\_\+hash, long keys\mbox{[}4\mbox{]}, Mix\+\_\+\+Chunk $\ast$sound\+Line)
+\begin{DoxyCompactList}\small\item\em Vérifie si des lignes sont complétées. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_af18749b8a1fa4aac7545421ef5bd8dd0}{clear\+Int\+Tab} (int $\ast$tab, int size)
+\begin{DoxyCompactList}\small\item\em Vide un tableau d\textquotesingle{}entier (l\textquotesingle{}initialise à 0) \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_a19882390a87a14fd0b6604bc102f4da1}{transfert\+Next\+Piece} (\hyperlink{struct_piece}{Piece} $\ast$current\+Piece, \hyperlink{struct_piece}{Piece} next\+Piece, int hardcore)
+\begin{DoxyCompactList}\small\item\em Copie une pièce dans une autre. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_a05ed89c0442ea4d45cfca45ea02631e1}{update\+Score\+Affichage} (\hyperlink{struct_score}{Score} $\ast$score\+Affichage, \hyperlink{struct_score}{Score} score\+Add\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, \hyperlink{struct_score_total}{Score\+Total} $\ast$score\+Total)
+\begin{DoxyCompactList}\small\item\em Rajoute les scores et combos obtenus cette frame dans le tableau de score à afficher pour toutes les lignes. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_adc1d7245f0623a3b3fb9abd8bba6d767}{line\+Empty} (int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int line)
+\begin{DoxyCompactList}\small\item\em Determine si une ligne est vide. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_ae452df4bd2e58349e6350342b6153c61}{update\+Frames} (int frame\+Laser\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int frame\+Complete\+Line\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int matrix\+Fill\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int bonus\+Activate\mbox{[}\hyperlink{5__tetris_2config_8h_aa5c414cc45eec8bd806bec316d058444}{N\+B\+\_\+\+B\+O\+N\+U\+S\+ES}\mbox{]}, \hyperlink{struct_score}{Score} $\ast$score\+Affichage, \hyperlink{struct_score}{Score} $\ast$score\+Add, \hyperlink{struct_score_total}{Score\+Total} $\ast$score\+Total, int $\ast$frame\+Dest\+Jauge, long int frame\+Total\+Speed, long int $\ast$frame\+Total\+Show, long long $\ast$score\+\_\+hash, long keys\mbox{[}4\mbox{]}, Mix\+\_\+\+Chunk $\ast$sound\+Line, Mix\+\_\+\+Chunk $\ast$sound\+Fill)
+\begin{DoxyCompactList}\small\item\em Actualise toutes les animations et réagis lorsqu\textquotesingle{}elles arrivent à certains moments. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_ad89280f871b106975881d67c0482af34}{afficher\+Scores} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$score\+Texture, \hyperlink{struct_score}{Score} score\+Affichage, int i\+Score)
+\begin{DoxyCompactList}\small\item\em Affiche les animations de score d\textquotesingle{}une ligne. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_a05fcd6b28c1b8fa3aa29a2b74048ec42}{draw\+Combo\+Text} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, char $\ast$msg\+Combo, T\+T\+F\+\_\+\+Font $\ast$font, \hyperlink{struct_score}{Score} score\+Affichage, S\+D\+L\+\_\+\+Rect $\ast$dest, S\+D\+L\+\_\+\+Color combo\+Color, float size\+\_\+score)
+\begin{DoxyCompactList}\small\item\em Affiche un texte de combo. \end{DoxyCompactList}\item 
+float \hyperlink{tetris_8c_a6536a809167e5de2612bcc0ac18a3e9f}{get\+Draw\+Size} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, char $\ast$msg\+Total, T\+T\+F\+\_\+\+Font $\ast$font)
+\begin{DoxyCompactList}\small\item\em Determine la taille d\textquotesingle{}écriture d\textquotesingle{}un message. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_a4f0435df84eff929d1e0323cff53d047}{intlog} (double x, double base)
+\begin{DoxyCompactList}\small\item\em Calcule le logarithme d\textquotesingle{}un nombre à une certaine base. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_a72a18e04d27c2cb63fbb8cc4cd03ca41}{draw\+Total\+Score} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, T\+T\+F\+\_\+\+Font $\ast$font, \hyperlink{struct_score_total}{Score\+Total} score)
+\begin{DoxyCompactList}\small\item\em Affiche le score total du joueur. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_af195d8f19aaf81370580a677e45997b1}{draw\+Help\+Text} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, T\+T\+F\+\_\+\+Font $\ast$font, S\+D\+L\+\_\+\+Texture $\ast$fleche\+Texture, S\+D\+L\+\_\+\+Texture $\ast$turn\+Texture, S\+D\+L\+\_\+\+Texture $\ast$bonus\+Texture, S\+D\+L\+\_\+\+Texture $\ast$brick\+Texture)
+\begin{DoxyCompactList}\small\item\em Affiche les commandes et explications des bonus. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_ad8ffdcf46f82426ad3c5c0e38e0bca22}{draw\+Combo} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, \hyperlink{struct_score}{Score} score\+Affichage, int line, T\+T\+F\+\_\+\+Font $\ast$font)
+\begin{DoxyCompactList}\small\item\em Determine les textes de combos et leurs attributs et les affiche. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_ad0abb9784a21bbacb78c422920767cb6}{draw\+Jauge} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$jauge\+Texture, long int frame\+Total\+Show)
+\begin{DoxyCompactList}\small\item\em Affiche la jauge de vitesse en fonction de l\textquotesingle{}avancement de la partie. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_a29a5cc199c4b527d72bcf1cd7a1d8061}{lines\+In\+Completion} (int matrix\+Fill\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int frame\+Laser\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]}, int frame\+Complete\+Line\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]})
+\begin{DoxyCompactList}\small\item\em Détermine si une ligne va potentiellement bientôt être complétée. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_a492ccb672d135cf716506b4400a7d822}{death\+Anim\+Init} (int $\ast$game\+Over, \hyperlink{struct_dead_piece}{Dead\+Piece} $\ast$$\ast$dead\+Pieces, int $\ast$nb\+Dead\+Pieces, int matrix\mbox{[}\hyperlink{5__tetris_2config_8h_a51af8693b7410f0df2a0796abe215160}{G\+R\+I\+L\+L\+E\+\_\+W}\mbox{]}\mbox{[}\hyperlink{5__tetris_2config_8h_a5ff40e75231adce782f51f6235c0eb05}{G\+R\+I\+L\+L\+E\+\_\+H}\mbox{]})
+\begin{DoxyCompactList}\small\item\em Met en place et enclenche l\textquotesingle{}animation de fin de partie en scannant la matrice et créant les pièces mortes. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_a6b3238157057d6edffdf70cc76ebb4a2}{afficher\+Dead\+Piece} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, \hyperlink{struct_dead_piece}{Dead\+Piece} dead\+Piece, S\+D\+L\+\_\+\+Texture $\ast$brick\+Texture, S\+D\+L\+\_\+\+Texture $\ast$bonus\+Texture)
+\begin{DoxyCompactList}\small\item\em Affiche une pièce morte de l\textquotesingle{}animation de fin de partie. \end{DoxyCompactList}\item 
+void \hyperlink{tetris_8c_aa0cffe6510076282d31467b40b92b371}{move\+Dead\+Piece} (\hyperlink{struct_dead_piece}{Dead\+Piece} $\ast$dead\+Piece)
+\begin{DoxyCompactList}\small\item\em Déplace une pièce morte en fonction de ses attributs. \end{DoxyCompactList}\item 
+static void \hyperlink{tetris_8c_a7f040cbc8df650a1c24e301d370b5184}{my\+Frees} (\hyperlink{struct_piece}{Piece} $\ast$current\+Piece, \hyperlink{struct_piece}{Piece} $\ast$next\+Piece, \hyperlink{struct_dead_piece}{Dead\+Piece} $\ast$$\ast$dead\+Pieces, S\+D\+L\+\_\+\+Texture $\ast$\hyperlink{room_8c_a158b90dfedb211efa4c317267c983dd2}{textures}\mbox{[}N\+B\+\_\+\+T\+E\+T\+R\+I\+S\+\_\+\+T\+E\+X\+T\+U\+R\+ES\mbox{]}, T\+T\+F\+\_\+\+Font $\ast$fonts\mbox{[}\hyperlink{5__tetris_2config_8h_a592bfa81303d4b795563f64ea6c284af}{N\+B\+\_\+\+T\+E\+T\+R\+I\+S\+\_\+\+F\+O\+N\+TS}\mbox{]}, S\+D\+L\+\_\+\+Thread $\ast$$\ast$\hyperlink{main_8c_a584962a25015c7d6e18e294f55a8bc2d}{thread})
+\begin{DoxyCompactList}\small\item\em Libère la mémoire. \end{DoxyCompactList}\item 
+int \hyperlink{tetris_8c_ae91e87573658ce6bf4496a29ff517e75}{tetris} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, int highscore, int \hyperlink{room_8c_a7bc33449edbe70d0faa8d9b08ac317e7}{Win\+Width}, int \hyperlink{room_8c_a14d631ded45fe3c6396d41f0b31a8aba}{Win\+Height}, char $\ast$token, int hardcore, S\+D\+L\+\_\+\+Texture $\ast$$\ast$\hyperlink{room_8c_a158b90dfedb211efa4c317267c983dd2}{textures})
+\begin{DoxyCompactList}\small\item\em La fonction principale \+: Lance et fait tourner le jeu tetris. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{tetris_8c_a30862aa51c2944f287c4445751341ee8}{update\+Ended}
+\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+Jeu tetris avec bonus. 
+
+\begin{DoxyAuthor}{Auteur}
+Hugo Lecomte 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+03/04/2020 
+\end{DoxyDate}
+
+
+\subsection{Documentation des fonctions}
+\mbox{\Hypertarget{tetris_8c_a6b3238157057d6edffdf70cc76ebb4a2}\label{tetris_8c_a6b3238157057d6edffdf70cc76ebb4a2}} 
+\index{tetris.\+c@{tetris.\+c}!afficher\+Dead\+Piece@{afficher\+Dead\+Piece}}
+\index{afficher\+Dead\+Piece@{afficher\+Dead\+Piece}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Dead\+Piece()}{afficherDeadPiece()}}
+{\footnotesize\ttfamily void afficher\+Dead\+Piece (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{\hyperlink{struct_dead_piece}{Dead\+Piece}}]{dead\+Piece,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{brick\+Texture,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{bonus\+Texture }\end{DoxyParamCaption})}
+
+
+
+Affiche une pièce morte de l\textquotesingle{}animation de fin de partie. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em dead\+Piece} & La pièce morte à afficher \\
+\hline
+{\em brick\+Texture} & La texture des briques \\
+\hline
+{\em bonus\+Texture} & La texture des bonus \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=279pt]{tetris_8c_a6b3238157057d6edffdf70cc76ebb4a2_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a6b3238157057d6edffdf70cc76ebb4a2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ad89280f871b106975881d67c0482af34}\label{tetris_8c_ad89280f871b106975881d67c0482af34}} 
+\index{tetris.\+c@{tetris.\+c}!afficher\+Scores@{afficher\+Scores}}
+\index{afficher\+Scores@{afficher\+Scores}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Scores()}{afficherScores()}}
+{\footnotesize\ttfamily void afficher\+Scores (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{score\+Texture,  }\item[{\hyperlink{struct_score}{Score}}]{score\+Affichage,  }\item[{int}]{i\+Score }\end{DoxyParamCaption})}
+
+
+
+Affiche les animations de score d\textquotesingle{}une ligne. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer \\
+\hline
+{\em score\+Texture} & La texture des chiffres \\
+\hline
+{\em score\+Affichage} & L\textquotesingle{}animation de score d\textquotesingle{}une ligne \\
+\hline
+{\em i\+Score} & L\textquotesingle{}indice de cette ligne \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{tetris_8c_ad89280f871b106975881d67c0482af34_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ad89280f871b106975881d67c0482af34_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_acad90996b6179ce8c1cc27590aa36339}\label{tetris_8c_acad90996b6179ce8c1cc27590aa36339}} 
+\index{tetris.\+c@{tetris.\+c}!almost\+Round@{almost\+Round}}
+\index{almost\+Round@{almost\+Round}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{almost\+Round()}{almostRound()}}
+{\footnotesize\ttfamily int almost\+Round (\begin{DoxyParamCaption}\item[{float}]{f }\end{DoxyParamCaption})}
+
+
+
+Determine si un float est proche d\textquotesingle{}un entier ou non. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em f} & Le float \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si il est proche d\textquotesingle{}un entier, sinon faux 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_acad90996b6179ce8c1cc27590aa36339_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_acdf0ae318e2e7c1db6c48843ae1b9395}\label{tetris_8c_acdf0ae318e2e7c1db6c48843ae1b9395}} 
+\index{tetris.\+c@{tetris.\+c}!change\+Dir@{change\+Dir}}
+\index{change\+Dir@{change\+Dir}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{change\+Dir()}{changeDir()}}
+{\footnotesize\ttfamily void change\+Dir (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece} $\ast$}]{piece,  }\item[{int}]{lateral\+Move,  }\item[{int}]{frame\+Lateral }\end{DoxyParamCaption})}
+
+
+
+Change la direction horizontale d\textquotesingle{}une pièce. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce à modifer la direction \\
+\hline
+{\em lateral\+Move} & La direction à attribuer \\
+\hline
+{\em frame\+Lateral} & Le nombre de frame pour parcourir une case en horizontal \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_acdf0ae318e2e7c1db6c48843ae1b9395_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a029193d8f5afd44d43843ce0d27b7ff2}\label{tetris_8c_a029193d8f5afd44d43843ce0d27b7ff2}} 
+\index{tetris.\+c@{tetris.\+c}!check\+Lines@{check\+Lines}}
+\index{check\+Lines@{check\+Lines}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{check\+Lines()}{checkLines()}}
+{\footnotesize\ttfamily int check\+Lines (\begin{DoxyParamCaption}\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{frame\+Complete\+Line\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{bonus\+Activate\mbox{[}\+N\+B\+\_\+\+B\+O\+N\+U\+S\+E\+S\mbox{]},  }\item[{int}]{get\+Bonus,  }\item[{\hyperlink{struct_score}{Score}}]{score\+Add\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{\hyperlink{struct_score_total}{Score\+Total} $\ast$}]{score\+Total,  }\item[{long long $\ast$}]{score\+\_\+hash,  }\item[{long}]{keys\mbox{[}4\mbox{]},  }\item[{Mix\+\_\+\+Chunk $\ast$}]{sound\+Line }\end{DoxyParamCaption})}
+
+
+
+Vérifie si des lignes sont complétées. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em matrix} & La matrice \\
+\hline
+{\em frame\+Complete\+Line} & Les frames d\textquotesingle{}animation de complétion de ligne \\
+\hline
+{\em bonus\+Activate} & Le tableau des bonus obtenus cette frame \\
+\hline
+{\em get\+Bonus} & Determine si les bonus des lignes complétés sont à donner au joueur \\
+\hline
+{\em score\+Add} & Le tableau de score par frame et par ligne \\
+\hline
+{\em score\+Total} & Le score total \\
+\hline
+{\em score\+\_\+hash} & Le score hashé \\
+\hline
+{\em keys} & Les clés de hashage \\
+\hline
+{\em sound\+Line} & Le son de complétion de ligne \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si pas de problème, faux si problème dans le hashage 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a029193d8f5afd44d43843ce0d27b7ff2_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a029193d8f5afd44d43843ce0d27b7ff2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a9298fc462a64f832e03b46956ad0558d}\label{tetris_8c_a9298fc462a64f832e03b46956ad0558d}} 
+\index{tetris.\+c@{tetris.\+c}!clear\+Combo@{clear\+Combo}}
+\index{clear\+Combo@{clear\+Combo}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{clear\+Combo()}{clearCombo()}}
+{\footnotesize\ttfamily void clear\+Combo (\begin{DoxyParamCaption}\item[{\hyperlink{struct_score}{Score} $\ast$}]{score\+To\+Clear }\end{DoxyParamCaption})}
+
+
+
+Efface les attributs combo d\textquotesingle{}un score. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em score\+To\+Clear} & Le score à effacer \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a9298fc462a64f832e03b46956ad0558d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_af18749b8a1fa4aac7545421ef5bd8dd0}\label{tetris_8c_af18749b8a1fa4aac7545421ef5bd8dd0}} 
+\index{tetris.\+c@{tetris.\+c}!clear\+Int\+Tab@{clear\+Int\+Tab}}
+\index{clear\+Int\+Tab@{clear\+Int\+Tab}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{clear\+Int\+Tab()}{clearIntTab()}}
+{\footnotesize\ttfamily void clear\+Int\+Tab (\begin{DoxyParamCaption}\item[{int $\ast$}]{tab,  }\item[{int}]{size }\end{DoxyParamCaption})}
+
+
+
+Vide un tableau d\textquotesingle{}entier (l\textquotesingle{}initialise à 0) 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em tab} & Le tableau à initialiser \\
+\hline
+{\em size} & La taille du tableau \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_af18749b8a1fa4aac7545421ef5bd8dd0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a31bec3033665b189b54e32bfb0679091}\label{tetris_8c_a31bec3033665b189b54e32bfb0679091}} 
+\index{tetris.\+c@{tetris.\+c}!clear\+Score@{clear\+Score}}
+\index{clear\+Score@{clear\+Score}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{clear\+Score()}{clearScore()}}
+{\footnotesize\ttfamily void clear\+Score (\begin{DoxyParamCaption}\item[{\hyperlink{struct_score}{Score} $\ast$}]{score\+To\+Clear }\end{DoxyParamCaption})}
+
+
+
+Efface les attributs score d\textquotesingle{}un score. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em score\+To\+Clear} & Le score à effacer \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a31bec3033665b189b54e32bfb0679091_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a7a29731af8ff6915956e89fdb1279459}\label{tetris_8c_a7a29731af8ff6915956e89fdb1279459}} 
+\index{tetris.\+c@{tetris.\+c}!compare\+Int@{compare\+Int}}
+\index{compare\+Int@{compare\+Int}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{compare\+Int()}{compareInt()}}
+{\footnotesize\ttfamily int compare\+Int (\begin{DoxyParamCaption}\item[{const void $\ast$}]{a,  }\item[{const void $\ast$}]{b }\end{DoxyParamCaption})}
+
+
+
+Fonction de comparaison inversée de deux entiers avec types adaptés pour qsort. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em a} & Le premier entier \\
+\hline
+{\em b} & Le deuxième entier \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Une valeur positive si a$>$b et négative si b$>$a 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=254pt]{tetris_8c_a7a29731af8ff6915956e89fdb1279459_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a49d0b949731101f357ce5aafaef2df95}\label{tetris_8c_a49d0b949731101f357ce5aafaef2df95}} 
+\index{tetris.\+c@{tetris.\+c}!compare\+Int\+\_\+i@{compare\+Int\+\_\+i}}
+\index{compare\+Int\+\_\+i@{compare\+Int\+\_\+i}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{compare\+Int\+\_\+i()}{compareInt\_i()}}
+{\footnotesize\ttfamily int compare\+Int\+\_\+i (\begin{DoxyParamCaption}\item[{const int $\ast$}]{a,  }\item[{const int $\ast$}]{b }\end{DoxyParamCaption})}
+
+
+
+Fonction de comparaison de deux entiers. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em a} & Le premier entier \\
+\hline
+{\em b} & Le deuxième entier \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Une valeur positive si a$>$b et négative si b$>$a 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=254pt]{tetris_8c_a49d0b949731101f357ce5aafaef2df95_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a3b39445f6b4c0418ce1dd739518dec67}\label{tetris_8c_a3b39445f6b4c0418ce1dd739518dec67}} 
+\index{tetris.\+c@{tetris.\+c}!complete\+Line@{complete\+Line}}
+\index{complete\+Line@{complete\+Line}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{complete\+Line()}{completeLine()}}
+{\footnotesize\ttfamily int complete\+Line (\begin{DoxyParamCaption}\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{frame\+Complete\+Line\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{line,  }\item[{int}]{last\+Line,  }\item[{int}]{bonus\+Activate\mbox{[}\+N\+B\+\_\+\+B\+O\+N\+U\+S\+E\+S\mbox{]},  }\item[{int}]{get\+Bonuses,  }\item[{\hyperlink{struct_score}{Score}}]{score\+Add\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{combo\+Line,  }\item[{\hyperlink{struct_score_total}{Score\+Total} $\ast$}]{score\+Total,  }\item[{long long $\ast$}]{score\+\_\+hash,  }\item[{long}]{keys\mbox{[}4\mbox{]},  }\item[{Mix\+\_\+\+Chunk $\ast$}]{sound\+Line }\end{DoxyParamCaption})}
+
+
+
+Enclenche l\textquotesingle{}animation de destruction de ligne et comptabilise les points rapportés et les bonus gagnés. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em matrix} & La grille \\
+\hline
+{\em frame\+Complete\+Line} & Les frames d\textquotesingle{}animation de complétion de ligne \\
+\hline
+{\em line} & La ligne à compléter \\
+\hline
+{\em last\+Line} & L\textquotesingle{}indice de la dernière ligne complétée cette frame \\
+\hline
+{\em bonus\+Activate} & Le nombre de chaque bonus gagnés cette frame \\
+\hline
+{\em get\+Bonuses} & Indique si la complétion de la ligne doit faire ganger les bonus présents \\
+\hline
+{\em score\+Add} & Le tableau du nombre de points et combos rapportés cette frame pour chaque ligne \\
+\hline
+{\em combo\+Line} & Le nombre de ligne déjà complétées cette frame \\
+\hline
+{\em score\+Total} & Le score total \\
+\hline
+{\em score\+\_\+hash} & Le scroe hashé \\
+\hline
+{\em keys} & Les clés de hashage \\
+\hline
+{\em sound\+Line} & Le son de complétion de ligne \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si pas de problème, faux si problème dans le hashage 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a3b39445f6b4c0418ce1dd739518dec67_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a3b39445f6b4c0418ce1dd739518dec67_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a492ccb672d135cf716506b4400a7d822}\label{tetris_8c_a492ccb672d135cf716506b4400a7d822}} 
+\index{tetris.\+c@{tetris.\+c}!death\+Anim\+Init@{death\+Anim\+Init}}
+\index{death\+Anim\+Init@{death\+Anim\+Init}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{death\+Anim\+Init()}{deathAnimInit()}}
+{\footnotesize\ttfamily void death\+Anim\+Init (\begin{DoxyParamCaption}\item[{int $\ast$}]{game\+Over,  }\item[{\hyperlink{struct_dead_piece}{Dead\+Piece} $\ast$$\ast$}]{dead\+Pieces,  }\item[{int $\ast$}]{nb\+Dead\+Pieces,  }\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Met en place et enclenche l\textquotesingle{}animation de fin de partie en scannant la matrice et créant les pièces mortes. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em game\+Over} & Determine si la partie est finie \\
+\hline
+{\em dead\+Pieces} & Le tableau de pièce mortes \\
+\hline
+{\em nb\+Dead\+Pieces} & Le nombre de pièces mortes \\
+\hline
+{\em matrix} & La matrice \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a492ccb672d135cf716506b4400a7d822_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ad8ffdcf46f82426ad3c5c0e38e0bca22}\label{tetris_8c_ad8ffdcf46f82426ad3c5c0e38e0bca22}} 
+\index{tetris.\+c@{tetris.\+c}!draw\+Combo@{draw\+Combo}}
+\index{draw\+Combo@{draw\+Combo}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{draw\+Combo()}{drawCombo()}}
+{\footnotesize\ttfamily void draw\+Combo (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{\hyperlink{struct_score}{Score}}]{score\+Affichage,  }\item[{int}]{line,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font }\end{DoxyParamCaption})}
+
+
+
+Determine les textes de combos et leurs attributs et les affiche. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em score\+Affichage} & Le combo à afficher \\
+\hline
+{\em line} & La ligne du combo \\
+\hline
+{\em font} & La police d\textquotesingle{}écriture à utiliser \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=274pt]{tetris_8c_ad8ffdcf46f82426ad3c5c0e38e0bca22_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ad8ffdcf46f82426ad3c5c0e38e0bca22_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a05fcd6b28c1b8fa3aa29a2b74048ec42}\label{tetris_8c_a05fcd6b28c1b8fa3aa29a2b74048ec42}} 
+\index{tetris.\+c@{tetris.\+c}!draw\+Combo\+Text@{draw\+Combo\+Text}}
+\index{draw\+Combo\+Text@{draw\+Combo\+Text}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{draw\+Combo\+Text()}{drawComboText()}}
+{\footnotesize\ttfamily void draw\+Combo\+Text (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{char $\ast$}]{msg\+Combo,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font,  }\item[{\hyperlink{struct_score}{Score}}]{score\+Affichage,  }\item[{S\+D\+L\+\_\+\+Rect $\ast$}]{dest,  }\item[{S\+D\+L\+\_\+\+Color}]{combo\+Color,  }\item[{float}]{size\+\_\+score }\end{DoxyParamCaption})}
+
+
+
+Affiche un texte de combo. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer \\
+\hline
+{\em msg\+Combo} & Le message à afficher \\
+\hline
+{\em font} & La police d\textquotesingle{}écriture du combo \\
+\hline
+{\em score\+Affichage} & Les informations du combo \\
+\hline
+{\em dest} & L\textquotesingle{}endroit où l\textquotesingle{}afficher \\
+\hline
+{\em combo\+Color} & La couleur d\textquotesingle{}écriture \\
+\hline
+{\em size\+\_\+score} & La taille d\textquotesingle{}écriture \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a05fcd6b28c1b8fa3aa29a2b74048ec42_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_abfb76f2f7b406230d830482342382fb8}\label{tetris_8c_abfb76f2f7b406230d830482342382fb8}} 
+\index{tetris.\+c@{tetris.\+c}!draw\+Fill@{draw\+Fill}}
+\index{draw\+Fill@{draw\+Fill}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{draw\+Fill()}{drawFill()}}
+{\footnotesize\ttfamily void draw\+Fill (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{int}]{matrix\+Fill\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{brick\+Texture }\end{DoxyParamCaption})}
+
+
+
+Dessine l\textquotesingle{}animation du bonus F\+I\+LL. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em matrix\+Fill} & Les frames d\textquotesingle{}animation du bonus F\+I\+LL \\
+\hline
+{\em brick\+Texture} & La texture des briques \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_abfb76f2f7b406230d830482342382fb8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_af195d8f19aaf81370580a677e45997b1}\label{tetris_8c_af195d8f19aaf81370580a677e45997b1}} 
+\index{tetris.\+c@{tetris.\+c}!draw\+Help\+Text@{draw\+Help\+Text}}
+\index{draw\+Help\+Text@{draw\+Help\+Text}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{draw\+Help\+Text()}{drawHelpText()}}
+{\footnotesize\ttfamily void draw\+Help\+Text (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{fleche\+Texture,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{turn\+Texture,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{bonus\+Texture,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{brick\+Texture }\end{DoxyParamCaption})}
+
+
+
+Affiche les commandes et explications des bonus. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em font} & La police d\textquotesingle{}écriture \\
+\hline
+{\em fleche\+Texture} & La texture des flèches directionelles \\
+\hline
+{\em turn\+Texture} & La texture des flèches rotatives \\
+\hline
+{\em bonus\+Texture} & La texture des bonus \\
+\hline
+{\em brick\+Texture} & La texture des briques \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_af195d8f19aaf81370580a677e45997b1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ad0abb9784a21bbacb78c422920767cb6}\label{tetris_8c_ad0abb9784a21bbacb78c422920767cb6}} 
+\index{tetris.\+c@{tetris.\+c}!draw\+Jauge@{draw\+Jauge}}
+\index{draw\+Jauge@{draw\+Jauge}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{draw\+Jauge()}{drawJauge()}}
+{\footnotesize\ttfamily void draw\+Jauge (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{jauge\+Texture,  }\item[{long int}]{frame\+Total\+Show }\end{DoxyParamCaption})}
+
+
+
+Affiche la jauge de vitesse en fonction de l\textquotesingle{}avancement de la partie. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em jauge\+Texture} & La texture de la jauge \\
+\hline
+{\em frame\+Total\+Show} & Le total de frame à utiliser \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ad0abb9784a21bbacb78c422920767cb6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a0ce334d5a3d0fd238859631357e2d6c7}\label{tetris_8c_a0ce334d5a3d0fd238859631357e2d6c7}} 
+\index{tetris.\+c@{tetris.\+c}!draw\+Laser@{draw\+Laser}}
+\index{draw\+Laser@{draw\+Laser}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{draw\+Laser()}{drawLaser()}}
+{\footnotesize\ttfamily void draw\+Laser (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{int}]{frame\+Laser\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{laser\+Texture,  }\item[{Mix\+\_\+\+Chunk $\ast$}]{sound\+Laser }\end{DoxyParamCaption})}
+
+
+
+Dessine l\textquotesingle{}animation du bonus L\+A\+S\+ER. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em frame\+Laser} & Les frames d\textquotesingle{}animation du bonus L\+A\+S\+ER \\
+\hline
+{\em laser\+Texture} & La texture du laser \\
+\hline
+{\em sound\+Laser} & Le son du laser \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a0ce334d5a3d0fd238859631357e2d6c7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_aba5eccd8ab2578d308652afa73c71549}\label{tetris_8c_aba5eccd8ab2578d308652afa73c71549}} 
+\index{tetris.\+c@{tetris.\+c}!draw\+Matrix@{draw\+Matrix}}
+\index{draw\+Matrix@{draw\+Matrix}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{draw\+Matrix()}{drawMatrix()}}
+{\footnotesize\ttfamily void draw\+Matrix (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{frame\+Complete\+Line\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{\hyperlink{struct_piece}{Piece}}]{current\+Piece,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{brick\+Texture,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{bonus\+Texture }\end{DoxyParamCaption})}
+
+
+
+Dessine la grille et son contenu. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em matrix} & La grille à dessiner \\
+\hline
+{\em frame\+Complete\+Line} & Les frames d\textquotesingle{}animation de complétion de ligne \\
+\hline
+{\em current\+Piece} & La pièce qui est en train de tomber (pour dessiner la collone où elle se trouve plus claire) \\
+\hline
+{\em brick\+Texture} & La texture des briques des pièces \\
+\hline
+{\em bonus\+Texture} & La texture des bonus \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=247pt]{tetris_8c_aba5eccd8ab2578d308652afa73c71549_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_aba5eccd8ab2578d308652afa73c71549_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a51259113cdc6787fdf3d0286e6ada2ac}\label{tetris_8c_a51259113cdc6787fdf3d0286e6ada2ac}} 
+\index{tetris.\+c@{tetris.\+c}!draw\+Piece@{draw\+Piece}}
+\index{draw\+Piece@{draw\+Piece}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{draw\+Piece()}{drawPiece()}}
+{\footnotesize\ttfamily void draw\+Piece (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{\hyperlink{struct_piece}{Piece}}]{piece,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{brick\+Texture,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{bonus\+Texture,  }\item[{int}]{is\+Next\+Piece,  }\item[{int}]{hardcore }\end{DoxyParamCaption})}
+
+
+
+Dessine une pièce (en train de tomber ou à venir) 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où dessiner \\
+\hline
+{\em piece} & La pièce à dessiner \\
+\hline
+{\em brick\+Texture} & La texture des briques des pièces \\
+\hline
+{\em bonus\+Texture} & La texture des bonus \\
+\hline
+{\em is\+Next\+Piece} & Indique si c\textquotesingle{}est une pièce à venir ou qui est en train de tomber \\
+\hline
+{\em hardcore} & La difficulté de la partie \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a51259113cdc6787fdf3d0286e6ada2ac_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a72a18e04d27c2cb63fbb8cc4cd03ca41}\label{tetris_8c_a72a18e04d27c2cb63fbb8cc4cd03ca41}} 
+\index{tetris.\+c@{tetris.\+c}!draw\+Total\+Score@{draw\+Total\+Score}}
+\index{draw\+Total\+Score@{draw\+Total\+Score}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{draw\+Total\+Score()}{drawTotalScore()}}
+{\footnotesize\ttfamily void draw\+Total\+Score (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font,  }\item[{\hyperlink{struct_score_total}{Score\+Total}}]{score }\end{DoxyParamCaption})}
+
+
+
+Affiche le score total du joueur. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer où afficher \\
+\hline
+{\em font} & La police d\textquotesingle{}écriture \\
+\hline
+{\em score} & Le score du joueur \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a72a18e04d27c2cb63fbb8cc4cd03ca41_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_aa8ef328fafd262cebaadf0517ec41d20}\label{tetris_8c_aa8ef328fafd262cebaadf0517ec41d20}} 
+\index{tetris.\+c@{tetris.\+c}!erase\+Line@{erase\+Line}}
+\index{erase\+Line@{erase\+Line}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{erase\+Line()}{eraseLine()}}
+{\footnotesize\ttfamily void erase\+Line (\begin{DoxyParamCaption}\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{line,  }\item[{int}]{matrix\+Fill\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{frame\+Laser\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{frame\+Complete\+Line\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{\hyperlink{struct_score}{Score} $\ast$}]{score\+Affichage }\end{DoxyParamCaption})}
+
+
+
+Supprime une ligne de la matrice et fait descendre celles au desus. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em matrix} & La matrice \\
+\hline
+{\em line} & La ligne à supprimer \\
+\hline
+{\em matrix\+Fill} & Les frames d\textquotesingle{}animations du bonus F\+I\+LL pour chaque ligne \\
+\hline
+{\em frame\+Laser} & Les frames d\textquotesingle{}animations du bonus L\+A\+S\+ER pour chaque ligne \\
+\hline
+{\em frame\+Complete\+Line} & Les frames d\textquotesingle{}animations de complétion de ligne \\
+\hline
+{\em score\+Affichage} & Les scores de chaque ligne \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_aa8ef328fafd262cebaadf0517ec41d20_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a602b2d26911345f5f9fc9c618332376d}\label{tetris_8c_a602b2d26911345f5f9fc9c618332376d}} 
+\index{tetris.\+c@{tetris.\+c}!get\+Bonus\+Id@{get\+Bonus\+Id}}
+\index{get\+Bonus\+Id@{get\+Bonus\+Id}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{get\+Bonus\+Id()}{getBonusId()}}
+{\footnotesize\ttfamily int get\+Bonus\+Id (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Détermine l\textquotesingle{}id du bonus d\textquotesingle{}une case de la grille. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em n} & La valeur de la case de la grille \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+L\textquotesingle{}id du bonus correspondant 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a602b2d26911345f5f9fc9c618332376d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_afd2c27e6f112264f9fb50e10fa8e9d70}\label{tetris_8c_afd2c27e6f112264f9fb50e10fa8e9d70}} 
+\index{tetris.\+c@{tetris.\+c}!get\+Col\+Raw\+Infos@{get\+Col\+Raw\+Infos}}
+\index{get\+Col\+Raw\+Infos@{get\+Col\+Raw\+Infos}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{get\+Col\+Raw\+Infos()}{getColRawInfos()}}
+{\footnotesize\ttfamily void get\+Col\+Raw\+Infos (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece} $\ast$}]{piece }\end{DoxyParamCaption})}
+
+
+
+Met à jour les informations de premières et dernière ligne et collone d\textquotesingle{}une pièce. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=286pt]{tetris_8c_afd2c27e6f112264f9fb50e10fa8e9d70_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_afd2c27e6f112264f9fb50e10fa8e9d70_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a6536a809167e5de2612bcc0ac18a3e9f}\label{tetris_8c_a6536a809167e5de2612bcc0ac18a3e9f}} 
+\index{tetris.\+c@{tetris.\+c}!get\+Draw\+Size@{get\+Draw\+Size}}
+\index{get\+Draw\+Size@{get\+Draw\+Size}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{get\+Draw\+Size()}{getDrawSize()}}
+{\footnotesize\ttfamily float get\+Draw\+Size (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{char $\ast$}]{msg\+Total,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font }\end{DoxyParamCaption})}
+
+
+
+Determine la taille d\textquotesingle{}écriture d\textquotesingle{}un message. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer \\
+\hline
+{\em msg\+Total} & Le message à mesurer \\
+\hline
+{\em font} & La police d\textquotesingle{}écriture du combo \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+La taille d\textquotesingle{}écriture maximale de ce message 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a6536a809167e5de2612bcc0ac18a3e9f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_af86b25e15fa31154f643aafa348509d5}\label{tetris_8c_af86b25e15fa31154f643aafa348509d5}} 
+\index{tetris.\+c@{tetris.\+c}!get\+Fill\+Places@{get\+Fill\+Places}}
+\index{get\+Fill\+Places@{get\+Fill\+Places}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{get\+Fill\+Places()}{getFillPlaces()}}
+{\footnotesize\ttfamily void get\+Fill\+Places (\begin{DoxyParamCaption}\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{matrix\+Fill\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{nb\+Fill }\end{DoxyParamCaption})}
+
+
+
+Détermine aléatoirement quelles cases de la matrices doivent être replies par le bonus F\+I\+LL et enclenche l\textquotesingle{}animation. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em matrix} & La grille \\
+\hline
+{\em matrix\+Fill} & Les frames d\textquotesingle{}animation de F\+I\+LL pour chaque case \\
+\hline
+{\em nb\+Fill} & Le nombre de cases à remplir \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_af86b25e15fa31154f643aafa348509d5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a247740fca8738ba272f965130ea77491}\label{tetris_8c_a247740fca8738ba272f965130ea77491}} 
+\index{tetris.\+c@{tetris.\+c}!get\+First\+Column@{get\+First\+Column}}
+\index{get\+First\+Column@{get\+First\+Column}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{get\+First\+Column()}{getFirstColumn()}}
+{\footnotesize\ttfamily int get\+First\+Column (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece}}]{piece }\end{DoxyParamCaption})}
+
+
+
+Calcule l\textquotesingle{}indice de la première collone d\textquotesingle{}une pièce. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+L\textquotesingle{}indice de la première collone ou -\/1 en cas d\textquotesingle{}erreur 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a247740fca8738ba272f965130ea77491_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a96e57a2ea28461c14cb723f46d8efd9f}\label{tetris_8c_a96e57a2ea28461c14cb723f46d8efd9f}} 
+\index{tetris.\+c@{tetris.\+c}!get\+First\+Row@{get\+First\+Row}}
+\index{get\+First\+Row@{get\+First\+Row}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{get\+First\+Row()}{getFirstRow()}}
+{\footnotesize\ttfamily int get\+First\+Row (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece}}]{piece }\end{DoxyParamCaption})}
+
+
+
+Calcule l\textquotesingle{}indice de la première ligne d\textquotesingle{}une pièce. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+L\textquotesingle{}indice de la première ligne ou -\/1 en cas d\textquotesingle{}erreur 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a96e57a2ea28461c14cb723f46d8efd9f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_afa8c2cc6ef8499b8480402ff1aa27762}\label{tetris_8c_afa8c2cc6ef8499b8480402ff1aa27762}} 
+\index{tetris.\+c@{tetris.\+c}!get\+Last\+Column@{get\+Last\+Column}}
+\index{get\+Last\+Column@{get\+Last\+Column}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{get\+Last\+Column()}{getLastColumn()}}
+{\footnotesize\ttfamily int get\+Last\+Column (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece}}]{piece }\end{DoxyParamCaption})}
+
+
+
+Calcule l\textquotesingle{}indice de la dernière collone d\textquotesingle{}une pièce. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+L\textquotesingle{}indice de la dernière collone ou -\/1 en cas d\textquotesingle{}erreur 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_afa8c2cc6ef8499b8480402ff1aa27762_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ad09a602d0b6c16445fab969f701a7d06}\label{tetris_8c_ad09a602d0b6c16445fab969f701a7d06}} 
+\index{tetris.\+c@{tetris.\+c}!get\+Last\+Row@{get\+Last\+Row}}
+\index{get\+Last\+Row@{get\+Last\+Row}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{get\+Last\+Row()}{getLastRow()}}
+{\footnotesize\ttfamily int get\+Last\+Row (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece}}]{piece }\end{DoxyParamCaption})}
+
+
+
+Calcule l\textquotesingle{}indice de la dernière ligne d\textquotesingle{}une pièce. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+L\textquotesingle{}indice de la dernière ligne ou -\/1 en cas d\textquotesingle{}erreur 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ad09a602d0b6c16445fab969f701a7d06_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_afcb86b88f9ff5bb73f44c78f48230203}\label{tetris_8c_afcb86b88f9ff5bb73f44c78f48230203}} 
+\index{tetris.\+c@{tetris.\+c}!get\+New\+Piece@{get\+New\+Piece}}
+\index{get\+New\+Piece@{get\+New\+Piece}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{get\+New\+Piece()}{getNewPiece()}}
+{\footnotesize\ttfamily void get\+New\+Piece (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece} $\ast$}]{piece,  }\item[{int}]{giant,  }\item[{int}]{hardcore }\end{DoxyParamCaption})}
+
+
+
+Obtient une nouvelle pièce aléatoire. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce où stocker cette nouvelle pièce \\
+\hline
+{\em giant} & Indique si cette nouvelle pièce sera géante ou non \\
+\hline
+{\em hardcore} & Indique si le mode de jeu est facile ou difficile \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_afcb86b88f9ff5bb73f44c78f48230203_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_afcb86b88f9ff5bb73f44c78f48230203_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ad3ffc7b35e2959c53ab338f9d12a529a}\label{tetris_8c_ad3ffc7b35e2959c53ab338f9d12a529a}} 
+\index{tetris.\+c@{tetris.\+c}!get\+Piece\+Id@{get\+Piece\+Id}}
+\index{get\+Piece\+Id@{get\+Piece\+Id}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{get\+Piece\+Id()}{getPieceId()}}
+{\footnotesize\ttfamily int get\+Piece\+Id (\begin{DoxyParamCaption}\item[{int}]{n }\end{DoxyParamCaption})}
+
+
+
+Obtient l\textquotesingle{}id d\textquotesingle{}une case de la matrice. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em n} & La valeur de la case de la matrice \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+L\textquotesingle{}id de cette case 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ad3ffc7b35e2959c53ab338f9d12a529a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ae85620c9aeca2e9c18acf776f00fdffc}\label{tetris_8c_ae85620c9aeca2e9c18acf776f00fdffc}} 
+\index{tetris.\+c@{tetris.\+c}!init\+Matrix@{init\+Matrix}}
+\index{init\+Matrix@{init\+Matrix}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{init\+Matrix()}{initMatrix()}}
+{\footnotesize\ttfamily void init\+Matrix (\begin{DoxyParamCaption}\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{init }\end{DoxyParamCaption})}
+
+
+
+Initialise les cases de la matrice. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em matrix} & La matrice à initialiser \\
+\hline
+{\em init} & La valeur d\textquotesingle{}initialisation \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ae85620c9aeca2e9c18acf776f00fdffc_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a179fed1118dad2056fe4ae7a1278de73}\label{tetris_8c_a179fed1118dad2056fe4ae7a1278de73}} 
+\index{tetris.\+c@{tetris.\+c}!init\+Piece@{init\+Piece}}
+\index{init\+Piece@{init\+Piece}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{init\+Piece()}{initPiece()}}
+{\footnotesize\ttfamily void init\+Piece (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece} $\ast$}]{piece }\end{DoxyParamCaption})}
+
+
+
+Initialise une pièce. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce à initialiser \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a179fed1118dad2056fe4ae7a1278de73_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_aa3b0b0ae919c820fe907aa5587f99fcf}\label{tetris_8c_aa3b0b0ae919c820fe907aa5587f99fcf}} 
+\index{tetris.\+c@{tetris.\+c}!init\+Score@{init\+Score}}
+\index{init\+Score@{init\+Score}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{init\+Score()}{initScore()}}
+{\footnotesize\ttfamily void init\+Score (\begin{DoxyParamCaption}\item[{\hyperlink{struct_score}{Score} $\ast$}]{score }\end{DoxyParamCaption})}
+
+
+
+Initialise un tableau de scores. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em score} & Le tableau de scores à initialiser \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_aa3b0b0ae919c820fe907aa5587f99fcf_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a4f0435df84eff929d1e0323cff53d047}\label{tetris_8c_a4f0435df84eff929d1e0323cff53d047}} 
+\index{tetris.\+c@{tetris.\+c}!intlog@{intlog}}
+\index{intlog@{intlog}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{intlog()}{intlog()}}
+{\footnotesize\ttfamily int intlog (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{double}]{base }\end{DoxyParamCaption})}
+
+
+
+Calcule le logarithme d\textquotesingle{}un nombre à une certaine base. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em x} & Le nombre \\
+\hline
+{\em base} & La base \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Le logarithme de x à la base \char`\"{}base\char`\"{} 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a4f0435df84eff929d1e0323cff53d047_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a1adafabaf31e498f7300d45adc48759e}\label{tetris_8c_a1adafabaf31e498f7300d45adc48759e}} 
+\index{tetris.\+c@{tetris.\+c}!is\+On\+Array@{is\+On\+Array}}
+\index{is\+On\+Array@{is\+On\+Array}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{is\+On\+Array()}{isOnArray()}}
+{\footnotesize\ttfamily int is\+On\+Array (\begin{DoxyParamCaption}\item[{int}]{n,  }\item[{int}]{array\mbox{[}$\,$\mbox{]},  }\item[{int}]{size }\end{DoxyParamCaption})}
+
+
+
+Détermine si un nombre n est présent dans un tableau. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em n} & Le nombre à chercher \\
+\hline
+{\em array} & Le tableau \\
+\hline
+{\em size} & La taille du tableau \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si l\textquotesingle{}entier est présent, sinon faux 
+\end{DoxyReturn}
+\mbox{\Hypertarget{tetris_8c_adc1d7245f0623a3b3fb9abd8bba6d767}\label{tetris_8c_adc1d7245f0623a3b3fb9abd8bba6d767}} 
+\index{tetris.\+c@{tetris.\+c}!line\+Empty@{line\+Empty}}
+\index{line\+Empty@{line\+Empty}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{line\+Empty()}{lineEmpty()}}
+{\footnotesize\ttfamily int line\+Empty (\begin{DoxyParamCaption}\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{line }\end{DoxyParamCaption})}
+
+
+
+Determine si une ligne est vide. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em matrix} & La matrice \\
+\hline
+{\em line} & La ligne à vérifier \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si la ligne est vide sinon faux 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_adc1d7245f0623a3b3fb9abd8bba6d767_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a29a5cc199c4b527d72bcf1cd7a1d8061}\label{tetris_8c_a29a5cc199c4b527d72bcf1cd7a1d8061}} 
+\index{tetris.\+c@{tetris.\+c}!lines\+In\+Completion@{lines\+In\+Completion}}
+\index{lines\+In\+Completion@{lines\+In\+Completion}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{lines\+In\+Completion()}{linesInCompletion()}}
+{\footnotesize\ttfamily int lines\+In\+Completion (\begin{DoxyParamCaption}\item[{int}]{matrix\+Fill\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{frame\+Laser\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{frame\+Complete\+Line\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Détermine si une ligne va potentiellement bientôt être complétée. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em matrix\+Fill} & Les animations du bonus F\+I\+LL \\
+\hline
+{\em frame\+Laser} & Les animations du bonus L\+A\+S\+ER \\
+\hline
+{\em frame\+Complete\+Line} & Les animations de complétion de ligne \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a29a5cc199c4b527d72bcf1cd7a1d8061_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_aa0cffe6510076282d31467b40b92b371}\label{tetris_8c_aa0cffe6510076282d31467b40b92b371}} 
+\index{tetris.\+c@{tetris.\+c}!move\+Dead\+Piece@{move\+Dead\+Piece}}
+\index{move\+Dead\+Piece@{move\+Dead\+Piece}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{move\+Dead\+Piece()}{moveDeadPiece()}}
+{\footnotesize\ttfamily void move\+Dead\+Piece (\begin{DoxyParamCaption}\item[{\hyperlink{struct_dead_piece}{Dead\+Piece} $\ast$}]{dead\+Piece }\end{DoxyParamCaption})}
+
+
+
+Déplace une pièce morte en fonction de ses attributs. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em dead\+Piece} & La pièce morte à afficher \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_aa0cffe6510076282d31467b40b92b371_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a5100e6c3d9135456bac8660e84ccb4c0}\label{tetris_8c_a5100e6c3d9135456bac8660e84ccb4c0}} 
+\index{tetris.\+c@{tetris.\+c}!move\+Down@{move\+Down}}
+\index{move\+Down@{move\+Down}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{move\+Down()}{moveDown()}}
+{\footnotesize\ttfamily int move\+Down (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece} $\ast$}]{piece,  }\item[{int}]{accelerate,  }\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{float}]{distance\+Down,  }\item[{int}]{frame\+Stop,  }\item[{int}]{max\+Down }\end{DoxyParamCaption})}
+
+
+
+Déplace la pièce vers le bas. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce à déplacer \\
+\hline
+{\em accelerate} & Indique si la pièce est accélérée par le joueur \\
+\hline
+{\em matrix} & La matrice pour vérifier les collisions \\
+\hline
+{\em distance\+Down} & La distance de déplacement \\
+\hline
+{\em frame\+Stop} & Le nombre de frame maximum avant que la pièce ne se fasse inscrire dans la grille \\
+\hline
+{\em max\+Down} & Indique si la pièce doit être descendue jusqu\textquotesingle{}en bas \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+S\+T\+O\+P\+P\+ED si la pièce s\textquotesingle{}est arrêtée et doit être inscite dans la matrice sinon 0 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=287pt]{tetris_8c_a5100e6c3d9135456bac8660e84ccb4c0_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a5100e6c3d9135456bac8660e84ccb4c0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ab7aa50536fa477c472edb9a29654a2c4}\label{tetris_8c_ab7aa50536fa477c472edb9a29654a2c4}} 
+\index{tetris.\+c@{tetris.\+c}!move\+Side@{move\+Side}}
+\index{move\+Side@{move\+Side}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{move\+Side()}{moveSide()}}
+{\footnotesize\ttfamily void move\+Side (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece} $\ast$}]{piece,  }\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{float}]{distance\+Lateral }\end{DoxyParamCaption})}
+
+
+
+Déplace la pièce sur le côté 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce à déplacer \\
+\hline
+{\em matrix} & La matrice pour vérifier les collisions \\
+\hline
+{\em distance\+Lateral} & La distance de déplacement \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=281pt]{tetris_8c_ab7aa50536fa477c472edb9a29654a2c4_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ab7aa50536fa477c472edb9a29654a2c4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a7f040cbc8df650a1c24e301d370b5184}\label{tetris_8c_a7f040cbc8df650a1c24e301d370b5184}} 
+\index{tetris.\+c@{tetris.\+c}!my\+Frees@{my\+Frees}}
+\index{my\+Frees@{my\+Frees}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{my\+Frees()}{myFrees()}}
+{\footnotesize\ttfamily void my\+Frees (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece} $\ast$}]{current\+Piece,  }\item[{\hyperlink{struct_piece}{Piece} $\ast$}]{next\+Piece,  }\item[{\hyperlink{struct_dead_piece}{Dead\+Piece} $\ast$$\ast$}]{dead\+Pieces,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{textures\mbox{[}\+N\+B\+\_\+\+T\+E\+T\+R\+I\+S\+\_\+\+T\+E\+X\+T\+U\+R\+E\+S\mbox{]},  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{fonts\mbox{[}\+N\+B\+\_\+\+T\+E\+T\+R\+I\+S\+\_\+\+F\+O\+N\+T\+S\mbox{]},  }\item[{S\+D\+L\+\_\+\+Thread $\ast$$\ast$}]{thread }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Libère la mémoire. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em current\+Piece} & La pièce actuelle \\
+\hline
+{\em next\+Piece} & La pièce à venir \\
+\hline
+{\em dead\+Pieces} & Les briques de l\textquotesingle{}animation de fin \\
+\hline
+{\em textures} & Les textures \\
+\hline
+{\em fonts} & Les polices \\
+\hline
+{\em thread} & Le thread d\textquotesingle{}envoi de score \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a7f040cbc8df650a1c24e301d370b5184_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a207a70e671ee880269d8a9fc96a39087}\label{tetris_8c_a207a70e671ee880269d8a9fc96a39087}} 
+\index{tetris.\+c@{tetris.\+c}!my\+Init@{my\+Init}}
+\index{my\+Init@{my\+Init}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{my\+Init()}{myInit()}}
+{\footnotesize\ttfamily void my\+Init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialise l\textquotesingle{}environement S\+DL, T\+TF et rand. 
+
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a207a70e671ee880269d8a9fc96a39087_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ad8e6ba2694e622ad01607902b50d4b8e}\label{tetris_8c_ad8e6ba2694e622ad01607902b50d4b8e}} 
+\index{tetris.\+c@{tetris.\+c}!put\+At\+Next\+Piece@{put\+At\+Next\+Piece}}
+\index{put\+At\+Next\+Piece@{put\+At\+Next\+Piece}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{put\+At\+Next\+Piece()}{putAtNextPiece()}}
+{\footnotesize\ttfamily void put\+At\+Next\+Piece (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece} $\ast$}]{piece }\end{DoxyParamCaption})}
+
+
+
+Met une pièce dans l\textquotesingle{}emplacement qui indique la prochaine pièce. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce à mettre dans cet emplacement \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ad8e6ba2694e622ad01607902b50d4b8e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ab05c527bd8b667fd4f52638458a25511}\label{tetris_8c_ab05c527bd8b667fd4f52638458a25511}} 
+\index{tetris.\+c@{tetris.\+c}!put\+At\+Top@{put\+At\+Top}}
+\index{put\+At\+Top@{put\+At\+Top}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{put\+At\+Top()}{putAtTop()}}
+{\footnotesize\ttfamily int put\+At\+Top (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece} $\ast$}]{piece,  }\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{frame\+To\+Go,  }\item[{int}]{hardcore }\end{DoxyParamCaption})}
+
+
+
+Met une pièce en haut de la grille en vérifiant que c\textquotesingle{}est possible. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce à mettre en haut \\
+\hline
+{\em matrix} & La grille \\
+\hline
+{\em frame\+To\+Go} & Le nombre de frame avant que la pièce commence à tomber \\
+\hline
+{\em hardcore} & Le mode de jeu \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si la pièce a pu être placée, sinon faux 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=277pt]{tetris_8c_ab05c527bd8b667fd4f52638458a25511_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ab05c527bd8b667fd4f52638458a25511_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ac768d060dc9bea4735aeab56c4ff699f}\label{tetris_8c_ac768d060dc9bea4735aeab56c4ff699f}} 
+\index{tetris.\+c@{tetris.\+c}!rotate\+Piece@{rotate\+Piece}}
+\index{rotate\+Piece@{rotate\+Piece}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{rotate\+Piece()}{rotatePiece()}}
+{\footnotesize\ttfamily void rotate\+Piece (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece} $\ast$}]{piece,  }\item[{int}]{rotate\+Sens,  }\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{hardcore,  }\item[{Mix\+\_\+\+Chunk $\ast$$\ast$}]{sounds }\end{DoxyParamCaption})}
+
+
+
+Essaye de tourner une pièce, en la déplaçant si besoin. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce à tourner \\
+\hline
+{\em rotate\+Sens} & Le sens de rotation \\
+\hline
+{\em matrix} & La matrice pour vérifier les collisions \\
+\hline
+{\em hardcore} & Indique si le mode de jeu est facile ou difficile \\
+\hline
+{\em sounds} & Les sons du jeu \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ac768d060dc9bea4735aeab56c4ff699f_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ac768d060dc9bea4735aeab56c4ff699f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ad7ebe9a4463636c9cea0d518d550ddbb}\label{tetris_8c_ad7ebe9a4463636c9cea0d518d550ddbb}} 
+\index{tetris.\+c@{tetris.\+c}!save\+Piece@{save\+Piece}}
+\index{save\+Piece@{save\+Piece}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{save\+Piece()}{savePiece()}}
+{\footnotesize\ttfamily void save\+Piece (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece}}]{piece,  }\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Inscrit une pièce dans la matrice. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce à inscrire \\
+\hline
+{\em matrix} & La matrice \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ad7ebe9a4463636c9cea0d518d550ddbb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ae91e87573658ce6bf4496a29ff517e75}\label{tetris_8c_ae91e87573658ce6bf4496a29ff517e75}} 
+\index{tetris.\+c@{tetris.\+c}!tetris@{tetris}}
+\index{tetris@{tetris}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{tetris()}{tetris()}}
+{\footnotesize\ttfamily int tetris (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{int}]{highscore,  }\item[{int}]{Win\+Width,  }\item[{int}]{Win\+Height,  }\item[{char $\ast$}]{token,  }\item[{int}]{hardcore,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$$\ast$}]{textures }\end{DoxyParamCaption})}
+
+
+
+La fonction principale \+: Lance et fait tourner le jeu tetris. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & Le renderer \\
+\hline
+{\em highscore} & Le meilleur score personnel \\
+\hline
+{\em Win\+Width} & La largeur de la fenêtre \\
+\hline
+{\em Win\+Height} & La hauteur de la fenêtre \\
+\hline
+{\em token} & Le token pour l\textquotesingle{}envoi des scores \\
+\hline
+{\em hardcore} & Le difficulté du jeu \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+0 en cas de retour normal 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{tetris_8c_ae91e87573658ce6bf4496a29ff517e75_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ae91e87573658ce6bf4496a29ff517e75_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a423d814944d7cdabae7238532af7399d}\label{tetris_8c_a423d814944d7cdabae7238532af7399d}} 
+\index{tetris.\+c@{tetris.\+c}!too\+Close\+From\+Matrix@{too\+Close\+From\+Matrix}}
+\index{too\+Close\+From\+Matrix@{too\+Close\+From\+Matrix}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{too\+Close\+From\+Matrix()}{tooCloseFromMatrix()}}
+{\footnotesize\ttfamily int too\+Close\+From\+Matrix (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece}}]{piece,  }\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Teste si une pièce est en collision avec les pièces déjà inscrites dans la grille. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce à tester \\
+\hline
+{\em matrix} & La grille \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si la piece à une collision avec les éléments de la grille, sinon faux 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a423d814944d7cdabae7238532af7399d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ab1f20fd2b247412fbface8ef523015d9}\label{tetris_8c_ab1f20fd2b247412fbface8ef523015d9}} 
+\index{tetris.\+c@{tetris.\+c}!too\+Close\+From\+Wall@{too\+Close\+From\+Wall}}
+\index{too\+Close\+From\+Wall@{too\+Close\+From\+Wall}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{too\+Close\+From\+Wall()}{tooCloseFromWall()}}
+{\footnotesize\ttfamily int too\+Close\+From\+Wall (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece}}]{piece }\end{DoxyParamCaption})}
+
+
+
+Détermine si une pièce dépasse des bords de la grille. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si elle dépasse sinon faux 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ab1f20fd2b247412fbface8ef523015d9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a19882390a87a14fd0b6604bc102f4da1}\label{tetris_8c_a19882390a87a14fd0b6604bc102f4da1}} 
+\index{tetris.\+c@{tetris.\+c}!transfert\+Next\+Piece@{transfert\+Next\+Piece}}
+\index{transfert\+Next\+Piece@{transfert\+Next\+Piece}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{transfert\+Next\+Piece()}{transfertNextPiece()}}
+{\footnotesize\ttfamily void transfert\+Next\+Piece (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece} $\ast$}]{current\+Piece,  }\item[{\hyperlink{struct_piece}{Piece}}]{next\+Piece,  }\item[{int}]{hardcore }\end{DoxyParamCaption})}
+
+
+
+Copie une pièce dans une autre. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em current\+Piece} & La pièce destinatrice \\
+\hline
+{\em next\+Piece} & La pièce source \\
+\hline
+{\em hardcore} & La difficulté du jeu \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{tetris_8c_a19882390a87a14fd0b6604bc102f4da1_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a19882390a87a14fd0b6604bc102f4da1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a05bef1cab76ded2320a764674b4c3641}\label{tetris_8c_a05bef1cab76ded2320a764674b4c3641}} 
+\index{tetris.\+c@{tetris.\+c}!try\+Shift@{try\+Shift}}
+\index{try\+Shift@{try\+Shift}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{try\+Shift()}{tryShift()}}
+{\footnotesize\ttfamily int try\+Shift (\begin{DoxyParamCaption}\item[{int}]{shift\+Init,  }\item[{int}]{max\+Shift,  }\item[{\hyperlink{struct_piece}{Piece} $\ast$}]{piece,  }\item[{float $\ast$}]{piece\+Coor,  }\item[{int}]{sign,  }\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Essaye de déplacer une pièce en vérifiant si elle est dans un emplacement valide. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em shift\+Init} & Le décallage de base (minimum) \\
+\hline
+{\em max\+Shift} & Le décallage maximum \\
+\hline
+{\em piece} & La pièce à tester \\
+\hline
+{\em piece\+Coor} & La coordonnée (x ou y) de la pièce à tester \\
+\hline
+{\em sign} & Le sens de décallage \\
+\hline
+{\em matrix} & La matrice pour tester la validité de la pièce \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Vrai si un emplacement valide a été trouvé sinon faux 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=269pt]{tetris_8c_a05bef1cab76ded2320a764674b4c3641_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a05bef1cab76ded2320a764674b4c3641_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ab86835b7f6bddb7b5ef9fa6295b30484}\label{tetris_8c_ab86835b7f6bddb7b5ef9fa6295b30484}} 
+\index{tetris.\+c@{tetris.\+c}!update\+Distances@{update\+Distances}}
+\index{update\+Distances@{update\+Distances}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{update\+Distances()}{updateDistances()}}
+{\footnotesize\ttfamily void update\+Distances (\begin{DoxyParamCaption}\item[{float}]{frame\mbox{[}\+N\+B\+\_\+\+F\+R\+A\+M\+E\+S\mbox{]},  }\item[{float}]{distances\mbox{[}\+N\+B\+\_\+\+D\+I\+S\+T\+A\+N\+C\+E\+S\mbox{]},  }\item[{int $\ast$}]{frame\+Passed,  }\item[{int $\ast$}]{frame\+Dest\+Jauge,  }\item[{long int $\ast$}]{frame\+Total\+Speed }\end{DoxyParamCaption})}
+
+
+
+Met à jour les distances et frames de déplacement, d\textquotesingle{}arrêt et de départ des pièces selon le nombre de frames qui se sont passées depuis le dernier appel. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em frame} & Les frames de déplacement, d\textquotesingle{}arrêt et de départ \\
+\hline
+{\em distances} & Les distances de déplacement \\
+\hline
+{\em frame\+Passed} & Le nombre de frame depuis le dernier appel \\
+\hline
+{\em frame\+Dest\+Jauge} & Les frames pour l\textquotesingle{}animation d\textquotesingle{}augmentation de la jauge de vitesse \\
+\hline
+{\em frame\+Total\+Speed} & Le nombre de frame théorique (avec bonus) depuis le début (pour la jauge) \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ab86835b7f6bddb7b5ef9fa6295b30484_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_ae452df4bd2e58349e6350342b6153c61}\label{tetris_8c_ae452df4bd2e58349e6350342b6153c61}} 
+\index{tetris.\+c@{tetris.\+c}!update\+Frames@{update\+Frames}}
+\index{update\+Frames@{update\+Frames}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{update\+Frames()}{updateFrames()}}
+{\footnotesize\ttfamily int update\+Frames (\begin{DoxyParamCaption}\item[{int}]{frame\+Laser\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{frame\+Complete\+Line\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{matrix\+Fill\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{bonus\+Activate\mbox{[}\+N\+B\+\_\+\+B\+O\+N\+U\+S\+E\+S\mbox{]},  }\item[{\hyperlink{struct_score}{Score} $\ast$}]{score\+Affichage,  }\item[{\hyperlink{struct_score}{Score} $\ast$}]{score\+Add,  }\item[{\hyperlink{struct_score_total}{Score\+Total} $\ast$}]{score\+Total,  }\item[{int $\ast$}]{frame\+Dest\+Jauge,  }\item[{long int}]{frame\+Total\+Speed,  }\item[{long int $\ast$}]{frame\+Total\+Show,  }\item[{long long $\ast$}]{score\+\_\+hash,  }\item[{long}]{keys\mbox{[}4\mbox{]},  }\item[{Mix\+\_\+\+Chunk $\ast$}]{sound\+Line,  }\item[{Mix\+\_\+\+Chunk $\ast$}]{sound\+Fill }\end{DoxyParamCaption})}
+
+
+
+Actualise toutes les animations et réagis lorsqu\textquotesingle{}elles arrivent à certains moments. 
+
+\begin{DoxyRemark}{Remarques}
+De nombreuses variables et choses différentes se passent dans cette fonction, mais pour beaucoup elles dépendent les unes des autres donc décomposer en fonction ne ferait qu\textquotesingle{}ajouter des appels lourds 
+\end{DoxyRemark}
+
+\begin{DoxyParams}{Paramètres}
+{\em frame\+Laser} & Les animations de L\+A\+S\+ER \\
+\hline
+{\em frame\+Complete\+Line} & Les animations de complétion de ligne \\
+\hline
+{\em matrix} & La matrice \\
+\hline
+{\em matrix\+Fill} & Les animations de F\+I\+LL \\
+\hline
+{\em bonus\+Activate} & Le tableau des bonus obtenus cette frame \\
+\hline
+{\em score\+Affichage} & Les animations de score et combo de lignes \\
+\hline
+{\em score\+Add} & Les scores et combos obtenus cette frame \\
+\hline
+{\em score\+Total} & Le score total \\
+\hline
+{\em frame\+Dest\+Jauge} & Les frames de l\textquotesingle{}animation de remplissage de la jauge \\
+\hline
+{\em frame\+Total\+Speed} & Le nombre de frame total compabilisé avec bonus \\
+\hline
+{\em frame\+Total\+Show} & Le nombre de frame total qui tend vers frame\+Total\+Speed pour l\textquotesingle{}animation d\textquotesingle{}update score total \\
+\hline
+{\em score\+\_\+hash} & le score hashé \\
+\hline
+{\em keys} & les clés de hashage \\
+\hline
+{\em sound\+Line} & Le son de complétion de ligne \\
+\hline
+{\em sound\+Fill} & Le son du bonus F\+I\+LL \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Faux si il y a une erreur de sécurité hashage, sinon vrai 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ae452df4bd2e58349e6350342b6153c61_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_ae452df4bd2e58349e6350342b6153c61_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a33a2ebbffb42b551f6c1a4a1a1ad30af}\label{tetris_8c_a33a2ebbffb42b551f6c1a4a1a1ad30af}} 
+\index{tetris.\+c@{tetris.\+c}!update\+Grille@{update\+Grille}}
+\index{update\+Grille@{update\+Grille}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{update\+Grille()}{updateGrille()}}
+{\footnotesize\ttfamily void update\+Grille (\begin{DoxyParamCaption}\item[{\hyperlink{struct_piece}{Piece} $\ast$}]{piece,  }\item[{int}]{hardcore }\end{DoxyParamCaption})}
+
+
+
+Met à jour les informations de la grille de la pièce selon son id, sa rotation et le fait qu\textquotesingle{}elle soit géante ou non. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em piece} & La pièce \\
+\hline
+{\em hardcore} & Indique si le mode de jeu est facile ou difficile \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a33a2ebbffb42b551f6c1a4a1a1ad30af_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a05ed89c0442ea4d45cfca45ea02631e1}\label{tetris_8c_a05ed89c0442ea4d45cfca45ea02631e1}} 
+\index{tetris.\+c@{tetris.\+c}!update\+Score\+Affichage@{update\+Score\+Affichage}}
+\index{update\+Score\+Affichage@{update\+Score\+Affichage}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{update\+Score\+Affichage()}{updateScoreAffichage()}}
+{\footnotesize\ttfamily void update\+Score\+Affichage (\begin{DoxyParamCaption}\item[{\hyperlink{struct_score}{Score} $\ast$}]{score\+Affichage,  }\item[{\hyperlink{struct_score}{Score}}]{score\+Add\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{\hyperlink{struct_score_total}{Score\+Total} $\ast$}]{score\+Total }\end{DoxyParamCaption})}
+
+
+
+Rajoute les scores et combos obtenus cette frame dans le tableau de score à afficher pour toutes les lignes. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em score\+Affichage} & Les scores des lignes \\
+\hline
+{\em score\+Add} & Les scores et combo de lignes à ajouter \\
+\hline
+{\em score\+Total} & Le score total \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=284pt]{tetris_8c_a05ed89c0442ea4d45cfca45ea02631e1_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a05ed89c0442ea4d45cfca45ea02631e1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{tetris_8c_a545126c622dbde4ab4a8541dc5e3fef3}\label{tetris_8c_a545126c622dbde4ab4a8541dc5e3fef3}} 
+\index{tetris.\+c@{tetris.\+c}!use\+Bonus@{use\+Bonus}}
+\index{use\+Bonus@{use\+Bonus}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{use\+Bonus()}{useBonus()}}
+{\footnotesize\ttfamily void use\+Bonus (\begin{DoxyParamCaption}\item[{int}]{bonus\+Id,  }\item[{int}]{frame\+Laser\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int $\ast$}]{frame\+Passed,  }\item[{int}]{nb\+Use,  }\item[{int}]{matrix\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int}]{matrix\+Fill\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+W\mbox{]}\mbox{[}\+G\+R\+I\+L\+L\+E\+\_\+\+H\mbox{]},  }\item[{int $\ast$}]{next\+Is\+Giant }\end{DoxyParamCaption})}
+
+
+
+Effectue l\textquotesingle{}action d\textquotesingle{}un bonus. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em bonus\+Id} & L\textquotesingle{}identifiant du bonus \\
+\hline
+{\em frame\+Laser} & Les frames d\textquotesingle{}animation du bonus L\+A\+S\+ER \\
+\hline
+{\em frame\+Passed} & Le nombre de frames déroules (pour S\+L\+OW et S\+P\+E\+ED) \\
+\hline
+{\em nb\+Use} & Le nombre d\textquotesingle{}exemplaires de ce bonus gagnés \\
+\hline
+{\em matrix} & La grille \\
+\hline
+{\em matrix\+Fill} & Les frames d\textquotesingle{}animation du bonus F\+I\+LL \\
+\hline
+{\em next\+Is\+Giant} & Indique si la prochaine pièce est géante \\
+\hline
+\end{DoxyParams}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=249pt]{tetris_8c_a545126c622dbde4ab4a8541dc5e3fef3_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetris_8c_a545126c622dbde4ab4a8541dc5e3fef3_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Documentation des variables}
+\mbox{\Hypertarget{tetris_8c_a30862aa51c2944f287c4445751341ee8}\label{tetris_8c_a30862aa51c2944f287c4445751341ee8}} 
+\index{tetris.\+c@{tetris.\+c}!update\+Ended@{update\+Ended}}
+\index{update\+Ended@{update\+Ended}!tetris.\+c@{tetris.\+c}}
+\subsubsection{\texorpdfstring{update\+Ended}{updateEnded}}
+{\footnotesize\ttfamily int update\+Ended}
+

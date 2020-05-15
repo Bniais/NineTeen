@@ -1,0 +1,8 @@
+<map id="drawComboText" name="drawComboText">
+<area shape="rect" id="node2" href="$tetris_8c.html#ad8ffdcf46f82426ad3c5c0e38e0bca22" title="Determine les textes de combos et leurs attributs et les affiche. " alt="" coords="172,5,264,32"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="312,5,363,32"/>
+<area shape="rect" id="node4" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="411,5,517,32"/>
+<area shape="rect" id="node5" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="565,5,691,32"/>
+<area shape="rect" id="node6" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="603,56,653,83"/>
+<area shape="rect" id="node7" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="739,56,789,83"/>
+</map>

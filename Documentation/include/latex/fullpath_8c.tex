@@ -1,0 +1,171 @@
+\hypertarget{fullpath_8c}{}\section{Référence du fichier include/fullpath.c}
+\label{fullpath_8c}\index{include/fullpath.\+c@{include/fullpath.\+c}}
+
+
+permet de reconstruire un lien de fichier complet sur mac OS  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$limits.\+h$>$}\newline
+Graphe des dépendances par inclusion de fullpath.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=326pt]{fullpath_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+static int \hyperlink{fullpath_8c_a971aa46d4b8a983073ebca2f29b47d7e}{nb\+Occurence} (char s\mbox{[}$\,$\mbox{]}, char c)
+\begin{DoxyCompactList}\small\item\em compte le nombre d occurence d un caractere \end{DoxyCompactList}\item 
+static char $\ast$ \hyperlink{fullpath_8c_a71d5e4ed9d9f73471cfc48a943e2c290}{complet\+Path\+Of} (char s\mbox{[}$\,$\mbox{]}, int mode)
+\begin{DoxyCompactList}\small\item\em complete le path \end{DoxyCompactList}\item 
+static int \hyperlink{fullpath_8c_a3957a3f02a1e6b683d02405d47f92126}{detection\+Mode} (char s\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em detecte le mode si besoin ou non \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{fullpath_8c_a02e9398e99a0a3837bae3d6f2d2a0687}{full\+Path} (char s\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em fonction principal que ce charge de faire l appel de chaque fonction \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+F\+I\+LE $\ast$ \hyperlink{fullpath_8c_a1ce6bb164d37e605aa60e94aefe73817}{E\+X\+T\+\_\+\+F\+I\+LE}
+\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+permet de reconstruire un lien de fichier complet sur mac OS 
+
+\begin{DoxyAuthor}{Auteur}
+Samy M. 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+31 janvier 2020 
+\end{DoxyDate}
+
+
+\subsection{Documentation des fonctions}
+\mbox{\Hypertarget{fullpath_8c_a71d5e4ed9d9f73471cfc48a943e2c290}\label{fullpath_8c_a71d5e4ed9d9f73471cfc48a943e2c290}} 
+\index{fullpath.\+c@{fullpath.\+c}!complet\+Path\+Of@{complet\+Path\+Of}}
+\index{complet\+Path\+Of@{complet\+Path\+Of}!fullpath.\+c@{fullpath.\+c}}
+\subsubsection{\texorpdfstring{complet\+Path\+Of()}{completPathOf()}}
+{\footnotesize\ttfamily char $\ast$ complet\+Path\+Of (\begin{DoxyParamCaption}\item[{char}]{s\mbox{[}$\,$\mbox{]},  }\item[{int}]{mode }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+complete le path 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em s} & Le chemin d\textquotesingle{}execution \\
+\hline
+{\em mode} & Détermine si c\textquotesingle{}est ./ ou a/a\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+la nouvelle chaine 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=322pt]{fullpath_8c_a71d5e4ed9d9f73471cfc48a943e2c290_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{fullpath_8c_a3957a3f02a1e6b683d02405d47f92126}\label{fullpath_8c_a3957a3f02a1e6b683d02405d47f92126}} 
+\index{fullpath.\+c@{fullpath.\+c}!detection\+Mode@{detection\+Mode}}
+\index{detection\+Mode@{detection\+Mode}!fullpath.\+c@{fullpath.\+c}}
+\subsubsection{\texorpdfstring{detection\+Mode()}{detectionMode()}}
+{\footnotesize\ttfamily int detection\+Mode (\begin{DoxyParamCaption}\item[{char}]{s\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+detecte le mode si besoin ou non 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em s} & Détecte le mode du chemin ( ./ ou a/a )\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+1/0 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{fullpath_8c_a3957a3f02a1e6b683d02405d47f92126_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{fullpath_8c_a02e9398e99a0a3837bae3d6f2d2a0687}\label{fullpath_8c_a02e9398e99a0a3837bae3d6f2d2a0687}} 
+\index{fullpath.\+c@{fullpath.\+c}!full\+Path@{full\+Path}}
+\index{full\+Path@{full\+Path}!fullpath.\+c@{fullpath.\+c}}
+\subsubsection{\texorpdfstring{full\+Path()}{fullPath()}}
+{\footnotesize\ttfamily char $\ast$ full\+Path (\begin{DoxyParamCaption}\item[{char}]{s\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+fonction principal que ce charge de faire l appel de chaque fonction 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em s} & Le chemin d\textquotesingle{}exectution\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+nouvelle chaine avec le path complet pour mac 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=248pt]{fullpath_8c_a02e9398e99a0a3837bae3d6f2d2a0687_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{fullpath_8c_a02e9398e99a0a3837bae3d6f2d2a0687_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{fullpath_8c_a971aa46d4b8a983073ebca2f29b47d7e}\label{fullpath_8c_a971aa46d4b8a983073ebca2f29b47d7e}} 
+\index{fullpath.\+c@{fullpath.\+c}!nb\+Occurence@{nb\+Occurence}}
+\index{nb\+Occurence@{nb\+Occurence}!fullpath.\+c@{fullpath.\+c}}
+\subsubsection{\texorpdfstring{nb\+Occurence()}{nbOccurence()}}
+{\footnotesize\ttfamily int nb\+Occurence (\begin{DoxyParamCaption}\item[{char}]{s\mbox{[}$\,$\mbox{]},  }\item[{char}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+compte le nombre d occurence d un caractere 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em s} & La chaine à examiner \\
+\hline
+{\em c} & Le caractère à compter\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+retourne le nombre d occurence d un caractere 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=314pt]{fullpath_8c_a971aa46d4b8a983073ebca2f29b47d7e_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Documentation des variables}
+\mbox{\Hypertarget{fullpath_8c_a1ce6bb164d37e605aa60e94aefe73817}\label{fullpath_8c_a1ce6bb164d37e605aa60e94aefe73817}} 
+\index{fullpath.\+c@{fullpath.\+c}!E\+X\+T\+\_\+\+F\+I\+LE@{E\+X\+T\+\_\+\+F\+I\+LE}}
+\index{E\+X\+T\+\_\+\+F\+I\+LE@{E\+X\+T\+\_\+\+F\+I\+LE}!fullpath.\+c@{fullpath.\+c}}
+\subsubsection{\texorpdfstring{E\+X\+T\+\_\+\+F\+I\+LE}{EXT\_FILE}}
+{\footnotesize\ttfamily F\+I\+LE$\ast$ E\+X\+T\+\_\+\+F\+I\+LE}
+

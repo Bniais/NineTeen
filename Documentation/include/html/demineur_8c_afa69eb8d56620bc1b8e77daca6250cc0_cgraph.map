@@ -1,0 +1,6 @@
+<map id="init_grille" name="init_grille">
+<area shape="rect" id="node2" href="$demineur_8c.html#a90ebe0ed1e9ab349fdfe54706f5a2ad3" title="coor_valide" alt="" coords="617,32,705,59"/>
+<area shape="rect" id="node3" href="$demineur_8c.html#a1aeb236ea4ef74475e3fc90c2bb789ad" title="etat" alt="" coords="127,32,171,59"/>
+<area shape="rect" id="node4" href="$demineur_8c.html#a216e830c55f7138da1627b29dac41b69" title="nb_bombes_autour" alt="" coords="437,57,569,84"/>
+<area shape="rect" id="node5" href="$demineur_8c.html#a56afde4cddb364095eab7c98ae563e22" title="danger_avec_libre_autour" alt="" coords="219,108,389,135"/>
+</map>

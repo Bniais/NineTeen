@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['centre_5fvaiss',['CENTRE_VAISS',['../7__asteroid_2config_8h.html#ae9fca2f857bd6028a231907b9fab1bea',1,'config.h']]],
+  ['chance_5fbonus',['CHANCE_BONUS',['../7__asteroid_2config_8h.html#afb01e08a19c87cb7852620f89e14c87b',1,'config.h']]],
+  ['chiffre',['CHIFFRE',['../flappy__bird_8c.html#ae4eeb02b43aebb10a51d6d398895765e',1,'flappy_bird.c']]],
+  ['cible_5fpy',['cible_py',['../struct_camera__s.html#ab114eea48a0a3a97349ee604f0706dac',1,'Camera_s']]],
+  ['coefradius',['coefRadius',['../struct_fruit.html#ae5a056bd55b04d92a295125e2b2f724f',1,'Fruit']]],
+  ['col_5fpiece',['COL_PIECE',['../5__tetris_2config_8h.html#a850ffd8650867fbfef2949c2678936c8',1,'config.h']]],
+  ['color',['color',['../struct_jauge.html#a5426eef58429780fbfcd74f0a4b72eca',1,'Jauge']]],
+  ['color_5ferror_5floading',['COLOR_ERROR_LOADING',['../commun_functions_8c.html#a30ee815d8c709aa66a576c66472d3a48',1,'communFunctions.c']]],
+  ['color_5fjauge',['COLOR_JAUGE',['../2__snake_2config_8h.html#a40076320a4ff1a9565bf3f806584a955',1,'config.h']]],
+  ['color_5fjauge_5fback',['COLOR_JAUGE_BACK',['../2__snake_2config_8h.html#acc130135e04e013d81f4763e1f439444',1,'config.h']]],
+  ['color_5floading',['COLOR_LOADING',['../flappy__bird_8c.html#a093b04abda57654be8b6ece6e07ab06d',1,'flappy_bird.c']]],
+  ['combo',['combo',['../struct_score.html#ae22d389a99bf914464ec06fbda7ccf0d',1,'Score']]],
+  ['combo_5fcolor',['COMBO_COLOR',['../5__tetris_2config_8h.html#a1e30025412e4ecfaa48228dc92ee891f',1,'config.h']]],
+  ['connectended',['connectEnded',['../lib_web_8c.html#a475b89cfe715cf08a050de5875525f14',1,'libWeb.c']]],
+  ['contour_5fgrille',['CONTOUR_GRILLE',['../5__tetris_2config_8h.html#a511836eda64378a4556a07c4b354a3f4',1,'config.h']]],
+  ['coord_5fspawn',['coord_spawn',['../7__asteroid_2config_8h.html#a7c1bdb8d8602a6bf6c2802e050a92f0e',1,'config.h']]],
+  ['corps_5fgrille',['CORPS_GRILLE',['../5__tetris_2config_8h.html#a0d87707fca556bfaf7e6868711ada6c1',1,'config.h']]],
+  ['cote_5fspawn',['cote_spawn',['../struct_asteroid.html#ad22a8ef78c1ce52730fb286c525663db',1,'Asteroid']]],
+  ['cyan',['cyan',['../main_8c.html#a57f58d1b1b9d954235bef55feff5e840',1,'main.c']]]
+];

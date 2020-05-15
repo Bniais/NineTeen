@@ -1,0 +1,6 @@
+<map id="trop_pres" name="trop_pres">
+<area shape="rect" id="node2" href="$asteroid_8c.html#a0e1887200685ed69b76a90ecfc3139a2" title="vaisseau_touche" alt="" coords="129,5,249,32"/>
+<area shape="rect" id="node4" href="$asteroid_8c.html#a2b28935e7423bac6746116db768f6416" title="asteroid_touche" alt="" coords="132,56,247,83"/>
+<area shape="rect" id="node5" href="$asteroid_8c.html#ae3cb9ce87e2a964a48513236f1a3b002" title="spawn_asteroid" alt="" coords="133,107,246,133"/>
+<area shape="rect" id="node3" href="$asteroid_8c.html#a7c77cd484439e0aa7e7758525457bee8" title="asteroid" alt="" coords="297,56,365,83"/>
+</map>

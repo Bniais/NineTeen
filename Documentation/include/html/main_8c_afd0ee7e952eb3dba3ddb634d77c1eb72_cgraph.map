@@ -1,0 +1,17 @@
+<map id="connexion" name="connexion">
+<area shape="rect" id="node2" href="$commun_functions_8c.html#af1e4d4eaa8a0a9e3ba768193d58e2792" title="permet de faire une allocation dynamqiue avec message d&#39;erreur " alt="" coords="179,5,245,32"/>
+<area shape="rect" id="node3" href="$text_field_8c.html#a39611766c9d772094ce44edc915b6b50" title="test si la souris est positionner dans le rectangle " alt="" coords="169,56,255,83"/>
+<area shape="rect" id="node4" href="$text_field_8c.html#ae24b08bc0eb4bbc3320b264568532505" title="Recuperer une chaine de caractere saisi au clavier. " alt="" coords="176,107,248,133"/>
+<area shape="rect" id="node6" href="$lib_web_8c.html#ab5e65dfa5ba90c7499277657617194cf" title="connexion avec nom d&#39;utilisateur " alt="" coords="135,157,289,184"/>
+<area shape="rect" id="node13" href="$main_8c.html#ad3fffe2a92945f4ee0723a625a624af6" title="permet d&#39;ouvrir une page web sur les 3 OS " alt="" coords="141,208,283,235"/>
+<area shape="rect" id="node14" href="$main_8c.html#ac99b5b2ed70796b04227bea66568dd51" title="cette fonction permet d&#39;afficher tous les elements present dans le launcher. " alt="" coords="181,259,243,285"/>
+<area shape="rect" id="node16" href="$text_field_8c.html#ad0d72e48f0b4f55ed5077899e75da497" title="sous fonction de textField() " alt="" coords="348,309,456,336"/>
+<area shape="rect" id="node5" href="$flappy__bird_8c.html#a96e403e8f6333abe2bee8d0429217c7c" title="remet les variables au DEFINE si on appui sur espace " alt="" coords="359,107,445,133"/>
+<area shape="rect" id="node7" href="$lib_web_8c.html#a645a96c1c84b1241792799dd13cf04a2" title="Permet de crée une requet dans *dest. " alt="" coords="337,157,467,184"/>
+<area shape="rect" id="node9" href="$lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="653,208,768,235"/>
+<area shape="rect" id="node8" href="$lib_web_8c.html#af1cd9df671d9ed2e6f502a489108e8a0" title="securise la requete avec une cle unique " alt="" coords="515,157,605,184"/>
+<area shape="rect" id="node12" href="$lib_web_8c.html#acc91e4581d5b08881b24df3e7755922c" title="hash la chaine en md5 " alt="" coords="671,157,750,184"/>
+<area shape="rect" id="node10" href="$lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="816,183,895,209"/>
+<area shape="rect" id="node11" href="$lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="818,233,893,260"/>
+<area shape="rect" id="node15" href="$commun_functions_8c.html#ad0ed0fe31f27ac7898fd7c0d25f8d71c" title="Affiche l&#39;animation de chargement des envois de requêtes. " alt="" coords="347,259,457,285"/>
+</map>

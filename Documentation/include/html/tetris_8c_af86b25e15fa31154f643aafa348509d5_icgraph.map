@@ -1,0 +1,8 @@
+<map id="getFillPlaces" name="getFillPlaces">
+<area shape="rect" id="node2" href="$tetris_8c.html#a545126c622dbde4ab4a8541dc5e3fef3" title="Effectue l&#39;action d&#39;un bonus. " alt="" coords="151,5,231,32"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="279,5,329,32"/>
+<area shape="rect" id="node4" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="377,5,484,32"/>
+<area shape="rect" id="node5" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="532,5,657,32"/>
+<area shape="rect" id="node6" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="569,56,620,83"/>
+<area shape="rect" id="node7" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="705,56,756,83"/>
+</map>

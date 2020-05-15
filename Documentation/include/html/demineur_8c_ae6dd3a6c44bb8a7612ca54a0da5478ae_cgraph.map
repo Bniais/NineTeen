@@ -1,0 +1,12 @@
+<map id="demineur" name="demineur">
+<area shape="rect" id="node2" href="$demineur_8c.html#a98ccc1d6ebce113643a26c9968dd5f58" title="myInit" alt="" coords="161,5,220,32"/>
+<area shape="rect" id="node3" href="$demineur_8c.html#ad29393d03041cbab1de2d78d8fd4bc69" title="maximizeWindow" alt="" coords="128,56,253,83"/>
+<area shape="rect" id="node4" href="$demineur_8c.html#a90ebe0ed1e9ab349fdfe54706f5a2ad3" title="coor_valide" alt="" coords="847,208,935,235"/>
+<area shape="rect" id="node5" href="$demineur_8c.html#afa69eb8d56620bc1b8e77daca6250cc0" title="init_grille" alt="" coords="154,157,227,184"/>
+<area shape="rect" id="node6" href="$demineur_8c.html#a1aeb236ea4ef74475e3fc90c2bb789ad" title="etat" alt="" coords="329,208,373,235"/>
+<area shape="rect" id="node9" href="$demineur_8c.html#a8e0b93803ed0574541c771a04263132f" title="afficher_texte" alt="" coords="140,259,241,285"/>
+<area shape="rect" id="node10" href="$demineur_8c.html#ac2482fce090f9b10007dd4cb206d58c7" title="afficher_grille" alt="" coords="301,335,400,361"/>
+<area shape="rect" id="node11" href="$demineur_8c.html#ad9d11bfa701219bc7e10683e3e2b8ca2" title="fin_jeu" alt="" coords="161,360,221,387"/>
+<area shape="rect" id="node7" href="$demineur_8c.html#a216e830c55f7138da1627b29dac41b69" title="nb_bombes_autour" alt="" coords="667,309,799,336"/>
+<area shape="rect" id="node8" href="$demineur_8c.html#a56afde4cddb364095eab7c98ae563e22" title="danger_avec_libre_autour" alt="" coords="448,259,619,285"/>
+</map>

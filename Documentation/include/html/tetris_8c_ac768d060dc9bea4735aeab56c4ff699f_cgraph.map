@@ -1,0 +1,11 @@
+<map id="rotatePiece" name="rotatePiece">
+<area shape="rect" id="node2" href="$tetris_8c.html#a33a2ebbffb42b551f6c1a4a1a1ad30af" title="Met à jour les informations de la grille de la pièce selon son id, sa rotation et le fait qu&#39;elle soi..." alt="" coords="154,56,245,83"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#afd2c27e6f112264f9fb50e10fa8e9d70" title="Met à jour les informations de premières et dernière ligne et collone d&#39;une pièce. " alt="" coords="141,107,257,133"/>
+<area shape="rect" id="node8" href="$tetris_8c.html#ab1f20fd2b247412fbface8ef523015d9" title="Détermine si une pièce dépasse des bords de la grille. " alt="" coords="310,208,441,235"/>
+<area shape="rect" id="node9" href="$tetris_8c.html#a423d814944d7cdabae7238532af7399d" title="Teste si une pièce est en collision avec les pièces déjà inscrites dans la grille. " alt="" coords="305,259,445,285"/>
+<area shape="rect" id="node10" href="$tetris_8c.html#a05bef1cab76ded2320a764674b4c3641" title="Essaye de déplacer une pièce en vérifiant si elle est dans un emplacement valide. ..." alt="" coords="167,208,231,235"/>
+<area shape="rect" id="node4" href="$tetris_8c.html#a247740fca8738ba272f965130ea77491" title="Calcule l&#39;indice de la première collone d&#39;une pièce. " alt="" coords="320,5,431,32"/>
+<area shape="rect" id="node5" href="$tetris_8c.html#afa8c2cc6ef8499b8480402ff1aa27762" title="Calcule l&#39;indice de la dernière collone d&#39;une pièce. " alt="" coords="320,56,431,83"/>
+<area shape="rect" id="node6" href="$tetris_8c.html#a96e57a2ea28461c14cb723f46d8efd9f" title="Calcule l&#39;indice de la première ligne d&#39;une pièce. " alt="" coords="329,107,422,133"/>
+<area shape="rect" id="node7" href="$tetris_8c.html#ad09a602d0b6c16445fab969f701a7d06" title="Calcule l&#39;indice de la dernière ligne d&#39;une pièce. " alt="" coords="329,157,421,184"/>
+</map>

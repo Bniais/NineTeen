@@ -1,0 +1,51 @@
+<map id="main" name="main">
+<area shape="rect" id="node2" href="$lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="797,103,912,130"/>
+<area shape="rect" id="node5" href="$commun_functions_8c.html#af1e4d4eaa8a0a9e3ba768193d58e2792" title="permet de faire une allocation dynamqiue avec message d&#39;erreur " alt="" coords="821,660,888,687"/>
+<area shape="rect" id="node6" href="$commun_functions_8c.html#ab497da0f3b8a639a9993a3aa10460c30" title="permet d&#39;afficher les info CPU/GPU " alt="" coords="104,1116,292,1143"/>
+<area shape="rect" id="node7" href="$main_8c.html#a94cac2e3d54b21d4e26db7f3d15e8e6a" title="permet de verifier la version du VERSION_LOGICIEL " alt="" coords="147,154,249,180"/>
+<area shape="rect" id="node10" href="$fullpath_8c.html#a02e9398e99a0a3837bae3d6f2d2a0687" title="fonction principal que ce charge de faire l appel de chaque fonction " alt="" coords="165,1572,231,1599"/>
+<area shape="rect" id="node14" href="$main_8c.html#a17ecaa560299c190b6147a919ffed8c5" title="regroupe les fonctions permettant de faire fonctionner le launcher avec l appel de connexion/chargeme..." alt="" coords="163,356,233,383"/>
+<area shape="rect" id="node28" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="173,1066,223,1092"/>
+<area shape="rect" id="node3" href="$lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="971,78,1049,104"/>
+<area shape="rect" id="node4" href="$lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="973,128,1047,155"/>
+<area shape="rect" id="node8" href="$lib_web_8c.html#a0e29e9eb16393df50ad9f677aa1ab1b8" title="permet de verifier la bonne version de l&#39;utilisateur " alt="" coords="584,78,723,104"/>
+<area shape="rect" id="node9" href="$commun_functions_8c.html#ad7115d96f0ae2328db6b62564ece982d" title="affiche une popup systeme " alt="" coords="345,154,515,180"/>
+<area shape="rect" id="node11" href="$fullpath_8c.html#a971aa46d4b8a983073ebca2f29b47d7e" title="compte le nombre d occurence d un caractere " alt="" coords="381,1547,479,1574"/>
+<area shape="rect" id="node12" href="$fullpath_8c.html#a3957a3f02a1e6b683d02405d47f92126" title="detecte le mode si besoin ou non " alt="" coords="377,1598,483,1624"/>
+<area shape="rect" id="node13" href="$fullpath_8c.html#a71d5e4ed9d9f73471cfc48a943e2c290" title="complete le path " alt="" coords="375,1648,485,1675"/>
+<area shape="rect" id="node15" href="$main_8c.html#a11b331a93f323447a69e780284e8679d" title="verifie si l utilisateur est deja connecter " alt="" coords="373,306,487,332"/>
+<area shape="rect" id="node17" href="$main_8c.html#afd0ee7e952eb3dba3ddb634d77c1eb72" title="la fonction gere l&#39;interaction globale de la vue, elle envoie les requetes de connexion et traite les..." alt="" coords="389,356,471,383"/>
+<area shape="rect" id="node24" href="$main_8c.html#a564bb0fc612137f87ebe7ad1614e975a" title="permet de sauvegarder le token dans un fichier " alt="" coords="365,255,495,282"/>
+<area shape="rect" id="node25" href="$main_8c.html#a3980fa98fa4e25d3fd957ad815ed142c" title="verifie la presence de tous les fichiers du jeu et charge la scene 3D ainsi que la table des scores ..." alt="" coords="365,559,495,586"/>
+<area shape="rect" id="node16" href="$lib_web_8c.html#a7e9a40cba3914561ea5795a6ef6f8394" title="connexion avec key " alt="" coords="594,128,713,155"/>
+<area shape="rect" id="node18" href="$text_field_8c.html#a39611766c9d772094ce44edc915b6b50" title="test si la souris est positionner dans le rectangle " alt="" coords="610,432,697,459"/>
+<area shape="rect" id="node19" href="$text_field_8c.html#ae24b08bc0eb4bbc3320b264568532505" title="Recuperer une chaine de caractere saisi au clavier. " alt="" coords="617,179,689,206"/>
+<area shape="rect" id="node20" href="$lib_web_8c.html#ab5e65dfa5ba90c7499277657617194cf" title="connexion avec nom d&#39;utilisateur " alt="" coords="576,280,731,307"/>
+<area shape="rect" id="node21" href="$main_8c.html#ad3fffe2a92945f4ee0723a625a624af6" title="permet d&#39;ouvrir une page web sur les 3 OS " alt="" coords="583,230,724,256"/>
+<area shape="rect" id="node22" href="$main_8c.html#ac99b5b2ed70796b04227bea66568dd51" title="cette fonction permet d&#39;afficher tous les elements present dans le launcher. " alt="" coords="622,382,685,408"/>
+<area shape="rect" id="node23" href="$text_field_8c.html#ad0d72e48f0b4f55ed5077899e75da497" title="sous fonction de textField() " alt="" coords="801,356,909,383"/>
+<area shape="rect" id="node26" href="$room_8c.html#a9d5eda0e789a5fc236195e2b0f605aaa" title="initialise la strcuture MeilleureScore_s avec le nom des jeux " alt="" coords="590,584,717,611"/>
+<area shape="rect" id="node27" href="$room_8c.html#a70263633a7a137f37ff72e5cf71cc7eb" title="Mes a jours les donnees liee au score de la structure meilleureScore. " alt="" coords="580,635,727,662"/>
+<area shape="rect" id="node29" href="$room_8c.html#a6746abb0b96cc3e013944163c053a0a3" title="fonction qui charge fixe la taille max de la fenetre " alt="" coords="371,1496,489,1523"/>
+<area shape="rect" id="node30" href="$room_8c.html#aa79fb9ded897b9bbbc0780feb6f9df9f" title="initialisation des variables lier au camera joueur et machines " alt="" coords="387,787,473,814"/>
+<area shape="rect" id="node31" href="$room_8c.html#a81296eac8fa7bcdd021c45e5c8e0921c" title="initalisation du volume " alt="" coords="394,838,466,864"/>
+<area shape="rect" id="node32" href="$room_8c.html#a77b40d2a48a66dc8f7b8207ed7a5e2a6" title="permet d&#39;appliquer la scene dans la window + mouvement camera " alt="" coords="568,990,739,1016"/>
+<area shape="rect" id="node36" href="$room_8c.html#a494760108e4661303a77ba7fb1122006" title="regle le mode de vue voulu et les lummiere de opengl " alt="" coords="574,838,733,864"/>
+<area shape="rect" id="node37" href="$room_8c.html#a920b806cad48b375b9a530814e7afd63" title="regle le volume de l&#39;environement sur un channel particuliere " alt="" coords="599,1192,707,1219"/>
+<area shape="rect" id="node40" href="$room_8c.html#a3ea615b7ff319d3bef6227857ce52786" title="permet de deplacer la source du son des pas et de le jouer " alt="" coords="608,1432,699,1459"/>
+<area shape="rect" id="node41" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="377,939,483,966"/>
+<area shape="rect" id="node44" href="$room_8c.html#aeb8bbd97cb6c720ffda7f7a9606e1b45" title="detruit les elements initaliser " alt="" coords="599,1040,708,1067"/>
+<area shape="rect" id="node45" href="$room_8c.html#ade7156d63e39a5b65ec2247840d9c381" title="afficher un background au classement pour qu&#39;il soit plus facilement visible " alt="" coords="351,1091,509,1118"/>
+<area shape="rect" id="node46" href="$room_8c.html#a47842a9ab60604cf3f40a87717aa685f" title="affichage de text sur un rendu OpenGL " alt="" coords="607,1370,700,1396"/>
+<area shape="rect" id="node47" href="$room_8c.html#a554c27dfea1971e6926e461187ebd29e" title="affichage un message propre a chaque machine " alt="" coords="368,1344,492,1371"/>
+<area shape="rect" id="node48" href="$room_8c.html#a22b155abc1008cd51da9718d8dff813e" title="permet de gerer les evenements liee au porte des toilettes " alt="" coords="354,1142,506,1168"/>
+<area shape="rect" id="node49" href="$room_8c.html#a901691690957fae9daa5d3d331da8ec7" title="permet d&#39;attendre avant d&#39;afficher message CLIGNOTANT affiche egalement les IPS " alt="" coords="340,1243,520,1270"/>
+<area shape="rect" id="node50" href="$room_8c.html#a88eaba9341fa844401d12a78679830dc" title="permet de mettre un nombre d&#39;image max et reglger la vitesse de deplacement en fonction des ips ..." alt="" coords="383,1294,477,1320"/>
+<area shape="rect" id="node33" href="$room_8c.html#ac7fd25ceb1c11ba859983d8fc5b6e742" title="Permet de gerer les deplacements de la camera. " alt="" coords="787,939,923,966"/>
+<area shape="rect" id="node34" href="$room_8c.html#a9a783579e7576a7ebfb754ff6a95926b" title="permet de regler l&#39;intensiter de chaque lampe presente dans la salle " alt="" coords="807,990,902,1016"/>
+<area shape="rect" id="node35" href="$room_8c.html#a2bbafc1b0562d4ee6d70364745714f89" title="Dessine un quadrilataire. " alt="" coords="795,1040,914,1067"/>
+<area shape="rect" id="node38" href="$room_8c.html#a99f0807856f649ff729b7924e125dcdf" title="renvoi la distance entre deux point " alt="" coords="804,1344,905,1371"/>
+<area shape="rect" id="node39" href="$room_8c.html#a6e52b9bce2208dbc639e5a979b15ca35" title="renvoi l&#39;angle entre 3 points " alt="" coords="810,1192,899,1219"/>
+<area shape="rect" id="node42" href="$room_8c.html#a2b408d60cd07c4117322cdbcc31fed7b" title="detection porte a proximite " alt="" coords="603,1116,703,1143"/>
+<area shape="rect" id="node43" href="$room_8c.html#abc49a289020f817b90aae10c27ae1c5b" title="permet d&#39;afficher le message avant de quitter ou au chargement de la room " alt="" coords="579,939,728,966"/>
+</map>

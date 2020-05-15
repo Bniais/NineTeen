@@ -1,0 +1,10 @@
+<map id="lenNum" name="lenNum">
+<area shape="rect" id="node2" href="$snake_8c.html#ad19affe43f9c0e08c2e359c5d56ed59c" title="Affiche un score de terrain. " alt="" coords="131,5,215,32"/>
+<area shape="rect" id="node8" href="$tetris_8c.html#ad89280f871b106975881d67c0482af34" title="Affiche les animations de score d&#39;une ligne. " alt="" coords="120,56,227,83"/>
+<area shape="rect" id="node3" href="$snake_8c.html#ade7b297c3e6ac4e9ba64a21163eec9b5" title="Affiche un score de terrain. " alt="" coords="275,5,332,32"/>
+<area shape="rect" id="node4" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="380,31,487,57"/>
+<area shape="rect" id="node5" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="535,31,660,57"/>
+<area shape="rect" id="node6" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="572,81,623,108"/>
+<area shape="rect" id="node7" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="708,81,759,108"/>
+<area shape="rect" id="node9" href="$tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="278,56,329,83"/>
+</map>

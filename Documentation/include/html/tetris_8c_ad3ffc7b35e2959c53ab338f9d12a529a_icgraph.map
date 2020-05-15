@@ -1,0 +1,12 @@
+<map id="getPieceId" name="getPieceId">
+<area shape="rect" id="node2" href="$tetris_8c.html#a3b39445f6b4c0418ce1dd739518dec67" title="Enclenche l&#39;animation de destruction de ligne et comptabilise les points rapportés et les bonus gagné..." alt="" coords="137,56,236,83"/>
+<area shape="rect" id="node10" href="$tetris_8c.html#aba5eccd8ab2578d308652afa73c71549" title="Dessine la grille et son contenu. " alt="" coords="285,107,371,133"/>
+<area shape="rect" id="node11" href="$tetris_8c.html#a6b3238157057d6edffdf70cc76ebb4a2" title="Affiche une pièce morte de l&#39;animation de fin de partie. " alt="" coords="420,157,549,184"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#a029193d8f5afd44d43843ce0d27b7ff2" title="Vérifie si des lignes sont complétées. " alt="" coords="284,56,372,83"/>
+<area shape="rect" id="node4" href="$tetris_8c.html#ae452df4bd2e58349e6350342b6153c61" title="Actualise toutes les animations et réagis lorsqu&#39;elles arrivent à certains moments. " alt="" coords="432,5,537,32"/>
+<area shape="rect" id="node5" href="$tetris_8c.html#ae91e87573658ce6bf4496a29ff517e75" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="597,81,648,108"/>
+<area shape="rect" id="node6" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="696,81,803,108"/>
+<area shape="rect" id="node7" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="851,81,976,108"/>
+<area shape="rect" id="node8" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="888,132,939,159"/>
+<area shape="rect" id="node9" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="1024,132,1075,159"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="ecrireText" name="ecrireText">
+<area shape="rect" id="node2" href="$leaderboard_8c.html#a14f7dd0af5a5a76079a0b705a796f679" title="affiche une cellule " alt="" coords="348,5,453,32"/>
+<area shape="rect" id="node8" href="$leaderboard_8c.html#a66f0efd7a6cc2cb950f5325357a3fe9f" title="affiche une / separateur entre des listes " alt="" coords="133,56,300,83"/>
+<area shape="rect" id="node9" href="$leaderboard_8c.html#a09857ead625fd6b4c32d3c0894f13c1d" title="affiche l&#39;HUD complet " alt="" coords="353,56,448,83"/>
+<area shape="rect" id="node3" href="$leaderboard_8c.html#adb7c03fcec842fb68ec6523b538f5ff7" title="leaderboard" alt="" coords="501,31,591,57"/>
+<area shape="rect" id="node4" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="639,31,745,57"/>
+<area shape="rect" id="node5" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="793,31,919,57"/>
+<area shape="rect" id="node6" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="831,81,881,108"/>
+<area shape="rect" id="node7" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="967,81,1017,108"/>
+</map>

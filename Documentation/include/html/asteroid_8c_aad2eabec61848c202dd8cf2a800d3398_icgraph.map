@@ -1,0 +1,6 @@
+<map id="randSign" name="randSign">
+<area shape="rect" id="node2" href="$asteroid_8c.html#a7b7c15b16930ffcc545b3f8a80d67dd7" title="detruire_asteroid" alt="" coords="127,5,245,32"/>
+<area shape="rect" id="node4" href="$asteroid_8c.html#a101a47caf287f1684d6d3f097446fd25" title="mouvement_tir" alt="" coords="132,56,240,83"/>
+<area shape="rect" id="node5" href="$asteroid_8c.html#ae3cb9ce87e2a964a48513236f1a3b002" title="spawn_asteroid" alt="" coords="129,107,243,133"/>
+<area shape="rect" id="node3" href="$asteroid_8c.html#a7c77cd484439e0aa7e7758525457bee8" title="asteroid" alt="" coords="293,56,361,83"/>
+</map>

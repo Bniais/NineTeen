@@ -1,0 +1,5 @@
+<map id="checkLines" name="checkLines">
+<area shape="rect" id="node2" href="$tetris_8c.html#a43138d18461e67de234da3ba3948b780" title="Enclenche l&#39;animation de destruction de ligne et comptabilise les points rapportés et les bonus gagné..." alt="" coords="141,31,240,57"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#ad3ffc7b35e2959c53ab338f9d12a529a" title="Obtient l&#39;id d&#39;une case de la matrice. " alt="" coords="290,5,374,32"/>
+<area shape="rect" id="node4" href="$tetris_8c.html#a602b2d26911345f5f9fc9c618332376d" title="Détermine l&#39;id du bonus d&#39;une case de la grille. " alt="" coords="288,56,376,83"/>
+</map>

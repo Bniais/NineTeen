@@ -1,0 +1,12 @@
+<map id="eatFruit" name="eatFruit">
+<area shape="rect" id="node2" href="$snake_8c.html#a01d32a4e465831ff02093a975fc19cfc" title="Détermine la taille d&#39;affichage du score d&#39;un fruit. " alt="" coords="123,5,203,32"/>
+<area shape="rect" id="node3" href="$snake_8c.html#a24e583790e5d49a5e6fa3d179ea4ae53" title="Suprimme des parties du serpent. " alt="" coords="130,56,197,83"/>
+<area shape="rect" id="node6" href="$snake_8c.html#aa18e911b4be3a77b0127c5d82a1e64b0" title="Fait apparaître un fruit. " alt="" coords="120,208,207,235"/>
+<area shape="rect" id="node8" href="$snake_8c.html#ae38231a62f58e817c8a5d5c0e65d81c7" title="Calcule la norme d&#39;un vecteur. " alt="" coords="481,183,540,209"/>
+<area shape="rect" id="node10" href="$tetris_8c.html#ab1f20fd2b247412fbface8ef523015d9" title="Détermine si une pièce dépasse des bords de la grille. " alt="" coords="445,309,576,336"/>
+<area shape="rect" id="node4" href="$snake_8c.html#a302fa1c00d3dfcf2e7deda97d2f86097" title="Décale le tableau de positions anciennes du serpent lors d&#39;une explosion de bombe. " alt="" coords="285,5,367,32"/>
+<area shape="rect" id="node5" href="$snake_8c.html#aad644da8ea3e101158c01657e4f38684" title="Décale le tableau de positions anciennes du serpent pour libérer de la place. " alt="" coords="271,56,381,83"/>
+<area shape="rect" id="node7" href="$snake_8c.html#a707860ff76b3c064c97abfb3aa3562d1" title="Détermine si un fruit est trop d&#39;un autre ou d&#39;un bonus pour pouvoir apparaître. " alt="" coords="261,208,391,235"/>
+<area shape="rect" id="node9" href="$snake_8c.html#aa9234d8c6419bdecdd99e4e9596fdbde" title="Détermine si un fruit est trop proche de la tête pour pouvoir apparaître. " alt="" coords="259,259,393,285"/>
+<area shape="rect" id="node11" href="$snake_8c.html#a5ab96fad579ff79a2df0bb06e86cb7d0" title="Détermine si un fruit est trop proche d&#39;un coin pour pouvoir apparaître. " alt="" coords="255,157,397,184"/>
+</map>

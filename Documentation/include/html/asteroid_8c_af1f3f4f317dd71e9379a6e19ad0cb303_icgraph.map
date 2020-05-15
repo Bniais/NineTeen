@@ -1,0 +1,8 @@
+<map id="get_bonus" name="get_bonus">
+<area shape="rect" id="node2" href="$asteroid_8c.html#a53204c929ab037429cac314a6c3d15e0" title="détruit un asteroid " alt="" coords="136,5,255,32"/>
+<area shape="rect" id="node3" href="$asteroid_8c.html#a837acea2c89acb4633fd60dbde2edc81" title="La fonction principale : Lance et fait tourner le jeu asteroid. " alt="" coords="303,5,371,32"/>
+<area shape="rect" id="node4" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="419,5,525,32"/>
+<area shape="rect" id="node5" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="573,5,699,32"/>
+<area shape="rect" id="node6" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="611,56,661,83"/>
+<area shape="rect" id="node7" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="747,56,797,83"/>
+</map>

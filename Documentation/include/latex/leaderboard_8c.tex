@@ -1,0 +1,929 @@
+\hypertarget{leaderboard_8c}{}\section{Référence du fichier room/leaderboard/leaderboard.c}
+\label{leaderboard_8c}\index{room/leaderboard/leaderboard.\+c@{room/leaderboard/leaderboard.\+c}}
+
+
+permet d\textquotesingle{}affciher le score du joueur  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+image.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+ttf.\+h$>$}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../../include/lib\+Web.\+h\char`\"{}}\newline
+Graphe des dépendances par inclusion de leaderboard.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Structures de données}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structclassement}{classement}
+\begin{DoxyCompactList}\small\item\em Contient les scores et nom des joueur charger. \end{DoxyCompactList}\item 
+struct \hyperlink{struct_scroll}{Scroll}
+\begin{DoxyCompactList}\small\item\em Contient les informations sur un scroll. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{leaderboard_8c_a7ee89081d078dd2a0777ac2700a59ad3}{L\+I\+M\+I\+T\+E\+\_\+\+F\+PS}~60
+\item 
+\#define \hyperlink{leaderboard_8c_a54ad9387fbe934c3e74e027729311d42}{N\+A\+T\+I\+F\+\_\+W}~1280
+\item 
+\#define \hyperlink{leaderboard_8c_ac7fd85b0a22cf744edd174492572616b}{N\+A\+T\+I\+F\+\_\+H}~720
+\item 
+\#define \hyperlink{leaderboard_8c_a54d4ec8b9d4a594fd078149e9c0be75a}{N\+O\+M\+B\+R\+E\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+F\+E\+N\+E\+T\+RE}~10
+\item 
+\#define \hyperlink{leaderboard_8c_af192d8ff49e094a39cfe42284f74e975}{P\+R\+E\+L\+O\+A\+D\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+M\+AX}~15
+\item 
+\#define \hyperlink{leaderboard_8c_a0ed1fe767838164107ff6c9a69f22ebb}{N\+O\+M\+B\+R\+E\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+L\+I\+S\+T\+\_\+\+S\+C\+R\+O\+LL}~6
+\item 
+\#define \hyperlink{leaderboard_8c_a5f9c39a1da9fde39408d383a0a8c88a7}{N\+O\+M\+B\+R\+E\+\_\+\+J\+E\+UX}~16
+\item 
+\#define \hyperlink{leaderboard_8c_ac4c22e94cc0be04312a74dcf451e74b1}{F\+R\+A\+M\+E\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE}~25
+\item 
+\#define \hyperlink{leaderboard_8c_a7de8a5ba14702b7bf2f6558903b1d3fb}{S\+C\+R\+E\+EN}~0
+\item 
+\#define \hyperlink{leaderboard_8c_a80d82b1da53a1196a365098e9d8acda0}{L\+I\+S\+T\+\_\+\+S\+C\+R\+O\+LL}~1
+\item 
+\#define \hyperlink{leaderboard_8c_adc90622a5afda265b9b8dd3bf10e651f}{L\+I\+S\+T\+\_\+\+S\+C\+O\+L\+L\+\_\+\+E\+L\+E\+M\+E\+NT}~2
+\item 
+\#define \hyperlink{leaderboard_8c_a511ca737da8b52a7f0ed5ae4598263b4}{T\+E\+X\+T\+\_\+\+F\+I\+E\+L\+D\+\_\+\+U\+S\+E\+R\+N\+A\+ME}~3
+\item 
+\#define \hyperlink{leaderboard_8c_a87155fe404a0c9bd1c02766ea6912609}{S\+E\+A\+R\+C\+H\+\_\+\+P\+L\+A\+Y\+ER}~4
+\item 
+\#define \hyperlink{leaderboard_8c_aa8d884fdf826a411f21e88bbd6d54155}{C\+H\+A\+N\+G\+E\+R\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+ER}~5
+\item 
+\#define \hyperlink{leaderboard_8c_a384cbda5c3d7714cdcbb9af18bc74cc4}{F\+R\+A\+M\+E\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+S\+M\+O\+O\+TH}~8
+\item 
+\#define \hyperlink{leaderboard_8c_a55d9d13c4660aab38697740bc5a0f863}{N\+O\+M\+B\+R\+E\+\_\+\+E\+L\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST}~7
+\end{DoxyCompactItemize}
+\subsection*{Énumérations}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \newline
+\hyperlink{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5a26d394b5caf2853dbcef5884f0f068dd}{E\+A\+SY}, 
+\hyperlink{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5a712b8eb9268f114b4afc567f24bc536f}{H\+A\+RD}, 
+\hyperlink{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5aac132f2982b98bcaa3445e535a03ff75}{O\+FF}, 
+\hyperlink{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5ae30cb3cb5ed31ec54fccedef56ec8760}{O\+F\+F\+\_\+\+E\+A\+SY}, 
+\newline
+\hyperlink{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5a5d65f0089044077824d3a8b4991d413b}{O\+F\+F\+\_\+\+H\+A\+RD}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{leaderboard_8c_ae7640fffad36983c36c0e8262770db4a}{concatenation\+Chaine} (char dest\mbox{[}$\,$\mbox{]}, char source\mbox{[}$\,$\mbox{]}, int debut)
+\begin{DoxyCompactList}\small\item\em permet de copier une chaine au +n element de la chaine source \end{DoxyCompactList}\item 
+int \hyperlink{leaderboard_8c_a8b9b72ad5c70dc9ed442cd734f2b3361}{chargement\+Donner} (int game\+ID, char $\ast$username, int offset, int limite, struct \hyperlink{structclassement}{classement} donner\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em permet de charger les donner dans la structure \end{DoxyCompactList}\item 
+int \hyperlink{leaderboard_8c_af9258a6d91eaf100ecc6d2367e46c812}{\+\_\+strcmp\+Min} (char s1\mbox{[}$\,$\mbox{]}, char s2\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em permet de comparer de chaine caster en minature \end{DoxyCompactList}\item 
+int \hyperlink{leaderboard_8c_ab1c772497e2229750ce69da0742fc217}{rechercher\+Joueur} (char nom\+Joueur\mbox{[}$\,$\mbox{]}, struct \hyperlink{structclassement}{classement} donner\mbox{[}$\,$\mbox{]}, int selection\+Scrolling\+List)
+\begin{DoxyCompactList}\small\item\em permet de rechercher un joueur dans une structure de donner de type classement \end{DoxyCompactList}\item 
+static void \hyperlink{leaderboard_8c_a88eaba9341fa844401d12a78679830dc}{limiter\+Frame} (const float delay\+Lancement\+Frame, float $\ast$\+\_\+\+I\+PS)
+\begin{DoxyCompactList}\small\item\em permet de limiter le nombre de frame de l\textquotesingle{}affcihage a une certaine valeur \end{DoxyCompactList}\item 
+void \hyperlink{leaderboard_8c_a8aa1a5fcb4a3d825a4614dd3c9221233}{gestion\+Evenement} (int $\ast$halt, int $\ast$x\+Mouse, int $\ast$y\+Mouse, \hyperlink{struct_scroll}{Scroll} $\ast$scroll\+Position\+Window, \hyperlink{struct_scroll}{Scroll} $\ast$scroll\+Position\+List, int $\ast$\+\_\+\+S\+E\+L\+E\+C\+T\+I\+ON, char rechercher\mbox{[}$\,$\mbox{]}, struct \hyperlink{structclassement}{classement} donner\mbox{[}$\,$\mbox{]}, int selection\+Scrolling\+List, int $\ast$frame\+Type)
+\begin{DoxyCompactList}\small\item\em permet de gerer tous les evenements liee au jeu \end{DoxyCompactList}\item 
+void \hyperlink{leaderboard_8c_a7fa5ca4e2a4178364eef7a0d151e1b3d}{ecrire\+Text} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, T\+T\+F\+\_\+\+Font $\ast$font, char $\ast$text, S\+D\+L\+\_\+\+Color couleur, int x\+Position, int y\+Position, float scale, int est\+H\+UD, int frame\+Type)
+\begin{DoxyCompactList}\small\item\em permet d\textquotesingle{}ecrire du text a l\textquotesingle{}ecran \end{DoxyCompactList}\item 
+Uint8 \hyperlink{leaderboard_8c_ab31760dfa98a1ff2267ba2bef0da22c9}{brillance} (Uint8 color, int power)
+\begin{DoxyCompactList}\small\item\em renvoie une valeur de brillance pour un code couleur \end{DoxyCompactList}\item 
+int \hyperlink{leaderboard_8c_a14f7dd0af5a5a76079a0b705a796f679}{afficher\+Cellule} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$texture, int cellule\+Position, struct \hyperlink{structclassement}{classement} donner, T\+T\+F\+\_\+\+Font $\ast$police, int decallageY, int frame\+Recherche)
+\begin{DoxyCompactList}\small\item\em affiche une cellule \end{DoxyCompactList}\item 
+void \hyperlink{leaderboard_8c_a66f0efd7a6cc2cb950f5325357a3fe9f}{afficher\+Cellule\+Scroll\+View} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, int cellule\+Position, char $\ast$text, T\+T\+F\+\_\+\+Font $\ast$police, int decallageY)
+\begin{DoxyCompactList}\small\item\em affiche une / separateur entre des listes \end{DoxyCompactList}\item 
+int \hyperlink{leaderboard_8c_a09857ead625fd6b4c32d3c0894f13c1d}{afficher\+H\+UD} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, S\+D\+L\+\_\+\+Texture $\ast$texture, T\+T\+F\+\_\+\+Font $\ast$police, char $\ast$recherche, int \+\_\+\+S\+E\+L\+E\+C\+T\+I\+ON, int decallageY, int selection\+Scrolling\+List, int frame\+Type)
+\begin{DoxyCompactList}\small\item\em affiche l\textquotesingle{}H\+UD complet \end{DoxyCompactList}\item 
+int \hyperlink{leaderboard_8c_a8cc8b08c1c9d8854a008e3fdb6cf091c}{interaction\+Interface} (int x, int y, int \+\_\+\+S\+E\+L\+E\+C\+T\+I\+ON, \hyperlink{struct_scroll}{Scroll} scroll\+Position\+List, int $\ast$selection\+Scrolling\+List, \hyperlink{struct_scroll}{Scroll} $\ast$scroll\+Position\+Window, struct \hyperlink{structclassement}{classement} donner\mbox{[}\hyperlink{leaderboard_8c_a5f9c39a1da9fde39408d383a0a8c88a7}{N\+O\+M\+B\+R\+E\+\_\+\+J\+E\+UX}\mbox{]}\mbox{[}\hyperlink{leaderboard_8c_a9c12da86a490dc54e376614386a58a19}{N\+O\+M\+B\+R\+E\+\_\+\+J\+O\+U\+E\+U\+R\+\_\+\+M\+AX}\mbox{]})
+\begin{DoxyCompactList}\small\item\em permet d\textquotesingle{}interagire avec l\textquotesingle{}interface \end{DoxyCompactList}\item 
+int \hyperlink{leaderboard_8c_adb7c03fcec842fb68ec6523b538f5ff7}{leaderboard} (S\+D\+L\+\_\+\+Renderer $\ast$renderer, int Win\+Weidth, int \hyperlink{room_8c_a14d631ded45fe3c6396d41f0b31a8aba}{Win\+Height}, int \+\_\+\+M\+A\+X\+\_\+\+J\+O\+U\+E\+UR)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+F\+I\+LE $\ast$ \hyperlink{leaderboard_8c_a1ce6bb164d37e605aa60e94aefe73817}{E\+X\+T\+\_\+\+F\+I\+LE}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{leaderboard_8c_a61214143322a612c52a8559261d3be3e}{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+H\+UD} = \{0,0,1716,158\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{leaderboard_8c_a51ef492e35bd165e7b2137c88ef81f70}{E\+M\+P\+L\+C\+E\+M\+E\+N\+T\+\_\+\+C\+E\+L\+L\+U\+LE} = \{0,162,1610,112\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{leaderboard_8c_aaf4e65e2a8a6f8ecfc253630fddf0cc3}{E\+M\+P\+L\+C\+E\+M\+E\+N\+T\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+F\+L\+A\+SH} = \{0,1200,1610,112\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{leaderboard_8c_aef74cd7447d33349a364d85bfe7f92ba}{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+H\+A\+M\+PS} = \{0,398,612,102\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{leaderboard_8c_a4a629f9ab6abdfa0c941189a3a1e2a03}{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE} = \{258,281,102,102\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{leaderboard_8c_a66368739e6bfef28a3aaa506a50e2842}{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST} = \{387,281,102,102\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{leaderboard_8c_a7348b5061faa925da0607242ce627981}{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+B\+G\+\_\+\+L\+I\+ST} = \{0,520,604,620\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{leaderboard_8c_affa722c700cb8e2955ae8d3aa489a371}{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+E\+A\+SY} = \{0,280,102,102\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{leaderboard_8c_a612ed0480f8b13583e8326a0fa712915}{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+H\+A\+RD} = \{130,280,102,102\}
+\item 
+const float \hyperlink{leaderboard_8c_a5d66091d2e65ed790bef279826357b26}{F\+R\+A\+M\+E\+\_\+\+T\+I\+M\+E\+\_\+\+L\+E\+A\+D\+E\+R\+B\+O\+A\+RD} = 1000.\+0/\hyperlink{leaderboard_8c_a7ee89081d078dd2a0777ac2700a59ad3}{L\+I\+M\+I\+T\+E\+\_\+\+F\+PS}$\ast$1.f
+\item 
+float \hyperlink{leaderboard_8c_ada12b929944ead19ea89b783ef2cff4f}{inverse\+Ratio} = 1.f
+\item 
+int \hyperlink{leaderboard_8c_a148220555824a7da81463842699aca1e}{D\+O\+N\+N\+E\+R\+\_\+\+C\+H\+A\+R\+G\+ER} \mbox{[}\hyperlink{leaderboard_8c_a5f9c39a1da9fde39408d383a0a8c88a7}{N\+O\+M\+B\+R\+E\+\_\+\+J\+E\+UX}\mbox{]} =\{0\}
+\item 
+int \hyperlink{leaderboard_8c_a9c12da86a490dc54e376614386a58a19}{N\+O\+M\+B\+R\+E\+\_\+\+J\+O\+U\+E\+U\+R\+\_\+\+M\+AX} = 0
+\item 
+int \hyperlink{leaderboard_8c_aac39a348327ed212c87fcc9e078961cd}{A\+F\+F\+I\+C\+H\+E\+R\+\_\+\+P\+L\+US} = 0
+\item 
+const int \hyperlink{leaderboard_8c_a4b0339d5780c9232a0799a628fad5488}{H\+U\+D\+\_\+\+S\+I\+ZE} = \hyperlink{leaderboard_8c_a54ad9387fbe934c3e74e027729311d42}{N\+A\+T\+I\+F\+\_\+W} $\ast$ 0.\+085
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{leaderboard_8c_a7a8d24bebede4402ccf98a18b669c68f}{B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+C} = \{10, 24, 40\}
+\item 
+const float \hyperlink{leaderboard_8c_a7ac792a81a7a59c1508a4036e0ab899d}{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+C\+R\+O\+LL} = 30.\+0
+\item 
+const int \hyperlink{leaderboard_8c_ad5bfebcf291ee76e1bea2fc4d93dcdc4}{A\+L\+P\+H\+A\+\_\+\+F\+L\+A\+SH} \mbox{[}\hyperlink{leaderboard_8c_ac4c22e94cc0be04312a74dcf451e74b1}{F\+R\+A\+M\+E\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE}\mbox{]} = \{13, 17, 22, 27, 30, 33, 35, 38, 38, 38, 38, 38,38, 38, 38, 38, 38, 38, 35, 33, 30, 27, 22, 17, 13\}
+\item 
+S\+D\+L\+\_\+\+Rect \hyperlink{leaderboard_8c_ada37bffc55a0f68a42261eec5a92e62d}{bouton\+Hard\+Easy}
+\item 
+S\+D\+L\+\_\+\+Point \hyperlink{leaderboard_8c_a85b1e8afb832ab0b95550bda71f50313}{bouton\+Position\+\_\+\+O\+FF}
+\item 
+S\+D\+L\+\_\+\+Point \hyperlink{leaderboard_8c_ad46456affd886585544bdc4358f334f4}{bouton\+Position\+\_\+\+ON}
+\item 
+int \hyperlink{leaderboard_8c_a99fe35d24123718c9300edec5b9a19d7}{statut\+Bouton\+E\+A\+S\+Y\+\_\+\+H\+A\+RD} = \hyperlink{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5aac132f2982b98bcaa3445e535a03ff75}{O\+FF}
+\item 
+const char \hyperlink{leaderboard_8c_a02b6deaa115f1bc1695c662c330ab5ea}{nom\+List} \mbox{[}\hyperlink{leaderboard_8c_a55d9d13c4660aab38697740bc5a0f863}{N\+O\+M\+B\+R\+E\+\_\+\+E\+L\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST}\mbox{]}\mbox{[}30\mbox{]} =\{\char`\"{}G\+L\+O\+B\+AL\char`\"{},\char`\"{}F\+L\+A\+P\+PY B\+I\+RD\char`\"{},\char`\"{}T\+E\+T\+R\+IS\char`\"{},\char`\"{}A\+S\+T\+E\+R\+O\+ID\char`\"{},\char`\"{}S\+H\+O\+O\+T\+ER\char`\"{},\char`\"{}S\+N\+A\+KE\char`\"{},\char`\"{}D\+E\+M\+I\+N\+E\+UR\char`\"{}\}
+\item 
+S\+D\+L\+\_\+\+Color \hyperlink{leaderboard_8c_a2bcc4e0e1187999db2e728ebcc312e03}{noir\+C\+O\+L\+OR} = \{0,0,0\}
+\item 
+S\+D\+L\+\_\+\+Color \hyperlink{leaderboard_8c_a42bdedd3ab6004989619d7bd046a1b43}{noirC} = \{50,50,50\}
+\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+permet d\textquotesingle{}affciher le score du joueur 
+
+\begin{DoxyAuthor}{Auteur}
+Samy M. 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+31 janvier 2020 
+\end{DoxyDate}
+
+
+\subsection{Documentation des macros}
+\mbox{\Hypertarget{leaderboard_8c_aa8d884fdf826a411f21e88bbd6d54155}\label{leaderboard_8c_aa8d884fdf826a411f21e88bbd6d54155}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!C\+H\+A\+N\+G\+E\+R\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+ER@{C\+H\+A\+N\+G\+E\+R\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+ER}}
+\index{C\+H\+A\+N\+G\+E\+R\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+ER@{C\+H\+A\+N\+G\+E\+R\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+ER}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{C\+H\+A\+N\+G\+E\+R\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+ER}{CHANGER\_DIFFICULTER}}
+{\footnotesize\ttfamily \#define C\+H\+A\+N\+G\+E\+R\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+ER~5}
+
+\mbox{\Hypertarget{leaderboard_8c_ac4c22e94cc0be04312a74dcf451e74b1}\label{leaderboard_8c_ac4c22e94cc0be04312a74dcf451e74b1}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!F\+R\+A\+M\+E\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE@{F\+R\+A\+M\+E\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE}}
+\index{F\+R\+A\+M\+E\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE@{F\+R\+A\+M\+E\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE}{FRAME\_RECHERCHE}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE~25}
+
+\mbox{\Hypertarget{leaderboard_8c_a384cbda5c3d7714cdcbb9af18bc74cc4}\label{leaderboard_8c_a384cbda5c3d7714cdcbb9af18bc74cc4}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!F\+R\+A\+M\+E\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+S\+M\+O\+O\+TH@{F\+R\+A\+M\+E\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+S\+M\+O\+O\+TH}}
+\index{F\+R\+A\+M\+E\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+S\+M\+O\+O\+TH@{F\+R\+A\+M\+E\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+S\+M\+O\+O\+TH}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+S\+M\+O\+O\+TH}{FRAME\_SCROLL\_SMOOTH}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+S\+C\+R\+O\+L\+L\+\_\+\+S\+M\+O\+O\+TH~8}
+
+\mbox{\Hypertarget{leaderboard_8c_a7ee89081d078dd2a0777ac2700a59ad3}\label{leaderboard_8c_a7ee89081d078dd2a0777ac2700a59ad3}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!L\+I\+M\+I\+T\+E\+\_\+\+F\+PS@{L\+I\+M\+I\+T\+E\+\_\+\+F\+PS}}
+\index{L\+I\+M\+I\+T\+E\+\_\+\+F\+PS@{L\+I\+M\+I\+T\+E\+\_\+\+F\+PS}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{L\+I\+M\+I\+T\+E\+\_\+\+F\+PS}{LIMITE\_FPS}}
+{\footnotesize\ttfamily \#define L\+I\+M\+I\+T\+E\+\_\+\+F\+PS~60}
+
+\mbox{\Hypertarget{leaderboard_8c_adc90622a5afda265b9b8dd3bf10e651f}\label{leaderboard_8c_adc90622a5afda265b9b8dd3bf10e651f}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!L\+I\+S\+T\+\_\+\+S\+C\+O\+L\+L\+\_\+\+E\+L\+E\+M\+E\+NT@{L\+I\+S\+T\+\_\+\+S\+C\+O\+L\+L\+\_\+\+E\+L\+E\+M\+E\+NT}}
+\index{L\+I\+S\+T\+\_\+\+S\+C\+O\+L\+L\+\_\+\+E\+L\+E\+M\+E\+NT@{L\+I\+S\+T\+\_\+\+S\+C\+O\+L\+L\+\_\+\+E\+L\+E\+M\+E\+NT}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{L\+I\+S\+T\+\_\+\+S\+C\+O\+L\+L\+\_\+\+E\+L\+E\+M\+E\+NT}{LIST\_SCOLL\_ELEMENT}}
+{\footnotesize\ttfamily \#define L\+I\+S\+T\+\_\+\+S\+C\+O\+L\+L\+\_\+\+E\+L\+E\+M\+E\+NT~2}
+
+\mbox{\Hypertarget{leaderboard_8c_a80d82b1da53a1196a365098e9d8acda0}\label{leaderboard_8c_a80d82b1da53a1196a365098e9d8acda0}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!L\+I\+S\+T\+\_\+\+S\+C\+R\+O\+LL@{L\+I\+S\+T\+\_\+\+S\+C\+R\+O\+LL}}
+\index{L\+I\+S\+T\+\_\+\+S\+C\+R\+O\+LL@{L\+I\+S\+T\+\_\+\+S\+C\+R\+O\+LL}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{L\+I\+S\+T\+\_\+\+S\+C\+R\+O\+LL}{LIST\_SCROLL}}
+{\footnotesize\ttfamily \#define L\+I\+S\+T\+\_\+\+S\+C\+R\+O\+LL~1}
+
+\mbox{\Hypertarget{leaderboard_8c_ac7fd85b0a22cf744edd174492572616b}\label{leaderboard_8c_ac7fd85b0a22cf744edd174492572616b}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!N\+A\+T\+I\+F\+\_\+H@{N\+A\+T\+I\+F\+\_\+H}}
+\index{N\+A\+T\+I\+F\+\_\+H@{N\+A\+T\+I\+F\+\_\+H}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{N\+A\+T\+I\+F\+\_\+H}{NATIF\_H}}
+{\footnotesize\ttfamily \#define N\+A\+T\+I\+F\+\_\+H~720}
+
+\mbox{\Hypertarget{leaderboard_8c_a54ad9387fbe934c3e74e027729311d42}\label{leaderboard_8c_a54ad9387fbe934c3e74e027729311d42}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!N\+A\+T\+I\+F\+\_\+W@{N\+A\+T\+I\+F\+\_\+W}}
+\index{N\+A\+T\+I\+F\+\_\+W@{N\+A\+T\+I\+F\+\_\+W}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{N\+A\+T\+I\+F\+\_\+W}{NATIF\_W}}
+{\footnotesize\ttfamily \#define N\+A\+T\+I\+F\+\_\+W~1280}
+
+\mbox{\Hypertarget{leaderboard_8c_a54d4ec8b9d4a594fd078149e9c0be75a}\label{leaderboard_8c_a54d4ec8b9d4a594fd078149e9c0be75a}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!N\+O\+M\+B\+R\+E\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+F\+E\+N\+E\+T\+RE@{N\+O\+M\+B\+R\+E\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+F\+E\+N\+E\+T\+RE}}
+\index{N\+O\+M\+B\+R\+E\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+F\+E\+N\+E\+T\+RE@{N\+O\+M\+B\+R\+E\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+F\+E\+N\+E\+T\+RE}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{N\+O\+M\+B\+R\+E\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+F\+E\+N\+E\+T\+RE}{NOMBRE\_CELLULE\_FENETRE}}
+{\footnotesize\ttfamily \#define N\+O\+M\+B\+R\+E\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+F\+E\+N\+E\+T\+RE~10}
+
+\mbox{\Hypertarget{leaderboard_8c_a0ed1fe767838164107ff6c9a69f22ebb}\label{leaderboard_8c_a0ed1fe767838164107ff6c9a69f22ebb}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!N\+O\+M\+B\+R\+E\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+L\+I\+S\+T\+\_\+\+S\+C\+R\+O\+LL@{N\+O\+M\+B\+R\+E\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+L\+I\+S\+T\+\_\+\+S\+C\+R\+O\+LL}}
+\index{N\+O\+M\+B\+R\+E\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+L\+I\+S\+T\+\_\+\+S\+C\+R\+O\+LL@{N\+O\+M\+B\+R\+E\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+L\+I\+S\+T\+\_\+\+S\+C\+R\+O\+LL}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{N\+O\+M\+B\+R\+E\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+L\+I\+S\+T\+\_\+\+S\+C\+R\+O\+LL}{NOMBRE\_CELLULE\_LIST\_SCROLL}}
+{\footnotesize\ttfamily \#define N\+O\+M\+B\+R\+E\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+L\+I\+S\+T\+\_\+\+S\+C\+R\+O\+LL~6}
+
+\mbox{\Hypertarget{leaderboard_8c_a55d9d13c4660aab38697740bc5a0f863}\label{leaderboard_8c_a55d9d13c4660aab38697740bc5a0f863}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!N\+O\+M\+B\+R\+E\+\_\+\+E\+L\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST@{N\+O\+M\+B\+R\+E\+\_\+\+E\+L\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST}}
+\index{N\+O\+M\+B\+R\+E\+\_\+\+E\+L\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST@{N\+O\+M\+B\+R\+E\+\_\+\+E\+L\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{N\+O\+M\+B\+R\+E\+\_\+\+E\+L\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST}{NOMBRE\_ELEMENT\_LIST}}
+{\footnotesize\ttfamily \#define N\+O\+M\+B\+R\+E\+\_\+\+E\+L\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST~7}
+
+\mbox{\Hypertarget{leaderboard_8c_a5f9c39a1da9fde39408d383a0a8c88a7}\label{leaderboard_8c_a5f9c39a1da9fde39408d383a0a8c88a7}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!N\+O\+M\+B\+R\+E\+\_\+\+J\+E\+UX@{N\+O\+M\+B\+R\+E\+\_\+\+J\+E\+UX}}
+\index{N\+O\+M\+B\+R\+E\+\_\+\+J\+E\+UX@{N\+O\+M\+B\+R\+E\+\_\+\+J\+E\+UX}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{N\+O\+M\+B\+R\+E\+\_\+\+J\+E\+UX}{NOMBRE\_JEUX}}
+{\footnotesize\ttfamily \#define N\+O\+M\+B\+R\+E\+\_\+\+J\+E\+UX~16}
+
+\mbox{\Hypertarget{leaderboard_8c_af192d8ff49e094a39cfe42284f74e975}\label{leaderboard_8c_af192d8ff49e094a39cfe42284f74e975}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!P\+R\+E\+L\+O\+A\+D\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+M\+AX@{P\+R\+E\+L\+O\+A\+D\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+M\+AX}}
+\index{P\+R\+E\+L\+O\+A\+D\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+M\+AX@{P\+R\+E\+L\+O\+A\+D\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+M\+AX}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{P\+R\+E\+L\+O\+A\+D\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+M\+AX}{PRELOAD\_CELLULE\_MAX}}
+{\footnotesize\ttfamily \#define P\+R\+E\+L\+O\+A\+D\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+M\+AX~15}
+
+\mbox{\Hypertarget{leaderboard_8c_a7de8a5ba14702b7bf2f6558903b1d3fb}\label{leaderboard_8c_a7de8a5ba14702b7bf2f6558903b1d3fb}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!S\+C\+R\+E\+EN@{S\+C\+R\+E\+EN}}
+\index{S\+C\+R\+E\+EN@{S\+C\+R\+E\+EN}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{S\+C\+R\+E\+EN}{SCREEN}}
+{\footnotesize\ttfamily \#define S\+C\+R\+E\+EN~0}
+
+\mbox{\Hypertarget{leaderboard_8c_a87155fe404a0c9bd1c02766ea6912609}\label{leaderboard_8c_a87155fe404a0c9bd1c02766ea6912609}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!S\+E\+A\+R\+C\+H\+\_\+\+P\+L\+A\+Y\+ER@{S\+E\+A\+R\+C\+H\+\_\+\+P\+L\+A\+Y\+ER}}
+\index{S\+E\+A\+R\+C\+H\+\_\+\+P\+L\+A\+Y\+ER@{S\+E\+A\+R\+C\+H\+\_\+\+P\+L\+A\+Y\+ER}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{S\+E\+A\+R\+C\+H\+\_\+\+P\+L\+A\+Y\+ER}{SEARCH\_PLAYER}}
+{\footnotesize\ttfamily \#define S\+E\+A\+R\+C\+H\+\_\+\+P\+L\+A\+Y\+ER~4}
+
+\mbox{\Hypertarget{leaderboard_8c_a511ca737da8b52a7f0ed5ae4598263b4}\label{leaderboard_8c_a511ca737da8b52a7f0ed5ae4598263b4}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!T\+E\+X\+T\+\_\+\+F\+I\+E\+L\+D\+\_\+\+U\+S\+E\+R\+N\+A\+ME@{T\+E\+X\+T\+\_\+\+F\+I\+E\+L\+D\+\_\+\+U\+S\+E\+R\+N\+A\+ME}}
+\index{T\+E\+X\+T\+\_\+\+F\+I\+E\+L\+D\+\_\+\+U\+S\+E\+R\+N\+A\+ME@{T\+E\+X\+T\+\_\+\+F\+I\+E\+L\+D\+\_\+\+U\+S\+E\+R\+N\+A\+ME}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{T\+E\+X\+T\+\_\+\+F\+I\+E\+L\+D\+\_\+\+U\+S\+E\+R\+N\+A\+ME}{TEXT\_FIELD\_USERNAME}}
+{\footnotesize\ttfamily \#define T\+E\+X\+T\+\_\+\+F\+I\+E\+L\+D\+\_\+\+U\+S\+E\+R\+N\+A\+ME~3}
+
+
+
+\subsection{Documentation du type de l\textquotesingle{}énumération}
+\mbox{\Hypertarget{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5}\label{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5}} 
+\subsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
+{\footnotesize\ttfamily anonymous enum}
+
+\begin{DoxyEnumFields}{Valeurs énumérées}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{E\+A\+SY@{E\+A\+SY}!leaderboard.\+c@{leaderboard.\+c}}\index{leaderboard.\+c@{leaderboard.\+c}!E\+A\+SY@{E\+A\+SY}}}\mbox{\Hypertarget{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5a26d394b5caf2853dbcef5884f0f068dd}\label{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5a26d394b5caf2853dbcef5884f0f068dd}} 
+E\+A\+SY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{H\+A\+RD@{H\+A\+RD}!leaderboard.\+c@{leaderboard.\+c}}\index{leaderboard.\+c@{leaderboard.\+c}!H\+A\+RD@{H\+A\+RD}}}\mbox{\Hypertarget{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5a712b8eb9268f114b4afc567f24bc536f}\label{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5a712b8eb9268f114b4afc567f24bc536f}} 
+H\+A\+RD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{O\+FF@{O\+FF}!leaderboard.\+c@{leaderboard.\+c}}\index{leaderboard.\+c@{leaderboard.\+c}!O\+FF@{O\+FF}}}\mbox{\Hypertarget{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5aac132f2982b98bcaa3445e535a03ff75}\label{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5aac132f2982b98bcaa3445e535a03ff75}} 
+O\+FF&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{O\+F\+F\+\_\+\+E\+A\+SY@{O\+F\+F\+\_\+\+E\+A\+SY}!leaderboard.\+c@{leaderboard.\+c}}\index{leaderboard.\+c@{leaderboard.\+c}!O\+F\+F\+\_\+\+E\+A\+SY@{O\+F\+F\+\_\+\+E\+A\+SY}}}\mbox{\Hypertarget{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5ae30cb3cb5ed31ec54fccedef56ec8760}\label{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5ae30cb3cb5ed31ec54fccedef56ec8760}} 
+O\+F\+F\+\_\+\+E\+A\+SY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{O\+F\+F\+\_\+\+H\+A\+RD@{O\+F\+F\+\_\+\+H\+A\+RD}!leaderboard.\+c@{leaderboard.\+c}}\index{leaderboard.\+c@{leaderboard.\+c}!O\+F\+F\+\_\+\+H\+A\+RD@{O\+F\+F\+\_\+\+H\+A\+RD}}}\mbox{\Hypertarget{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5a5d65f0089044077824d3a8b4991d413b}\label{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5a5d65f0089044077824d3a8b4991d413b}} 
+O\+F\+F\+\_\+\+H\+A\+RD&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Documentation des fonctions}
+\mbox{\Hypertarget{leaderboard_8c_af9258a6d91eaf100ecc6d2367e46c812}\label{leaderboard_8c_af9258a6d91eaf100ecc6d2367e46c812}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!\+\_\+strcmp\+Min@{\+\_\+strcmp\+Min}}
+\index{\+\_\+strcmp\+Min@{\+\_\+strcmp\+Min}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{\+\_\+strcmp\+Min()}{\_strcmpMin()}}
+{\footnotesize\ttfamily int \+\_\+strcmp\+Min (\begin{DoxyParamCaption}\item[{char}]{s1\mbox{[}$\,$\mbox{]},  }\item[{char}]{s2\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+permet de comparer de chaine caster en minature 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em s1} & \\
+\hline
+{\em s2} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+0 si egale 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_af9258a6d91eaf100ecc6d2367e46c812_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{leaderboard_8c_a14f7dd0af5a5a76079a0b705a796f679}\label{leaderboard_8c_a14f7dd0af5a5a76079a0b705a796f679}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!afficher\+Cellule@{afficher\+Cellule}}
+\index{afficher\+Cellule@{afficher\+Cellule}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Cellule()}{afficherCellule()}}
+{\footnotesize\ttfamily int afficher\+Cellule (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture,  }\item[{int}]{cellule\+Position,  }\item[{struct \hyperlink{structclassement}{classement}}]{donner,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{police,  }\item[{int}]{decallageY,  }\item[{int}]{frame\+Recherche }\end{DoxyParamCaption})}
+
+
+
+affiche une cellule 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & pointeur sur le rendu \\
+\hline
+{\em texture} & texture de la cellule \\
+\hline
+{\em cellule\+Position} & position de la cellule \\
+\hline
+{\em donner} & ensemble des donners stocker sur unsermane et score \\
+\hline
+{\em police} & pointeur sur la police d\textquotesingle{}ecriture \\
+\hline
+{\em decallageY} & decallage de la postion sur Y \\
+\hline
+{\em frame\+Recherche} & parametre de sur brillance\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+S\+S/\+E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=255pt]{leaderboard_8c_a14f7dd0af5a5a76079a0b705a796f679_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_a14f7dd0af5a5a76079a0b705a796f679_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{leaderboard_8c_a66f0efd7a6cc2cb950f5325357a3fe9f}\label{leaderboard_8c_a66f0efd7a6cc2cb950f5325357a3fe9f}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!afficher\+Cellule\+Scroll\+View@{afficher\+Cellule\+Scroll\+View}}
+\index{afficher\+Cellule\+Scroll\+View@{afficher\+Cellule\+Scroll\+View}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{afficher\+Cellule\+Scroll\+View()}{afficherCelluleScrollView()}}
+{\footnotesize\ttfamily void afficher\+Cellule\+Scroll\+View (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{int}]{cellule\+Position,  }\item[{char $\ast$}]{text,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{police,  }\item[{int}]{decallageY }\end{DoxyParamCaption})}
+
+
+
+affiche une / separateur entre des listes 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & pointeur sur le rendu \\
+\hline
+{\em cellule\+Position} & position de la cellule \\
+\hline
+{\em text} & \\
+\hline
+{\em police} & pointeur sur la police \\
+\hline
+{\em decallageY} & decallage sur l\textquotesingle{}axe des Y\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=301pt]{leaderboard_8c_a66f0efd7a6cc2cb950f5325357a3fe9f_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_a66f0efd7a6cc2cb950f5325357a3fe9f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{leaderboard_8c_a09857ead625fd6b4c32d3c0894f13c1d}\label{leaderboard_8c_a09857ead625fd6b4c32d3c0894f13c1d}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!afficher\+H\+UD@{afficher\+H\+UD}}
+\index{afficher\+H\+UD@{afficher\+H\+UD}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{afficher\+H\+U\+D()}{afficherHUD()}}
+{\footnotesize\ttfamily int afficher\+H\+UD (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{S\+D\+L\+\_\+\+Texture $\ast$}]{texture,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{police,  }\item[{char $\ast$}]{recherche,  }\item[{int}]{\+\_\+\+S\+E\+L\+E\+C\+T\+I\+ON,  }\item[{int}]{decallageY,  }\item[{int}]{selection\+Scrolling\+List,  }\item[{int}]{frame\+Type }\end{DoxyParamCaption})}
+
+
+
+affiche l\textquotesingle{}H\+UD complet 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & pointeur sur le rendu \\
+\hline
+{\em texture} & pointeur sur la texture \\
+\hline
+{\em police} & pointeur sur la police \\
+\hline
+{\em recherche} & text present dans le champs recherche \\
+\hline
+{\em \+\_\+\+S\+E\+L\+E\+C\+T\+I\+ON} & selectiona actuel \\
+\hline
+{\em decallageY} & decallage sur Y \\
+\hline
+{\em selection\+Scrolling\+List} & selection sur la scrolling list \\
+\hline
+{\em frame\+Type} & type de brillance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+int 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_a09857ead625fd6b4c32d3c0894f13c1d_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_a09857ead625fd6b4c32d3c0894f13c1d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{leaderboard_8c_ab31760dfa98a1ff2267ba2bef0da22c9}\label{leaderboard_8c_ab31760dfa98a1ff2267ba2bef0da22c9}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!brillance@{brillance}}
+\index{brillance@{brillance}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{brillance()}{brillance()}}
+{\footnotesize\ttfamily Uint8 brillance (\begin{DoxyParamCaption}\item[{Uint8}]{color,  }\item[{int}]{power }\end{DoxyParamCaption})}
+
+
+
+renvoie une valeur de brillance pour un code couleur 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em color} & \\
+\hline
+{\em power} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Uint8 
+\end{DoxyReturn}
+\mbox{\Hypertarget{leaderboard_8c_a8b9b72ad5c70dc9ed442cd734f2b3361}\label{leaderboard_8c_a8b9b72ad5c70dc9ed442cd734f2b3361}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!chargement\+Donner@{chargement\+Donner}}
+\index{chargement\+Donner@{chargement\+Donner}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{chargement\+Donner()}{chargementDonner()}}
+{\footnotesize\ttfamily int chargement\+Donner (\begin{DoxyParamCaption}\item[{int}]{game\+ID,  }\item[{char $\ast$}]{username,  }\item[{int}]{offset,  }\item[{int}]{limite,  }\item[{struct \hyperlink{structclassement}{classement}}]{donner\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+permet de charger les donner dans la structure 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em game\+ID} & \\
+\hline
+{\em username} & \\
+\hline
+{\em offset} & \\
+\hline
+{\em limite} & \\
+\hline
+{\em donner} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+int nombre de nouveau ellement charger 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_a8b9b72ad5c70dc9ed442cd734f2b3361_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_a8b9b72ad5c70dc9ed442cd734f2b3361_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{leaderboard_8c_ae7640fffad36983c36c0e8262770db4a}\label{leaderboard_8c_ae7640fffad36983c36c0e8262770db4a}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!concatenation\+Chaine@{concatenation\+Chaine}}
+\index{concatenation\+Chaine@{concatenation\+Chaine}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{concatenation\+Chaine()}{concatenationChaine()}}
+{\footnotesize\ttfamily void concatenation\+Chaine (\begin{DoxyParamCaption}\item[{char}]{dest\mbox{[}$\,$\mbox{]},  }\item[{char}]{source\mbox{[}$\,$\mbox{]},  }\item[{int}]{debut }\end{DoxyParamCaption})}
+
+
+
+permet de copier une chaine au +n element de la chaine source 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em dest} & chaine destination \\
+\hline
+{\em source} & chaine source \\
+\hline
+{\em debut} & indice debut de la copie\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_ae7640fffad36983c36c0e8262770db4a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{leaderboard_8c_a7fa5ca4e2a4178364eef7a0d151e1b3d}\label{leaderboard_8c_a7fa5ca4e2a4178364eef7a0d151e1b3d}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!ecrire\+Text@{ecrire\+Text}}
+\index{ecrire\+Text@{ecrire\+Text}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{ecrire\+Text()}{ecrireText()}}
+{\footnotesize\ttfamily void ecrire\+Text (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font,  }\item[{char $\ast$}]{text,  }\item[{S\+D\+L\+\_\+\+Color}]{couleur,  }\item[{int}]{x\+Position,  }\item[{int}]{y\+Position,  }\item[{float}]{scale,  }\item[{int}]{est\+H\+UD,  }\item[{int}]{frame\+Type }\end{DoxyParamCaption})}
+
+
+
+permet d\textquotesingle{}ecrire du text a l\textquotesingle{}ecran 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em renderer} & pointeur sur le rendu \\
+\hline
+{\em font} & pointeur sur la police \\
+\hline
+{\em text} & pointeur sur le text \\
+\hline
+{\em couleur} & couleur du text \\
+\hline
+{\em x\+Position} & position -\/1 pour centrer \\
+\hline
+{\em y\+Position} & position -\/1 pour centrer \\
+\hline
+{\em scale} & scale du text \\
+\hline
+{\em est\+H\+UD} & est pour l\textquotesingle{}H\+UD \\
+\hline
+{\em frame\+Type} & frame pour le curseur\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_a7fa5ca4e2a4178364eef7a0d151e1b3d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{leaderboard_8c_a8aa1a5fcb4a3d825a4614dd3c9221233}\label{leaderboard_8c_a8aa1a5fcb4a3d825a4614dd3c9221233}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!gestion\+Evenement@{gestion\+Evenement}}
+\index{gestion\+Evenement@{gestion\+Evenement}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{gestion\+Evenement()}{gestionEvenement()}}
+{\footnotesize\ttfamily void gestion\+Evenement (\begin{DoxyParamCaption}\item[{int $\ast$}]{halt,  }\item[{int $\ast$}]{x\+Mouse,  }\item[{int $\ast$}]{y\+Mouse,  }\item[{\hyperlink{struct_scroll}{Scroll} $\ast$}]{scroll\+Position\+Window,  }\item[{\hyperlink{struct_scroll}{Scroll} $\ast$}]{scroll\+Position\+List,  }\item[{int $\ast$}]{\+\_\+\+S\+E\+L\+E\+C\+T\+I\+ON,  }\item[{char}]{rechercher\mbox{[}$\,$\mbox{]},  }\item[{struct \hyperlink{structclassement}{classement}}]{donner\mbox{[}$\,$\mbox{]},  }\item[{int}]{selection\+Scrolling\+List,  }\item[{int $\ast$}]{frame\+Type }\end{DoxyParamCaption})}
+
+
+
+permet de gerer tous les evenements liee au jeu 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em halt} & stop le programme \\
+\hline
+{\em x\+Mouse} & coordonner souris x \\
+\hline
+{\em y\+Mouse} & coordonner souris y \\
+\hline
+{\em scroll\+Position\+Window} & position scroll sur la fenetre \\
+\hline
+{\em scroll\+Position\+List} & position scroll dans la liste \\
+\hline
+{\em \+\_\+\+S\+E\+L\+E\+C\+T\+I\+ON} & connaitre l\textquotesingle{}evenement a gerer dans le programme principal \\
+\hline
+{\em rechercher} & chaine de text liee a la recherche \\
+\hline
+{\em donner} & strucuteur de donner actuel \\
+\hline
+{\em selection\+Scrolling\+List} & element selectionner actuellement dans la liste \\
+\hline
+{\em frame\+Type} & les frames pour le curseur \\
+\hline
+{\em frame\+Type} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_a8aa1a5fcb4a3d825a4614dd3c9221233_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_a8aa1a5fcb4a3d825a4614dd3c9221233_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{leaderboard_8c_a8cc8b08c1c9d8854a008e3fdb6cf091c}\label{leaderboard_8c_a8cc8b08c1c9d8854a008e3fdb6cf091c}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!interaction\+Interface@{interaction\+Interface}}
+\index{interaction\+Interface@{interaction\+Interface}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{interaction\+Interface()}{interactionInterface()}}
+{\footnotesize\ttfamily int interaction\+Interface (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{\+\_\+\+S\+E\+L\+E\+C\+T\+I\+ON,  }\item[{\hyperlink{struct_scroll}{Scroll}}]{scroll\+Position\+List,  }\item[{int $\ast$}]{selection\+Scrolling\+List,  }\item[{\hyperlink{struct_scroll}{Scroll} $\ast$}]{scroll\+Position\+Window,  }\item[{struct \hyperlink{structclassement}{classement}}]{donner\mbox{[}\+N\+O\+M\+B\+R\+E\+\_\+\+J\+E\+U\+X\mbox{]}\mbox{[}\+N\+O\+M\+B\+R\+E\+\_\+\+J\+O\+U\+E\+U\+R\+\_\+\+M\+A\+X\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+permet d\textquotesingle{}interagire avec l\textquotesingle{}interface 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em x} & position souris X \\
+\hline
+{\em y} & position souris Y \\
+\hline
+{\em \+\_\+\+S\+E\+L\+E\+C\+T\+I\+ON} & selectiona actuel \\
+\hline
+{\em scroll\+Position\+List} & postion sur la scroll principal \\
+\hline
+{\em selection\+Scrolling\+List} & position sur la liste des jeux \\
+\hline
+{\em scroll\+Position\+Window} & \\
+\hline
+{\em donner} & donner de chaque joueur et leur score deja charger\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+int 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_a8cc8b08c1c9d8854a008e3fdb6cf091c_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_a8cc8b08c1c9d8854a008e3fdb6cf091c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{leaderboard_8c_adb7c03fcec842fb68ec6523b538f5ff7}\label{leaderboard_8c_adb7c03fcec842fb68ec6523b538f5ff7}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!leaderboard@{leaderboard}}
+\index{leaderboard@{leaderboard}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{leaderboard()}{leaderboard()}}
+{\footnotesize\ttfamily int leaderboard (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Renderer $\ast$}]{renderer,  }\item[{int}]{Win\+Weidth,  }\item[{int}]{Win\+Height,  }\item[{int}]{\+\_\+\+M\+A\+X\+\_\+\+J\+O\+U\+E\+UR }\end{DoxyParamCaption})}
+
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_adb7c03fcec842fb68ec6523b538f5ff7_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_adb7c03fcec842fb68ec6523b538f5ff7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{leaderboard_8c_a88eaba9341fa844401d12a78679830dc}\label{leaderboard_8c_a88eaba9341fa844401d12a78679830dc}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!limiter\+Frame@{limiter\+Frame}}
+\index{limiter\+Frame@{limiter\+Frame}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{limiter\+Frame()}{limiterFrame()}}
+{\footnotesize\ttfamily void limiter\+Frame (\begin{DoxyParamCaption}\item[{const float}]{delay\+Lancement\+Frame,  }\item[{float $\ast$}]{\+\_\+\+I\+PS }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+permet de limiter le nombre de frame de l\textquotesingle{}affcihage a une certaine valeur 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em delay\+Lancement\+Frame} & duree en cours depuis le debut de la frame \\
+\hline
+{\em \+\_\+\+I\+PS} & ecrit le nombre de F\+PS actuel\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_a88eaba9341fa844401d12a78679830dc_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{leaderboard_8c_ab1c772497e2229750ce69da0742fc217}\label{leaderboard_8c_ab1c772497e2229750ce69da0742fc217}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!rechercher\+Joueur@{rechercher\+Joueur}}
+\index{rechercher\+Joueur@{rechercher\+Joueur}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{rechercher\+Joueur()}{rechercherJoueur()}}
+{\footnotesize\ttfamily int rechercher\+Joueur (\begin{DoxyParamCaption}\item[{char}]{nom\+Joueur\mbox{[}$\,$\mbox{]},  }\item[{struct \hyperlink{structclassement}{classement}}]{donner\mbox{[}$\,$\mbox{]},  }\item[{int}]{selection\+Scrolling\+List }\end{DoxyParamCaption})}
+
+
+
+permet de rechercher un joueur dans une structure de donner de type classement 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em nom\+Joueur} & nom du joueur rechercher \\
+\hline
+{\em donner} & structure de donner \\
+\hline
+{\em selection\+Scrolling\+List} & liste sur la quelle on ce trouve\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+int indice de recherche diff -\/1 si trouver 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_ab1c772497e2229750ce69da0742fc217_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{leaderboard_8c_ab1c772497e2229750ce69da0742fc217_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Documentation des variables}
+\mbox{\Hypertarget{leaderboard_8c_aac39a348327ed212c87fcc9e078961cd}\label{leaderboard_8c_aac39a348327ed212c87fcc9e078961cd}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!A\+F\+F\+I\+C\+H\+E\+R\+\_\+\+P\+L\+US@{A\+F\+F\+I\+C\+H\+E\+R\+\_\+\+P\+L\+US}}
+\index{A\+F\+F\+I\+C\+H\+E\+R\+\_\+\+P\+L\+US@{A\+F\+F\+I\+C\+H\+E\+R\+\_\+\+P\+L\+US}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{A\+F\+F\+I\+C\+H\+E\+R\+\_\+\+P\+L\+US}{AFFICHER\_PLUS}}
+{\footnotesize\ttfamily int A\+F\+F\+I\+C\+H\+E\+R\+\_\+\+P\+L\+US = 0}
+
+\mbox{\Hypertarget{leaderboard_8c_ad5bfebcf291ee76e1bea2fc4d93dcdc4}\label{leaderboard_8c_ad5bfebcf291ee76e1bea2fc4d93dcdc4}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!A\+L\+P\+H\+A\+\_\+\+F\+L\+A\+SH@{A\+L\+P\+H\+A\+\_\+\+F\+L\+A\+SH}}
+\index{A\+L\+P\+H\+A\+\_\+\+F\+L\+A\+SH@{A\+L\+P\+H\+A\+\_\+\+F\+L\+A\+SH}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{A\+L\+P\+H\+A\+\_\+\+F\+L\+A\+SH}{ALPHA\_FLASH}}
+{\footnotesize\ttfamily const int A\+L\+P\+H\+A\+\_\+\+F\+L\+A\+SH\mbox{[}\hyperlink{leaderboard_8c_ac4c22e94cc0be04312a74dcf451e74b1}{F\+R\+A\+M\+E\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE}\mbox{]} = \{13, 17, 22, 27, 30, 33, 35, 38, 38, 38, 38, 38,38, 38, 38, 38, 38, 38, 35, 33, 30, 27, 22, 17, 13\}}
+
+\mbox{\Hypertarget{leaderboard_8c_a7a8d24bebede4402ccf98a18b669c68f}\label{leaderboard_8c_a7a8d24bebede4402ccf98a18b669c68f}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+C@{B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+C}}
+\index{B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+C@{B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+C}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+C}{BACKGROUND\_C}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color B\+A\+C\+K\+G\+R\+O\+U\+N\+D\+\_\+C = \{10, 24, 40\}}
+
+\mbox{\Hypertarget{leaderboard_8c_ada37bffc55a0f68a42261eec5a92e62d}\label{leaderboard_8c_ada37bffc55a0f68a42261eec5a92e62d}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!bouton\+Hard\+Easy@{bouton\+Hard\+Easy}}
+\index{bouton\+Hard\+Easy@{bouton\+Hard\+Easy}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{bouton\+Hard\+Easy}{boutonHardEasy}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect bouton\+Hard\+Easy}
+
+\mbox{\Hypertarget{leaderboard_8c_a85b1e8afb832ab0b95550bda71f50313}\label{leaderboard_8c_a85b1e8afb832ab0b95550bda71f50313}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!bouton\+Position\+\_\+\+O\+FF@{bouton\+Position\+\_\+\+O\+FF}}
+\index{bouton\+Position\+\_\+\+O\+FF@{bouton\+Position\+\_\+\+O\+FF}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{bouton\+Position\+\_\+\+O\+FF}{boutonPosition\_OFF}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Point bouton\+Position\+\_\+\+O\+FF}
+
+\mbox{\Hypertarget{leaderboard_8c_ad46456affd886585544bdc4358f334f4}\label{leaderboard_8c_ad46456affd886585544bdc4358f334f4}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!bouton\+Position\+\_\+\+ON@{bouton\+Position\+\_\+\+ON}}
+\index{bouton\+Position\+\_\+\+ON@{bouton\+Position\+\_\+\+ON}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{bouton\+Position\+\_\+\+ON}{boutonPosition\_ON}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Point bouton\+Position\+\_\+\+ON}
+
+\mbox{\Hypertarget{leaderboard_8c_a148220555824a7da81463842699aca1e}\label{leaderboard_8c_a148220555824a7da81463842699aca1e}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!D\+O\+N\+N\+E\+R\+\_\+\+C\+H\+A\+R\+G\+ER@{D\+O\+N\+N\+E\+R\+\_\+\+C\+H\+A\+R\+G\+ER}}
+\index{D\+O\+N\+N\+E\+R\+\_\+\+C\+H\+A\+R\+G\+ER@{D\+O\+N\+N\+E\+R\+\_\+\+C\+H\+A\+R\+G\+ER}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{D\+O\+N\+N\+E\+R\+\_\+\+C\+H\+A\+R\+G\+ER}{DONNER\_CHARGER}}
+{\footnotesize\ttfamily int D\+O\+N\+N\+E\+R\+\_\+\+C\+H\+A\+R\+G\+ER\mbox{[}\hyperlink{leaderboard_8c_a5f9c39a1da9fde39408d383a0a8c88a7}{N\+O\+M\+B\+R\+E\+\_\+\+J\+E\+UX}\mbox{]} =\{0\}}
+
+\mbox{\Hypertarget{leaderboard_8c_a7348b5061faa925da0607242ce627981}\label{leaderboard_8c_a7348b5061faa925da0607242ce627981}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+B\+G\+\_\+\+L\+I\+ST@{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+B\+G\+\_\+\+L\+I\+ST}}
+\index{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+B\+G\+\_\+\+L\+I\+ST@{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+B\+G\+\_\+\+L\+I\+ST}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+B\+G\+\_\+\+L\+I\+ST}{EMPLACEMENT\_BG\_LIST}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+B\+G\+\_\+\+L\+I\+ST = \{0,520,604,620\}}
+
+\mbox{\Hypertarget{leaderboard_8c_aef74cd7447d33349a364d85bfe7f92ba}\label{leaderboard_8c_aef74cd7447d33349a364d85bfe7f92ba}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+H\+A\+M\+PS@{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+H\+A\+M\+PS}}
+\index{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+H\+A\+M\+PS@{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+H\+A\+M\+PS}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+H\+A\+M\+PS}{EMPLACEMENT\_CHAMPS}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+H\+A\+M\+PS = \{0,398,612,102\}}
+
+\mbox{\Hypertarget{leaderboard_8c_affa722c700cb8e2955ae8d3aa489a371}\label{leaderboard_8c_affa722c700cb8e2955ae8d3aa489a371}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+E\+A\+SY@{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+E\+A\+SY}}
+\index{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+E\+A\+SY@{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+E\+A\+SY}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+E\+A\+SY}{EMPLACEMENT\_EASY}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+E\+A\+SY = \{0,280,102,102\}}
+
+\mbox{\Hypertarget{leaderboard_8c_a612ed0480f8b13583e8326a0fa712915}\label{leaderboard_8c_a612ed0480f8b13583e8326a0fa712915}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+H\+A\+RD@{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+H\+A\+RD}}
+\index{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+H\+A\+RD@{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+H\+A\+RD}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+H\+A\+RD}{EMPLACEMENT\_HARD}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+H\+A\+RD = \{130,280,102,102\}}
+
+\mbox{\Hypertarget{leaderboard_8c_a61214143322a612c52a8559261d3be3e}\label{leaderboard_8c_a61214143322a612c52a8559261d3be3e}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+H\+UD@{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+H\+UD}}
+\index{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+H\+UD@{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+H\+UD}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+H\+UD}{EMPLACEMENT\_HUD}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+H\+UD = \{0,0,1716,158\}}
+
+\mbox{\Hypertarget{leaderboard_8c_a66368739e6bfef28a3aaa506a50e2842}\label{leaderboard_8c_a66368739e6bfef28a3aaa506a50e2842}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST@{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST}}
+\index{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST@{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST}{EMPLACEMENT\_LIST}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST = \{387,281,102,102\}}
+
+\mbox{\Hypertarget{leaderboard_8c_a4a629f9ab6abdfa0c941189a3a1e2a03}\label{leaderboard_8c_a4a629f9ab6abdfa0c941189a3a1e2a03}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE@{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE}}
+\index{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE@{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE}{EMPLACEMENT\_RECHERCHE}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+R\+E\+C\+H\+E\+R\+C\+HE = \{258,281,102,102\}}
+
+\mbox{\Hypertarget{leaderboard_8c_a51ef492e35bd165e7b2137c88ef81f70}\label{leaderboard_8c_a51ef492e35bd165e7b2137c88ef81f70}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!E\+M\+P\+L\+C\+E\+M\+E\+N\+T\+\_\+\+C\+E\+L\+L\+U\+LE@{E\+M\+P\+L\+C\+E\+M\+E\+N\+T\+\_\+\+C\+E\+L\+L\+U\+LE}}
+\index{E\+M\+P\+L\+C\+E\+M\+E\+N\+T\+\_\+\+C\+E\+L\+L\+U\+LE@{E\+M\+P\+L\+C\+E\+M\+E\+N\+T\+\_\+\+C\+E\+L\+L\+U\+LE}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{E\+M\+P\+L\+C\+E\+M\+E\+N\+T\+\_\+\+C\+E\+L\+L\+U\+LE}{EMPLCEMENT\_CELLULE}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect E\+M\+P\+L\+C\+E\+M\+E\+N\+T\+\_\+\+C\+E\+L\+L\+U\+LE = \{0,162,1610,112\}}
+
+\mbox{\Hypertarget{leaderboard_8c_aaf4e65e2a8a6f8ecfc253630fddf0cc3}\label{leaderboard_8c_aaf4e65e2a8a6f8ecfc253630fddf0cc3}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!E\+M\+P\+L\+C\+E\+M\+E\+N\+T\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+F\+L\+A\+SH@{E\+M\+P\+L\+C\+E\+M\+E\+N\+T\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+F\+L\+A\+SH}}
+\index{E\+M\+P\+L\+C\+E\+M\+E\+N\+T\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+F\+L\+A\+SH@{E\+M\+P\+L\+C\+E\+M\+E\+N\+T\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+F\+L\+A\+SH}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{E\+M\+P\+L\+C\+E\+M\+E\+N\+T\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+F\+L\+A\+SH}{EMPLCEMENT\_CELLULE\_FLASH}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect E\+M\+P\+L\+C\+E\+M\+E\+N\+T\+\_\+\+C\+E\+L\+L\+U\+L\+E\+\_\+\+F\+L\+A\+SH = \{0,1200,1610,112\}}
+
+\mbox{\Hypertarget{leaderboard_8c_a1ce6bb164d37e605aa60e94aefe73817}\label{leaderboard_8c_a1ce6bb164d37e605aa60e94aefe73817}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!E\+X\+T\+\_\+\+F\+I\+LE@{E\+X\+T\+\_\+\+F\+I\+LE}}
+\index{E\+X\+T\+\_\+\+F\+I\+LE@{E\+X\+T\+\_\+\+F\+I\+LE}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{E\+X\+T\+\_\+\+F\+I\+LE}{EXT\_FILE}}
+{\footnotesize\ttfamily F\+I\+LE$\ast$ E\+X\+T\+\_\+\+F\+I\+LE}
+
+\mbox{\Hypertarget{leaderboard_8c_a5d66091d2e65ed790bef279826357b26}\label{leaderboard_8c_a5d66091d2e65ed790bef279826357b26}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!F\+R\+A\+M\+E\+\_\+\+T\+I\+M\+E\+\_\+\+L\+E\+A\+D\+E\+R\+B\+O\+A\+RD@{F\+R\+A\+M\+E\+\_\+\+T\+I\+M\+E\+\_\+\+L\+E\+A\+D\+E\+R\+B\+O\+A\+RD}}
+\index{F\+R\+A\+M\+E\+\_\+\+T\+I\+M\+E\+\_\+\+L\+E\+A\+D\+E\+R\+B\+O\+A\+RD@{F\+R\+A\+M\+E\+\_\+\+T\+I\+M\+E\+\_\+\+L\+E\+A\+D\+E\+R\+B\+O\+A\+RD}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+T\+I\+M\+E\+\_\+\+L\+E\+A\+D\+E\+R\+B\+O\+A\+RD}{FRAME\_TIME\_LEADERBOARD}}
+{\footnotesize\ttfamily const float F\+R\+A\+M\+E\+\_\+\+T\+I\+M\+E\+\_\+\+L\+E\+A\+D\+E\+R\+B\+O\+A\+RD = 1000.\+0/\hyperlink{leaderboard_8c_a7ee89081d078dd2a0777ac2700a59ad3}{L\+I\+M\+I\+T\+E\+\_\+\+F\+PS}$\ast$1.f}
+
+\mbox{\Hypertarget{leaderboard_8c_a4b0339d5780c9232a0799a628fad5488}\label{leaderboard_8c_a4b0339d5780c9232a0799a628fad5488}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!H\+U\+D\+\_\+\+S\+I\+ZE@{H\+U\+D\+\_\+\+S\+I\+ZE}}
+\index{H\+U\+D\+\_\+\+S\+I\+ZE@{H\+U\+D\+\_\+\+S\+I\+ZE}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{H\+U\+D\+\_\+\+S\+I\+ZE}{HUD\_SIZE}}
+{\footnotesize\ttfamily const int H\+U\+D\+\_\+\+S\+I\+ZE = \hyperlink{leaderboard_8c_a54ad9387fbe934c3e74e027729311d42}{N\+A\+T\+I\+F\+\_\+W} $\ast$ 0.\+085}
+
+\mbox{\Hypertarget{leaderboard_8c_ada12b929944ead19ea89b783ef2cff4f}\label{leaderboard_8c_ada12b929944ead19ea89b783ef2cff4f}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!inverse\+Ratio@{inverse\+Ratio}}
+\index{inverse\+Ratio@{inverse\+Ratio}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{inverse\+Ratio}{inverseRatio}}
+{\footnotesize\ttfamily float inverse\+Ratio = 1.f}
+
+\mbox{\Hypertarget{leaderboard_8c_a42bdedd3ab6004989619d7bd046a1b43}\label{leaderboard_8c_a42bdedd3ab6004989619d7bd046a1b43}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!noirC@{noirC}}
+\index{noirC@{noirC}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{noirC}{noirC}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Color noirC = \{50,50,50\}}
+
+\mbox{\Hypertarget{leaderboard_8c_a2bcc4e0e1187999db2e728ebcc312e03}\label{leaderboard_8c_a2bcc4e0e1187999db2e728ebcc312e03}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!noir\+C\+O\+L\+OR@{noir\+C\+O\+L\+OR}}
+\index{noir\+C\+O\+L\+OR@{noir\+C\+O\+L\+OR}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{noir\+C\+O\+L\+OR}{noirCOLOR}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Color noir\+C\+O\+L\+OR = \{0,0,0\}}
+
+\mbox{\Hypertarget{leaderboard_8c_a9c12da86a490dc54e376614386a58a19}\label{leaderboard_8c_a9c12da86a490dc54e376614386a58a19}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!N\+O\+M\+B\+R\+E\+\_\+\+J\+O\+U\+E\+U\+R\+\_\+\+M\+AX@{N\+O\+M\+B\+R\+E\+\_\+\+J\+O\+U\+E\+U\+R\+\_\+\+M\+AX}}
+\index{N\+O\+M\+B\+R\+E\+\_\+\+J\+O\+U\+E\+U\+R\+\_\+\+M\+AX@{N\+O\+M\+B\+R\+E\+\_\+\+J\+O\+U\+E\+U\+R\+\_\+\+M\+AX}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{N\+O\+M\+B\+R\+E\+\_\+\+J\+O\+U\+E\+U\+R\+\_\+\+M\+AX}{NOMBRE\_JOUEUR\_MAX}}
+{\footnotesize\ttfamily int N\+O\+M\+B\+R\+E\+\_\+\+J\+O\+U\+E\+U\+R\+\_\+\+M\+AX = 0}
+
+\mbox{\Hypertarget{leaderboard_8c_a02b6deaa115f1bc1695c662c330ab5ea}\label{leaderboard_8c_a02b6deaa115f1bc1695c662c330ab5ea}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!nom\+List@{nom\+List}}
+\index{nom\+List@{nom\+List}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{nom\+List}{nomList}}
+{\footnotesize\ttfamily const char nom\+List\mbox{[}\hyperlink{leaderboard_8c_a55d9d13c4660aab38697740bc5a0f863}{N\+O\+M\+B\+R\+E\+\_\+\+E\+L\+E\+M\+E\+N\+T\+\_\+\+L\+I\+ST}\mbox{]}\mbox{[}30\mbox{]} =\{\char`\"{}G\+L\+O\+B\+AL\char`\"{},\char`\"{}F\+L\+A\+P\+PY B\+I\+RD\char`\"{},\char`\"{}T\+E\+T\+R\+IS\char`\"{},\char`\"{}A\+S\+T\+E\+R\+O\+ID\char`\"{},\char`\"{}S\+H\+O\+O\+T\+ER\char`\"{},\char`\"{}S\+N\+A\+KE\char`\"{},\char`\"{}D\+E\+M\+I\+N\+E\+UR\char`\"{}\}}
+
+\mbox{\Hypertarget{leaderboard_8c_a99fe35d24123718c9300edec5b9a19d7}\label{leaderboard_8c_a99fe35d24123718c9300edec5b9a19d7}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!statut\+Bouton\+E\+A\+S\+Y\+\_\+\+H\+A\+RD@{statut\+Bouton\+E\+A\+S\+Y\+\_\+\+H\+A\+RD}}
+\index{statut\+Bouton\+E\+A\+S\+Y\+\_\+\+H\+A\+RD@{statut\+Bouton\+E\+A\+S\+Y\+\_\+\+H\+A\+RD}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{statut\+Bouton\+E\+A\+S\+Y\+\_\+\+H\+A\+RD}{statutBoutonEASY\_HARD}}
+{\footnotesize\ttfamily int statut\+Bouton\+E\+A\+S\+Y\+\_\+\+H\+A\+RD = \hyperlink{leaderboard_8c_a99fb83031ce9923c84392b4e92f956b5aac132f2982b98bcaa3445e535a03ff75}{O\+FF}}
+
+\mbox{\Hypertarget{leaderboard_8c_a7ac792a81a7a59c1508a4036e0ab899d}\label{leaderboard_8c_a7ac792a81a7a59c1508a4036e0ab899d}} 
+\index{leaderboard.\+c@{leaderboard.\+c}!V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+C\+R\+O\+LL@{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+C\+R\+O\+LL}}
+\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+C\+R\+O\+LL@{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+C\+R\+O\+LL}!leaderboard.\+c@{leaderboard.\+c}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+C\+R\+O\+LL}{VITESSE\_SCROLL}}
+{\footnotesize\ttfamily const float V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+C\+R\+O\+LL = 30.\+0}
+

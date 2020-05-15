@@ -1,0 +1,1698 @@
+\hypertarget{7__asteroid_2config_8h}{}\section{Référence du fichier games/7\+\_\+asteroid/config.h}
+\label{7__asteroid_2config_8h}\index{games/7\+\_\+asteroid/config.\+h@{games/7\+\_\+asteroid/config.\+h}}
+{\ttfamily \#include \char`\"{}../../include/define.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../include/hashage.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../include/lib\+Web.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../../include/commun\+Functions.\+h\char`\"{}}\newline
+Graphe des dépendances par inclusion de config.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{7__asteroid_2config_8h__incl}
+\end{center}
+\end{figure}
+Ce graphe montre quels fichiers incluent directement ou indirectement ce fichier \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=220pt]{7__asteroid_2config_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Structures de données}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_score_total}{Score\+Total}
+\begin{DoxyCompactList}\small\item\em Contient des informations sur le score total. \end{DoxyCompactList}\item 
+struct \hyperlink{struct_vaiss}{Vaiss}
+\begin{DoxyCompactList}\small\item\em Contient des informations sur le vaisseau. \end{DoxyCompactList}\item 
+struct \hyperlink{struct_asteroid}{Asteroid}
+\begin{DoxyCompactList}\small\item\em Contient des informations sur un asteroide. \end{DoxyCompactList}\item 
+struct \hyperlink{struct_explosion}{Explosion}
+\begin{DoxyCompactList}\small\item\em Contient des informations sur l\textquotesingle{}explosion. \end{DoxyCompactList}\item 
+struct \hyperlink{struct_jauge}{Jauge}
+\begin{DoxyCompactList}\small\item\em Contient des informations sur la jauge. \end{DoxyCompactList}\item 
+struct \hyperlink{struct_roue}{Roue}
+\begin{DoxyCompactList}\small\item\em Contient des informations sur la roue. \end{DoxyCompactList}\item 
+struct \hyperlink{struct_missile}{Missile}
+\begin{DoxyCompactList}\small\item\em Contient des informations sur un missile. \end{DoxyCompactList}\item 
+struct \hyperlink{struct_text_bonus}{Text\+Bonus}
+\begin{DoxyCompactList}\small\item\em Contient des informations sur le texte à l\textquotesingle{}obtention d\textquotesingle{}un bonus. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a0ebf185842674cdecc6621333d79f8a5}{F\+R\+A\+M\+E\+\_\+\+S\+C\+O\+R\+E\+\_\+\+A\+N\+IM}~20
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ab5b5708a6ff360cd6e84c213661ef639}{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+F\+O\+N\+TS}~2
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a520fd2821a90af2ac4b3bb837bf17b12}{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+O\+U\+N\+DS}~12
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a4fa94d9d3cf9f39200937dd319b4b87b}{T\+I\+M\+E\+\_\+\+F\+A\+D\+E\+\_\+\+IN}~400
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ac8b81a774ecb05419aebc49d73bd97b2}{T\+I\+M\+E\+\_\+\+F\+A\+D\+E\+\_\+\+O\+UT}~400
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ad2ab730880ec0195b2c9358f1af05110}{N\+B\+\_\+\+C\+H\+A\+N\+N\+E\+L\+\_\+\+E\+X\+P\+L\+O\+S\+I\+ON}~3
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ad7c708c0fc5593668c426b212c154e2c}{N\+B\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}~3
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a86e7bcd90e7564fe7f43c2b197cc6b82}{R\+A\+T\+I\+O\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+E\+X\+P\+L\+O\+\_\+\+S\+I\+ZE}~1.\+2
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a8c7c8a93108a3a111a68ba2d01dbdaf2}{P\+R\+E\+C\+I\+S\+I\+O\+N\+\_\+\+R\+A\+N\+D\+\_\+\+F\+L\+O\+AT}~100.
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{T\+R\+UE}~1
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a38e357a6ecaf7d313bd89e9e30dfa541}{R\+A\+Y\+O\+N\+\_\+\+V\+A\+I\+SS}~25
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a82d8fad64f895864e2aa8926c4ca396b}{D\+E\+C\+E\+L\+E\+R\+A\+T\+I\+ON}~1.\+015
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a25355a725439afc1415c598a30cf3bc9}{B\+O\+N\+U\+S\+\_\+\+D\+E\+A\+D\+\_\+\+D\+E\+C\+E\+L\+E\+R\+A\+T\+I\+ON}~0.\+05
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a130e8ced2d3adae7f21e9df296c2a746}{T\+U\+R\+N\+\_\+\+A\+M\+M\+O\+U\+NT}~0.\+13
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a01bb5f060b3487835f42c74e5267e498}{V\+I\+T\+E\+S\+SE}~10
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ad2d7243c099b33b2343976dd3ee8b36b}{A\+C\+C\+EL}~0.\+75
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a4e8a0f75f21e5116a77c9abead2a886d}{B\+A\+S\+E\+\_\+\+A\+N\+G\+LE}~3 $\ast$ \hyperlink{2__snake_2config_8h_a598a3330b3c21701223ee0ca14316eca}{PI} / 2
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ab793711cafbbe768ffd4fb0dbef01acf}{R\+A\+T\+I\+O\+\_\+\+A\+C\+C\+E\+L\+\_\+\+T\+U\+RN}~0.\+16
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a88b9efdaa83394155cda5d2c0e4fb4f1}{N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+U\+RN}~9
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a0f4822a880df0adec932579f9138494e}{R\+E\+S\+E\+T\+\_\+\+T\+U\+RN}~6
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a1b4bc8e6cb25e856724af9cee69c7182}{N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+H\+R\+U\+ST}~5
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a9543a857b985d03608052455e12dd59a}{R\+E\+S\+E\+T\+\_\+\+T\+H\+R\+U\+ST}~2
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_af54bece7a0dbc6d81fca67a6aad1d3d3}{F\+R\+A\+M\+E\+\_\+\+I\+N\+I\+T\+\_\+\+S\+P\+A\+WN}~20
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_aa4fe3ccc691ba865885db0c83abb4b2c}{D\+I\+S\+T\+\_\+2\+A\+S\+T\+E\+R\+O\+ID}~30
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a867c193becb784020b96f49c89567789}{D\+I\+S\+T\+\_\+\+V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+A\+S\+T\+E\+R\+O\+ID}~300
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a367d02be23938557734167f64c02eaa0}{F\+R\+A\+M\+E\+\_\+\+A\+P\+P\+A\+R\+I\+T\+I\+O\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID}~(16$\ast$ \hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND})
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a74dce507516728630bc30ef7b972c1c0}{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+P\+A\+W\+N\+\_\+\+I\+N\+IT}~(\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}$\ast$12)
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a1a4378a760568e6d429f03d9a7c789c6}{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+P\+A\+W\+N\+\_\+\+M\+IN}~(\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}$\ast$6.\+5)
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a49ef28c6ca8e5b17abc7a959460e0fe3}{A\+C\+C\+E\+L\+E\+R\+A\+T\+I\+O\+N\+\_\+\+S\+P\+A\+WN}~0.\+03
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ab6825030e5a2ad03f808fdc9b906fac0}{F\+R\+A\+M\+E\+\_\+2\+A\+S\+T\+E\+R\+O\+ID}~(\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}/2)
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_aadb09f40a02b5e53176d185bfa68525f}{P\+V\+\_\+\+B\+A\+SE}~1.\+2
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a27850c6d9e07217ed9ba3fac6eddc274}{V\+I\+T\+E\+S\+S\+E\+\_\+\+B\+A\+SE}~3
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a083062c9ab1a34bb4973fa42ef8d1fb1}{M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+I\+ZE}~90
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_af02879b9632680b60be79e865b7fe3e6}{T\+A\+I\+L\+L\+E\+\_\+\+M\+I\+N\+\_\+\+S\+P\+L\+IT}~36
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a0324b414e456891368832c5b9e41e832}{T\+A\+I\+L\+L\+E\+\_\+\+M\+I\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID}~18
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ae5d3fd03efff7ea8fa5f4f107f6a17a8}{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+ID}~22
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a538099a79a3562dfb035e19bc15d68de}{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+H\+A\+R\+D\+C\+O\+RE}~30
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_aa390e01494054ae0fe9a4f55624915bd}{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID}~9
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_aec0384f1b98985dff50f645e84bdf0f2}{S\+T\+A\+R\+T\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+TE}~1.\+01
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a60b40f56c11dab83d832d4ad4bee30b5}{D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+M\+I\+N\+\_\+\+S\+P\+L\+IT}~5
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a72d24b98214f3c2e864689b358ede3b3}{R\+A\+T\+I\+O\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+A\+U\+G\+M\+E\+NT}~0.\+0027
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_af5694824a1f3b87d24cefdc9a73884b9}{R\+A\+T\+I\+O\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+A\+U\+G\+M\+E\+N\+T\+\_\+\+M\+U\+L\+TI}~0.\+00033
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a2c9abf82f8cc72408c5a7b76daedd54d}{M\+A\+X\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+R\+O\+TA}~15
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a8e5034a0493e51b9c7db570e3510feea}{N\+B\+\_\+\+A\+S\+T\+E\+\_\+\+T\+E\+X\+T\+U\+R\+ES}~6
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_aa26f2abfb75d6954c0dd07183121c23f}{N\+B\+\_\+\+T\+R\+A\+N\+C\+H\+E\+\_\+\+T\+A\+I\+L\+LE}~4
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a5461d80ad074bdfa729ab899767d7739}{N\+B\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+A\+S\+TE}~2
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_aa422d6fe9012d53a7e7d4380d41b090b}{N\+B\+\_\+\+F\+I\+S\+S\+U\+R\+ES}~2
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a1605a24e037309a2d85ed0e8dfcb6926}{M\+A\+X\+\_\+\+D\+I\+FF}~40
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a3191acbabe1143c2edbaf5d8244647da}{I\+N\+T\+E\+R\+V\+A\+L\+E\+\_\+\+R\+A\+N\+D\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+TE}~0.\+3
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a3ab9d4d138157a3616c54d162dc3c6b4}{F\+R\+A\+M\+E\+\_\+\+H\+I\+T\+\_\+\+A\+N\+IM}~2
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a66c186ad8fdc49e41743279ab4b7cb3b}{F\+R\+A\+M\+E\+\_\+\+V\+A\+G\+U\+E\+\_\+\+I\+N\+IT}~(4.\+28$\ast$\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND})
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ae17dfb36ca43503a93859b915348c610}{F\+R\+A\+M\+E\+\_\+\+D\+E\+P\+A\+RT}~24
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_afb63fb9f349f47a97b92f3cad23e3e60}{D\+I\+S\+T\+\_\+\+S\+P\+A\+W\+N\+\_\+2\+A\+S\+T\+E\+R\+O\+ID}~40
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a4b7da9eaf833652dbeebc0ec44de936d}{S\+P\+E\+E\+D\+\_\+\+H\+A\+R\+D\+C\+O\+RE}~2.\+1
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a9b87682f53ffda9c807c82a1e2a68692}{N\+B\+\_\+\+R\+O\+U\+E\+\_\+\+E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+TS}~5
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a86127395915e59ff5ccf9f126da48ac8}{N\+B\+\_\+\+A\+R\+R\+O\+U\+N\+D\+\_\+\+J\+A\+U\+G\+ES}~4
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_aa6f50319f3c88e48eee673f118098849}{M\+I\+N\+\_\+\+R\+A\+T\+I\+O\+\_\+\+C\+O\+L\+OR}~0.\+3
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ade0b1b60a8d3061799f26048ca432100}{R\+A\+T\+I\+O\+\_\+\+C\+O\+L\+O\+R\+\_\+\+J\+A\+U\+GE}~0.\+72
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_aec076af9a7f22f9e7b75d89af7b69cf9}{F\+R\+A\+M\+E\+\_\+\+R\+O\+T\+A\+\_\+\+R\+O\+UE}~13
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a2abb3de4b868eb0585d073d57186ab80}{F\+R\+A\+M\+E\+\_\+\+A\+M\+MO}~7
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ad3e3c131127104b015d71bb7da542039}{B\+L\+O\+C\+K\+I\+N\+G\+\_\+\+A\+N\+IM}~1
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}~5
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a042aff171ca8fc67ec290883be13e7f1}{B\+A\+S\+E\+\_\+\+Z\+I\+G\+Z\+A\+G\+\_\+\+A\+N\+G\+LE}~0.\+1
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a1558c6eb803a19bd6e24b87941f9c59c}{I\+N\+T\+E\+R\+V\+A\+L\+L\+E\+\_\+\+Z\+I\+G\+Z\+A\+G\+\_\+\+A\+N\+G\+LE}~0.\+05
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a73196e7f8821c43bbe9c5658ecb2d83c}{F\+R\+A\+M\+E\+\_\+\+T\+O\+\_\+\+R\+E\+A\+C\+H\+\_\+\+A\+N\+G\+LE}~4
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a4305f182e04ef5162040e4f6c0ba9e5b}{A\+N\+G\+L\+E\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE}~0.\+1
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a4a8aa7578e2e94c8ed0ac1a84c6fcdb0}{C\+H\+A\+M\+P\+\_\+\+V\+I\+S\+I\+O\+N\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE}~(\hyperlink{2__snake_2config_8h_a598a3330b3c21701223ee0ca14316eca}{PI}/2)
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_acc4840ef85870c593a211f6abde0e463}{N\+B\+\_\+\+L\+A\+S\+E\+R\+\_\+\+B\+E\+AM}~8
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a236d0ccf33f6056f911f5148d6145d39}{L\+A\+S\+E\+R\+\_\+\+A\+C\+C\+EL}~0.\+05
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_af84625e32b007c66dad7b405c0885f5d}{B\+A\+S\+E\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+ON}~40
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a5202c9342f09b8f704493e6f460dbe40}{R\+A\+T\+I\+O\+\_\+\+D\+M\+G\+\_\+\+U\+P\+\_\+\+L\+A\+S\+ER}~0.\+9
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a880a9368f0ff5ad7191636759070180e}{D\+E\+A\+D\+\_\+\+F\+R\+O\+Z\+EN}~-\/999
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a0c7c8ce4f51e9231d7c5815e09758bb5}{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+C\+A\+N\+ON}~23
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a4563e322ab3b48c9fe9d84c755db6cf8}{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+B\+A\+SE}~(\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}/2)
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a1fb05fa9aac1e8e1b3cdd9cf32a4cfc1}{B\+A\+S\+E\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE}~15
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a153cf1d5572254c3b75196055e5b660e}{B\+A\+S\+E\+\_\+\+D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+LE}~1.\+5
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a229c39288605ee702940dec249381452}{D\+U\+R\+E\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+B\+A\+SE}~(2$\ast$\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND})
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_aa1ac23c9deb598d55a6c57c25e67187e}{M\+A\+X\+\_\+\+R\+A\+T\+I\+O\+\_\+\+A\+M\+M\+O\+\_\+\+O\+B\+T\+A\+I\+N\+A\+B\+LE}~(0.\+7)
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a6f739e7becfffb0dae9365d1bce80ef2}{A\+M\+M\+O\+\_\+\+G\+R\+A\+NT}~(1./3)
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a1f286ccdb17e67adc116628ca8048577}{M\+I\+S\+S\+I\+L\+E\+\_\+\+C\+UT}~56
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_aed81eb575ba3469d1154bc05e5655772}{F\+R\+A\+M\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+D\+E\+A\+TH}~8
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}~30
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a5b6610f9d69984ecba58bcd37b3c1be1}{F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+H\+E\+LP}~-\/50
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a49cb9e7f6e11529527802f1188a44921}{F\+R\+A\+M\+E\+\_\+\+D\+E\+S\+T\+R\+O\+Y\+\_\+\+A\+S\+TE}~-\/30
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a0ccacc3ecbbc935176fd11454ecb79d6}{N\+B\+\_\+\+B\+O\+N\+US}~9
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ae1cfd4c65bedcc92ee36aaab568fb83d}{N\+O\+\_\+\+B\+O\+N\+US}~-\/1
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a8271f0bb542462f1c9f2304605c0434f}{P\+R\+O\+B\+A\+\_\+\+B\+O\+N\+US}~3
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a92f2c26a8843f0541c86537af936437d}{N\+B\+\_\+\+T\+I\+R\+\_\+\+M\+AX}~3
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ad8292ff6d99fb255c69b1748f39b3ad5}{N\+B\+\_\+\+B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT}~3
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ae0c22d64ea65c9b96120e7937a9d385d}{M\+A\+X\+\_\+\+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE}~1
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_ad1ceaf0f3d078698c1f9cb967b6b2bcc}{M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+US}~10
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a20c6057a89989a489e7a2aaae04c68f5}{F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT}~30
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a3a0fd00eeac2ad701e77975739bd35f6}{E\+S\+P\+A\+C\+E\+M\+E\+N\+T\+\_\+\+S\+H\+O\+W\+\_\+\+T\+E\+XT}~70
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a8e869e2f265747e788850e24792f6773}{S\+I\+Z\+E\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT}~44.
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a132c4d592b86925dca028243542435c6}{B\+O\+N\+U\+S\+\_\+\+A\+C\+C\+E\+L\+E\+R\+A\+T\+I\+O\+N\+\_\+\+M\+I\+S\+S\+I\+LE}~1.\+7
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_acc2301597c373ea5c2e44c28afacd096}{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+AX}~(2$\ast$\hyperlink{7__asteroid_2config_8h_a1fb05fa9aac1e8e1b3cdd9cf32a4cfc1}{B\+A\+S\+E\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE})
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a7e64d280ad41a6e8860907d35dceee12}{B\+O\+N\+U\+S\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+LE}~1.\+4
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a0dc68d121caff8ce538a983b66bf32ed}{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+IN}~(\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}/6.)
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a65e2bceb8fa36eeaa96da771b679c2be}{D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+AX}~6
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a532725482c7898789a71e019f613ed85}{D\+E\+G\+A\+T\+\_\+\+A\+DD}~0.\+75
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_af4e038d21c306161bb8c70cdf4a28985}{F\+R\+A\+M\+E\+\_\+\+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE}~(\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}$\ast$1.\+5)
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_aaae5de8a7b1eb20d7e9c69ffbc2384e2}{F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+B\+O\+MB}~24
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a9e5b4adfefe9009bc09eaf78738c0db8}{N\+B\+\_\+\+A\+N\+I\+M\+\_\+\+B\+O\+MB}~16
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a20e65cb991369765500db37b9089cdb8}{F\+R\+A\+M\+E\+\_\+\+K\+I\+L\+L\+\_\+\+A\+S\+T\+E\+R\+O\+\_\+\+B\+O\+MB}~15
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_adeea677a5f008ccf5f43a0da5b2793f1}{N\+B\+\_\+\+R\+O\+W\+\_\+\+B\+O\+MB}~4
+\item 
+\#define \hyperlink{7__asteroid_2config_8h_a73ac4b641b9f81be39d541e4eb48b82c}{N\+B\+\_\+\+C\+O\+L\+\_\+\+B\+O\+MB}~4
+\end{DoxyCompactItemize}
+\subsection*{Énumérations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{7__asteroid_2config_8h_ad92d52a794b5305986ad03061e2c25cf}{F\+O\+N\+TS} \{ \hyperlink{7__asteroid_2config_8h_ad92d52a794b5305986ad03061e2c25cfa28a3b29845b04d5a4787681206f8a03d}{F\+O\+N\+T\+\_\+\+B\+O\+N\+US}, 
+\hyperlink{7__asteroid_2config_8h_ad92d52a794b5305986ad03061e2c25cfad2961fbcba9784d7f35f2a6e7799759d}{F\+O\+N\+T\+\_\+\+S\+C\+O\+RE}
+ \}
+\item 
+enum \hyperlink{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30}{S\+O\+U\+N\+DS} \{ \newline
+\hyperlink{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a86cd12e192f09cd44ce2f9d4fa2df159}{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+OT}, 
+\hyperlink{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ab10cc58e9bce4306cf9e29e6227f9d2b}{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+Z\+I\+G\+Z\+AG}, 
+\hyperlink{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ad4ef88640a5284d68d56ad7e3b0cda18}{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE}, 
+\hyperlink{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ae9ae95d1d12fbfba3b7ec8526c61166a}{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+G\+L\+A\+CE}, 
+\newline
+\hyperlink{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a1501464ef97bf2e5dba4a5365fe5154c}{S\+O\+U\+N\+D\+\_\+\+L\+A\+S\+E\+R\+\_\+\+B\+E\+AM}, 
+\hyperlink{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a8dc509f9c01b07b3373ca0be1e0bbc9e}{S\+O\+U\+N\+D\+\_\+\+B\+O\+N\+US}, 
+\hyperlink{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a70b644f29fff15e2bb258fb9f4c8c9d0}{S\+O\+U\+N\+D\+\_\+\+H\+IT}, 
+\hyperlink{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ada6fd4263cd43f4f5d5c4e29b86d5352}{S\+O\+U\+N\+D\+\_\+\+I\+C\+E\+\_\+\+E\+X\+P\+LO}, 
+\newline
+\hyperlink{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a5a0f7d9bf53bb2e4519e16992005bf1a}{S\+O\+U\+N\+D\+\_\+\+E\+X\+P\+LO}, 
+\hyperlink{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ae81e9f820fa7bc4777aa9f46019f29bd}{B\+I\+G\+\_\+\+E\+X\+P\+LO}, 
+\hyperlink{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ad20b05ef589944c25dd727bdd0badeb0}{S\+O\+U\+N\+D\+\_\+\+T\+H\+R\+U\+ST}, 
+\hyperlink{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a3c84a26eed13f1442e465fd3b2e64434}{S\+O\+U\+N\+D\+\_\+\+G\+A\+M\+E\+O\+V\+ER}
+ \}
+\item 
+enum \{ \hyperlink{7__asteroid_2config_8h_a0411cd49bb5b71852cecd93bcbf0ca2da1efa724a722d3e42a1eeca162d3e35e1}{T\+H\+R\+U\+S\+T\+\_\+\+UP}, 
+\hyperlink{7__asteroid_2config_8h_a0411cd49bb5b71852cecd93bcbf0ca2daa3b97e6087fb50166fdc894dabf23923}{T\+H\+R\+U\+S\+T\+\_\+\+L\+E\+FT}, 
+\hyperlink{7__asteroid_2config_8h_a0411cd49bb5b71852cecd93bcbf0ca2da322165874c218fd1bf46661dffee3a50}{T\+H\+R\+U\+S\+T\+\_\+\+R\+I\+G\+HT}
+ \}
+\item 
+enum \hyperlink{7__asteroid_2config_8h_af974e57579aa5197c4982de9eb7607b9}{E\+X\+P\+L\+O\+S\+I\+O\+NS} \{ \hyperlink{7__asteroid_2config_8h_af974e57579aa5197c4982de9eb7607b9a76ff75d159f3f858e95e68696dab357a}{E\+X\+P\+L\+O\+\_\+\+M\+I\+S\+S\+I\+LE}, 
+\hyperlink{7__asteroid_2config_8h_af974e57579aa5197c4982de9eb7607b9ac166d2f44348c5a805d574361fe6d13d}{E\+X\+P\+L\+O\+\_\+\+A\+S\+TE}, 
+\hyperlink{7__asteroid_2config_8h_af974e57579aa5197c4982de9eb7607b9a5820b3bd1d86ce2f1463a1e6bded5c2e}{E\+X\+P\+L\+O\+\_\+\+G\+L\+A\+CE}
+ \}
+\item 
+enum \hyperlink{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26}{dir\+\_\+turn} \{ \hyperlink{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26a3f8787368a9aa87f0bde02c09574a1df}{N\+O\+\_\+\+T\+U\+RN}, 
+\hyperlink{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26adb45120aafd37a973140edee24708065}{L\+E\+FT}, 
+\hyperlink{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26aec8379af7490bb9eaaf579cf17876f38}{R\+I\+G\+HT}, 
+\hyperlink{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26a627abe5a430420baf29ebe1940a7f2fb}{B\+O\+TH}
+ \}
+\item 
+enum \hyperlink{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012}{shots} \{ \newline
+\hyperlink{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012aa74b8aa45938cb6274229dda4244bfdf}{S\+H\+O\+T\+\_\+\+N\+O\+R\+M\+AL}, 
+\hyperlink{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012ac5819da9ee63928afdf901dae24510fe}{S\+H\+O\+T\+\_\+\+Z\+I\+G\+Z\+AG}, 
+\hyperlink{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012a5db38b985b3549e1030a4f48a1aa1d16}{S\+H\+O\+T\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE}, 
+\hyperlink{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012ab972c96a50c110bb807e749a89833e6c}{S\+H\+O\+T\+\_\+\+G\+L\+A\+CE}, 
+\newline
+\hyperlink{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012a771820a6dcb12d44c8d149235d6d1320}{S\+H\+O\+T\+\_\+\+L\+A\+S\+ER}
+ \}
+\item 
+enum \hyperlink{7__asteroid_2config_8h_a5c055da78bfd0ead31125cf3f3c6fbb6}{taille\+\_\+bonus} \{ \hyperlink{7__asteroid_2config_8h_a5c055da78bfd0ead31125cf3f3c6fbb6aee66d881e873b981297334e790f60c1a}{P\+E\+T\+IT}, 
+\hyperlink{7__asteroid_2config_8h_a5c055da78bfd0ead31125cf3f3c6fbb6aee96574eabbfbe329a44b059e4652351}{M\+O\+Y\+EN}, 
+\hyperlink{7__asteroid_2config_8h_a5c055da78bfd0ead31125cf3f3c6fbb6a30625632affab2bcd18da495e1105ecb}{G\+R\+A\+ND}
+ \}
+\item 
+enum \hyperlink{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573}{bonus\+\_\+e} \{ \newline
+\hyperlink{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a271c87e4b359d9671a7e1c5702a0f794}{T\+I\+R\+\_\+\+M\+U\+L\+T\+I\+P\+LE}, 
+\hyperlink{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a3436d76a8c9425b7433a05c80ece0e54}{B\+O\+U\+C\+L\+I\+ER}, 
+\hyperlink{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573af9e6e93d2a3ef928c1c60676f09fce8b}{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+\_\+\+T\+IR}, 
+\hyperlink{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573acf38ba132630b9624727dac63e7f72a5}{B\+O\+N\+U\+S\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE}, 
+\newline
+\hyperlink{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a03e725c8dd07724161e6279c6f25ec23}{D\+E\+G\+AT}, 
+\hyperlink{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573acc0b2a29ba239dab6a8eac7e5a343e7b}{B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE}, 
+\hyperlink{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a01a455b23120bd4cf2d679477f04bc0a}{P\+O\+I\+N\+T\+\_\+\+P\+E\+T\+IT}, 
+\hyperlink{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a5f4c7a11779341968d176e199bdf0439}{P\+O\+I\+N\+T\+\_\+\+M\+O\+Y\+EN}, 
+\newline
+\hyperlink{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a1af9aa71bd375dd18a71e16b8ab97ab2}{P\+O\+I\+N\+T\+\_\+\+G\+R\+A\+ND}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{7__asteroid_2config_8h_a776a7ff0aa9e3316de82682b96592bf8}{S\+C\+O\+R\+E\+\_\+\+C\+O\+L\+OR} = \{0x44,0xdd,0x\+F\+F\}
+\item 
+static const S\+D\+L\+\_\+\+Color \hyperlink{7__asteroid_2config_8h_a4223eebf2e076b331940f83bc3285bee}{H\+U\+D\+\_\+\+C\+O\+L\+OR} = \{0x2f,0x30,0x4f\}
+\item 
+char $\ast$ \hyperlink{7__asteroid_2config_8h_ae901b87296360a66db1ee112f1a5c44a}{D\+I\+R\+\_\+\+F\+O\+N\+T\+S\+\_\+\+A\+S\+T\+E\+R\+O\+ID} \mbox{[}\hyperlink{7__asteroid_2config_8h_ab5b5708a6ff360cd6e84c213661ef639}{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+F\+O\+N\+TS}\mbox{]}
+\item 
+char $\ast$ \hyperlink{7__asteroid_2config_8h_a992307868c261a777620ec2d62c97360}{D\+I\+R\+\_\+\+S\+O\+U\+N\+D\+S\+\_\+\+A\+S\+T\+E\+R\+O\+ID} \mbox{[}\hyperlink{7__asteroid_2config_8h_a520fd2821a90af2ac4b3bb837bf17b12}{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+O\+U\+N\+DS}\mbox{]}
+\item 
+static int \hyperlink{7__asteroid_2config_8h_a2d7328a301fb2bf2583daf7c188f5649}{S\+O\+U\+N\+D\+\_\+\+V\+O\+L\+U\+M\+ES} \mbox{[}\hyperlink{7__asteroid_2config_8h_a520fd2821a90af2ac4b3bb837bf17b12}{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+O\+U\+N\+DS}\mbox{]} = \{30,110,17,85,25, 128, 12,50, 115,128, 100, 100\}
+\item 
+const int \hyperlink{7__asteroid_2config_8h_a59768e15ccd384331f91425238e9b9b5}{F\+R\+A\+M\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS} \mbox{[}\hyperlink{7__asteroid_2config_8h_ad7c708c0fc5593668c426b212c154e2c}{N\+B\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}\mbox{]} = \{12, 20, 20\}
+\item 
+const int \hyperlink{7__asteroid_2config_8h_ae12bcc2a9eec7e7b021f58156ada176e}{N\+B\+\_\+\+A\+N\+I\+M\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS} \mbox{[}\hyperlink{7__asteroid_2config_8h_ad7c708c0fc5593668c426b212c154e2c}{N\+B\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}\mbox{]} = \{6, 10, 6\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{7__asteroid_2config_8h_ab508e5be5ec0eb063c6e546e8b3d9ddf}{E\+X\+P\+L\+O\+\_\+\+S\+R\+CS} \mbox{[}\hyperlink{7__asteroid_2config_8h_ad7c708c0fc5593668c426b212c154e2c}{N\+B\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}\mbox{]} = \{\{0,0, 374, 374\} , \{0,0, 312, 312\}, \{0,0,216,216\}\}
+\item 
+const S\+D\+L\+\_\+\+Rect \hyperlink{7__asteroid_2config_8h_a4668c2dc80d2e07af7f4f491d00a4a46}{S\+R\+C\+\_\+\+B\+O\+MB} = \{0,0,960,540\}
+\item 
+const float \hyperlink{7__asteroid_2config_8h_acfcd7265ae38801f1f71f5d4c0e96833}{R\+A\+T\+I\+O\+\_\+\+T\+U\+RN} \mbox{[}\hyperlink{7__asteroid_2config_8h_a88b9efdaa83394155cda5d2c0e4fb4f1}{N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+U\+RN}\mbox{]} = \{0, 0.\+1, 0.\+2, 0.\+3, 0.\+6, 0.\+8, 1, 1, 1\}
+\item 
+const float \hyperlink{7__asteroid_2config_8h_a6e415f7cd73ddbff54ddadcc219c7062}{R\+A\+T\+I\+O\+\_\+\+A\+C\+C\+EL} \mbox{[}\hyperlink{7__asteroid_2config_8h_a1b4bc8e6cb25e856724af9cee69c7182}{N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+H\+R\+U\+ST}+1\mbox{]} = \{0, 0.\+3, 0.\+6, 1, 1, 1\}
+\item 
+S\+D\+L\+\_\+\+Point \hyperlink{7__asteroid_2config_8h_a7c1bdb8d8602a6bf6c2802e050a92f0e}{coord\+\_\+spawn} \mbox{[}3\mbox{]} =\{\{0,0\},\{0,(P\+L\+A\+Y\+G\+R\+O\+U\+N\+D\+\_\+\+S\+I\+Z\+E\+\_\+H/2)\},\{(P\+L\+A\+Y\+G\+R\+O\+U\+N\+D\+\_\+\+S\+I\+Z\+E\+\_\+W/2),0\}\}
+\item 
+const int \hyperlink{7__asteroid_2config_8h_abae6331379d06add737d07a6d6edebbc}{S\+C\+O\+R\+E\+\_\+\+A\+S\+T\+E\+R\+O\+ID} \mbox{[}\hyperlink{7__asteroid_2config_8h_a8e5034a0493e51b9c7db570e3510feea}{N\+B\+\_\+\+A\+S\+T\+E\+\_\+\+T\+E\+X\+T\+U\+R\+ES}\mbox{]} = \{50, 100, 200, 300, 400, 500\}
+\item 
+const float \hyperlink{7__asteroid_2config_8h_adfd6e6b311603592b76dff0313d4e530}{M\+U\+L\+T\+I\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+S\+C\+O\+RE} \mbox{[}\hyperlink{7__asteroid_2config_8h_aa26f2abfb75d6954c0dd07183121c23f}{N\+B\+\_\+\+T\+R\+A\+N\+C\+H\+E\+\_\+\+T\+A\+I\+L\+LE}\mbox{]} = \{0.\+2, 0.\+4, 0.\+8 ,1\}
+\item 
+const int \hyperlink{7__asteroid_2config_8h_a4896132ff929e6abc0def4bf6b801325}{D\+I\+A\+M\+E\+T\+R\+E\+\_\+\+A\+S\+TE} \mbox{[}\hyperlink{7__asteroid_2config_8h_a5461d80ad074bdfa729ab899767d7739}{N\+B\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+A\+S\+TE}\mbox{]} = \{32,48\}
+\item 
+S\+D\+L\+\_\+\+Rect \hyperlink{7__asteroid_2config_8h_aec598c4a8caf121886ed46e8b519356b}{A\+S\+T\+E\+\_\+\+S\+RC} = \{0,0,48,48\}
+\item 
+S\+D\+L\+\_\+\+Rect \hyperlink{7__asteroid_2config_8h_ad225b3d18e31b32fd2fea440696534df}{S\+R\+C\+\_\+\+R\+O\+UE} = \{0,0,622,622\}
+\item 
+S\+D\+L\+\_\+\+Rect \hyperlink{7__asteroid_2config_8h_aca86731ee5a24ae09d7cc0aa6dd3c3c1}{R\+O\+U\+E\+\_\+\+D\+IM} = \{0,0,80,80\}
+\item 
+S\+D\+L\+\_\+\+Rect \hyperlink{7__asteroid_2config_8h_a120711a85163b48d1bd431a1c45a4eab}{B\+O\+M\+B\+\_\+\+I\+C\+O\+N\+\_\+\+D\+IM} = \{0,0, 71, 70\}
+\item 
+S\+D\+L\+\_\+\+Color \hyperlink{7__asteroid_2config_8h_aac7e5eb0d062ddd93fc3546d71dcd810}{R\+O\+U\+E\+\_\+\+C\+O\+L\+OR} = \{40,40,40\}
+\item 
+const int \hyperlink{7__asteroid_2config_8h_a0b04055f3a8bfed5f7a65af4e05e21d2}{B\+L\+O\+C\+K\+I\+N\+G\+\_\+\+A\+N\+I\+M\+\_\+\+A\+N\+G\+LE} \mbox{[}\hyperlink{7__asteroid_2config_8h_aec076af9a7f22f9e7b75d89af7b69cf9}{F\+R\+A\+M\+E\+\_\+\+R\+O\+T\+A\+\_\+\+R\+O\+UE}\mbox{]} = \{0,0,0,4,4,4,4,4,4,1,-\/1,-\/12,-\/12\}
+\item 
+S\+D\+L\+\_\+\+Rect \hyperlink{7__asteroid_2config_8h_a25b48909d83038e8ef1eba6af5781f9c}{J\+A\+U\+G\+E\+\_\+\+D\+IM} = \{0,0,80,500\}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{7__asteroid_2config_8h_abd15933eb747c6822af28ef8e32838a3}{G\+E\+M\+\_\+\+C\+O\+L\+O\+RS} \mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{7__asteroid_2config_8h_a5723c2c0ec341e2e26d389654009c9bb}{B\+O\+U\+C\+L\+I\+E\+R\+\_\+\+C\+O\+L\+OR} = \{0xfd,0xff,0x37\}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{7__asteroid_2config_8h_a8f77a36db8ef0fcbf6ed9845076b4ce0}{F\+I\+S\+S\+U\+R\+E\+\_\+\+G\+L\+A\+C\+E\+\_\+\+C\+O\+L\+OR} = \{0x58,0x95,0xaa\}
+\item 
+const float \hyperlink{7__asteroid_2config_8h_a3becb8a199441dd77554400398a89ed2}{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES} \mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} = \{1, 0.\+66, 1.\+6, 1.\+33, 0\}
+\item 
+const float \hyperlink{7__asteroid_2config_8h_a1108f4e2a048fb527f48903a5568a347}{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES} \mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} = \{1.\+2, 1.\+4, 1, 1.\+3, 0\}
+\item 
+const float \hyperlink{7__asteroid_2config_8h_a4df5f0fcd67454b6a725bf21965588b5}{D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+L\+ES} \mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} = \{1.\+3, 1.\+6, 3.\+6, 0, 12./30\}
+\item 
+const int \hyperlink{7__asteroid_2config_8h_a2cc85f77176a93bc5c62f4b934683362}{R\+A\+Y\+O\+N\+\_\+\+M\+I\+S\+S\+I\+L\+ES} \mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} = \{6, 10, 14, 10, 0\}
+\item 
+const float \hyperlink{7__asteroid_2config_8h_af5b11c0d02817410930c9fd7e156a17f}{T\+A\+I\+L\+L\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS} \mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} = \{0.\+9, 1.\+1, 1.\+3, 1, 0\}
+\item 
+const float \hyperlink{7__asteroid_2config_8h_a914020f0eb727509753a26d00ee9178a}{D\+U\+R\+E\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES} \mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} = \{0.\+9, 0.\+7, 1.\+6, 1, 0\}
+\item 
+const float \hyperlink{7__asteroid_2config_8h_a76d9b5cf39549b68a87802655749c6d3}{M\+U\+N\+I\+T\+I\+O\+N\+S\+\_\+\+U\+S\+A\+GE} \mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} = \{0, 0.\+01, 0.\+0334, 0.\+02, 1./(14$\ast$30)\}
+\item 
+S\+D\+L\+\_\+\+Point \hyperlink{7__asteroid_2config_8h_af4d3e821587ff152e4ccec37455cf211}{M\+I\+S\+S\+I\+L\+E\+\_\+\+S\+RC} \mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]}
+\item 
+S\+D\+L\+\_\+\+Point \hyperlink{7__asteroid_2config_8h_ac60144991538a0e3d4fd124648629070}{M\+I\+S\+S\+I\+L\+E\+\_\+\+C\+E\+N\+T\+R\+ES} \mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]}
+\item 
+const int \hyperlink{7__asteroid_2config_8h_ab503f71ccc6a2db49ef372eb8ab2dcbf}{M\+I\+S\+S\+I\+L\+E\+S\+\_\+\+S\+R\+C\+\_\+\+R\+A\+Y\+ON} \mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} =\{6, 15, 18, 13, 0\}
+\item 
+const int \hyperlink{7__asteroid_2config_8h_a3fb7d5637e289f5175120e2276cb9005}{A\+L\+P\+H\+A\+\_\+\+M\+I\+S\+S\+I\+LE} \mbox{[}\hyperlink{7__asteroid_2config_8h_aed81eb575ba3469d1154bc05e5655772}{F\+R\+A\+M\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+D\+E\+A\+TH}\mbox{]} =\{10, 30, 60, 90, 140, 180, 215, 250\}
+\item 
+static const int \hyperlink{7__asteroid_2config_8h_a1563e736047cb57052434e132e4afac4}{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME} = 1000 / \hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}
+\item 
+static S\+D\+L\+\_\+\+Rect \hyperlink{7__asteroid_2config_8h_a2131a805654560bcc80dc5a4785aac43}{F\+L\+E\+C\+H\+E\+\_\+\+S\+RC} = \{0,0, 500, 435\}
+\item 
+static S\+D\+L\+\_\+\+Rect \hyperlink{7__asteroid_2config_8h_a857f34789a49aa1be3298cbb4245b36a}{F\+L\+E\+C\+H\+E\+\_\+\+D\+E\+ST} \mbox{[}6\mbox{]}
+\item 
+const float \hyperlink{7__asteroid_2config_8h_acb6d45055361fada7296a9214af36017}{M\+U\+N\+I\+T\+I\+O\+N\+S\+\_\+\+U\+S\+A\+G\+E\+\_\+\+M\+U\+L\+T\+I\+P\+LE} \mbox{[}\hyperlink{7__asteroid_2config_8h_a92f2c26a8843f0541c86537af936437d}{N\+B\+\_\+\+T\+I\+R\+\_\+\+M\+AX}\mbox{]} =\{1,1.\+3,1.\+50\}
+\item 
+int \hyperlink{7__asteroid_2config_8h_a7e46aaaf9ccdcdbe7e1425ec675aa14d}{B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT} \mbox{[}\hyperlink{7__asteroid_2config_8h_ad8292ff6d99fb255c69b1748f39b3ad5}{N\+B\+\_\+\+B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT}\mbox{]} =\{500,1500,5000\}
+\item 
+char $\ast$ \hyperlink{7__asteroid_2config_8h_a3999a5a7a142a32d647d8347a6f03e84}{T\+E\+X\+T\+\_\+\+B\+O\+N\+US} \mbox{[}\hyperlink{7__asteroid_2config_8h_a0ccacc3ecbbc935176fd11454ecb79d6}{N\+B\+\_\+\+B\+O\+N\+US}+\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES} -\/ 1\mbox{]}
+\item 
+const S\+D\+L\+\_\+\+Color \hyperlink{7__asteroid_2config_8h_ade6893f8f954c1be2839cb6732d88457}{B\+O\+N\+U\+S\+\_\+\+T\+E\+X\+T\+\_\+\+C\+O\+L\+OR} = \{0xa7,0x96,0xff\}
+\item 
+static const int \hyperlink{7__asteroid_2config_8h_adf07383e75a84f1a8c400269b2541787}{A\+L\+P\+H\+A\+\_\+\+B\+O\+N\+US} \mbox{[}\hyperlink{7__asteroid_2config_8h_a20c6057a89989a489e7a2aaae04c68f5}{F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT}\mbox{]} = \{ 40, 80, 160, 200, 235, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 245, 235, 225, 215, 205, 180, 150, 110, 80, 40 \}
+\item 
+int \hyperlink{7__asteroid_2config_8h_afb01e08a19c87cb7852620f89e14c87b}{C\+H\+A\+N\+C\+E\+\_\+\+B\+O\+N\+US} \mbox{[}\hyperlink{7__asteroid_2config_8h_a0ccacc3ecbbc935176fd11454ecb79d6}{N\+B\+\_\+\+B\+O\+N\+US}+\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES} -\/ 1\mbox{]} =\{1,3,1,3,4,1,10,6,2,4,4,4,4\}
+\item 
+float \hyperlink{7__asteroid_2config_8h_ab753140ac4bb3cc9f021e8967ecfc5d1}{angle\+\_\+tir\+\_\+multiple} \mbox{[}\hyperlink{7__asteroid_2config_8h_a92f2c26a8843f0541c86537af936437d}{N\+B\+\_\+\+T\+I\+R\+\_\+\+M\+AX}\mbox{]}\mbox{[}\hyperlink{7__asteroid_2config_8h_a92f2c26a8843f0541c86537af936437d}{N\+B\+\_\+\+T\+I\+R\+\_\+\+M\+AX}\mbox{]}
+\item 
+S\+D\+L\+\_\+\+Rect \hyperlink{7__asteroid_2config_8h_a7dd6ae788b433dc299227f5d839e3d73}{T\+H\+R\+U\+S\+T\+\_\+\+S\+RC} =\{0,0,72,70\}
+\item 
+S\+D\+L\+\_\+\+Rect \hyperlink{7__asteroid_2config_8h_af4550b1f59838ab4760a7a41c846765d}{V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+S\+RC} = \{0,0,72,70\}
+\item 
+S\+D\+L\+\_\+\+Rect \hyperlink{7__asteroid_2config_8h_a1600c4a791fc472428f18f4c9518c184}{V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+D\+E\+ST} = \{200,200,72,70\}
+\item 
+S\+D\+L\+\_\+\+Rect \hyperlink{7__asteroid_2config_8h_a8543253d220a809fd083b609deb6b056}{G\+E\+M\+\_\+\+S\+RC} = \{0,0,72,70\}
+\item 
+S\+D\+L\+\_\+\+Point \hyperlink{7__asteroid_2config_8h_ae9fca2f857bd6028a231907b9fab1bea}{C\+E\+N\+T\+R\+E\+\_\+\+V\+A\+I\+SS} = \{36,26\}
+\end{DoxyCompactItemize}
+
+
+\subsection{Documentation des macros}
+\mbox{\Hypertarget{7__asteroid_2config_8h_ad2d7243c099b33b2343976dd3ee8b36b}\label{7__asteroid_2config_8h_ad2d7243c099b33b2343976dd3ee8b36b}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!A\+C\+C\+EL@{A\+C\+C\+EL}}
+\index{A\+C\+C\+EL@{A\+C\+C\+EL}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{A\+C\+C\+EL}{ACCEL}}
+{\footnotesize\ttfamily \#define A\+C\+C\+EL~0.\+75}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a49ef28c6ca8e5b17abc7a959460e0fe3}\label{7__asteroid_2config_8h_a49ef28c6ca8e5b17abc7a959460e0fe3}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!A\+C\+C\+E\+L\+E\+R\+A\+T\+I\+O\+N\+\_\+\+S\+P\+A\+WN@{A\+C\+C\+E\+L\+E\+R\+A\+T\+I\+O\+N\+\_\+\+S\+P\+A\+WN}}
+\index{A\+C\+C\+E\+L\+E\+R\+A\+T\+I\+O\+N\+\_\+\+S\+P\+A\+WN@{A\+C\+C\+E\+L\+E\+R\+A\+T\+I\+O\+N\+\_\+\+S\+P\+A\+WN}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{A\+C\+C\+E\+L\+E\+R\+A\+T\+I\+O\+N\+\_\+\+S\+P\+A\+WN}{ACCELERATION\_SPAWN}}
+{\footnotesize\ttfamily \#define A\+C\+C\+E\+L\+E\+R\+A\+T\+I\+O\+N\+\_\+\+S\+P\+A\+WN~0.\+03}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a6f739e7becfffb0dae9365d1bce80ef2}\label{7__asteroid_2config_8h_a6f739e7becfffb0dae9365d1bce80ef2}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!A\+M\+M\+O\+\_\+\+G\+R\+A\+NT@{A\+M\+M\+O\+\_\+\+G\+R\+A\+NT}}
+\index{A\+M\+M\+O\+\_\+\+G\+R\+A\+NT@{A\+M\+M\+O\+\_\+\+G\+R\+A\+NT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{A\+M\+M\+O\+\_\+\+G\+R\+A\+NT}{AMMO\_GRANT}}
+{\footnotesize\ttfamily \#define A\+M\+M\+O\+\_\+\+G\+R\+A\+NT~(1./3)}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a4305f182e04ef5162040e4f6c0ba9e5b}\label{7__asteroid_2config_8h_a4305f182e04ef5162040e4f6c0ba9e5b}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!A\+N\+G\+L\+E\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE@{A\+N\+G\+L\+E\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE}}
+\index{A\+N\+G\+L\+E\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE@{A\+N\+G\+L\+E\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{A\+N\+G\+L\+E\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE}{ANGLE\_TELEGUIDE}}
+{\footnotesize\ttfamily \#define A\+N\+G\+L\+E\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE~0.\+1}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a4e8a0f75f21e5116a77c9abead2a886d}\label{7__asteroid_2config_8h_a4e8a0f75f21e5116a77c9abead2a886d}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+A\+S\+E\+\_\+\+A\+N\+G\+LE@{B\+A\+S\+E\+\_\+\+A\+N\+G\+LE}}
+\index{B\+A\+S\+E\+\_\+\+A\+N\+G\+LE@{B\+A\+S\+E\+\_\+\+A\+N\+G\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{B\+A\+S\+E\+\_\+\+A\+N\+G\+LE}{BASE\_ANGLE}}
+{\footnotesize\ttfamily \#define B\+A\+S\+E\+\_\+\+A\+N\+G\+LE~3 $\ast$ \hyperlink{2__snake_2config_8h_a598a3330b3c21701223ee0ca14316eca}{PI} / 2}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a153cf1d5572254c3b75196055e5b660e}\label{7__asteroid_2config_8h_a153cf1d5572254c3b75196055e5b660e}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+A\+S\+E\+\_\+\+D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+LE@{B\+A\+S\+E\+\_\+\+D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+LE}}
+\index{B\+A\+S\+E\+\_\+\+D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+LE@{B\+A\+S\+E\+\_\+\+D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{B\+A\+S\+E\+\_\+\+D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+LE}{BASE\_DEGAT\_MISSILE}}
+{\footnotesize\ttfamily \#define B\+A\+S\+E\+\_\+\+D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+LE~1.\+5}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_af84625e32b007c66dad7b405c0885f5d}\label{7__asteroid_2config_8h_af84625e32b007c66dad7b405c0885f5d}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+A\+S\+E\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+ON@{B\+A\+S\+E\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+ON}}
+\index{B\+A\+S\+E\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+ON@{B\+A\+S\+E\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+ON}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{B\+A\+S\+E\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+ON}{BASE\_TAILLE\_EXPLOSION}}
+{\footnotesize\ttfamily \#define B\+A\+S\+E\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+ON~40}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a1fb05fa9aac1e8e1b3cdd9cf32a4cfc1}\label{7__asteroid_2config_8h_a1fb05fa9aac1e8e1b3cdd9cf32a4cfc1}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+A\+S\+E\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE@{B\+A\+S\+E\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE}}
+\index{B\+A\+S\+E\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE@{B\+A\+S\+E\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{B\+A\+S\+E\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE}{BASE\_VITESSE\_MISSILE}}
+{\footnotesize\ttfamily \#define B\+A\+S\+E\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE~15}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a042aff171ca8fc67ec290883be13e7f1}\label{7__asteroid_2config_8h_a042aff171ca8fc67ec290883be13e7f1}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+A\+S\+E\+\_\+\+Z\+I\+G\+Z\+A\+G\+\_\+\+A\+N\+G\+LE@{B\+A\+S\+E\+\_\+\+Z\+I\+G\+Z\+A\+G\+\_\+\+A\+N\+G\+LE}}
+\index{B\+A\+S\+E\+\_\+\+Z\+I\+G\+Z\+A\+G\+\_\+\+A\+N\+G\+LE@{B\+A\+S\+E\+\_\+\+Z\+I\+G\+Z\+A\+G\+\_\+\+A\+N\+G\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{B\+A\+S\+E\+\_\+\+Z\+I\+G\+Z\+A\+G\+\_\+\+A\+N\+G\+LE}{BASE\_ZIGZAG\_ANGLE}}
+{\footnotesize\ttfamily \#define B\+A\+S\+E\+\_\+\+Z\+I\+G\+Z\+A\+G\+\_\+\+A\+N\+G\+LE~0.\+1}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ad3e3c131127104b015d71bb7da542039}\label{7__asteroid_2config_8h_ad3e3c131127104b015d71bb7da542039}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+L\+O\+C\+K\+I\+N\+G\+\_\+\+A\+N\+IM@{B\+L\+O\+C\+K\+I\+N\+G\+\_\+\+A\+N\+IM}}
+\index{B\+L\+O\+C\+K\+I\+N\+G\+\_\+\+A\+N\+IM@{B\+L\+O\+C\+K\+I\+N\+G\+\_\+\+A\+N\+IM}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{B\+L\+O\+C\+K\+I\+N\+G\+\_\+\+A\+N\+IM}{BLOCKING\_ANIM}}
+{\footnotesize\ttfamily \#define B\+L\+O\+C\+K\+I\+N\+G\+\_\+\+A\+N\+IM~1}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a132c4d592b86925dca028243542435c6}\label{7__asteroid_2config_8h_a132c4d592b86925dca028243542435c6}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+O\+N\+U\+S\+\_\+\+A\+C\+C\+E\+L\+E\+R\+A\+T\+I\+O\+N\+\_\+\+M\+I\+S\+S\+I\+LE@{B\+O\+N\+U\+S\+\_\+\+A\+C\+C\+E\+L\+E\+R\+A\+T\+I\+O\+N\+\_\+\+M\+I\+S\+S\+I\+LE}}
+\index{B\+O\+N\+U\+S\+\_\+\+A\+C\+C\+E\+L\+E\+R\+A\+T\+I\+O\+N\+\_\+\+M\+I\+S\+S\+I\+LE@{B\+O\+N\+U\+S\+\_\+\+A\+C\+C\+E\+L\+E\+R\+A\+T\+I\+O\+N\+\_\+\+M\+I\+S\+S\+I\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{B\+O\+N\+U\+S\+\_\+\+A\+C\+C\+E\+L\+E\+R\+A\+T\+I\+O\+N\+\_\+\+M\+I\+S\+S\+I\+LE}{BONUS\_ACCELERATION\_MISSILE}}
+{\footnotesize\ttfamily \#define B\+O\+N\+U\+S\+\_\+\+A\+C\+C\+E\+L\+E\+R\+A\+T\+I\+O\+N\+\_\+\+M\+I\+S\+S\+I\+LE~1.\+7}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a25355a725439afc1415c598a30cf3bc9}\label{7__asteroid_2config_8h_a25355a725439afc1415c598a30cf3bc9}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+O\+N\+U\+S\+\_\+\+D\+E\+A\+D\+\_\+\+D\+E\+C\+E\+L\+E\+R\+A\+T\+I\+ON@{B\+O\+N\+U\+S\+\_\+\+D\+E\+A\+D\+\_\+\+D\+E\+C\+E\+L\+E\+R\+A\+T\+I\+ON}}
+\index{B\+O\+N\+U\+S\+\_\+\+D\+E\+A\+D\+\_\+\+D\+E\+C\+E\+L\+E\+R\+A\+T\+I\+ON@{B\+O\+N\+U\+S\+\_\+\+D\+E\+A\+D\+\_\+\+D\+E\+C\+E\+L\+E\+R\+A\+T\+I\+ON}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{B\+O\+N\+U\+S\+\_\+\+D\+E\+A\+D\+\_\+\+D\+E\+C\+E\+L\+E\+R\+A\+T\+I\+ON}{BONUS\_DEAD\_DECELERATION}}
+{\footnotesize\ttfamily \#define B\+O\+N\+U\+S\+\_\+\+D\+E\+A\+D\+\_\+\+D\+E\+C\+E\+L\+E\+R\+A\+T\+I\+ON~0.\+05}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a7e64d280ad41a6e8860907d35dceee12}\label{7__asteroid_2config_8h_a7e64d280ad41a6e8860907d35dceee12}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+O\+N\+U\+S\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+LE@{B\+O\+N\+U\+S\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+LE}}
+\index{B\+O\+N\+U\+S\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+LE@{B\+O\+N\+U\+S\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{B\+O\+N\+U\+S\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+LE}{BONUS\_FREQUENCE\_MISSILE}}
+{\footnotesize\ttfamily \#define B\+O\+N\+U\+S\+\_\+\+F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+LE~1.\+4}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a4a8aa7578e2e94c8ed0ac1a84c6fcdb0}\label{7__asteroid_2config_8h_a4a8aa7578e2e94c8ed0ac1a84c6fcdb0}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!C\+H\+A\+M\+P\+\_\+\+V\+I\+S\+I\+O\+N\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE@{C\+H\+A\+M\+P\+\_\+\+V\+I\+S\+I\+O\+N\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE}}
+\index{C\+H\+A\+M\+P\+\_\+\+V\+I\+S\+I\+O\+N\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE@{C\+H\+A\+M\+P\+\_\+\+V\+I\+S\+I\+O\+N\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{C\+H\+A\+M\+P\+\_\+\+V\+I\+S\+I\+O\+N\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE}{CHAMP\_VISION\_TELEGUIDE}}
+{\footnotesize\ttfamily \#define C\+H\+A\+M\+P\+\_\+\+V\+I\+S\+I\+O\+N\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE~(\hyperlink{2__snake_2config_8h_a598a3330b3c21701223ee0ca14316eca}{PI}/2)}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a880a9368f0ff5ad7191636759070180e}\label{7__asteroid_2config_8h_a880a9368f0ff5ad7191636759070180e}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+E\+A\+D\+\_\+\+F\+R\+O\+Z\+EN@{D\+E\+A\+D\+\_\+\+F\+R\+O\+Z\+EN}}
+\index{D\+E\+A\+D\+\_\+\+F\+R\+O\+Z\+EN@{D\+E\+A\+D\+\_\+\+F\+R\+O\+Z\+EN}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+E\+A\+D\+\_\+\+F\+R\+O\+Z\+EN}{DEAD\_FROZEN}}
+{\footnotesize\ttfamily \#define D\+E\+A\+D\+\_\+\+F\+R\+O\+Z\+EN~-\/999}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a82d8fad64f895864e2aa8926c4ca396b}\label{7__asteroid_2config_8h_a82d8fad64f895864e2aa8926c4ca396b}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+E\+C\+E\+L\+E\+R\+A\+T\+I\+ON@{D\+E\+C\+E\+L\+E\+R\+A\+T\+I\+ON}}
+\index{D\+E\+C\+E\+L\+E\+R\+A\+T\+I\+ON@{D\+E\+C\+E\+L\+E\+R\+A\+T\+I\+ON}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+E\+C\+E\+L\+E\+R\+A\+T\+I\+ON}{DECELERATION}}
+{\footnotesize\ttfamily \#define D\+E\+C\+E\+L\+E\+R\+A\+T\+I\+ON~1.\+015}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a532725482c7898789a71e019f613ed85}\label{7__asteroid_2config_8h_a532725482c7898789a71e019f613ed85}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+E\+G\+A\+T\+\_\+\+A\+DD@{D\+E\+G\+A\+T\+\_\+\+A\+DD}}
+\index{D\+E\+G\+A\+T\+\_\+\+A\+DD@{D\+E\+G\+A\+T\+\_\+\+A\+DD}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+E\+G\+A\+T\+\_\+\+A\+DD}{DEGAT\_ADD}}
+{\footnotesize\ttfamily \#define D\+E\+G\+A\+T\+\_\+\+A\+DD~0.\+75}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a65e2bceb8fa36eeaa96da771b679c2be}\label{7__asteroid_2config_8h_a65e2bceb8fa36eeaa96da771b679c2be}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+AX@{D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+AX}}
+\index{D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+AX@{D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+AX}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+AX}{DEGAT\_MISSILE\_MAX}}
+{\footnotesize\ttfamily \#define D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+AX~6}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a60b40f56c11dab83d832d4ad4bee30b5}\label{7__asteroid_2config_8h_a60b40f56c11dab83d832d4ad4bee30b5}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+M\+I\+N\+\_\+\+S\+P\+L\+IT@{D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+M\+I\+N\+\_\+\+S\+P\+L\+IT}}
+\index{D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+M\+I\+N\+\_\+\+S\+P\+L\+IT@{D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+M\+I\+N\+\_\+\+S\+P\+L\+IT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+M\+I\+N\+\_\+\+S\+P\+L\+IT}{DIFFICULTE\_MIN\_SPLIT}}
+{\footnotesize\ttfamily \#define D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+M\+I\+N\+\_\+\+S\+P\+L\+IT~5}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_aa4fe3ccc691ba865885db0c83abb4b2c}\label{7__asteroid_2config_8h_aa4fe3ccc691ba865885db0c83abb4b2c}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+I\+S\+T\+\_\+2\+A\+S\+T\+E\+R\+O\+ID@{D\+I\+S\+T\+\_\+2\+A\+S\+T\+E\+R\+O\+ID}}
+\index{D\+I\+S\+T\+\_\+2\+A\+S\+T\+E\+R\+O\+ID@{D\+I\+S\+T\+\_\+2\+A\+S\+T\+E\+R\+O\+ID}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+I\+S\+T\+\_\+2\+A\+S\+T\+E\+R\+O\+ID}{DIST\_2ASTEROID}}
+{\footnotesize\ttfamily \#define D\+I\+S\+T\+\_\+2\+A\+S\+T\+E\+R\+O\+ID~30}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_afb63fb9f349f47a97b92f3cad23e3e60}\label{7__asteroid_2config_8h_afb63fb9f349f47a97b92f3cad23e3e60}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+I\+S\+T\+\_\+\+S\+P\+A\+W\+N\+\_\+2\+A\+S\+T\+E\+R\+O\+ID@{D\+I\+S\+T\+\_\+\+S\+P\+A\+W\+N\+\_\+2\+A\+S\+T\+E\+R\+O\+ID}}
+\index{D\+I\+S\+T\+\_\+\+S\+P\+A\+W\+N\+\_\+2\+A\+S\+T\+E\+R\+O\+ID@{D\+I\+S\+T\+\_\+\+S\+P\+A\+W\+N\+\_\+2\+A\+S\+T\+E\+R\+O\+ID}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+I\+S\+T\+\_\+\+S\+P\+A\+W\+N\+\_\+2\+A\+S\+T\+E\+R\+O\+ID}{DIST\_SPAWN\_2ASTEROID}}
+{\footnotesize\ttfamily \#define D\+I\+S\+T\+\_\+\+S\+P\+A\+W\+N\+\_\+2\+A\+S\+T\+E\+R\+O\+ID~40}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a867c193becb784020b96f49c89567789}\label{7__asteroid_2config_8h_a867c193becb784020b96f49c89567789}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+I\+S\+T\+\_\+\+V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{D\+I\+S\+T\+\_\+\+V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+A\+S\+T\+E\+R\+O\+ID}}
+\index{D\+I\+S\+T\+\_\+\+V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{D\+I\+S\+T\+\_\+\+V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+A\+S\+T\+E\+R\+O\+ID}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+I\+S\+T\+\_\+\+V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+A\+S\+T\+E\+R\+O\+ID}{DIST\_VAISSEAU\_ASTEROID}}
+{\footnotesize\ttfamily \#define D\+I\+S\+T\+\_\+\+V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+A\+S\+T\+E\+R\+O\+ID~300}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a0c7c8ce4f51e9231d7c5815e09758bb5}\label{7__asteroid_2config_8h_a0c7c8ce4f51e9231d7c5815e09758bb5}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+C\+A\+N\+ON@{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+C\+A\+N\+ON}}
+\index{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+C\+A\+N\+ON@{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+C\+A\+N\+ON}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+C\+A\+N\+ON}{DISTANCE\_CANON}}
+{\footnotesize\ttfamily \#define D\+I\+S\+T\+A\+N\+C\+E\+\_\+\+C\+A\+N\+ON~23}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a229c39288605ee702940dec249381452}\label{7__asteroid_2config_8h_a229c39288605ee702940dec249381452}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+U\+R\+E\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+B\+A\+SE@{D\+U\+R\+E\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+B\+A\+SE}}
+\index{D\+U\+R\+E\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+B\+A\+SE@{D\+U\+R\+E\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+B\+A\+SE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+U\+R\+E\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+B\+A\+SE}{DUREE\_MISSILE\_BASE}}
+{\footnotesize\ttfamily \#define D\+U\+R\+E\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+B\+A\+SE~(2$\ast$\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND})}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a3a0fd00eeac2ad701e77975739bd35f6}\label{7__asteroid_2config_8h_a3a0fd00eeac2ad701e77975739bd35f6}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!E\+S\+P\+A\+C\+E\+M\+E\+N\+T\+\_\+\+S\+H\+O\+W\+\_\+\+T\+E\+XT@{E\+S\+P\+A\+C\+E\+M\+E\+N\+T\+\_\+\+S\+H\+O\+W\+\_\+\+T\+E\+XT}}
+\index{E\+S\+P\+A\+C\+E\+M\+E\+N\+T\+\_\+\+S\+H\+O\+W\+\_\+\+T\+E\+XT@{E\+S\+P\+A\+C\+E\+M\+E\+N\+T\+\_\+\+S\+H\+O\+W\+\_\+\+T\+E\+XT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{E\+S\+P\+A\+C\+E\+M\+E\+N\+T\+\_\+\+S\+H\+O\+W\+\_\+\+T\+E\+XT}{ESPACEMENT\_SHOW\_TEXT}}
+{\footnotesize\ttfamily \#define E\+S\+P\+A\+C\+E\+M\+E\+N\+T\+\_\+\+S\+H\+O\+W\+\_\+\+T\+E\+XT~70}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ab6825030e5a2ad03f808fdc9b906fac0}\label{7__asteroid_2config_8h_ab6825030e5a2ad03f808fdc9b906fac0}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+2\+A\+S\+T\+E\+R\+O\+ID@{F\+R\+A\+M\+E\+\_\+2\+A\+S\+T\+E\+R\+O\+ID}}
+\index{F\+R\+A\+M\+E\+\_\+2\+A\+S\+T\+E\+R\+O\+ID@{F\+R\+A\+M\+E\+\_\+2\+A\+S\+T\+E\+R\+O\+ID}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+2\+A\+S\+T\+E\+R\+O\+ID}{FRAME\_2ASTEROID}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+2\+A\+S\+T\+E\+R\+O\+ID~(\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}/2)}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a2abb3de4b868eb0585d073d57186ab80}\label{7__asteroid_2config_8h_a2abb3de4b868eb0585d073d57186ab80}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+A\+M\+MO@{F\+R\+A\+M\+E\+\_\+\+A\+M\+MO}}
+\index{F\+R\+A\+M\+E\+\_\+\+A\+M\+MO@{F\+R\+A\+M\+E\+\_\+\+A\+M\+MO}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+A\+M\+MO}{FRAME\_AMMO}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+A\+M\+MO~7}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_aaae5de8a7b1eb20d7e9c69ffbc2384e2}\label{7__asteroid_2config_8h_aaae5de8a7b1eb20d7e9c69ffbc2384e2}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+B\+O\+MB@{F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+B\+O\+MB}}
+\index{F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+B\+O\+MB@{F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+B\+O\+MB}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+B\+O\+MB}{FRAME\_ANIM\_BOMB}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+A\+N\+I\+M\+\_\+\+B\+O\+MB~24}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a367d02be23938557734167f64c02eaa0}\label{7__asteroid_2config_8h_a367d02be23938557734167f64c02eaa0}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+A\+P\+P\+A\+R\+I\+T\+I\+O\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{F\+R\+A\+M\+E\+\_\+\+A\+P\+P\+A\+R\+I\+T\+I\+O\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID}}
+\index{F\+R\+A\+M\+E\+\_\+\+A\+P\+P\+A\+R\+I\+T\+I\+O\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{F\+R\+A\+M\+E\+\_\+\+A\+P\+P\+A\+R\+I\+T\+I\+O\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+A\+P\+P\+A\+R\+I\+T\+I\+O\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID}{FRAME\_APPARITION\_ASTEROID}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+A\+P\+P\+A\+R\+I\+T\+I\+O\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID~(16$\ast$ \hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND})}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_af4e038d21c306161bb8c70cdf4a28985}\label{7__asteroid_2config_8h_af4e038d21c306161bb8c70cdf4a28985}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE@{F\+R\+A\+M\+E\+\_\+\+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE}}
+\index{F\+R\+A\+M\+E\+\_\+\+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE@{F\+R\+A\+M\+E\+\_\+\+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE}{FRAME\_BOMBE\_NUCLEAIRE}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE~(\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}$\ast$1.\+5)}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ae17dfb36ca43503a93859b915348c610}\label{7__asteroid_2config_8h_ae17dfb36ca43503a93859b915348c610}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+D\+E\+P\+A\+RT@{F\+R\+A\+M\+E\+\_\+\+D\+E\+P\+A\+RT}}
+\index{F\+R\+A\+M\+E\+\_\+\+D\+E\+P\+A\+RT@{F\+R\+A\+M\+E\+\_\+\+D\+E\+P\+A\+RT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+D\+E\+P\+A\+RT}{FRAME\_DEPART}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+D\+E\+P\+A\+RT~24}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a49cb9e7f6e11529527802f1188a44921}\label{7__asteroid_2config_8h_a49cb9e7f6e11529527802f1188a44921}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+D\+E\+S\+T\+R\+O\+Y\+\_\+\+A\+S\+TE@{F\+R\+A\+M\+E\+\_\+\+D\+E\+S\+T\+R\+O\+Y\+\_\+\+A\+S\+TE}}
+\index{F\+R\+A\+M\+E\+\_\+\+D\+E\+S\+T\+R\+O\+Y\+\_\+\+A\+S\+TE@{F\+R\+A\+M\+E\+\_\+\+D\+E\+S\+T\+R\+O\+Y\+\_\+\+A\+S\+TE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+D\+E\+S\+T\+R\+O\+Y\+\_\+\+A\+S\+TE}{FRAME\_DESTROY\_ASTE}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+D\+E\+S\+T\+R\+O\+Y\+\_\+\+A\+S\+TE~-\/30}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a3ab9d4d138157a3616c54d162dc3c6b4}\label{7__asteroid_2config_8h_a3ab9d4d138157a3616c54d162dc3c6b4}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+H\+I\+T\+\_\+\+A\+N\+IM@{F\+R\+A\+M\+E\+\_\+\+H\+I\+T\+\_\+\+A\+N\+IM}}
+\index{F\+R\+A\+M\+E\+\_\+\+H\+I\+T\+\_\+\+A\+N\+IM@{F\+R\+A\+M\+E\+\_\+\+H\+I\+T\+\_\+\+A\+N\+IM}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+H\+I\+T\+\_\+\+A\+N\+IM}{FRAME\_HIT\_ANIM}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+H\+I\+T\+\_\+\+A\+N\+IM~2}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_af54bece7a0dbc6d81fca67a6aad1d3d3}\label{7__asteroid_2config_8h_af54bece7a0dbc6d81fca67a6aad1d3d3}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+I\+N\+I\+T\+\_\+\+S\+P\+A\+WN@{F\+R\+A\+M\+E\+\_\+\+I\+N\+I\+T\+\_\+\+S\+P\+A\+WN}}
+\index{F\+R\+A\+M\+E\+\_\+\+I\+N\+I\+T\+\_\+\+S\+P\+A\+WN@{F\+R\+A\+M\+E\+\_\+\+I\+N\+I\+T\+\_\+\+S\+P\+A\+WN}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+I\+N\+I\+T\+\_\+\+S\+P\+A\+WN}{FRAME\_INIT\_SPAWN}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+I\+N\+I\+T\+\_\+\+S\+P\+A\+WN~20}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a20e65cb991369765500db37b9089cdb8}\label{7__asteroid_2config_8h_a20e65cb991369765500db37b9089cdb8}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+K\+I\+L\+L\+\_\+\+A\+S\+T\+E\+R\+O\+\_\+\+B\+O\+MB@{F\+R\+A\+M\+E\+\_\+\+K\+I\+L\+L\+\_\+\+A\+S\+T\+E\+R\+O\+\_\+\+B\+O\+MB}}
+\index{F\+R\+A\+M\+E\+\_\+\+K\+I\+L\+L\+\_\+\+A\+S\+T\+E\+R\+O\+\_\+\+B\+O\+MB@{F\+R\+A\+M\+E\+\_\+\+K\+I\+L\+L\+\_\+\+A\+S\+T\+E\+R\+O\+\_\+\+B\+O\+MB}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+K\+I\+L\+L\+\_\+\+A\+S\+T\+E\+R\+O\+\_\+\+B\+O\+MB}{FRAME\_KILL\_ASTERO\_BOMB}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+K\+I\+L\+L\+\_\+\+A\+S\+T\+E\+R\+O\+\_\+\+B\+O\+MB~15}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_aed81eb575ba3469d1154bc05e5655772}\label{7__asteroid_2config_8h_aed81eb575ba3469d1154bc05e5655772}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+D\+E\+A\+TH@{F\+R\+A\+M\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+D\+E\+A\+TH}}
+\index{F\+R\+A\+M\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+D\+E\+A\+TH@{F\+R\+A\+M\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+D\+E\+A\+TH}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+D\+E\+A\+TH}{FRAME\_MISSILE\_DEATH}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+D\+E\+A\+TH~8}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_aec076af9a7f22f9e7b75d89af7b69cf9}\label{7__asteroid_2config_8h_aec076af9a7f22f9e7b75d89af7b69cf9}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+R\+O\+T\+A\+\_\+\+R\+O\+UE@{F\+R\+A\+M\+E\+\_\+\+R\+O\+T\+A\+\_\+\+R\+O\+UE}}
+\index{F\+R\+A\+M\+E\+\_\+\+R\+O\+T\+A\+\_\+\+R\+O\+UE@{F\+R\+A\+M\+E\+\_\+\+R\+O\+T\+A\+\_\+\+R\+O\+UE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+R\+O\+T\+A\+\_\+\+R\+O\+UE}{FRAME\_ROTA\_ROUE}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+R\+O\+T\+A\+\_\+\+R\+O\+UE~13}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a0ebf185842674cdecc6621333d79f8a5}\label{7__asteroid_2config_8h_a0ebf185842674cdecc6621333d79f8a5}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+S\+C\+O\+R\+E\+\_\+\+A\+N\+IM@{F\+R\+A\+M\+E\+\_\+\+S\+C\+O\+R\+E\+\_\+\+A\+N\+IM}}
+\index{F\+R\+A\+M\+E\+\_\+\+S\+C\+O\+R\+E\+\_\+\+A\+N\+IM@{F\+R\+A\+M\+E\+\_\+\+S\+C\+O\+R\+E\+\_\+\+A\+N\+IM}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+S\+C\+O\+R\+E\+\_\+\+A\+N\+IM}{FRAME\_SCORE\_ANIM}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+S\+C\+O\+R\+E\+\_\+\+A\+N\+IM~20}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a20c6057a89989a489e7a2aaae04c68f5}\label{7__asteroid_2config_8h_a20c6057a89989a489e7a2aaae04c68f5}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT@{F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT}}
+\index{F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT@{F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT}{FRAME\_SHOW\_BONUS\_TEXT}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT~30}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a5b6610f9d69984ecba58bcd37b3c1be1}\label{7__asteroid_2config_8h_a5b6610f9d69984ecba58bcd37b3c1be1}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+H\+E\+LP@{F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+H\+E\+LP}}
+\index{F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+H\+E\+LP@{F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+H\+E\+LP}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+H\+E\+LP}{FRAME\_SHOW\_HELP}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+H\+E\+LP~-\/50}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a73196e7f8821c43bbe9c5658ecb2d83c}\label{7__asteroid_2config_8h_a73196e7f8821c43bbe9c5658ecb2d83c}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+T\+O\+\_\+\+R\+E\+A\+C\+H\+\_\+\+A\+N\+G\+LE@{F\+R\+A\+M\+E\+\_\+\+T\+O\+\_\+\+R\+E\+A\+C\+H\+\_\+\+A\+N\+G\+LE}}
+\index{F\+R\+A\+M\+E\+\_\+\+T\+O\+\_\+\+R\+E\+A\+C\+H\+\_\+\+A\+N\+G\+LE@{F\+R\+A\+M\+E\+\_\+\+T\+O\+\_\+\+R\+E\+A\+C\+H\+\_\+\+A\+N\+G\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+T\+O\+\_\+\+R\+E\+A\+C\+H\+\_\+\+A\+N\+G\+LE}{FRAME\_TO\_REACH\_ANGLE}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+T\+O\+\_\+\+R\+E\+A\+C\+H\+\_\+\+A\+N\+G\+LE~4}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a66c186ad8fdc49e41743279ab4b7cb3b}\label{7__asteroid_2config_8h_a66c186ad8fdc49e41743279ab4b7cb3b}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+V\+A\+G\+U\+E\+\_\+\+I\+N\+IT@{F\+R\+A\+M\+E\+\_\+\+V\+A\+G\+U\+E\+\_\+\+I\+N\+IT}}
+\index{F\+R\+A\+M\+E\+\_\+\+V\+A\+G\+U\+E\+\_\+\+I\+N\+IT@{F\+R\+A\+M\+E\+\_\+\+V\+A\+G\+U\+E\+\_\+\+I\+N\+IT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+V\+A\+G\+U\+E\+\_\+\+I\+N\+IT}{FRAME\_VAGUE\_INIT}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+\_\+\+V\+A\+G\+U\+E\+\_\+\+I\+N\+IT~(4.\+28$\ast$\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND})}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}\label{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND@{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}}
+\index{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND@{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}{FRAMES\_PER\_SECOND}}
+{\footnotesize\ttfamily \#define F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND~30}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a4563e322ab3b48c9fe9d84c755db6cf8}\label{7__asteroid_2config_8h_a4563e322ab3b48c9fe9d84c755db6cf8}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+B\+A\+SE@{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+B\+A\+SE}}
+\index{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+B\+A\+SE@{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+B\+A\+SE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+B\+A\+SE}{FREQUENCE\_BASE}}
+{\footnotesize\ttfamily \#define F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+B\+A\+SE~(\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}/2)}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a0dc68d121caff8ce538a983b66bf32ed}\label{7__asteroid_2config_8h_a0dc68d121caff8ce538a983b66bf32ed}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+IN@{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+IN}}
+\index{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+IN@{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+IN}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+IN}{FREQUENCE\_MISSILE\_MIN}}
+{\footnotesize\ttfamily \#define F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+IN~(\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}/6.)}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a3191acbabe1143c2edbaf5d8244647da}\label{7__asteroid_2config_8h_a3191acbabe1143c2edbaf5d8244647da}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!I\+N\+T\+E\+R\+V\+A\+L\+E\+\_\+\+R\+A\+N\+D\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+TE@{I\+N\+T\+E\+R\+V\+A\+L\+E\+\_\+\+R\+A\+N\+D\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+TE}}
+\index{I\+N\+T\+E\+R\+V\+A\+L\+E\+\_\+\+R\+A\+N\+D\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+TE@{I\+N\+T\+E\+R\+V\+A\+L\+E\+\_\+\+R\+A\+N\+D\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+TE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{I\+N\+T\+E\+R\+V\+A\+L\+E\+\_\+\+R\+A\+N\+D\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+TE}{INTERVALE\_RAND\_DIFFICULTE}}
+{\footnotesize\ttfamily \#define I\+N\+T\+E\+R\+V\+A\+L\+E\+\_\+\+R\+A\+N\+D\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+TE~0.\+3}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a1558c6eb803a19bd6e24b87941f9c59c}\label{7__asteroid_2config_8h_a1558c6eb803a19bd6e24b87941f9c59c}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!I\+N\+T\+E\+R\+V\+A\+L\+L\+E\+\_\+\+Z\+I\+G\+Z\+A\+G\+\_\+\+A\+N\+G\+LE@{I\+N\+T\+E\+R\+V\+A\+L\+L\+E\+\_\+\+Z\+I\+G\+Z\+A\+G\+\_\+\+A\+N\+G\+LE}}
+\index{I\+N\+T\+E\+R\+V\+A\+L\+L\+E\+\_\+\+Z\+I\+G\+Z\+A\+G\+\_\+\+A\+N\+G\+LE@{I\+N\+T\+E\+R\+V\+A\+L\+L\+E\+\_\+\+Z\+I\+G\+Z\+A\+G\+\_\+\+A\+N\+G\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{I\+N\+T\+E\+R\+V\+A\+L\+L\+E\+\_\+\+Z\+I\+G\+Z\+A\+G\+\_\+\+A\+N\+G\+LE}{INTERVALLE\_ZIGZAG\_ANGLE}}
+{\footnotesize\ttfamily \#define I\+N\+T\+E\+R\+V\+A\+L\+L\+E\+\_\+\+Z\+I\+G\+Z\+A\+G\+\_\+\+A\+N\+G\+LE~0.\+05}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a236d0ccf33f6056f911f5148d6145d39}\label{7__asteroid_2config_8h_a236d0ccf33f6056f911f5148d6145d39}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!L\+A\+S\+E\+R\+\_\+\+A\+C\+C\+EL@{L\+A\+S\+E\+R\+\_\+\+A\+C\+C\+EL}}
+\index{L\+A\+S\+E\+R\+\_\+\+A\+C\+C\+EL@{L\+A\+S\+E\+R\+\_\+\+A\+C\+C\+EL}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{L\+A\+S\+E\+R\+\_\+\+A\+C\+C\+EL}{LASER\_ACCEL}}
+{\footnotesize\ttfamily \#define L\+A\+S\+E\+R\+\_\+\+A\+C\+C\+EL~0.\+05}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a083062c9ab1a34bb4973fa42ef8d1fb1}\label{7__asteroid_2config_8h_a083062c9ab1a34bb4973fa42ef8d1fb1}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+I\+ZE@{M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+I\+ZE}}
+\index{M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+I\+ZE@{M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+I\+ZE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+I\+ZE}{MAX\_ASTEROID\_SIZE}}
+{\footnotesize\ttfamily \#define M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+I\+ZE~90}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ae0c22d64ea65c9b96120e7937a9d385d}\label{7__asteroid_2config_8h_ae0c22d64ea65c9b96120e7937a9d385d}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+A\+X\+\_\+\+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE@{M\+A\+X\+\_\+\+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE}}
+\index{M\+A\+X\+\_\+\+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE@{M\+A\+X\+\_\+\+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE}{MAX\_BOMBE\_NUCLEAIRE}}
+{\footnotesize\ttfamily \#define M\+A\+X\+\_\+\+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE~1}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a1605a24e037309a2d85ed0e8dfcb6926}\label{7__asteroid_2config_8h_a1605a24e037309a2d85ed0e8dfcb6926}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+A\+X\+\_\+\+D\+I\+FF@{M\+A\+X\+\_\+\+D\+I\+FF}}
+\index{M\+A\+X\+\_\+\+D\+I\+FF@{M\+A\+X\+\_\+\+D\+I\+FF}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+D\+I\+FF}{MAX\_DIFF}}
+{\footnotesize\ttfamily \#define M\+A\+X\+\_\+\+D\+I\+FF~40}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_aa1ac23c9deb598d55a6c57c25e67187e}\label{7__asteroid_2config_8h_aa1ac23c9deb598d55a6c57c25e67187e}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+A\+X\+\_\+\+R\+A\+T\+I\+O\+\_\+\+A\+M\+M\+O\+\_\+\+O\+B\+T\+A\+I\+N\+A\+B\+LE@{M\+A\+X\+\_\+\+R\+A\+T\+I\+O\+\_\+\+A\+M\+M\+O\+\_\+\+O\+B\+T\+A\+I\+N\+A\+B\+LE}}
+\index{M\+A\+X\+\_\+\+R\+A\+T\+I\+O\+\_\+\+A\+M\+M\+O\+\_\+\+O\+B\+T\+A\+I\+N\+A\+B\+LE@{M\+A\+X\+\_\+\+R\+A\+T\+I\+O\+\_\+\+A\+M\+M\+O\+\_\+\+O\+B\+T\+A\+I\+N\+A\+B\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+R\+A\+T\+I\+O\+\_\+\+A\+M\+M\+O\+\_\+\+O\+B\+T\+A\+I\+N\+A\+B\+LE}{MAX\_RATIO\_AMMO\_OBTAINABLE}}
+{\footnotesize\ttfamily \#define M\+A\+X\+\_\+\+R\+A\+T\+I\+O\+\_\+\+A\+M\+M\+O\+\_\+\+O\+B\+T\+A\+I\+N\+A\+B\+LE~(0.\+7)}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ad1ceaf0f3d078698c1f9cb967b6b2bcc}\label{7__asteroid_2config_8h_ad1ceaf0f3d078698c1f9cb967b6b2bcc}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+US@{M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+US}}
+\index{M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+US@{M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+US}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+US}{MAX\_TEXT\_BONUS}}
+{\footnotesize\ttfamily \#define M\+A\+X\+\_\+\+T\+E\+X\+T\+\_\+\+B\+O\+N\+US~10}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a2c9abf82f8cc72408c5a7b76daedd54d}\label{7__asteroid_2config_8h_a2c9abf82f8cc72408c5a7b76daedd54d}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+A\+X\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+R\+O\+TA@{M\+A\+X\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+R\+O\+TA}}
+\index{M\+A\+X\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+R\+O\+TA@{M\+A\+X\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+R\+O\+TA}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+R\+O\+TA}{MAX\_VITESSE\_ROTA}}
+{\footnotesize\ttfamily \#define M\+A\+X\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+R\+O\+TA~15}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_aa6f50319f3c88e48eee673f118098849}\label{7__asteroid_2config_8h_aa6f50319f3c88e48eee673f118098849}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+I\+N\+\_\+\+R\+A\+T\+I\+O\+\_\+\+C\+O\+L\+OR@{M\+I\+N\+\_\+\+R\+A\+T\+I\+O\+\_\+\+C\+O\+L\+OR}}
+\index{M\+I\+N\+\_\+\+R\+A\+T\+I\+O\+\_\+\+C\+O\+L\+OR@{M\+I\+N\+\_\+\+R\+A\+T\+I\+O\+\_\+\+C\+O\+L\+OR}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{M\+I\+N\+\_\+\+R\+A\+T\+I\+O\+\_\+\+C\+O\+L\+OR}{MIN\_RATIO\_COLOR}}
+{\footnotesize\ttfamily \#define M\+I\+N\+\_\+\+R\+A\+T\+I\+O\+\_\+\+C\+O\+L\+OR~0.\+3}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a1f286ccdb17e67adc116628ca8048577}\label{7__asteroid_2config_8h_a1f286ccdb17e67adc116628ca8048577}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+I\+S\+S\+I\+L\+E\+\_\+\+C\+UT@{M\+I\+S\+S\+I\+L\+E\+\_\+\+C\+UT}}
+\index{M\+I\+S\+S\+I\+L\+E\+\_\+\+C\+UT@{M\+I\+S\+S\+I\+L\+E\+\_\+\+C\+UT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{M\+I\+S\+S\+I\+L\+E\+\_\+\+C\+UT}{MISSILE\_CUT}}
+{\footnotesize\ttfamily \#define M\+I\+S\+S\+I\+L\+E\+\_\+\+C\+UT~56}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a9e5b4adfefe9009bc09eaf78738c0db8}\label{7__asteroid_2config_8h_a9e5b4adfefe9009bc09eaf78738c0db8}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+A\+N\+I\+M\+\_\+\+B\+O\+MB@{N\+B\+\_\+\+A\+N\+I\+M\+\_\+\+B\+O\+MB}}
+\index{N\+B\+\_\+\+A\+N\+I\+M\+\_\+\+B\+O\+MB@{N\+B\+\_\+\+A\+N\+I\+M\+\_\+\+B\+O\+MB}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+A\+N\+I\+M\+\_\+\+B\+O\+MB}{NB\_ANIM\_BOMB}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+A\+N\+I\+M\+\_\+\+B\+O\+MB~16}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a86127395915e59ff5ccf9f126da48ac8}\label{7__asteroid_2config_8h_a86127395915e59ff5ccf9f126da48ac8}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+A\+R\+R\+O\+U\+N\+D\+\_\+\+J\+A\+U\+G\+ES@{N\+B\+\_\+\+A\+R\+R\+O\+U\+N\+D\+\_\+\+J\+A\+U\+G\+ES}}
+\index{N\+B\+\_\+\+A\+R\+R\+O\+U\+N\+D\+\_\+\+J\+A\+U\+G\+ES@{N\+B\+\_\+\+A\+R\+R\+O\+U\+N\+D\+\_\+\+J\+A\+U\+G\+ES}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+A\+R\+R\+O\+U\+N\+D\+\_\+\+J\+A\+U\+G\+ES}{NB\_ARROUND\_JAUGES}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+A\+R\+R\+O\+U\+N\+D\+\_\+\+J\+A\+U\+G\+ES~4}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a8e5034a0493e51b9c7db570e3510feea}\label{7__asteroid_2config_8h_a8e5034a0493e51b9c7db570e3510feea}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+A\+S\+T\+E\+\_\+\+T\+E\+X\+T\+U\+R\+ES@{N\+B\+\_\+\+A\+S\+T\+E\+\_\+\+T\+E\+X\+T\+U\+R\+ES}}
+\index{N\+B\+\_\+\+A\+S\+T\+E\+\_\+\+T\+E\+X\+T\+U\+R\+ES@{N\+B\+\_\+\+A\+S\+T\+E\+\_\+\+T\+E\+X\+T\+U\+R\+ES}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+A\+S\+T\+E\+\_\+\+T\+E\+X\+T\+U\+R\+ES}{NB\_ASTE\_TEXTURES}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+A\+S\+T\+E\+\_\+\+T\+E\+X\+T\+U\+R\+ES~6}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ab5b5708a6ff360cd6e84c213661ef639}\label{7__asteroid_2config_8h_ab5b5708a6ff360cd6e84c213661ef639}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+F\+O\+N\+TS@{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+F\+O\+N\+TS}}
+\index{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+F\+O\+N\+TS@{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+F\+O\+N\+TS}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+F\+O\+N\+TS}{NB\_ASTEROID\_FONTS}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+F\+O\+N\+TS~2}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a520fd2821a90af2ac4b3bb837bf17b12}\label{7__asteroid_2config_8h_a520fd2821a90af2ac4b3bb837bf17b12}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+O\+U\+N\+DS@{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+O\+U\+N\+DS}}
+\index{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+O\+U\+N\+DS@{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+O\+U\+N\+DS}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+O\+U\+N\+DS}{NB\_ASTEROID\_SOUNDS}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+O\+U\+N\+DS~12}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a0ccacc3ecbbc935176fd11454ecb79d6}\label{7__asteroid_2config_8h_a0ccacc3ecbbc935176fd11454ecb79d6}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+B\+O\+N\+US@{N\+B\+\_\+\+B\+O\+N\+US}}
+\index{N\+B\+\_\+\+B\+O\+N\+US@{N\+B\+\_\+\+B\+O\+N\+US}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+B\+O\+N\+US}{NB\_BONUS}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+B\+O\+N\+US~9}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ad8292ff6d99fb255c69b1748f39b3ad5}\label{7__asteroid_2config_8h_ad8292ff6d99fb255c69b1748f39b3ad5}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT@{N\+B\+\_\+\+B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT}}
+\index{N\+B\+\_\+\+B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT@{N\+B\+\_\+\+B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT}{NB\_BONUS\_POINT}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT~3}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ad2ab730880ec0195b2c9358f1af05110}\label{7__asteroid_2config_8h_ad2ab730880ec0195b2c9358f1af05110}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+C\+H\+A\+N\+N\+E\+L\+\_\+\+E\+X\+P\+L\+O\+S\+I\+ON@{N\+B\+\_\+\+C\+H\+A\+N\+N\+E\+L\+\_\+\+E\+X\+P\+L\+O\+S\+I\+ON}}
+\index{N\+B\+\_\+\+C\+H\+A\+N\+N\+E\+L\+\_\+\+E\+X\+P\+L\+O\+S\+I\+ON@{N\+B\+\_\+\+C\+H\+A\+N\+N\+E\+L\+\_\+\+E\+X\+P\+L\+O\+S\+I\+ON}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+C\+H\+A\+N\+N\+E\+L\+\_\+\+E\+X\+P\+L\+O\+S\+I\+ON}{NB\_CHANNEL\_EXPLOSION}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+C\+H\+A\+N\+N\+E\+L\+\_\+\+E\+X\+P\+L\+O\+S\+I\+ON~3}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a73ac4b641b9f81be39d541e4eb48b82c}\label{7__asteroid_2config_8h_a73ac4b641b9f81be39d541e4eb48b82c}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+C\+O\+L\+\_\+\+B\+O\+MB@{N\+B\+\_\+\+C\+O\+L\+\_\+\+B\+O\+MB}}
+\index{N\+B\+\_\+\+C\+O\+L\+\_\+\+B\+O\+MB@{N\+B\+\_\+\+C\+O\+L\+\_\+\+B\+O\+MB}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+C\+O\+L\+\_\+\+B\+O\+MB}{NB\_COL\_BOMB}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+C\+O\+L\+\_\+\+B\+O\+MB~4}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ad7c708c0fc5593668c426b212c154e2c}\label{7__asteroid_2config_8h_ad7c708c0fc5593668c426b212c154e2c}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS@{N\+B\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}}
+\index{N\+B\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS@{N\+B\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}{NB\_EXPLOSIONS}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS~3}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_aa422d6fe9012d53a7e7d4380d41b090b}\label{7__asteroid_2config_8h_aa422d6fe9012d53a7e7d4380d41b090b}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+F\+I\+S\+S\+U\+R\+ES@{N\+B\+\_\+\+F\+I\+S\+S\+U\+R\+ES}}
+\index{N\+B\+\_\+\+F\+I\+S\+S\+U\+R\+ES@{N\+B\+\_\+\+F\+I\+S\+S\+U\+R\+ES}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+F\+I\+S\+S\+U\+R\+ES}{NB\_FISSURES}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+F\+I\+S\+S\+U\+R\+ES~2}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a1b4bc8e6cb25e856724af9cee69c7182}\label{7__asteroid_2config_8h_a1b4bc8e6cb25e856724af9cee69c7182}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+H\+R\+U\+ST@{N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+H\+R\+U\+ST}}
+\index{N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+H\+R\+U\+ST@{N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+H\+R\+U\+ST}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+H\+R\+U\+ST}{NB\_FRAME\_THRUST}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+H\+R\+U\+ST~5}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a88b9efdaa83394155cda5d2c0e4fb4f1}\label{7__asteroid_2config_8h_a88b9efdaa83394155cda5d2c0e4fb4f1}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+U\+RN@{N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+U\+RN}}
+\index{N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+U\+RN@{N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+U\+RN}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+U\+RN}{NB\_FRAME\_TURN}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+U\+RN~9}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_acc4840ef85870c593a211f6abde0e463}\label{7__asteroid_2config_8h_acc4840ef85870c593a211f6abde0e463}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+L\+A\+S\+E\+R\+\_\+\+B\+E\+AM@{N\+B\+\_\+\+L\+A\+S\+E\+R\+\_\+\+B\+E\+AM}}
+\index{N\+B\+\_\+\+L\+A\+S\+E\+R\+\_\+\+B\+E\+AM@{N\+B\+\_\+\+L\+A\+S\+E\+R\+\_\+\+B\+E\+AM}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+L\+A\+S\+E\+R\+\_\+\+B\+E\+AM}{NB\_LASER\_BEAM}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+L\+A\+S\+E\+R\+\_\+\+B\+E\+AM~8}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}\label{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES@{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}}
+\index{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES@{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}{NB\_MISSILES}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES~5}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a9b87682f53ffda9c807c82a1e2a68692}\label{7__asteroid_2config_8h_a9b87682f53ffda9c807c82a1e2a68692}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+R\+O\+U\+E\+\_\+\+E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+TS@{N\+B\+\_\+\+R\+O\+U\+E\+\_\+\+E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+TS}}
+\index{N\+B\+\_\+\+R\+O\+U\+E\+\_\+\+E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+TS@{N\+B\+\_\+\+R\+O\+U\+E\+\_\+\+E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+TS}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+R\+O\+U\+E\+\_\+\+E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+TS}{NB\_ROUE\_EMPLACEMENTS}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+R\+O\+U\+E\+\_\+\+E\+M\+P\+L\+A\+C\+E\+M\+E\+N\+TS~5}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_adeea677a5f008ccf5f43a0da5b2793f1}\label{7__asteroid_2config_8h_adeea677a5f008ccf5f43a0da5b2793f1}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+R\+O\+W\+\_\+\+B\+O\+MB@{N\+B\+\_\+\+R\+O\+W\+\_\+\+B\+O\+MB}}
+\index{N\+B\+\_\+\+R\+O\+W\+\_\+\+B\+O\+MB@{N\+B\+\_\+\+R\+O\+W\+\_\+\+B\+O\+MB}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+R\+O\+W\+\_\+\+B\+O\+MB}{NB\_ROW\_BOMB}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+R\+O\+W\+\_\+\+B\+O\+MB~4}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a5461d80ad074bdfa729ab899767d7739}\label{7__asteroid_2config_8h_a5461d80ad074bdfa729ab899767d7739}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+A\+S\+TE@{N\+B\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+A\+S\+TE}}
+\index{N\+B\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+A\+S\+TE@{N\+B\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+A\+S\+TE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+A\+S\+TE}{NB\_TAILLE\_ASTE}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+A\+S\+TE~2}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a92f2c26a8843f0541c86537af936437d}\label{7__asteroid_2config_8h_a92f2c26a8843f0541c86537af936437d}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+T\+I\+R\+\_\+\+M\+AX@{N\+B\+\_\+\+T\+I\+R\+\_\+\+M\+AX}}
+\index{N\+B\+\_\+\+T\+I\+R\+\_\+\+M\+AX@{N\+B\+\_\+\+T\+I\+R\+\_\+\+M\+AX}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+T\+I\+R\+\_\+\+M\+AX}{NB\_TIR\_MAX}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+T\+I\+R\+\_\+\+M\+AX~3}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_aa26f2abfb75d6954c0dd07183121c23f}\label{7__asteroid_2config_8h_aa26f2abfb75d6954c0dd07183121c23f}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+T\+R\+A\+N\+C\+H\+E\+\_\+\+T\+A\+I\+L\+LE@{N\+B\+\_\+\+T\+R\+A\+N\+C\+H\+E\+\_\+\+T\+A\+I\+L\+LE}}
+\index{N\+B\+\_\+\+T\+R\+A\+N\+C\+H\+E\+\_\+\+T\+A\+I\+L\+LE@{N\+B\+\_\+\+T\+R\+A\+N\+C\+H\+E\+\_\+\+T\+A\+I\+L\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+T\+R\+A\+N\+C\+H\+E\+\_\+\+T\+A\+I\+L\+LE}{NB\_TRANCHE\_TAILLE}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+T\+R\+A\+N\+C\+H\+E\+\_\+\+T\+A\+I\+L\+LE~4}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ae1cfd4c65bedcc92ee36aaab568fb83d}\label{7__asteroid_2config_8h_ae1cfd4c65bedcc92ee36aaab568fb83d}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+O\+\_\+\+B\+O\+N\+US@{N\+O\+\_\+\+B\+O\+N\+US}}
+\index{N\+O\+\_\+\+B\+O\+N\+US@{N\+O\+\_\+\+B\+O\+N\+US}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+O\+\_\+\+B\+O\+N\+US}{NO\_BONUS}}
+{\footnotesize\ttfamily \#define N\+O\+\_\+\+B\+O\+N\+US~-\/1}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a8c7c8a93108a3a111a68ba2d01dbdaf2}\label{7__asteroid_2config_8h_a8c7c8a93108a3a111a68ba2d01dbdaf2}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!P\+R\+E\+C\+I\+S\+I\+O\+N\+\_\+\+R\+A\+N\+D\+\_\+\+F\+L\+O\+AT@{P\+R\+E\+C\+I\+S\+I\+O\+N\+\_\+\+R\+A\+N\+D\+\_\+\+F\+L\+O\+AT}}
+\index{P\+R\+E\+C\+I\+S\+I\+O\+N\+\_\+\+R\+A\+N\+D\+\_\+\+F\+L\+O\+AT@{P\+R\+E\+C\+I\+S\+I\+O\+N\+\_\+\+R\+A\+N\+D\+\_\+\+F\+L\+O\+AT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{P\+R\+E\+C\+I\+S\+I\+O\+N\+\_\+\+R\+A\+N\+D\+\_\+\+F\+L\+O\+AT}{PRECISION\_RAND\_FLOAT}}
+{\footnotesize\ttfamily \#define P\+R\+E\+C\+I\+S\+I\+O\+N\+\_\+\+R\+A\+N\+D\+\_\+\+F\+L\+O\+AT~100.}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a8271f0bb542462f1c9f2304605c0434f}\label{7__asteroid_2config_8h_a8271f0bb542462f1c9f2304605c0434f}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!P\+R\+O\+B\+A\+\_\+\+B\+O\+N\+US@{P\+R\+O\+B\+A\+\_\+\+B\+O\+N\+US}}
+\index{P\+R\+O\+B\+A\+\_\+\+B\+O\+N\+US@{P\+R\+O\+B\+A\+\_\+\+B\+O\+N\+US}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{P\+R\+O\+B\+A\+\_\+\+B\+O\+N\+US}{PROBA\_BONUS}}
+{\footnotesize\ttfamily \#define P\+R\+O\+B\+A\+\_\+\+B\+O\+N\+US~3}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_aadb09f40a02b5e53176d185bfa68525f}\label{7__asteroid_2config_8h_aadb09f40a02b5e53176d185bfa68525f}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!P\+V\+\_\+\+B\+A\+SE@{P\+V\+\_\+\+B\+A\+SE}}
+\index{P\+V\+\_\+\+B\+A\+SE@{P\+V\+\_\+\+B\+A\+SE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{P\+V\+\_\+\+B\+A\+SE}{PV\_BASE}}
+{\footnotesize\ttfamily \#define P\+V\+\_\+\+B\+A\+SE~1.\+2}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ab793711cafbbe768ffd4fb0dbef01acf}\label{7__asteroid_2config_8h_ab793711cafbbe768ffd4fb0dbef01acf}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+A\+T\+I\+O\+\_\+\+A\+C\+C\+E\+L\+\_\+\+T\+U\+RN@{R\+A\+T\+I\+O\+\_\+\+A\+C\+C\+E\+L\+\_\+\+T\+U\+RN}}
+\index{R\+A\+T\+I\+O\+\_\+\+A\+C\+C\+E\+L\+\_\+\+T\+U\+RN@{R\+A\+T\+I\+O\+\_\+\+A\+C\+C\+E\+L\+\_\+\+T\+U\+RN}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{R\+A\+T\+I\+O\+\_\+\+A\+C\+C\+E\+L\+\_\+\+T\+U\+RN}{RATIO\_ACCEL\_TURN}}
+{\footnotesize\ttfamily \#define R\+A\+T\+I\+O\+\_\+\+A\+C\+C\+E\+L\+\_\+\+T\+U\+RN~0.\+16}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a86e7bcd90e7564fe7f43c2b197cc6b82}\label{7__asteroid_2config_8h_a86e7bcd90e7564fe7f43c2b197cc6b82}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+A\+T\+I\+O\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+E\+X\+P\+L\+O\+\_\+\+S\+I\+ZE@{R\+A\+T\+I\+O\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+E\+X\+P\+L\+O\+\_\+\+S\+I\+ZE}}
+\index{R\+A\+T\+I\+O\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+E\+X\+P\+L\+O\+\_\+\+S\+I\+ZE@{R\+A\+T\+I\+O\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+E\+X\+P\+L\+O\+\_\+\+S\+I\+ZE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{R\+A\+T\+I\+O\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+E\+X\+P\+L\+O\+\_\+\+S\+I\+ZE}{RATIO\_ASTEROID\_EXPLO\_SIZE}}
+{\footnotesize\ttfamily \#define R\+A\+T\+I\+O\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+E\+X\+P\+L\+O\+\_\+\+S\+I\+ZE~1.\+2}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ade0b1b60a8d3061799f26048ca432100}\label{7__asteroid_2config_8h_ade0b1b60a8d3061799f26048ca432100}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+A\+T\+I\+O\+\_\+\+C\+O\+L\+O\+R\+\_\+\+J\+A\+U\+GE@{R\+A\+T\+I\+O\+\_\+\+C\+O\+L\+O\+R\+\_\+\+J\+A\+U\+GE}}
+\index{R\+A\+T\+I\+O\+\_\+\+C\+O\+L\+O\+R\+\_\+\+J\+A\+U\+GE@{R\+A\+T\+I\+O\+\_\+\+C\+O\+L\+O\+R\+\_\+\+J\+A\+U\+GE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{R\+A\+T\+I\+O\+\_\+\+C\+O\+L\+O\+R\+\_\+\+J\+A\+U\+GE}{RATIO\_COLOR\_JAUGE}}
+{\footnotesize\ttfamily \#define R\+A\+T\+I\+O\+\_\+\+C\+O\+L\+O\+R\+\_\+\+J\+A\+U\+GE~0.\+72}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a72d24b98214f3c2e864689b358ede3b3}\label{7__asteroid_2config_8h_a72d24b98214f3c2e864689b358ede3b3}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+A\+T\+I\+O\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+A\+U\+G\+M\+E\+NT@{R\+A\+T\+I\+O\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+A\+U\+G\+M\+E\+NT}}
+\index{R\+A\+T\+I\+O\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+A\+U\+G\+M\+E\+NT@{R\+A\+T\+I\+O\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+A\+U\+G\+M\+E\+NT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{R\+A\+T\+I\+O\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+A\+U\+G\+M\+E\+NT}{RATIO\_DIFFICULTE\_AUGMENT}}
+{\footnotesize\ttfamily \#define R\+A\+T\+I\+O\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+A\+U\+G\+M\+E\+NT~0.\+0027}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_af5694824a1f3b87d24cefdc9a73884b9}\label{7__asteroid_2config_8h_af5694824a1f3b87d24cefdc9a73884b9}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+A\+T\+I\+O\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+A\+U\+G\+M\+E\+N\+T\+\_\+\+M\+U\+L\+TI@{R\+A\+T\+I\+O\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+A\+U\+G\+M\+E\+N\+T\+\_\+\+M\+U\+L\+TI}}
+\index{R\+A\+T\+I\+O\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+A\+U\+G\+M\+E\+N\+T\+\_\+\+M\+U\+L\+TI@{R\+A\+T\+I\+O\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+A\+U\+G\+M\+E\+N\+T\+\_\+\+M\+U\+L\+TI}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{R\+A\+T\+I\+O\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+A\+U\+G\+M\+E\+N\+T\+\_\+\+M\+U\+L\+TI}{RATIO\_DIFFICULTE\_AUGMENT\_MULTI}}
+{\footnotesize\ttfamily \#define R\+A\+T\+I\+O\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+T\+E\+\_\+\+A\+U\+G\+M\+E\+N\+T\+\_\+\+M\+U\+L\+TI~0.\+00033}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a5202c9342f09b8f704493e6f460dbe40}\label{7__asteroid_2config_8h_a5202c9342f09b8f704493e6f460dbe40}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+A\+T\+I\+O\+\_\+\+D\+M\+G\+\_\+\+U\+P\+\_\+\+L\+A\+S\+ER@{R\+A\+T\+I\+O\+\_\+\+D\+M\+G\+\_\+\+U\+P\+\_\+\+L\+A\+S\+ER}}
+\index{R\+A\+T\+I\+O\+\_\+\+D\+M\+G\+\_\+\+U\+P\+\_\+\+L\+A\+S\+ER@{R\+A\+T\+I\+O\+\_\+\+D\+M\+G\+\_\+\+U\+P\+\_\+\+L\+A\+S\+ER}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{R\+A\+T\+I\+O\+\_\+\+D\+M\+G\+\_\+\+U\+P\+\_\+\+L\+A\+S\+ER}{RATIO\_DMG\_UP\_LASER}}
+{\footnotesize\ttfamily \#define R\+A\+T\+I\+O\+\_\+\+D\+M\+G\+\_\+\+U\+P\+\_\+\+L\+A\+S\+ER~0.\+9}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a38e357a6ecaf7d313bd89e9e30dfa541}\label{7__asteroid_2config_8h_a38e357a6ecaf7d313bd89e9e30dfa541}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+A\+Y\+O\+N\+\_\+\+V\+A\+I\+SS@{R\+A\+Y\+O\+N\+\_\+\+V\+A\+I\+SS}}
+\index{R\+A\+Y\+O\+N\+\_\+\+V\+A\+I\+SS@{R\+A\+Y\+O\+N\+\_\+\+V\+A\+I\+SS}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{R\+A\+Y\+O\+N\+\_\+\+V\+A\+I\+SS}{RAYON\_VAISS}}
+{\footnotesize\ttfamily \#define R\+A\+Y\+O\+N\+\_\+\+V\+A\+I\+SS~25}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a9543a857b985d03608052455e12dd59a}\label{7__asteroid_2config_8h_a9543a857b985d03608052455e12dd59a}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+E\+S\+E\+T\+\_\+\+T\+H\+R\+U\+ST@{R\+E\+S\+E\+T\+\_\+\+T\+H\+R\+U\+ST}}
+\index{R\+E\+S\+E\+T\+\_\+\+T\+H\+R\+U\+ST@{R\+E\+S\+E\+T\+\_\+\+T\+H\+R\+U\+ST}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{R\+E\+S\+E\+T\+\_\+\+T\+H\+R\+U\+ST}{RESET\_THRUST}}
+{\footnotesize\ttfamily \#define R\+E\+S\+E\+T\+\_\+\+T\+H\+R\+U\+ST~2}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a0f4822a880df0adec932579f9138494e}\label{7__asteroid_2config_8h_a0f4822a880df0adec932579f9138494e}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+E\+S\+E\+T\+\_\+\+T\+U\+RN@{R\+E\+S\+E\+T\+\_\+\+T\+U\+RN}}
+\index{R\+E\+S\+E\+T\+\_\+\+T\+U\+RN@{R\+E\+S\+E\+T\+\_\+\+T\+U\+RN}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{R\+E\+S\+E\+T\+\_\+\+T\+U\+RN}{RESET\_TURN}}
+{\footnotesize\ttfamily \#define R\+E\+S\+E\+T\+\_\+\+T\+U\+RN~6}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a8e869e2f265747e788850e24792f6773}\label{7__asteroid_2config_8h_a8e869e2f265747e788850e24792f6773}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+I\+Z\+E\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT@{S\+I\+Z\+E\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT}}
+\index{S\+I\+Z\+E\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT@{S\+I\+Z\+E\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{S\+I\+Z\+E\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT}{SIZE\_BONUS\_TEXT}}
+{\footnotesize\ttfamily \#define S\+I\+Z\+E\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT~44.}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a4b7da9eaf833652dbeebc0ec44de936d}\label{7__asteroid_2config_8h_a4b7da9eaf833652dbeebc0ec44de936d}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+P\+E\+E\+D\+\_\+\+H\+A\+R\+D\+C\+O\+RE@{S\+P\+E\+E\+D\+\_\+\+H\+A\+R\+D\+C\+O\+RE}}
+\index{S\+P\+E\+E\+D\+\_\+\+H\+A\+R\+D\+C\+O\+RE@{S\+P\+E\+E\+D\+\_\+\+H\+A\+R\+D\+C\+O\+RE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{S\+P\+E\+E\+D\+\_\+\+H\+A\+R\+D\+C\+O\+RE}{SPEED\_HARDCORE}}
+{\footnotesize\ttfamily \#define S\+P\+E\+E\+D\+\_\+\+H\+A\+R\+D\+C\+O\+RE~2.\+1}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_aec0384f1b98985dff50f645e84bdf0f2}\label{7__asteroid_2config_8h_aec0384f1b98985dff50f645e84bdf0f2}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+T\+A\+R\+T\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+TE@{S\+T\+A\+R\+T\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+TE}}
+\index{S\+T\+A\+R\+T\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+TE@{S\+T\+A\+R\+T\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+TE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{S\+T\+A\+R\+T\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+TE}{START\_DIFFICULTE}}
+{\footnotesize\ttfamily \#define S\+T\+A\+R\+T\+\_\+\+D\+I\+F\+F\+I\+C\+U\+L\+TE~1.\+01}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a0324b414e456891368832c5b9e41e832}\label{7__asteroid_2config_8h_a0324b414e456891368832c5b9e41e832}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!T\+A\+I\+L\+L\+E\+\_\+\+M\+I\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{T\+A\+I\+L\+L\+E\+\_\+\+M\+I\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID}}
+\index{T\+A\+I\+L\+L\+E\+\_\+\+M\+I\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{T\+A\+I\+L\+L\+E\+\_\+\+M\+I\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{T\+A\+I\+L\+L\+E\+\_\+\+M\+I\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID}{TAILLE\_MIN\_ASTEROID}}
+{\footnotesize\ttfamily \#define T\+A\+I\+L\+L\+E\+\_\+\+M\+I\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID~18}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_af02879b9632680b60be79e865b7fe3e6}\label{7__asteroid_2config_8h_af02879b9632680b60be79e865b7fe3e6}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!T\+A\+I\+L\+L\+E\+\_\+\+M\+I\+N\+\_\+\+S\+P\+L\+IT@{T\+A\+I\+L\+L\+E\+\_\+\+M\+I\+N\+\_\+\+S\+P\+L\+IT}}
+\index{T\+A\+I\+L\+L\+E\+\_\+\+M\+I\+N\+\_\+\+S\+P\+L\+IT@{T\+A\+I\+L\+L\+E\+\_\+\+M\+I\+N\+\_\+\+S\+P\+L\+IT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{T\+A\+I\+L\+L\+E\+\_\+\+M\+I\+N\+\_\+\+S\+P\+L\+IT}{TAILLE\_MIN\_SPLIT}}
+{\footnotesize\ttfamily \#define T\+A\+I\+L\+L\+E\+\_\+\+M\+I\+N\+\_\+\+S\+P\+L\+IT~36}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a4fa94d9d3cf9f39200937dd319b4b87b}\label{7__asteroid_2config_8h_a4fa94d9d3cf9f39200937dd319b4b87b}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!T\+I\+M\+E\+\_\+\+F\+A\+D\+E\+\_\+\+IN@{T\+I\+M\+E\+\_\+\+F\+A\+D\+E\+\_\+\+IN}}
+\index{T\+I\+M\+E\+\_\+\+F\+A\+D\+E\+\_\+\+IN@{T\+I\+M\+E\+\_\+\+F\+A\+D\+E\+\_\+\+IN}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{T\+I\+M\+E\+\_\+\+F\+A\+D\+E\+\_\+\+IN}{TIME\_FADE\_IN}}
+{\footnotesize\ttfamily \#define T\+I\+M\+E\+\_\+\+F\+A\+D\+E\+\_\+\+IN~400}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ac8b81a774ecb05419aebc49d73bd97b2}\label{7__asteroid_2config_8h_ac8b81a774ecb05419aebc49d73bd97b2}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!T\+I\+M\+E\+\_\+\+F\+A\+D\+E\+\_\+\+O\+UT@{T\+I\+M\+E\+\_\+\+F\+A\+D\+E\+\_\+\+O\+UT}}
+\index{T\+I\+M\+E\+\_\+\+F\+A\+D\+E\+\_\+\+O\+UT@{T\+I\+M\+E\+\_\+\+F\+A\+D\+E\+\_\+\+O\+UT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{T\+I\+M\+E\+\_\+\+F\+A\+D\+E\+\_\+\+O\+UT}{TIME\_FADE\_OUT}}
+{\footnotesize\ttfamily \#define T\+I\+M\+E\+\_\+\+F\+A\+D\+E\+\_\+\+O\+UT~400}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_aa8cecfc5c5c054d2875c03e77b7be15d}\label{7__asteroid_2config_8h_aa8cecfc5c5c054d2875c03e77b7be15d}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!T\+R\+UE@{T\+R\+UE}}
+\index{T\+R\+UE@{T\+R\+UE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{T\+R\+UE}{TRUE}}
+{\footnotesize\ttfamily \#define T\+R\+UE~1}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a130e8ced2d3adae7f21e9df296c2a746}\label{7__asteroid_2config_8h_a130e8ced2d3adae7f21e9df296c2a746}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!T\+U\+R\+N\+\_\+\+A\+M\+M\+O\+U\+NT@{T\+U\+R\+N\+\_\+\+A\+M\+M\+O\+U\+NT}}
+\index{T\+U\+R\+N\+\_\+\+A\+M\+M\+O\+U\+NT@{T\+U\+R\+N\+\_\+\+A\+M\+M\+O\+U\+NT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{T\+U\+R\+N\+\_\+\+A\+M\+M\+O\+U\+NT}{TURN\_AMMOUNT}}
+{\footnotesize\ttfamily \#define T\+U\+R\+N\+\_\+\+A\+M\+M\+O\+U\+NT~0.\+13}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a01bb5f060b3487835f42c74e5267e498}\label{7__asteroid_2config_8h_a01bb5f060b3487835f42c74e5267e498}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!V\+I\+T\+E\+S\+SE@{V\+I\+T\+E\+S\+SE}}
+\index{V\+I\+T\+E\+S\+SE@{V\+I\+T\+E\+S\+SE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+SE}{VITESSE}}
+{\footnotesize\ttfamily \#define V\+I\+T\+E\+S\+SE~10}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a27850c6d9e07217ed9ba3fac6eddc274}\label{7__asteroid_2config_8h_a27850c6d9e07217ed9ba3fac6eddc274}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!V\+I\+T\+E\+S\+S\+E\+\_\+\+B\+A\+SE@{V\+I\+T\+E\+S\+S\+E\+\_\+\+B\+A\+SE}}
+\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+B\+A\+SE@{V\+I\+T\+E\+S\+S\+E\+\_\+\+B\+A\+SE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+S\+E\+\_\+\+B\+A\+SE}{VITESSE\_BASE}}
+{\footnotesize\ttfamily \#define V\+I\+T\+E\+S\+S\+E\+\_\+\+B\+A\+SE~3}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ae5d3fd03efff7ea8fa5f4f107f6a17a8}\label{7__asteroid_2config_8h_ae5d3fd03efff7ea8fa5f4f107f6a17a8}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+ID}}
+\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+ID}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+ID}{VITESSE\_MAX\_ASTEROID}}
+{\footnotesize\ttfamily \#define V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+ID~22}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a538099a79a3562dfb035e19bc15d68de}\label{7__asteroid_2config_8h_a538099a79a3562dfb035e19bc15d68de}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+H\+A\+R\+D\+C\+O\+RE@{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+H\+A\+R\+D\+C\+O\+RE}}
+\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+H\+A\+R\+D\+C\+O\+RE@{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+H\+A\+R\+D\+C\+O\+RE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+H\+A\+R\+D\+C\+O\+RE}{VITESSE\_MAX\_ASTEROID\_HARDCORE}}
+{\footnotesize\ttfamily \#define V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+A\+X\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+H\+A\+R\+D\+C\+O\+RE~30}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_aa390e01494054ae0fe9a4f55624915bd}\label{7__asteroid_2config_8h_aa390e01494054ae0fe9a4f55624915bd}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID}}
+\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID}{VITESSE\_MIN\_ASTEROID}}
+{\footnotesize\ttfamily \#define V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+N\+\_\+\+A\+S\+T\+E\+R\+O\+ID~9}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_acc2301597c373ea5c2e44c28afacd096}\label{7__asteroid_2config_8h_acc2301597c373ea5c2e44c28afacd096}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+AX@{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+AX}}
+\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+AX@{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+AX}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+AX}{VITESSE\_MISSILE\_MAX}}
+{\footnotesize\ttfamily \#define V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+M\+AX~(2$\ast$\hyperlink{7__asteroid_2config_8h_a1fb05fa9aac1e8e1b3cdd9cf32a4cfc1}{B\+A\+S\+E\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE})}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a74dce507516728630bc30ef7b972c1c0}\label{7__asteroid_2config_8h_a74dce507516728630bc30ef7b972c1c0}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+P\+A\+W\+N\+\_\+\+I\+N\+IT@{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+P\+A\+W\+N\+\_\+\+I\+N\+IT}}
+\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+P\+A\+W\+N\+\_\+\+I\+N\+IT@{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+P\+A\+W\+N\+\_\+\+I\+N\+IT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+P\+A\+W\+N\+\_\+\+I\+N\+IT}{VITESSE\_SPAWN\_INIT}}
+{\footnotesize\ttfamily \#define V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+P\+A\+W\+N\+\_\+\+I\+N\+IT~(\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}$\ast$12)}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a1a4378a760568e6d429f03d9a7c789c6}\label{7__asteroid_2config_8h_a1a4378a760568e6d429f03d9a7c789c6}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+P\+A\+W\+N\+\_\+\+M\+IN@{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+P\+A\+W\+N\+\_\+\+M\+IN}}
+\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+P\+A\+W\+N\+\_\+\+M\+IN@{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+P\+A\+W\+N\+\_\+\+M\+IN}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+P\+A\+W\+N\+\_\+\+M\+IN}{VITESSE\_SPAWN\_MIN}}
+{\footnotesize\ttfamily \#define V\+I\+T\+E\+S\+S\+E\+\_\+\+S\+P\+A\+W\+N\+\_\+\+M\+IN~(\hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}$\ast$6.\+5)}
+
+
+
+\subsection{Documentation du type de l\textquotesingle{}énumération}
+\mbox{\Hypertarget{7__asteroid_2config_8h_a0411cd49bb5b71852cecd93bcbf0ca2d}\label{7__asteroid_2config_8h_a0411cd49bb5b71852cecd93bcbf0ca2d}} 
+\subsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
+{\footnotesize\ttfamily anonymous enum}
+
+\begin{DoxyEnumFields}{Valeurs énumérées}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+H\+R\+U\+S\+T\+\_\+\+UP@{T\+H\+R\+U\+S\+T\+\_\+\+UP}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!T\+H\+R\+U\+S\+T\+\_\+\+UP@{T\+H\+R\+U\+S\+T\+\_\+\+UP}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a0411cd49bb5b71852cecd93bcbf0ca2da1efa724a722d3e42a1eeca162d3e35e1}\label{7__asteroid_2config_8h_a0411cd49bb5b71852cecd93bcbf0ca2da1efa724a722d3e42a1eeca162d3e35e1}} 
+T\+H\+R\+U\+S\+T\+\_\+\+UP&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+H\+R\+U\+S\+T\+\_\+\+L\+E\+FT@{T\+H\+R\+U\+S\+T\+\_\+\+L\+E\+FT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!T\+H\+R\+U\+S\+T\+\_\+\+L\+E\+FT@{T\+H\+R\+U\+S\+T\+\_\+\+L\+E\+FT}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a0411cd49bb5b71852cecd93bcbf0ca2daa3b97e6087fb50166fdc894dabf23923}\label{7__asteroid_2config_8h_a0411cd49bb5b71852cecd93bcbf0ca2daa3b97e6087fb50166fdc894dabf23923}} 
+T\+H\+R\+U\+S\+T\+\_\+\+L\+E\+FT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+H\+R\+U\+S\+T\+\_\+\+R\+I\+G\+HT@{T\+H\+R\+U\+S\+T\+\_\+\+R\+I\+G\+HT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!T\+H\+R\+U\+S\+T\+\_\+\+R\+I\+G\+HT@{T\+H\+R\+U\+S\+T\+\_\+\+R\+I\+G\+HT}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a0411cd49bb5b71852cecd93bcbf0ca2da322165874c218fd1bf46661dffee3a50}\label{7__asteroid_2config_8h_a0411cd49bb5b71852cecd93bcbf0ca2da322165874c218fd1bf46661dffee3a50}} 
+T\+H\+R\+U\+S\+T\+\_\+\+R\+I\+G\+HT&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573}\label{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!bonus\+\_\+e@{bonus\+\_\+e}}
+\index{bonus\+\_\+e@{bonus\+\_\+e}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{bonus\+\_\+e}{bonus\_e}}
+{\footnotesize\ttfamily enum \hyperlink{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573}{bonus\+\_\+e}}
+
+\begin{DoxyEnumFields}{Valeurs énumérées}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+I\+R\+\_\+\+M\+U\+L\+T\+I\+P\+LE@{T\+I\+R\+\_\+\+M\+U\+L\+T\+I\+P\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!T\+I\+R\+\_\+\+M\+U\+L\+T\+I\+P\+LE@{T\+I\+R\+\_\+\+M\+U\+L\+T\+I\+P\+LE}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a271c87e4b359d9671a7e1c5702a0f794}\label{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a271c87e4b359d9671a7e1c5702a0f794}} 
+T\+I\+R\+\_\+\+M\+U\+L\+T\+I\+P\+LE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{B\+O\+U\+C\+L\+I\+ER@{B\+O\+U\+C\+L\+I\+ER}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+O\+U\+C\+L\+I\+ER@{B\+O\+U\+C\+L\+I\+ER}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a3436d76a8c9425b7433a05c80ece0e54}\label{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a3436d76a8c9425b7433a05c80ece0e54}} 
+B\+O\+U\+C\+L\+I\+ER&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+\_\+\+T\+IR@{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+\_\+\+T\+IR}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+\_\+\+T\+IR@{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+\_\+\+T\+IR}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573af9e6e93d2a3ef928c1c60676f09fce8b}\label{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573af9e6e93d2a3ef928c1c60676f09fce8b}} 
+V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+\_\+\+T\+IR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{B\+O\+N\+U\+S\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE@{B\+O\+N\+U\+S\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+O\+N\+U\+S\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE@{B\+O\+N\+U\+S\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573acf38ba132630b9624727dac63e7f72a5}\label{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573acf38ba132630b9624727dac63e7f72a5}} 
+B\+O\+N\+U\+S\+\_\+\+V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+LE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+E\+G\+AT@{D\+E\+G\+AT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+E\+G\+AT@{D\+E\+G\+AT}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a03e725c8dd07724161e6279c6f25ec23}\label{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a03e725c8dd07724161e6279c6f25ec23}} 
+D\+E\+G\+AT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE@{B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE@{B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573acc0b2a29ba239dab6a8eac7e5a343e7b}\label{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573acc0b2a29ba239dab6a8eac7e5a343e7b}} 
+B\+O\+M\+B\+E\+\_\+\+N\+U\+C\+L\+E\+A\+I\+RE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{P\+O\+I\+N\+T\+\_\+\+P\+E\+T\+IT@{P\+O\+I\+N\+T\+\_\+\+P\+E\+T\+IT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!P\+O\+I\+N\+T\+\_\+\+P\+E\+T\+IT@{P\+O\+I\+N\+T\+\_\+\+P\+E\+T\+IT}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a01a455b23120bd4cf2d679477f04bc0a}\label{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a01a455b23120bd4cf2d679477f04bc0a}} 
+P\+O\+I\+N\+T\+\_\+\+P\+E\+T\+IT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{P\+O\+I\+N\+T\+\_\+\+M\+O\+Y\+EN@{P\+O\+I\+N\+T\+\_\+\+M\+O\+Y\+EN}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!P\+O\+I\+N\+T\+\_\+\+M\+O\+Y\+EN@{P\+O\+I\+N\+T\+\_\+\+M\+O\+Y\+EN}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a5f4c7a11779341968d176e199bdf0439}\label{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a5f4c7a11779341968d176e199bdf0439}} 
+P\+O\+I\+N\+T\+\_\+\+M\+O\+Y\+EN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{P\+O\+I\+N\+T\+\_\+\+G\+R\+A\+ND@{P\+O\+I\+N\+T\+\_\+\+G\+R\+A\+ND}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!P\+O\+I\+N\+T\+\_\+\+G\+R\+A\+ND@{P\+O\+I\+N\+T\+\_\+\+G\+R\+A\+ND}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a1af9aa71bd375dd18a71e16b8ab97ab2}\label{7__asteroid_2config_8h_a229077b6da581cb56adde9d613e02573a1af9aa71bd375dd18a71e16b8ab97ab2}} 
+P\+O\+I\+N\+T\+\_\+\+G\+R\+A\+ND&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26}\label{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!dir\+\_\+turn@{dir\+\_\+turn}}
+\index{dir\+\_\+turn@{dir\+\_\+turn}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{dir\+\_\+turn}{dir\_turn}}
+{\footnotesize\ttfamily enum \hyperlink{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26}{dir\+\_\+turn}}
+
+\begin{DoxyEnumFields}{Valeurs énumérées}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{N\+O\+\_\+\+T\+U\+RN@{N\+O\+\_\+\+T\+U\+RN}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+O\+\_\+\+T\+U\+RN@{N\+O\+\_\+\+T\+U\+RN}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26a3f8787368a9aa87f0bde02c09574a1df}\label{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26a3f8787368a9aa87f0bde02c09574a1df}} 
+N\+O\+\_\+\+T\+U\+RN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{L\+E\+FT@{L\+E\+FT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!L\+E\+FT@{L\+E\+FT}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26adb45120aafd37a973140edee24708065}\label{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26adb45120aafd37a973140edee24708065}} 
+L\+E\+FT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{R\+I\+G\+HT@{R\+I\+G\+HT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+I\+G\+HT@{R\+I\+G\+HT}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26aec8379af7490bb9eaaf579cf17876f38}\label{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26aec8379af7490bb9eaaf579cf17876f38}} 
+R\+I\+G\+HT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{B\+O\+TH@{B\+O\+TH}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+O\+TH@{B\+O\+TH}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26a627abe5a430420baf29ebe1940a7f2fb}\label{7__asteroid_2config_8h_a610033eba3b8e7fcb6d5284a70ab5e26a627abe5a430420baf29ebe1940a7f2fb}} 
+B\+O\+TH&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{7__asteroid_2config_8h_af974e57579aa5197c4982de9eb7607b9}\label{7__asteroid_2config_8h_af974e57579aa5197c4982de9eb7607b9}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!E\+X\+P\+L\+O\+S\+I\+O\+NS@{E\+X\+P\+L\+O\+S\+I\+O\+NS}}
+\index{E\+X\+P\+L\+O\+S\+I\+O\+NS@{E\+X\+P\+L\+O\+S\+I\+O\+NS}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{E\+X\+P\+L\+O\+S\+I\+O\+NS}{EXPLOSIONS}}
+{\footnotesize\ttfamily enum \hyperlink{7__asteroid_2config_8h_af974e57579aa5197c4982de9eb7607b9}{E\+X\+P\+L\+O\+S\+I\+O\+NS}}
+
+\begin{DoxyEnumFields}{Valeurs énumérées}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{E\+X\+P\+L\+O\+\_\+\+M\+I\+S\+S\+I\+LE@{E\+X\+P\+L\+O\+\_\+\+M\+I\+S\+S\+I\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!E\+X\+P\+L\+O\+\_\+\+M\+I\+S\+S\+I\+LE@{E\+X\+P\+L\+O\+\_\+\+M\+I\+S\+S\+I\+LE}}}\mbox{\Hypertarget{7__asteroid_2config_8h_af974e57579aa5197c4982de9eb7607b9a76ff75d159f3f858e95e68696dab357a}\label{7__asteroid_2config_8h_af974e57579aa5197c4982de9eb7607b9a76ff75d159f3f858e95e68696dab357a}} 
+E\+X\+P\+L\+O\+\_\+\+M\+I\+S\+S\+I\+LE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{E\+X\+P\+L\+O\+\_\+\+A\+S\+TE@{E\+X\+P\+L\+O\+\_\+\+A\+S\+TE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!E\+X\+P\+L\+O\+\_\+\+A\+S\+TE@{E\+X\+P\+L\+O\+\_\+\+A\+S\+TE}}}\mbox{\Hypertarget{7__asteroid_2config_8h_af974e57579aa5197c4982de9eb7607b9ac166d2f44348c5a805d574361fe6d13d}\label{7__asteroid_2config_8h_af974e57579aa5197c4982de9eb7607b9ac166d2f44348c5a805d574361fe6d13d}} 
+E\+X\+P\+L\+O\+\_\+\+A\+S\+TE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{E\+X\+P\+L\+O\+\_\+\+G\+L\+A\+CE@{E\+X\+P\+L\+O\+\_\+\+G\+L\+A\+CE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!E\+X\+P\+L\+O\+\_\+\+G\+L\+A\+CE@{E\+X\+P\+L\+O\+\_\+\+G\+L\+A\+CE}}}\mbox{\Hypertarget{7__asteroid_2config_8h_af974e57579aa5197c4982de9eb7607b9a5820b3bd1d86ce2f1463a1e6bded5c2e}\label{7__asteroid_2config_8h_af974e57579aa5197c4982de9eb7607b9a5820b3bd1d86ce2f1463a1e6bded5c2e}} 
+E\+X\+P\+L\+O\+\_\+\+G\+L\+A\+CE&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{7__asteroid_2config_8h_ad92d52a794b5305986ad03061e2c25cf}\label{7__asteroid_2config_8h_ad92d52a794b5305986ad03061e2c25cf}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+O\+N\+TS@{F\+O\+N\+TS}}
+\index{F\+O\+N\+TS@{F\+O\+N\+TS}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+O\+N\+TS}{FONTS}}
+{\footnotesize\ttfamily enum \hyperlink{7__asteroid_2config_8h_ad92d52a794b5305986ad03061e2c25cf}{F\+O\+N\+TS}}
+
+\begin{DoxyEnumFields}{Valeurs énumérées}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{F\+O\+N\+T\+\_\+\+B\+O\+N\+US@{F\+O\+N\+T\+\_\+\+B\+O\+N\+US}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+O\+N\+T\+\_\+\+B\+O\+N\+US@{F\+O\+N\+T\+\_\+\+B\+O\+N\+US}}}\mbox{\Hypertarget{7__asteroid_2config_8h_ad92d52a794b5305986ad03061e2c25cfa28a3b29845b04d5a4787681206f8a03d}\label{7__asteroid_2config_8h_ad92d52a794b5305986ad03061e2c25cfa28a3b29845b04d5a4787681206f8a03d}} 
+F\+O\+N\+T\+\_\+\+B\+O\+N\+US&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{F\+O\+N\+T\+\_\+\+S\+C\+O\+RE@{F\+O\+N\+T\+\_\+\+S\+C\+O\+RE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+O\+N\+T\+\_\+\+S\+C\+O\+RE@{F\+O\+N\+T\+\_\+\+S\+C\+O\+RE}}}\mbox{\Hypertarget{7__asteroid_2config_8h_ad92d52a794b5305986ad03061e2c25cfad2961fbcba9784d7f35f2a6e7799759d}\label{7__asteroid_2config_8h_ad92d52a794b5305986ad03061e2c25cfad2961fbcba9784d7f35f2a6e7799759d}} 
+F\+O\+N\+T\+\_\+\+S\+C\+O\+RE&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012}\label{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!shots@{shots}}
+\index{shots@{shots}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{shots}{shots}}
+{\footnotesize\ttfamily enum \hyperlink{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012}{shots}}
+
+\begin{DoxyEnumFields}{Valeurs énumérées}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+H\+O\+T\+\_\+\+N\+O\+R\+M\+AL@{S\+H\+O\+T\+\_\+\+N\+O\+R\+M\+AL}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+H\+O\+T\+\_\+\+N\+O\+R\+M\+AL@{S\+H\+O\+T\+\_\+\+N\+O\+R\+M\+AL}}}\mbox{\Hypertarget{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012aa74b8aa45938cb6274229dda4244bfdf}\label{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012aa74b8aa45938cb6274229dda4244bfdf}} 
+S\+H\+O\+T\+\_\+\+N\+O\+R\+M\+AL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+H\+O\+T\+\_\+\+Z\+I\+G\+Z\+AG@{S\+H\+O\+T\+\_\+\+Z\+I\+G\+Z\+AG}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+H\+O\+T\+\_\+\+Z\+I\+G\+Z\+AG@{S\+H\+O\+T\+\_\+\+Z\+I\+G\+Z\+AG}}}\mbox{\Hypertarget{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012ac5819da9ee63928afdf901dae24510fe}\label{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012ac5819da9ee63928afdf901dae24510fe}} 
+S\+H\+O\+T\+\_\+\+Z\+I\+G\+Z\+AG&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+H\+O\+T\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE@{S\+H\+O\+T\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+H\+O\+T\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE@{S\+H\+O\+T\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE}}}\mbox{\Hypertarget{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012a5db38b985b3549e1030a4f48a1aa1d16}\label{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012a5db38b985b3549e1030a4f48a1aa1d16}} 
+S\+H\+O\+T\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+H\+O\+T\+\_\+\+G\+L\+A\+CE@{S\+H\+O\+T\+\_\+\+G\+L\+A\+CE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+H\+O\+T\+\_\+\+G\+L\+A\+CE@{S\+H\+O\+T\+\_\+\+G\+L\+A\+CE}}}\mbox{\Hypertarget{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012ab972c96a50c110bb807e749a89833e6c}\label{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012ab972c96a50c110bb807e749a89833e6c}} 
+S\+H\+O\+T\+\_\+\+G\+L\+A\+CE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+H\+O\+T\+\_\+\+L\+A\+S\+ER@{S\+H\+O\+T\+\_\+\+L\+A\+S\+ER}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+H\+O\+T\+\_\+\+L\+A\+S\+ER@{S\+H\+O\+T\+\_\+\+L\+A\+S\+ER}}}\mbox{\Hypertarget{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012a771820a6dcb12d44c8d149235d6d1320}\label{7__asteroid_2config_8h_ad2ef04bd701ad364078ae0bd1afd6012a771820a6dcb12d44c8d149235d6d1320}} 
+S\+H\+O\+T\+\_\+\+L\+A\+S\+ER&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30}\label{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+O\+U\+N\+DS@{S\+O\+U\+N\+DS}}
+\index{S\+O\+U\+N\+DS@{S\+O\+U\+N\+DS}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{S\+O\+U\+N\+DS}{SOUNDS}}
+{\footnotesize\ttfamily enum \hyperlink{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30}{S\+O\+U\+N\+DS}}
+
+\begin{DoxyEnumFields}{Valeurs énumérées}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+OT@{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+OT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+OT@{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+OT}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a86cd12e192f09cd44ce2f9d4fa2df159}\label{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a86cd12e192f09cd44ce2f9d4fa2df159}} 
+S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+OT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+Z\+I\+G\+Z\+AG@{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+Z\+I\+G\+Z\+AG}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+Z\+I\+G\+Z\+AG@{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+Z\+I\+G\+Z\+AG}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ab10cc58e9bce4306cf9e29e6227f9d2b}\label{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ab10cc58e9bce4306cf9e29e6227f9d2b}} 
+S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+Z\+I\+G\+Z\+AG&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE@{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE@{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ad4ef88640a5284d68d56ad7e3b0cda18}\label{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ad4ef88640a5284d68d56ad7e3b0cda18}} 
+S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+T\+E\+L\+E\+G\+U\+I\+DE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+G\+L\+A\+CE@{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+G\+L\+A\+CE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+G\+L\+A\+CE@{S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+G\+L\+A\+CE}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ae9ae95d1d12fbfba3b7ec8526c61166a}\label{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ae9ae95d1d12fbfba3b7ec8526c61166a}} 
+S\+O\+U\+N\+D\+\_\+\+S\+H\+O\+O\+T\+\_\+\+G\+L\+A\+CE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+O\+U\+N\+D\+\_\+\+L\+A\+S\+E\+R\+\_\+\+B\+E\+AM@{S\+O\+U\+N\+D\+\_\+\+L\+A\+S\+E\+R\+\_\+\+B\+E\+AM}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+O\+U\+N\+D\+\_\+\+L\+A\+S\+E\+R\+\_\+\+B\+E\+AM@{S\+O\+U\+N\+D\+\_\+\+L\+A\+S\+E\+R\+\_\+\+B\+E\+AM}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a1501464ef97bf2e5dba4a5365fe5154c}\label{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a1501464ef97bf2e5dba4a5365fe5154c}} 
+S\+O\+U\+N\+D\+\_\+\+L\+A\+S\+E\+R\+\_\+\+B\+E\+AM&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+O\+U\+N\+D\+\_\+\+B\+O\+N\+US@{S\+O\+U\+N\+D\+\_\+\+B\+O\+N\+US}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+O\+U\+N\+D\+\_\+\+B\+O\+N\+US@{S\+O\+U\+N\+D\+\_\+\+B\+O\+N\+US}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a8dc509f9c01b07b3373ca0be1e0bbc9e}\label{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a8dc509f9c01b07b3373ca0be1e0bbc9e}} 
+S\+O\+U\+N\+D\+\_\+\+B\+O\+N\+US&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+O\+U\+N\+D\+\_\+\+H\+IT@{S\+O\+U\+N\+D\+\_\+\+H\+IT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+O\+U\+N\+D\+\_\+\+H\+IT@{S\+O\+U\+N\+D\+\_\+\+H\+IT}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a70b644f29fff15e2bb258fb9f4c8c9d0}\label{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a70b644f29fff15e2bb258fb9f4c8c9d0}} 
+S\+O\+U\+N\+D\+\_\+\+H\+IT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+O\+U\+N\+D\+\_\+\+I\+C\+E\+\_\+\+E\+X\+P\+LO@{S\+O\+U\+N\+D\+\_\+\+I\+C\+E\+\_\+\+E\+X\+P\+LO}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+O\+U\+N\+D\+\_\+\+I\+C\+E\+\_\+\+E\+X\+P\+LO@{S\+O\+U\+N\+D\+\_\+\+I\+C\+E\+\_\+\+E\+X\+P\+LO}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ada6fd4263cd43f4f5d5c4e29b86d5352}\label{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ada6fd4263cd43f4f5d5c4e29b86d5352}} 
+S\+O\+U\+N\+D\+\_\+\+I\+C\+E\+\_\+\+E\+X\+P\+LO&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+O\+U\+N\+D\+\_\+\+E\+X\+P\+LO@{S\+O\+U\+N\+D\+\_\+\+E\+X\+P\+LO}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+O\+U\+N\+D\+\_\+\+E\+X\+P\+LO@{S\+O\+U\+N\+D\+\_\+\+E\+X\+P\+LO}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a5a0f7d9bf53bb2e4519e16992005bf1a}\label{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a5a0f7d9bf53bb2e4519e16992005bf1a}} 
+S\+O\+U\+N\+D\+\_\+\+E\+X\+P\+LO&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{B\+I\+G\+\_\+\+E\+X\+P\+LO@{B\+I\+G\+\_\+\+E\+X\+P\+LO}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+I\+G\+\_\+\+E\+X\+P\+LO@{B\+I\+G\+\_\+\+E\+X\+P\+LO}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ae81e9f820fa7bc4777aa9f46019f29bd}\label{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ae81e9f820fa7bc4777aa9f46019f29bd}} 
+B\+I\+G\+\_\+\+E\+X\+P\+LO&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+O\+U\+N\+D\+\_\+\+T\+H\+R\+U\+ST@{S\+O\+U\+N\+D\+\_\+\+T\+H\+R\+U\+ST}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+O\+U\+N\+D\+\_\+\+T\+H\+R\+U\+ST@{S\+O\+U\+N\+D\+\_\+\+T\+H\+R\+U\+ST}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ad20b05ef589944c25dd727bdd0badeb0}\label{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30ad20b05ef589944c25dd727bdd0badeb0}} 
+S\+O\+U\+N\+D\+\_\+\+T\+H\+R\+U\+ST&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+O\+U\+N\+D\+\_\+\+G\+A\+M\+E\+O\+V\+ER@{S\+O\+U\+N\+D\+\_\+\+G\+A\+M\+E\+O\+V\+ER}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+O\+U\+N\+D\+\_\+\+G\+A\+M\+E\+O\+V\+ER@{S\+O\+U\+N\+D\+\_\+\+G\+A\+M\+E\+O\+V\+ER}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a3c84a26eed13f1442e465fd3b2e64434}\label{7__asteroid_2config_8h_a084b0c48898b48ae7e1379c594e0ed30a3c84a26eed13f1442e465fd3b2e64434}} 
+S\+O\+U\+N\+D\+\_\+\+G\+A\+M\+E\+O\+V\+ER&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{7__asteroid_2config_8h_a5c055da78bfd0ead31125cf3f3c6fbb6}\label{7__asteroid_2config_8h_a5c055da78bfd0ead31125cf3f3c6fbb6}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!taille\+\_\+bonus@{taille\+\_\+bonus}}
+\index{taille\+\_\+bonus@{taille\+\_\+bonus}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{taille\+\_\+bonus}{taille\_bonus}}
+{\footnotesize\ttfamily enum \hyperlink{7__asteroid_2config_8h_a5c055da78bfd0ead31125cf3f3c6fbb6}{taille\+\_\+bonus}}
+
+\begin{DoxyEnumFields}{Valeurs énumérées}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{P\+E\+T\+IT@{P\+E\+T\+IT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!P\+E\+T\+IT@{P\+E\+T\+IT}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a5c055da78bfd0ead31125cf3f3c6fbb6aee66d881e873b981297334e790f60c1a}\label{7__asteroid_2config_8h_a5c055da78bfd0ead31125cf3f3c6fbb6aee66d881e873b981297334e790f60c1a}} 
+P\+E\+T\+IT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{M\+O\+Y\+EN@{M\+O\+Y\+EN}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+O\+Y\+EN@{M\+O\+Y\+EN}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a5c055da78bfd0ead31125cf3f3c6fbb6aee96574eabbfbe329a44b059e4652351}\label{7__asteroid_2config_8h_a5c055da78bfd0ead31125cf3f3c6fbb6aee96574eabbfbe329a44b059e4652351}} 
+M\+O\+Y\+EN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{G\+R\+A\+ND@{G\+R\+A\+ND}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!G\+R\+A\+ND@{G\+R\+A\+ND}}}\mbox{\Hypertarget{7__asteroid_2config_8h_a5c055da78bfd0ead31125cf3f3c6fbb6a30625632affab2bcd18da495e1105ecb}\label{7__asteroid_2config_8h_a5c055da78bfd0ead31125cf3f3c6fbb6a30625632affab2bcd18da495e1105ecb}} 
+G\+R\+A\+ND&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Documentation des variables}
+\mbox{\Hypertarget{7__asteroid_2config_8h_adf07383e75a84f1a8c400269b2541787}\label{7__asteroid_2config_8h_adf07383e75a84f1a8c400269b2541787}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!A\+L\+P\+H\+A\+\_\+\+B\+O\+N\+US@{A\+L\+P\+H\+A\+\_\+\+B\+O\+N\+US}}
+\index{A\+L\+P\+H\+A\+\_\+\+B\+O\+N\+US@{A\+L\+P\+H\+A\+\_\+\+B\+O\+N\+US}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{A\+L\+P\+H\+A\+\_\+\+B\+O\+N\+US}{ALPHA\_BONUS}}
+{\footnotesize\ttfamily const int A\+L\+P\+H\+A\+\_\+\+B\+O\+N\+US\mbox{[}\hyperlink{7__asteroid_2config_8h_a20c6057a89989a489e7a2aaae04c68f5}{F\+R\+A\+M\+E\+\_\+\+S\+H\+O\+W\+\_\+\+B\+O\+N\+U\+S\+\_\+\+T\+E\+XT}\mbox{]} = \{ 40, 80, 160, 200, 235, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 245, 235, 225, 215, 205, 180, 150, 110, 80, 40 \}\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a3fb7d5637e289f5175120e2276cb9005}\label{7__asteroid_2config_8h_a3fb7d5637e289f5175120e2276cb9005}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!A\+L\+P\+H\+A\+\_\+\+M\+I\+S\+S\+I\+LE@{A\+L\+P\+H\+A\+\_\+\+M\+I\+S\+S\+I\+LE}}
+\index{A\+L\+P\+H\+A\+\_\+\+M\+I\+S\+S\+I\+LE@{A\+L\+P\+H\+A\+\_\+\+M\+I\+S\+S\+I\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{A\+L\+P\+H\+A\+\_\+\+M\+I\+S\+S\+I\+LE}{ALPHA\_MISSILE}}
+{\footnotesize\ttfamily const int A\+L\+P\+H\+A\+\_\+\+M\+I\+S\+S\+I\+LE\mbox{[}\hyperlink{7__asteroid_2config_8h_aed81eb575ba3469d1154bc05e5655772}{F\+R\+A\+M\+E\+\_\+\+M\+I\+S\+S\+I\+L\+E\+\_\+\+D\+E\+A\+TH}\mbox{]} =\{10, 30, 60, 90, 140, 180, 215, 250\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ab753140ac4bb3cc9f021e8967ecfc5d1}\label{7__asteroid_2config_8h_ab753140ac4bb3cc9f021e8967ecfc5d1}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!angle\+\_\+tir\+\_\+multiple@{angle\+\_\+tir\+\_\+multiple}}
+\index{angle\+\_\+tir\+\_\+multiple@{angle\+\_\+tir\+\_\+multiple}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{angle\+\_\+tir\+\_\+multiple}{angle\_tir\_multiple}}
+{\footnotesize\ttfamily float angle\+\_\+tir\+\_\+multiple\mbox{[}\hyperlink{7__asteroid_2config_8h_a92f2c26a8843f0541c86537af936437d}{N\+B\+\_\+\+T\+I\+R\+\_\+\+M\+AX}\mbox{]}\mbox{[}\hyperlink{7__asteroid_2config_8h_a92f2c26a8843f0541c86537af936437d}{N\+B\+\_\+\+T\+I\+R\+\_\+\+M\+AX}\mbox{]}}
+
+{\bfseries Valeur initiale \+:}
+\begin{DoxyCode}
+=\{
+  \{0,0,0\},
+  \{-\hyperlink{2__snake_2config_8h_a598a3330b3c21701223ee0ca14316eca}{PI}/25,\hyperlink{2__snake_2config_8h_a598a3330b3c21701223ee0ca14316eca}{PI}/25,0\},
+  \{-\hyperlink{2__snake_2config_8h_a598a3330b3c21701223ee0ca14316eca}{PI}/15,0,\hyperlink{2__snake_2config_8h_a598a3330b3c21701223ee0ca14316eca}{PI}/15\}
+ 
+  
+\}
+\end{DoxyCode}
+\mbox{\Hypertarget{7__asteroid_2config_8h_aec598c4a8caf121886ed46e8b519356b}\label{7__asteroid_2config_8h_aec598c4a8caf121886ed46e8b519356b}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!A\+S\+T\+E\+\_\+\+S\+RC@{A\+S\+T\+E\+\_\+\+S\+RC}}
+\index{A\+S\+T\+E\+\_\+\+S\+RC@{A\+S\+T\+E\+\_\+\+S\+RC}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{A\+S\+T\+E\+\_\+\+S\+RC}{ASTE\_SRC}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect A\+S\+T\+E\+\_\+\+S\+RC = \{0,0,48,48\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a0b04055f3a8bfed5f7a65af4e05e21d2}\label{7__asteroid_2config_8h_a0b04055f3a8bfed5f7a65af4e05e21d2}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+L\+O\+C\+K\+I\+N\+G\+\_\+\+A\+N\+I\+M\+\_\+\+A\+N\+G\+LE@{B\+L\+O\+C\+K\+I\+N\+G\+\_\+\+A\+N\+I\+M\+\_\+\+A\+N\+G\+LE}}
+\index{B\+L\+O\+C\+K\+I\+N\+G\+\_\+\+A\+N\+I\+M\+\_\+\+A\+N\+G\+LE@{B\+L\+O\+C\+K\+I\+N\+G\+\_\+\+A\+N\+I\+M\+\_\+\+A\+N\+G\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{B\+L\+O\+C\+K\+I\+N\+G\+\_\+\+A\+N\+I\+M\+\_\+\+A\+N\+G\+LE}{BLOCKING\_ANIM\_ANGLE}}
+{\footnotesize\ttfamily const int B\+L\+O\+C\+K\+I\+N\+G\+\_\+\+A\+N\+I\+M\+\_\+\+A\+N\+G\+LE\mbox{[}\hyperlink{7__asteroid_2config_8h_aec076af9a7f22f9e7b75d89af7b69cf9}{F\+R\+A\+M\+E\+\_\+\+R\+O\+T\+A\+\_\+\+R\+O\+UE}\mbox{]} = \{0,0,0,4,4,4,4,4,4,1,-\/1,-\/12,-\/12\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a120711a85163b48d1bd431a1c45a4eab}\label{7__asteroid_2config_8h_a120711a85163b48d1bd431a1c45a4eab}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+O\+M\+B\+\_\+\+I\+C\+O\+N\+\_\+\+D\+IM@{B\+O\+M\+B\+\_\+\+I\+C\+O\+N\+\_\+\+D\+IM}}
+\index{B\+O\+M\+B\+\_\+\+I\+C\+O\+N\+\_\+\+D\+IM@{B\+O\+M\+B\+\_\+\+I\+C\+O\+N\+\_\+\+D\+IM}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{B\+O\+M\+B\+\_\+\+I\+C\+O\+N\+\_\+\+D\+IM}{BOMB\_ICON\_DIM}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect B\+O\+M\+B\+\_\+\+I\+C\+O\+N\+\_\+\+D\+IM = \{0,0, 71, 70\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a7e46aaaf9ccdcdbe7e1425ec675aa14d}\label{7__asteroid_2config_8h_a7e46aaaf9ccdcdbe7e1425ec675aa14d}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT@{B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT}}
+\index{B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT@{B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT}{BONUS\_POINT}}
+{\footnotesize\ttfamily int B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT\mbox{[}\hyperlink{7__asteroid_2config_8h_ad8292ff6d99fb255c69b1748f39b3ad5}{N\+B\+\_\+\+B\+O\+N\+U\+S\+\_\+\+P\+O\+I\+NT}\mbox{]} =\{500,1500,5000\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ade6893f8f954c1be2839cb6732d88457}\label{7__asteroid_2config_8h_ade6893f8f954c1be2839cb6732d88457}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+O\+N\+U\+S\+\_\+\+T\+E\+X\+T\+\_\+\+C\+O\+L\+OR@{B\+O\+N\+U\+S\+\_\+\+T\+E\+X\+T\+\_\+\+C\+O\+L\+OR}}
+\index{B\+O\+N\+U\+S\+\_\+\+T\+E\+X\+T\+\_\+\+C\+O\+L\+OR@{B\+O\+N\+U\+S\+\_\+\+T\+E\+X\+T\+\_\+\+C\+O\+L\+OR}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{B\+O\+N\+U\+S\+\_\+\+T\+E\+X\+T\+\_\+\+C\+O\+L\+OR}{BONUS\_TEXT\_COLOR}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color B\+O\+N\+U\+S\+\_\+\+T\+E\+X\+T\+\_\+\+C\+O\+L\+OR = \{0xa7,0x96,0xff\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a5723c2c0ec341e2e26d389654009c9bb}\label{7__asteroid_2config_8h_a5723c2c0ec341e2e26d389654009c9bb}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!B\+O\+U\+C\+L\+I\+E\+R\+\_\+\+C\+O\+L\+OR@{B\+O\+U\+C\+L\+I\+E\+R\+\_\+\+C\+O\+L\+OR}}
+\index{B\+O\+U\+C\+L\+I\+E\+R\+\_\+\+C\+O\+L\+OR@{B\+O\+U\+C\+L\+I\+E\+R\+\_\+\+C\+O\+L\+OR}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{B\+O\+U\+C\+L\+I\+E\+R\+\_\+\+C\+O\+L\+OR}{BOUCLIER\_COLOR}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color B\+O\+U\+C\+L\+I\+E\+R\+\_\+\+C\+O\+L\+OR = \{0xfd,0xff,0x37\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ae9fca2f857bd6028a231907b9fab1bea}\label{7__asteroid_2config_8h_ae9fca2f857bd6028a231907b9fab1bea}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!C\+E\+N\+T\+R\+E\+\_\+\+V\+A\+I\+SS@{C\+E\+N\+T\+R\+E\+\_\+\+V\+A\+I\+SS}}
+\index{C\+E\+N\+T\+R\+E\+\_\+\+V\+A\+I\+SS@{C\+E\+N\+T\+R\+E\+\_\+\+V\+A\+I\+SS}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{C\+E\+N\+T\+R\+E\+\_\+\+V\+A\+I\+SS}{CENTRE\_VAISS}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Point C\+E\+N\+T\+R\+E\+\_\+\+V\+A\+I\+SS = \{36,26\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_afb01e08a19c87cb7852620f89e14c87b}\label{7__asteroid_2config_8h_afb01e08a19c87cb7852620f89e14c87b}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!C\+H\+A\+N\+C\+E\+\_\+\+B\+O\+N\+US@{C\+H\+A\+N\+C\+E\+\_\+\+B\+O\+N\+US}}
+\index{C\+H\+A\+N\+C\+E\+\_\+\+B\+O\+N\+US@{C\+H\+A\+N\+C\+E\+\_\+\+B\+O\+N\+US}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{C\+H\+A\+N\+C\+E\+\_\+\+B\+O\+N\+US}{CHANCE\_BONUS}}
+{\footnotesize\ttfamily int C\+H\+A\+N\+C\+E\+\_\+\+B\+O\+N\+US\mbox{[}\hyperlink{7__asteroid_2config_8h_a0ccacc3ecbbc935176fd11454ecb79d6}{N\+B\+\_\+\+B\+O\+N\+US}+\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES} -\/ 1\mbox{]} =\{1,3,1,3,4,1,10,6,2,4,4,4,4\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a7c1bdb8d8602a6bf6c2802e050a92f0e}\label{7__asteroid_2config_8h_a7c1bdb8d8602a6bf6c2802e050a92f0e}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!coord\+\_\+spawn@{coord\+\_\+spawn}}
+\index{coord\+\_\+spawn@{coord\+\_\+spawn}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{coord\+\_\+spawn}{coord\_spawn}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Point coord\+\_\+spawn\mbox{[}3\mbox{]} =\{\{0,0\},\{0,(P\+L\+A\+Y\+G\+R\+O\+U\+N\+D\+\_\+\+S\+I\+Z\+E\+\_\+H/2)\},\{(P\+L\+A\+Y\+G\+R\+O\+U\+N\+D\+\_\+\+S\+I\+Z\+E\+\_\+W/2),0\}\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a4df5f0fcd67454b6a725bf21965588b5}\label{7__asteroid_2config_8h_a4df5f0fcd67454b6a725bf21965588b5}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+L\+ES@{D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+L\+ES}}
+\index{D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+L\+ES@{D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+L\+ES}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+L\+ES}{DEGAT\_MISSILES}}
+{\footnotesize\ttfamily const float D\+E\+G\+A\+T\+\_\+\+M\+I\+S\+S\+I\+L\+ES\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} = \{1.\+3, 1.\+6, 3.\+6, 0, 12./30\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a4896132ff929e6abc0def4bf6b801325}\label{7__asteroid_2config_8h_a4896132ff929e6abc0def4bf6b801325}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+I\+A\+M\+E\+T\+R\+E\+\_\+\+A\+S\+TE@{D\+I\+A\+M\+E\+T\+R\+E\+\_\+\+A\+S\+TE}}
+\index{D\+I\+A\+M\+E\+T\+R\+E\+\_\+\+A\+S\+TE@{D\+I\+A\+M\+E\+T\+R\+E\+\_\+\+A\+S\+TE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+I\+A\+M\+E\+T\+R\+E\+\_\+\+A\+S\+TE}{DIAMETRE\_ASTE}}
+{\footnotesize\ttfamily const int D\+I\+A\+M\+E\+T\+R\+E\+\_\+\+A\+S\+TE\mbox{[}\hyperlink{7__asteroid_2config_8h_a5461d80ad074bdfa729ab899767d7739}{N\+B\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+A\+S\+TE}\mbox{]} = \{32,48\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ae901b87296360a66db1ee112f1a5c44a}\label{7__asteroid_2config_8h_ae901b87296360a66db1ee112f1a5c44a}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+I\+R\+\_\+\+F\+O\+N\+T\+S\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{D\+I\+R\+\_\+\+F\+O\+N\+T\+S\+\_\+\+A\+S\+T\+E\+R\+O\+ID}}
+\index{D\+I\+R\+\_\+\+F\+O\+N\+T\+S\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{D\+I\+R\+\_\+\+F\+O\+N\+T\+S\+\_\+\+A\+S\+T\+E\+R\+O\+ID}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+F\+O\+N\+T\+S\+\_\+\+A\+S\+T\+E\+R\+O\+ID}{DIR\_FONTS\_ASTEROID}}
+{\footnotesize\ttfamily char$\ast$ D\+I\+R\+\_\+\+F\+O\+N\+T\+S\+\_\+\+A\+S\+T\+E\+R\+O\+ID\mbox{[}\hyperlink{7__asteroid_2config_8h_ab5b5708a6ff360cd6e84c213661ef639}{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+F\+O\+N\+TS}\mbox{]}}
+
+{\bfseries Valeur initiale \+:}
+\begin{DoxyCode}
+= \{
+    \textcolor{stringliteral}{"../games/2\_snake/Fonts/zorque.ttf"},
+    \textcolor{stringliteral}{"../games/2\_snake/Fonts/Demonized.ttf"}
+\}
+\end{DoxyCode}
+\mbox{\Hypertarget{7__asteroid_2config_8h_a992307868c261a777620ec2d62c97360}\label{7__asteroid_2config_8h_a992307868c261a777620ec2d62c97360}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+I\+R\+\_\+\+S\+O\+U\+N\+D\+S\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{D\+I\+R\+\_\+\+S\+O\+U\+N\+D\+S\+\_\+\+A\+S\+T\+E\+R\+O\+ID}}
+\index{D\+I\+R\+\_\+\+S\+O\+U\+N\+D\+S\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{D\+I\+R\+\_\+\+S\+O\+U\+N\+D\+S\+\_\+\+A\+S\+T\+E\+R\+O\+ID}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+S\+O\+U\+N\+D\+S\+\_\+\+A\+S\+T\+E\+R\+O\+ID}{DIR\_SOUNDS\_ASTEROID}}
+{\footnotesize\ttfamily char$\ast$ D\+I\+R\+\_\+\+S\+O\+U\+N\+D\+S\+\_\+\+A\+S\+T\+E\+R\+O\+ID\mbox{[}\hyperlink{7__asteroid_2config_8h_a520fd2821a90af2ac4b3bb837bf17b12}{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+O\+U\+N\+DS}\mbox{]}}
+
+{\bfseries Valeur initiale \+:}
+\begin{DoxyCode}
+= \{
+    \textcolor{stringliteral}{"../games/7\_asteroid/Sound/shoot1.wav"},
+    \textcolor{stringliteral}{"../games/7\_asteroid/Sound/shoot2.wav"},
+    \textcolor{stringliteral}{"../games/7\_asteroid/Sound/shoot3.wav"},
+    \textcolor{stringliteral}{"../games/7\_asteroid/Sound/shoot4.wav"},
+    \textcolor{stringliteral}{"../games/7\_asteroid/Sound/laser\_beam.wav"},
+    \textcolor{stringliteral}{"../games/7\_asteroid/Sound/powerUp.wav"},
+    \textcolor{stringliteral}{"../games/7\_asteroid/Sound/hit.wav"},
+    \textcolor{stringliteral}{"../games/7\_asteroid/Sound/ice\_explo.wav"},
+    \textcolor{stringliteral}{"../games/7\_asteroid/Sound/explo.wav"},
+    \textcolor{stringliteral}{"../games/7\_asteroid/Sound/big\_explo.wav"},
+    \textcolor{stringliteral}{"../games/7\_asteroid/Sound/thrust.wav"},
+    \textcolor{stringliteral}{"../games/5\_tetris/Sound/gameover.wav"}
+
+\}
+\end{DoxyCode}
+\mbox{\Hypertarget{7__asteroid_2config_8h_a914020f0eb727509753a26d00ee9178a}\label{7__asteroid_2config_8h_a914020f0eb727509753a26d00ee9178a}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!D\+U\+R\+E\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES@{D\+U\+R\+E\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES}}
+\index{D\+U\+R\+E\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES@{D\+U\+R\+E\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{D\+U\+R\+E\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES}{DUREE\_MISSILES}}
+{\footnotesize\ttfamily const float D\+U\+R\+E\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} = \{0.\+9, 0.\+7, 1.\+6, 1, 0\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ab508e5be5ec0eb063c6e546e8b3d9ddf}\label{7__asteroid_2config_8h_ab508e5be5ec0eb063c6e546e8b3d9ddf}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!E\+X\+P\+L\+O\+\_\+\+S\+R\+CS@{E\+X\+P\+L\+O\+\_\+\+S\+R\+CS}}
+\index{E\+X\+P\+L\+O\+\_\+\+S\+R\+CS@{E\+X\+P\+L\+O\+\_\+\+S\+R\+CS}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{E\+X\+P\+L\+O\+\_\+\+S\+R\+CS}{EXPLO\_SRCS}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect E\+X\+P\+L\+O\+\_\+\+S\+R\+CS\mbox{[}\hyperlink{7__asteroid_2config_8h_ad7c708c0fc5593668c426b212c154e2c}{N\+B\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}\mbox{]} = \{\{0,0, 374, 374\} , \{0,0, 312, 312\}, \{0,0,216,216\}\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a8f77a36db8ef0fcbf6ed9845076b4ce0}\label{7__asteroid_2config_8h_a8f77a36db8ef0fcbf6ed9845076b4ce0}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+I\+S\+S\+U\+R\+E\+\_\+\+G\+L\+A\+C\+E\+\_\+\+C\+O\+L\+OR@{F\+I\+S\+S\+U\+R\+E\+\_\+\+G\+L\+A\+C\+E\+\_\+\+C\+O\+L\+OR}}
+\index{F\+I\+S\+S\+U\+R\+E\+\_\+\+G\+L\+A\+C\+E\+\_\+\+C\+O\+L\+OR@{F\+I\+S\+S\+U\+R\+E\+\_\+\+G\+L\+A\+C\+E\+\_\+\+C\+O\+L\+OR}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+I\+S\+S\+U\+R\+E\+\_\+\+G\+L\+A\+C\+E\+\_\+\+C\+O\+L\+OR}{FISSURE\_GLACE\_COLOR}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color F\+I\+S\+S\+U\+R\+E\+\_\+\+G\+L\+A\+C\+E\+\_\+\+C\+O\+L\+OR = \{0x58,0x95,0xaa\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a857f34789a49aa1be3298cbb4245b36a}\label{7__asteroid_2config_8h_a857f34789a49aa1be3298cbb4245b36a}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+L\+E\+C\+H\+E\+\_\+\+D\+E\+ST@{F\+L\+E\+C\+H\+E\+\_\+\+D\+E\+ST}}
+\index{F\+L\+E\+C\+H\+E\+\_\+\+D\+E\+ST@{F\+L\+E\+C\+H\+E\+\_\+\+D\+E\+ST}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+L\+E\+C\+H\+E\+\_\+\+D\+E\+ST}{FLECHE\_DEST}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect F\+L\+E\+C\+H\+E\+\_\+\+D\+E\+ST\mbox{[}6\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Valeur initiale \+:}
+\begin{DoxyCode}
+= \{
+    \{PLAYGROUND\_SIZE\_W/2 - 50/2,  PLAYGROUND\_SIZE\_H/2 - \hyperlink{7__asteroid_2config_8h_a38e357a6ecaf7d313bd89e9e30dfa541}{RAYON\_VAISS} -50 -4,50,30\},
+    \{PLAYGROUND\_SIZE\_W/2 - 50 -10 - \hyperlink{7__asteroid_2config_8h_a38e357a6ecaf7d313bd89e9e30dfa541}{RAYON\_VAISS},  PLAYGROUND\_SIZE\_H/2 -30/2,50,30\},
+    \{PLAYGROUND\_SIZE\_W/2 + 10 + \hyperlink{7__asteroid_2config_8h_a38e357a6ecaf7d313bd89e9e30dfa541}{RAYON\_VAISS},  PLAYGROUND\_SIZE\_H/2- 30/2,50,30\},
+    \{10,720,40,20\},
+    \{26,736,40,20\},
+    \{10,834,56,38\}
+\}
+\end{DoxyCode}
+\mbox{\Hypertarget{7__asteroid_2config_8h_a2131a805654560bcc80dc5a4785aac43}\label{7__asteroid_2config_8h_a2131a805654560bcc80dc5a4785aac43}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+L\+E\+C\+H\+E\+\_\+\+S\+RC@{F\+L\+E\+C\+H\+E\+\_\+\+S\+RC}}
+\index{F\+L\+E\+C\+H\+E\+\_\+\+S\+RC@{F\+L\+E\+C\+H\+E\+\_\+\+S\+RC}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+L\+E\+C\+H\+E\+\_\+\+S\+RC}{FLECHE\_SRC}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect F\+L\+E\+C\+H\+E\+\_\+\+S\+RC = \{0,0, 500, 435\}\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a59768e15ccd384331f91425238e9b9b5}\label{7__asteroid_2config_8h_a59768e15ccd384331f91425238e9b9b5}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS@{F\+R\+A\+M\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}}
+\index{F\+R\+A\+M\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS@{F\+R\+A\+M\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}{FRAME\_EXPLOSIONS}}
+{\footnotesize\ttfamily const int F\+R\+A\+M\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS\mbox{[}\hyperlink{7__asteroid_2config_8h_ad7c708c0fc5593668c426b212c154e2c}{N\+B\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}\mbox{]} = \{12, 20, 20\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a1563e736047cb57052434e132e4afac4}\label{7__asteroid_2config_8h_a1563e736047cb57052434e132e4afac4}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+A\+M\+E\+\_\+\+T\+I\+ME@{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME}}
+\index{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME@{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME}{FRAME\_TIME}}
+{\footnotesize\ttfamily const int F\+R\+A\+M\+E\+\_\+\+T\+I\+ME = 1000 / \hyperlink{7__asteroid_2config_8h_a85f9d29551f1bf30f03229da27cb532f}{F\+R\+A\+M\+E\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+C\+O\+ND}\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a3becb8a199441dd77554400398a89ed2}\label{7__asteroid_2config_8h_a3becb8a199441dd77554400398a89ed2}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES@{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES}}
+\index{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES@{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES}{FREQUENCE\_MISSILES}}
+{\footnotesize\ttfamily const float F\+R\+E\+Q\+U\+E\+N\+C\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} = \{1, 0.\+66, 1.\+6, 1.\+33, 0\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_abd15933eb747c6822af28ef8e32838a3}\label{7__asteroid_2config_8h_abd15933eb747c6822af28ef8e32838a3}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!G\+E\+M\+\_\+\+C\+O\+L\+O\+RS@{G\+E\+M\+\_\+\+C\+O\+L\+O\+RS}}
+\index{G\+E\+M\+\_\+\+C\+O\+L\+O\+RS@{G\+E\+M\+\_\+\+C\+O\+L\+O\+RS}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{G\+E\+M\+\_\+\+C\+O\+L\+O\+RS}{GEM\_COLORS}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color G\+E\+M\+\_\+\+C\+O\+L\+O\+RS\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]}}
+
+{\bfseries Valeur initiale \+:}
+\begin{DoxyCode}
+=\{
+        \{250,35,35\},
+        \{0xfa,0xa6,0x32\},
+        \{0x71,0xb5,0x45\},
+        \{0x68,0xcf,0xf1\},
+        \{0xb0,0x6c,0xd0\}
+    \}
+\end{DoxyCode}
+\mbox{\Hypertarget{7__asteroid_2config_8h_a8543253d220a809fd083b609deb6b056}\label{7__asteroid_2config_8h_a8543253d220a809fd083b609deb6b056}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!G\+E\+M\+\_\+\+S\+RC@{G\+E\+M\+\_\+\+S\+RC}}
+\index{G\+E\+M\+\_\+\+S\+RC@{G\+E\+M\+\_\+\+S\+RC}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{G\+E\+M\+\_\+\+S\+RC}{GEM\_SRC}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect G\+E\+M\+\_\+\+S\+RC = \{0,0,72,70\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a4223eebf2e076b331940f83bc3285bee}\label{7__asteroid_2config_8h_a4223eebf2e076b331940f83bc3285bee}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!H\+U\+D\+\_\+\+C\+O\+L\+OR@{H\+U\+D\+\_\+\+C\+O\+L\+OR}}
+\index{H\+U\+D\+\_\+\+C\+O\+L\+OR@{H\+U\+D\+\_\+\+C\+O\+L\+OR}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{H\+U\+D\+\_\+\+C\+O\+L\+OR}{HUD\_COLOR}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color H\+U\+D\+\_\+\+C\+O\+L\+OR = \{0x2f,0x30,0x4f\}\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a25b48909d83038e8ef1eba6af5781f9c}\label{7__asteroid_2config_8h_a25b48909d83038e8ef1eba6af5781f9c}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!J\+A\+U\+G\+E\+\_\+\+D\+IM@{J\+A\+U\+G\+E\+\_\+\+D\+IM}}
+\index{J\+A\+U\+G\+E\+\_\+\+D\+IM@{J\+A\+U\+G\+E\+\_\+\+D\+IM}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{J\+A\+U\+G\+E\+\_\+\+D\+IM}{JAUGE\_DIM}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect J\+A\+U\+G\+E\+\_\+\+D\+IM = \{0,0,80,500\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ac60144991538a0e3d4fd124648629070}\label{7__asteroid_2config_8h_ac60144991538a0e3d4fd124648629070}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+I\+S\+S\+I\+L\+E\+\_\+\+C\+E\+N\+T\+R\+ES@{M\+I\+S\+S\+I\+L\+E\+\_\+\+C\+E\+N\+T\+R\+ES}}
+\index{M\+I\+S\+S\+I\+L\+E\+\_\+\+C\+E\+N\+T\+R\+ES@{M\+I\+S\+S\+I\+L\+E\+\_\+\+C\+E\+N\+T\+R\+ES}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{M\+I\+S\+S\+I\+L\+E\+\_\+\+C\+E\+N\+T\+R\+ES}{MISSILE\_CENTRES}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Point M\+I\+S\+S\+I\+L\+E\+\_\+\+C\+E\+N\+T\+R\+ES\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]}}
+
+{\bfseries Valeur initiale \+:}
+\begin{DoxyCode}
+=\{
+        \{21,18\},
+        \{28,26\},
+        \{28,19\},
+        \{28,27\},
+        \{22,62\}
+    \}
+\end{DoxyCode}
+\mbox{\Hypertarget{7__asteroid_2config_8h_af4d3e821587ff152e4ccec37455cf211}\label{7__asteroid_2config_8h_af4d3e821587ff152e4ccec37455cf211}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+I\+S\+S\+I\+L\+E\+\_\+\+S\+RC@{M\+I\+S\+S\+I\+L\+E\+\_\+\+S\+RC}}
+\index{M\+I\+S\+S\+I\+L\+E\+\_\+\+S\+RC@{M\+I\+S\+S\+I\+L\+E\+\_\+\+S\+RC}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{M\+I\+S\+S\+I\+L\+E\+\_\+\+S\+RC}{MISSILE\_SRC}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Point M\+I\+S\+S\+I\+L\+E\+\_\+\+S\+RC\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]}}
+
+{\bfseries Valeur initiale \+:}
+\begin{DoxyCode}
+=\{
+        \{42,82\},
+        \{56,74\},
+        \{56,82\},
+        \{56,82\},
+        \{2385,124\}
+    \}
+\end{DoxyCode}
+\mbox{\Hypertarget{7__asteroid_2config_8h_ab503f71ccc6a2db49ef372eb8ab2dcbf}\label{7__asteroid_2config_8h_ab503f71ccc6a2db49ef372eb8ab2dcbf}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+I\+S\+S\+I\+L\+E\+S\+\_\+\+S\+R\+C\+\_\+\+R\+A\+Y\+ON@{M\+I\+S\+S\+I\+L\+E\+S\+\_\+\+S\+R\+C\+\_\+\+R\+A\+Y\+ON}}
+\index{M\+I\+S\+S\+I\+L\+E\+S\+\_\+\+S\+R\+C\+\_\+\+R\+A\+Y\+ON@{M\+I\+S\+S\+I\+L\+E\+S\+\_\+\+S\+R\+C\+\_\+\+R\+A\+Y\+ON}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{M\+I\+S\+S\+I\+L\+E\+S\+\_\+\+S\+R\+C\+\_\+\+R\+A\+Y\+ON}{MISSILES\_SRC\_RAYON}}
+{\footnotesize\ttfamily const int M\+I\+S\+S\+I\+L\+E\+S\+\_\+\+S\+R\+C\+\_\+\+R\+A\+Y\+ON\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} =\{6, 15, 18, 13, 0\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_adfd6e6b311603592b76dff0313d4e530}\label{7__asteroid_2config_8h_adfd6e6b311603592b76dff0313d4e530}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+U\+L\+T\+I\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+S\+C\+O\+RE@{M\+U\+L\+T\+I\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+S\+C\+O\+RE}}
+\index{M\+U\+L\+T\+I\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+S\+C\+O\+RE@{M\+U\+L\+T\+I\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+S\+C\+O\+RE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{M\+U\+L\+T\+I\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+S\+C\+O\+RE}{MULTI\_TAILLE\_SCORE}}
+{\footnotesize\ttfamily const float M\+U\+L\+T\+I\+\_\+\+T\+A\+I\+L\+L\+E\+\_\+\+S\+C\+O\+RE\mbox{[}\hyperlink{7__asteroid_2config_8h_aa26f2abfb75d6954c0dd07183121c23f}{N\+B\+\_\+\+T\+R\+A\+N\+C\+H\+E\+\_\+\+T\+A\+I\+L\+LE}\mbox{]} = \{0.\+2, 0.\+4, 0.\+8 ,1\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a76d9b5cf39549b68a87802655749c6d3}\label{7__asteroid_2config_8h_a76d9b5cf39549b68a87802655749c6d3}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+U\+N\+I\+T\+I\+O\+N\+S\+\_\+\+U\+S\+A\+GE@{M\+U\+N\+I\+T\+I\+O\+N\+S\+\_\+\+U\+S\+A\+GE}}
+\index{M\+U\+N\+I\+T\+I\+O\+N\+S\+\_\+\+U\+S\+A\+GE@{M\+U\+N\+I\+T\+I\+O\+N\+S\+\_\+\+U\+S\+A\+GE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{M\+U\+N\+I\+T\+I\+O\+N\+S\+\_\+\+U\+S\+A\+GE}{MUNITIONS\_USAGE}}
+{\footnotesize\ttfamily const float M\+U\+N\+I\+T\+I\+O\+N\+S\+\_\+\+U\+S\+A\+GE\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} = \{0, 0.\+01, 0.\+0334, 0.\+02, 1./(14$\ast$30)\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_acb6d45055361fada7296a9214af36017}\label{7__asteroid_2config_8h_acb6d45055361fada7296a9214af36017}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!M\+U\+N\+I\+T\+I\+O\+N\+S\+\_\+\+U\+S\+A\+G\+E\+\_\+\+M\+U\+L\+T\+I\+P\+LE@{M\+U\+N\+I\+T\+I\+O\+N\+S\+\_\+\+U\+S\+A\+G\+E\+\_\+\+M\+U\+L\+T\+I\+P\+LE}}
+\index{M\+U\+N\+I\+T\+I\+O\+N\+S\+\_\+\+U\+S\+A\+G\+E\+\_\+\+M\+U\+L\+T\+I\+P\+LE@{M\+U\+N\+I\+T\+I\+O\+N\+S\+\_\+\+U\+S\+A\+G\+E\+\_\+\+M\+U\+L\+T\+I\+P\+LE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{M\+U\+N\+I\+T\+I\+O\+N\+S\+\_\+\+U\+S\+A\+G\+E\+\_\+\+M\+U\+L\+T\+I\+P\+LE}{MUNITIONS\_USAGE\_MULTIPLE}}
+{\footnotesize\ttfamily const float M\+U\+N\+I\+T\+I\+O\+N\+S\+\_\+\+U\+S\+A\+G\+E\+\_\+\+M\+U\+L\+T\+I\+P\+LE\mbox{[}\hyperlink{7__asteroid_2config_8h_a92f2c26a8843f0541c86537af936437d}{N\+B\+\_\+\+T\+I\+R\+\_\+\+M\+AX}\mbox{]} =\{1,1.\+3,1.\+50\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ae12bcc2a9eec7e7b021f58156ada176e}\label{7__asteroid_2config_8h_ae12bcc2a9eec7e7b021f58156ada176e}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!N\+B\+\_\+\+A\+N\+I\+M\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS@{N\+B\+\_\+\+A\+N\+I\+M\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}}
+\index{N\+B\+\_\+\+A\+N\+I\+M\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS@{N\+B\+\_\+\+A\+N\+I\+M\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+A\+N\+I\+M\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}{NB\_ANIM\_EXPLOSIONS}}
+{\footnotesize\ttfamily const int N\+B\+\_\+\+A\+N\+I\+M\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS\mbox{[}\hyperlink{7__asteroid_2config_8h_ad7c708c0fc5593668c426b212c154e2c}{N\+B\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}\mbox{]} = \{6, 10, 6\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a6e415f7cd73ddbff54ddadcc219c7062}\label{7__asteroid_2config_8h_a6e415f7cd73ddbff54ddadcc219c7062}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+A\+T\+I\+O\+\_\+\+A\+C\+C\+EL@{R\+A\+T\+I\+O\+\_\+\+A\+C\+C\+EL}}
+\index{R\+A\+T\+I\+O\+\_\+\+A\+C\+C\+EL@{R\+A\+T\+I\+O\+\_\+\+A\+C\+C\+EL}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{R\+A\+T\+I\+O\+\_\+\+A\+C\+C\+EL}{RATIO\_ACCEL}}
+{\footnotesize\ttfamily const float R\+A\+T\+I\+O\+\_\+\+A\+C\+C\+EL\mbox{[}\hyperlink{7__asteroid_2config_8h_a1b4bc8e6cb25e856724af9cee69c7182}{N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+H\+R\+U\+ST}+1\mbox{]} = \{0, 0.\+3, 0.\+6, 1, 1, 1\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_acfcd7265ae38801f1f71f5d4c0e96833}\label{7__asteroid_2config_8h_acfcd7265ae38801f1f71f5d4c0e96833}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+A\+T\+I\+O\+\_\+\+T\+U\+RN@{R\+A\+T\+I\+O\+\_\+\+T\+U\+RN}}
+\index{R\+A\+T\+I\+O\+\_\+\+T\+U\+RN@{R\+A\+T\+I\+O\+\_\+\+T\+U\+RN}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{R\+A\+T\+I\+O\+\_\+\+T\+U\+RN}{RATIO\_TURN}}
+{\footnotesize\ttfamily const float R\+A\+T\+I\+O\+\_\+\+T\+U\+RN\mbox{[}\hyperlink{7__asteroid_2config_8h_a88b9efdaa83394155cda5d2c0e4fb4f1}{N\+B\+\_\+\+F\+R\+A\+M\+E\+\_\+\+T\+U\+RN}\mbox{]} = \{0, 0.\+1, 0.\+2, 0.\+3, 0.\+6, 0.\+8, 1, 1, 1\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a2cc85f77176a93bc5c62f4b934683362}\label{7__asteroid_2config_8h_a2cc85f77176a93bc5c62f4b934683362}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+A\+Y\+O\+N\+\_\+\+M\+I\+S\+S\+I\+L\+ES@{R\+A\+Y\+O\+N\+\_\+\+M\+I\+S\+S\+I\+L\+ES}}
+\index{R\+A\+Y\+O\+N\+\_\+\+M\+I\+S\+S\+I\+L\+ES@{R\+A\+Y\+O\+N\+\_\+\+M\+I\+S\+S\+I\+L\+ES}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{R\+A\+Y\+O\+N\+\_\+\+M\+I\+S\+S\+I\+L\+ES}{RAYON\_MISSILES}}
+{\footnotesize\ttfamily const int R\+A\+Y\+O\+N\+\_\+\+M\+I\+S\+S\+I\+L\+ES\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} = \{6, 10, 14, 10, 0\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_aac7e5eb0d062ddd93fc3546d71dcd810}\label{7__asteroid_2config_8h_aac7e5eb0d062ddd93fc3546d71dcd810}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+O\+U\+E\+\_\+\+C\+O\+L\+OR@{R\+O\+U\+E\+\_\+\+C\+O\+L\+OR}}
+\index{R\+O\+U\+E\+\_\+\+C\+O\+L\+OR@{R\+O\+U\+E\+\_\+\+C\+O\+L\+OR}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{R\+O\+U\+E\+\_\+\+C\+O\+L\+OR}{ROUE\_COLOR}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Color R\+O\+U\+E\+\_\+\+C\+O\+L\+OR = \{40,40,40\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_aca86731ee5a24ae09d7cc0aa6dd3c3c1}\label{7__asteroid_2config_8h_aca86731ee5a24ae09d7cc0aa6dd3c3c1}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!R\+O\+U\+E\+\_\+\+D\+IM@{R\+O\+U\+E\+\_\+\+D\+IM}}
+\index{R\+O\+U\+E\+\_\+\+D\+IM@{R\+O\+U\+E\+\_\+\+D\+IM}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{R\+O\+U\+E\+\_\+\+D\+IM}{ROUE\_DIM}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect R\+O\+U\+E\+\_\+\+D\+IM = \{0,0,80,80\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_abae6331379d06add737d07a6d6edebbc}\label{7__asteroid_2config_8h_abae6331379d06add737d07a6d6edebbc}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+C\+O\+R\+E\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{S\+C\+O\+R\+E\+\_\+\+A\+S\+T\+E\+R\+O\+ID}}
+\index{S\+C\+O\+R\+E\+\_\+\+A\+S\+T\+E\+R\+O\+ID@{S\+C\+O\+R\+E\+\_\+\+A\+S\+T\+E\+R\+O\+ID}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{S\+C\+O\+R\+E\+\_\+\+A\+S\+T\+E\+R\+O\+ID}{SCORE\_ASTEROID}}
+{\footnotesize\ttfamily const int S\+C\+O\+R\+E\+\_\+\+A\+S\+T\+E\+R\+O\+ID\mbox{[}\hyperlink{7__asteroid_2config_8h_a8e5034a0493e51b9c7db570e3510feea}{N\+B\+\_\+\+A\+S\+T\+E\+\_\+\+T\+E\+X\+T\+U\+R\+ES}\mbox{]} = \{50, 100, 200, 300, 400, 500\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a776a7ff0aa9e3316de82682b96592bf8}\label{7__asteroid_2config_8h_a776a7ff0aa9e3316de82682b96592bf8}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+C\+O\+R\+E\+\_\+\+C\+O\+L\+OR@{S\+C\+O\+R\+E\+\_\+\+C\+O\+L\+OR}}
+\index{S\+C\+O\+R\+E\+\_\+\+C\+O\+L\+OR@{S\+C\+O\+R\+E\+\_\+\+C\+O\+L\+OR}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{S\+C\+O\+R\+E\+\_\+\+C\+O\+L\+OR}{SCORE\_COLOR}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Color S\+C\+O\+R\+E\+\_\+\+C\+O\+L\+OR = \{0x44,0xdd,0x\+F\+F\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a2d7328a301fb2bf2583daf7c188f5649}\label{7__asteroid_2config_8h_a2d7328a301fb2bf2583daf7c188f5649}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+O\+U\+N\+D\+\_\+\+V\+O\+L\+U\+M\+ES@{S\+O\+U\+N\+D\+\_\+\+V\+O\+L\+U\+M\+ES}}
+\index{S\+O\+U\+N\+D\+\_\+\+V\+O\+L\+U\+M\+ES@{S\+O\+U\+N\+D\+\_\+\+V\+O\+L\+U\+M\+ES}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{S\+O\+U\+N\+D\+\_\+\+V\+O\+L\+U\+M\+ES}{SOUND\_VOLUMES}}
+{\footnotesize\ttfamily int S\+O\+U\+N\+D\+\_\+\+V\+O\+L\+U\+M\+ES\mbox{[}\hyperlink{7__asteroid_2config_8h_a520fd2821a90af2ac4b3bb837bf17b12}{N\+B\+\_\+\+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+S\+O\+U\+N\+DS}\mbox{]} = \{30,110,17,85,25, 128, 12,50, 115,128, 100, 100\}\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a4668c2dc80d2e07af7f4f491d00a4a46}\label{7__asteroid_2config_8h_a4668c2dc80d2e07af7f4f491d00a4a46}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+R\+C\+\_\+\+B\+O\+MB@{S\+R\+C\+\_\+\+B\+O\+MB}}
+\index{S\+R\+C\+\_\+\+B\+O\+MB@{S\+R\+C\+\_\+\+B\+O\+MB}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{S\+R\+C\+\_\+\+B\+O\+MB}{SRC\_BOMB}}
+{\footnotesize\ttfamily const S\+D\+L\+\_\+\+Rect S\+R\+C\+\_\+\+B\+O\+MB = \{0,0,960,540\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_ad225b3d18e31b32fd2fea440696534df}\label{7__asteroid_2config_8h_ad225b3d18e31b32fd2fea440696534df}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!S\+R\+C\+\_\+\+R\+O\+UE@{S\+R\+C\+\_\+\+R\+O\+UE}}
+\index{S\+R\+C\+\_\+\+R\+O\+UE@{S\+R\+C\+\_\+\+R\+O\+UE}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{S\+R\+C\+\_\+\+R\+O\+UE}{SRC\_ROUE}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect S\+R\+C\+\_\+\+R\+O\+UE = \{0,0,622,622\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_af5b11c0d02817410930c9fd7e156a17f}\label{7__asteroid_2config_8h_af5b11c0d02817410930c9fd7e156a17f}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!T\+A\+I\+L\+L\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS@{T\+A\+I\+L\+L\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}}
+\index{T\+A\+I\+L\+L\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS@{T\+A\+I\+L\+L\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{T\+A\+I\+L\+L\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS}{TAILLE\_EXPLOSIONS}}
+{\footnotesize\ttfamily const float T\+A\+I\+L\+L\+E\+\_\+\+E\+X\+P\+L\+O\+S\+I\+O\+NS\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} = \{0.\+9, 1.\+1, 1.\+3, 1, 0\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a3999a5a7a142a32d647d8347a6f03e84}\label{7__asteroid_2config_8h_a3999a5a7a142a32d647d8347a6f03e84}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!T\+E\+X\+T\+\_\+\+B\+O\+N\+US@{T\+E\+X\+T\+\_\+\+B\+O\+N\+US}}
+\index{T\+E\+X\+T\+\_\+\+B\+O\+N\+US@{T\+E\+X\+T\+\_\+\+B\+O\+N\+US}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{T\+E\+X\+T\+\_\+\+B\+O\+N\+US}{TEXT\_BONUS}}
+{\footnotesize\ttfamily char$\ast$ T\+E\+X\+T\+\_\+\+B\+O\+N\+US\mbox{[}\hyperlink{7__asteroid_2config_8h_a0ccacc3ecbbc935176fd11454ecb79d6}{N\+B\+\_\+\+B\+O\+N\+US}+\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES} -\/ 1\mbox{]}}
+
+{\bfseries Valeur initiale \+:}
+\begin{DoxyCode}
+= \{
+    \textcolor{stringliteral}{"Tir multiple !"},
+    \textcolor{stringliteral}{"Bouclier !"},
+    \textcolor{stringliteral}{"Frequence de tir !"},
+    \textcolor{stringliteral}{"Vitesse des missiles !"},
+    \textcolor{stringliteral}{"Degat !"},
+    \textcolor{stringliteral}{"Bombe nucleaire !"},
+    \textcolor{stringliteral}{"+500 points !"},
+    \textcolor{stringliteral}{"+1500 points !"},
+    \textcolor{stringliteral}{"+5000 points !"},
+    \textcolor{stringliteral}{"Munitions zigzag !"},
+    \textcolor{stringliteral}{"Munitions a tete chercheuse !"},
+    \textcolor{stringliteral}{"Munitons de glace !"},
+    \textcolor{stringliteral}{"Munitions laser !"}
+\}
+\end{DoxyCode}
+\mbox{\Hypertarget{7__asteroid_2config_8h_a7dd6ae788b433dc299227f5d839e3d73}\label{7__asteroid_2config_8h_a7dd6ae788b433dc299227f5d839e3d73}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!T\+H\+R\+U\+S\+T\+\_\+\+S\+RC@{T\+H\+R\+U\+S\+T\+\_\+\+S\+RC}}
+\index{T\+H\+R\+U\+S\+T\+\_\+\+S\+RC@{T\+H\+R\+U\+S\+T\+\_\+\+S\+RC}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{T\+H\+R\+U\+S\+T\+\_\+\+S\+RC}{THRUST\_SRC}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect T\+H\+R\+U\+S\+T\+\_\+\+S\+RC =\{0,0,72,70\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a1600c4a791fc472428f18f4c9518c184}\label{7__asteroid_2config_8h_a1600c4a791fc472428f18f4c9518c184}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+D\+E\+ST@{V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+D\+E\+ST}}
+\index{V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+D\+E\+ST@{V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+D\+E\+ST}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+D\+E\+ST}{VAISSEAU\_DEST}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+D\+E\+ST = \{200,200,72,70\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_af4550b1f59838ab4760a7a41c846765d}\label{7__asteroid_2config_8h_af4550b1f59838ab4760a7a41c846765d}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+S\+RC@{V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+S\+RC}}
+\index{V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+S\+RC@{V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+S\+RC}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+S\+RC}{VAISSEAU\_SRC}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect V\+A\+I\+S\+S\+E\+A\+U\+\_\+\+S\+RC = \{0,0,72,70\}}
+
+\mbox{\Hypertarget{7__asteroid_2config_8h_a1108f4e2a048fb527f48903a5568a347}\label{7__asteroid_2config_8h_a1108f4e2a048fb527f48903a5568a347}} 
+\index{7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}!V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES@{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES}}
+\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES@{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES}!7\+\_\+asteroid/config.\+h@{7\+\_\+asteroid/config.\+h}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES}{VITESSE\_MISSILES}}
+{\footnotesize\ttfamily const float V\+I\+T\+E\+S\+S\+E\+\_\+\+M\+I\+S\+S\+I\+L\+ES\mbox{[}\hyperlink{7__asteroid_2config_8h_ada4bca62a7b42b394ec20349e16e209d}{N\+B\+\_\+\+M\+I\+S\+S\+I\+L\+ES}\mbox{]} = \{1.\+2, 1.\+4, 1, 1.\+3, 0\}}
+

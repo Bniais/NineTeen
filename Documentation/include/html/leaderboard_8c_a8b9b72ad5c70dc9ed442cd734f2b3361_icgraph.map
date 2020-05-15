@@ -1,0 +1,10 @@
+<map id="chargementDonner" name="chargementDonner">
+<area shape="rect" id="node2" href="$leaderboard_8c.html#ab1c772497e2229750ce69da0742fc217" title="permet de rechercher un joueur dans une structure de donner de type classement " alt="" coords="191,5,313,32"/>
+<area shape="rect" id="node3" href="$leaderboard_8c.html#adb7c03fcec842fb68ec6523b538f5ff7" title="leaderboard" alt="" coords="367,81,456,108"/>
+<area shape="rect" id="node8" href="$leaderboard_8c.html#a8aa1a5fcb4a3d825a4614dd3c9221233" title="permet de gerer tous les evenements liee au jeu " alt="" coords="187,107,317,133"/>
+<area shape="rect" id="node9" href="$leaderboard_8c.html#a8cc8b08c1c9d8854a008e3fdb6cf091c" title="permet d&#39;interagire avec l&#39;interface " alt="" coords="185,157,319,184"/>
+<area shape="rect" id="node4" href="$room_8c.html#a975caa310fae43e7d151c042081a509f" title="permet de lancer une machine de jeux comprend plusieur fonction annexe " alt="" coords="504,81,611,108"/>
+<area shape="rect" id="node5" href="$room_8c.html#aa10586f67996f3bae9aa5c4ae9c96718" title="Charge les textures d&#39;un jeu. " alt="" coords="659,81,784,108"/>
+<area shape="rect" id="node6" href="$room_8c.html#ad389842cd7e9002501145ffbf0bd81de" title="room" alt="" coords="696,132,747,159"/>
+<area shape="rect" id="node7" href="$main_8c.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="832,132,883,159"/>
+</map>

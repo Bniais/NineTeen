@@ -1,0 +1,70 @@
+\hypertarget{structPiece}{}\section{Piece}
+\label{structPiece}\index{Piece@{Piece}}
+
+
+Contient des informations sur une pièce (actuelle ou suivante)  
+
+
+
+
+{\ttfamily \#include $<$config.\+h$>$}
+
+\subsection*{Champs de données}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structPiece_af1951f72b2ec34674a8575bc71398e1c}\label{structPiece_af1951f72b2ec34674a8575bc71398e1c}} 
+unsigned int \hyperlink{structPiece_af1951f72b2ec34674a8575bc71398e1c}{rota}
+\begin{DoxyCompactList}\small\item\em La rotation de la pièce. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_a7441ef0865bcb3db9b8064dd7375c1ea}\label{structPiece_a7441ef0865bcb3db9b8064dd7375c1ea}} 
+int \hyperlink{structPiece_a7441ef0865bcb3db9b8064dd7375c1ea}{id}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}id de la pièce (determine la forme) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_ad0da36b2558901e21e7a30f6c227a45e}\label{structPiece_ad0da36b2558901e21e7a30f6c227a45e}} 
+float \hyperlink{structPiece_ad0da36b2558901e21e7a30f6c227a45e}{x}
+\begin{DoxyCompactList}\small\item\em La position en x de la pièce. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_aa4f0d3eebc3c443f9be81bf48561a217}\label{structPiece_aa4f0d3eebc3c443f9be81bf48561a217}} 
+float \hyperlink{structPiece_aa4f0d3eebc3c443f9be81bf48561a217}{y}
+\begin{DoxyCompactList}\small\item\em La position en y de la pièce. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_a53c275753c38008d97f9f1bb5a002ab0}\label{structPiece_a53c275753c38008d97f9f1bb5a002ab0}} 
+int $\ast$ \hyperlink{structPiece_a53c275753c38008d97f9f1bb5a002ab0}{grille}
+\begin{DoxyCompactList}\small\item\em Sa disposition des briques. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_a439227feff9d7f55384e8780cfc2eb82}\label{structPiece_a439227feff9d7f55384e8780cfc2eb82}} 
+int \hyperlink{structPiece_a439227feff9d7f55384e8780cfc2eb82}{size}
+\begin{DoxyCompactList}\small\item\em Sa taille de grille. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_ace00c818a42e075e4b95fb8c0e76ef68}\label{structPiece_ace00c818a42e075e4b95fb8c0e76ef68}} 
+int \hyperlink{structPiece_ace00c818a42e075e4b95fb8c0e76ef68}{giant}
+\begin{DoxyCompactList}\small\item\em Indique si la pièce est géante ou non. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_a1a0ea235a379f8a01e7ca7af7d70db65}\label{structPiece_a1a0ea235a379f8a01e7ca7af7d70db65}} 
+int \hyperlink{structPiece_a1a0ea235a379f8a01e7ca7af7d70db65}{frame\+To\+Go}
+\begin{DoxyCompactList}\small\item\em Nombre de frame restante en étant bloquée en haut de la grille. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_a851cf68c8f607573c1a5e987784c83f6}\label{structPiece_a851cf68c8f607573c1a5e987784c83f6}} 
+int \hyperlink{structPiece_a851cf68c8f607573c1a5e987784c83f6}{dir}
+\begin{DoxyCompactList}\small\item\em La direction de déplacement latérale. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_af88e9b6e7a4389bb550446ec43f5f217}\label{structPiece_af88e9b6e7a4389bb550446ec43f5f217}} 
+int \hyperlink{structPiece_af88e9b6e7a4389bb550446ec43f5f217}{frame\+Dir}
+\begin{DoxyCompactList}\small\item\em Le nombre de frame avant d\textquotesingle{}atteindre la collone visée. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_a0c322226d3c4a4800386ffedec5fe19d}\label{structPiece_a0c322226d3c4a4800386ffedec5fe19d}} 
+int \hyperlink{structPiece_a0c322226d3c4a4800386ffedec5fe19d}{frame\+Stop}
+\begin{DoxyCompactList}\small\item\em Le nombre de frame coincé en bas de la grille. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_a2bb440d2a9fcf8f93cef9c8fef275f08}\label{structPiece_a2bb440d2a9fcf8f93cef9c8fef275f08}} 
+int \hyperlink{structPiece_a2bb440d2a9fcf8f93cef9c8fef275f08}{first\+Col}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}indice de la première collone comprenant une brique. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_a83ab63b7aa486a694dab9b6f80406bd8}\label{structPiece_a83ab63b7aa486a694dab9b6f80406bd8}} 
+int \hyperlink{structPiece_a83ab63b7aa486a694dab9b6f80406bd8}{last\+Col}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}indice de la dernière collone comprenant une brique. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_aef999c7196efc1329147948b48b154fc}\label{structPiece_aef999c7196efc1329147948b48b154fc}} 
+int \hyperlink{structPiece_aef999c7196efc1329147948b48b154fc}{first\+Row}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}indice de la première ligne comprenant une brique. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_ace79b5c90dfa592dce72849ef1551446}\label{structPiece_ace79b5c90dfa592dce72849ef1551446}} 
+int \hyperlink{structPiece_ace79b5c90dfa592dce72849ef1551446}{last\+Row}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}indice de la dernière ligne comprenant une brique. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structPiece_a21a6e1305c3f396d42ee151e8751b469}\label{structPiece_a21a6e1305c3f396d42ee151e8751b469}} 
+int \hyperlink{structPiece_a21a6e1305c3f396d42ee151e8751b469}{bonus}
+\begin{DoxyCompactList}\small\item\em Le bonus contenu par la pièce. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+Contient des informations sur une pièce (actuelle ou suivante) 
+
+La documentation de cette structure a été générée à partir du fichier suivant \+:\begin{DoxyCompactItemize}
+\item 
+games/5\+\_\+tetris/\hyperlink{config_8h}{config.\+h}\end{DoxyCompactItemize}

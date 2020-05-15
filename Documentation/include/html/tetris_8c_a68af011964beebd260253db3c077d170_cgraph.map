@@ -1,0 +1,51 @@
+<map id="tetris" name="tetris">
+<area shape="rect" id="node2" href="$tetris_8c.html#a207a70e671ee880269d8a9fc96a39087" title="Initialise l&#39;environement SDL, TTF et rand. " alt="" coords="150,5,209,32"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#ab86835b7f6bddb7b5ef9fa6295b30484" title="Met à jour les distances et frames de déplacement, d&#39;arrêt et de départ des pièces selon le nombre de..." alt="" coords="119,56,239,83"/>
+<area shape="rect" id="node4" href="$tetris_8c.html#aa3b0b0ae919c820fe907aa5587f99fcf" title="Initialise un tableau de scores. " alt="" coords="325,132,399,159"/>
+<area shape="rect" id="node5" href="$tetris_8c.html#ae85620c9aeca2e9c18acf776f00fdffc" title="Initialise les cases de la matrice. " alt="" coords="142,208,217,235"/>
+<area shape="rect" id="node6" href="$tetris_8c.html#a179fed1118dad2056fe4ae7a1278de73" title="Initialise une pièce. " alt="" coords="143,259,215,285"/>
+<area shape="rect" id="node7" href="$tetris_8c.html#afcb86b88f9ff5bb73f44c78f48230203" title="Obtient une nouvelle pièce aléatoire. " alt="" coords="129,411,229,437"/>
+<area shape="rect" id="node10" href="$tetris_8c.html#ab05c527bd8b667fd4f52638458a25511" title="Met une pièce en haut de la grille en vérifiant que c&#39;est possible. " alt="" coords="325,309,399,336"/>
+<area shape="rect" id="node12" href="$tetris_8c.html#ad8e6ba2694e622ad01607902b50d4b8e" title="Met une pièce dans l&#39;emplacement qui indique la prochaine pièce. " alt="" coords="122,613,237,640"/>
+<area shape="rect" id="node13" href="$tetris_8c.html#a7f040cbc8df650a1c24e301d370b5184" title="Libère la mémoire. " alt="" coords="143,664,216,691"/>
+<area shape="rect" id="node14" href="$tetris_8c.html#af3a1a0478a6589c249b045846df3a0a4" title="Essaye de tourner une pièce, en la déplaçant si besoin. " alt="" coords="135,461,223,488"/>
+<area shape="rect" id="node17" href="$tetris_8c.html#acdf0ae318e2e7c1db6c48843ae1b9395" title="Change la direction horizontale d&#39;une pièce. " alt="" coords="139,715,220,741"/>
+<area shape="rect" id="node18" href="$tetris_8c.html#ab7aa50536fa477c472edb9a29654a2c4" title="Déplace la pièce sur le côté " alt="" coords="322,664,402,691"/>
+<area shape="rect" id="node20" href="$tetris_8c.html#a5100e6c3d9135456bac8660e84ccb4c0" title="Déplace la pièce vers le bas. " alt="" coords="318,613,406,640"/>
+<area shape="rect" id="node21" href="$tetris_8c.html#ad7ebe9a4463636c9cea0d518d550ddbb" title="Inscrit une pièce dans la matrice. " alt="" coords="138,765,221,792"/>
+<area shape="rect" id="node22" href="$tetris_8c.html#af18749b8a1fa4aac7545421ef5bd8dd0" title="Vide un tableau d&#39;entier (l&#39;initialise à 0) " alt="" coords="136,816,223,843"/>
+<area shape="rect" id="node23" href="$tetris_8c.html#a8575fd96b1d18f85055174a3fb96ea28" title="Vérifie si des lignes sont complétées. " alt="" coords="318,892,406,919"/>
+<area shape="rect" id="node27" href="$tetris_8c.html#a545126c622dbde4ab4a8541dc5e3fef3" title="Effectue l&#39;action d&#39;un bonus. " alt="" coords="139,1069,219,1096"/>
+<area shape="rect" id="node29" href="$tetris_8c.html#a19882390a87a14fd0b6604bc102f4da1" title="Copie une pièce dans une autre. " alt="" coords="114,360,245,387"/>
+<area shape="rect" id="node30" href="$tetris_8c.html#a29a5cc199c4b527d72bcf1cd7a1d8061" title="Détermine si une ligne va potentiellement bientôt être complétée. " alt="" coords="116,1120,243,1147"/>
+<area shape="rect" id="node31" href="$tetris_8c.html#a492ccb672d135cf716506b4400a7d822" title="Met en place et enclenche l&#39;animation de fin de partie en scannant la matrice et créant les pièces mo..." alt="" coords="128,1171,231,1197"/>
+<area shape="rect" id="node32" href="$tetris_8c.html#a05ed89c0442ea4d45cfca45ea02631e1" title="Rajoute les scores et combos obtenus cette frame dans le tableau de score à afficher pour toutes les ..." alt="" coords="104,107,255,133"/>
+<area shape="rect" id="node33" href="$tetris_8c.html#aa0cffe6510076282d31467b40b92b371" title="Déplace une pièce morte en fonction de ses attributs. " alt="" coords="120,1221,239,1248"/>
+<area shape="rect" id="node34" href="$tetris_8c.html#af195d8f19aaf81370580a677e45997b1" title="Affiche les commandes et explications des bonus. " alt="" coords="128,1272,231,1299"/>
+<area shape="rect" id="node35" href="$tetris_8c.html#ad0abb9784a21bbacb78c422920767cb6" title="Affiche la jauge de vitesse en fonction de l&#39;avancement de la partie. " alt="" coords="137,1323,222,1349"/>
+<area shape="rect" id="node36" href="$tetris_8c.html#aba5eccd8ab2578d308652afa73c71549" title="Dessine la grille et son contenu. " alt="" coords="496,841,583,868"/>
+<area shape="rect" id="node37" href="$tetris_8c.html#a51259113cdc6787fdf3d0286e6ada2ac" title="Dessine une pièce (en train de tomber ou à venir) " alt="" coords="138,1373,221,1400"/>
+<area shape="rect" id="node38" href="$tetris_8c.html#aeae958df918ae2d7c9454cdb2155b939" title="Dessine l&#39;animation du bonus LASER. " alt="" coords="138,1424,221,1451"/>
+<area shape="rect" id="node39" href="$tetris_8c.html#abfb76f2f7b406230d830482342382fb8" title="Dessine l&#39;animation du bonus FILL. " alt="" coords="146,1475,213,1501"/>
+<area shape="rect" id="node40" href="$tetris_8c.html#a72a18e04d27c2cb63fbb8cc4cd03ca41" title="Affiche le score total du joueur. " alt="" coords="123,1525,236,1552"/>
+<area shape="rect" id="node41" href="$tetris_8c.html#ad89280f871b106975881d67c0482af34" title="Affiche les animations de score d&#39;une ligne. " alt="" coords="126,1576,233,1603"/>
+<area shape="rect" id="node42" href="$tetris_8c.html#ad8ffdcf46f82426ad3c5c0e38e0bca22" title="Determine les textes de combos et leurs attributs et les affiche. " alt="" coords="133,1627,225,1653"/>
+<area shape="rect" id="node46" href="$tetris_8c.html#a6b3238157057d6edffdf70cc76ebb4a2" title="Affiche une pièce morte de l&#39;animation de fin de partie. " alt="" coords="475,943,604,969"/>
+<area shape="rect" id="node47" href="$tetris_8c.html#ac80ef76f62842fc0df7753b4108356e0" title="Actualise toutes les animations et réagis lorsqu&#39;elles arrivent à certains moments. " alt="" coords="127,968,232,995"/>
+<area shape="rect" id="node8" href="$tetris_8c.html#a33a2ebbffb42b551f6c1a4a1a1ad30af" title="Met à jour les informations de la grille de la pièce selon son id, sa rotation et le fait qu&#39;elle soi..." alt="" coords="317,360,407,387"/>
+<area shape="rect" id="node9" href="$tetris_8c.html#afd2c27e6f112264f9fb50e10fa8e9d70" title="Met à jour les informations de premières et dernière ligne et collone d&#39;une pièce. " alt="" coords="304,411,420,437"/>
+<area shape="rect" id="node11" href="$tetris_8c.html#a423d814944d7cdabae7238532af7399d" title="Teste si une pièce est en collision avec les pièces déjà inscrites dans la grille. " alt="" coords="469,512,609,539"/>
+<area shape="rect" id="node15" href="$tetris_8c.html#ab1f20fd2b247412fbface8ef523015d9" title="Détermine si une pièce dépasse des bords de la grille. " alt="" coords="474,575,605,601"/>
+<area shape="rect" id="node16" href="$tetris_8c.html#a05bef1cab76ded2320a764674b4c3641" title="Essaye de déplacer une pièce en vérifiant si elle est dans un emplacement valide. ..." alt="" coords="330,512,394,539"/>
+<area shape="rect" id="node19" href="$tetris_8c.html#acad90996b6179ce8c1cc27590aa36339" title="Determine si un float est proche d&#39;un entier ou non. " alt="" coords="490,651,589,677"/>
+<area shape="rect" id="node24" href="$tetris_8c.html#a43138d18461e67de234da3ba3948b780" title="Enclenche l&#39;animation de destruction de ligne et comptabilise les points rapportés et les bonus gagné..." alt="" coords="490,892,589,919"/>
+<area shape="rect" id="node25" href="$tetris_8c.html#ad3ffc7b35e2959c53ab338f9d12a529a" title="Obtient l&#39;id d&#39;une case de la matrice. " alt="" coords="659,867,743,893"/>
+<area shape="rect" id="node26" href="$tetris_8c.html#a602b2d26911345f5f9fc9c618332376d" title="Détermine l&#39;id du bonus d&#39;une case de la grille. " alt="" coords="657,917,745,944"/>
+<area shape="rect" id="node28" href="$tetris_8c.html#af86b25e15fa31154f643aafa348509d5" title="Détermine aléatoirement quelles cases de la matrices doivent être replies par le bonus FILL et enclen..." alt="" coords="313,1145,411,1172"/>
+<area shape="rect" id="node43" href="$tetris_8c.html#a6536a809167e5de2612bcc0ac18a3e9f" title="Determine la taille d&#39;écriture d&#39;un message. " alt="" coords="313,1576,411,1603"/>
+<area shape="rect" id="node44" href="$tetris_8c.html#a05fcd6b28c1b8fa3aa29a2b74048ec42" title="Affiche un texte de combo. " alt="" coords="303,1627,421,1653"/>
+<area shape="rect" id="node45" href="$tetris_8c.html#a4f0435df84eff929d1e0323cff53d047" title="Calcule le logarithme d&#39;un nombre à une certaine base. " alt="" coords="335,1677,389,1704"/>
+<area shape="rect" id="node48" href="$tetris_8c.html#adc1d7245f0623a3b3fb9abd8bba6d767" title="Determine si une ligne est vide. " alt="" coords="322,943,402,969"/>
+<area shape="rect" id="node49" href="$tetris_8c.html#a31bec3033665b189b54e32bfb0679091" title="Efface les attributs score d&#39;un score. " alt="" coords="320,993,404,1020"/>
+<area shape="rect" id="node50" href="$tetris_8c.html#a9298fc462a64f832e03b46956ad0558d" title="Efface les attributs combo d&#39;un score. " alt="" coords="316,1044,408,1071"/>
+</map>

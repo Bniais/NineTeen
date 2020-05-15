@@ -1,0 +1,5 @@
+<map id="completeLine" name="completeLine">
+<area shape="rect" id="node2" href="$tetris_8c.html#a8575fd96b1d18f85055174a3fb96ea28" title="Vérifie si des lignes sont complétées. " alt="" coords="152,31,240,57"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#ac80ef76f62842fc0df7753b4108356e0" title="Actualise toutes les animations et réagis lorsqu&#39;elles arrivent à certains moments. " alt="" coords="288,5,393,32"/>
+<area shape="rect" id="node4" href="$tetris_8c.html#a68af011964beebd260253db3c077d170" title="La fonction principale : Lance et fait tourner le jeu tetris. " alt="" coords="441,31,492,57"/>
+</map>

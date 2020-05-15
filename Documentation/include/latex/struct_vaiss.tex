@@ -1,0 +1,193 @@
+\hypertarget{struct_vaiss}{}\section{Référence de la structure Vaiss}
+\label{struct_vaiss}\index{Vaiss@{Vaiss}}
+
+
+Contient des informations sur le vaisseau.  
+
+
+
+
+{\ttfamily \#include $<$config.\+h$>$}
+
+\subsection*{Champs de données}
+\begin{DoxyCompactItemize}
+\item 
+float \hyperlink{struct_vaiss_adf25c355add352aee76780722e5c4435}{x}
+\begin{DoxyCompactList}\small\item\em La position en x du vaisseau. \end{DoxyCompactList}\item 
+float \hyperlink{struct_vaiss_a6b9897f16bb39baba8b2e2a30ca405f9}{y}
+\begin{DoxyCompactList}\small\item\em La position en y du vaisseau. \end{DoxyCompactList}\item 
+float \hyperlink{struct_vaiss_a825b3dfd9664c59cdedcb03c868c23df}{angle}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}angle du vaisseau\textquotesingle{}. \end{DoxyCompactList}\item 
+int \hyperlink{struct_vaiss_a056dad119b938ab8acc9c28190ec2f71}{frame\+\_\+recharge}
+\begin{DoxyCompactList}\small\item\em nombre de frame restantes avant de pouvoir tirer \end{DoxyCompactList}\item 
+int \hyperlink{struct_vaiss_a7a103cbc9f22117c77b40d6dd44a2015}{temps\+\_\+recharge}
+\begin{DoxyCompactList}\small\item\em Temps de recharge entre chaque tir. \end{DoxyCompactList}\item 
+int \hyperlink{struct_vaiss_ad63f9e2775f24575e22ba800714c36be}{nb\+\_\+tir}
+\begin{DoxyCompactList}\small\item\em nombre de tir du vaisseau \end{DoxyCompactList}\item 
+int \hyperlink{struct_vaiss_abccb7ae50f5a9e2ac6bb3c55d95e89eb}{bouclier}
+\begin{DoxyCompactList}\small\item\em Indique si le vaisseau possède un bouclier ou non. \end{DoxyCompactList}\item 
+int \hyperlink{struct_vaiss_a2d89e3bc77b94dfa058abe8754f54691}{missile\+\_\+id}
+\begin{DoxyCompactList}\small\item\em id du type de missile utilisé \end{DoxyCompactList}\item 
+float \hyperlink{struct_vaiss_a505eb5f7ba36b2908a93da45d647413c}{vitesse\+\_\+missile}
+\begin{DoxyCompactList}\small\item\em vitesse du missile utilisé \end{DoxyCompactList}\item 
+float \hyperlink{struct_vaiss_aac3dfe507a9390c8e409296fc655457e}{degat\+\_\+missile}
+\begin{DoxyCompactList}\small\item\em dégat des missiles utilisé \end{DoxyCompactList}\item 
+int \hyperlink{struct_vaiss_aba1fc8693cb37743370747ca934d9320}{frame\+\_\+turn\+\_\+left}
+\begin{DoxyCompactList}\small\item\em l\textquotesingle{}avancement de l\textquotesingle{}animation pour tourner à gauche \end{DoxyCompactList}\item 
+int \hyperlink{struct_vaiss_a6743709307197dee49a3c58bcaae62ff}{frame\+\_\+turn\+\_\+right}
+\begin{DoxyCompactList}\small\item\em l\textquotesingle{}avancement de l\textquotesingle{}animation pour tourner à droite \end{DoxyCompactList}\item 
+int \hyperlink{struct_vaiss_a8beb984425902e27a90e232417279a4e}{frame\+\_\+thrust}
+\begin{DoxyCompactList}\small\item\em avancement de l\textquotesingle{}animation d\textquotesingle{}acceleration \end{DoxyCompactList}\item 
+long \hyperlink{struct_vaiss_a06e5d929598d839bd61673f0c56f1684}{frame\+\_\+explo}
+\begin{DoxyCompactList}\small\item\em avancement de l\textquotesingle{}animation d\textquotesingle{}explosion du vaisseau \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+Contient des informations sur le vaisseau. 
+
+\subsection{Documentation des champs}
+\mbox{\Hypertarget{struct_vaiss_a825b3dfd9664c59cdedcb03c868c23df}\label{struct_vaiss_a825b3dfd9664c59cdedcb03c868c23df}} 
+\index{Vaiss@{Vaiss}!angle@{angle}}
+\index{angle@{angle}!Vaiss@{Vaiss}}
+\subsubsection{\texorpdfstring{angle}{angle}}
+{\footnotesize\ttfamily float Vaiss\+::angle}
+
+
+
+L\textquotesingle{}angle du vaisseau\textquotesingle{}. 
+
+\mbox{\Hypertarget{struct_vaiss_abccb7ae50f5a9e2ac6bb3c55d95e89eb}\label{struct_vaiss_abccb7ae50f5a9e2ac6bb3c55d95e89eb}} 
+\index{Vaiss@{Vaiss}!bouclier@{bouclier}}
+\index{bouclier@{bouclier}!Vaiss@{Vaiss}}
+\subsubsection{\texorpdfstring{bouclier}{bouclier}}
+{\footnotesize\ttfamily int Vaiss\+::bouclier}
+
+
+
+Indique si le vaisseau possède un bouclier ou non. 
+
+\mbox{\Hypertarget{struct_vaiss_aac3dfe507a9390c8e409296fc655457e}\label{struct_vaiss_aac3dfe507a9390c8e409296fc655457e}} 
+\index{Vaiss@{Vaiss}!degat\+\_\+missile@{degat\+\_\+missile}}
+\index{degat\+\_\+missile@{degat\+\_\+missile}!Vaiss@{Vaiss}}
+\subsubsection{\texorpdfstring{degat\+\_\+missile}{degat\_missile}}
+{\footnotesize\ttfamily float Vaiss\+::degat\+\_\+missile}
+
+
+
+dégat des missiles utilisé 
+
+\mbox{\Hypertarget{struct_vaiss_a06e5d929598d839bd61673f0c56f1684}\label{struct_vaiss_a06e5d929598d839bd61673f0c56f1684}} 
+\index{Vaiss@{Vaiss}!frame\+\_\+explo@{frame\+\_\+explo}}
+\index{frame\+\_\+explo@{frame\+\_\+explo}!Vaiss@{Vaiss}}
+\subsubsection{\texorpdfstring{frame\+\_\+explo}{frame\_explo}}
+{\footnotesize\ttfamily long Vaiss\+::frame\+\_\+explo}
+
+
+
+avancement de l\textquotesingle{}animation d\textquotesingle{}explosion du vaisseau 
+
+\mbox{\Hypertarget{struct_vaiss_a056dad119b938ab8acc9c28190ec2f71}\label{struct_vaiss_a056dad119b938ab8acc9c28190ec2f71}} 
+\index{Vaiss@{Vaiss}!frame\+\_\+recharge@{frame\+\_\+recharge}}
+\index{frame\+\_\+recharge@{frame\+\_\+recharge}!Vaiss@{Vaiss}}
+\subsubsection{\texorpdfstring{frame\+\_\+recharge}{frame\_recharge}}
+{\footnotesize\ttfamily int Vaiss\+::frame\+\_\+recharge}
+
+
+
+nombre de frame restantes avant de pouvoir tirer 
+
+\mbox{\Hypertarget{struct_vaiss_a8beb984425902e27a90e232417279a4e}\label{struct_vaiss_a8beb984425902e27a90e232417279a4e}} 
+\index{Vaiss@{Vaiss}!frame\+\_\+thrust@{frame\+\_\+thrust}}
+\index{frame\+\_\+thrust@{frame\+\_\+thrust}!Vaiss@{Vaiss}}
+\subsubsection{\texorpdfstring{frame\+\_\+thrust}{frame\_thrust}}
+{\footnotesize\ttfamily int Vaiss\+::frame\+\_\+thrust}
+
+
+
+avancement de l\textquotesingle{}animation d\textquotesingle{}acceleration 
+
+\mbox{\Hypertarget{struct_vaiss_aba1fc8693cb37743370747ca934d9320}\label{struct_vaiss_aba1fc8693cb37743370747ca934d9320}} 
+\index{Vaiss@{Vaiss}!frame\+\_\+turn\+\_\+left@{frame\+\_\+turn\+\_\+left}}
+\index{frame\+\_\+turn\+\_\+left@{frame\+\_\+turn\+\_\+left}!Vaiss@{Vaiss}}
+\subsubsection{\texorpdfstring{frame\+\_\+turn\+\_\+left}{frame\_turn\_left}}
+{\footnotesize\ttfamily int Vaiss\+::frame\+\_\+turn\+\_\+left}
+
+
+
+l\textquotesingle{}avancement de l\textquotesingle{}animation pour tourner à gauche 
+
+\mbox{\Hypertarget{struct_vaiss_a6743709307197dee49a3c58bcaae62ff}\label{struct_vaiss_a6743709307197dee49a3c58bcaae62ff}} 
+\index{Vaiss@{Vaiss}!frame\+\_\+turn\+\_\+right@{frame\+\_\+turn\+\_\+right}}
+\index{frame\+\_\+turn\+\_\+right@{frame\+\_\+turn\+\_\+right}!Vaiss@{Vaiss}}
+\subsubsection{\texorpdfstring{frame\+\_\+turn\+\_\+right}{frame\_turn\_right}}
+{\footnotesize\ttfamily int Vaiss\+::frame\+\_\+turn\+\_\+right}
+
+
+
+l\textquotesingle{}avancement de l\textquotesingle{}animation pour tourner à droite 
+
+\mbox{\Hypertarget{struct_vaiss_a2d89e3bc77b94dfa058abe8754f54691}\label{struct_vaiss_a2d89e3bc77b94dfa058abe8754f54691}} 
+\index{Vaiss@{Vaiss}!missile\+\_\+id@{missile\+\_\+id}}
+\index{missile\+\_\+id@{missile\+\_\+id}!Vaiss@{Vaiss}}
+\subsubsection{\texorpdfstring{missile\+\_\+id}{missile\_id}}
+{\footnotesize\ttfamily int Vaiss\+::missile\+\_\+id}
+
+
+
+id du type de missile utilisé 
+
+\mbox{\Hypertarget{struct_vaiss_ad63f9e2775f24575e22ba800714c36be}\label{struct_vaiss_ad63f9e2775f24575e22ba800714c36be}} 
+\index{Vaiss@{Vaiss}!nb\+\_\+tir@{nb\+\_\+tir}}
+\index{nb\+\_\+tir@{nb\+\_\+tir}!Vaiss@{Vaiss}}
+\subsubsection{\texorpdfstring{nb\+\_\+tir}{nb\_tir}}
+{\footnotesize\ttfamily int Vaiss\+::nb\+\_\+tir}
+
+
+
+nombre de tir du vaisseau 
+
+\mbox{\Hypertarget{struct_vaiss_a7a103cbc9f22117c77b40d6dd44a2015}\label{struct_vaiss_a7a103cbc9f22117c77b40d6dd44a2015}} 
+\index{Vaiss@{Vaiss}!temps\+\_\+recharge@{temps\+\_\+recharge}}
+\index{temps\+\_\+recharge@{temps\+\_\+recharge}!Vaiss@{Vaiss}}
+\subsubsection{\texorpdfstring{temps\+\_\+recharge}{temps\_recharge}}
+{\footnotesize\ttfamily int Vaiss\+::temps\+\_\+recharge}
+
+
+
+Temps de recharge entre chaque tir. 
+
+\mbox{\Hypertarget{struct_vaiss_a505eb5f7ba36b2908a93da45d647413c}\label{struct_vaiss_a505eb5f7ba36b2908a93da45d647413c}} 
+\index{Vaiss@{Vaiss}!vitesse\+\_\+missile@{vitesse\+\_\+missile}}
+\index{vitesse\+\_\+missile@{vitesse\+\_\+missile}!Vaiss@{Vaiss}}
+\subsubsection{\texorpdfstring{vitesse\+\_\+missile}{vitesse\_missile}}
+{\footnotesize\ttfamily float Vaiss\+::vitesse\+\_\+missile}
+
+
+
+vitesse du missile utilisé 
+
+\mbox{\Hypertarget{struct_vaiss_adf25c355add352aee76780722e5c4435}\label{struct_vaiss_adf25c355add352aee76780722e5c4435}} 
+\index{Vaiss@{Vaiss}!x@{x}}
+\index{x@{x}!Vaiss@{Vaiss}}
+\subsubsection{\texorpdfstring{x}{x}}
+{\footnotesize\ttfamily float Vaiss\+::x}
+
+
+
+La position en x du vaisseau. 
+
+\mbox{\Hypertarget{struct_vaiss_a6b9897f16bb39baba8b2e2a30ca405f9}\label{struct_vaiss_a6b9897f16bb39baba8b2e2a30ca405f9}} 
+\index{Vaiss@{Vaiss}!y@{y}}
+\index{y@{y}!Vaiss@{Vaiss}}
+\subsubsection{\texorpdfstring{y}{y}}
+{\footnotesize\ttfamily float Vaiss\+::y}
+
+
+
+La position en y du vaisseau. 
+
+
+
+La documentation de cette structure a été générée à partir du fichier suivant \+:\begin{DoxyCompactItemize}
+\item 
+games/7\+\_\+asteroid/\hyperlink{7__asteroid_2config_8h}{config.\+h}\end{DoxyCompactItemize}

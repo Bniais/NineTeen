@@ -1,0 +1,1672 @@
+\hypertarget{room_8c}{}\section{Référence du fichier room/room.c}
+\label{room_8c}\index{room/room.\+c@{room/room.\+c}}
+
+
+affichage de la room et gestion des evenements liee  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+mixer.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+ttf.\+h$>$}\newline
+{\ttfamily \#include $<$S\+D\+L2/\+S\+D\+L\+\_\+image.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}import.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}room.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../include/define.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../include/lib\+Web.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../include/commun\+Functions.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../games/2\+\_\+snake/snake.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../games/3\+\_\+flappy\+\_\+bird/flappy\+\_\+bird.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../games/4\+\_\+shooter/shooter.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../games/5\+\_\+tetris/tetris.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../games/6\+\_\+demineur/demineur.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../games/7\+\_\+asteroid/asteroid.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}leaderboard/leaderboard.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}dir.\+h\char`\"{}}\newline
+Graphe des dépendances par inclusion de room.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Structures de données}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_camera__s}{Camera\+\_\+s}
+\begin{DoxyCompactList}\small\item\em Contient les informations necessaire pour positionner la camera open\+GL. \end{DoxyCompactList}\item 
+struct \hyperlink{struct_g_l___quadf}{G\+L\+\_\+\+Quadf}
+\begin{DoxyCompactList}\small\item\em Contient les coordonner et dimension d\textquotesingle{}un quadrilataire. \end{DoxyCompactList}\item 
+struct \hyperlink{structload_game__s}{load\+Game\+\_\+s}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{room_8c_aff81051ca3a372272ebd92b338a83ced}{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+1}~\char`\"{}../room/sounds/borne1.\+wav\char`\"{}
+\item 
+\#define \hyperlink{room_8c_a2649af5114a4cb47a4c755d2f45239d6}{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+2}~\char`\"{}../room/sounds/borne2.\+wav\char`\"{}
+\item 
+\#define \hyperlink{room_8c_ad9e8e279ce5d942ddd1c0ba36425219b}{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+3}~\char`\"{}../room/sounds/borne3.\+wav\char`\"{}
+\item 
+\#define \hyperlink{room_8c_a0a07be9078d3b7e08603a94b78a295db}{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+\+W\+A\+LK}~\char`\"{}../room/sounds/walk.\+wav\char`\"{}
+\item 
+\#define \hyperlink{room_8c_a08043e68ce387b819990ba9ff07c635e}{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+O\+U\+V\+E\+R\+T\+U\+R\+E\+\_\+\+P\+O\+R\+TE}~\char`\"{}../room/sounds/SF-\/ouvport.\+wav\char`\"{}
+\item 
+\#define \hyperlink{room_8c_a8e50b80e01eb6a12d6ff0f138e6d8120}{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+F\+E\+R\+M\+E\+T\+U\+R\+E\+\_\+\+P\+O\+R\+TE}~\char`\"{}../room/sounds/SF-\/fermport.\+wav\char`\"{}
+\item 
+\#define \hyperlink{room_8c_a618a3b021fb7eb71396b9d8c902097af}{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+S\+E\+GA}~\char`\"{}../room/fonts/sega.\+ttf\char`\"{}
+\item 
+\#define \hyperlink{room_8c_a7981074131f353a5ca7c3e6856e534e3}{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+O\+L\+I\+CE}~\char`\"{}../room/fonts/police.\+ttf\char`\"{}
+\item 
+\#define \hyperlink{room_8c_a79eb567e00b5f977f2c6da15d4bd8bee}{D\+I\+R\+\_\+\+O\+B\+J\+\_\+\+L\+O\+AD}~\char`\"{}../room/\hyperlink{room_8c_a158b90dfedb211efa4c317267c983dd2}{textures}/salle.\+obj\char`\"{}
+\item 
+\#define \hyperlink{room_8c_a3b2a48496efca546f3a0bc1f59c1f374}{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+O\+U\+R\+IR}~0.\+14F
+\item 
+\#define \hyperlink{room_8c_aeb6046e6ced1d56127320f9922979129}{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+B\+O\+UT}~0.\+08F
+\item 
+\#define \hyperlink{room_8c_add7d71943248d3a880c7940a54760da3}{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+A\+C\+C\+R\+O\+U\+PI}~0.\+035F
+\item 
+\#define \hyperlink{room_8c_a48f60a08ce361415cb041dd4fd98c773}{S\+E\+N\+S\+I\+B\+I\+L\+I\+T\+E\+\_\+\+C\+A\+M\+E\+RA}~0.\+08F
+\item 
+\#define \hyperlink{room_8c_a8d774828b93d97eae79140c10691003e}{S\+E\+N\+S\+I\+B\+I\+L\+I\+T\+E\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+S\+O\+U\+R\+IS}~0.\+003F
+\item 
+\#define \hyperlink{room_8c_ae7fa4e640be7aca962c24936ef41175c}{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+D\+E\+B\+O\+UT}~3.\+5F
+\item 
+\#define \hyperlink{room_8c_ab689fd9853cfb16cd43dfa63e2a5ab6d}{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+A\+C\+C\+R\+O\+U\+PI}~2.\+7F
+\item 
+\#define \hyperlink{room_8c_ad51088a6c1027f8d9f717144bc6e508e}{M\+A\+X\+\_\+\+Y\+\_\+\+A\+X\+E\+\_\+\+C\+I\+B\+LE}~2.\+8F
+\item 
+\#define \hyperlink{room_8c_a601f483d8c965efc557bae42b7c20a31}{S\+O\+N\+\_\+\+P\+A\+S\+\_\+\+D\+I\+S\+T\+A\+N\+CE}~2.\+2F
+\item 
+\#define \hyperlink{room_8c_ade9b153f9e942566a3c42acfc84a9a34}{S\+T\+A\+R\+T\+\_\+\+PX}~12.\+5F
+\item 
+\#define \hyperlink{room_8c_a57174a04ce33a10d5194ae2f791b71f6}{S\+T\+A\+R\+T\+\_\+\+PY}~3.\+64F
+\item 
+\#define \hyperlink{room_8c_adf5be05204e94737b6e938e7bbe163ed}{S\+T\+A\+R\+T\+\_\+\+PZ}~35.\+0F
+\item 
+\#define \hyperlink{room_8c_acf460335df82f2babbeb984ad9451685}{S\+T\+A\+R\+T\+\_\+\+C\+I\+B\+L\+E\+\_\+Y}~0.\+0F
+\item 
+\#define \hyperlink{room_8c_ade40d9399abc335bfecd0515c9459488}{S\+T\+A\+R\+T\+\_\+\+C\+I\+B\+L\+E\+\_\+X}~M\+\_\+\+PI
+\item 
+\#define \hyperlink{room_8c_afa693a592865a655fc3a99c9ed63e3d9}{S\+T\+A\+R\+T\+\_\+\+O\+U\+V\+E\+R\+T\+U\+RE}~70.\+0F
+\item 
+\#define \hyperlink{room_8c_ab2e67ad88d67fa0b96d73ac13e002ecc}{M\+I\+N\+\_\+\+I\+N\+T\+E\+N\+S\+I\+TE}~100
+\begin{DoxyCompactList}\small\item\em V\+O\+L\+U\+ME S\+ON P\+AS. \end{DoxyCompactList}\item 
+\#define \hyperlink{room_8c_ae9289e2d2a36a494974889c9d59feb6c}{R\+A\+T\+I\+O\+\_\+\+W\+I\+N\+D\+O\+W\+\_\+\+S\+C\+R\+E\+EN}~0.\+95
+\item 
+\#define \hyperlink{room_8c_ac92ca5ab87034a348decad7ee8d4bd1b}{F\+PS}~60
+\item 
+\#define \hyperlink{room_8c_a496f6f64454c6a4f79895139dc4e0e0a}{N\+B\+\_\+\+I\+N\+D\+I\+C\+E\+\_\+\+P\+O\+R\+T\+ER}~2
+\item 
+\#define \hyperlink{room_8c_a083ed70ca74befd44b162c15d47e3ed2}{M\+A\+X\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+A\+R\+C\+A\+DE}~100
+\item 
+\#define \hyperlink{room_8c_a4afb31b8aaad24ca6e4133e9e0ffd0f2}{D\+I\+R\+\_\+\+T\+O\+K\+E\+N\+\_\+\+F\+I\+LE}~\char`\"{}/tmp/.Nineteen\char`\"{}
+\begin{DoxyCompactList}\small\item\em S\+T\+O\+CK L\+ES P\+O\+S\+I\+T\+I\+O\+NS. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Définitions de type}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structload_game__s}{load\+Game\+\_\+s} \hyperlink{room_8c_a35bd5a66ac7d7e246fc3492b40eb1330}{load\+Game}
+\end{DoxyCompactItemize}
+\subsection*{Énumérations}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \hyperlink{room_8c_a06fc87d81c62e9abb8790b6e5713c55bac8169325eba0c15d39e8e000239e9626}{F\+E\+R\+M\+ER}, 
+\hyperlink{room_8c_a06fc87d81c62e9abb8790b6e5713c55baf98a4352f675aa74bafb458db94bc90f}{O\+U\+V\+E\+R\+TE}, 
+\hyperlink{room_8c_a06fc87d81c62e9abb8790b6e5713c55babe1869c7cca80535a1c204117840eb0a}{F\+E\+R\+M\+E\+T\+U\+RE}, 
+\hyperlink{room_8c_a06fc87d81c62e9abb8790b6e5713c55baf8a7db1aa0c9bd8f25c5218f6cb1fe39}{O\+U\+V\+E\+R\+T\+U\+RE}
+ \}
+\item 
+enum \{ \newline
+\hyperlink{room_8c_adf764cbdea00d65edcd07bb9953ad2b7af57444a2814db96222f09035ff269767}{S\+C\+O\+RE}, 
+\hyperlink{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a627bef6f993aecf3fc7b84e88ef36e1f}{F\+L\+A\+P\+P\+Y\+\_\+\+H\+A\+RD}, 
+\hyperlink{room_8c_adf764cbdea00d65edcd07bb9953ad2b7ac629447ffe06f5c3503b9c3b59a69c1c}{T\+E\+T\+R\+I\+S\+\_\+\+H\+A\+RD}, 
+\hyperlink{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a9a8a64340536c2852e79265d0b9d2073}{A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+H\+A\+RD}, 
+\newline
+\hyperlink{room_8c_adf764cbdea00d65edcd07bb9953ad2b7aaa096bfa4f15eb633c1f007cc6450743}{S\+H\+O\+O\+T\+E\+R\+\_\+\+H\+A\+RD}, 
+\hyperlink{room_8c_adf764cbdea00d65edcd07bb9953ad2b7aed668e8397510fdebb365713e9770437}{S\+N\+A\+K\+E\+\_\+\+H\+A\+RD}, 
+\hyperlink{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a16cf05ff91a289ab7d53527ba1c82cd8}{D\+E\+M\+I\+N\+E\+U\+R\+\_\+\+H\+A\+RD}, 
+\hyperlink{room_8c_adf764cbdea00d65edcd07bb9953ad2b7ad65645e147496df12e4236f7a983fbbb}{D\+E\+M\+I\+N\+E\+U\+R\+\_\+\+E\+A\+SY}, 
+\newline
+\hyperlink{room_8c_adf764cbdea00d65edcd07bb9953ad2b7aca97d20afb3da6989691b22487796b79}{S\+N\+A\+K\+E\+\_\+\+E\+A\+SY}, 
+\hyperlink{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a319a37b7c656015f3934df616cf0f533}{S\+H\+O\+O\+T\+E\+R\+\_\+\+E\+A\+SY}, 
+\hyperlink{room_8c_adf764cbdea00d65edcd07bb9953ad2b7aa4d17b2449adc0e98e0519c87e1ecb64}{A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+E\+A\+SY}, 
+\hyperlink{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a9d6e4b1c694d99ec79af11945bf172a6}{T\+E\+T\+R\+I\+S\+\_\+\+E\+A\+SY}, 
+\newline
+\hyperlink{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a82ade9d94297cbd98f10f29fde9fb27f}{F\+L\+A\+P\+P\+Y\+\_\+\+E\+A\+SY}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{room_8c_aa10586f67996f3bae9aa5c4ae9c96718}{load\+Game\+Texture} (\hyperlink{structload_game}{load\+Game} $\ast$load)
+\begin{DoxyCompactList}\small\item\em Charge les textures d\textquotesingle{}un jeu. \end{DoxyCompactList}\item 
+static int \hyperlink{room_8c_a6746abb0b96cc3e013944163c053a0a3}{window\+Max\+Size} (int \hyperlink{room_8c_af9d5d4e3e4522b355dd2acbc432591f5}{option\+Full\+Screen})
+\begin{DoxyCompactList}\small\item\em fonction qui charge fixe la taille max de la fenetre \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_a88eaba9341fa844401d12a78679830dc}{limiter\+Frame} (const float delay\+Lancement\+Frame, float $\ast$\+\_\+\+I\+PS)
+\begin{DoxyCompactList}\small\item\em permet de mettre un nombre d\textquotesingle{}image max et reglger la vitesse de deplacement en fonction des ips \end{DoxyCompactList}\item 
+static int \hyperlink{room_8c_a901691690957fae9daa5d3d331da8ec7}{attendre\+Xseconde\+Message} (int $\ast$compter\+Seconde, int $\ast$afficher\+Message, const int MS, const float \+\_\+\+F\+PS)
+\begin{DoxyCompactList}\small\item\em permet d\textquotesingle{}attendre avant d\textquotesingle{}afficher message C\+L\+I\+G\+N\+O\+T\+A\+NT affiche egalement les I\+PS \end{DoxyCompactList}\item 
+static int \hyperlink{room_8c_a3fb5d57c89ca3957fc124608dfcaf659}{detection\+Environnement} (float x, float y)
+\begin{DoxyCompactList}\small\item\em fonction de collision avec l\textquotesingle{}environement \end{DoxyCompactList}\item 
+static int \hyperlink{room_8c_a38dd7f392233bb41399b023bc2669249}{detecter\+Radio} (float x, float y, float angle)
+\begin{DoxyCompactList}\small\item\em detection radio a proximite \end{DoxyCompactList}\item 
+static int \hyperlink{room_8c_a2b408d60cd07c4117322cdbcc31fed7b}{detecter\+Porte} (float x, float y, float angle)
+\begin{DoxyCompactList}\small\item\em detection porte a proximite \end{DoxyCompactList}\item 
+static int \hyperlink{room_8c_a87f0edb1c54eefa26f857c4a4d530429}{detecter\+Ouverture\+Toilette} (float x, float y, float angle)
+\begin{DoxyCompactList}\small\item\em detection des toilettes h/f \end{DoxyCompactList}\item 
+static int \hyperlink{room_8c_a784b5c81cdc56701d32c20fa9232ddf9}{detecter\+Machine} (float x, float y, float angle)
+\begin{DoxyCompactList}\small\item\em fonction qui detecte la proxmiter avec une machine de jeu \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_a81296eac8fa7bcdd021c45e5c8e0921c}{mixer\+Init} ()
+\begin{DoxyCompactList}\small\item\em initalisation du volume \end{DoxyCompactList}\item 
+static float \hyperlink{room_8c_a99f0807856f649ff729b7924e125dcdf}{distance\+Point} (float xa, float ya, float xb, float yb)
+\begin{DoxyCompactList}\small\item\em renvoi la distance entre deux point \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_a920b806cad48b375b9a530814e7afd63}{reglage\+Volume} (int channel, float xa, float ya, float xb, float yb, float porter, float angle\+Joueur, int max\+\_\+volume)
+\begin{DoxyCompactList}\small\item\em regle le volume de l\textquotesingle{}environement sur un channel particuliere \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_a3ea615b7ff319d3bef6227857ce52786}{bruitage\+Pas} (struct \hyperlink{struct_camera__s}{Camera\+\_\+s} $\ast$derniere\+Position, struct \hyperlink{struct_camera__s}{Camera\+\_\+s} camera, int channel, Mix\+\_\+\+Chunk $\ast$music)
+\begin{DoxyCompactList}\small\item\em permet de deplacer la source du son des pas et de le jouer \end{DoxyCompactList}\item 
+static float \hyperlink{room_8c_a6e52b9bce2208dbc639e5a979b15ca35}{calcul\+Angle} (float xa, float ya, float xb, float yb, float xc, float yc)
+\begin{DoxyCompactList}\small\item\em renvoi l\textquotesingle{}angle entre 3 points \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_a494760108e4661303a77ba7fb1122006}{G\+L\+\_\+\+Initialiser\+Parametre} (int width, int height, struct \hyperlink{struct_camera__s}{Camera\+\_\+s} camera)
+\begin{DoxyCompactList}\small\item\em regle le mode de vue voulu et les lummiere de opengl \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_aa79fb9ded897b9bbbc0780feb6f9df9f}{Init\+Camera} (struct \hyperlink{struct_camera__s}{Camera\+\_\+s} $\ast$camera, struct \hyperlink{struct_camera__s}{Camera\+\_\+s} $\ast$cible)
+\begin{DoxyCompactList}\small\item\em initialisation des variables lier au camera joueur et machines \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_ac7fd25ceb1c11ba859983d8fc5b6e742}{mouvement\+Camera} (S\+D\+L\+\_\+\+Window $\ast$window, struct \hyperlink{struct_camera__s}{Camera\+\_\+s} $\ast$camera, const float I\+PS)
+\begin{DoxyCompactList}\small\item\em Permet de gerer les deplacements de la camera. \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_a77b40d2a48a66dc8f7b8207ed7a5e2a6}{S\+D\+L\+\_\+\+G\+L\+\_\+\+Appliquer\+Scene} (S\+D\+L\+\_\+\+Window $\ast$Window, const C\+\_\+\+S\+T\+R\+U\+CT ai\+Scene $\ast$scene, struct \hyperlink{struct_camera__s}{Camera\+\_\+s} $\ast$camera, G\+Luint $\ast$scene\+\_\+list, const float I\+PS)
+\begin{DoxyCompactList}\small\item\em permet d\textquotesingle{}appliquer la scene dans la window + mouvement camera \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_a47842a9ab60604cf3f40a87717aa685f}{Afficher\+Text} (T\+T\+F\+\_\+\+Font $\ast$font, char $\ast$message, S\+D\+L\+\_\+\+Color color, int x, int y)
+\begin{DoxyCompactList}\small\item\em affichage de text sur un rendu Open\+GL \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_a554c27dfea1971e6926e461187ebd29e}{message\+Machine} (struct Meilleure\+Score\+\_\+s str\mbox{[}$\,$\mbox{]}, struct \hyperlink{struct_camera__s}{Camera\+\_\+s} camera, T\+T\+F\+\_\+\+Font $\ast$font, int afficher\+Message)
+\begin{DoxyCompactList}\small\item\em affichage un message propre a chaque machine \end{DoxyCompactList}\item 
+static int \hyperlink{room_8c_abc49a289020f817b90aae10c27ae1c5b}{Message\+Quitter\+Room} (int mode\+Chargement, char path\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em permet d\textquotesingle{}afficher le message avant de quitter ou au chargement de la room \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_a975caa310fae43e7d151c042081a509f}{lancer\+Machine} (const C\+\_\+\+S\+T\+R\+U\+CT ai\+Scene $\ast$scene, int $\ast$Running, struct \hyperlink{struct_camera__s}{Camera\+\_\+s} camera, struct \hyperlink{struct_camera__s}{Camera\+\_\+s} cible\mbox{[}$\,$\mbox{]}, char $\ast$token, struct Meilleure\+Score\+\_\+s meilleure\+Score\mbox{[}$\,$\mbox{]}, G\+Luint $\ast$scene\+\_\+list, S\+D\+L\+\_\+\+Window $\ast$Window, S\+D\+L\+\_\+\+G\+L\+Context $\ast$Context, int $\ast$jouer\+Son\+Porte\+Femme, int $\ast$jouer\+Son\+Porte\+Homme, float \+\_\+\+I\+PS, T\+T\+F\+\_\+\+Font $\ast$font)
+\begin{DoxyCompactList}\small\item\em permet de lancer une machine de jeux comprend plusieur fonction annexe \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_aaa0228d441c082bc57e7abb2e4c68ffc}{animation\+Lancer\+Machine} (struct \hyperlink{struct_camera__s}{Camera\+\_\+s} camera, struct \hyperlink{struct_camera__s}{Camera\+\_\+s} cible, G\+Luint scene\+\_\+list, S\+D\+L\+\_\+\+Window $\ast$Window, float \+\_\+\+I\+PS, float img\+Anim)
+\begin{DoxyCompactList}\small\item\em permet d\textquotesingle{}animer le lancement et retour des machines \end{DoxyCompactList}\item 
+void \hyperlink{room_8c_a9d5eda0e789a5fc236195e2b0f605aaa}{Init\+Meilleure\+Score} (struct Meilleure\+Score\+\_\+s str\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em initialise la strcuture Meilleure\+Score\+\_\+s avec le nom des jeux \end{DoxyCompactList}\item 
+int \hyperlink{room_8c_a70263633a7a137f37ff72e5cf71cc7eb}{update\+Meilleure\+Score} (struct Meilleure\+Score\+\_\+s str\mbox{[}$\,$\mbox{]}, char $\ast$token)
+\begin{DoxyCompactList}\small\item\em Mes a jours les donnees liee au score de la structure meilleure\+Score. \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_a2bbafc1b0562d4ee6d70364745714f89}{Gl\+Dessiner\+Quad} (struct \hyperlink{struct_g_l___quadf}{G\+L\+\_\+\+Quadf} quad)
+\begin{DoxyCompactList}\small\item\em Dessine un quadrilataire. \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_aeb8bbd97cb6c720ffda7f7a9606e1b45}{detruire\+Texture} (G\+Luint nb\+Textures)
+\begin{DoxyCompactList}\small\item\em detruit les elements initaliser \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_a9a783579e7576a7ebfb754ff6a95926b}{G\+Llight\+Mode} ()
+\begin{DoxyCompactList}\small\item\em permet de regler l\textquotesingle{}intensiter de chaque lampe presente dans la salle \end{DoxyCompactList}\item 
+static void \hyperlink{room_8c_a22b155abc1008cd51da9718d8dff813e}{animation\+Porte\+Toilette} (int $\ast$\hyperlink{room_8c_abdda01a2980b5382c54607a58e75aa92}{statut\+Porte\+Femme}, int $\ast$\hyperlink{room_8c_a1a37fee5b76f73901c88100447e177b7}{statut\+Porte\+Homme}, int $\ast$jouer\+Son\+Porte\+Femme, int $\ast$jouer\+Son\+Porte\+Homme, int $\ast$toilette\+Femme\+Ouverte\+Delai, int $\ast$toilette\+Homme\+Ouverte\+Delai, Mix\+\_\+\+Chunk $\ast$sas\+\_\+ouverture, Mix\+\_\+\+Chunk $\ast$sas\+\_\+fermeture, struct \hyperlink{struct_camera__s}{Camera\+\_\+s} camera, float I\+PS)
+\begin{DoxyCompactList}\small\item\em permet de gerer les evenements liee au porte des toilettes \end{DoxyCompactList}\item 
+static int \hyperlink{room_8c_ade7156d63e39a5b65ec2247840d9c381}{background\+Classement} (S\+D\+L\+\_\+\+Surface $\ast$s\+Image)
+\begin{DoxyCompactList}\small\item\em afficher un background au classement pour qu\textquotesingle{}il soit plus facilement visible \end{DoxyCompactList}\item 
+int \hyperlink{room_8c_ad389842cd7e9002501145ffbf0bd81de}{room} (char $\ast$token, struct Meilleure\+Score\+\_\+s meilleure\+Score\mbox{[}$\,$\mbox{]}, S\+D\+L\+\_\+\+Window $\ast$Window, const C\+\_\+\+S\+T\+R\+U\+CT ai\+Scene $\ast$scene, int opt\+Full\+Screen, S\+D\+L\+\_\+\+Rect border\+Size)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+F\+I\+LE $\ast$ \hyperlink{room_8c_a1ce6bb164d37e605aa60e94aefe73817}{E\+X\+T\+\_\+\+F\+I\+LE}
+\item 
+int \hyperlink{room_8c_adc21c1c3300d8c04ce517d937b335899}{M\+A\+C\+O\+S\+\_\+\+V\+ER}
+\item 
+static G\+Luint $\ast$ \hyperlink{room_8c_a1aea49c36a81ec0616383ac82d0ec32c}{\+\_\+textures} = N\+U\+LL
+\item 
+static G\+Luint $\ast$ \hyperlink{room_8c_a2f816a1a65ad7fbccb4db5cb2e9e7993}{\+\_\+counts} = N\+U\+LL
+\item 
+const float \hyperlink{room_8c_a697d36fe04a6f8dcbecfe477c8cea75b}{A\+N\+G\+L\+E\+\_\+\+D\+E\+T\+E\+C\+T\+I\+O\+N\+\_\+\+M\+A\+C\+H\+I\+NE} = M\+\_\+\+PI/6
+\item 
+float \hyperlink{room_8c_aa1fcd3ff2421233f9a1342aab2ee72b9}{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+NT} = \hyperlink{room_8c_aeb6046e6ced1d56127320f9922979129}{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+B\+O\+UT}
+\item 
+float \hyperlink{room_8c_a76cafa5d3675931a1b2c7627a839a8da}{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+RA} = \hyperlink{room_8c_ae7fa4e640be7aca962c24936ef41175c}{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+D\+E\+B\+O\+UT}
+\begin{DoxyCompactList}\small\item\em V\+I\+T\+E\+S\+SE D\+E\+P\+L\+A\+C\+E\+M\+E\+NT D\+E\+B\+O\+UT A\+S\+S\+IS. \end{DoxyCompactList}\item 
+const int \hyperlink{room_8c_a0cfba7cb071c891a904656837a1fbfa4}{S\+O\+N\+\_\+\+P\+AS} = 5
+\item 
+static int \hyperlink{room_8c_a7bc33449edbe70d0faa8d9b08ac317e7}{Win\+Width} = 1280
+\item 
+static int \hyperlink{room_8c_a14d631ded45fe3c6396d41f0b31a8aba}{Win\+Height} = 720
+\begin{DoxyCompactList}\small\item\em D\+E\+F\+A\+U\+LT R\+E\+S\+O\+L\+U\+T\+I\+ON. \end{DoxyCompactList}\item 
+S\+D\+L\+\_\+\+Rect \hyperlink{room_8c_ae507f1db2aed5e059208ba5af707dd26}{bounds}
+\begin{DoxyCompactList}\small\item\em D\+E\+F\+A\+U\+LT R\+E\+S\+O\+L\+U\+T\+I\+ON. \end{DoxyCompactList}\item 
+int \hyperlink{room_8c_af9d5d4e3e4522b355dd2acbc432591f5}{option\+Full\+Screen} = 0
+\item 
+static const float \hyperlink{room_8c_ae3a41f505fa8d010bea4cb6d61a9019d}{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME} = 1000/\hyperlink{flappy__bird_8c_ac92ca5ab87034a348decad7ee8d4bd1b}{F\+PS}
+\item 
+S\+D\+L\+\_\+\+Color \hyperlink{room_8c_a2303c1a6cca1728b7b2e384b5daf3251}{Text\+\_\+rouge} = \{255,0,0\}
+\begin{DoxyCompactList}\small\item\em EN D\+E\+D\+U\+I\+RE LE D\+E\+L\+AI M\+IN D\textquotesingle{}U\+NE F\+R\+A\+ME. \end{DoxyCompactList}\item 
+struct \hyperlink{struct_g_l___quadf}{G\+L\+\_\+\+Quadf} \hyperlink{room_8c_a14cb39a0d4e98a405a403d133c6d1709}{toilette\+Femme} = \{20.\+2 , 8.\+65 , 1.\+9 , 3. , 0.\+1 , 3.\+9\}
+\item 
+struct \hyperlink{struct_g_l___quadf}{G\+L\+\_\+\+Quadf} \hyperlink{room_8c_a595973b7be2454092879b90c82598fb5}{toilette\+Homme} = \{20.\+2 , 1.\+05 , 1.\+9 , 3. , 0.\+1 , 3.\+9\}
+\item 
+int \hyperlink{room_8c_abdda01a2980b5382c54607a58e75aa92}{statut\+Porte\+Femme} = \hyperlink{room_8c_a06fc87d81c62e9abb8790b6e5713c55bac8169325eba0c15d39e8e000239e9626}{F\+E\+R\+M\+ER}
+\item 
+int \hyperlink{room_8c_a1a37fee5b76f73901c88100447e177b7}{statut\+Porte\+Homme} = \hyperlink{room_8c_a06fc87d81c62e9abb8790b6e5713c55bac8169325eba0c15d39e8e000239e9626}{F\+E\+R\+M\+ER}
+\item 
+char \hyperlink{room_8c_ad51f373733b0912ffcf7d077055c4a41}{adresse\+Font\+Img} \mbox{[}16\mbox{]}\mbox{[}64\mbox{]}
+\item 
+int \hyperlink{room_8c_aa98c580399ee4c9a56dbd577788eeee9}{F\+I\+R\+S\+T\+\_\+\+F\+R\+A\+ME} = 0
+\item 
+S\+D\+L\+\_\+\+Texture $\ast$ \hyperlink{room_8c_a158b90dfedb211efa4c317267c983dd2}{textures} \mbox{[}N\+B\+\_\+\+M\+A\+X\+\_\+\+T\+E\+X\+T\+U\+R\+ES\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+affichage de la room et gestion des evenements liee 
+
+\begin{DoxyAuthor}{Auteur}
+Samy M. 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+31 janvier 2020 
+\end{DoxyDate}
+
+
+\subsection{Documentation des macros}
+\mbox{\Hypertarget{room_8c_a7981074131f353a5ca7c3e6856e534e3}\label{room_8c_a7981074131f353a5ca7c3e6856e534e3}} 
+\index{room.\+c@{room.\+c}!D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+O\+L\+I\+CE@{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+O\+L\+I\+CE}}
+\index{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+O\+L\+I\+CE@{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+O\+L\+I\+CE}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+O\+L\+I\+CE}{DIR\_FONT\_POLICE}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+P\+O\+L\+I\+CE~\char`\"{}../room/fonts/police.\+ttf\char`\"{}}
+
+\mbox{\Hypertarget{room_8c_a618a3b021fb7eb71396b9d8c902097af}\label{room_8c_a618a3b021fb7eb71396b9d8c902097af}} 
+\index{room.\+c@{room.\+c}!D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+S\+E\+GA@{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+S\+E\+GA}}
+\index{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+S\+E\+GA@{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+S\+E\+GA}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+S\+E\+GA}{DIR\_FONT\_SEGA}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+F\+O\+N\+T\+\_\+\+S\+E\+GA~\char`\"{}../room/fonts/sega.\+ttf\char`\"{}}
+
+\mbox{\Hypertarget{room_8c_a79eb567e00b5f977f2c6da15d4bd8bee}\label{room_8c_a79eb567e00b5f977f2c6da15d4bd8bee}} 
+\index{room.\+c@{room.\+c}!D\+I\+R\+\_\+\+O\+B\+J\+\_\+\+L\+O\+AD@{D\+I\+R\+\_\+\+O\+B\+J\+\_\+\+L\+O\+AD}}
+\index{D\+I\+R\+\_\+\+O\+B\+J\+\_\+\+L\+O\+AD@{D\+I\+R\+\_\+\+O\+B\+J\+\_\+\+L\+O\+AD}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+O\+B\+J\+\_\+\+L\+O\+AD}{DIR\_OBJ\_LOAD}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+O\+B\+J\+\_\+\+L\+O\+AD~\char`\"{}../room/\hyperlink{room_8c_a158b90dfedb211efa4c317267c983dd2}{textures}/salle.\+obj\char`\"{}}
+
+\mbox{\Hypertarget{room_8c_aff81051ca3a372272ebd92b338a83ced}\label{room_8c_aff81051ca3a372272ebd92b338a83ced}} 
+\index{room.\+c@{room.\+c}!D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+1@{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+1}}
+\index{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+1@{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+1}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+1}{DIR\_SON\_ENIRONNEMENT\_1}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+1~\char`\"{}../room/sounds/borne1.\+wav\char`\"{}}
+
+\mbox{\Hypertarget{room_8c_a2649af5114a4cb47a4c755d2f45239d6}\label{room_8c_a2649af5114a4cb47a4c755d2f45239d6}} 
+\index{room.\+c@{room.\+c}!D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+2@{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+2}}
+\index{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+2@{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+2}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+2}{DIR\_SON\_ENIRONNEMENT\_2}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+2~\char`\"{}../room/sounds/borne2.\+wav\char`\"{}}
+
+\mbox{\Hypertarget{room_8c_ad9e8e279ce5d942ddd1c0ba36425219b}\label{room_8c_ad9e8e279ce5d942ddd1c0ba36425219b}} 
+\index{room.\+c@{room.\+c}!D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+3@{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+3}}
+\index{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+3@{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+3}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+3}{DIR\_SON\_ENIRONNEMENT\_3}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+3~\char`\"{}../room/sounds/borne3.\+wav\char`\"{}}
+
+\mbox{\Hypertarget{room_8c_a0a07be9078d3b7e08603a94b78a295db}\label{room_8c_a0a07be9078d3b7e08603a94b78a295db}} 
+\index{room.\+c@{room.\+c}!D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+\+W\+A\+LK@{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+\+W\+A\+LK}}
+\index{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+\+W\+A\+LK@{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+\+W\+A\+LK}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+\+W\+A\+LK}{DIR\_SON\_ENIRONNEMENT\_WALK}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+E\+N\+I\+R\+O\+N\+N\+E\+M\+E\+N\+T\+\_\+\+W\+A\+LK~\char`\"{}../room/sounds/walk.\+wav\char`\"{}}
+
+\mbox{\Hypertarget{room_8c_a8e50b80e01eb6a12d6ff0f138e6d8120}\label{room_8c_a8e50b80e01eb6a12d6ff0f138e6d8120}} 
+\index{room.\+c@{room.\+c}!D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+F\+E\+R\+M\+E\+T\+U\+R\+E\+\_\+\+P\+O\+R\+TE@{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+F\+E\+R\+M\+E\+T\+U\+R\+E\+\_\+\+P\+O\+R\+TE}}
+\index{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+F\+E\+R\+M\+E\+T\+U\+R\+E\+\_\+\+P\+O\+R\+TE@{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+F\+E\+R\+M\+E\+T\+U\+R\+E\+\_\+\+P\+O\+R\+TE}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+F\+E\+R\+M\+E\+T\+U\+R\+E\+\_\+\+P\+O\+R\+TE}{DIR\_SON\_FERMETURE\_PORTE}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+F\+E\+R\+M\+E\+T\+U\+R\+E\+\_\+\+P\+O\+R\+TE~\char`\"{}../room/sounds/SF-\/fermport.\+wav\char`\"{}}
+
+\mbox{\Hypertarget{room_8c_a08043e68ce387b819990ba9ff07c635e}\label{room_8c_a08043e68ce387b819990ba9ff07c635e}} 
+\index{room.\+c@{room.\+c}!D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+O\+U\+V\+E\+R\+T\+U\+R\+E\+\_\+\+P\+O\+R\+TE@{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+O\+U\+V\+E\+R\+T\+U\+R\+E\+\_\+\+P\+O\+R\+TE}}
+\index{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+O\+U\+V\+E\+R\+T\+U\+R\+E\+\_\+\+P\+O\+R\+TE@{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+O\+U\+V\+E\+R\+T\+U\+R\+E\+\_\+\+P\+O\+R\+TE}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+O\+U\+V\+E\+R\+T\+U\+R\+E\+\_\+\+P\+O\+R\+TE}{DIR\_SON\_OUVERTURE\_PORTE}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+S\+O\+N\+\_\+\+O\+U\+V\+E\+R\+T\+U\+R\+E\+\_\+\+P\+O\+R\+TE~\char`\"{}../room/sounds/SF-\/ouvport.\+wav\char`\"{}}
+
+\mbox{\Hypertarget{room_8c_a4afb31b8aaad24ca6e4133e9e0ffd0f2}\label{room_8c_a4afb31b8aaad24ca6e4133e9e0ffd0f2}} 
+\index{room.\+c@{room.\+c}!D\+I\+R\+\_\+\+T\+O\+K\+E\+N\+\_\+\+F\+I\+LE@{D\+I\+R\+\_\+\+T\+O\+K\+E\+N\+\_\+\+F\+I\+LE}}
+\index{D\+I\+R\+\_\+\+T\+O\+K\+E\+N\+\_\+\+F\+I\+LE@{D\+I\+R\+\_\+\+T\+O\+K\+E\+N\+\_\+\+F\+I\+LE}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{D\+I\+R\+\_\+\+T\+O\+K\+E\+N\+\_\+\+F\+I\+LE}{DIR\_TOKEN\_FILE}}
+{\footnotesize\ttfamily \#define D\+I\+R\+\_\+\+T\+O\+K\+E\+N\+\_\+\+F\+I\+LE~\char`\"{}/tmp/.Nineteen\char`\"{}}
+
+
+
+S\+T\+O\+CK L\+ES P\+O\+S\+I\+T\+I\+O\+NS. 
+
+\mbox{\Hypertarget{room_8c_ac92ca5ab87034a348decad7ee8d4bd1b}\label{room_8c_ac92ca5ab87034a348decad7ee8d4bd1b}} 
+\index{room.\+c@{room.\+c}!F\+PS@{F\+PS}}
+\index{F\+PS@{F\+PS}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{F\+PS}{FPS}}
+{\footnotesize\ttfamily \#define F\+PS~60}
+
+\mbox{\Hypertarget{room_8c_ab689fd9853cfb16cd43dfa63e2a5ab6d}\label{room_8c_ab689fd9853cfb16cd43dfa63e2a5ab6d}} 
+\index{room.\+c@{room.\+c}!H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+A\+C\+C\+R\+O\+U\+PI@{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+A\+C\+C\+R\+O\+U\+PI}}
+\index{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+A\+C\+C\+R\+O\+U\+PI@{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+A\+C\+C\+R\+O\+U\+PI}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+A\+C\+C\+R\+O\+U\+PI}{HAUTEUR\_CAMERA\_ACCROUPI}}
+{\footnotesize\ttfamily \#define H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+A\+C\+C\+R\+O\+U\+PI~2.\+7F}
+
+\mbox{\Hypertarget{room_8c_ae7fa4e640be7aca962c24936ef41175c}\label{room_8c_ae7fa4e640be7aca962c24936ef41175c}} 
+\index{room.\+c@{room.\+c}!H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+D\+E\+B\+O\+UT@{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+D\+E\+B\+O\+UT}}
+\index{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+D\+E\+B\+O\+UT@{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+D\+E\+B\+O\+UT}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+D\+E\+B\+O\+UT}{HAUTEUR\_CAMERA\_DEBOUT}}
+{\footnotesize\ttfamily \#define H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+D\+E\+B\+O\+UT~3.\+5F}
+
+\mbox{\Hypertarget{room_8c_a083ed70ca74befd44b162c15d47e3ed2}\label{room_8c_a083ed70ca74befd44b162c15d47e3ed2}} 
+\index{room.\+c@{room.\+c}!M\+A\+X\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+A\+R\+C\+A\+DE@{M\+A\+X\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+A\+R\+C\+A\+DE}}
+\index{M\+A\+X\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+A\+R\+C\+A\+DE@{M\+A\+X\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+A\+R\+C\+A\+DE}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+A\+R\+C\+A\+DE}{MAX\_VOLUME\_ARCADE}}
+{\footnotesize\ttfamily \#define M\+A\+X\+\_\+\+V\+O\+L\+U\+M\+E\+\_\+\+A\+R\+C\+A\+DE~100}
+
+\mbox{\Hypertarget{room_8c_ad51088a6c1027f8d9f717144bc6e508e}\label{room_8c_ad51088a6c1027f8d9f717144bc6e508e}} 
+\index{room.\+c@{room.\+c}!M\+A\+X\+\_\+\+Y\+\_\+\+A\+X\+E\+\_\+\+C\+I\+B\+LE@{M\+A\+X\+\_\+\+Y\+\_\+\+A\+X\+E\+\_\+\+C\+I\+B\+LE}}
+\index{M\+A\+X\+\_\+\+Y\+\_\+\+A\+X\+E\+\_\+\+C\+I\+B\+LE@{M\+A\+X\+\_\+\+Y\+\_\+\+A\+X\+E\+\_\+\+C\+I\+B\+LE}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+Y\+\_\+\+A\+X\+E\+\_\+\+C\+I\+B\+LE}{MAX\_Y\_AXE\_CIBLE}}
+{\footnotesize\ttfamily \#define M\+A\+X\+\_\+\+Y\+\_\+\+A\+X\+E\+\_\+\+C\+I\+B\+LE~2.\+8F}
+
+\mbox{\Hypertarget{room_8c_ab2e67ad88d67fa0b96d73ac13e002ecc}\label{room_8c_ab2e67ad88d67fa0b96d73ac13e002ecc}} 
+\index{room.\+c@{room.\+c}!M\+I\+N\+\_\+\+I\+N\+T\+E\+N\+S\+I\+TE@{M\+I\+N\+\_\+\+I\+N\+T\+E\+N\+S\+I\+TE}}
+\index{M\+I\+N\+\_\+\+I\+N\+T\+E\+N\+S\+I\+TE@{M\+I\+N\+\_\+\+I\+N\+T\+E\+N\+S\+I\+TE}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{M\+I\+N\+\_\+\+I\+N\+T\+E\+N\+S\+I\+TE}{MIN\_INTENSITE}}
+{\footnotesize\ttfamily \#define M\+I\+N\+\_\+\+I\+N\+T\+E\+N\+S\+I\+TE~100}
+
+
+
+V\+O\+L\+U\+ME S\+ON P\+AS. 
+
+\mbox{\Hypertarget{room_8c_a496f6f64454c6a4f79895139dc4e0e0a}\label{room_8c_a496f6f64454c6a4f79895139dc4e0e0a}} 
+\index{room.\+c@{room.\+c}!N\+B\+\_\+\+I\+N\+D\+I\+C\+E\+\_\+\+P\+O\+R\+T\+ER@{N\+B\+\_\+\+I\+N\+D\+I\+C\+E\+\_\+\+P\+O\+R\+T\+ER}}
+\index{N\+B\+\_\+\+I\+N\+D\+I\+C\+E\+\_\+\+P\+O\+R\+T\+ER@{N\+B\+\_\+\+I\+N\+D\+I\+C\+E\+\_\+\+P\+O\+R\+T\+ER}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{N\+B\+\_\+\+I\+N\+D\+I\+C\+E\+\_\+\+P\+O\+R\+T\+ER}{NB\_INDICE\_PORTER}}
+{\footnotesize\ttfamily \#define N\+B\+\_\+\+I\+N\+D\+I\+C\+E\+\_\+\+P\+O\+R\+T\+ER~2}
+
+\mbox{\Hypertarget{room_8c_ae9289e2d2a36a494974889c9d59feb6c}\label{room_8c_ae9289e2d2a36a494974889c9d59feb6c}} 
+\index{room.\+c@{room.\+c}!R\+A\+T\+I\+O\+\_\+\+W\+I\+N\+D\+O\+W\+\_\+\+S\+C\+R\+E\+EN@{R\+A\+T\+I\+O\+\_\+\+W\+I\+N\+D\+O\+W\+\_\+\+S\+C\+R\+E\+EN}}
+\index{R\+A\+T\+I\+O\+\_\+\+W\+I\+N\+D\+O\+W\+\_\+\+S\+C\+R\+E\+EN@{R\+A\+T\+I\+O\+\_\+\+W\+I\+N\+D\+O\+W\+\_\+\+S\+C\+R\+E\+EN}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{R\+A\+T\+I\+O\+\_\+\+W\+I\+N\+D\+O\+W\+\_\+\+S\+C\+R\+E\+EN}{RATIO\_WINDOW\_SCREEN}}
+{\footnotesize\ttfamily \#define R\+A\+T\+I\+O\+\_\+\+W\+I\+N\+D\+O\+W\+\_\+\+S\+C\+R\+E\+EN~0.\+95}
+
+\mbox{\Hypertarget{room_8c_a48f60a08ce361415cb041dd4fd98c773}\label{room_8c_a48f60a08ce361415cb041dd4fd98c773}} 
+\index{room.\+c@{room.\+c}!S\+E\+N\+S\+I\+B\+I\+L\+I\+T\+E\+\_\+\+C\+A\+M\+E\+RA@{S\+E\+N\+S\+I\+B\+I\+L\+I\+T\+E\+\_\+\+C\+A\+M\+E\+RA}}
+\index{S\+E\+N\+S\+I\+B\+I\+L\+I\+T\+E\+\_\+\+C\+A\+M\+E\+RA@{S\+E\+N\+S\+I\+B\+I\+L\+I\+T\+E\+\_\+\+C\+A\+M\+E\+RA}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{S\+E\+N\+S\+I\+B\+I\+L\+I\+T\+E\+\_\+\+C\+A\+M\+E\+RA}{SENSIBILITE\_CAMERA}}
+{\footnotesize\ttfamily \#define S\+E\+N\+S\+I\+B\+I\+L\+I\+T\+E\+\_\+\+C\+A\+M\+E\+RA~0.\+08F}
+
+\mbox{\Hypertarget{room_8c_a8d774828b93d97eae79140c10691003e}\label{room_8c_a8d774828b93d97eae79140c10691003e}} 
+\index{room.\+c@{room.\+c}!S\+E\+N\+S\+I\+B\+I\+L\+I\+T\+E\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+S\+O\+U\+R\+IS@{S\+E\+N\+S\+I\+B\+I\+L\+I\+T\+E\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+S\+O\+U\+R\+IS}}
+\index{S\+E\+N\+S\+I\+B\+I\+L\+I\+T\+E\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+S\+O\+U\+R\+IS@{S\+E\+N\+S\+I\+B\+I\+L\+I\+T\+E\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+S\+O\+U\+R\+IS}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{S\+E\+N\+S\+I\+B\+I\+L\+I\+T\+E\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+S\+O\+U\+R\+IS}{SENSIBILITE\_CAMERA\_SOURIS}}
+{\footnotesize\ttfamily \#define S\+E\+N\+S\+I\+B\+I\+L\+I\+T\+E\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+S\+O\+U\+R\+IS~0.\+003F}
+
+\mbox{\Hypertarget{room_8c_a601f483d8c965efc557bae42b7c20a31}\label{room_8c_a601f483d8c965efc557bae42b7c20a31}} 
+\index{room.\+c@{room.\+c}!S\+O\+N\+\_\+\+P\+A\+S\+\_\+\+D\+I\+S\+T\+A\+N\+CE@{S\+O\+N\+\_\+\+P\+A\+S\+\_\+\+D\+I\+S\+T\+A\+N\+CE}}
+\index{S\+O\+N\+\_\+\+P\+A\+S\+\_\+\+D\+I\+S\+T\+A\+N\+CE@{S\+O\+N\+\_\+\+P\+A\+S\+\_\+\+D\+I\+S\+T\+A\+N\+CE}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{S\+O\+N\+\_\+\+P\+A\+S\+\_\+\+D\+I\+S\+T\+A\+N\+CE}{SON\_PAS\_DISTANCE}}
+{\footnotesize\ttfamily \#define S\+O\+N\+\_\+\+P\+A\+S\+\_\+\+D\+I\+S\+T\+A\+N\+CE~2.\+2F}
+
+\mbox{\Hypertarget{room_8c_ade40d9399abc335bfecd0515c9459488}\label{room_8c_ade40d9399abc335bfecd0515c9459488}} 
+\index{room.\+c@{room.\+c}!S\+T\+A\+R\+T\+\_\+\+C\+I\+B\+L\+E\+\_\+X@{S\+T\+A\+R\+T\+\_\+\+C\+I\+B\+L\+E\+\_\+X}}
+\index{S\+T\+A\+R\+T\+\_\+\+C\+I\+B\+L\+E\+\_\+X@{S\+T\+A\+R\+T\+\_\+\+C\+I\+B\+L\+E\+\_\+X}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{S\+T\+A\+R\+T\+\_\+\+C\+I\+B\+L\+E\+\_\+X}{START\_CIBLE\_X}}
+{\footnotesize\ttfamily \#define S\+T\+A\+R\+T\+\_\+\+C\+I\+B\+L\+E\+\_\+X~M\+\_\+\+PI}
+
+\mbox{\Hypertarget{room_8c_acf460335df82f2babbeb984ad9451685}\label{room_8c_acf460335df82f2babbeb984ad9451685}} 
+\index{room.\+c@{room.\+c}!S\+T\+A\+R\+T\+\_\+\+C\+I\+B\+L\+E\+\_\+Y@{S\+T\+A\+R\+T\+\_\+\+C\+I\+B\+L\+E\+\_\+Y}}
+\index{S\+T\+A\+R\+T\+\_\+\+C\+I\+B\+L\+E\+\_\+Y@{S\+T\+A\+R\+T\+\_\+\+C\+I\+B\+L\+E\+\_\+Y}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{S\+T\+A\+R\+T\+\_\+\+C\+I\+B\+L\+E\+\_\+Y}{START\_CIBLE\_Y}}
+{\footnotesize\ttfamily \#define S\+T\+A\+R\+T\+\_\+\+C\+I\+B\+L\+E\+\_\+Y~0.\+0F}
+
+\mbox{\Hypertarget{room_8c_afa693a592865a655fc3a99c9ed63e3d9}\label{room_8c_afa693a592865a655fc3a99c9ed63e3d9}} 
+\index{room.\+c@{room.\+c}!S\+T\+A\+R\+T\+\_\+\+O\+U\+V\+E\+R\+T\+U\+RE@{S\+T\+A\+R\+T\+\_\+\+O\+U\+V\+E\+R\+T\+U\+RE}}
+\index{S\+T\+A\+R\+T\+\_\+\+O\+U\+V\+E\+R\+T\+U\+RE@{S\+T\+A\+R\+T\+\_\+\+O\+U\+V\+E\+R\+T\+U\+RE}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{S\+T\+A\+R\+T\+\_\+\+O\+U\+V\+E\+R\+T\+U\+RE}{START\_OUVERTURE}}
+{\footnotesize\ttfamily \#define S\+T\+A\+R\+T\+\_\+\+O\+U\+V\+E\+R\+T\+U\+RE~70.\+0F}
+
+\mbox{\Hypertarget{room_8c_ade9b153f9e942566a3c42acfc84a9a34}\label{room_8c_ade9b153f9e942566a3c42acfc84a9a34}} 
+\index{room.\+c@{room.\+c}!S\+T\+A\+R\+T\+\_\+\+PX@{S\+T\+A\+R\+T\+\_\+\+PX}}
+\index{S\+T\+A\+R\+T\+\_\+\+PX@{S\+T\+A\+R\+T\+\_\+\+PX}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{S\+T\+A\+R\+T\+\_\+\+PX}{START\_PX}}
+{\footnotesize\ttfamily \#define S\+T\+A\+R\+T\+\_\+\+PX~12.\+5F}
+
+\mbox{\Hypertarget{room_8c_a57174a04ce33a10d5194ae2f791b71f6}\label{room_8c_a57174a04ce33a10d5194ae2f791b71f6}} 
+\index{room.\+c@{room.\+c}!S\+T\+A\+R\+T\+\_\+\+PY@{S\+T\+A\+R\+T\+\_\+\+PY}}
+\index{S\+T\+A\+R\+T\+\_\+\+PY@{S\+T\+A\+R\+T\+\_\+\+PY}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{S\+T\+A\+R\+T\+\_\+\+PY}{START\_PY}}
+{\footnotesize\ttfamily \#define S\+T\+A\+R\+T\+\_\+\+PY~3.\+64F}
+
+\mbox{\Hypertarget{room_8c_adf5be05204e94737b6e938e7bbe163ed}\label{room_8c_adf5be05204e94737b6e938e7bbe163ed}} 
+\index{room.\+c@{room.\+c}!S\+T\+A\+R\+T\+\_\+\+PZ@{S\+T\+A\+R\+T\+\_\+\+PZ}}
+\index{S\+T\+A\+R\+T\+\_\+\+PZ@{S\+T\+A\+R\+T\+\_\+\+PZ}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{S\+T\+A\+R\+T\+\_\+\+PZ}{START\_PZ}}
+{\footnotesize\ttfamily \#define S\+T\+A\+R\+T\+\_\+\+PZ~35.\+0F}
+
+\mbox{\Hypertarget{room_8c_add7d71943248d3a880c7940a54760da3}\label{room_8c_add7d71943248d3a880c7940a54760da3}} 
+\index{room.\+c@{room.\+c}!V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+A\+C\+C\+R\+O\+U\+PI@{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+A\+C\+C\+R\+O\+U\+PI}}
+\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+A\+C\+C\+R\+O\+U\+PI@{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+A\+C\+C\+R\+O\+U\+PI}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+A\+C\+C\+R\+O\+U\+PI}{VITESSE\_DEPLACEMENT\_ACCROUPI}}
+{\footnotesize\ttfamily \#define V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+A\+C\+C\+R\+O\+U\+PI~0.\+035F}
+
+\mbox{\Hypertarget{room_8c_a3b2a48496efca546f3a0bc1f59c1f374}\label{room_8c_a3b2a48496efca546f3a0bc1f59c1f374}} 
+\index{room.\+c@{room.\+c}!V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+O\+U\+R\+IR@{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+O\+U\+R\+IR}}
+\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+O\+U\+R\+IR@{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+O\+U\+R\+IR}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+O\+U\+R\+IR}{VITESSE\_DEPLACEMENT\_COURIR}}
+{\footnotesize\ttfamily \#define V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+C\+O\+U\+R\+IR~0.\+14F}
+
+\mbox{\Hypertarget{room_8c_aeb6046e6ced1d56127320f9922979129}\label{room_8c_aeb6046e6ced1d56127320f9922979129}} 
+\index{room.\+c@{room.\+c}!V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+B\+O\+UT@{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+B\+O\+UT}}
+\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+B\+O\+UT@{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+B\+O\+UT}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+B\+O\+UT}{VITESSE\_DEPLACEMENT\_DEBOUT}}
+{\footnotesize\ttfamily \#define V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+B\+O\+UT~0.\+08F}
+
+
+
+\subsection{Documentation des définitions de type}
+\mbox{\Hypertarget{room_8c_a35bd5a66ac7d7e246fc3492b40eb1330}\label{room_8c_a35bd5a66ac7d7e246fc3492b40eb1330}} 
+\index{room.\+c@{room.\+c}!load\+Game@{load\+Game}}
+\index{load\+Game@{load\+Game}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{load\+Game}{loadGame}}
+{\footnotesize\ttfamily typedef struct \hyperlink{structload_game__s}{load\+Game\+\_\+s} \hyperlink{structload_game}{load\+Game}}
+
+
+
+\subsection{Documentation du type de l\textquotesingle{}énumération}
+\mbox{\Hypertarget{room_8c_a06fc87d81c62e9abb8790b6e5713c55b}\label{room_8c_a06fc87d81c62e9abb8790b6e5713c55b}} 
+\subsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
+{\footnotesize\ttfamily anonymous enum}
+
+\begin{DoxyEnumFields}{Valeurs énumérées}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{F\+E\+R\+M\+ER@{F\+E\+R\+M\+ER}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!F\+E\+R\+M\+ER@{F\+E\+R\+M\+ER}}}\mbox{\Hypertarget{room_8c_a06fc87d81c62e9abb8790b6e5713c55bac8169325eba0c15d39e8e000239e9626}\label{room_8c_a06fc87d81c62e9abb8790b6e5713c55bac8169325eba0c15d39e8e000239e9626}} 
+F\+E\+R\+M\+ER&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{O\+U\+V\+E\+R\+TE@{O\+U\+V\+E\+R\+TE}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!O\+U\+V\+E\+R\+TE@{O\+U\+V\+E\+R\+TE}}}\mbox{\Hypertarget{room_8c_a06fc87d81c62e9abb8790b6e5713c55baf98a4352f675aa74bafb458db94bc90f}\label{room_8c_a06fc87d81c62e9abb8790b6e5713c55baf98a4352f675aa74bafb458db94bc90f}} 
+O\+U\+V\+E\+R\+TE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{F\+E\+R\+M\+E\+T\+U\+RE@{F\+E\+R\+M\+E\+T\+U\+RE}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!F\+E\+R\+M\+E\+T\+U\+RE@{F\+E\+R\+M\+E\+T\+U\+RE}}}\mbox{\Hypertarget{room_8c_a06fc87d81c62e9abb8790b6e5713c55babe1869c7cca80535a1c204117840eb0a}\label{room_8c_a06fc87d81c62e9abb8790b6e5713c55babe1869c7cca80535a1c204117840eb0a}} 
+F\+E\+R\+M\+E\+T\+U\+RE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{O\+U\+V\+E\+R\+T\+U\+RE@{O\+U\+V\+E\+R\+T\+U\+RE}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!O\+U\+V\+E\+R\+T\+U\+RE@{O\+U\+V\+E\+R\+T\+U\+RE}}}\mbox{\Hypertarget{room_8c_a06fc87d81c62e9abb8790b6e5713c55baf8a7db1aa0c9bd8f25c5218f6cb1fe39}\label{room_8c_a06fc87d81c62e9abb8790b6e5713c55baf8a7db1aa0c9bd8f25c5218f6cb1fe39}} 
+O\+U\+V\+E\+R\+T\+U\+RE&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{room_8c_adf764cbdea00d65edcd07bb9953ad2b7}\label{room_8c_adf764cbdea00d65edcd07bb9953ad2b7}} 
+\subsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
+{\footnotesize\ttfamily anonymous enum}
+
+\begin{DoxyEnumFields}{Valeurs énumérées}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+C\+O\+RE@{S\+C\+O\+RE}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!S\+C\+O\+RE@{S\+C\+O\+RE}}}\mbox{\Hypertarget{room_8c_adf764cbdea00d65edcd07bb9953ad2b7af57444a2814db96222f09035ff269767}\label{room_8c_adf764cbdea00d65edcd07bb9953ad2b7af57444a2814db96222f09035ff269767}} 
+S\+C\+O\+RE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{F\+L\+A\+P\+P\+Y\+\_\+\+H\+A\+RD@{F\+L\+A\+P\+P\+Y\+\_\+\+H\+A\+RD}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!F\+L\+A\+P\+P\+Y\+\_\+\+H\+A\+RD@{F\+L\+A\+P\+P\+Y\+\_\+\+H\+A\+RD}}}\mbox{\Hypertarget{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a627bef6f993aecf3fc7b84e88ef36e1f}\label{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a627bef6f993aecf3fc7b84e88ef36e1f}} 
+F\+L\+A\+P\+P\+Y\+\_\+\+H\+A\+RD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+E\+T\+R\+I\+S\+\_\+\+H\+A\+RD@{T\+E\+T\+R\+I\+S\+\_\+\+H\+A\+RD}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!T\+E\+T\+R\+I\+S\+\_\+\+H\+A\+RD@{T\+E\+T\+R\+I\+S\+\_\+\+H\+A\+RD}}}\mbox{\Hypertarget{room_8c_adf764cbdea00d65edcd07bb9953ad2b7ac629447ffe06f5c3503b9c3b59a69c1c}\label{room_8c_adf764cbdea00d65edcd07bb9953ad2b7ac629447ffe06f5c3503b9c3b59a69c1c}} 
+T\+E\+T\+R\+I\+S\+\_\+\+H\+A\+RD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+H\+A\+RD@{A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+H\+A\+RD}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+H\+A\+RD@{A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+H\+A\+RD}}}\mbox{\Hypertarget{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a9a8a64340536c2852e79265d0b9d2073}\label{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a9a8a64340536c2852e79265d0b9d2073}} 
+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+H\+A\+RD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+H\+O\+O\+T\+E\+R\+\_\+\+H\+A\+RD@{S\+H\+O\+O\+T\+E\+R\+\_\+\+H\+A\+RD}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!S\+H\+O\+O\+T\+E\+R\+\_\+\+H\+A\+RD@{S\+H\+O\+O\+T\+E\+R\+\_\+\+H\+A\+RD}}}\mbox{\Hypertarget{room_8c_adf764cbdea00d65edcd07bb9953ad2b7aaa096bfa4f15eb633c1f007cc6450743}\label{room_8c_adf764cbdea00d65edcd07bb9953ad2b7aaa096bfa4f15eb633c1f007cc6450743}} 
+S\+H\+O\+O\+T\+E\+R\+\_\+\+H\+A\+RD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+N\+A\+K\+E\+\_\+\+H\+A\+RD@{S\+N\+A\+K\+E\+\_\+\+H\+A\+RD}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!S\+N\+A\+K\+E\+\_\+\+H\+A\+RD@{S\+N\+A\+K\+E\+\_\+\+H\+A\+RD}}}\mbox{\Hypertarget{room_8c_adf764cbdea00d65edcd07bb9953ad2b7aed668e8397510fdebb365713e9770437}\label{room_8c_adf764cbdea00d65edcd07bb9953ad2b7aed668e8397510fdebb365713e9770437}} 
+S\+N\+A\+K\+E\+\_\+\+H\+A\+RD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+E\+M\+I\+N\+E\+U\+R\+\_\+\+H\+A\+RD@{D\+E\+M\+I\+N\+E\+U\+R\+\_\+\+H\+A\+RD}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!D\+E\+M\+I\+N\+E\+U\+R\+\_\+\+H\+A\+RD@{D\+E\+M\+I\+N\+E\+U\+R\+\_\+\+H\+A\+RD}}}\mbox{\Hypertarget{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a16cf05ff91a289ab7d53527ba1c82cd8}\label{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a16cf05ff91a289ab7d53527ba1c82cd8}} 
+D\+E\+M\+I\+N\+E\+U\+R\+\_\+\+H\+A\+RD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+E\+M\+I\+N\+E\+U\+R\+\_\+\+E\+A\+SY@{D\+E\+M\+I\+N\+E\+U\+R\+\_\+\+E\+A\+SY}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!D\+E\+M\+I\+N\+E\+U\+R\+\_\+\+E\+A\+SY@{D\+E\+M\+I\+N\+E\+U\+R\+\_\+\+E\+A\+SY}}}\mbox{\Hypertarget{room_8c_adf764cbdea00d65edcd07bb9953ad2b7ad65645e147496df12e4236f7a983fbbb}\label{room_8c_adf764cbdea00d65edcd07bb9953ad2b7ad65645e147496df12e4236f7a983fbbb}} 
+D\+E\+M\+I\+N\+E\+U\+R\+\_\+\+E\+A\+SY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+N\+A\+K\+E\+\_\+\+E\+A\+SY@{S\+N\+A\+K\+E\+\_\+\+E\+A\+SY}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!S\+N\+A\+K\+E\+\_\+\+E\+A\+SY@{S\+N\+A\+K\+E\+\_\+\+E\+A\+SY}}}\mbox{\Hypertarget{room_8c_adf764cbdea00d65edcd07bb9953ad2b7aca97d20afb3da6989691b22487796b79}\label{room_8c_adf764cbdea00d65edcd07bb9953ad2b7aca97d20afb3da6989691b22487796b79}} 
+S\+N\+A\+K\+E\+\_\+\+E\+A\+SY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{S\+H\+O\+O\+T\+E\+R\+\_\+\+E\+A\+SY@{S\+H\+O\+O\+T\+E\+R\+\_\+\+E\+A\+SY}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!S\+H\+O\+O\+T\+E\+R\+\_\+\+E\+A\+SY@{S\+H\+O\+O\+T\+E\+R\+\_\+\+E\+A\+SY}}}\mbox{\Hypertarget{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a319a37b7c656015f3934df616cf0f533}\label{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a319a37b7c656015f3934df616cf0f533}} 
+S\+H\+O\+O\+T\+E\+R\+\_\+\+E\+A\+SY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+E\+A\+SY@{A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+E\+A\+SY}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+E\+A\+SY@{A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+E\+A\+SY}}}\mbox{\Hypertarget{room_8c_adf764cbdea00d65edcd07bb9953ad2b7aa4d17b2449adc0e98e0519c87e1ecb64}\label{room_8c_adf764cbdea00d65edcd07bb9953ad2b7aa4d17b2449adc0e98e0519c87e1ecb64}} 
+A\+S\+T\+E\+R\+O\+I\+D\+\_\+\+E\+A\+SY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{T\+E\+T\+R\+I\+S\+\_\+\+E\+A\+SY@{T\+E\+T\+R\+I\+S\+\_\+\+E\+A\+SY}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!T\+E\+T\+R\+I\+S\+\_\+\+E\+A\+SY@{T\+E\+T\+R\+I\+S\+\_\+\+E\+A\+SY}}}\mbox{\Hypertarget{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a9d6e4b1c694d99ec79af11945bf172a6}\label{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a9d6e4b1c694d99ec79af11945bf172a6}} 
+T\+E\+T\+R\+I\+S\+\_\+\+E\+A\+SY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{F\+L\+A\+P\+P\+Y\+\_\+\+E\+A\+SY@{F\+L\+A\+P\+P\+Y\+\_\+\+E\+A\+SY}!room.\+c@{room.\+c}}\index{room.\+c@{room.\+c}!F\+L\+A\+P\+P\+Y\+\_\+\+E\+A\+SY@{F\+L\+A\+P\+P\+Y\+\_\+\+E\+A\+SY}}}\mbox{\Hypertarget{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a82ade9d94297cbd98f10f29fde9fb27f}\label{room_8c_adf764cbdea00d65edcd07bb9953ad2b7a82ade9d94297cbd98f10f29fde9fb27f}} 
+F\+L\+A\+P\+P\+Y\+\_\+\+E\+A\+SY&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Documentation des fonctions}
+\mbox{\Hypertarget{room_8c_a47842a9ab60604cf3f40a87717aa685f}\label{room_8c_a47842a9ab60604cf3f40a87717aa685f}} 
+\index{room.\+c@{room.\+c}!Afficher\+Text@{Afficher\+Text}}
+\index{Afficher\+Text@{Afficher\+Text}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{Afficher\+Text()}{AfficherText()}}
+{\footnotesize\ttfamily void Afficher\+Text (\begin{DoxyParamCaption}\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font,  }\item[{char $\ast$}]{message,  }\item[{S\+D\+L\+\_\+\+Color}]{color,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+affichage de text sur un rendu Open\+GL 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em font} & police d\textquotesingle{}ecriture du texte \\
+\hline
+{\em message} & message a afficher \\
+\hline
+{\em color} & couleur du texte \\
+\hline
+{\em x} & position du text sur X -\/1 = centrer \\
+\hline
+{\em y} & position du text sur Y -\/1 = centrer\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a47842a9ab60604cf3f40a87717aa685f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_aaa0228d441c082bc57e7abb2e4c68ffc}\label{room_8c_aaa0228d441c082bc57e7abb2e4c68ffc}} 
+\index{room.\+c@{room.\+c}!animation\+Lancer\+Machine@{animation\+Lancer\+Machine}}
+\index{animation\+Lancer\+Machine@{animation\+Lancer\+Machine}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{animation\+Lancer\+Machine()}{animationLancerMachine()}}
+{\footnotesize\ttfamily void animation\+Lancer\+Machine (\begin{DoxyParamCaption}\item[{struct \hyperlink{struct_camera__s}{Camera\+\_\+s}}]{camera,  }\item[{struct \hyperlink{struct_camera__s}{Camera\+\_\+s}}]{cible,  }\item[{G\+Luint}]{scene\+\_\+list,  }\item[{S\+D\+L\+\_\+\+Window $\ast$}]{Window,  }\item[{float}]{\+\_\+\+I\+PS,  }\item[{float}]{img\+Anim }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+permet d\textquotesingle{}animer le lancement et retour des machines 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em camera} & camera de depart \\
+\hline
+{\em cible} & camera de fin \\
+\hline
+{\em scene\+\_\+list} & scene \\
+\hline
+{\em Window} & vue d\textquotesingle{}affichae \\
+\hline
+{\em \+\_\+\+I\+PS} & image / s\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_aaa0228d441c082bc57e7abb2e4c68ffc_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_aaa0228d441c082bc57e7abb2e4c68ffc_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a22b155abc1008cd51da9718d8dff813e}\label{room_8c_a22b155abc1008cd51da9718d8dff813e}} 
+\index{room.\+c@{room.\+c}!animation\+Porte\+Toilette@{animation\+Porte\+Toilette}}
+\index{animation\+Porte\+Toilette@{animation\+Porte\+Toilette}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{animation\+Porte\+Toilette()}{animationPorteToilette()}}
+{\footnotesize\ttfamily void animation\+Porte\+Toilette (\begin{DoxyParamCaption}\item[{int $\ast$}]{statut\+Porte\+Femme,  }\item[{int $\ast$}]{statut\+Porte\+Homme,  }\item[{int $\ast$}]{jouer\+Son\+Porte\+Femme,  }\item[{int $\ast$}]{jouer\+Son\+Porte\+Homme,  }\item[{int $\ast$}]{toilette\+Femme\+Ouverte\+Delai,  }\item[{int $\ast$}]{toilette\+Homme\+Ouverte\+Delai,  }\item[{Mix\+\_\+\+Chunk $\ast$}]{sas\+\_\+ouverture,  }\item[{Mix\+\_\+\+Chunk $\ast$}]{sas\+\_\+fermeture,  }\item[{struct \hyperlink{struct_camera__s}{Camera\+\_\+s}}]{camera,  }\item[{float}]{I\+PS }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+permet de gerer les evenements liee au porte des toilettes 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em statut\+Porte\+Femme} & \\
+\hline
+{\em statut\+Porte\+Homme} & \\
+\hline
+{\em jouer\+Son\+Porte\+Femme} & \\
+\hline
+{\em jouer\+Son\+Porte\+Homme} & \\
+\hline
+{\em toilette\+Femme\+Ouverte\+Delai} & \\
+\hline
+{\em toilette\+Homme\+Ouverte\+Delai} & \\
+\hline
+{\em sas\+\_\+ouverture} & \\
+\hline
+{\em sas\+\_\+fermeture} & \\
+\hline
+{\em camera} & \\
+\hline
+{\em I\+PS} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+S\+S/\+E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a22b155abc1008cd51da9718d8dff813e_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a22b155abc1008cd51da9718d8dff813e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a901691690957fae9daa5d3d331da8ec7}\label{room_8c_a901691690957fae9daa5d3d331da8ec7}} 
+\index{room.\+c@{room.\+c}!attendre\+Xseconde\+Message@{attendre\+Xseconde\+Message}}
+\index{attendre\+Xseconde\+Message@{attendre\+Xseconde\+Message}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{attendre\+Xseconde\+Message()}{attendreXsecondeMessage()}}
+{\footnotesize\ttfamily int attendre\+Xseconde\+Message (\begin{DoxyParamCaption}\item[{int $\ast$}]{compter\+Seconde,  }\item[{int $\ast$}]{afficher\+Message,  }\item[{const int}]{MS,  }\item[{const float}]{\+\_\+\+I\+PS }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+permet d\textquotesingle{}attendre avant d\textquotesingle{}afficher message C\+L\+I\+G\+N\+O\+T\+A\+NT affiche egalement les I\+PS 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em compter\+Seconde} & delai d\textquotesingle{}attente mesurer \\
+\hline
+{\em afficher\+Message} & booleen vrai ou faux \\
+\hline
+{\em MS} & delai d\textquotesingle{}attente \\
+\hline
+{\em \+\_\+\+I\+PS} & affichage des I\+PS\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+V\+R\+A\+I/\+F\+A\+UX 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a901691690957fae9daa5d3d331da8ec7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_ade7156d63e39a5b65ec2247840d9c381}\label{room_8c_ade7156d63e39a5b65ec2247840d9c381}} 
+\index{room.\+c@{room.\+c}!background\+Classement@{background\+Classement}}
+\index{background\+Classement@{background\+Classement}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{background\+Classement()}{backgroundClassement()}}
+{\footnotesize\ttfamily int background\+Classement (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Surface $\ast$}]{s\+Image }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+afficher un background au classement pour qu\textquotesingle{}il soit plus facilement visible 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em s\+Image} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+S\+S/\+E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_ade7156d63e39a5b65ec2247840d9c381_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a3ea615b7ff319d3bef6227857ce52786}\label{room_8c_a3ea615b7ff319d3bef6227857ce52786}} 
+\index{room.\+c@{room.\+c}!bruitage\+Pas@{bruitage\+Pas}}
+\index{bruitage\+Pas@{bruitage\+Pas}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{bruitage\+Pas()}{bruitagePas()}}
+{\footnotesize\ttfamily void bruitage\+Pas (\begin{DoxyParamCaption}\item[{struct \hyperlink{struct_camera__s}{Camera\+\_\+s} $\ast$}]{derniere\+Position,  }\item[{struct \hyperlink{struct_camera__s}{Camera\+\_\+s}}]{camera,  }\item[{int}]{channel,  }\item[{Mix\+\_\+\+Chunk $\ast$}]{music }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+permet de deplacer la source du son des pas et de le jouer 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em derniere\+Position} & derniere position ou le son a etait jouer \\
+\hline
+{\em camera} & position actuel \\
+\hline
+{\em channel} & channel sur le quelle jouer le son \\
+\hline
+{\em music} & son a jouer \\
+\hline
+{\em angle\+Joueur} & angle de la camera du joueur\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{room_8c_a3ea615b7ff319d3bef6227857ce52786_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a3ea615b7ff319d3bef6227857ce52786_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a6e52b9bce2208dbc639e5a979b15ca35}\label{room_8c_a6e52b9bce2208dbc639e5a979b15ca35}} 
+\index{room.\+c@{room.\+c}!calcul\+Angle@{calcul\+Angle}}
+\index{calcul\+Angle@{calcul\+Angle}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{calcul\+Angle()}{calculAngle()}}
+{\footnotesize\ttfamily float calcul\+Angle (\begin{DoxyParamCaption}\item[{float}]{xa,  }\item[{float}]{ya,  }\item[{float}]{xb,  }\item[{float}]{yb,  }\item[{float}]{xc,  }\item[{float}]{yc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+renvoi l\textquotesingle{}angle entre 3 points 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em xa} & \\
+\hline
+{\em ya} & \\
+\hline
+{\em xb} & \\
+\hline
+{\em yb} & \\
+\hline
+{\em xc} & \\
+\hline
+{\em yc} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a6e52b9bce2208dbc639e5a979b15ca35_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a784b5c81cdc56701d32c20fa9232ddf9}\label{room_8c_a784b5c81cdc56701d32c20fa9232ddf9}} 
+\index{room.\+c@{room.\+c}!detecter\+Machine@{detecter\+Machine}}
+\index{detecter\+Machine@{detecter\+Machine}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{detecter\+Machine()}{detecterMachine()}}
+{\footnotesize\ttfamily int detecter\+Machine (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{y,  }\item[{float}]{angle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+fonction qui detecte la proxmiter avec une machine de jeu 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em x} & coordonner x \\
+\hline
+{\em y} & coordonner y \\
+\hline
+{\em angle} & angle\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+T\+R\+U\+E/\+F\+A\+L\+SE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a784b5c81cdc56701d32c20fa9232ddf9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a87f0edb1c54eefa26f857c4a4d530429}\label{room_8c_a87f0edb1c54eefa26f857c4a4d530429}} 
+\index{room.\+c@{room.\+c}!detecter\+Ouverture\+Toilette@{detecter\+Ouverture\+Toilette}}
+\index{detecter\+Ouverture\+Toilette@{detecter\+Ouverture\+Toilette}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{detecter\+Ouverture\+Toilette()}{detecterOuvertureToilette()}}
+{\footnotesize\ttfamily int detecter\+Ouverture\+Toilette (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{y,  }\item[{float}]{angle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+detection des toilettes h/f 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em x} & coordonner x \\
+\hline
+{\em y} & coordonner y \\
+\hline
+{\em angle} & angle\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+T\+R\+U\+E/\+F\+A\+L\+SE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a87f0edb1c54eefa26f857c4a4d530429_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a2b408d60cd07c4117322cdbcc31fed7b}\label{room_8c_a2b408d60cd07c4117322cdbcc31fed7b}} 
+\index{room.\+c@{room.\+c}!detecter\+Porte@{detecter\+Porte}}
+\index{detecter\+Porte@{detecter\+Porte}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{detecter\+Porte()}{detecterPorte()}}
+{\footnotesize\ttfamily int detecter\+Porte (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{y,  }\item[{float}]{angle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+detection porte a proximite 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em x} & coordonner x \\
+\hline
+{\em y} & coordonner y \\
+\hline
+{\em angle} & angle\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+T\+R\+U\+E/\+F\+A\+L\+SE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a2b408d60cd07c4117322cdbcc31fed7b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a38dd7f392233bb41399b023bc2669249}\label{room_8c_a38dd7f392233bb41399b023bc2669249}} 
+\index{room.\+c@{room.\+c}!detecter\+Radio@{detecter\+Radio}}
+\index{detecter\+Radio@{detecter\+Radio}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{detecter\+Radio()}{detecterRadio()}}
+{\footnotesize\ttfamily int detecter\+Radio (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{y,  }\item[{float}]{angle }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+detection radio a proximite 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em x} & coordonner x \\
+\hline
+{\em y} & coordonner y \\
+\hline
+{\em angle} & angle\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+T\+R\+U\+E/\+F\+A\+L\+SE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a38dd7f392233bb41399b023bc2669249_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a3fb5d57c89ca3957fc124608dfcaf659}\label{room_8c_a3fb5d57c89ca3957fc124608dfcaf659}} 
+\index{room.\+c@{room.\+c}!detection\+Environnement@{detection\+Environnement}}
+\index{detection\+Environnement@{detection\+Environnement}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{detection\+Environnement()}{detectionEnvironnement()}}
+{\footnotesize\ttfamily int detection\+Environnement (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+fonction de collision avec l\textquotesingle{}environement 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em x} & coordonner x \\
+\hline
+{\em y} & coordonner y\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+T\+R\+U\+E/\+F\+A\+L\+SE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a3fb5d57c89ca3957fc124608dfcaf659_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_aeb8bbd97cb6c720ffda7f7a9606e1b45}\label{room_8c_aeb8bbd97cb6c720ffda7f7a9606e1b45}} 
+\index{room.\+c@{room.\+c}!detruire\+Texture@{detruire\+Texture}}
+\index{detruire\+Texture@{detruire\+Texture}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{detruire\+Texture()}{detruireTexture()}}
+{\footnotesize\ttfamily void detruire\+Texture (\begin{DoxyParamCaption}\item[{G\+Luint}]{nb\+Textures }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+detruit les elements initaliser 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em nb\+Textures} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_aeb8bbd97cb6c720ffda7f7a9606e1b45_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a99f0807856f649ff729b7924e125dcdf}\label{room_8c_a99f0807856f649ff729b7924e125dcdf}} 
+\index{room.\+c@{room.\+c}!distance\+Point@{distance\+Point}}
+\index{distance\+Point@{distance\+Point}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{distance\+Point()}{distancePoint()}}
+{\footnotesize\ttfamily float distance\+Point (\begin{DoxyParamCaption}\item[{float}]{xa,  }\item[{float}]{ya,  }\item[{float}]{xb,  }\item[{float}]{yb }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+renvoi la distance entre deux point 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em xa} & \\
+\hline
+{\em ya} & \\
+\hline
+{\em xb} & \\
+\hline
+{\em yb} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+float distance point a et b 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a99f0807856f649ff729b7924e125dcdf_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a494760108e4661303a77ba7fb1122006}\label{room_8c_a494760108e4661303a77ba7fb1122006}} 
+\index{room.\+c@{room.\+c}!G\+L\+\_\+\+Initialiser\+Parametre@{G\+L\+\_\+\+Initialiser\+Parametre}}
+\index{G\+L\+\_\+\+Initialiser\+Parametre@{G\+L\+\_\+\+Initialiser\+Parametre}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{G\+L\+\_\+\+Initialiser\+Parametre()}{GL\_InitialiserParametre()}}
+{\footnotesize\ttfamily void G\+L\+\_\+\+Initialiser\+Parametre (\begin{DoxyParamCaption}\item[{int}]{width,  }\item[{int}]{height,  }\item[{struct \hyperlink{struct_camera__s}{Camera\+\_\+s}}]{camera }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+regle le mode de vue voulu et les lummiere de opengl 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em width} & \\
+\hline
+{\em height} & \\
+\hline
+{\em camera} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a494760108e4661303a77ba7fb1122006_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a2bbafc1b0562d4ee6d70364745714f89}\label{room_8c_a2bbafc1b0562d4ee6d70364745714f89}} 
+\index{room.\+c@{room.\+c}!Gl\+Dessiner\+Quad@{Gl\+Dessiner\+Quad}}
+\index{Gl\+Dessiner\+Quad@{Gl\+Dessiner\+Quad}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{Gl\+Dessiner\+Quad()}{GlDessinerQuad()}}
+{\footnotesize\ttfamily void Gl\+Dessiner\+Quad (\begin{DoxyParamCaption}\item[{struct \hyperlink{struct_g_l___quadf}{G\+L\+\_\+\+Quadf}}]{quad }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Dessine un quadrilataire. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em quad} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+S\+S/\+E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a2bbafc1b0562d4ee6d70364745714f89_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a9a783579e7576a7ebfb754ff6a95926b}\label{room_8c_a9a783579e7576a7ebfb754ff6a95926b}} 
+\index{room.\+c@{room.\+c}!G\+Llight\+Mode@{G\+Llight\+Mode}}
+\index{G\+Llight\+Mode@{G\+Llight\+Mode}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{G\+Llight\+Mode()}{GLlightMode()}}
+{\footnotesize\ttfamily void G\+Llight\+Mode (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+permet de regler l\textquotesingle{}intensiter de chaque lampe presente dans la salle 
+
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a9a783579e7576a7ebfb754ff6a95926b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_aa79fb9ded897b9bbbc0780feb6f9df9f}\label{room_8c_aa79fb9ded897b9bbbc0780feb6f9df9f}} 
+\index{room.\+c@{room.\+c}!Init\+Camera@{Init\+Camera}}
+\index{Init\+Camera@{Init\+Camera}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{Init\+Camera()}{InitCamera()}}
+{\footnotesize\ttfamily void Init\+Camera (\begin{DoxyParamCaption}\item[{struct \hyperlink{struct_camera__s}{Camera\+\_\+s} $\ast$}]{camera,  }\item[{struct \hyperlink{struct_camera__s}{Camera\+\_\+s} $\ast$}]{cible }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+initialisation des variables lier au camera joueur et machines 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em camera} & \\
+\hline
+{\em cible} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_aa79fb9ded897b9bbbc0780feb6f9df9f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a9d5eda0e789a5fc236195e2b0f605aaa}\label{room_8c_a9d5eda0e789a5fc236195e2b0f605aaa}} 
+\index{room.\+c@{room.\+c}!Init\+Meilleure\+Score@{Init\+Meilleure\+Score}}
+\index{Init\+Meilleure\+Score@{Init\+Meilleure\+Score}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{Init\+Meilleure\+Score()}{InitMeilleureScore()}}
+{\footnotesize\ttfamily void Init\+Meilleure\+Score (\begin{DoxyParamCaption}\item[{struct Meilleure\+Score\+\_\+s}]{str\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+initialise la strcuture Meilleure\+Score\+\_\+s avec le nom des jeux 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em Meilleure\+Score\+\_\+s} & str tableau de donner \\
+\hline
+\end{DoxyParams}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a9d5eda0e789a5fc236195e2b0f605aaa_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a975caa310fae43e7d151c042081a509f}\label{room_8c_a975caa310fae43e7d151c042081a509f}} 
+\index{room.\+c@{room.\+c}!lancer\+Machine@{lancer\+Machine}}
+\index{lancer\+Machine@{lancer\+Machine}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{lancer\+Machine()}{lancerMachine()}}
+{\footnotesize\ttfamily void lancer\+Machine (\begin{DoxyParamCaption}\item[{const C\+\_\+\+S\+T\+R\+U\+CT ai\+Scene $\ast$}]{scene,  }\item[{int $\ast$}]{Running,  }\item[{struct \hyperlink{struct_camera__s}{Camera\+\_\+s}}]{camera,  }\item[{struct \hyperlink{struct_camera__s}{Camera\+\_\+s}}]{cible\mbox{[}$\,$\mbox{]},  }\item[{char $\ast$}]{token,  }\item[{struct Meilleure\+Score\+\_\+s}]{meilleure\+Score\mbox{[}$\,$\mbox{]},  }\item[{G\+Luint $\ast$}]{scene\+\_\+list,  }\item[{S\+D\+L\+\_\+\+Window $\ast$}]{Window,  }\item[{S\+D\+L\+\_\+\+G\+L\+Context $\ast$}]{Context,  }\item[{int $\ast$}]{jouer\+Son\+Porte\+Femme,  }\item[{int $\ast$}]{jouer\+Son\+Porte\+Homme,  }\item[{float}]{\+\_\+\+I\+PS,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+permet de lancer une machine de jeux comprend plusieur fonction annexe 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em scene} & permet de passer la scene a re afficher au retour de la machine \\
+\hline
+{\em Running} & permet de mettre fin au jeux \\
+\hline
+{\em camera} & camera du joueur \\
+\hline
+{\em cible} & camera cible machine \\
+\hline
+{\em token} & cle du joueur pour mode en ligne \\
+\hline
+{\em meilleure\+Score} & strucuteur des score et nom meilleure joueur \\
+\hline
+{\em scene\+\_\+list} & liste des scenes \\
+\hline
+{\em Window} & fenetre sdl/opengl \\
+\hline
+{\em Context} & context sdl/opengl \\
+\hline
+{\em jouer\+Son\+Porte\+Femme} & \\
+\hline
+{\em jouer\+Son\+Porte\+Homme} & \\
+\hline
+{\em \+\_\+\+I\+PS} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{room_8c_a975caa310fae43e7d151c042081a509f_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a975caa310fae43e7d151c042081a509f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a88eaba9341fa844401d12a78679830dc}\label{room_8c_a88eaba9341fa844401d12a78679830dc}} 
+\index{room.\+c@{room.\+c}!limiter\+Frame@{limiter\+Frame}}
+\index{limiter\+Frame@{limiter\+Frame}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{limiter\+Frame()}{limiterFrame()}}
+{\footnotesize\ttfamily void limiter\+Frame (\begin{DoxyParamCaption}\item[{const float}]{delay\+Lancement\+Frame,  }\item[{float $\ast$}]{\+\_\+\+I\+PS }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+permet de mettre un nombre d\textquotesingle{}image max et reglger la vitesse de deplacement en fonction des ips 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em delay\+Lancement\+Frame} & temps au lancement de la frame \\
+\hline
+{\em \+\_\+\+I\+PS} & mise a jour de la constante I\+PS\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a88eaba9341fa844401d12a78679830dc_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_aa10586f67996f3bae9aa5c4ae9c96718}\label{room_8c_aa10586f67996f3bae9aa5c4ae9c96718}} 
+\index{room.\+c@{room.\+c}!load\+Game\+Texture@{load\+Game\+Texture}}
+\index{load\+Game\+Texture@{load\+Game\+Texture}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{load\+Game\+Texture()}{loadGameTexture()}}
+{\footnotesize\ttfamily int load\+Game\+Texture (\begin{DoxyParamCaption}\item[{\hyperlink{structload_game}{load\+Game} $\ast$}]{load }\end{DoxyParamCaption})}
+
+
+
+Charge les textures d\textquotesingle{}un jeu. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em load} & La structure contenant l\textquotesingle{}id du jeu et le renderer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+Faux en cas de problème sinon vrai 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{room_8c_aa10586f67996f3bae9aa5c4ae9c96718_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_aa10586f67996f3bae9aa5c4ae9c96718_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a554c27dfea1971e6926e461187ebd29e}\label{room_8c_a554c27dfea1971e6926e461187ebd29e}} 
+\index{room.\+c@{room.\+c}!message\+Machine@{message\+Machine}}
+\index{message\+Machine@{message\+Machine}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{message\+Machine()}{messageMachine()}}
+{\footnotesize\ttfamily void message\+Machine (\begin{DoxyParamCaption}\item[{struct Meilleure\+Score\+\_\+s}]{str\mbox{[}$\,$\mbox{]},  }\item[{struct \hyperlink{struct_camera__s}{Camera\+\_\+s}}]{camera,  }\item[{T\+T\+F\+\_\+\+Font $\ast$}]{font,  }\item[{int}]{afficher\+Message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+affichage un message propre a chaque machine 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em str} & structure stockant les nom et score des meilleure joueur par machine \\
+\hline
+{\em camera} & Camera du joueur pour detection des machines \\
+\hline
+{\em font} & pointeur sur la police \\
+\hline
+{\em afficher\+Message} & afficher messages clignotant ou nom\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{room_8c_a554c27dfea1971e6926e461187ebd29e_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a554c27dfea1971e6926e461187ebd29e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_abc49a289020f817b90aae10c27ae1c5b}\label{room_8c_abc49a289020f817b90aae10c27ae1c5b}} 
+\index{room.\+c@{room.\+c}!Message\+Quitter\+Room@{Message\+Quitter\+Room}}
+\index{Message\+Quitter\+Room@{Message\+Quitter\+Room}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{Message\+Quitter\+Room()}{MessageQuitterRoom()}}
+{\footnotesize\ttfamily int Message\+Quitter\+Room (\begin{DoxyParamCaption}\item[{int}]{mode\+Chargement,  }\item[{char}]{path\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+permet d\textquotesingle{}afficher le message avant de quitter ou au chargement de la room 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em mode\+Chargement} & \\
+\hline
+{\em path} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+S\+S/\+E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_abc49a289020f817b90aae10c27ae1c5b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a81296eac8fa7bcdd021c45e5c8e0921c}\label{room_8c_a81296eac8fa7bcdd021c45e5c8e0921c}} 
+\index{room.\+c@{room.\+c}!mixer\+Init@{mixer\+Init}}
+\index{mixer\+Init@{mixer\+Init}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{mixer\+Init()}{mixerInit()}}
+{\footnotesize\ttfamily void mixer\+Init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+initalisation du volume 
+
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a81296eac8fa7bcdd021c45e5c8e0921c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_ac7fd25ceb1c11ba859983d8fc5b6e742}\label{room_8c_ac7fd25ceb1c11ba859983d8fc5b6e742}} 
+\index{room.\+c@{room.\+c}!mouvement\+Camera@{mouvement\+Camera}}
+\index{mouvement\+Camera@{mouvement\+Camera}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{mouvement\+Camera()}{mouvementCamera()}}
+{\footnotesize\ttfamily void mouvement\+Camera (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Window $\ast$}]{window,  }\item[{struct \hyperlink{struct_camera__s}{Camera\+\_\+s} $\ast$}]{camera,  }\item[{const float}]{I\+PS }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Permet de gerer les deplacements de la camera. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em window} & \\
+\hline
+{\em camera} & prend l\textquotesingle{}adresse de la camera \\
+\hline
+{\em I\+PS} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=340pt]{room_8c_ac7fd25ceb1c11ba859983d8fc5b6e742_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_ac7fd25ceb1c11ba859983d8fc5b6e742_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a920b806cad48b375b9a530814e7afd63}\label{room_8c_a920b806cad48b375b9a530814e7afd63}} 
+\index{room.\+c@{room.\+c}!reglage\+Volume@{reglage\+Volume}}
+\index{reglage\+Volume@{reglage\+Volume}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{reglage\+Volume()}{reglageVolume()}}
+{\footnotesize\ttfamily void reglage\+Volume (\begin{DoxyParamCaption}\item[{int}]{channel,  }\item[{float}]{xa,  }\item[{float}]{ya,  }\item[{float}]{xb,  }\item[{float}]{yb,  }\item[{float}]{porter,  }\item[{float}]{angle\+Joueur,  }\item[{int}]{max\+\_\+volume }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+regle le volume de l\textquotesingle{}environement sur un channel particuliere 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em channel} & canal du son a regler \\
+\hline
+{\em xa} & \\
+\hline
+{\em ya} & \\
+\hline
+{\em xb} & \\
+\hline
+{\em yb} & \\
+\hline
+{\em porter} & Porter du son \\
+\hline
+{\em float} & angle\+Joueur \\
+\hline
+{\em max\+\_\+volume} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=273pt]{room_8c_a920b806cad48b375b9a530814e7afd63_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a920b806cad48b375b9a530814e7afd63_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_ad389842cd7e9002501145ffbf0bd81de}\label{room_8c_ad389842cd7e9002501145ffbf0bd81de}} 
+\index{room.\+c@{room.\+c}!room@{room}}
+\index{room@{room}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{room()}{room()}}
+{\footnotesize\ttfamily int room (\begin{DoxyParamCaption}\item[{char $\ast$}]{token,  }\item[{struct Meilleure\+Score\+\_\+s}]{meilleure\+Score\mbox{[}$\,$\mbox{]},  }\item[{S\+D\+L\+\_\+\+Window $\ast$}]{Window,  }\item[{const C\+\_\+\+S\+T\+R\+U\+CT ai\+Scene $\ast$}]{scene,  }\item[{int}]{opt\+Full\+Screen,  }\item[{S\+D\+L\+\_\+\+Rect}]{border\+Size }\end{DoxyParamCaption})}
+
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{room_8c_ad389842cd7e9002501145ffbf0bd81de_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=192pt]{room_8c_ad389842cd7e9002501145ffbf0bd81de_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a77b40d2a48a66dc8f7b8207ed7a5e2a6}\label{room_8c_a77b40d2a48a66dc8f7b8207ed7a5e2a6}} 
+\index{room.\+c@{room.\+c}!S\+D\+L\+\_\+\+G\+L\+\_\+\+Appliquer\+Scene@{S\+D\+L\+\_\+\+G\+L\+\_\+\+Appliquer\+Scene}}
+\index{S\+D\+L\+\_\+\+G\+L\+\_\+\+Appliquer\+Scene@{S\+D\+L\+\_\+\+G\+L\+\_\+\+Appliquer\+Scene}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{S\+D\+L\+\_\+\+G\+L\+\_\+\+Appliquer\+Scene()}{SDL\_GL\_AppliquerScene()}}
+{\footnotesize\ttfamily void S\+D\+L\+\_\+\+G\+L\+\_\+\+Appliquer\+Scene (\begin{DoxyParamCaption}\item[{S\+D\+L\+\_\+\+Window $\ast$}]{Window,  }\item[{const C\+\_\+\+S\+T\+R\+U\+CT ai\+Scene $\ast$}]{scene,  }\item[{struct \hyperlink{struct_camera__s}{Camera\+\_\+s} $\ast$}]{camera,  }\item[{G\+Luint $\ast$}]{scene\+\_\+list,  }\item[{const float}]{I\+PS }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+permet d\textquotesingle{}appliquer la scene dans la window + mouvement camera 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em scene} & scene ou est stocker notre obj \\
+\hline
+{\em camera} & mise a jour de Look\+At \\
+\hline
+{\em scene\+\_\+list} & Nombre de scene\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+void 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a77b40d2a48a66dc8f7b8207ed7a5e2a6_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a77b40d2a48a66dc8f7b8207ed7a5e2a6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a70263633a7a137f37ff72e5cf71cc7eb}\label{room_8c_a70263633a7a137f37ff72e5cf71cc7eb}} 
+\index{room.\+c@{room.\+c}!update\+Meilleure\+Score@{update\+Meilleure\+Score}}
+\index{update\+Meilleure\+Score@{update\+Meilleure\+Score}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{update\+Meilleure\+Score()}{updateMeilleureScore()}}
+{\footnotesize\ttfamily int update\+Meilleure\+Score (\begin{DoxyParamCaption}\item[{struct Meilleure\+Score\+\_\+s}]{str\mbox{[}$\,$\mbox{]},  }\item[{char $\ast$}]{token }\end{DoxyParamCaption})}
+
+
+
+Mes a jours les donnees liee au score de la structure meilleure\+Score. 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em str} & tableau de donner\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+S\+S/\+E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe d\textquotesingle{}appel pour cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a70263633a7a137f37ff72e5cf71cc7eb_cgraph}
+\end{center}
+\end{figure}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a70263633a7a137f37ff72e5cf71cc7eb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{room_8c_a6746abb0b96cc3e013944163c053a0a3}\label{room_8c_a6746abb0b96cc3e013944163c053a0a3}} 
+\index{room.\+c@{room.\+c}!window\+Max\+Size@{window\+Max\+Size}}
+\index{window\+Max\+Size@{window\+Max\+Size}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{window\+Max\+Size()}{windowMaxSize()}}
+{\footnotesize\ttfamily int window\+Max\+Size (\begin{DoxyParamCaption}\item[{int}]{option\+Full\+Screen }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+fonction qui charge fixe la taille max de la fenetre 
+
+
+\begin{DoxyParams}{Paramètres}
+{\em option\+Full\+Screen} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+E\+X\+I\+T\+\_\+\+S\+U\+C\+C\+E\+SS / E\+X\+I\+T\+\_\+\+F\+A\+I\+L\+U\+RE 
+\end{DoxyReturn}
+Voici le graphe des appelants de cette fonction \+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{room_8c_a6746abb0b96cc3e013944163c053a0a3_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Documentation des variables}
+\mbox{\Hypertarget{room_8c_a2f816a1a65ad7fbccb4db5cb2e9e7993}\label{room_8c_a2f816a1a65ad7fbccb4db5cb2e9e7993}} 
+\index{room.\+c@{room.\+c}!\+\_\+counts@{\+\_\+counts}}
+\index{\+\_\+counts@{\+\_\+counts}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{\+\_\+counts}{\_counts}}
+{\footnotesize\ttfamily G\+Luint $\ast$ \+\_\+counts = N\+U\+LL\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{room_8c_a1aea49c36a81ec0616383ac82d0ec32c}\label{room_8c_a1aea49c36a81ec0616383ac82d0ec32c}} 
+\index{room.\+c@{room.\+c}!\+\_\+textures@{\+\_\+textures}}
+\index{\+\_\+textures@{\+\_\+textures}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{\+\_\+textures}{\_textures}}
+{\footnotesize\ttfamily G\+Luint$\ast$ \+\_\+textures = N\+U\+LL\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{room_8c_ad51f373733b0912ffcf7d077055c4a41}\label{room_8c_ad51f373733b0912ffcf7d077055c4a41}} 
+\index{room.\+c@{room.\+c}!adresse\+Font\+Img@{adresse\+Font\+Img}}
+\index{adresse\+Font\+Img@{adresse\+Font\+Img}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{adresse\+Font\+Img}{adresseFontImg}}
+{\footnotesize\ttfamily char adresse\+Font\+Img\mbox{[}16\mbox{]}\mbox{[}64\mbox{]}}
+
+{\bfseries Valeur initiale \+:}
+\begin{DoxyCode}
+=\{\textcolor{stringliteral}{"../room/textures/flappy\_hard\_font.jpg"},\textcolor{stringliteral}{"../room/textures/tetris\_font.jpg"},\textcolor{stringliteral}{"
+      ../room/textures/asteroid\_font\_hard.jpg"},\textcolor{stringliteral}{"../room/textures/shooter\_font.jpg"},\textcolor{stringliteral}{"../room/textures/snake\_font.jpg"},\textcolor{stringliteral}{"
+      ../room/textures/demineur\_font.jpg"},
+                                                         \textcolor{stringliteral}{"../room/textures/demineur\_font.jpg"},\textcolor{stringliteral}{"
+      ../room/textures/snake\_font.jpg"},\textcolor{stringliteral}{"../room/textures/shooter\_font.jpg"},\textcolor{stringliteral}{"../room/textures/asteroid\_font.jpg"},\textcolor{stringliteral}{"
+      ../room/textures/tetris\_font.jpg"},\textcolor{stringliteral}{"../room/textures/flappy\_easy\_font.jpg"},
+                                                         \textcolor{stringliteral}{"../room/textures/chargement.jpg"},\textcolor{stringliteral}{"
+      ../room/textures/chargement.jpg"},\textcolor{stringliteral}{"../room/textures/chargement.jpg"},\textcolor{stringliteral}{"../room/textures/leaderboard\_font.jpg"}\}
+\end{DoxyCode}
+\mbox{\Hypertarget{room_8c_a697d36fe04a6f8dcbecfe477c8cea75b}\label{room_8c_a697d36fe04a6f8dcbecfe477c8cea75b}} 
+\index{room.\+c@{room.\+c}!A\+N\+G\+L\+E\+\_\+\+D\+E\+T\+E\+C\+T\+I\+O\+N\+\_\+\+M\+A\+C\+H\+I\+NE@{A\+N\+G\+L\+E\+\_\+\+D\+E\+T\+E\+C\+T\+I\+O\+N\+\_\+\+M\+A\+C\+H\+I\+NE}}
+\index{A\+N\+G\+L\+E\+\_\+\+D\+E\+T\+E\+C\+T\+I\+O\+N\+\_\+\+M\+A\+C\+H\+I\+NE@{A\+N\+G\+L\+E\+\_\+\+D\+E\+T\+E\+C\+T\+I\+O\+N\+\_\+\+M\+A\+C\+H\+I\+NE}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{A\+N\+G\+L\+E\+\_\+\+D\+E\+T\+E\+C\+T\+I\+O\+N\+\_\+\+M\+A\+C\+H\+I\+NE}{ANGLE\_DETECTION\_MACHINE}}
+{\footnotesize\ttfamily const float A\+N\+G\+L\+E\+\_\+\+D\+E\+T\+E\+C\+T\+I\+O\+N\+\_\+\+M\+A\+C\+H\+I\+NE = M\+\_\+\+PI/6}
+
+\mbox{\Hypertarget{room_8c_ae507f1db2aed5e059208ba5af707dd26}\label{room_8c_ae507f1db2aed5e059208ba5af707dd26}} 
+\index{room.\+c@{room.\+c}!bounds@{bounds}}
+\index{bounds@{bounds}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{bounds}{bounds}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Rect bounds}
+
+
+
+D\+E\+F\+A\+U\+LT R\+E\+S\+O\+L\+U\+T\+I\+ON. 
+
+\mbox{\Hypertarget{room_8c_a1ce6bb164d37e605aa60e94aefe73817}\label{room_8c_a1ce6bb164d37e605aa60e94aefe73817}} 
+\index{room.\+c@{room.\+c}!E\+X\+T\+\_\+\+F\+I\+LE@{E\+X\+T\+\_\+\+F\+I\+LE}}
+\index{E\+X\+T\+\_\+\+F\+I\+LE@{E\+X\+T\+\_\+\+F\+I\+LE}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{E\+X\+T\+\_\+\+F\+I\+LE}{EXT\_FILE}}
+{\footnotesize\ttfamily F\+I\+LE$\ast$ E\+X\+T\+\_\+\+F\+I\+LE}
+
+\mbox{\Hypertarget{room_8c_aa98c580399ee4c9a56dbd577788eeee9}\label{room_8c_aa98c580399ee4c9a56dbd577788eeee9}} 
+\index{room.\+c@{room.\+c}!F\+I\+R\+S\+T\+\_\+\+F\+R\+A\+ME@{F\+I\+R\+S\+T\+\_\+\+F\+R\+A\+ME}}
+\index{F\+I\+R\+S\+T\+\_\+\+F\+R\+A\+ME@{F\+I\+R\+S\+T\+\_\+\+F\+R\+A\+ME}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{F\+I\+R\+S\+T\+\_\+\+F\+R\+A\+ME}{FIRST\_FRAME}}
+{\footnotesize\ttfamily int F\+I\+R\+S\+T\+\_\+\+F\+R\+A\+ME = 0}
+
+\mbox{\Hypertarget{room_8c_ae3a41f505fa8d010bea4cb6d61a9019d}\label{room_8c_ae3a41f505fa8d010bea4cb6d61a9019d}} 
+\index{room.\+c@{room.\+c}!F\+R\+A\+M\+E\+\_\+\+T\+I\+ME@{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME}}
+\index{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME@{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{F\+R\+A\+M\+E\+\_\+\+T\+I\+ME}{FRAME\_TIME}}
+{\footnotesize\ttfamily const float F\+R\+A\+M\+E\+\_\+\+T\+I\+ME = 1000/\hyperlink{flappy__bird_8c_ac92ca5ab87034a348decad7ee8d4bd1b}{F\+PS}\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{room_8c_a76cafa5d3675931a1b2c7627a839a8da}\label{room_8c_a76cafa5d3675931a1b2c7627a839a8da}} 
+\index{room.\+c@{room.\+c}!H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+RA@{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+RA}}
+\index{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+RA@{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+RA}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+RA}{HAUTEUR\_CAMERA}}
+{\footnotesize\ttfamily float H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+RA = \hyperlink{room_8c_ae7fa4e640be7aca962c24936ef41175c}{H\+A\+U\+T\+E\+U\+R\+\_\+\+C\+A\+M\+E\+R\+A\+\_\+\+D\+E\+B\+O\+UT}}
+
+
+
+V\+I\+T\+E\+S\+SE D\+E\+P\+L\+A\+C\+E\+M\+E\+NT D\+E\+B\+O\+UT A\+S\+S\+IS. 
+
+\mbox{\Hypertarget{room_8c_adc21c1c3300d8c04ce517d937b335899}\label{room_8c_adc21c1c3300d8c04ce517d937b335899}} 
+\index{room.\+c@{room.\+c}!M\+A\+C\+O\+S\+\_\+\+V\+ER@{M\+A\+C\+O\+S\+\_\+\+V\+ER}}
+\index{M\+A\+C\+O\+S\+\_\+\+V\+ER@{M\+A\+C\+O\+S\+\_\+\+V\+ER}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{M\+A\+C\+O\+S\+\_\+\+V\+ER}{MACOS\_VER}}
+{\footnotesize\ttfamily int M\+A\+C\+O\+S\+\_\+\+V\+ER}
+
+\mbox{\Hypertarget{room_8c_af9d5d4e3e4522b355dd2acbc432591f5}\label{room_8c_af9d5d4e3e4522b355dd2acbc432591f5}} 
+\index{room.\+c@{room.\+c}!option\+Full\+Screen@{option\+Full\+Screen}}
+\index{option\+Full\+Screen@{option\+Full\+Screen}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{option\+Full\+Screen}{optionFullScreen}}
+{\footnotesize\ttfamily int option\+Full\+Screen = 0}
+
+\mbox{\Hypertarget{room_8c_a0cfba7cb071c891a904656837a1fbfa4}\label{room_8c_a0cfba7cb071c891a904656837a1fbfa4}} 
+\index{room.\+c@{room.\+c}!S\+O\+N\+\_\+\+P\+AS@{S\+O\+N\+\_\+\+P\+AS}}
+\index{S\+O\+N\+\_\+\+P\+AS@{S\+O\+N\+\_\+\+P\+AS}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{S\+O\+N\+\_\+\+P\+AS}{SON\_PAS}}
+{\footnotesize\ttfamily const int S\+O\+N\+\_\+\+P\+AS = 5}
+
+\mbox{\Hypertarget{room_8c_abdda01a2980b5382c54607a58e75aa92}\label{room_8c_abdda01a2980b5382c54607a58e75aa92}} 
+\index{room.\+c@{room.\+c}!statut\+Porte\+Femme@{statut\+Porte\+Femme}}
+\index{statut\+Porte\+Femme@{statut\+Porte\+Femme}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{statut\+Porte\+Femme}{statutPorteFemme}}
+{\footnotesize\ttfamily int statut\+Porte\+Femme = \hyperlink{room_8c_a06fc87d81c62e9abb8790b6e5713c55bac8169325eba0c15d39e8e000239e9626}{F\+E\+R\+M\+ER}}
+
+\mbox{\Hypertarget{room_8c_a1a37fee5b76f73901c88100447e177b7}\label{room_8c_a1a37fee5b76f73901c88100447e177b7}} 
+\index{room.\+c@{room.\+c}!statut\+Porte\+Homme@{statut\+Porte\+Homme}}
+\index{statut\+Porte\+Homme@{statut\+Porte\+Homme}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{statut\+Porte\+Homme}{statutPorteHomme}}
+{\footnotesize\ttfamily int statut\+Porte\+Homme = \hyperlink{room_8c_a06fc87d81c62e9abb8790b6e5713c55bac8169325eba0c15d39e8e000239e9626}{F\+E\+R\+M\+ER}}
+
+\mbox{\Hypertarget{room_8c_a2303c1a6cca1728b7b2e384b5daf3251}\label{room_8c_a2303c1a6cca1728b7b2e384b5daf3251}} 
+\index{room.\+c@{room.\+c}!Text\+\_\+rouge@{Text\+\_\+rouge}}
+\index{Text\+\_\+rouge@{Text\+\_\+rouge}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{Text\+\_\+rouge}{Text\_rouge}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Color Text\+\_\+rouge = \{255,0,0\}}
+
+
+
+EN D\+E\+D\+U\+I\+RE LE D\+E\+L\+AI M\+IN D\textquotesingle{}U\+NE F\+R\+A\+ME. 
+
+\mbox{\Hypertarget{room_8c_a158b90dfedb211efa4c317267c983dd2}\label{room_8c_a158b90dfedb211efa4c317267c983dd2}} 
+\index{room.\+c@{room.\+c}!textures@{textures}}
+\index{textures@{textures}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{textures}{textures}}
+{\footnotesize\ttfamily S\+D\+L\+\_\+\+Texture$\ast$ textures\mbox{[}N\+B\+\_\+\+M\+A\+X\+\_\+\+T\+E\+X\+T\+U\+R\+ES\mbox{]}}
+
+\mbox{\Hypertarget{room_8c_a14cb39a0d4e98a405a403d133c6d1709}\label{room_8c_a14cb39a0d4e98a405a403d133c6d1709}} 
+\index{room.\+c@{room.\+c}!toilette\+Femme@{toilette\+Femme}}
+\index{toilette\+Femme@{toilette\+Femme}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{toilette\+Femme}{toiletteFemme}}
+{\footnotesize\ttfamily struct \hyperlink{struct_g_l___quadf}{G\+L\+\_\+\+Quadf} toilette\+Femme = \{20.\+2 , 8.\+65 , 1.\+9 , 3. , 0.\+1 , 3.\+9\}}
+
+\mbox{\Hypertarget{room_8c_a595973b7be2454092879b90c82598fb5}\label{room_8c_a595973b7be2454092879b90c82598fb5}} 
+\index{room.\+c@{room.\+c}!toilette\+Homme@{toilette\+Homme}}
+\index{toilette\+Homme@{toilette\+Homme}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{toilette\+Homme}{toiletteHomme}}
+{\footnotesize\ttfamily struct \hyperlink{struct_g_l___quadf}{G\+L\+\_\+\+Quadf} toilette\+Homme = \{20.\+2 , 1.\+05 , 1.\+9 , 3. , 0.\+1 , 3.\+9\}}
+
+\mbox{\Hypertarget{room_8c_aa1fcd3ff2421233f9a1342aab2ee72b9}\label{room_8c_aa1fcd3ff2421233f9a1342aab2ee72b9}} 
+\index{room.\+c@{room.\+c}!V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+NT@{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+NT}}
+\index{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+NT@{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+NT}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+NT}{VITESSE\_DEPLACEMENT}}
+{\footnotesize\ttfamily float V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+NT = \hyperlink{room_8c_aeb6046e6ced1d56127320f9922979129}{V\+I\+T\+E\+S\+S\+E\+\_\+\+D\+E\+P\+L\+A\+C\+E\+M\+E\+N\+T\+\_\+\+D\+E\+B\+O\+UT}}
+
+\mbox{\Hypertarget{room_8c_a14d631ded45fe3c6396d41f0b31a8aba}\label{room_8c_a14d631ded45fe3c6396d41f0b31a8aba}} 
+\index{room.\+c@{room.\+c}!Win\+Height@{Win\+Height}}
+\index{Win\+Height@{Win\+Height}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{Win\+Height}{WinHeight}}
+{\footnotesize\ttfamily int Win\+Height = 720\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+D\+E\+F\+A\+U\+LT R\+E\+S\+O\+L\+U\+T\+I\+ON. 
+
+\mbox{\Hypertarget{room_8c_a7bc33449edbe70d0faa8d9b08ac317e7}\label{room_8c_a7bc33449edbe70d0faa8d9b08ac317e7}} 
+\index{room.\+c@{room.\+c}!Win\+Width@{Win\+Width}}
+\index{Win\+Width@{Win\+Width}!room.\+c@{room.\+c}}
+\subsubsection{\texorpdfstring{Win\+Width}{WinWidth}}
+{\footnotesize\ttfamily int Win\+Width = 1280\hspace{0.3cm}{\ttfamily [static]}}
+

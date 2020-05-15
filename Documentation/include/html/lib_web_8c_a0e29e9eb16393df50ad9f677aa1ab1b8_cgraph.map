@@ -1,0 +1,5 @@
+<map id="checkVersionOnline" name="checkVersionOnline">
+<area shape="rect" id="node2" href="$lib_web_8c.html#a27e26af48346ad4ffbedb792ea9928ec" title="Envoi une requet et ecrit la reponse dans **response. " alt="" coords="192,31,307,57"/>
+<area shape="rect" id="node3" href="$lib_web_8c.html#a10b2e06c39458e351d7e94527bafd9a9" title="initilalise la structure qui contient la reponse " alt="" coords="355,5,433,32"/>
+<area shape="rect" id="node4" href="$lib_web_8c.html#a7d790f417b07791af6dd6e9e4717d36a" title="Ecrit la reponse de la requete dans une chaine. " alt="" coords="357,56,431,83"/>
+</map>

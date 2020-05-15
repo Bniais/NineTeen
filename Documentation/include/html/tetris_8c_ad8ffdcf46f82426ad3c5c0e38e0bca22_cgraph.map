@@ -1,0 +1,5 @@
+<map id="drawCombo" name="drawCombo">
+<area shape="rect" id="node2" href="$tetris_8c.html#a6536a809167e5de2612bcc0ac18a3e9f" title="Determine la taille d&#39;écriture d&#39;un message. " alt="" coords="156,5,253,32"/>
+<area shape="rect" id="node3" href="$tetris_8c.html#a05fcd6b28c1b8fa3aa29a2b74048ec42" title="Affiche un texte de combo. " alt="" coords="145,56,264,83"/>
+<area shape="rect" id="node4" href="$tetris_8c.html#a4f0435df84eff929d1e0323cff53d047" title="Calcule le logarithme d&#39;un nombre à une certaine base. " alt="" coords="178,107,231,133"/>
+</map>

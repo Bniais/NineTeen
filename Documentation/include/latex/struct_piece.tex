@@ -1,0 +1,217 @@
+\hypertarget{struct_piece}{}\section{Référence de la structure Piece}
+\label{struct_piece}\index{Piece@{Piece}}
+
+
+Contient des informations sur une pièce (actuelle ou suivante)  
+
+
+
+
+{\ttfamily \#include $<$config.\+h$>$}
+
+\subsection*{Champs de données}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \hyperlink{struct_piece_ad3c1a967d0ba8aad19e4ed9d9d3e21a4}{rota}
+\begin{DoxyCompactList}\small\item\em La rotation de la pièce. \end{DoxyCompactList}\item 
+int \hyperlink{struct_piece_ac40cffee50da10a50361ff4791fdd528}{id}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}id de la pièce (determine la forme) \end{DoxyCompactList}\item 
+float \hyperlink{struct_piece_aa7f9008e1aa6bacebfd319bfb30c5bcc}{x}
+\begin{DoxyCompactList}\small\item\em La position en x de la pièce. \end{DoxyCompactList}\item 
+float \hyperlink{struct_piece_a0eea0ecdd99782e029bef01950f596ca}{y}
+\begin{DoxyCompactList}\small\item\em La position en y de la pièce. \end{DoxyCompactList}\item 
+int $\ast$ \hyperlink{struct_piece_a37ac5e8ab5ac3980e9685b660c79e1cd}{grille}
+\begin{DoxyCompactList}\small\item\em Sa disposition des briques. \end{DoxyCompactList}\item 
+int \hyperlink{struct_piece_ae6aaaa3c177258e1b49d431ba3a12c05}{size}
+\begin{DoxyCompactList}\small\item\em Sa taille de grille. \end{DoxyCompactList}\item 
+int \hyperlink{struct_piece_ac3619bd3c5360a0979c7018a187107c0}{giant}
+\begin{DoxyCompactList}\small\item\em Indique si la pièce est géante ou non. \end{DoxyCompactList}\item 
+int \hyperlink{struct_piece_afab34d8939b7959fc2a95b4f05c38bbd}{frame\+To\+Go}
+\begin{DoxyCompactList}\small\item\em Nombre de frame restante en étant bloquée en haut de la grille. \end{DoxyCompactList}\item 
+int \hyperlink{struct_piece_a0d6d230858b211a68fbb4e410998a636}{dir}
+\begin{DoxyCompactList}\small\item\em La direction de déplacement latérale. \end{DoxyCompactList}\item 
+int \hyperlink{struct_piece_ac5dd791052ddb644af6904fe7bbf86d8}{frame\+Dir}
+\begin{DoxyCompactList}\small\item\em Le nombre de frame avant d\textquotesingle{}atteindre la collone visée. \end{DoxyCompactList}\item 
+int \hyperlink{struct_piece_a267d24f36baede2610b872e7e910ac29}{frame\+Stop}
+\begin{DoxyCompactList}\small\item\em Le nombre de frame coincé en bas de la grille. \end{DoxyCompactList}\item 
+int \hyperlink{struct_piece_a9ad7f55e97faf9230b2921295a8f18b5}{first\+Col}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}indice de la première collone comprenant une brique. \end{DoxyCompactList}\item 
+int \hyperlink{struct_piece_a00c22a871e4431c2fe08184f13e96800}{last\+Col}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}indice de la dernière collone comprenant une brique. \end{DoxyCompactList}\item 
+int \hyperlink{struct_piece_aa7a294ad71a4c69d0b0b83f5abafe066}{first\+Row}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}indice de la première ligne comprenant une brique. \end{DoxyCompactList}\item 
+int \hyperlink{struct_piece_aaea62498ff2f91c00dddbe798e73397a}{last\+Row}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}indice de la dernière ligne comprenant une brique. \end{DoxyCompactList}\item 
+int \hyperlink{struct_piece_a3c899f47b3b274539617033d1da8f368}{bonus}
+\begin{DoxyCompactList}\small\item\em Le bonus contenu par la pièce. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Description détaillée}
+Contient des informations sur une pièce (actuelle ou suivante) 
+
+\subsection{Documentation des champs}
+\mbox{\Hypertarget{struct_piece_a3c899f47b3b274539617033d1da8f368}\label{struct_piece_a3c899f47b3b274539617033d1da8f368}} 
+\index{Piece@{Piece}!bonus@{bonus}}
+\index{bonus@{bonus}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{bonus}{bonus}}
+{\footnotesize\ttfamily int Piece\+::bonus}
+
+
+
+Le bonus contenu par la pièce. 
+
+\mbox{\Hypertarget{struct_piece_a0d6d230858b211a68fbb4e410998a636}\label{struct_piece_a0d6d230858b211a68fbb4e410998a636}} 
+\index{Piece@{Piece}!dir@{dir}}
+\index{dir@{dir}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{dir}{dir}}
+{\footnotesize\ttfamily int Piece\+::dir}
+
+
+
+La direction de déplacement latérale. 
+
+\mbox{\Hypertarget{struct_piece_a9ad7f55e97faf9230b2921295a8f18b5}\label{struct_piece_a9ad7f55e97faf9230b2921295a8f18b5}} 
+\index{Piece@{Piece}!first\+Col@{first\+Col}}
+\index{first\+Col@{first\+Col}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{first\+Col}{firstCol}}
+{\footnotesize\ttfamily int Piece\+::first\+Col}
+
+
+
+L\textquotesingle{}indice de la première collone comprenant une brique. 
+
+\mbox{\Hypertarget{struct_piece_aa7a294ad71a4c69d0b0b83f5abafe066}\label{struct_piece_aa7a294ad71a4c69d0b0b83f5abafe066}} 
+\index{Piece@{Piece}!first\+Row@{first\+Row}}
+\index{first\+Row@{first\+Row}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{first\+Row}{firstRow}}
+{\footnotesize\ttfamily int Piece\+::first\+Row}
+
+
+
+L\textquotesingle{}indice de la première ligne comprenant une brique. 
+
+\mbox{\Hypertarget{struct_piece_ac5dd791052ddb644af6904fe7bbf86d8}\label{struct_piece_ac5dd791052ddb644af6904fe7bbf86d8}} 
+\index{Piece@{Piece}!frame\+Dir@{frame\+Dir}}
+\index{frame\+Dir@{frame\+Dir}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{frame\+Dir}{frameDir}}
+{\footnotesize\ttfamily int Piece\+::frame\+Dir}
+
+
+
+Le nombre de frame avant d\textquotesingle{}atteindre la collone visée. 
+
+\mbox{\Hypertarget{struct_piece_a267d24f36baede2610b872e7e910ac29}\label{struct_piece_a267d24f36baede2610b872e7e910ac29}} 
+\index{Piece@{Piece}!frame\+Stop@{frame\+Stop}}
+\index{frame\+Stop@{frame\+Stop}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{frame\+Stop}{frameStop}}
+{\footnotesize\ttfamily int Piece\+::frame\+Stop}
+
+
+
+Le nombre de frame coincé en bas de la grille. 
+
+\mbox{\Hypertarget{struct_piece_afab34d8939b7959fc2a95b4f05c38bbd}\label{struct_piece_afab34d8939b7959fc2a95b4f05c38bbd}} 
+\index{Piece@{Piece}!frame\+To\+Go@{frame\+To\+Go}}
+\index{frame\+To\+Go@{frame\+To\+Go}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{frame\+To\+Go}{frameToGo}}
+{\footnotesize\ttfamily int Piece\+::frame\+To\+Go}
+
+
+
+Nombre de frame restante en étant bloquée en haut de la grille. 
+
+\mbox{\Hypertarget{struct_piece_ac3619bd3c5360a0979c7018a187107c0}\label{struct_piece_ac3619bd3c5360a0979c7018a187107c0}} 
+\index{Piece@{Piece}!giant@{giant}}
+\index{giant@{giant}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{giant}{giant}}
+{\footnotesize\ttfamily int Piece\+::giant}
+
+
+
+Indique si la pièce est géante ou non. 
+
+\mbox{\Hypertarget{struct_piece_a37ac5e8ab5ac3980e9685b660c79e1cd}\label{struct_piece_a37ac5e8ab5ac3980e9685b660c79e1cd}} 
+\index{Piece@{Piece}!grille@{grille}}
+\index{grille@{grille}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{grille}{grille}}
+{\footnotesize\ttfamily int$\ast$ Piece\+::grille}
+
+
+
+Sa disposition des briques. 
+
+\mbox{\Hypertarget{struct_piece_ac40cffee50da10a50361ff4791fdd528}\label{struct_piece_ac40cffee50da10a50361ff4791fdd528}} 
+\index{Piece@{Piece}!id@{id}}
+\index{id@{id}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{id}{id}}
+{\footnotesize\ttfamily int Piece\+::id}
+
+
+
+L\textquotesingle{}id de la pièce (determine la forme) 
+
+\mbox{\Hypertarget{struct_piece_a00c22a871e4431c2fe08184f13e96800}\label{struct_piece_a00c22a871e4431c2fe08184f13e96800}} 
+\index{Piece@{Piece}!last\+Col@{last\+Col}}
+\index{last\+Col@{last\+Col}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{last\+Col}{lastCol}}
+{\footnotesize\ttfamily int Piece\+::last\+Col}
+
+
+
+L\textquotesingle{}indice de la dernière collone comprenant une brique. 
+
+\mbox{\Hypertarget{struct_piece_aaea62498ff2f91c00dddbe798e73397a}\label{struct_piece_aaea62498ff2f91c00dddbe798e73397a}} 
+\index{Piece@{Piece}!last\+Row@{last\+Row}}
+\index{last\+Row@{last\+Row}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{last\+Row}{lastRow}}
+{\footnotesize\ttfamily int Piece\+::last\+Row}
+
+
+
+L\textquotesingle{}indice de la dernière ligne comprenant une brique. 
+
+\mbox{\Hypertarget{struct_piece_ad3c1a967d0ba8aad19e4ed9d9d3e21a4}\label{struct_piece_ad3c1a967d0ba8aad19e4ed9d9d3e21a4}} 
+\index{Piece@{Piece}!rota@{rota}}
+\index{rota@{rota}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{rota}{rota}}
+{\footnotesize\ttfamily unsigned int Piece\+::rota}
+
+
+
+La rotation de la pièce. 
+
+\mbox{\Hypertarget{struct_piece_ae6aaaa3c177258e1b49d431ba3a12c05}\label{struct_piece_ae6aaaa3c177258e1b49d431ba3a12c05}} 
+\index{Piece@{Piece}!size@{size}}
+\index{size@{size}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{size}{size}}
+{\footnotesize\ttfamily int Piece\+::size}
+
+
+
+Sa taille de grille. 
+
+\mbox{\Hypertarget{struct_piece_aa7f9008e1aa6bacebfd319bfb30c5bcc}\label{struct_piece_aa7f9008e1aa6bacebfd319bfb30c5bcc}} 
+\index{Piece@{Piece}!x@{x}}
+\index{x@{x}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{x}{x}}
+{\footnotesize\ttfamily float Piece\+::x}
+
+
+
+La position en x de la pièce. 
+
+\mbox{\Hypertarget{struct_piece_a0eea0ecdd99782e029bef01950f596ca}\label{struct_piece_a0eea0ecdd99782e029bef01950f596ca}} 
+\index{Piece@{Piece}!y@{y}}
+\index{y@{y}!Piece@{Piece}}
+\subsubsection{\texorpdfstring{y}{y}}
+{\footnotesize\ttfamily float Piece\+::y}
+
+
+
+La position en y de la pièce. 
+
+
+
+La documentation de cette structure a été générée à partir du fichier suivant \+:\begin{DoxyCompactItemize}
+\item 
+games/5\+\_\+tetris/\hyperlink{5__tetris_2config_8h}{config.\+h}\end{DoxyCompactItemize}
