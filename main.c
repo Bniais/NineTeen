@@ -6,8 +6,8 @@
 ///	\brief regroupe le launcher ainsi que le programme principal du jeu
 /////////////////////////////////////////////////
 
-#define VERSION_LOGICIEL "version=1.1.0"
-#define VERSION "1.1.0"
+#define VERSION_LOGICIEL "version=1.1.1"
+#define VERSION "1.1.1"
 
 #ifdef _WIN32
 #define WESNOTH_EXPORT __declspec(dllexport)
