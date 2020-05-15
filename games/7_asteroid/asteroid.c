@@ -250,16 +250,17 @@ float dist_2f(float x1, float y1, float x2, float y2){
 *\return si oui ou non les deux points sont trop près
 */
 int trop_pres(float x1, float y1, float x2, float y2, float dist, int cote_spawn){
-    if(x2-x1 > PLAYGROUND_SIZE_W/2 && cote_spawn != 2)
+    if(x2-x1 > PLAYGROUND_SIZE_W/2 && cote_spawn != 0 && cote_spawn != 2)
         x2-= PLAYGROUND_SIZE_W;
-    else if(x1-x2 > PLAYGROUND_SIZE_W/2 && cote_spawn != 0)
+    else if(x1-x2 > PLAYGROUND_SIZE_W/2 && cote_spawn != 2 && cote_spawn != 0)
         x1-= PLAYGROUND_SIZE_W;
 
-    if(y2-y1 > PLAYGROUND_SIZE_H/2 && cote_spawn != 3)
+    if(y2-y1 > PLAYGROUND_SIZE_H/2 && cote_spawn != 1 && cote_spawn != 3)
         y2-= PLAYGROUND_SIZE_H;
-    else if(y1-y2 > PLAYGROUND_SIZE_H/2 && cote_spawn != 1)
+    else if(y1-y2 > PLAYGROUND_SIZE_H/2 && cote_spawn != 3 && cote_spawn != 1)
         y1-= PLAYGROUND_SIZE_H;
-
+	if(dist_2f(x1,y1,x2,y2)<=dist)
+		printf("%f %f %f %f\n",x1, y1, x2, y2 );
     return (dist_2f(x1,y1,x2,y2)<=dist) ;
 
 }
@@ -291,6 +292,7 @@ int sur_asteroid(Asteroid * asteroides, int nb_asteroid, int i_asteroid){
 int vaisseau_touche(Vaiss vaisseau, Asteroid * asteroides, int nb_asteroid){
 	for(int i=0;i<nb_asteroid;i++){
 		if(trop_pres(vaisseau.x,vaisseau.y,asteroides[i].x,asteroides[i].y,asteroides[i].taille+RAYON_VAISS,asteroides[i].cote_spawn)){
+			printf("%f %f %f %f %d\n", vaisseau.x,vaisseau.y,asteroides[i].x,asteroides[i].y, asteroides[i].cote_spawn);
 			return i;
 		}
 	}
