@@ -259,8 +259,6 @@ int trop_pres(float x1, float y1, float x2, float y2, float dist, int cote_spawn
         y2-= PLAYGROUND_SIZE_H;
     else if(y1-y2 > PLAYGROUND_SIZE_H/2 && cote_spawn != 3 && cote_spawn != 1)
         y1-= PLAYGROUND_SIZE_H;
-	if(dist_2f(x1,y1,x2,y2)<=dist)
-		printf("%f %f %f %f\n",x1, y1, x2, y2 );
     return (dist_2f(x1,y1,x2,y2)<=dist) ;
 
 }
@@ -292,7 +290,6 @@ int sur_asteroid(Asteroid * asteroides, int nb_asteroid, int i_asteroid){
 int vaisseau_touche(Vaiss vaisseau, Asteroid * asteroides, int nb_asteroid){
 	for(int i=0;i<nb_asteroid;i++){
 		if(trop_pres(vaisseau.x,vaisseau.y,asteroides[i].x,asteroides[i].y,asteroides[i].taille+RAYON_VAISS,asteroides[i].cote_spawn)){
-			printf("%f %f %f %f %d\n", vaisseau.x,vaisseau.y,asteroides[i].x,asteroides[i].y, asteroides[i].cote_spawn);
 			return i;
 		}
 	}
@@ -974,7 +971,6 @@ void afficher_text_bonus(SDL_Renderer * renderer, TextBonus textBonus[MAX_TEXT_B
 	for(int i=0; i<MAX_TEXT_BONUS; i++){
 		if(textBonus[i].frame){
 			SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, TEXT_BONUS[textBonus[i].id], BONUS_TEXT_COLOR);
-			printf("%s\n",  TEXT_BONUS[textBonus[i].id]);
 			SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
 			SDL_SetTextureAlphaMod(Message, ALPHA_BONUS[textBonus[i].frame]);
 			SDL_QueryTexture(Message,NULL,(int*)SDL_TEXTUREACCESS_STATIC,&(dest.w), &(dest.h) );
@@ -985,8 +981,6 @@ void afficher_text_bonus(SDL_Renderer * renderer, TextBonus textBonus[MAX_TEXT_B
 				dest.y -= dest.h/2;
 				firstDraw = SDL_FALSE;
 			}
-
-			printf("%d %d %d %d\n", dest.x, dest.y, dest.w, dest.h);
 			SDL_RenderCopy(renderer, Message, NULL, &dest);
 			SDL_FreeSurface(surfaceMessage);
 			SDL_DestroyTexture(Message);
@@ -1250,13 +1244,11 @@ void afficher_tir( SDL_Renderer * renderer, Missile shot, SDL_Texture * missileT
 *\param hardcore mode de jeu hardcore ou non
 */
 void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, float difficulte, float munitions[NB_MISSILES], int hardcore){
-	printf("Je suis la 0 \n");
 	difficulte *= 1 + randSign() * (rand()%(int)(PRECISION_RAND_FLOAT *INTERVALE_RAND_DIFFICULTE))/(float)PRECISION_RAND_FLOAT;
 	int id_coord;
 	float ratio_pv;
 	(*nb_asteroid)++;
 	(*asteroides)=realloc((*asteroides),sizeof(Asteroid)*(*nb_asteroid));
-	printf("Je suis la 1 \n");
 	if(!hardcore){
 		(*asteroides)[*nb_asteroid-1].angle=(rand()%(int)PRECISION_RAND_FLOAT*2*PI)/PRECISION_RAND_FLOAT;
 		(*asteroides)[*nb_asteroid-1].pv=PV_BASE;
@@ -1306,7 +1298,6 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 		}	while(trop_pres(vaisseau.x,vaisseau.y,(*asteroides)[*nb_asteroid-1].x,(*asteroides)[*nb_asteroid-1].y,DIST_VAISSEAU_ASTEROID+RAYON_VAISS+(*asteroides)[*nb_asteroid-1].taille,-1));
 	}
 	else{
-		printf("Je suis la 2 \n");
 		(*asteroides)[*nb_asteroid-1].vitesse=VITESSE_BASE;
 		(*asteroides)[*nb_asteroid-1].difficulte=difficulte;
 		(*asteroides)[*nb_asteroid-1].difficulte_pere = (*asteroides)[*nb_asteroid-1].difficulte;
@@ -1345,7 +1336,6 @@ void spawn_asteroid(Vaiss vaisseau, Asteroid ** asteroides, int * nb_asteroid, f
 			(*asteroides)[*nb_asteroid-1].vitesse= VITESSE_MIN_ASTEROID;
 		}
 		do{
-			printf("Je suis la 3\n");
 			(*asteroides)[*nb_asteroid-1].cote_spawn=rand()%4;
 			if((*asteroides)[*nb_asteroid-1].cote_spawn%2){
 				(*asteroides)[*nb_asteroid-1].y= PLAYGROUND_SIZE_H*((*asteroides)[*nb_asteroid-1].cote_spawn==1?0:1);
@@ -1933,7 +1923,6 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 	/////////////////////
 		int done = 0;
 		while( 1 ){
-			printf("Coucou 0 \n");
 			if(firstframe){
 				done = SDL_TRUE;
 				firstframe = SDL_FALSE;
@@ -2076,7 +2065,6 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		//////////////
 		// Gameplay //`
 		//////////////
-		printf("Coucou 1 \n");
 		//hardcore
 		if(hardcore){
 			for(int i=0; i<nb_asteroid;i++){
@@ -2146,7 +2134,6 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		///////////////////
 		// Check hitboxs //`
 		///////////////////
-		printf("Coucou 2 \n");
 
 		spawn_laser=(SDL_Point){0, RAYON_VAISS};
     xM = spawn_laser.x;
@@ -2312,7 +2299,6 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		//////////
 		// Draw //`
 		//////////
-		printf("Coucou 3 \n");
 
 			SDL_RenderCopy(renderer, textures[A_BACKGROUND], NULL, NULL);
 
@@ -2371,9 +2357,6 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 						SDL_RenderSetViewport(renderer, NULL);
 						return HACKED;
 					}
-
-
-				printf("%d %d\n", (int)( (FRAME_ANIM_BOMB - frameAnimBomb)/((float)FRAME_ANIM_BOMB/NB_ANIM_BOMB) )%NB_COL_BOMB, (int)( (FRAME_ANIM_BOMB - frameAnimBomb)/((float)FRAME_ANIM_BOMB/NB_ANIM_BOMB) )/NB_COL_BOMB);
 
 				SDL_Rect srcBomb = {SRC_BOMB.w * ((int)( (FRAME_ANIM_BOMB - frameAnimBomb)/((float)FRAME_ANIM_BOMB/NB_ANIM_BOMB) )%NB_COL_BOMB),
 									SRC_BOMB.h * ((int)( (FRAME_ANIM_BOMB - frameAnimBomb)/((float)FRAME_ANIM_BOMB/NB_ANIM_BOMB) )/NB_COL_BOMB),
