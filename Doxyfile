@@ -837,8 +837,7 @@ INPUT                  = ./main.c \
                          ./games/2_snake/config.h \
 						             ./games/3_flappy_bird/flappy_bird.c \
                          ./games/5_tetris/tetris.c \
-                         ./games/5_tetris/config.h \
-                         ./games/6_demineur/demineur.c \
+                         ./games/5_tetris/config.h  \
 						             ./games/7_asteroid/asteroid.c \
                          ./games/7_asteroid/config.h \
                          \
