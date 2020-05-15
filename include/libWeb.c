@@ -478,7 +478,7 @@ int connectWithKey(char *key)
 /// \brief recuperer les meilleures score
 ///
 /// \param key Ecriture de la clé dans key
-/// \param retour
+/// \param retour reponse en retour
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -516,10 +516,11 @@ int updateMeilleureScoreStruct(char *key,char *retour)
 /// \fn int getLeaderboard(char *gameID,char *username, char *offset,char *limite ,char *retour)
 /// \brief recupere le classement des joueurs
 ///
-/// \param gameID
-/// \param username
-/// \param offset
-/// \param retour
+/// \param gameID identifiant du jeu (Optinal)
+/// \param username non d utulisateur
+/// \param offset specifier le debut des retour pour la requete sql
+/// \param limite specifier la limite de la rpeonse sql
+/// \param retour chaine de retour de la reponse
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -563,7 +564,7 @@ int updateEnded;
 /// \fn int updateScore(EnvoiScore * envoiScore)
 /// \brief update le score
 ///
-/// \param envoiScore
+/// \param envoiScore structure comprenant les parametre necessaire a l envoo des scores
 ///
 /// \return EXIT_SUCCESS / EXIT_FAILURE
 /////////////////////////////////////////////////////
@@ -635,6 +636,7 @@ int ping()
 /////////////////////////////////////////////////////
 /// \fn int checkVersionOnline(char message[])
 /// \brief permet de verifier la bonne version de l'utilisateur
+/// \param requete construite comprenant la version du jeu
 ///
 /// \return DELAY MS
 /////////////////////////////////////////////////////
@@ -649,13 +651,13 @@ int checkVersionOnline(char message[])
 			response = NULL;
 			return EXIT_SUCCESS;
 		}
-		fprintf(EXT_FILE,"libWeb.c : checkVersionOnline() : erreur %s \n",response);
+		fprintf(EXT_FILE,"libWeb.c : checkVersionOnline() : erreur %s version actuel %s \n",response,message);
 		free(response);
 		response = NULL;
 		return EXIT_FAILURE;
 
 	}
-	fprintf(EXT_FILE,"libWeb.c : checkVersionOnline() : erreur envoi requete \n");
+	fprintf(EXT_FILE,"libWeb.c : checkVersionOnline() : erreur envoi requete %s \n",message);
 
 	return EXIT_FAILURE;
 }
