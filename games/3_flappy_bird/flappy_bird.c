@@ -93,17 +93,6 @@ const int VITESSE_DEPLACEMENT_DECOR = 8 / (FPS/30); // vitesse de deplacement de
 
 
 
-/////////////////////////////////////////////////////
-/// \fn SDL_Texture * LoadTextureWithErrorCode(SDL_Renderer *renderer ,char directory[])
-/// \brief affiche l'image de fond
-///
-/// \param  renderer
-/// \param  directory
-///
-/// \return SDL_Texture*
-/////////////////////////////////////////////////////
-static
-SDL_Texture * LoadTextureWithErrorCode(SDL_Renderer *renderer ,char directory[]);
 
 
 
@@ -390,7 +379,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 	// mise a jour variable pour difficulte hardcore
 	if( hardcore == 1 )
 	{
-		DISTANCE_UNDER_OBSTACLE = 80;
+		DISTANCE_UNDER_OBSTACLE = 82;
 		DISTANCE_BETWEEN_OBSTACLE = 48;
 	}
 	else
@@ -820,16 +809,7 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 
 
 
-SDL_Texture * LoadTextureWithErrorCode(SDL_Renderer *renderer ,char directory[])
-{
 
-	SDL_Texture* texture = IMG_LoadTexture(renderer,directory);
-
-	if(!texture)
-		printf("\nTEXTURE FAILURE : Erreur lors de la creation de %s SDL_ERROR : %s",directory,SDL_GetError());
-
-	return texture;
-}
 
 
 
