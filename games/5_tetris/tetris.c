@@ -2022,7 +2022,7 @@ int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, 
 		 // // // // // // // // //
 			SDL_PumpEvents();
 
-			if( keystate[SDL_SCANCODE_DOWN] )
+			if( keystate[SDL_SCANCODE_DOWN] || keystate[SDL_SCANCODE_S] )
 				accelerate = ACCELERATE;
 
 
@@ -2038,10 +2038,10 @@ int tetris( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, 
 				return 0;
 			}
 
-			if( keystate[SDL_SCANCODE_RIGHT] )
+			if( keystate[SDL_SCANCODE_RIGHT] || keystate[SDL_SCANCODE_D] )
 				lateralMove = MOVE_RIGHT;
 
-			else if( keystate[SDL_SCANCODE_LEFT] )
+			else if( keystate[SDL_SCANCODE_LEFT]  || keystate[SDL_SCANCODE_A])
 				lateralMove = MOVE_LEFT;
 
 

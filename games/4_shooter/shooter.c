@@ -750,14 +750,14 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 			}
 
 			ship.dir = 0;
-			if( keystate[SDL_SCANCODE_LEFT] ){
+			if( keystate[SDL_SCANCODE_LEFT] || keystate[SDL_SCANCODE_A] ){
 				ship.x-=SHIP_SPEED;
 				ship.dir = 1;
 
 				if(ship.x + DIST_BORD_VAISS.x < BACKGROUND_DEST.x)
 					ship.x = BACKGROUND_DEST.x - DIST_BORD_VAISS.x;
 			}
-			else if( keystate[SDL_SCANCODE_RIGHT] ){
+			else if( keystate[SDL_SCANCODE_RIGHT] || keystate[SDL_SCANCODE_D]){
 				ship.x+=SHIP_SPEED;
 				ship.dir = 2;
 
@@ -765,14 +765,14 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 					ship.x = BACKGROUND_DEST.x + BACKGROUND_DEST.w - DIST_BORD_VAISS.w;
 			}
 
-			if( keystate[SDL_SCANCODE_UP] ){
+			if( keystate[SDL_SCANCODE_UP] || keystate[SDL_SCANCODE_W]){
 				ship.y-=SHIP_SPEED;
 				ship.dir += 3;
 
 				if(ship.y + DIST_BORD_VAISS.y < BACKGROUND_DEST.y)
 					ship.y = BACKGROUND_DEST.y - DIST_BORD_VAISS.y;
 			}
-			else if( keystate[SDL_SCANCODE_DOWN] ){
+			else if( keystate[SDL_SCANCODE_DOWN] || keystate[SDL_SCANCODE_S]){
 				ship.y += RATIO_SPEED_DOWN * SHIP_SPEED;
 				ship.dir += 6;
 
@@ -780,7 +780,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 					ship.y = BACKGROUND_DEST.y + BACKGROUND_DEST.h - DIST_BORD_VAISS.h;
 			}
 
-			if( keystate[SDL_SCANCODE_SPACE] ){
+			if( keystate[SDL_SCANCODE_SPACE] || keystate[SDL_SCANCODE_LCTRL]){
 				fire(&ship, &allyMissiles, &nbAllyMissiles);
 			}
 
