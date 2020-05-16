@@ -16,7 +16,6 @@
 #include <string.h>
 #include <math.h>
 
-
 /*http://ressources.polytech-lille.fr/cours-algos-calcul-scientifique/progrcit.html*/
 void it_coef_lagrange(int n,double x[NMAX],double f[NMAX],double d[NMAX])
 {
@@ -322,22 +321,40 @@ void fire(Ship *ship, Missile **allyMissiles, int *nbAllyMissiles){
 	}
 }
 
-void enemyFire(Enemy *enemy, Missile **enemyMissiles, int *nbEnemyMissiles){
+static float calculer_angle(float x1, float y1, float x2, float y2){
+	return atan2((y2-y1) , (x2-x1));
+}
+
+void enemyFire(Enemy *enemy, Missile **enemyMissiles, int *nbEnemyMissiles, Ship ship){
 	for(int i = 0; i <= enemy->nbWeapon; i++){
 		if(enemy->weapons[i].frame_reload == 0){
 			*enemyMissiles = realloc(*enemyMissiles, ++(*nbEnemyMissiles)  *  sizeof(Missile));
 			(*enemyMissiles)[*nbEnemyMissiles - 1].x = enemy->x + WEAPON_DEST_ENEMY[enemy->id][i].x;
 			(*enemyMissiles)[*nbEnemyMissiles - 1].y = enemy->y + WEAPON_DEST_ENEMY[enemy->id][i].y;
 			(*enemyMissiles)[*nbEnemyMissiles - 1].id = enemy->weapons[i].id;
-			(*enemyMissiles)[*nbEnemyMissiles - 1].rota = PI;
-			if( ANGLE_ENEMY_FIRE[enemy->id][i])
-				(*enemyMissiles)[*nbEnemyMissiles - 1].rota += ANGLE_ENEMY_FIRE[enemy->id][i] ? (randSign() * ((rand()%(int)(PRECISION_RAND_FLOAT*ANGLE_ENEMY_FIRE[enemy->id][i])) / PRECISION_RAND_FLOAT)) : 0;
+			(*enemyMissiles)[*nbEnemyMissiles - 1].rota = PI/2 + (TYPE_ENEMY_FIRE[enemy->id][i] == AIMED ? calculer_angle((*enemyMissiles)[*nbEnemyMissiles - 1].x, (*enemyMissiles)[*nbEnemyMissiles - 1].y, ship.x + SHIP_HITBOX[ship.form].x, ship.y+ SHIP_HITBOX[ship.form].y) : PI/2);
+			(*enemyMissiles)[*nbEnemyMissiles - 1].rota += (ANGLE_ENEMY_FIRE[enemy->id][i] ? (randSign() * ((rand()%(int)(PRECISION_RAND_FLOAT*ANGLE_ENEMY_FIRE[enemy->id][i])) / PRECISION_RAND_FLOAT)) : 0);
 
 			(*enemyMissiles)[*nbEnemyMissiles - 1].damage = 1;
 			(*enemyMissiles)[*nbEnemyMissiles - 1].frame = 0;
 			(*enemyMissiles)[*nbEnemyMissiles - 1].speed = MISSILE_SPEED_ENEMY[enemy->id][i];
 
-			enemy->weapons[i].frame_reload = RELOAD_FRAME_ENEMY[enemy->id][i];
+			if(enemy->weapons[i].combo){
+				enemy->weapons[i].frame_reload = RELOAD_FRAME_COMBO_ENEMY[enemy->id][i];
+				enemy->weapons[i].combo--;
+			}
+			else{
+				if(RELOAD_FRAME_RAND_ENEMY[enemy->id][i] >0)
+					enemy->weapons[i].frame_reload = RELOAD_FRAME_ENEMY[enemy->id][i] + rand()%RELOAD_FRAME_RAND_ENEMY[enemy->id][i];
+				else //symetry
+					enemy->weapons[i].frame_reload = enemy->weapons[-RELOAD_FRAME_RAND_ENEMY[enemy->id][i]].frame_reload;
+
+				//combo reset
+				if(COMBO_RAND_ENEMY[enemy->id][i] > 0)
+					enemy->weapons[i].combo = COMBO_ENEMY[enemy->id][i] + rand()%COMBO_RAND_ENEMY[enemy->id][i];
+				else
+					enemy->weapons[i].combo = enemy->weapons[-COMBO_RAND_ENEMY[enemy->id][i]].combo;
+			}
 		}
 	}
 }
@@ -433,32 +450,62 @@ void moveMissile(Missile *missile){
 }
 
 void moveEnemy(Enemy **enemies, int * nbEnemy, int iEnemy){
-	if((*enemies)[iEnemy].id == BASE_ENEMY && (*enemies)[iEnemy].frameWait == 0){
-		float tmpX, tmpY, tmpD;
-		while((*enemies)[iEnemy].dist < SPEED_ENEMY[(*enemies)[iEnemy].id]){
-			tmpX = (*enemies)[iEnemy].x;
-			tmpY = (*enemies)[iEnemy].y;
-			(*enemies)[iEnemy].x += (*enemies)[iEnemy].dir * SPEED_DECOMPOSITION;
-			(*enemies)[iEnemy].y = it_pol_lagrange(NMAX-1,(*enemies)[iEnemy].coefs,(*enemies)[iEnemy].abscisses,(*enemies)[iEnemy].x);
+	if((*enemies)[iEnemy].frameWait == 0){
+		if(TYPE_MOVE_ENEMY[(*enemies)[iEnemy].id] == INTERPOLATION){
+			float tmpX, tmpY, tmpD;
+			while((*enemies)[iEnemy].dist < SPEED_ENEMY[(*enemies)[iEnemy].id]){
+				tmpX = (*enemies)[iEnemy].x;
+				tmpY = (*enemies)[iEnemy].y;
+				(*enemies)[iEnemy].x += (*enemies)[iEnemy].dir * SPEED_DECOMPOSITION;
+				(*enemies)[iEnemy].y = it_pol_lagrange(NMAX-1,(*enemies)[iEnemy].coefs,(*enemies)[iEnemy].abscisses,(*enemies)[iEnemy].x);
 
-			tmpD =  sqrt(pow(tmpX - (*enemies)[iEnemy].x, 2) + pow(tmpY - (*enemies)[iEnemy].y, 2));
-			(*enemies)[iEnemy].dist += tmpD;
+				tmpD =  sqrt(pow(tmpX - (*enemies)[iEnemy].x, 2) + pow(tmpY - (*enemies)[iEnemy].y, 2));
+				(*enemies)[iEnemy].dist += tmpD;
+			}
+			(*enemies)[iEnemy].x -= (*enemies)[iEnemy].dir * (SPEED_DECOMPOSITION * ((*enemies)[iEnemy].dist - SPEED_ENEMY[(*enemies)[iEnemy].id])) / tmpD;
+			(*enemies)[iEnemy].y = it_pol_lagrange(3,(*enemies)[iEnemy].coefs,(*enemies)[iEnemy].abscisses,(*enemies)[iEnemy].x);
+			(*enemies)[iEnemy].dist = 0 ;
+
+
 		}
-		(*enemies)[iEnemy].x -= (*enemies)[iEnemy].dir * (SPEED_DECOMPOSITION * ((*enemies)[iEnemy].dist - SPEED_ENEMY[(*enemies)[iEnemy].id])) / tmpD;
-		(*enemies)[iEnemy].y = it_pol_lagrange(3,(*enemies)[iEnemy].coefs,(*enemies)[iEnemy].abscisses,(*enemies)[iEnemy].x);
-		(*enemies)[iEnemy].dist = 0 ;
+		else if(TYPE_MOVE_ENEMY[(*enemies)[iEnemy].id] == ROUND_TRIP){
+			(*enemies)[iEnemy].x += (*enemies)[iEnemy].dir * SPEED_ENEMY[(*enemies)[iEnemy].id];
+			if((*enemies)[iEnemy].nbMove && (((*enemies)[iEnemy].dir == 1 &&(*enemies)[iEnemy].x + ENEMY_SRC[(*enemies)[iEnemy].id].w / RATIO_SIZE_ENEMY[(*enemies)[iEnemy].id] > (2-RESET_MOVE_ENEMY[(*enemies)[iEnemy].id])*BACKGROUND_DEST.w) || ((*enemies)[iEnemy].dir == -1 && (*enemies)[iEnemy].x < (1+RESET_MOVE_ENEMY[(*enemies)[iEnemy].id]) * BACKGROUND_DEST.w))){
+				(*enemies)[iEnemy].dir *= -1;
+				(*enemies)[iEnemy].nbMove--;
+			}
+		}
+		else if( TYPE_MOVE_ENEMY[(*enemies)[iEnemy].id] == BESACE){
 
+			(*enemies)[iEnemy].coefs[0]+= (*enemies)[iEnemy].dir * PI/90;
+			while((*enemies)[iEnemy].coefs[0] > 2* PI )
+				(*enemies)[iEnemy].coefs[0] -= 2 * PI;
+			while((*enemies)[iEnemy].coefs[0] < 0 )
+				(*enemies)[iEnemy].coefs[0] += 2 * PI;
 
+			(*enemies)[iEnemy].coefs[1] += (*enemies)[iEnemy].coefs[3] * (*enemies)[iEnemy].abscisses[2] / 6; // shift x
+			if((*enemies)[iEnemy].coefs[1] > 100 || (*enemies)[iEnemy].coefs[1] < -100)
+				(*enemies)[iEnemy].coefs[3] *= -1;
+
+			(*enemies)[iEnemy].x = BASE_WINDOW_W/2 - (ENEMY_SRC[(*enemies)[iEnemy].id].w / RATIO_SIZE_ENEMY[(*enemies)[iEnemy].id])/2 +(*enemies)[iEnemy].abscisses[0] * cos((*enemies)[iEnemy].coefs[0]) - (*enemies)[iEnemy].abscisses[1] * sin((*enemies)[iEnemy].coefs[0]);
+			(*enemies)[iEnemy].y = (*enemies)[iEnemy].coefs[2] - sin((*enemies)[iEnemy].coefs[0]) * ((*enemies)[iEnemy].x - BASE_WINDOW_W/2 + (ENEMY_SRC[(*enemies)[iEnemy].id].w / RATIO_SIZE_ENEMY[(*enemies)[iEnemy].id])/2);
+
+			(*enemies)[iEnemy].x += (*enemies)[iEnemy].coefs[1];
+
+			if((*enemies)[iEnemy].coefs[2] < MAX_Y_BOSS)
+				(*enemies)[iEnemy].coefs[2] += MOVE_Y_BOSS;
+		}
 	}
-	else if((*enemies)[iEnemy].frameWait == 0){
-		(*enemies)[iEnemy].x += SPEED_ENEMY[(*enemies)[iEnemy].id];
-	}
 
-	if((*enemies)[iEnemy].x < BACKGROUND_DEST.x - ENEMY_SRC[(*enemies)[iEnemy].id].w / RATIO_SIZE_ENEMY[(*enemies)[iEnemy].id]  || (*enemies)[iEnemy].x > BACKGROUND_DEST.x + BACKGROUND_DEST.w){
+	if(!(TYPE_MOVE_ENEMY[(*enemies)[iEnemy].id] == BESACE && (*enemies)[iEnemy].coefs[2] < MAX_Y_BOSS))
+	if((*enemies)[iEnemy].x < BACKGROUND_DEST.x - ENEMY_SRC[(*enemies)[iEnemy].id].w / RATIO_SIZE_ENEMY[(*enemies)[iEnemy].id] - 1  || (*enemies)[iEnemy].x > BACKGROUND_DEST.x + BACKGROUND_DEST.w + 1
+			|| (*enemies)[iEnemy].y < -ENEMY_SRC[(*enemies)[iEnemy].id].h / RATIO_SIZE_ENEMY[(*enemies)[iEnemy].id] - 1 || (*enemies)[iEnemy].y > BACKGROUND_DEST.h +1){
+				printf("out !! %f %f\n",(*enemies)[iEnemy].x, (*enemies)[iEnemy].y);
 		shiftEnemy(*enemies, *nbEnemy, iEnemy);
 		(*nbEnemy)--;
 		if(*nbEnemy !=0)
 			*enemies=realloc(*enemies, sizeof(Enemy)* *nbEnemy );
+
 	}
 }
 
@@ -470,16 +517,37 @@ void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
 	double x[NMAX];
 	double f[NMAX];
 	double d[NMAX];
-	if(id == BASE_ENEMY){
-		x[0] = BACKGROUND_DEST.x - ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY];
-		f[0] = rand()%300+100;
-		for(int i=1; i<NMAX; i++){
-			x[i] = x[i-1] + (BACKGROUND_DEST.w + ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY])/3;
-			f[i] = rand()%250+100;
+	if(TYPE_MOVE_ENEMY[id] == INTERPOLATION){
+		int path = rand()%3;
+		if(path == 2){
+			x[0] = BACKGROUND_DEST.x - ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY];
+			f[0] = rand()%360+90;
+			for(int i=1; i<NMAX; i++){
+				x[i] = x[i-1] + (BACKGROUND_DEST.w + ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY])/3;
+				f[i] = rand()%350+100;
+			}
+			it_coef_lagrange(3,x,f,d);
 		}
-		//x[NMAX-1] = BACKGROUND_DEST.x + BACKGROUND_DEST.w + ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY];
-
-		it_coef_lagrange(3,x,f,d);
+		else if(path ==1){
+			x[0] = BACKGROUND_DEST.x - ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY];
+			f[0] = rand()%360+90;
+			x[NMAX-1] = 2*BACKGROUND_DEST.w - rand()%120 -10 - ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY];
+			f[NMAX-1] = -ENEMY_SRC[BASE_ENEMY].h/RATIO_SIZE_ENEMY[BASE_ENEMY];
+			for(int i=NMAX-2; i>0; i--){
+				x[i] = x[i+1] - (2*BACKGROUND_DEST.w - x[0] )/3;
+				f[i] = rand()%360+90;
+			}
+			it_coef_lagrange(3,x,f,d);
+		}
+		else {
+			x[0] = BACKGROUND_DEST.w + rand()%120 +10;
+			f[0] = -ENEMY_SRC[BASE_ENEMY].h/RATIO_SIZE_ENEMY[BASE_ENEMY];
+			for(int i=1; i<NMAX; i++){
+				x[i] = x[i-1] + (2*BACKGROUND_DEST.w - x[0] )/3;
+				f[i] = rand()%360+90;
+			}
+			it_coef_lagrange(3,x,f,d);
+		}
 	}
 
 	int dir = randSign();
@@ -488,20 +556,33 @@ void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
 		(*enemies)[i] = (Enemy){
 			id, //id
 			BACKGROUND_DEST.x - ENEMY_SRC[id].w/RATIO_SIZE_ENEMY[id], //x
-			200, //y
+			SPAWN_ENEMY_Y[id], //y
 			0, //rota
 			ENEMY_HP[id], //hp
 			0, // framehit
 			0, //dist
 			FRAME_MULTI_SPAWN[id] * (*nbEnemy-1 -i),//frameWait
 			dir, //dir
+			0, //nbMove
 			NB_WEAPON_ENEMY[id] //nbWeapon
 		};
-		printf("dir : %d\n", (*enemies)[i].dir);
-		for(int j=0; j<= (*enemies)[i].nbWeapon; j++)
-            (*enemies)[i].weapons[j] = WEAPONS_ENEMY[id][j];
 
-		if(id == BASE_ENEMY){
+		for(int j=0; j<= (*enemies)[i].nbWeapon; j++){
+			(*enemies)[i].weapons[j] = WEAPONS_ENEMY[id][j];
+			if(RELOAD_FRAME_RAND_ENEMY[(*enemies)[i].id][j] > 0)
+				(*enemies)[i].weapons[j].frame_reload +=  FRAME_MULTI_SPAWN[id] * (*nbEnemy-1 -i) + rand()%RELOAD_FRAME_RAND_ENEMY[(*enemies)[i].id][j];
+			else
+				(*enemies)[i].weapons[j].frame_reload = (*enemies)[i].weapons[-RELOAD_FRAME_RAND_ENEMY[(*enemies)[i].id][j]].frame_reload;
+
+			if(COMBO_RAND_ENEMY[(*enemies)[i].id][j] > 0)
+				(*enemies)[i].weapons[j].combo = COMBO_ENEMY[(*enemies)[i].id][j] + rand()%COMBO_RAND_ENEMY[(*enemies)[i].id][j];
+			else
+				(*enemies)[i].weapons[j].combo = (*enemies)[i].weapons[-COMBO_RAND_ENEMY[(*enemies)[i].id][j]].combo;
+		}
+
+		(*enemies)[i].nbMove = NB_MOVE_ENEMY[id];
+
+		if(TYPE_MOVE_ENEMY[id] == INTERPOLATION){
 			for(int j=0; j<NMAX; j++){
 				(*enemies)[i].abscisses[j] = x[j];
 				(*enemies)[i].coefs[j] = d[j];
@@ -509,8 +590,29 @@ void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
 			(*enemies)[i].x = x[(*enemies)[i].dir == 1 ? 0: NMAX-1];
 			(*enemies)[i].y = f[(*enemies)[i].dir == 1 ? 0: NMAX-1];
 		}
-	}
+		else if(TYPE_MOVE_ENEMY[id] == ROUND_TRIP){
+			if(dir == -1){
+				(*enemies)[i].x += BACKGROUND_DEST.w +ENEMY_SRC[id].w/RATIO_SIZE_ENEMY[id];
+			}
+		}
+		else if(TYPE_MOVE_ENEMY[id] == BESACE){/*https://fr.wikipedia.org/wiki/Besace_(math%C3%A9matiques)*/
+			(*enemies)[i].abscisses[0] = 50 + rand()%80;//a
+			(*enemies)[i].abscisses[1] = 40 + rand()%60;//b
+			(*enemies)[i].abscisses[2] = rand()%2 + 2; //x ammount
+			(*enemies)[i].coefs[0] = (rand()%(int)( 2*PI * PRECISION_RAND_FLOAT))/PRECISION_RAND_FLOAT; //t
+			(*enemies)[i].coefs[1] = rand()%201 -100; //dx
+			(*enemies)[i].coefs[2] = -220; //dy
+			(*enemies)[i].coefs[3] = randSign(); //dx
+			(*enemies)[i].x = BASE_WINDOW_W/2 + (*enemies)[i].coefs[1] - (ENEMY_SRC[(*enemies)[i].id].w / RATIO_SIZE_ENEMY[(*enemies)[i].id])/2 +(*enemies)[i].abscisses[0] * cos((*enemies)[i].coefs[0]) - (*enemies)[i].abscisses[1] * sin((*enemies)[i].coefs[0]);
+			(*enemies)[i].y = (*enemies)[i].coefs[2] - sin((*enemies)[i].coefs[0]) * ((*enemies)[i].x - BASE_WINDOW_W/2 + (ENEMY_SRC[(*enemies)[i].id].w / RATIO_SIZE_ENEMY[(*enemies)[i].id])/2);
+
+		}
+
+        printf("%f %f \n", (*enemies)[i].x, (*enemies)[i].y);
 }
+	}
+
+
 
 void myFrees(Enemy ** enemies, Missile ** allyMissiles, Missile ** enemyMissiles){
 	if(*enemies)
@@ -608,51 +710,6 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		};
 
 		int nbEnemy = 0;
-		 spawnEnemy(&enemies, &nbEnemy, 0, 5);
-		spawnEnemy(&enemies, &nbEnemy, 1, 1);
-		spawnEnemy(&enemies, &nbEnemy, 2, 1);
-
-		/*enemies[0] = (Enemy){
-			BASE_ENEMY, //id
-			BACKGROUND_DEST.x, //abcise
-			x[0], //x
-			200, //y
-			0, //rota
-			10, //hp
-			0, //nbWeapon
-			{{W_BASE_ENEMY, 0},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1}},
-			0, // framehit
-			//abcises
-            //coefs
-		};*/
-
-		/*enemies[1] = (Enemy){
-			LASER_ENEMY, //id
-			BACKGROUND_DEST.x, //abcise
-			BASE_WINDOW_W/2, //x
-			400, //y
-			0, //rota
-			3, //hp
-			3, //nbWeapon
-			{{W_BASE_ENEMY, 0},{W_LASER_ENEMY, 0},{W_LASER_ENEMY, 0},{W_BASE_ENEMY, 0},{NO_WEAPON, -1},{NO_WEAPON, -1},{NO_WEAPON, -1}},
-			0, // framehit
-			//abcises
-			//coefs
-		};*/
-
-		/*enemies[2] = (Enemy){
-			BOSS_ENEMY, //id
-			BACKGROUND_DEST.x, //abcise
-			BASE_WINDOW_W/2, //x
-			700, //y
-			0, //rota
-			5, //hp
-			6, //nbWeapon
-			{{W_BASE_ENEMY, 0},{W_BASE_ENEMY, 0},{W_BASE_ENEMY, 0},{W_LASER_ENEMY, 0},{W_BASE_ENEMY, 0},{W_BASE_ENEMY, 0},{W_BASE_ENEMY, 0}},
-			0, // framehit
-			//abcises
-			//coefs
-		};*/
 
 		int nbAllyMissiles = 0;
 		int nbEnemyMissiles = 0;
@@ -661,7 +718,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		 // // // // // // // //
 		//   Initialize vars   //
 		 // // // // // // // //
-
+		 int r = 0;
 	 // // // // // // //
 	//   BOUCLE DU JEU  //``
 	 // // // // // // //
@@ -679,7 +736,6 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 						break;
 				}
 			}
-
 
 		 // // // // // // // // //
 		// Handle Keyboard inputs //`
@@ -754,18 +810,20 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		// Gameplay //`
 		// // // // //
 		if(nbEnemy == 0){
-			int r = rand()%9;
-			if(r<5)
-				spawnEnemy(&enemies, &nbEnemy, 0, 4 + rand()%3);
-			else if (r<7)
+
+			if(r%6<=2)
+				spawnEnemy(&enemies, &nbEnemy, 0, 5 + rand()%4);
+			else if (r%6<=4)
 				spawnEnemy(&enemies, &nbEnemy, 1, 1);
 			else
 				spawnEnemy(&enemies, &nbEnemy, 2, 1);
+
+			r++;
 		}
 
 
 		for(int i=0; i<nbEnemy; i++)
-			enemyFire(&(enemies[i]), &enemyMissiles, &nbEnemyMissiles);
+			enemyFire(&(enemies[i]), &enemyMissiles, &nbEnemyMissiles, ship);
 
 		//move missiles
 		for(int i=0; i<nbAllyMissiles; i++)
@@ -837,7 +895,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		 // // //
 			drawBackground(renderer, textures[SH_BACKGROUND], backgroundSrc, backgroundDest);
 
-			if(nbEnemy && enemies[0].id == BASE_ENEMY){
+			/*if(nbEnemy && enemies[0].id == BASE_ENEMY){
 				for(int i=enemies[0].abscisses[0]; i<=BACKGROUND_DEST.x + BACKGROUND_DEST.w ; i++){
 					SDL_SetRenderDrawColor(renderer, 0,255,0,255);
 					if(i == roundf(enemies[0].abscisses[0]) || i == roundf(enemies[0].abscisses[1]) || i == roundf(enemies[0].abscisses[2]) || i == roundf(enemies[0].abscisses[3]))
@@ -845,10 +903,10 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 					SDL_RenderDrawPoint(renderer, i + (ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY])/2, it_pol_lagrange(3,enemies[0].coefs,enemies[0].abscisses,i)+ (ENEMY_SRC[BASE_ENEMY].h/RATIO_SIZE_ENEMY[BASE_ENEMY])/2);
 				}
 
-				/*SDL_SetRenderDrawColor(renderer, 255,255,255,255);
+				SDL_SetRenderDrawColor(renderer, 255,255,255,255);
 				for(int i=0; i<NMAX; i++)
-					SDL_RenderDrawPoint(renderer, x[i], f[i]);*/
-			}
+					SDL_RenderDrawPoint(renderer, x[i], f[i]);
+			}*/
 
 
 			for(int i=0; i<nbAllyMissiles; i++)
@@ -888,7 +946,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 					enemies[i].frameWait--;
 
 				if(enemies[i].id == BASE_ENEMY)
-					enemies[i].rota += 6;
+					enemies[i].rota += enemies[i].dir * 6;
 			}
 
 			//reload
