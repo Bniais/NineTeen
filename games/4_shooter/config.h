@@ -57,14 +57,16 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 	#define RATIO_SPEED_DOWN 0.9
 	typedef struct Weapon_s{int id; int frame_reload; int combo;}Weapon;
 	typedef struct Ship_s{float x; float y; int dir; int form; int nbWeapon; Weapon weapons[NB_MAX_WEAPON];}Ship;
-	#define RATIO_SIZE_SHIP 1.55
+	#define RATIO_SIZE_SHIP 1.65
 	#define NB_SHIP_FORMS 3
 	const SDL_Rect  SHIP_SRC = {0, 0, 132, 170};
 	const SDL_Point SHIP_CENTER = {66, 66};
+
+	#define FAIR_HITBOX_SHIP 2
 	const Ellips  SHIP_HITBOX[NB_SHIP_FORMS] = {
-		{66/RATIO_SIZE_SHIP, 70.5/RATIO_SIZE_SHIP, 38.5/RATIO_SIZE_SHIP, 49.5/RATIO_SIZE_SHIP},
-		{65.5/RATIO_SIZE_SHIP, 71/RATIO_SIZE_SHIP, 44.5/RATIO_SIZE_SHIP, 49/RATIO_SIZE_SHIP},
-		{66/RATIO_SIZE_SHIP, 66/RATIO_SIZE_SHIP, 44/RATIO_SIZE_SHIP, 51/RATIO_SIZE_SHIP},
+		{66/RATIO_SIZE_SHIP, 70.5/RATIO_SIZE_SHIP, (38.5 -FAIR_HITBOX_SHIP)/RATIO_SIZE_SHIP, (49.5-FAIR_HITBOX_SHIP)/RATIO_SIZE_SHIP},
+		{65.5/RATIO_SIZE_SHIP, 71/RATIO_SIZE_SHIP, (44.5-FAIR_HITBOX_SHIP)/RATIO_SIZE_SHIP, (49-FAIR_HITBOX_SHIP)/RATIO_SIZE_SHIP},
+		{66/RATIO_SIZE_SHIP, 66/RATIO_SIZE_SHIP, (44-FAIR_HITBOX_SHIP)/RATIO_SIZE_SHIP, (51-FAIR_HITBOX_SHIP)/RATIO_SIZE_SHIP},
 	};
 
 	SDL_Rect DIST_BORD_VAISS = {27/RATIO_SIZE_SHIP, 20/RATIO_SIZE_SHIP, 105/RATIO_SIZE_SHIP, 113/RATIO_SIZE_SHIP};
@@ -75,12 +77,13 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 	#define NB_ENEMY_MISSILES 2
 	#define NO_WEAPON -1
 	typedef enum{W_BASE, W_ZIGZAG, W_AUTOAIM, W_BASE_ENEMY, W_LASER_ENEMY}WEAPONS;
-	const float RATIO_SIZE_MISSILE[NB_ALLY_MISSILES + NB_ENEMY_MISSILES] = {1, 1, 1, 0.4, 1};
+
 	#define RATIO_SIZE_MISSILE_0 1
 	#define RATIO_SIZE_MISSILE_1 1
 	#define RATIO_SIZE_MISSILE_2 1
-	#define RATIO_SIZE_MISSILE_3 0.5
+	#define RATIO_SIZE_MISSILE_3 0.4
 	#define RATIO_SIZE_MISSILE_4 1
+	const float RATIO_SIZE_MISSILE[NB_ALLY_MISSILES + NB_ENEMY_MISSILES] = {RATIO_SIZE_MISSILE_0, RATIO_SIZE_MISSILE_1, RATIO_SIZE_MISSILE_2, RATIO_SIZE_MISSILE_3, RATIO_SIZE_MISSILE_4};
 
 	typedef struct Missile_s{float x; float y; int id; float rota; float damage; float speed; int frame;}Missile;
 	 Ellips MISSILE_HITBOX[NB_ALLY_MISSILES + NB_ENEMY_MISSILES] = {
@@ -95,7 +98,7 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 		{0,0,38,68},
 		{0,0,38,68},
 		{0,0,38,68},
-		{38,0,60,62},
+		{38,0,60,68},
 		{98,0,64,210}
 	};
 
@@ -107,7 +110,7 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 		{32*RATIO_SIZE_MISSILE_4, 120*RATIO_SIZE_MISSILE_4}
 	};
 
-	const float MISSILE_SPEED[NB_ALLY_MISSILES] ={18, 18, 18};
+	const float MISSILE_SPEED[NB_ALLY_MISSILES] ={24, 18, 18};
 	const int RELOAD_FRAME[NB_ALLY_MISSILES] = {10};
 	static const float TAILLE_EXPLOSIONS[NB_ALLY_MISSILES + NB_ENEMY_MISSILES] = {1, 1, 1, 1, 1};
 
@@ -123,10 +126,11 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 		{0,0,150,109},
 		{0,0,213,143}
 	};
-	const float RATIO_SIZE_ENEMY[NB_ENEMY] = {1.5, 1.25, 0.7};
 	#define RATIO_SIZE_ENEMY_0 1.5
 	#define RATIO_SIZE_ENEMY_1 1.25
 	#define RATIO_SIZE_ENEMY_2 0.7
+	const float RATIO_SIZE_ENEMY[NB_ENEMY] = {RATIO_SIZE_ENEMY_0, RATIO_SIZE_ENEMY_1, RATIO_SIZE_ENEMY_2};
+
 
 	const float SPEED_ENEMY[NB_ENEMY] = {5.3, 6.3, 5};
 	#define SPEED_DECOMPOSITION 5
@@ -151,13 +155,13 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 	const int RELOAD_FRAME_ENEMY[NB_ENEMY][NB_MAX_WEAPON_ENEMY] ={
 		{50},
 		{40, 80, 80, 40},
-		{50, 55, 60, 100, 60, 55, 50}
+		{66, 66, 66, 100, 66, 66, 66}
 	};
 
 	const int RELOAD_FRAME_RAND_ENEMY[NB_ENEMY][NB_MAX_WEAPON_ENEMY] ={
 		{20},
 		{15, 20, -1, 0},
-		{10, 20, 30, 20, -2, -1, 0}
+		{20, 0, 0, 30, 0, 0, 0}
 	};
 
 	const int COMBO_ENEMY[NB_ENEMY][NB_MAX_WEAPON_ENEMY] ={
@@ -169,13 +173,13 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 	const int COMBO_RAND_ENEMY[NB_ENEMY][NB_MAX_WEAPON_ENEMY] ={
 		{1},
 		{3, 1, -1, 0},
-		{1, 2, 2, 1, -2, -1, 0}
+		{2, 3, 2, 1, -2, -1, 0}
 	};
 
 	const int RELOAD_FRAME_COMBO_ENEMY[NB_ENEMY][NB_MAX_WEAPON_ENEMY] ={
 		{0},
 		{2, 8, 8, 2},
-		{3, 3, 2, 14, 2, 3, 3}
+		{3, 3, 2, 15, 2, 3, 3}
 	};
 
 	enum{AIMED, STRAIGHT};
@@ -186,14 +190,14 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 	};
 
 	const float ANGLE_ENEMY_FIRE[NB_ENEMY][NB_MAX_WEAPON_ENEMY] ={
-		{PI/6},
-		{PI/6, 0, 0, PI/6},
-		{PI/6, PI/6, PI/6, 0, PI/6, PI/6, PI/6}
+		{PI/5},
+		{PI/8, 0, 0, PI/8},
+		{PI/5, PI/5, PI/5, 0, PI/5, PI/5, PI/5}
 	};
 
 	const float MISSILE_SPEED_ENEMY[NB_ENEMY][NB_MAX_WEAPON_ENEMY] ={
-		{8},
-		{10, 40, 40, 10},
+		{6},
+		{9, 45, 45, 9},
 		{8, 7, 6, 60, 6, 7, 8}
 	};
 
@@ -212,7 +216,7 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 	//laser enemy
 	enum{INTERPOLATION, ROUND_TRIP, BESACE};
 	const float TYPE_MOVE_ENEMY[NB_ENEMY] = {INTERPOLATION, ROUND_TRIP, BESACE};
-	const int NB_MOVE_ENEMY[NB_ENEMY] = {0, 7, 4};
+	const int NB_MOVE_ENEMY[NB_ENEMY] = {0, 7, 5};
 	const float RESET_MOVE_ENEMY[NB_ENEMY] = {0, 0.05, 0.01};
 	#define MAX_Y_BOSS 60
 	#define MOVE_Y_BOSS 2.3
