@@ -1,6 +1,52 @@
 <?php
 	include('include/secure.php');
 
+	$result = $link->query("SELECT count FROM nineteen_downloads");
+	while ($row = $result->fetch_assoc()) { $compteur = $row["count"]; }
+
+	if($_SERVER['REQUEST_METHOD'] == 'GET')
+	{
+
+		$file = $_GET["file"];
+		$lancerTelechargement = FALSE;
+
+		if($file == "mac")
+		{
+			$fichier = 'download/Nineteen_v1.1.1.zip';
+			$fichier_taille = filesize($fichier);
+			$lancerTelechargement = TRUE;
+		}
+		else if ($file == "windows")
+		{
+			$fichier = 'download/Nineteen_v1.1.1.exe';
+			$fichier_taille = filesize($fichier);
+			$lancerTelechargement = TRUE;
+		}
+		else if ($file == "linux")
+		{?>
+			<script language="javascript">
+				alert("Bientot disponible");
+			</script>
+			<?php
+		}
+
+		if($lancerTelechargement)
+		{
+			header("Content-disposition: attachment; filename=$fichier");
+			header("Content-Type: application/force-download");
+			header("Content-Transfer-Encoding: application/octet-stream");
+			header("Content-Length: $fichier_taille");
+			header("Pragma: no-cache");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0, public");
+			header("Expires: 0");
+			readfile($fichier);
+
+			// SEND REQUEST
+			$result = $link->query("UPDATE nineteen_downloads SET count = count + 1");
+		}
+
+	}
+
 	if($_SERVER['REQUEST_METHOD'] == 'POST')
 	{
 		$message = $_POST["message"];
@@ -46,17 +92,31 @@ function getClientIP(){
 
 			<div class= "jeu" style="margin-right: 2%; float:right; width:30vw;">
 				<h1>Liens de téléchargement</h1>
-				<a href="download/Nineteen_v1.1.0.zip"> <img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/MacOS_logo_%282017%29.svg/768px-MacOS_logo_%282017%29.svg.png" alt="logo apple"></a>
-				<a href="download/Nineteen_v1.1.0.exe"><img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Windows_logo_–_2012_%28dark_blue%29.svg/768px-Windows_logo_–_2012_%28dark_blue%29.svg.png" alt="logo apple"></a>
-	<!--			<a href="#"><img style="width: 4vw; " src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Ubuntu-Logo_ohne_Schriftzug.svg/1200px-Ubuntu-Logo_ohne_Schriftzug.svg.png" alt="logo apple"></a> -->
+				<a href="download.php?file=mac"> <img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/MacOS_logo_%282017%29.svg/768px-MacOS_logo_%282017%29.svg.png" alt="logo apple"></a>
+				<a href="download.php?file=windows"><img style="width: 4vw; margin-right: 10%;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Windows_logo_–_2012_%28dark_blue%29.svg/768px-Windows_logo_–_2012_%28dark_blue%29.svg.png" alt="logo apple"></a>
+			  <a href="download.php?file=linux"><img style="width: 4vw; " src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Ubuntu-Logo_ohne_Schriftzug.svg/1200px-Ubuntu-Logo_ohne_Schriftzug.svg.png" alt="logo apple"></a>
 				<br>
 				<br>
+				<a>Compteur de téléchargement : <?php echo $compteur ?></a>
 				<hr>
 				<h2>Version actuelle :  <?php include("checkVersion.php"); echo $versionActuel ?></h2>
 			</div>
 			<div class= "jeu" style="margin-right: 2%; float:right; width:30vw;">
 				<h1>Note de mise à jour</h1>
 				<br>
+
+
+				<h2>Version : 1.1.1</h2>
+        <ul style="text-align: left;">
+          <li>Flappy :</li>
+            <ul>
+								<li>Équilibrage du mode hard</li>
+				        <li>Résolution de bug de score</li>
+            </ul>
+        </ul>
+        <br>
+        <br>
+				<hr>
 
 				<h2>Version : 1.1.0</h2>
                 <ul style="text-align: left;">
@@ -84,7 +144,7 @@ function getClientIP(){
                 <br>
                 <br>
                 <hr>
-								
+
 				<h2>Version : 1.0.1</h2>
 					<ul style="text-align: left;">
 						<li>Global :</li>
