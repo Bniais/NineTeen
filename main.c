@@ -1,13 +1,13 @@
 /////////////////////////////////////////////////
 ///	\file main.c
 ///	\author Samy M.
-///	\version 1.0
+///	\version 1.1.2
 ///	\date 31 janvier 2020
 ///	\brief regroupe le launcher ainsi que le programme principal du jeu
 /////////////////////////////////////////////////
 
-#define VERSION_LOGICIEL "version=1.1.1"
-#define VERSION "1.1.1"
+#define VERSION_LOGICIEL "version=1.1.2"
+#define VERSION "1.1.2"
 
 #ifdef _WIN32
 #define WESNOTH_EXPORT __declspec(dllexport)
