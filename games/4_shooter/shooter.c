@@ -375,10 +375,6 @@ void drawMissile(SDL_Renderer *renderer, Missile missile, SDL_Texture *textureMi
 	SDL_RenderCopyEx(renderer, textureMissile, &src, &dest, missile.rota * 180/PI, &MISSILE_CENTER[missile.id], SDL_FLIP_NONE);
 
 	SDL_SetRenderDrawColor(renderer, 0,255,0,255);
-	SDL_RenderDrawPoint(renderer, missile.x, missile.y+1);
-	SDL_RenderDrawPoint(renderer, missile.x, missile.y-1);
-	SDL_RenderDrawPoint(renderer, missile.x+1, missile.y);
-	SDL_RenderDrawPoint(renderer, missile.x-1, missile.y);
 }
 
 void drawBackground(SDL_Renderer *renderer, SDL_Texture *textureBackground, SDL_Rect *backgroundSrc, SDL_Rect *backgroundDest){
@@ -925,20 +921,6 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		// Draw //`
 		 // // //
 			drawBackground(renderer, textures[SH_BACKGROUND], backgroundSrc, backgroundDest);
-
-			/*if(nbEnemy && enemies[0].id == BASE_ENEMY){
-				for(int i=enemies[0].abscisses[0]; i<=BACKGROUND_DEST.x + BACKGROUND_DEST.w ; i++){
-					SDL_SetRenderDrawColor(renderer, 0,255,0,255);
-					if(i == roundf(enemies[0].abscisses[0]) || i == roundf(enemies[0].abscisses[1]) || i == roundf(enemies[0].abscisses[2]) || i == roundf(enemies[0].abscisses[3]))
-						SDL_SetRenderDrawColor(renderer, 255,0,0,255);
-					SDL_RenderDrawPoint(renderer, i + (ENEMY_SRC[BASE_ENEMY].w/RATIO_SIZE_ENEMY[BASE_ENEMY])/2, it_pol_lagrange(3,enemies[0].coefs,enemies[0].abscisses,i)+ (ENEMY_SRC[BASE_ENEMY].h/RATIO_SIZE_ENEMY[BASE_ENEMY])/2);
-				}
-
-				SDL_SetRenderDrawColor(renderer, 255,255,255,255);
-				for(int i=0; i<NMAX; i++)
-					SDL_RenderDrawPoint(renderer, x[i], f[i]);
-			}*/
-
 
 			for(int i=0; i<nbAllyMissiles; i++)
 				drawMissile(renderer, allyMissiles[i], textures[SH_MISSILE]);
