@@ -12,13 +12,13 @@
 
 		if($file == "mac")
 		{
-			$fichier = 'download/Nineteen_v1.1.1.zip';
+			$fichier = 'download/Nineteen_v1.1.2.zip';
 			$fichier_taille = filesize($fichier);
 			$lancerTelechargement = TRUE;
 		}
 		else if ($file == "windows")
 		{
-			$fichier = 'download/Nineteen_v1.1.1.exe';
+			$fichier = 'download/Nineteen_v1.1.2.exe';
 			$fichier_taille = filesize($fichier);
 			$lancerTelechargement = TRUE;
 		}
@@ -105,6 +105,21 @@ function getClientIP(){
 				<h1>Note de mise à jour</h1>
 				<br>
 
+				<h2>Version : 1.1.2</h2>
+                <ul style="text-align: left;">
+
+                    <li>Asteroid :</li>
+                    <ul>
+                        <li>Correction de bug de collision en mode difficile</li>
+                    </ul>
+                    <li>Space Shooter :</li>
+                    <ul>
+                        <li>Amélioration des mouvements et attaques des ennemis</li>
+                    </ul>
+                </ul>
+								<br>
+								<br>
+								<hr>
 
 				<h2>Version : 1.1.1</h2>
         <ul style="text-align: left;">
