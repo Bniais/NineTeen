@@ -169,9 +169,12 @@ int statutPorteHomme = FERMER;
 
 
 enum { SCORE,FLAPPY_HARD,TETRIS_HARD,ASTEROID_HARD,SHOOTER_HARD,SNAKE_HARD,DEMINEUR_HARD,DEMINEUR_EASY,SNAKE_EASY,SHOOTER_EASY,ASTEROID_EASY,TETRIS_EASY,FLAPPY_EASY};
-char adresseFontImg[16][64]={"../room/textures/flappy_hard_font.jpg","../room/textures/tetris_font.jpg","../room/textures/asteroid_font_hard.jpg","../room/textures/shooter_font.jpg","../room/textures/snake_font.jpg","../room/textures/demineur_font.jpg",
+#define NB_BORNES 16
+char adresseFontImg[NB_BORNES][64]={"../room/textures/flappy_hard_font.jpg","../room/textures/tetris_font.jpg","../room/textures/asteroid_font_hard.jpg","../room/textures/shooter_font.jpg","../room/textures/snake_font.jpg","../room/textures/demineur_font.jpg",
 														 "../room/textures/demineur_font.jpg","../room/textures/snake_font.jpg","../room/textures/shooter_font.jpg","../room/textures/asteroid_font.jpg","../room/textures/tetris_font.jpg","../room/textures/flappy_easy_font.jpg",
 														 "../room/textures/chargement.jpg","../room/textures/chargement.jpg","../room/textures/chargement.jpg","../room/textures/leaderboard_font.jpg"}; /// STOCK LES POSITIONS
+
+int (*lancerJeu[NB_BORNES])(SDL_Renderer *,int , int , int , char *, int , SDL_Texture **) = {flappy_bird, tetris, asteroid, shooter, snake, demineur, demineur, snake, shooter, asteroid, tetris, flappy_bird};
 
 #ifdef _WIN32
   #define DIR_TOKEN_FILE "C:\\Windows\\Temp\\.Nineteen"
@@ -287,6 +290,7 @@ int loadGameTexture(loadGame * load){
 		}
 		return SDL_TRUE;
 }
+
 
 
 /////////////////////////////////////////////////////
@@ -2718,76 +2722,23 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 
 
-              #ifdef _WIN32
+              				#ifdef _WIN32
 							if(optionFullScreen ){
 								SDL_MinimizeWindow(Window);
 								SDL_MaximizeWindow(Window);
 							}
 							#endif
 
+							SDL_ShowCursor(SDL_TRUE);
 
-							///////////////////////////////////////////////////
-							// CASE POUR CHAQUE MACHINE
-							// AVEC UPDATE DU SCORE A L ISSUS
-							switch (machine) {
-								case 1:
-									flappy_bird( pRenderer, meilleureScore[FLAPPY_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
-									updateMeilleureScore(meilleureScore,token);
-									break;
-								case 2:
-									tetris( pRenderer ,meilleureScore[TETRIS_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
-									updateMeilleureScore(meilleureScore,token);
-									break;
-								case 3:
-									asteroid( pRenderer ,meilleureScore[ASTEROID_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
-									updateMeilleureScore(meilleureScore,token);
-									break;
-								case 4:
-									shooter( pRenderer ,meilleureScore[SHOOTER_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
-									break;
-								case 5:
-									snake( pRenderer ,meilleureScore[SNAKE_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
-									updateMeilleureScore(meilleureScore,token);
-									break;
-								case 6:
-									SDL_ShowCursor(SDL_ENABLE);
-									demineur(pRenderer, meilleureScore[DEMINEUR_HARD].scoreJoueurActuel,WinWidth,WinHeight,token,1);
-									SDL_ShowCursor(SDL_DISABLE);
-									break;
-								case 7:
-									SDL_ShowCursor(SDL_ENABLE);
-									demineur(pRenderer, meilleureScore[DEMINEUR_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0);
-									SDL_ShowCursor(SDL_DISABLE);
-									break;
-								case 8:
-									snake( pRenderer ,meilleureScore[SNAKE_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
-									updateMeilleureScore(meilleureScore,token);
-									break;
-								case 9:
-									shooter( pRenderer ,meilleureScore[SHOOTER_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
-									break;
-								case 10:
-									asteroid( pRenderer ,meilleureScore[ASTEROID_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
-									updateMeilleureScore(meilleureScore,token);
-									break;
-								case 11:
-									tetris( pRenderer ,meilleureScore[TETRIS_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
-									updateMeilleureScore(meilleureScore,token);
-									break;
-								case 12:
-									flappy_bird( pRenderer, meilleureScore[FLAPPY_EASY].scoreJoueurActuel,WinWidth,WinHeight,token,0, textures);
-									updateMeilleureScore(meilleureScore,token);
-									break;
-								case 13: SDL_Delay(500);break;
-								case 14: SDL_Delay(500);break;
-								case 15: SDL_Delay(500);break;
-								case 16:
-									SDL_ShowCursor(SDL_TRUE);
-									leaderboard(pRenderer,WinWidth,WinHeight,meilleureScore[0].multiplicator);
-									SDL_ShowCursor(SDL_FALSE);
-									break;
-								default:break;
+							if(machine <= 12){
+								lancerJeu[machine-1](pRenderer, meilleureScore[machine].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
+								updateMeilleureScore(meilleureScore,token);
 							}
+							else if(machine == 16)
+								leaderboard(pRenderer,WinWidth,WinHeight,meilleureScore[0].multiplicator);
+
+							SDL_ShowCursor(SDL_FALSE);
 
 
 							///////////////////////////////////////////////////
