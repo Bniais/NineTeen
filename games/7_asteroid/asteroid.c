@@ -35,7 +35,7 @@ void asteroidInit(){
 	Mix_Volume(7, 128);//hit
 	Mix_Volume(8, 128);//nuclear
 	for(int i = 9; i < 9+NB_CHANNEL_EXPLOSION; i++)
-		Mix_Volume(i, 50);//explo
+		Mix_Volume(i, 15);//explo
 
 	Mix_Volume(9+NB_CHANNEL_EXPLOSION, 0);//thrust principal
 	Mix_Volume(9+NB_CHANNEL_EXPLOSION+1, 0);//thrust gauche
