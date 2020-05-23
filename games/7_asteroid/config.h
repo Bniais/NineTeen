@@ -345,6 +345,7 @@ typedef struct{float x; float y; int frame; int size; int alive;}Pickup;
 #define FRAME_SPAWN_PICKUP 18
 #define DIST_WALL_PICKUP 140
 #define CHANCE_SPAWN_PICKUP (FRAMES_PER_SECOND*8)
+#define DIST_VAISS_PICKUP 70
 
 //Window
 #define FRAMES_PER_SECOND 30

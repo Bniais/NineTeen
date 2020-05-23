@@ -1780,7 +1780,7 @@ void spawnPickup(Pickup *pickup, Vaiss vaisseau){
 	do{
 		pickup->x = rand()%(PLAYGROUND_SIZE_W-pickup->size - DIST_WALL_PICKUP*2) + pickup->size/2 + DIST_WALL_PICKUP;
 		pickup->y = rand()%(PLAYGROUND_SIZE_H-pickup->size - DIST_WALL_PICKUP*2) + pickup->size/2 + DIST_WALL_PICKUP;
-	}while(trop_pres(vaisseau.x,vaisseau.y,pickup->x,pickup->y,pickup->size/2+RAYON_VAISS,-1));
+	}while(trop_pres(vaisseau.x,vaisseau.y,pickup->x,pickup->y,pickup->size/2+RAYON_VAISS + DIST_VAISS_PICKUP,-1));
 
 }
 
