@@ -2732,7 +2732,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							SDL_ShowCursor(SDL_TRUE);
 
 							if(machine <= 12){
-								lancerJeu[machine-1](pRenderer, meilleureScore[machine].scoreJoueurActuel,WinWidth,WinHeight,token,1, textures);
+								lancerJeu[machine-1](pRenderer, meilleureScore[machine].scoreJoueurActuel,WinWidth,WinHeight,token,machine <= 6, textures);
 								updateMeilleureScore(meilleureScore,token);
 							}
 							else if(machine == 16)
