@@ -375,6 +375,8 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 	srand(time(NULL));
 	///////////////////////////////////////////////////////
 
+
+
 	///////////////////////////////////////////////////////
 	// mise a jour variable pour difficulte hardcore
 	if( hardcore == 1 )
@@ -436,6 +438,12 @@ int flappy_bird( SDL_Renderer *renderer , int highscore, int send_l, int send_h,
 		printf("\nError load %s CODE : %s", DIR_SCORE_WAV,SDL_GetError() );
 		return SOUND_ERROR_LOAD;
 	}
+
+	Mix_Volume(5, 12); //flap
+
+	Mix_Volume(6, 20); // score
+
+	Mix_Volume(7, 20); //hurt
 	//////////////////////////////////////////////////////////////////
 
 
