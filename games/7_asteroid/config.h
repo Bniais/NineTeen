@@ -337,6 +337,14 @@ typedef struct{
 	#define FRAME_MISSILE_DEATH 8
 	const int ALPHA_MISSILE[FRAME_MISSILE_DEATH]={10, 30, 60, 90, 140, 180, 215, 250};
 
+//pickup
+const SDL_Rect PICKUP_SRC = {0,0,32,32};
+#define FRAME_PICKUP 8
+#define NB_COLOR_PICKUP 3
+typedef struct{float x; float y; int frame; int size; int alive;}Pickup;
+#define FRAME_SPAWN_PICKUP 18
+#define DIST_WALL_PICKUP 140
+#define CHANCE_SPAWN_PICKUP (FRAMES_PER_SECOND*8)
 
 //Window
 #define FRAMES_PER_SECOND 30
@@ -362,7 +370,7 @@ static SDL_Rect FLECHE_DEST[6] = {
 
 #define NB_BONUS 9
 #define NO_BONUS -1
-#define PROBA_BONUS 3
+#define PROBA_BONUS 4
 #define NB_TIR_MAX 3
 const float MUNITIONS_USAGE_MULTIPLE[NB_TIR_MAX]={1,1.3,1.50};
 #define NB_BONUS_POINT 3
@@ -417,7 +425,7 @@ typedef struct {
 const SDL_Color BONUS_TEXT_COLOR = {0xa7,0x96,0xff};
 static const int ALPHA_BONUS[FRAME_SHOW_BONUS_TEXT] = { 40, 80, 160, 200, 235,   255, 255, 255, 255, 255,	 255, 255, 255, 255, 255,	 255, 255, 255, 255, 255,   245, 235, 225, 215, 205,   180, 150, 110, 80, 40 };
 
-int CHANCE_BONUS[NB_BONUS + NB_MISSILES - 1]={1,3,1,3,4,1,10,6,2,4,4,4,4};
+int CHANCE_BONUS[NB_BONUS + NB_MISSILES - 1]={1,2,1,3,4,1,10,6,2,4,4,4,4};
 
 float angle_tir_multiple[NB_TIR_MAX][NB_TIR_MAX]={
   {0,0,0},//,0,0},

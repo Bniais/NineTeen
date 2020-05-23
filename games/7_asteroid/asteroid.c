@@ -549,36 +549,37 @@ int getFirstNullText(TextBonus textsBonus[MAX_TEXT_BONUS]){
 
 
 /**
-*\fn int isObtainable(int id_bonus, Vaiss vaisseau, float munitions[NB_MISSILES], int nbBombeNucleaire)
+*\fn int isObtainable(int id_bonus, Vaiss vaisseau, float munitions[NB_MISSILES], int nbBombeNucleaire, int hardcore)
 *\brief test si un bonus peut être obtenu
 *\param id_bonus indice du bonus
 *\param vaisseau le vaisseau
 *\param munitions[NB_MISSILES] munitions des missiles
 *\param nbBombeNucleaire nombre de bombe nucleaire stocké
+*\param hardcore Le mode de jeu
 *\return Vrai si le bonus est possible à obtenir sinon FAUX
 */
-int isObtainable(int id_bonus, Vaiss vaisseau, float munitions[NB_MISSILES], int nbBombeNucleaire){
+int isObtainable(int id_bonus, Vaiss vaisseau, float munitions[NB_MISSILES], int nbBombeNucleaire, int hardcore){
 	if(id_bonus >= NB_BONUS)
-		return (munitions[id_bonus - NB_BONUS +1] <= MAX_RATIO_AMMO_OBTAINABLE);
+		return (!hardcore && munitions[id_bonus - NB_BONUS +1] <= MAX_RATIO_AMMO_OBTAINABLE);
 	else
 		switch(id_bonus){
 			case TIR_MULTIPLE :
-				return (vaisseau.nb_tir < NB_TIR_MAX);
+				return (!hardcore && vaisseau.nb_tir < NB_TIR_MAX);
 
 		    case BOUCLIER :
 				return (!vaisseau.bouclier);
 
 		    case VITESSE_DE_TIR:
-				return (vaisseau.temps_recharge > FREQUENCE_MISSILE_MIN);
+				return (!hardcore && vaisseau.temps_recharge > FREQUENCE_MISSILE_MIN);
 
 		    case BONUS_VITESSE_MISSILE :
-				return (vaisseau.vitesse_missile<VITESSE_MISSILE_MAX);
+				return (!hardcore && vaisseau.vitesse_missile<VITESSE_MISSILE_MAX);
 
 			case DEGAT:
-				return (vaisseau.degat_missile<DEGAT_MISSILE_MAX);
+				return (!hardcore && vaisseau.degat_missile<DEGAT_MISSILE_MAX);
 
 			case BOMBE_NUCLEAIRE:
-				return (nbBombeNucleaire < MAX_BOMBE_NUCLEAIRE);
+				return (!hardcore && nbBombeNucleaire < MAX_BOMBE_NUCLEAIRE);
 
 			default :
 				return SDL_TRUE;
@@ -593,17 +594,17 @@ int isObtainable(int id_bonus, Vaiss vaisseau, float munitions[NB_MISSILES], int
 *\param nbBombeNucleaire nombre de bombe nucleaire stocké
 *\return l'indice du bonus
 */
-int get_bonus(Vaiss vaisseau, float munitions[NB_MISSILES], int nbBombeNucleaire){
+int get_bonus(Vaiss vaisseau, float munitions[NB_MISSILES], int nbBombeNucleaire, int hardcore){
 	int chanceTotal = 0;
 	int i;
 	for(i=0; i<NB_BONUS + NB_MISSILES -1; i++)
-		if(isObtainable(i, vaisseau, munitions, nbBombeNucleaire))
+		if(isObtainable(i, vaisseau, munitions, nbBombeNucleaire, hardcore))
 			chanceTotal += CHANCE_BONUS[i];
 
 	int proba = rand()%chanceTotal + 1;
 
 	for(i=0; i<NB_BONUS  + NB_MISSILES -1 && proba > 0; i++)
-		if(isObtainable(i, vaisseau, munitions, nbBombeNucleaire))
+		if(isObtainable(i, vaisseau, munitions, nbBombeNucleaire, hardcore))
 			proba -= CHANCE_BONUS[i];
 
 	return i-1;
@@ -630,7 +631,7 @@ int get_bonus(Vaiss vaisseau, float munitions[NB_MISSILES], int nbBombeNucleaire
 *\param done indique si le jeu est fini
 *\return 0 si il n'y a pas de problème sinon return HACKED
 */
-int detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid,Vaiss * vaisseau,int touche_bouclier, ScoreTotal * score, int* nbBombeNucleaire, float angleMissile, TextBonus bonusTexts[MAX_TEXT_BONUS], float munitions[NB_MISSILES], long keys[4], long long *score_hash, Mix_Chunk * bonusSound, Mix_Chunk * exploSound, int done){
+int detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid,Vaiss * vaisseau,int touche_bouclier, ScoreTotal * score, int* nbBombeNucleaire, float angleMissile, TextBonus bonusTexts[MAX_TEXT_BONUS], float munitions[NB_MISSILES], long keys[4], long long *score_hash, Mix_Chunk * bonusSound, Mix_Chunk * exploSound, int done,int hardcore){
 	int channel=Mix_GroupAvailable(1);
 	if (channel==-1) {
 		channel = Mix_GroupOldest(1);;
@@ -649,7 +650,7 @@ int detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid,
 		if(skinAste > NB_ASTE_TEXTURES-1)
 			skinAste = NB_ASTE_TEXTURES-1;
 
-		if(!changeProtectedVar(score_hash, &(score->score), (score->score) + SCORE_ASTEROID[skinAste] / ((*asteroides)[i_asteroid].difficulte_pere/(*asteroides)[i_asteroid].difficulte), keys))
+		if(!changeProtectedVar(score_hash, &(score->score), (score->score) + (SCORE_ASTEROID[skinAste] / ((*asteroides)[i_asteroid].difficulte_pere/(*asteroides)[i_asteroid].difficulte)) / (hardcore+1), keys))
 			return HACKED;
 		score->frameToDest = FRAME_SCORE_ANIM;
 	}
@@ -689,7 +690,7 @@ int detruire_asteroid(Asteroid ** asteroides, int * nb_asteroid, int i_asteroid,
     }
 
     if(bonus && !done){
-		int id_bonus = get_bonus(*vaisseau, munitions, *nbBombeNucleaire);
+		int id_bonus = get_bonus(*vaisseau, munitions, *nbBombeNucleaire, hardcore);
 		if( recoit_bonus(id_bonus,vaisseau,nbBombeNucleaire,score, munitions, keys, score_hash, bonusSound) == HACKED )
 			return HACKED;
 
@@ -1737,6 +1738,63 @@ static void drawHelpText(SDL_Renderer *renderer, SDL_Texture *flecheTexture,int 
 
 }
 
+
+/**
+*\fn void drawPickup(SDL_Renderer *renderer, SDL_Texture *pickupTexture, Pickup pickup)
+*\brief Affiche les pickups
+*\param renderer Le renderer où afficher
+*\param pickupTexture La texture des pickups
+*\param pickup Le pickup à afficher
+*/
+void drawPickup(SDL_Renderer *renderer, SDL_Texture *pickupTexture, Pickup pickup){
+
+	SDL_Rect src = PICKUP_SRC;
+	SDL_Rect dest = src;
+
+	if(pickup.frame < FRAME_SPAWN_PICKUP)
+		SDL_SetTextureAlphaMod(pickupTexture, 255 - ((float)(FRAME_SPAWN_PICKUP-pickup.frame)/FRAME_SPAWN_PICKUP)*240 );
+	else
+		SDL_SetTextureAlphaMod(pickupTexture, 255);
+
+	src.x += PICKUP_SRC.w * ((pickup.frame/2)%FRAME_PICKUP);
+	dest.x = pickup.x - pickup.size/2;
+	dest.y = pickup.y - pickup.size/2;
+	dest.w = pickup.size;
+	dest.h = pickup.size;
+	SDL_RenderCopy(renderer, pickupTexture, &src, &dest);
+
+}
+
+/**
+*\fn void spawnPickup(Pickup *pickup, Vaiss vaisseau)
+*\brief Fait apparaitre un pickup
+*\param pickup Le pickup
+*\param vaisseau Le vaisseau
+*/
+void spawnPickup(Pickup *pickup, Vaiss vaisseau){
+
+	pickup->alive = SDL_TRUE;
+	pickup->frame = 0;
+	pickup->size = 50;
+
+	do{
+		pickup->x = rand()%(PLAYGROUND_SIZE_W-pickup->size - DIST_WALL_PICKUP*2) + pickup->size/2 + DIST_WALL_PICKUP;
+		pickup->y = rand()%(PLAYGROUND_SIZE_H-pickup->size - DIST_WALL_PICKUP*2) + pickup->size/2 + DIST_WALL_PICKUP;
+	}while(trop_pres(vaisseau.x,vaisseau.y,pickup->x,pickup->y,pickup->size/2+RAYON_VAISS,-1));
+
+}
+
+/**
+*\fn int touchePickup(Pickup *pickup, Vaiss vaisseau)
+*\brief Détermine si l'on touche le pikcup
+*\param pickup Le pickup
+*\param vaisseau Le vaisseau
+*\return Vrai si on touche
+*/
+int touchePickup(Pickup pickup, Vaiss vaisseau){
+	return trop_pres(vaisseau.x,vaisseau.y,pickup.x,pickup.y,pickup.size/2+RAYON_VAISS,-1);
+}
+
 extern int updateEnded;
 /**
 *\fn int asteroid( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight, char *token, int hardcore, SDL_Texture ** textures, int fullscreen)
@@ -1845,6 +1903,11 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		int frame_vague=FRAME_VAGUE_INIT/2;
 		int frame_entre_vague=FRAME_VAGUE_INIT;
 
+		//pickup
+		Pickup pickup;
+		pickup.alive = SDL_FALSE;
+
+
 		//VAISSEAU
 	 	Vaiss vaisseau=
 		{
@@ -1863,6 +1926,10 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 			0, //frame_thrust
 			0  //frame_explo
 		};
+
+		if(hardcore && !firstframe)
+			spawnPickup(&pickup, vaisseau);
+
 		Vector2f accelerate={0,0};
 		SDL_SetTextureAlphaMod(textures[A_VAISS], 255);
 		SDL_SetTextureAlphaMod(textures[A_GEM], 255);
@@ -2065,15 +2132,19 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		//////////////
 		// Gameplay //`
 		//////////////
-		//hardcore
-		if(hardcore){
-			for(int i=0; i<nb_asteroid;i++){
-					if((asteroides[i].x < -asteroides[i].taille && asteroides[i].cote_spawn == 2) || (asteroides[i].y < -asteroides[i].taille && asteroides[i].cote_spawn == 3) || (asteroides[i].x - asteroides[i].taille > PLAYGROUND_SIZE_W && asteroides[i].cote_spawn == 0) || (asteroides[i].y - asteroides[i].taille > PLAYGROUND_SIZE_H && asteroides[i].cote_spawn == 1) ){
+			//hardcore
+			if(hardcore){
+				for(int i=0; i<nb_asteroid;i++){
+						if((asteroides[i].x < -asteroides[i].taille && asteroides[i].cote_spawn == 2) || (asteroides[i].y < -asteroides[i].taille && asteroides[i].cote_spawn == 3) || (asteroides[i].x - asteroides[i].taille > PLAYGROUND_SIZE_W && asteroides[i].cote_spawn == 0) || (asteroides[i].y - asteroides[i].taille > PLAYGROUND_SIZE_H && asteroides[i].cote_spawn == 1) ){
 
-						detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_TRUE, &score, &nbBombeNucleaire, 0, textsBonus, munitions, keys, &score_hash, sounds[SOUND_BONUS], NULL, done);
-					}
+							detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_TRUE, &score, &nbBombeNucleaire, 0, textsBonus, munitions, keys, &score_hash, sounds[SOUND_BONUS], NULL, done, hardcore);
+						}
+				}
 			}
-		}
+			else{
+				if(!pickup.alive && rand()%CHANCE_SPAWN_PICKUP == 0)
+					spawnPickup(&pickup, vaisseau);
+			}
 
 			accelerate.x/=DECELERATION + BONUS_DEAD_DECELERATION*done;
 		    accelerate.y/=DECELERATION + BONUS_DEAD_DECELERATION*done;
@@ -2135,12 +2206,32 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 		// Check hitboxs //`
 		///////////////////
 
-		spawn_laser=(SDL_Point){0, RAYON_VAISS};
-    xM = spawn_laser.x;
-    yM = spawn_laser.y;
-    spawn_laser.x = xM*cos(vaisseau.angle-PI/2) - yM * sin(vaisseau.angle-PI/2) ;
-    spawn_laser.y = xM * sin(vaisseau.angle-PI/2) + yM * cos(vaisseau.angle-PI/2) ;
-    collision_mur(&vaisseau.x,&vaisseau.y, vaisseau.x + spawn_laser.x, vaisseau.y + spawn_laser.y, 0,hardcore);
+            if(pickup.alive && touchePickup(pickup, vaisseau)){
+
+				pickup.alive = SDL_FALSE;
+				if(!done){
+					int id_bonus = get_bonus(vaisseau, munitions, nbBombeNucleaire, hardcore);
+					if( recoit_bonus(id_bonus,&vaisseau,&nbBombeNucleaire,&score, munitions, keys, &score_hash, sounds[SOUND_BONUS]) == HACKED )
+						return HACKED;
+
+					int iText= getFirstNullText(textsBonus);
+					textsBonus[iText].id = id_bonus;
+					textsBonus[iText].frame = FRAME_SHOW_BONUS_TEXT;
+					score.frameToDest = FRAME_SCORE_ANIM;
+
+					if(hardcore)
+						spawnPickup(&pickup, vaisseau);
+				}
+
+			}
+
+
+            spawn_laser=(SDL_Point){0, RAYON_VAISS};
+            xM = spawn_laser.x;
+            yM = spawn_laser.y;
+            spawn_laser.x = xM*cos(vaisseau.angle-PI/2) - yM * sin(vaisseau.angle-PI/2) ;
+            spawn_laser.y = xM * sin(vaisseau.angle-PI/2) + yM * cos(vaisseau.angle-PI/2) ;
+            collision_mur(&vaisseau.x,&vaisseau.y, vaisseau.x + spawn_laser.x, vaisseau.y + spawn_laser.y, 0,hardcore);
 
 
 			for(int i=0;i<nb_asteroid;i++){
@@ -2208,9 +2299,9 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 
 					int retour=0;
 					if(asteroides[i].pv == DEAD_FROZEN)
-						retour = detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_TRUE, &score, &nbBombeNucleaire, angle_touche, textsBonus, munitions, keys, &score_hash, sounds[SOUND_BONUS], sounds[SOUND_ICE_EXPLO], done);
+						retour = detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_TRUE, &score, &nbBombeNucleaire, angle_touche, textsBonus, munitions, keys, &score_hash, sounds[SOUND_BONUS], sounds[SOUND_ICE_EXPLO], done, hardcore);
 					else
-						retour = detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_FALSE, &score, &nbBombeNucleaire, angle_touche, textsBonus, munitions, keys, &score_hash, sounds[SOUND_BONUS], sounds[SOUND_EXPLO], done);
+						retour = detruire_asteroid(&asteroides,&nb_asteroid,i,&vaisseau,SDL_FALSE, &score, &nbBombeNucleaire, angle_touche, textsBonus, munitions, keys, &score_hash, sounds[SOUND_BONUS], sounds[SOUND_EXPLO], done, hardcore);
 
 					if(retour == HACKED){
 						myFrees(&missiles, &asteroides, &explosions, fonts, &thread, sounds);
@@ -2233,7 +2324,7 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 					explosions[nb_explosions-1].y = asteroides[i_touche].y - explosions[nb_explosions-1].taille/2;
 					explosions[nb_explosions-1].frame = FRAME_EXPLOSIONS[explosions[nb_explosions-1].id];
 
-					if( detruire_asteroid(&asteroides,&nb_asteroid,i_touche, &vaisseau,SDL_TRUE,&score, &nbBombeNucleaire, vaisseau.angle, textsBonus, munitions, keys, &score_hash, sounds[SOUND_BONUS],asteroides[i_touche].frozen >= 2 ? sounds[SOUND_ICE_EXPLO] : sounds[SOUND_EXPLO], done) == HACKED){
+					if( detruire_asteroid(&asteroides,&nb_asteroid,i_touche, &vaisseau,SDL_TRUE,&score, &nbBombeNucleaire, vaisseau.angle, textsBonus, munitions, keys, &score_hash, sounds[SOUND_BONUS],asteroides[i_touche].frozen >= 2 ? sounds[SOUND_ICE_EXPLO] : sounds[SOUND_EXPLO], done, hardcore) == HACKED){
 						myFrees(&missiles, &asteroides, &explosions, fonts, &thread, sounds);
 						SDL_RenderSetViewport(renderer, NULL);
 						return HACKED;
@@ -2346,6 +2437,9 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 			for(int i=0; i<nb_explosions; i++){
 				afficher_explosion(renderer, explosions[i], textures[A_EXPLO_MISSILE+explosions[i].id]);
 			}
+
+			if(pickup.alive)
+				drawPickup(renderer, textures[A_PICKUP], pickup);
 
 
 	        afficher_text_bonus(renderer, textsBonus, fonts[FONT_BONUS]);
@@ -2518,6 +2612,8 @@ int asteroid(SDL_Renderer * renderer, int highscore, int WinWidth, int WinHeight
 			rotateAsteroides(asteroides, nb_asteroid);
 			update_frame(&missiles,&nb_missiles,&vaisseau,&frame,&frame_apparition_asteroid,&vitesse_spawn,&frame_2asteroid);
 			difficulte+=RATIO_DIFFICULTE_AUGMENT + difficulte * RATIO_DIFFICULTE_AUGMENT_MULTI;
+			pickup.frame++;
+
 			//regulateFPS
 			currentTime = SDL_GetTicks();
 			while( currentTime - lastTime < FRAME_TIME )

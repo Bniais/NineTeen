@@ -19,7 +19,8 @@ const char* DIR_TEXTURES_ASTEROID[NB_ASTEROID_TEXTURES] = {
     DIR_LOADING,
     "../games/7_asteroid/Textures/explo.png",
     "../games/7_asteroid/Textures/explo2.png",
-    "../games/7_asteroid/Textures/explo3.png"
+    "../games/7_asteroid/Textures/explo3.png",
+    "../games/7_asteroid/Textures/pickup.png"
 };
 const int textureFloueAsteroid[NB_ASTEROID_TEXTURES] = {0		, 0	   , 0       , 0           , 0    , 0         , 0        , 0      , 0      , 0       , 1      , 1     , 1      , 0     , 0          , 0       , 0              , 0               , 0};
 
