@@ -239,61 +239,285 @@ void drawShip(SDL_Renderer *renderer, Ship ship, SDL_Texture **textures){
 		destWeapon.x += DECALLAGE_TURN[ship.dir%3][WEAPON_DISPOSITION[ship.nbWeapon][i]-1];
 		destWeapon.x /= RATIO_SIZE_SHIP;
 		destWeapon.y /= RATIO_SIZE_SHIP;
-		destWeapon.w /= RATIO_SIZE_SHIP;
-		destWeapon.h /= RATIO_SIZE_SHIP;
+		destWeapon.w = ceil( destWeapon.w / RATIO_SIZE_SHIP);
+		destWeapon.h = ceil( destWeapon.h / RATIO_SIZE_SHIP);
 		destWeapon.x += dest.x;
 		destWeapon.y += dest.y;
-
+		if(i<3)
+			destWeapon.x ++;
 		SDL_RenderCopy(renderer, textures[SH_WEAPON], &WEAPON_SRC, &destWeapon);
 	}
 }
 
-void drawEnemy(SDL_Renderer *renderer, Enemy enemy, SDL_Texture **textures){
-	SDL_Rect srcEnemy = ENEMY_SRC[enemy.id];
+void drawEnemy(SDL_Renderer *renderer, Enemy *enemy, SDL_Texture **textures){
+	SDL_Rect srcEnemy = ENEMY_SRC[enemy->id];
 	SDL_Rect destEnemy = srcEnemy;
-	destEnemy.w /= RATIO_SIZE_ENEMY[enemy.id];
-	destEnemy.h /= RATIO_SIZE_ENEMY[enemy.id];
-	destEnemy.x = enemy.x;
-	destEnemy.y = enemy.y;
+	destEnemy.w /= RATIO_SIZE_ENEMY[enemy->id];
+	destEnemy.h /= RATIO_SIZE_ENEMY[enemy->id];
+	destEnemy.x = enemy->x;
+	destEnemy.y = enemy->y;
 
-	if( enemy.id == BASE_ENEMY){
-		SDL_RenderCopyEx(renderer, textures[SH_ENEMY_ROND + enemy.id], &srcEnemy, &destEnemy, enemy.rota, NULL, SDL_FLIP_NONE);
-		if(enemy.frameHit){
+	if( enemy->id == BASE_ENEMY){
+		SDL_RenderCopyEx(renderer, textures[SH_ENEMY_ROND + enemy->id], &srcEnemy, &destEnemy, enemy->rota, NULL, SDL_FLIP_NONE);
+		if(enemy->frameHit){
 			srcEnemy.y += srcEnemy.h;
-			SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy.id], ALPHA_HIT);
-			SDL_RenderCopyEx(renderer, textures[SH_ENEMY_ROND + enemy.id], &srcEnemy, &destEnemy, enemy.rota, NULL, SDL_FLIP_NONE);
+			SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy->id], ALPHA_HIT);
+			SDL_RenderCopyEx(renderer, textures[SH_ENEMY_ROND + enemy->id], &srcEnemy, &destEnemy, enemy->rota, NULL, SDL_FLIP_NONE);
 			srcEnemy.y -= srcEnemy.h;
-			SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy.id], 255);
+			SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy->id], 255);
 		}
 
 		srcEnemy.x += srcEnemy.w;
 	}
-	SDL_RenderCopy(renderer, textures[SH_ENEMY_ROND + enemy.id], &srcEnemy, &destEnemy );
-	if(enemy.frameHit){
-		SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy.id], ALPHA_HIT);
-		srcEnemy.y += srcEnemy.h;
-		SDL_RenderCopy(renderer, textures[SH_ENEMY_ROND + enemy.id], &srcEnemy, &destEnemy );
-		SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy.id], 255);
+	if(enemy->id != ARM_ENEMY){
+		SDL_RenderCopy(renderer, textures[SH_ENEMY_ROND + enemy->id], &srcEnemy, &destEnemy );
+		if(enemy->frameHit){
+			SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy->id], ALPHA_HIT);
+			srcEnemy.y += srcEnemy.h;
+			SDL_RenderCopy(renderer, textures[SH_ENEMY_ROND + enemy->id], &srcEnemy, &destEnemy );
+			SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy->id], 255);
+		}
 	}
+	else{
+		SDL_Point rotaPoint = ROTATION_POINT_ARM;
+		rotaPoint.x -= ENEMY_CENTER[enemy->id].x;
+		rotaPoint.y -= ENEMY_CENTER[enemy->id].y;
+
+		float xM = rotaPoint.x;
+		float yM = rotaPoint.y;
+		rotaPoint.x = xM*cos(enemy->rota * PI / 180 ) - yM * sin(enemy->rota * PI / 180);
+		rotaPoint.y = xM * sin(enemy->rota * PI / 180) + yM * cos(enemy->rota * PI / 180);
+
+		SDL_Point rotaPointAvant = ROTATION_POINT_ARM;
+		rotaPointAvant.x -= ENEMY_CENTER[enemy->id].x;
+		rotaPointAvant.y -= ENEMY_CENTER[enemy->id].y;
+
+		xM = rotaPointAvant.x;
+		yM = rotaPointAvant.y;
+		rotaPointAvant.x = xM*cos(enemy->coefs[0] * PI / 180 ) - yM * sin(enemy->coefs[0] * PI / 180);
+		rotaPointAvant.y = xM * sin(enemy->coefs[0] * PI / 180) + yM * cos(enemy->coefs[0] * PI / 180);
+
+
+
+		for(int i=0; i<NB_ARM_COMPONENT; i++){
+			if(enemy->hp/ENEMY_HP[enemy->id] > RATIO_HP_PIECES[i]){
+				if(i == 0 || i>4){
+					SDL_Point center = ENEMY_CENTER[enemy->id];
+					SDL_RenderCopyEx(renderer, textures[SH_ENEMY_ROND + enemy->id], &srcEnemy, &destEnemy, enemy->rota, &center, SDL_FLIP_NONE);
+					if(enemy->frameHit){
+						SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy->id], ALPHA_HIT);
+						srcEnemy.y += srcEnemy.h;
+						//center.y += srcEnemy.h / RATIO_SIZE_ENEMY[enemy->id];
+						SDL_RenderCopyEx(renderer, textures[SH_ENEMY_ROND + enemy->id], &srcEnemy, &destEnemy, enemy->rota, &center, SDL_FLIP_NONE);
+						srcEnemy.y -= srcEnemy.h;
+						SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy->id], 255);
+					}
+
+				}
+				else{
+					SDL_Point center = ENEMY_CENTER[enemy->id];//ROTATION_POINT_ARM;
+
+					destEnemy.x += roundf(rotaPoint.x - rotaPointAvant.x);
+					destEnemy.y += roundf(rotaPoint.y - rotaPointAvant.y);
+
+					SDL_RenderCopyEx(renderer, textures[SH_ENEMY_ROND + enemy->id], &srcEnemy, &destEnemy, enemy->coefs[0], &center, SDL_FLIP_NONE);
+					if(enemy->frameHit){
+						SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy->id], ALPHA_HIT);
+						srcEnemy.y += srcEnemy.h;
+						SDL_RenderCopyEx(renderer, textures[SH_ENEMY_ROND + enemy->id], &srcEnemy, &destEnemy, enemy->coefs[0], &center, SDL_FLIP_NONE);
+						srcEnemy.y -= srcEnemy.h;
+						SDL_SetTextureAlphaMod(textures[SH_ENEMY_ROND + enemy->id], 255);
+					}
+					destEnemy.x -= roundf(rotaPoint.x- rotaPointAvant.x);
+					destEnemy.y -= roundf(rotaPoint.y- rotaPointAvant.y);
+				}
+
+			}
+			srcEnemy.x += srcEnemy.w;
+		}
+
+		//if(DRAW_DEBUG){
+			rotaPoint.x += enemy->x + ENEMY_CENTER[enemy->id].x;
+			rotaPoint.y += enemy->y + ENEMY_CENTER[enemy->id].y;
+			/*SDL_RenderDrawPoint(renderer,enemy->x + ROTATION_POINT_ARM.x, enemy->y + ROTATION_POINT_ARM.y);
+			SDL_RenderDrawPoint(renderer,enemy->x + ROTATION_POINT_ARM.x+1,enemy->y +  ROTATION_POINT_ARM.y);
+			SDL_RenderDrawPoint(renderer,enemy->x + ROTATION_POINT_ARM.x-1,enemy->y +  ROTATION_POINT_ARM.y);
+			SDL_RenderDrawPoint(renderer,enemy->x + ROTATION_POINT_ARM.x,enemy->y +  ROTATION_POINT_ARM.y+1);
+			SDL_RenderDrawPoint(renderer,enemy->x + ROTATION_POINT_ARM.x,enemy->y +  ROTATION_POINT_ARM.y-1);*/
+
+
+			SDL_RenderDrawPoint(renderer,rotaPoint.x, rotaPoint.y);
+			SDL_RenderDrawPoint(renderer,rotaPoint.x+1, rotaPoint.y);
+			SDL_RenderDrawPoint(renderer,rotaPoint.x-1, rotaPoint.y);
+			SDL_RenderDrawPoint(renderer,rotaPoint.x, rotaPoint.y+1);
+			SDL_RenderDrawPoint(renderer,rotaPoint.x, rotaPoint.y-1);
+
+			/*SDL_RenderDrawPoint(renderer,enemy->x, enemy->y);
+			SDL_RenderDrawPoint(renderer,enemy->x+1, enemy->y);
+			SDL_RenderDrawPoint(renderer,enemy->x-1, enemy->y);
+			SDL_RenderDrawPoint(renderer,enemy->x, enemy->y+1);
+			SDL_RenderDrawPoint(renderer,enemy->x, enemy->y-1);
+
+			SDL_RenderDrawPoint(renderer,destEnemy.x + ENEMY_CENTER[enemy->id].x, destEnemy.y + ENEMY_CENTER[enemy->id].y);
+			SDL_RenderDrawPoint(renderer,destEnemy.x + ENEMY_CENTER[enemy->id].x+1, destEnemy.y + ENEMY_CENTER[enemy->id].y);
+			SDL_RenderDrawPoint(renderer,destEnemy.x + ENEMY_CENTER[enemy->id].x-1, destEnemy.y + ENEMY_CENTER[enemy->id].y);
+			SDL_RenderDrawPoint(renderer,destEnemy.x + ENEMY_CENTER[enemy->id].x, destEnemy.y + ENEMY_CENTER[enemy->id].y+1);
+			SDL_RenderDrawPoint(renderer,destEnemy.x + ENEMY_CENTER[enemy->id].x, destEnemy.y + ENEMY_CENTER[enemy->id].y-1);*/
+
+			enemy->abscisses[0]=rotaPoint.x + DIST_ROTA_CENTER_HITBOX_ARM / RATIO_SIZE_ENEMY[enemy->id] * cos(enemy->coefs[0] * PI / 180 + PI/2);
+			enemy->abscisses[1]=rotaPoint.y + DIST_ROTA_CENTER_HITBOX_ARM / RATIO_SIZE_ENEMY[enemy->id] * sin(enemy->coefs[0] * PI / 180 + PI/2);
+
+			enemy->abscisses[2]=rotaPoint.x + DIST_ROTA_CENTER_ADDITIONAL_HITBOX_ARM / RATIO_SIZE_ENEMY[enemy->id] * cos(enemy->coefs[0] * PI / 180 + PI/2);
+			enemy->abscisses[3]=rotaPoint.y + DIST_ROTA_CENTER_ADDITIONAL_HITBOX_ARM / RATIO_SIZE_ENEMY[enemy->id] * sin(enemy->coefs[0] * PI / 180 + PI/2);
+
+			SDL_RenderDrawPoint(renderer,	enemy->abscisses[0], enemy->abscisses[1]);
+			SDL_RenderDrawPoint(renderer,	enemy->abscisses[0]+1, enemy->abscisses[1]);
+			SDL_RenderDrawPoint(renderer,	enemy->abscisses[0]-1, enemy->abscisses[1]);
+			SDL_RenderDrawPoint(renderer,	enemy->abscisses[0], enemy->abscisses[1]+1);
+			SDL_RenderDrawPoint(renderer,	enemy->abscisses[0], enemy->abscisses[1]-1);
+
+			/*SDL_RenderDrawPoint(renderer,	enemy->abscisses[2], enemy->abscisses[3]);
+			SDL_RenderDrawPoint(renderer,	enemy->abscisses[2]+1, enemy->abscisses[3]);
+			SDL_RenderDrawPoint(renderer,	enemy->abscisses[2]-1, enemy->abscisses[3]);
+			SDL_RenderDrawPoint(renderer,	enemy->abscisses[2], enemy->abscisses[3]+1);
+			SDL_RenderDrawPoint(renderer,	enemy->abscisses[2], enemy->abscisses[3]-1);*/
+
+			rotaPoint.x += DIST_ROTA_CANON_ARM / RATIO_SIZE_ENEMY[enemy->id] * cos(enemy->coefs[0] * PI / 180 + PI/2);
+			rotaPoint.y += DIST_ROTA_CANON_ARM / RATIO_SIZE_ENEMY[enemy->id] * sin(enemy->coefs[0] * PI / 180 + PI/2);
+			enemy->coefs[2]=rotaPoint.x;
+			enemy->coefs[3]=rotaPoint.y;
+			/*SDL_RenderDrawPoint(renderer,rotaPoint.x, rotaPoint.y);
+			SDL_RenderDrawPoint(renderer,rotaPoint.x+1, rotaPoint.y);
+			SDL_RenderDrawPoint(renderer,rotaPoint.x-1, rotaPoint.y);
+			SDL_RenderDrawPoint(renderer,rotaPoint.x, rotaPoint.y+1);
+			SDL_RenderDrawPoint(renderer,rotaPoint.x, rotaPoint.y-1);*/
+
+			if(enemy->infos[5] >= 0){
+				if(enemy->infos[5] >= NB_ROW_LASER_BEAM*NB_COL_LASER_BEAM - FRAME_LASER_BEAM_DISAPEAR)
+					SDL_SetTextureAlphaMod(textures[SH_LASER_BEAM], 255-200/(NB_ROW_LASER_BEAM*NB_COL_LASER_BEAM-enemy->infos[5]));
+				else
+					SDL_SetTextureAlphaMod(textures[SH_LASER_BEAM], 255);
+				SDL_Rect srcbeam = {(((int)enemy->infos[5])%NB_COL_LASER_BEAM) * LASER_BEAM_SRC.w, (((int)enemy->infos[5])/NB_COL_LASER_BEAM) * LASER_BEAM_SRC.h, LASER_BEAM_SRC.w, LASER_BEAM_SRC.h};
+				SDL_Rect destbeam = {enemy->coefs[2] - LASER_BEAM_CENTER.x, enemy->coefs[3] - LASER_BEAM_CENTER.y, LASER_BEAM_SRC.w*RATIO_ALLONGEMENT_LASER, LASER_BEAM_SRC.h};
+				printf("draw : %f \n", LASER_BEAM_SRC.w*RATIO_ALLONGEMENT_LASER);
+				SDL_RenderCopyEx(renderer, textures[SH_LASER_BEAM], &srcbeam, &destbeam, enemy->coefs[0] + 90, &LASER_BEAM_CENTER, SDL_FLIP_NONE);
+
+				enemy->infos[5]++;
+			}
+			if(enemy->infos[5] >= NB_ROW_LASER_BEAM*NB_COL_LASER_BEAM)
+				enemy->infos[5] = -1;
+		//}
+	}
+}
+
+void drawEnemyParts(SDL_Renderer *renderer, EnemyPart *enemy, SDL_Texture **textures){
+	SDL_Rect srcEnemy = ENEMY_SRC[enemy->idSrc];
+	int leftPart = SDL_FALSE;
+
+	if(enemy->id < NB_ARM_COMPONENT && enemy->id !=6 && enemy->id >=2){
+		srcEnemy.w/=2;
+	}
+	SDL_Rect destEnemy = srcEnemy;
+	destEnemy.w /= RATIO_SIZE_ENEMY[enemy->idSrc];
+	destEnemy.h /= RATIO_SIZE_ENEMY[enemy->idSrc];
+	destEnemy.x = enemy->x;
+	destEnemy.y = enemy->y;
+
+	if(enemy->id > NB_ARM_COMPONENT){
+		leftPart = SDL_TRUE;
+		enemy->id -= NB_ARM_COMPONENT;
+		srcEnemy.y += ENEMY_SRC[enemy->idSrc].h*2;
+	}
+
+	srcEnemy.x += enemy->id * ENEMY_SRC[enemy->idSrc].w;
+
+
+	SDL_Point center = ENEMY_CENTER[enemy->idSrc];
+	if(enemy->id == 0 || enemy->id>4){
+		SDL_RenderCopyEx(renderer, textures[SH_ENEMY_ROND + enemy->idSrc], &srcEnemy, &destEnemy, enemy->rota[0], &center, SDL_FLIP_NONE);
+	}
+	else{
+		SDL_Point rotaPoint = ROTATION_POINT_ARM;
+		rotaPoint.x -= ENEMY_CENTER[enemy->idSrc].x;
+		rotaPoint.y -= ENEMY_CENTER[enemy->idSrc].y;
+
+		float xM = rotaPoint.x;
+		float yM = rotaPoint.y;
+		rotaPoint.x = xM*cos(enemy->rota[0] * PI / 180 ) - yM * sin(enemy->rota[0] * PI / 180);
+		rotaPoint.y = xM * sin(enemy->rota[0] * PI / 180) + yM * cos(enemy->rota[0] * PI / 180);
+
+		SDL_Point rotaPointAvant = ROTATION_POINT_ARM;
+		rotaPointAvant.x -= ENEMY_CENTER[enemy->idSrc].x;
+		rotaPointAvant.y -= ENEMY_CENTER[enemy->idSrc].y;
+
+		xM = rotaPointAvant.x;
+		yM = rotaPointAvant.y;
+		rotaPointAvant.x = xM*cos(enemy->rota[1] * PI / 180 ) - yM * sin(enemy->rota[1] * PI / 180);
+		rotaPointAvant.y = xM * sin(enemy->rota[1] * PI / 180) + yM * cos(enemy->rota[1] * PI / 180);
+
+		destEnemy.x += roundf(rotaPoint.x - rotaPointAvant.x);
+		destEnemy.y += roundf(rotaPoint.y - rotaPointAvant.y);
+
+		SDL_RenderCopyEx(renderer, textures[SH_ENEMY_ROND + enemy->idSrc], &srcEnemy, &destEnemy, enemy->rota[1], &center, SDL_FLIP_NONE);
+	}
+
+	if(leftPart)
+		enemy->id += NB_ARM_COMPONENT;
 }
 
 
 int shipHitEnemy(Ship ship, Enemy enemy){
 	return (collideOblique(SHIP_HITBOX[ship.form].x + ship.x, SHIP_HITBOX[ship.form].y + ship.y, SHIP_HITBOX[ship.form].rx , 0, SHIP_HITBOX[ship.form].ry/SHIP_HITBOX[ship.form].rx,
-			ENEMY_HITBOX[enemy.id].x + enemy.x, ENEMY_HITBOX[enemy.id].y + enemy.y, cos(enemy.rota) * ENEMY_HITBOX[enemy.id].rx, sin(enemy.rota) * ENEMY_HITBOX[enemy.id].rx, ENEMY_HITBOX[enemy.id].ry/ENEMY_HITBOX[enemy.id].rx, 0)
+			ENEMY_HITBOX[enemy.id].x + enemy.x, ENEMY_HITBOX[enemy.id].y + enemy.y, cos(enemy.rota * PI / 180) * ENEMY_HITBOX[enemy.id].rx, sin(enemy.rota * PI / 180) * ENEMY_HITBOX[enemy.id].rx, ENEMY_HITBOX[enemy.id].ry/ENEMY_HITBOX[enemy.id].rx, 0)
 			||
-			collideOblique(ENEMY_ADDITIONAL_HITBOX[enemy.id].x + enemy.x, ENEMY_ADDITIONAL_HITBOX[enemy.id].y + enemy.y, cos(enemy.rota) * ENEMY_ADDITIONAL_HITBOX[enemy.id].rx, sin(enemy.rota) * ENEMY_ADDITIONAL_HITBOX[enemy.id].rx, ENEMY_ADDITIONAL_HITBOX[enemy.id].ry/ENEMY_ADDITIONAL_HITBOX[enemy.id].rx,
+			collideOblique(ENEMY_ADDITIONAL_HITBOX[enemy.id].x + enemy.x, ENEMY_ADDITIONAL_HITBOX[enemy.id].y + enemy.y, cos(enemy.rota * PI / 180) * ENEMY_ADDITIONAL_HITBOX[enemy.id].rx, sin(enemy.rota * PI / 180) * ENEMY_ADDITIONAL_HITBOX[enemy.id].rx, ENEMY_ADDITIONAL_HITBOX[enemy.id].ry/ENEMY_ADDITIONAL_HITBOX[enemy.id].rx,
 				SHIP_HITBOX[ship.form].x + ship.x, SHIP_HITBOX[ship.form].y + ship.y,SHIP_HITBOX[ship.form].rx ,  0, SHIP_HITBOX[ship.form].ry/SHIP_HITBOX[ship.form].rx, 1)
+
+			||
+
+			(enemy.id == ARM_ENEMY &&
+			(collideOblique(SHIP_HITBOX[ship.form].x + ship.x, SHIP_HITBOX[ship.form].y + ship.y, SHIP_HITBOX[ship.form].rx , 0, SHIP_HITBOX[ship.form].ry/SHIP_HITBOX[ship.form].rx,
+					enemy.abscisses[0], enemy.abscisses[1], cos(enemy.coefs[0] * PI / 180) * ENEMY_HITBOX_ARM.rx, sin(enemy.coefs[0] * PI / 180) * ENEMY_HITBOX_ARM.rx, ENEMY_HITBOX_ARM.ry/ENEMY_HITBOX_ARM.rx, 0)
+			||
+			collideOblique(enemy.abscisses[2], enemy.abscisses[3], cos(enemy.coefs[0] * PI / 180) * ENEMY_ADDITIONAL_HITBOX_ARM.rx, sin(enemy.coefs[0] * PI / 180) * ENEMY_ADDITIONAL_HITBOX_ARM.rx, ENEMY_ADDITIONAL_HITBOX_ARM.ry/ENEMY_ADDITIONAL_HITBOX_ARM.rx,
+				SHIP_HITBOX[ship.form].x + ship.x, SHIP_HITBOX[ship.form].y + ship.y,SHIP_HITBOX[ship.form].rx ,  0, SHIP_HITBOX[ship.form].ry/SHIP_HITBOX[ship.form].rx, 1)))
 			);
 
+}
+
+int laserHitShip(Ship ship, Enemy enemy){
+	int longueur;
+	if(enemy.infos[5] >= FIRST_FRAME_LASER &&  enemy.infos[5] < FIRST_FRAME_LASER + NB_FRAME_START_LASER_BEAM)
+		longueur = LASER_BEAM_DIST_START[(int)enemy.infos[5] - FIRST_FRAME_LASER];
+	else if(enemy.infos[5] >= FIRST_END_FRAME_LASER && enemy.infos[5] <  FIRST_END_FRAME_LASER + NB_FRAME_END_LASER_BEAM)
+		longueur = LASER_BEAM_DIST_END[(int)enemy.infos[5] - FIRST_END_FRAME_LASER];
+	else if(enemy.infos[5] >= FIRST_FRAME_LASER && enemy.infos[5] <= FIRST_END_FRAME_LASER)
+		longueur = LASER_BEAM_DIST_START[NB_FRAME_START_LASER_BEAM-1];
+	else
+		return 0;
+
+	longueur *= RATIO_ALLONGEMENT_LASER;
+	longueur += LASER_BEAM_ADDITIONAL_HITBOX;
+
+	return collideOblique(enemy.abscisses[2], enemy.abscisses[3], cos(enemy.coefs[0] * PI / 180) * LASER_BEAM_WIDTH_HITBOX, sin(enemy.coefs[0] * PI / 180) * LASER_BEAM_WIDTH_HITBOX, longueur/LASER_BEAM_WIDTH_HITBOX,
+		SHIP_HITBOX[ship.form].x + ship.x, SHIP_HITBOX[ship.form].y + ship.y,SHIP_HITBOX[ship.form].rx ,  0, SHIP_HITBOX[ship.form].ry/SHIP_HITBOX[ship.form].rx, 1);
 }
 
 int missileHitEnemy(Missile missile, Enemy enemy){
 	return (collideOblique(missile.x, missile.y, cos(missile.rota) * MISSILE_HITBOX[missile.id].rx , sin(missile.rota) * MISSILE_HITBOX[missile.id].rx,MISSILE_HITBOX[missile.id].ry/MISSILE_HITBOX[missile.id].rx,
 			ENEMY_HITBOX[enemy.id].x + enemy.x, ENEMY_HITBOX[enemy.id].y + enemy.y, cos(enemy.rota * PI / 180) * ENEMY_HITBOX[enemy.id].rx, sin(enemy.rota * PI / 180) * ENEMY_HITBOX[enemy.id].rx, ENEMY_HITBOX[enemy.id].ry/ENEMY_HITBOX[enemy.id].rx, 0)
 			||
-			collideOblique(ENEMY_ADDITIONAL_HITBOX[enemy.id].x + enemy.x, ENEMY_ADDITIONAL_HITBOX[enemy.id].y + enemy.y, cos(enemy.rota) * ENEMY_ADDITIONAL_HITBOX[enemy.id].rx, sin(enemy.rota) * ENEMY_ADDITIONAL_HITBOX[enemy.id].rx, ENEMY_ADDITIONAL_HITBOX[enemy.id].ry/ENEMY_ADDITIONAL_HITBOX[enemy.id].rx,
+			collideOblique(ENEMY_ADDITIONAL_HITBOX[enemy.id].x + enemy.x, ENEMY_ADDITIONAL_HITBOX[enemy.id].y + enemy.y, cos(enemy.rota * PI / 180) * ENEMY_ADDITIONAL_HITBOX[enemy.id].rx, sin(enemy.rota * PI / 180) * ENEMY_ADDITIONAL_HITBOX[enemy.id].rx, ENEMY_ADDITIONAL_HITBOX[enemy.id].ry/ENEMY_ADDITIONAL_HITBOX[enemy.id].rx,
 			missile.x, missile.y, cos(missile.rota) * MISSILE_HITBOX[missile.id].rx , sin(missile.rota) * MISSILE_HITBOX[missile.id].rx, MISSILE_HITBOX[missile.id].ry/MISSILE_HITBOX[missile.id].rx, 1)
+
+			||
+
+			(enemy.id == ARM_ENEMY &&
+			(collideOblique(missile.x, missile.y, cos(missile.rota) * MISSILE_HITBOX[missile.id].rx , sin(missile.rota) * MISSILE_HITBOX[missile.id].rx,MISSILE_HITBOX[missile.id].ry/MISSILE_HITBOX[missile.id].rx,
+					enemy.abscisses[0], enemy.abscisses[1], cos(enemy.coefs[0] * PI / 180) * ENEMY_HITBOX_ARM.rx, sin(enemy.coefs[0] * PI / 180) * ENEMY_HITBOX_ARM.rx, ENEMY_HITBOX_ARM.ry/ENEMY_HITBOX_ARM.rx, 0)
+			||
+			collideOblique(enemy.abscisses[2], enemy.abscisses[3], cos(enemy.coefs[0] * PI / 180) * ENEMY_ADDITIONAL_HITBOX_ARM.rx, sin(enemy.coefs[0] * PI / 180) * ENEMY_ADDITIONAL_HITBOX_ARM.rx, ENEMY_ADDITIONAL_HITBOX_ARM.ry/ENEMY_ADDITIONAL_HITBOX_ARM.rx,
+				missile.x, missile.y, cos(missile.rota) * MISSILE_HITBOX[missile.id].rx , sin(missile.rota) * MISSILE_HITBOX[missile.id].rx, MISSILE_HITBOX[missile.id].ry/MISSILE_HITBOX[missile.id].rx, 1)))
 			);
 
 }
@@ -327,27 +551,60 @@ static float calculer_angle(float x1, float y1, float x2, float y2){
 
 void enemyFire(Enemy *enemy, Missile **enemyMissiles, int *nbEnemyMissiles, Ship ship){
 	for(int i = 0; i <= enemy->nbWeapon; i++){
-		if(enemy->weapons[i].frame_reload == 0){
+		while(enemy->weapons[i].frame_reload == 0){
+			int wrongMissile = SDL_FALSE;
 			*enemyMissiles = realloc(*enemyMissiles, ++(*nbEnemyMissiles)  *  sizeof(Missile));
-			(*enemyMissiles)[*nbEnemyMissiles - 1].x = enemy->x + WEAPON_DEST_ENEMY[enemy->id][i].x;
-			(*enemyMissiles)[*nbEnemyMissiles - 1].y = enemy->y + WEAPON_DEST_ENEMY[enemy->id][i].y;
+			(*enemyMissiles)[*nbEnemyMissiles - 1].x = ((enemy->id == ARM_ENEMY) ? (enemy->coefs[2]) : (enemy->x + WEAPON_DEST_ENEMY[enemy->id][i].x));
+			(*enemyMissiles)[*nbEnemyMissiles - 1].y = ((enemy->id == ARM_ENEMY) ? (enemy->coefs[3]) : (enemy->y + WEAPON_DEST_ENEMY[enemy->id][i].y));
 			(*enemyMissiles)[*nbEnemyMissiles - 1].id = enemy->weapons[i].id;
 			(*enemyMissiles)[*nbEnemyMissiles - 1].rota = PI/2 + (TYPE_ENEMY_FIRE[enemy->id][i] == AIMED ? calculer_angle((*enemyMissiles)[*nbEnemyMissiles - 1].x, (*enemyMissiles)[*nbEnemyMissiles - 1].y, ship.x + SHIP_HITBOX[ship.form].x, ship.y+ SHIP_HITBOX[ship.form].y) : PI/2);
 			(*enemyMissiles)[*nbEnemyMissiles - 1].rota += (ANGLE_ENEMY_FIRE[enemy->id][i] ? (randSign() * ((rand()%(int)(PRECISION_RAND_FLOAT*ANGLE_ENEMY_FIRE[enemy->id][i])) / PRECISION_RAND_FLOAT)) : 0);
 
-			(*enemyMissiles)[*nbEnemyMissiles - 1].damage = 1;
-			(*enemyMissiles)[*nbEnemyMissiles - 1].frame = 0;
-			(*enemyMissiles)[*nbEnemyMissiles - 1].speed = MISSILE_SPEED_ENEMY[enemy->id][i];
+			if(enemy->id == ARM_ENEMY)
+				(*enemyMissiles)[*nbEnemyMissiles - 1].rota = enemy->coefs[0] * PI / 180 + PI;
+			else if(enemy->id == ARM_BOSS_ENEMY){
+				(*enemyMissiles)[*nbEnemyMissiles - 1].rota = (i==0?1:-1)*ANGLE_ENEMY_ARM_BOSS_FIRE*(enemy->weapons[i].combo + (i==0?1:0)) * PI / 180 + PI + enemy->infos[0];//+ (i==0?-1:1) * BASE_ANGLE_ARM_BOSS_FIRE;
+				while((*enemyMissiles)[*nbEnemyMissiles - 1].rota < -PI && i==1)
+					(*enemyMissiles)[*nbEnemyMissiles - 1].rota += 2*PI;
+
+				while((*enemyMissiles)[*nbEnemyMissiles - 1].rota >= PI  && i==0)
+					(*enemyMissiles)[*nbEnemyMissiles - 1].rota -= 2*PI;
+
+					while((*enemyMissiles)[*nbEnemyMissiles - 1].rota >= PI+PI/50  && i==1)
+						(*enemyMissiles)[*nbEnemyMissiles - 1].rota -= 2*PI;
+
+				if(((*enemyMissiles)[*nbEnemyMissiles - 1].rota > -PI/2 + PI/18  && i == 0) || ( (*enemyMissiles)[*nbEnemyMissiles - 1].rota < PI/2 - PI/18  && i == 1)){
+					(*nbEnemyMissiles)--;
+					if(*nbEnemyMissiles)
+						*enemyMissiles = realloc(*enemyMissiles, *nbEnemyMissiles  *  sizeof(Missile));
+					wrongMissile = SDL_TRUE;
+				}
+			}
+
+
+			if(!wrongMissile){
+				(*enemyMissiles)[*nbEnemyMissiles - 1].damage = 1;
+				(*enemyMissiles)[*nbEnemyMissiles - 1].frame = 0;
+				(*enemyMissiles)[*nbEnemyMissiles - 1].speed = MISSILE_SPEED_ENEMY[enemy->id][i];
+			}
 
 			if(enemy->weapons[i].combo){
 				enemy->weapons[i].frame_reload = RELOAD_FRAME_COMBO_ENEMY[enemy->id][i];
 				enemy->weapons[i].combo--;
 			}
 			else{
-				if(RELOAD_FRAME_RAND_ENEMY[enemy->id][i] >0)
+				if(RELOAD_FRAME_RAND_ENEMY[enemy->id][i] >0){
 					enemy->weapons[i].frame_reload = RELOAD_FRAME_ENEMY[enemy->id][i] + rand()%RELOAD_FRAME_RAND_ENEMY[enemy->id][i];
-				else //symetry
+					if(enemy->id == ARM_BOSS_ENEMY){
+						enemy->weapons[i].frame_reload += enemy->infos[1] * NERF_FREQUENCY_PER_ARM;
+						enemy->infos[0]+= BASE_ANGLE_ARM_BOSS_FIRE;
+					}
+
+				}
+				else{
 					enemy->weapons[i].frame_reload = enemy->weapons[-RELOAD_FRAME_RAND_ENEMY[enemy->id][i]].frame_reload;
+				} //symetry
+
 
 				//combo reset
 				if(COMBO_RAND_ENEMY[enemy->id][i] > 0)
@@ -435,11 +692,13 @@ void shiftExplosion(Explosion * explosions, int nbExplosions, int i){
 }
 
 void drawExplosion(SDL_Renderer * renderer,Explosion explosion, SDL_Texture * explo_texture){
-	SDL_Rect src = EXPLO_SRCS[explosion.id];
-	src.x += (int)((FRAME_EXPLOSIONS[explosion.id] - explosion.frame) / ((float)FRAME_EXPLOSIONS[explosion.id] /NB_ANIM_EXPLOSIONS[explosion.id])) * src.w;
-	SDL_Rect dest = {explosion.x, explosion.y, explosion.taille, explosion.taille};
+	if(!explosion.delay){
+		SDL_Rect src = EXPLO_SRCS[explosion.id];
+		src.x += (int)((FRAME_EXPLOSIONS[explosion.id] - explosion.frame) / ((float)FRAME_EXPLOSIONS[explosion.id] /NB_ANIM_EXPLOSIONS[explosion.id])) * src.w;
+		SDL_Rect dest = {explosion.x, explosion.y, explosion.taille, explosion.taille};
 
-	SDL_RenderCopy(renderer, explo_texture, &src, &dest);
+		SDL_RenderCopy(renderer, explo_texture, &src, &dest);
+	}
 }
 
 int moveMissile(Missile **missiles , int *nbMissiles, int iMissile){
@@ -515,14 +774,106 @@ int moveEnemy(Enemy **enemies, int * nbEnemy, int iEnemy){
 			if((*enemies)[iEnemy].coefs[2] < MAX_Y_BOSS)
 				(*enemies)[iEnemy].coefs[2] += MOVE_Y_BOSS;
 		}
+		else if( TYPE_MOVE_ENEMY[(*enemies)[iEnemy].id] == ARM){
+
+			SDL_Point rotaPoint = ROTATION_POINT_ARM;
+			rotaPoint.x -= ENEMY_CENTER[(*enemies)[iEnemy].id].x;
+			rotaPoint.y -= ENEMY_CENTER[(*enemies)[iEnemy].id].y;
+
+			float xM = rotaPoint.x;
+			float yM = rotaPoint.y;
+			rotaPoint.x = xM*cos((*enemies)[iEnemy].rota * PI / 180 ) - yM * sin((*enemies)[iEnemy].rota * PI / 180);
+			rotaPoint.y = xM * sin((*enemies)[iEnemy].rota * PI / 180) + yM * cos((*enemies)[iEnemy].rota * PI / 180);
+			rotaPoint.x += DIST_ROTA_REAL_HITBOX_ARM * cos(((*enemies)[iEnemy].rota + 60) * PI / 180);
+			rotaPoint.y += DIST_ROTA_REAL_HITBOX_ARM * sin(((*enemies)[iEnemy].rota + 60) * PI / 180);
+
+
+
+			if((*enemies)[iEnemy].infos[2] > 0){
+				float smooth = 1;
+
+				if((*enemies)[iEnemy].infos[4] < NB_FRAME_WARMUP)
+					smooth /= abs((*enemies)[iEnemy].infos[4] - NB_FRAME_WARMUP);
+
+				if((*enemies)[iEnemy].infos[2] < NB_FRAME_WARMUP)
+					smooth /= NB_FRAME_WARMUP - (*enemies)[iEnemy].infos[2] +1;
+
+				(*enemies)[iEnemy].rota += smooth * (((*enemies)[iEnemy].infos[0] - (*enemies)[iEnemy].rota ) / (*enemies)[iEnemy].infos[2]);
+				(*enemies)[iEnemy].coefs[0] += smooth * (((*enemies)[iEnemy].infos[1] - (*enemies)[iEnemy].coefs[0]) / (*enemies)[iEnemy].infos[2]);
+			}
+			else if((*enemies)[iEnemy].infos[2] == FRAME_RESET_ARM_MOVE){
+				(*enemies)[iEnemy].infos[4] = -1;
+
+
+				double info0 = (*enemies)[iEnemy].infos[0], info1 = (*enemies)[iEnemy].infos[1];
+
+				if((*enemies)[iEnemy].infos[3]){
+					(*enemies)[iEnemy].infos[2] = FRAME_ARM_MOVE + 1;
+					while(abs(info0 - (*enemies)[iEnemy].infos[0]) < MIN_ANGLE_ARM || abs(info0 - (*enemies)[iEnemy].infos[0]) > MAX_ANGLE_ARM)
+						(*enemies)[iEnemy].infos[0] = (*enemies)[iEnemy].dir * (-15 - rand()%51); //entre -15 et -65
+
+					while(abs(info1 - (*enemies)[iEnemy].infos[1]) < MIN_ANGLE_AVANT_ARM || abs(info1 - (*enemies)[iEnemy].infos[1]) > MAX_ANGLE_AVANT_ARM)
+						(*enemies)[iEnemy].infos[1] = (*enemies)[iEnemy].dir * (15 - rand()%71); //entre 15 et -55 -
+
+					(*enemies)[iEnemy].infos[1] -= RATIO_ADAPT_ANGLE_ARM * (*enemies)[iEnemy].dir * (40 - abs((*enemies)[iEnemy].infos[0]));
+				}
+				else{
+					(*enemies)[iEnemy].infos[2] = FRAME_ARM_ROTATE + 1;
+					if(((*enemies)[iEnemy].dir == 1 && (*enemies)[iEnemy].infos[1] > -20) || ((*enemies)[iEnemy].dir == -1 && (*enemies)[iEnemy].infos[1] < 20))
+						(*enemies)[iEnemy].infos[1] -= (*enemies)[iEnemy].dir * ANGLE_TURN_BEAM_ARM;
+					else
+						(*enemies)[iEnemy].infos[1] += (*enemies)[iEnemy].dir * ANGLE_TURN_BEAM_ARM;
+
+					(*enemies)[iEnemy].infos[2] = FRAME_ARM_BEAM_MOVE + 1;
+
+
+				}
+
+			}
+			else if((*enemies)[iEnemy].infos[2] == FRAME_SHOOT_ARM){
+				(*enemies)[iEnemy].infos[3]--;
+				if(!(*enemies)[iEnemy].infos[3])
+					(*enemies)[iEnemy].infos[5]= 0;
+				else if((*enemies)[iEnemy].infos[3] > 0)
+					(*enemies)[iEnemy].weapons[0].frame_reload = 0;
+				else if((*enemies)[iEnemy].infos[3] < 0){
+					if(iEnemy>0 && (*enemies)[iEnemy-1].id == (*enemies)[iEnemy].id)
+						(*enemies)[iEnemy].infos[3] = (*enemies)[iEnemy-1].infos[3];
+					else
+						(*enemies)[iEnemy].infos[3] = NB_SMALL_ATK_ARM + rand()%RAND_SMALL_ATK_ARM;
+				}
+			}
+
+
+			(*enemies)[iEnemy].infos[2]--;
+			(*enemies)[iEnemy].infos[4]++;
+
+
+			SDL_Point rotaPointAfter = ROTATION_POINT_ARM;
+			rotaPointAfter.x -= ENEMY_CENTER[(*enemies)[iEnemy].id].x;
+			rotaPointAfter.y -= ENEMY_CENTER[(*enemies)[iEnemy].id].y;
+
+			xM = rotaPointAfter.x;
+			yM = rotaPointAfter.y;
+			rotaPointAfter.x = xM*cos((*enemies)[iEnemy].rota * PI / 180 ) - yM * sin((*enemies)[iEnemy].rota * PI / 180);
+			rotaPointAfter.y = xM * sin((*enemies)[iEnemy].rota * PI / 180) + yM * cos((*enemies)[iEnemy].rota * PI / 180);
+			rotaPointAfter.x += DIST_ROTA_REAL_HITBOX_ARM * cos(((*enemies)[iEnemy].rota + 60) * PI / 180);
+			rotaPointAfter.y += DIST_ROTA_REAL_HITBOX_ARM * sin(((*enemies)[iEnemy].rota + 60) * PI / 180);
+
+			(*enemies)[iEnemy].x -= (rotaPoint.x - rotaPointAfter.x);
+			(*enemies)[iEnemy].y -= (rotaPoint.y - rotaPointAfter.y);
+
+
+		}
 	}
 
 	if(!(TYPE_MOVE_ENEMY[(*enemies)[iEnemy].id] == BESACE && (*enemies)[iEnemy].coefs[2] < MAX_Y_BOSS))
 		if((*enemies)[iEnemy].x < BACKGROUND_DEST.x - ENEMY_SRC[(*enemies)[iEnemy].id].w / RATIO_SIZE_ENEMY[(*enemies)[iEnemy].id] - 1  || (*enemies)[iEnemy].x > BACKGROUND_DEST.x + BACKGROUND_DEST.w + 1
 				|| (*enemies)[iEnemy].y < -ENEMY_SRC[(*enemies)[iEnemy].id].h / RATIO_SIZE_ENEMY[(*enemies)[iEnemy].id] - 1 || (*enemies)[iEnemy].y > BACKGROUND_DEST.h +1){
-					printf("out !! %f %f\n",(*enemies)[iEnemy].x, (*enemies)[iEnemy].y);
+
 			shiftEnemy(*enemies, *nbEnemy, iEnemy);
 			(*nbEnemy)--;
+
 			if(*nbEnemy !=0){
 				*enemies=realloc(*enemies, sizeof(Enemy)* *nbEnemy );
 				return SDL_TRUE;
@@ -534,10 +885,24 @@ int moveEnemy(Enemy **enemies, int * nbEnemy, int iEnemy){
 	return SDL_FALSE;
 }
 
+int moveEnemyParts(EnemyPart **enemyParts, int * nbEnemyParts, int i){
+
+	(*enemyParts)[i].x += (*enemyParts)[i].dirX;
+	(*enemyParts)[i].y += (*enemyParts)[i].dirY;
+
+	if((*enemyParts)[i].id%NB_ARM_COMPONENT > 4)
+		(*enemyParts)[i].rota[0] += (*enemyParts)[i].dirX;
+	else
+		(*enemyParts)[i].rota[1] += (*enemyParts)[i].dirX;
+
+	(*enemyParts)[i].dirY -= GRAVITY_ENEMY_PARTS;
+
+	return SDL_FALSE;
+}
+
 void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
 	*nbEnemy += nbSpawn;
 	*enemies = realloc( *enemies, *nbEnemy * sizeof(Enemy));
-
 	//Polynomial interpolation
 	double x[NMAX];
 	double f[NMAX];
@@ -575,9 +940,12 @@ void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
 		}
 	}
 
-	int dir = randSign();
+    int dir = randSign();
 
 	for(int i = *nbEnemy-1; i> *nbEnemy - 1 - nbSpawn; i--){
+		if(id == ARM_ENEMY)
+			dir *= -1;
+
 		(*enemies)[i] = (Enemy){
 			id, //id
 			BACKGROUND_DEST.x - ENEMY_SRC[id].w/RATIO_SIZE_ENEMY[id], //x
@@ -631,9 +999,29 @@ void spawnEnemy(Enemy ** enemies, int *nbEnemy, int id, int nbSpawn){
 
 		}
 
-        printf("%f %f \n", (*enemies)[i].x, (*enemies)[i].y);
-}
+		if(id == ARM_ENEMY){
+			(*enemies)[i].x = BACKGROUND_DEST.x - SHIFT_X_ARM / RATIO_SIZE_ENEMY[id];
+			if((*enemies)[i].dir == -1)
+				(*enemies)[i].x +=  BACKGROUND_DEST.w + (2*SHIFT_X_ARM) / RATIO_SIZE_ENEMY[id] - ENEMY_SRC[id].w/RATIO_SIZE_ENEMY[id];//+ (2 * SHIFT_X_ARM) / RATIO_SIZE_ENEMY[(*enemies)[i].id] ;//+ ENEMY_SRC[(*enemies)[i].id].w / RATIO_SIZE_ENEMY[(*enemies)[i].id];
+			(*enemies)[i].rota = -(*enemies)[i].dir * 30;
+			(*enemies)[i].coefs[0] = -(*enemies)[i].dir * 50; // angle avant bras
+			(*enemies)[i].infos[0] = (*enemies)[i].rota; //angle dest
+			(*enemies)[i].infos[1] = (*enemies)[i].coefs[0]; // angle dest avant bras
+			(*enemies)[i].infos[2] = 0; // frame turn
+			(*enemies)[i].infos[3] = NB_SMALL_ATK_ARM + rand()%RAND_SMALL_ATK_ARM; // nbturn
+			(*enemies)[i].infos[4]= 0; //smooth warmup
+			(*enemies)[i].infos[5]= -1; //laserbeam
+			if(i<*nbEnemy-1 && (*enemies)[i+1].id == id)
+				(*enemies)[i].infos[3] = (*enemies)[i+1].infos[3];
+		}
+
+		if(id == ARM_BOSS_ENEMY){
+			(*enemies)[i].infos[0] = 0;
+			(*enemies)[i].infos[1] = 2;
+			(*enemies)[i].x = BACKGROUND_DEST.x;
+		}
 	}
+}
 
 
 
@@ -646,6 +1034,72 @@ void myFrees(Enemy ** enemies, Missile ** allyMissiles, Missile ** enemyMissiles
 
 	if(*enemyMissiles)
 		free(*enemyMissiles);
+}
+
+void armExplosion(Enemy enemy, Explosion ** explosions, int *nbExplosions){
+	SDL_Point rotaPoint = ROTATION_POINT_ARM;
+	rotaPoint.x -= ENEMY_CENTER[enemy.id].x;
+	rotaPoint.y -= ENEMY_CENTER[enemy.id].y;
+
+	float xM = rotaPoint.x;
+	float yM = rotaPoint.y;
+	rotaPoint.x = xM*cos(enemy.rota * PI / 180 ) - yM * sin(enemy.rota * PI / 180);
+	rotaPoint.y = xM * sin(enemy.rota * PI / 180) + yM * cos(enemy.rota * PI / 180);
+	rotaPoint.x += enemy.x + ENEMY_CENTER[enemy.id].x;
+	rotaPoint.y += enemy.y + ENEMY_CENTER[enemy.id].y;
+	/*rotaPoint.x -= DIST_ROTA_HITBOX_BASIC_ARM / RATIO_SIZE_ENEMY[enemy.id] * cos(enemy.rota * PI / 180 + PI/2);
+	rotaPoint.y -= DIST_ROTA_HITBOX_BASIC_ARM / RATIO_SIZE_ENEMY[enemy.id] * sin(enemy.rota * PI / 180 + PI/2);*/
+
+	*nbExplosions += NB_ARM_EXPLOSIONS;
+	*explosions = realloc(*explosions, *nbExplosions * sizeof(Explosion));
+	int j;
+	for(int i=*nbExplosions-NB_ARM_EXPLOSIONS, j=0; i<=*nbExplosions-1; i++, j++){
+		(*explosions)[i].id = EXPLO_SHIP;
+		(*explosions)[i].taille = SIZE_ARM_EXPLO[j];
+		int rota = (SIZE_ARM_EXPLO[j]==0?enemy.rota:enemy.coefs[0]);
+		(*explosions)[i].x = rotaPoint.x + (PART_ARM_EXPLO[j]==0?(-DIST_ROTA_HITBOX_BASIC_ARM):DIST_ROTA_CENTER_HITBOX_ARM) / RATIO_SIZE_ENEMY[enemy.id] * cos(rota * PI / 180 + PI/2)
+		 								 + EXPLO_COOR[j].x * cos(rota * PI / 180 + PI/2) + EXPLO_COOR[j].y * sin(rota * PI / 180) - (*explosions)[i].taille/2;
+		(*explosions)[i].y = rotaPoint.y + (PART_ARM_EXPLO[j]==0?(-DIST_ROTA_HITBOX_BASIC_ARM):DIST_ROTA_CENTER_HITBOX_ARM) / RATIO_SIZE_ENEMY[enemy.id] * sin(rota * PI / 180 + PI/2)
+		 								 + EXPLO_COOR[j].x * sin(rota * PI / 180 + PI/2) + EXPLO_COOR[j].y * cos(rota * PI / 180) - (*explosions)[i].taille/2;
+		(*explosions)[i].frame = FRAME_EXPLOSIONS[(*explosions)[i].id];
+		(*explosions)[i].delay = rand()%16+1;
+	}
+}
+void armBossExplosion(Explosion ** explosions, int *nbExplosions){
+	*nbExplosions += NB_ARM_BOSS_EXPLO;
+	*explosions = realloc(*explosions, *nbExplosions * sizeof(Explosion));
+	for(int i=*nbExplosions-NB_ARM_BOSS_EXPLO; i<=*nbExplosions-1; i++){
+		(*explosions)[i].id = EXPLO_SHIP;
+		(*explosions)[i].taille = MIN_SIZE_EXPLO_BOSS + rand()%(int)RAND_SIZE_EXPLO_BOSS;
+		(*explosions)[i].x = BACKGROUND_DEST.x + rand()%(BACKGROUND_DEST.w + 1) - (*explosions)[i].taille/2;
+		(*explosions)[i].y = rand()%MAX_Y_EXPLO_BOSS - (*explosions)[i].taille/2;
+		(*explosions)[i].frame = FRAME_EXPLOSIONS[(*explosions)[i].id];
+		(*explosions)[i].delay = rand()%24+2;
+	}
+}
+
+void armPartExplosion(Enemy enemy, Explosion ** explosions, int *nbExplosions, int idPart){
+	SDL_Point rotaPoint = ROTATION_POINT_ARM;
+	rotaPoint.x -= ENEMY_CENTER[enemy.id].x;
+	rotaPoint.y -= ENEMY_CENTER[enemy.id].y;
+
+	float xM = rotaPoint.x;
+	float yM = rotaPoint.y;
+	rotaPoint.x = xM*cos(enemy.rota * PI / 180 ) - yM * sin(enemy.rota * PI / 180);
+	rotaPoint.y = xM * sin(enemy.rota * PI / 180) + yM * cos(enemy.rota * PI / 180);
+	rotaPoint.x += enemy.x + ENEMY_CENTER[enemy.id].x;
+	rotaPoint.y += enemy.y + ENEMY_CENTER[enemy.id].y;
+	rotaPoint.x += DIST_ARM_PART[idPart] / RATIO_SIZE_ENEMY[enemy.id] * cos((PART_ARM_SIDE[idPart]==0?enemy.rota:enemy.coefs[0]) * PI / 180 + PI/2);
+	rotaPoint.y += DIST_ARM_PART[idPart] / RATIO_SIZE_ENEMY[enemy.id] * sin((PART_ARM_SIDE[idPart]==0?enemy.rota:enemy.coefs[0]) * PI / 180 + PI/2);
+
+	(*nbExplosions)++;
+	*explosions = realloc(*explosions, *nbExplosions * sizeof(Explosion));
+	(*explosions)[*nbExplosions -1].id = EXPLO_SHIP;
+	(*explosions)[*nbExplosions -1].taille = PART_ARM_SIZE[idPart] / RATIO_SIZE_ENEMY[enemy.id];
+	(*explosions)[*nbExplosions -1].x = rotaPoint.x - (*explosions)[*nbExplosions -1].taille/2;
+	(*explosions)[*nbExplosions -1].y = rotaPoint.y - (*explosions)[*nbExplosions -1].taille/2;
+	(*explosions)[*nbExplosions -1].frame = FRAME_EXPLOSIONS[(*explosions)[*nbExplosions -1].id];
+	(*explosions)[*nbExplosions -1].delay = 0;
 }
 
 extern int updateEnded;
@@ -686,6 +1140,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 	Missile * enemyMissiles = malloc(sizeof(Missile));
 
 	Enemy *enemies = malloc(sizeof(Enemy));
+	EnemyPart * enemyParts = malloc(sizeof(EnemyPart));
 	Explosion *explosions = malloc(sizeof(Explosion));
 	//Fonts
 	TTF_Font * font = TTF_OpenFont("../games/2_snake/Fonts/zorque.ttf", OPEN_FONT_SIZE);
@@ -733,6 +1188,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		};
 
 		int nbEnemy = 0;
+		int nbEnemyParts = 0;
 
 		int nbAllyMissiles = 0;
 		int nbEnemyMissiles = 0;
@@ -742,10 +1198,11 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		//   Initialize vars   //
 		 // // // // // // // //
 		 int r = 0;
+		 spawnEnemy(&enemies, &nbEnemy, ARM_BOSS_ENEMY, 1);
+		 spawnEnemy(&enemies, &nbEnemy, ARM_ENEMY, 2);
 	 // // // // // // //
 	//   BOUCLE DU JEU  //``
 	 // // // // // // //
-	 	int frame =0;
 		while( 1 ){
 		// // // //
 		// Events //`
@@ -834,72 +1291,159 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 		// // // // //
 		if(nbEnemy == 0){
 
-			if(r%6<=2)
-				spawnEnemy(&enemies, &nbEnemy, 0, 5 + rand()%4);
-			else if (r%6<=4)
-				spawnEnemy(&enemies, &nbEnemy, 1, 1);
-			else
-				spawnEnemy(&enemies, &nbEnemy, 2, 1);
-
-			r++;
 		}
-
 
 		for(int i=0; i<nbEnemy; i++)
 			enemyFire(&(enemies[i]), &enemyMissiles, &nbEnemyMissiles, ship);
-
 		//move missiles
 		for(int i=0; i<nbAllyMissiles; i++)
 			if(moveMissile(&allyMissiles, &nbAllyMissiles, i))
 				i--;
 
-
 		for(int i=0; i<nbEnemyMissiles; i++)
 			if(moveMissile(&enemyMissiles, &nbEnemyMissiles, i))
 				i--;
 
+		for(int i=0; i<nbEnemy; i++){
+			if(moveEnemy(&enemies, &nbEnemy, i))
+				i--;
+		}
 
-		for(int i=0; i<nbEnemy; i++)
-			moveEnemy(&enemies, &nbEnemy, i);
+		for(int i=0; i<nbEnemyParts; i++)
+			if(moveEnemyParts(&enemyParts, &nbEnemyParts, i))
+				i--;
 
 
 		// // // // //
 		// Hitbox //`
 		// // // // //
-
-			//ship-enemy
 			SDL_SetTextureColorMod(textures[SH_SHIP],255,255,255);
+
+
+			//ship-missiles
+			for(int i=0; i< nbEnemyMissiles; i++){
+				if(missileHitShip(enemyMissiles[i], ship) )
+					SDL_SetTextureColorMod(textures[SH_SHIP],255,150,0);
+			}
+
+			//laser
+			for(int i=0; i<nbEnemy; i++)
+				if( enemies[i].id == ARM_ENEMY && laserHitShip(ship, enemies[i]) )
+					SDL_SetTextureColorMod(textures[SH_SHIP],255,150,0);
+			//ship-enemy
+
 			for(int i=0; i<nbEnemy; i++)
 				if( shipHitEnemy(ship, enemies[i]) )
 					SDL_SetTextureColorMod(textures[SH_SHIP],255,0,0);
 
 
-			//ship-missiles
-			for(int i=0; i< nbEnemyMissiles; i++){
-				if(missileHitShip(enemyMissiles[i], ship))
-					SDL_SetTextureColorMod(textures[SH_SHIP],255,150,0);
-			}
+
 
 			//enemy-missiles
 			for(int i=0; i< nbAllyMissiles; i++){
 				for(int iEnemy = 0; iEnemy < nbEnemy; iEnemy++){
 					//enemy hitted
 					if(missileHitEnemy(allyMissiles[i], enemies[iEnemy])){
+						if(enemies[iEnemy].id == ARM_ENEMY){
+							for(int j=0; j<NB_ARM_COMPONENT; j++){
+								if(enemies[iEnemy].hp/ENEMY_HP[enemies[iEnemy].id] > RATIO_HP_PIECES[j] && (enemies[iEnemy].hp-allyMissiles[i].damage)/ENEMY_HP[enemies[iEnemy].id] <= RATIO_HP_PIECES[j]){
+									nbEnemyParts+= ((j==6||j<2)? 1:2);
+									enemyParts = realloc(enemyParts, nbEnemyParts * sizeof(EnemyPart));
+									enemyParts[nbEnemyParts-1] = (EnemyPart){
+										enemies[iEnemy].id,
+										j,//id
+										enemies[iEnemy].x,//x
+										enemies[iEnemy].y,//y
+										{enemies[iEnemy].rota,enemies[iEnemy].coefs[0]},//rota
+										((j==6||j<2)? 0.6*randSign():1) * (-X_PARTS - (1/PRECISION_RAND_FLOAT) * (rand() %(int)(RAND_X_PARTS*PRECISION_RAND_FLOAT)))/(j<=4 ? 1.5:1),//dirX
+										(Y_PARTS + (1/PRECISION_RAND_FLOAT) * (rand()%(int)(RAND_Y_PARTS*PRECISION_RAND_FLOAT)))*(j<=4 ? 1:1.4),//dirY
+									};
+
+									armPartExplosion(enemies[iEnemy], &explosions, &nbExplosions, j);
+
+									if(!(j==6||j<2))
+										enemyParts[nbEnemyParts-2] = (EnemyPart){
+											enemies[iEnemy].id,
+											j + NB_ARM_COMPONENT,//id
+											enemies[iEnemy].x,//x
+											enemies[iEnemy].y,//y
+											{enemies[iEnemy].rota,enemies[iEnemy].coefs[0]},//rota
+											(j==6? 0.6*randSign():1) * (X_PARTS + (1/PRECISION_RAND_FLOAT) * (rand() %(int)(RAND_X_PARTS*PRECISION_RAND_FLOAT)))/(j<=4 ? 1.5:1),//dirX
+											(Y_PARTS + (1/PRECISION_RAND_FLOAT) * (rand()%(int)(RAND_Y_PARTS*PRECISION_RAND_FLOAT)))*(j<=4 ? 1:1.4)//dirY
+										};
+								}
+							}
+						}
+
 						enemies[iEnemy].hp -= allyMissiles[i].damage;
 						enemies[iEnemy].frameHit = FRAME_HIT_ANIM;
 						if(enemies[iEnemy].hp <= 0){
+							if(enemies[iEnemy].id == ARM_ENEMY){
+								int iBoss;
+								for(iBoss = 0; iBoss < nbEnemy && enemies[iBoss].id != ARM_BOSS_ENEMY; iBoss++);
+								enemies[iBoss].infos[1]--;
+								armExplosion(enemies[iEnemy], &explosions, &nbExplosions);
+							}
+							else if(enemies[iEnemy].id == ARM_BOSS_ENEMY){
+								int iArm;
+								for(iArm = 0; iArm < nbEnemy; iArm++){
+									if(enemies[iArm].id == ARM_ENEMY){
+										for(int j=0; j<NB_ARM_COMPONENT; j++){
+											nbEnemyParts+= ((j==6||j<2)? 1:2);
+											enemyParts = realloc(enemyParts, nbEnemyParts * sizeof(EnemyPart));
+											enemyParts[nbEnemyParts-1] = (EnemyPart){
+												enemies[iArm].id,
+												j,//id
+												enemies[iArm].x,//x
+												enemies[iArm].y,//y
+												{enemies[iArm].rota,enemies[iArm].coefs[0]},//rota
+												((j==6||j<2)? 0.6*randSign():1) * (-X_PARTS - (1/PRECISION_RAND_FLOAT) * (rand() %(int)(RAND_X_PARTS*PRECISION_RAND_FLOAT)))/(j<=4 ? 1.5:1),//dirX
+												(Y_PARTS + (1/PRECISION_RAND_FLOAT) * (rand()%(int)(RAND_Y_PARTS*PRECISION_RAND_FLOAT)))*(j<=4 ? 1:1.4),//dirY
+											};
+
+											armPartExplosion(enemies[iArm], &explosions, &nbExplosions, j);
+
+											if(!(j==6||j<2))
+												enemyParts[nbEnemyParts-2] = (EnemyPart){
+													enemies[iArm].id,
+													j + NB_ARM_COMPONENT,//id
+													enemies[iArm].x,//x
+													enemies[iArm].y,//y
+													{enemies[iArm].rota,enemies[iArm].coefs[0]},//rota
+													(j==6? 0.6*randSign():1) * (X_PARTS + (1/PRECISION_RAND_FLOAT) * (rand() %(int)(RAND_X_PARTS*PRECISION_RAND_FLOAT)))/(j<=4 ? 1.5:1),//dirX
+													(Y_PARTS + (1/PRECISION_RAND_FLOAT) * (rand()%(int)(RAND_Y_PARTS*PRECISION_RAND_FLOAT)))*(j<=4 ? 1:1.4)//dirY
+												};
+										}
+										armExplosion(enemies[iArm], &explosions, &nbExplosions);
+										shiftEnemy(enemies, nbEnemy, iArm);
+										nbEnemy--;
+										if(nbEnemy !=0){
+											enemies=realloc(enemies, sizeof(Enemy)* nbEnemy );
+											iArm--;
+										}
+									}
+								}
+								armBossExplosion(&explosions, &nbExplosions);
+							}
+
 							explosions = realloc(explosions, ++nbExplosions * sizeof(Explosion));
 							explosions[nbExplosions-1].id = EXPLO_SHIP;
 							explosions[nbExplosions-1].taille = 2 * ENEMY_HITBOX[enemies[iEnemy].id].rx * RATIO_SHIP_EXPLO_SIZE;
+							if(enemies[iEnemy].id == ARM_BOSS_ENEMY)
+								explosions[nbExplosions-1].taille/=2;
 							explosions[nbExplosions-1].x = enemies[iEnemy].x + ENEMY_HITBOX[enemies[iEnemy].id].x - explosions[nbExplosions-1].taille/2;
 							explosions[nbExplosions-1].y = enemies[iEnemy].y + ENEMY_HITBOX[enemies[iEnemy].id].y - explosions[nbExplosions-1].taille/2;
+							if(enemies[iEnemy].id == ARM_BOSS_ENEMY)
+								explosions[nbExplosions-1].y += MAX_Y_BOSS;
 							explosions[nbExplosions-1].frame = FRAME_EXPLOSIONS[explosions[nbExplosions-1].id];
+							explosions[nbExplosions-1].delay = 0;
 
 							shiftEnemy(enemies, nbEnemy, iEnemy);
 							nbEnemy--;
-							if(nbEnemy !=0)
+							if(nbEnemy !=0){
 								enemies=realloc(enemies, sizeof(Enemy)* nbEnemy );
-
+								iEnemy--;
+							}
 						}
 						explosions = realloc(explosions, ++nbExplosions * sizeof(Explosion));
 						explosions[nbExplosions-1].id = EXPLO_MISSILE;
@@ -907,11 +1451,15 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 						explosions[nbExplosions-1].y = allyMissiles[i].y - TAILLE_EXPLOSIONS[allyMissiles[i].id]/2 - MISSILE_HITBOX[allyMissiles[i].id].ry;
 						explosions[nbExplosions-1].frame = FRAME_EXPLOSIONS[explosions[nbExplosions-1].id];
 						explosions[nbExplosions-1].taille = BASE_TAILLE_EXPLOSION * TAILLE_EXPLOSIONS[allyMissiles[i].id];
+						explosions[nbExplosions-1].delay = 0;
 
 						shiftMissile(allyMissiles, nbAllyMissiles, i);
 						nbAllyMissiles--;
-						if(nbAllyMissiles !=0)
+						if(nbAllyMissiles !=0){
 							allyMissiles=realloc(allyMissiles, sizeof(Missile)* nbAllyMissiles );
+							i--;
+						}
+
 						break;
 					}
 				}
@@ -929,13 +1477,19 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 				drawMissile(renderer, enemyMissiles[i], textures[SH_MISSILE]);
 
 			for(int i=0; i<nbEnemy; i++)
-                drawEnemy(renderer, enemies[i] , textures);
+                drawEnemy(renderer, &(enemies[i]) , textures);
+
+			for(int i=0; i<nbEnemyParts; i++)
+				drawEnemyParts(renderer, &(enemyParts[i]) , textures);
 
 			drawShip(renderer, ship, textures);
 
 
 			for(int i=0; i<nbExplosions; i++)
 				drawExplosion(renderer, explosions[i], textures[SH_EXPLO_MISSILE+explosions[i].id]);
+
+
+
 
 			SDL_SetRenderDrawColor(renderer, BACKGROUND_COLOR.r, BACKGROUND_COLOR.g, BACKGROUND_COLOR.b, 255);
 			SDL_RenderFillRect(renderer, &LEFT_BACK);
@@ -958,7 +1512,7 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 				if( enemies[i].frameWait )
 					enemies[i].frameWait--;
 
-				if(enemies[i].id == BASE_ENEMY)
+				if(enemies[i].id == BASE_ENEMY )
 					enemies[i].rota += enemies[i].dir * 6;
 			}
 
@@ -986,19 +1540,22 @@ int shooter( SDL_Renderer *renderer ,int highscore, int WinWidth, int WinHeight,
 				}
 			}
 
-		 	frame++;
-
 			//explo
 			for(int i=0; i<nbExplosions; i++){
-				explosions[i].frame--;
+				if(!explosions[i].delay){
+					explosions[i].frame--;
 
-				if(!explosions[i].frame){
-					shiftExplosion(explosions, nbExplosions, i);
-					nbExplosions--;
-					if(nbExplosions != 0){
-						explosions=realloc(explosions,sizeof(Explosion) * nbExplosions);
-						i--;
+					if(!explosions[i].frame){
+						shiftExplosion(explosions, nbExplosions, i);
+						nbExplosions--;
+						if(nbExplosions != 0){
+							explosions=realloc(explosions,sizeof(Explosion) * nbExplosions);
+							i--;
+						}
 					}
+				}
+				else{
+					explosions[i].delay--;
 				}
 			}
 

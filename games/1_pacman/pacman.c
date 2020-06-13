@@ -25,7 +25,7 @@ int piece[SIZE_TABLEAU_PIECE][SIZE_TABLEAU_PIECE];
 enum bonus {RIEN,PIECE,BONUS_1,BONUS_2};
 // distance entre piece
 const int DISTANCE_BETWEEN_PIECE = WINDOW_L/SIZE_TABLEAU_PIECE;
-//vitesse deplacement 
+//vitesse deplacement
 #define VITESSE_DEPLACEMENT 4
 
 // chargement
@@ -64,7 +64,7 @@ void initialiserPlateauJeux()
         {
             piece[i][j] = PIECE;
         }
-            
+
 }
 
 void carte1()
@@ -78,7 +78,7 @@ void carte1()
             mur[i][j] = HORIZONTAL;
         }
 
-    
+
 }
 
 void afficherPiece(SDL_Renderer *renderer)
@@ -91,7 +91,7 @@ void afficherPiece(SDL_Renderer *renderer)
                  SDL_RenderDrawPoint(renderer,i*DISTANCE_BETWEEN_PIECE,j*DISTANCE_BETWEEN_PIECE);
             }
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);        
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
 }
 
 void afficherMur(SDL_Renderer *renderer)
@@ -111,8 +111,8 @@ void afficherMur(SDL_Renderer *renderer)
                  SDL_RenderFillRect(renderer,&target);
             }
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);  
-    
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+
 }
 
 
@@ -123,7 +123,7 @@ void afficherPacman(SDL_Renderer *renderer,SDL_Texture *texturePersonnage ,int p
     cible.x *= direction;
     cible.y *= boucheOuverte;
     SDL_RenderCopy(renderer,texturePersonnage,&cible,&target);
-    
+
 }
 
 void mangerPiece(int positionX, int positionY)
@@ -135,7 +135,7 @@ void mangerPiece(int positionX, int positionY)
                 if( (positionY + PERSONNAGE.w) >= j*DISTANCE_BETWEEN_PIECE && (positionY + PERSONNAGE.w) < (j+1)*DISTANCE_BETWEEN_PIECE)
                     piece[i][j] = 0;
         }
-            
+
 }
 
 void attendreEvenementAppuyer(int event)
@@ -148,14 +148,14 @@ void attendreEvenementAppuyer(int event)
         {
             if (ev.type == SDL_KEYDOWN){
 
-                if(ev.key.keysym.sym == event)
+                if(ev.key.keysym.sym == SDLK_SPACE)
                 {
                     attendre = 0;
                 }
 
             }
 
-        }       
+        }
     } while (attendre);
 }
 
@@ -185,11 +185,11 @@ void traitementEvenementVariable(pacmanPosition *pacmanPositionDirection, int *e
                 {
                     *exit = 1;
                 }
-                    
+
             }
 
 
-        }  
+        }
 
         switch (pacmanPositionDirection->direction)
         {
@@ -228,7 +228,7 @@ void pacman(SDL_Renderer *renderer)
         SDL_Delay(1000/FPS);
 
     } while (!mort);
-   
+
 
 }
 

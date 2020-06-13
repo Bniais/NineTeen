@@ -71,9 +71,12 @@ const char* DIR_TEXTURES_SHOOTER[NB_SHOOTER_TEXTURES]={
 	"../games/4_shooter/Textures/background.png",
 	"../games/7_asteroid/Textures/explo.png",
 	"../games/7_asteroid/Textures/explo2.png",
+	"../games/4_shooter/Textures/laser_beam.png",
 	"../games/4_shooter/Textures/enemy1.png",
 	"../games/4_shooter/Textures/enemy2.png",
-	"../games/4_shooter/Textures/enemy3.png"
+	"../games/4_shooter/Textures/enemy3.png",
+	"../games/4_shooter/Textures/arm.png",
+	"../games/4_shooter/Textures/arm_boss.png"
 
 };
-const int textureFloueShooter[NB_SHOOTER_TEXTURES] = {1,1,1,1,1,1,1,1,1};
+const int textureFloueShooter[NB_SHOOTER_TEXTURES] = {1,1,0,1,1,1,1,1,1,1,1,0,0};

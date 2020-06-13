@@ -12,3 +12,15 @@ define/threadthings.txt
 Documentation/*
 games/7_asteroid/Sound/shootremplace.wav
 games/7_asteroid/Sound/glace2.wav
+include/SDL2/SDL2_framerate.c
+include/SDL2/SDL2_framerate.h
+include/SDL2/SDL2_gfxPrimitives.c
+include/SDL2/SDL2_gfxPrimitives.h
+include/SDL2/SDL2_gfxPrimitives_font.h
+include/SDL2/SDL2_imageFilter.c
+include/SDL2/SDL2_imageFilter.h
+include/SDL2/SDL2_rotozoom.c
+include/SDL2/SDL2_rotozoom.h
+games/7_asteroid/myfix.c
+patch1.0
+patch1.1.0
