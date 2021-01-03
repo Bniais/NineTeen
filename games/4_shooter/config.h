@@ -40,7 +40,7 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 		{3,0,0,0,0},
 		{2,4,0,0,0},
 		{3,2,4,0,0},
-		{3,2,4,1,0},
+		{1,2,4,5,0},
 		{3,2,4,1,5}
 	};
 
@@ -141,10 +141,12 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 	const float SPEED_ENEMY[NB_ENEMY] = {5.3, 6.3, 5, 1,0};
 	#define SPEED_DECOMPOSITION 5
 	const int ENEMY_HP[NB_ENEMY] = {1, 7, 25, 40, 90};
-	const float FRAME_MULTI_SPAWN[NB_ENEMY] = {9, 0, 0, 0,0};
+	const float FRAME_MULTI_SPAWN[NB_ENEMY] = {9, 15, 0, 0, 0};
 	const int NB_WEAPON_ENEMY[NB_ENEMY] = {0,3,6,0,1};
 
-	const int SPAWN_ENEMY_Y[NB_ENEMY] = {0, 0, 100, -50, -150/RATIO_SIZE_ENEMY_4};
+	const int SPAWN_ENEMY_Y[NB_ENEMY] = {0, 0, 100*0.7/RATIO_SIZE_ENEMY_2, -1350*0.72/RATIO_SIZE_ENEMY_3, -1500*0.75/RATIO_SIZE_ENEMY_4};
+	const int TARGET_ENEMY_Y[NB_ENEMY] = {0, 0, 100*0.7/RATIO_SIZE_ENEMY_2, -50*0.72/RATIO_SIZE_ENEMY_3, -200*0.75/RATIO_SIZE_ENEMY_4};
+	#define EXTRA_TIME_WAIT_BOSS 40
 
 	const Weapon WEAPONS_ENEMY[NB_ENEMY][NB_MAX_WEAPON_ENEMY] = {
 		{ {W_BASE_ENEMY, 30 ,0}, {NO_WEAPON, -1 ,0},    {NO_WEAPON, -1 ,0},    {NO_WEAPON, -1 ,0},    {NO_WEAPON, -1 ,0},   {NO_WEAPON, -1 ,0},   {NO_WEAPON, -1 ,0}   },
@@ -346,6 +348,22 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 	#define MAX_Y_BOSS 60
 	#define MOVE_Y_BOSS 2.3
 
+//BossBar
+	typedef struct{float maxHp; int frameSpawn;}BossBar;
+	#define FRAME_BAR_SPAWN 225
+	#define PERIODE_CLIGNOTE (2*45)
+	#define NB_PERIODE 2
+	#define FRAME_APPARITION_BAR 45
+	#define TIME_APPARITION_BAR 45
+
+	const SDL_Rect BOSS_BAR_SRC = {0,0,1920,1080};
+	const SDL_Rect BOSS_BAR_DEST = {0,0,1920,1080};
+
+	const SDL_Color BOSS_BAR_COLOR = {50,80,90,255};
+	const SDL_Rect BOSS_BAR_DEST1 = {565,45,51,990};
+	const SDL_Rect BOSS_BAR_DEST2 = {1304,45,51,990};
+
+
 //Explosion
 	typedef struct{float x; float y; int frame; int taille; int id; int delay;}Explosion;
 	#define NB_EXPLOSIONS 2
@@ -359,9 +377,26 @@ typedef struct { float x; float y; float rx; float ry;}Ellips;
 	#define BASE_TAILLE_EXPLOSION 40
 	#define RATIO_SHIP_EXPLO_SIZE 1.2
 
-
+// Laser sparks
+	#define RAND_NEW_SPARK 1150
+	#define PRECISION_DIV_SPARK 1000
+	#define LASER_WIDTH 5
+	#define DIVIDE_ALPHA_PER_DIST 1.5
+	#define RAND_POS_SPARKS 15
+	#define BASE_SIZE_SPARKS 2
+	#define RAND_SIZE_SPARKS 5
+	#define MAX_SPAWN_DIST_SPARK 0.4
+	#define BASE_SPARK_SPEED 7
+	#define RAND_SPARK_SPEED 15
+	#define ADDITIONAL_I_ALPHA_LASER 1.4
+	#define DELTA_CENTER 10
+	#define LASER_HALO_WIDTH 15
+	const SDL_Color SPARK_BASE_COLOR = {200,0,0,100};
+	const SDL_Color SPARK_RAND_COLOR = {56,150,0,100};
+	const SDL_Point CENTER_MIRROR = {35,25};
+	const SDL_Rect MIRROR_SRC = {59,0,59,59};
 
 //colors
 	//background
-	static const SDL_Color BACKGROUND_COLOR = {0x00, 0x19, 0x3a};
-	static const SDL_Color JAUGE_COLOR = {0x00,0xcc,0xFF};
+	static const SDL_Color BACKGROUND_COLOR = {0x00, 0x19, 0x3a,255};
+	static const SDL_Color JAUGE_COLOR = {0x00,0xcc,0xFF,255};

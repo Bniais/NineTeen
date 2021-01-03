@@ -78,8 +78,8 @@ static GLuint * _textures =  NULL, *_counts = NULL;
 // POLICE
 #define DIR_FONT_SEGA "../room/fonts/sega.ttf"
 #define DIR_FONT_POLICE "../room/fonts/police.ttf"
-//OBJS
-#define DIR_OBJ_LOAD "../room/textures/salle.obj"
+//OBJS1
+#define DIR_OBJ_LOAD "../room/textures/Girl_1.obj"
 // EMPLACEMENT FIHCIER NECESSAIRE
 
 #define VITESSE_DEPLACEMENT_COURIR 0.14F
@@ -1723,7 +1723,12 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	camera->angle = START_CIBLE_X;
 	camera->ouverture = START_OUVERTURE;
 
-
+	camera->px = -6.56;
+	camera->pz = 9.195632;
+	camera->py = 3.609998;
+	camera->cible_py = -.329000;
+	camera->angle = 0.0;
+	camera->ouverture =70;
 
 
 	///////////////////////////////////////////////////
