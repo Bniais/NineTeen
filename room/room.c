@@ -306,11 +306,6 @@ int loadGameTexture(loadGame * load){
 /////////////////////////////////////////////////////
 //int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize );
 
-void newWindow(SDL_Window **Window){
-	SDL_DestroyWindow(*Window);
-	*Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL );
-}
-
 
 /////////////////////////////////////////////////////
 /// \fn int windowMaxSize(int optionFullScreen)
@@ -2586,6 +2581,25 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 
 }
 
+void show_flags(int flags) {
+
+    printf("\nFLAGS ENABLED: ( %d )\n", flags);
+    printf("=======================\n");
+    if(flags & SDL_WINDOW_FULLSCREEN)         printf("SDL_WINDOW_FULLSCREEN\n");
+    if(flags & SDL_WINDOW_OPENGL)             printf("SDL_WINDOW_OPENGL\n");
+    if(flags & SDL_WINDOW_SHOWN)              printf("SDL_WINDOW_SHOWN\n");
+    if(flags & SDL_WINDOW_HIDDEN)             printf("SDL_WINDOW_HIDDEN\n");
+    if(flags & SDL_WINDOW_BORDERLESS)         printf("SDL_WINDOW_BORDERLESS\n");
+    if(flags & SDL_WINDOW_RESIZABLE)          printf("SDL_WINDOW_RESIZABLE\n");
+    if(flags & SDL_WINDOW_MINIMIZED)          printf("SDL_WINDOW_MINIMIZED\n");
+    if(flags & SDL_WINDOW_MAXIMIZED)          printf("SDL_WINDOW_MAXIMIZED\n");
+    if(flags & SDL_WINDOW_INPUT_GRABBED)      printf("SDL_WINDOW_INPUT_GRABBED\n");
+    if(flags & SDL_WINDOW_INPUT_FOCUS)        printf("SDL_WINDOW_INPUT_FOCUS\n");
+    if(flags & SDL_WINDOW_MOUSE_FOCUS)        printf("SDL_WINDOW_MOUSE_FOCUS\n");
+    if(flags & SDL_WINDOW_FULLSCREEN_DESKTOP) printf("SDL_WINDOW_FULLSCREEN_DESKTOP\n");
+    if(flags & SDL_WINDOW_FOREIGN)            printf("SDL_WINDOW_FOREIGN\n");
+}
+
 void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list, SDL_Window **Window,SDL_GLContext *Context, int *jouerSonPorteFemme , int *jouerSonPorteHomme, float _IPS, TTF_Font *font)
 {
 
@@ -2692,7 +2706,8 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							///////////////////////////////////////////////////
 							// CREATION D'UN RENDU AUTRE QUE OPENGL CAR NON COMPATIBLE
 
-
+							printf("Renderer value 1 : %p FLAG : %d\n", SDL_GetRenderer(*Window) , SDL_GetWindowFlags(*Window) );
+							show_flags( SDL_GetWindowFlags(*Window) );
 							///////////////////////////////////////////////////
 							// ANIMATION CENTRAGE SUR MACHINE
 							animationLancerMachine(camera,cible[machine-1],*scene_list,*Window, _IPS,60.0);
@@ -2712,7 +2727,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							///////////////////////////////////////////////////
 							// CREATION DU RENDU POUR CHARGEMENT DES TEXTURES
-							SDL_Renderer * pRenderer = SDL_CreateRenderer(*Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+							SDL_Renderer * pRenderer = SDL_CreateRenderer(*Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE );
+							printf("Renderer value 2 : %p FLAG : %d\n", SDL_GetRenderer(*Window) , SDL_GetWindowFlags(*Window) );
+							show_flags( SDL_GetWindowFlags(*Window) );
 							if(!pRenderer)
 							{
 								SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal creation render.",SDL_GetError(),*Window);
@@ -2721,17 +2738,16 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							}
 
 
-
 							loadGame lg = {machine, pRenderer};
 							loadGameTexture(&lg);
 
 
 
               				#ifdef _WIN32
-							if(optionFullScreen ){
-								SDL_MinimizeWindow(Window);
-								SDL_MaximizeWindow(Window);
-							}
+								if(optionFullScreen ){
+									SDL_MinimizeWindow(Window);
+									SDL_MaximizeWindow(Window);
+								}
 							#endif
 
 							SDL_ShowCursor(SDL_TRUE);
@@ -2750,11 +2766,13 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
 							SDL_DestroyRenderer(pRenderer);
 							pRenderer = NULL;
-							
+							printf("Renderer value 3 : %p FLAG : %d\n", SDL_GetRenderer(*Window) , SDL_GetWindowFlags(*Window) );
+							show_flags( SDL_GetWindowFlags(*Window) );
 							SDL_DestroyWindow(*Window);
 							*Window = SDL_CreateWindow("Nineteen", x,y, WinWidth, WinHeight, SDL_WINDOW_OPENGL );
-
 							*Context = SDL_GL_CreateContext(*Window);
+							printf("Renderer value 4 : %p FLAG : %d\n", SDL_GetRenderer(*Window) , SDL_GetWindowFlags(*Window) );
+							show_flags( SDL_GetWindowFlags(*Window) );
 							///////////////////////////////////////////////////
 							// AFFICHAGE DE LA SCENE
 							// RECHARGEMENT DES IMAGES
