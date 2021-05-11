@@ -306,6 +306,10 @@ int loadGameTexture(loadGame * load){
 /////////////////////////////////////////////////////
 //int room(char *token,struct MeilleureScore_s meilleureScore[], SDL_Window *Window,const C_STRUCT aiScene* scene, int optFullScreen, SDL_Rect borderSize );
 
+void newWindow(SDL_Window **Window){
+	SDL_DestroyWindow(*Window);
+	*Window = SDL_CreateWindow("Nineteen", SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, WinWidth, WinHeight, SDL_WINDOW_OPENGL );
+}
 
 
 /////////////////////////////////////////////////////
@@ -633,7 +637,7 @@ int MessageQuitterRoom(int modeChargement, char path[]);
 /// \return void
 /////////////////////////////////////////////////////
 static
-void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme,  int *jouerSonPorteHomme, float _IPS, TTF_Font *font);
+void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[],char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list, SDL_Window **Window,SDL_GLContext *Context, int *jouerSonPorteFemme,  int *jouerSonPorteHomme, float _IPS, TTF_Font *font);
 
 
 /////////////////////////////////////////////////////
@@ -1124,7 +1128,7 @@ int room(char *token,struct MeilleureScore_s meilleureScore[],SDL_Window *Window
 
 		//////////////////////////////////////////////////////////
 		// LANCEMENT DES MACHINES
-		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list,Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme, _IPS,sega);
+		lancerMachine(scene,&Running,camera,cible,token,meilleureScore,&scene_list, &Window,&Context,&jouerSonPorteFemme, &jouerSonPorteHomme, _IPS,sega);
 		//////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////
 		// CHARGER LA SCENE
@@ -1722,13 +1726,6 @@ void InitCamera(struct Camera_s *camera, struct Camera_s *cible)
 	camera->cible_py = START_CIBLE_Y;
 	camera->angle = START_CIBLE_X;
 	camera->ouverture = START_OUVERTURE;
-
-	camera->px = -6.56;
-	camera->pz = 9.195632;
-	camera->py = 3.609998;
-	camera->cible_py = -.329000;
-	camera->angle = 0.0;
-	camera->ouverture =70;
 
 
 	///////////////////////////////////////////////////
@@ -2589,7 +2586,7 @@ void animationLancerMachine(struct Camera_s camera, struct Camera_s cible,GLuint
 
 }
 
-void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list,SDL_Window *Window,SDL_GLContext *Context, int *jouerSonPorteFemme , int *jouerSonPorteHomme, float _IPS, TTF_Font *font)
+void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s camera, struct Camera_s cible[], char *token, struct MeilleureScore_s meilleureScore[],GLuint *scene_list, SDL_Window **Window,SDL_GLContext *Context, int *jouerSonPorteFemme , int *jouerSonPorteHomme, float _IPS, TTF_Font *font)
 {
 
 
@@ -2613,9 +2610,9 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 					///////////////////////////////////////////////////
 					// INIT AFFICHAGE DU MESSAGE
-					SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
+					SDL_GL_AppliquerScene(*Window, scene,&camera,scene_list,FPS);
 					MessageQuitterRoom(0,"../room/textures/exit.png");
-					SDL_GL_SwapWindow(Window);
+					SDL_GL_SwapWindow(*Window);
 
 					///////////////////////////////////////////////////
 					// VIDER LA LISTE DES EVENEMENTS
@@ -2642,7 +2639,7 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 										fprintf(EXT_FILE, "room.c : lancerMachine() :Quitter le menu (Appui touche echap) \n" );
 										decision = 0;
 										FIRST_FRAME = 0;
-										SDL_GL_AppliquerScene(Window, scene,&camera,scene_list,FPS);
+										SDL_GL_AppliquerScene(*Window, scene,&camera,scene_list,FPS);
 										break;
 									case SDLK_q:
 										fprintf(EXT_FILE, "room.c : lancerMachine() : Quitter le jeu (Appui touche q) \n" );
@@ -2668,11 +2665,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 						//////////////////////////////////////////////////////////
 						// CACHER LA SOURIS
 						#ifndef __linux__
-						if (SDL_GetWindowFlags(Window) & (SDL_WINDOW_INPUT_FOCUS ) ){
+						if (SDL_GetWindowFlags(*Window) & (SDL_WINDOW_INPUT_FOCUS ) ){
 						 	SDL_ShowCursor(SDL_DISABLE);
 							///////////////////////////////////////////////////
 							// RECENTRAGE DE CAMERA
-							SDL_WarpMouseInWindow(Window, (WinWidth/2)  ,(WinHeight/2) );
+							SDL_WarpMouseInWindow(*Window, (WinWidth/2)  ,(WinHeight/2) );
 						}
 						#endif
 													///////////////////////////////////////////////////
@@ -2698,24 +2695,27 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 
 							///////////////////////////////////////////////////
 							// ANIMATION CENTRAGE SUR MACHINE
-							animationLancerMachine(camera,cible[machine-1],*scene_list,Window, _IPS,60.0);
+							animationLancerMachine(camera,cible[machine-1],*scene_list,*Window, _IPS,60.0);
 
 							MessageQuitterRoom(1,adresseFontImg[machine-1]);
 							MessageQuitterRoom(1,"../room/textures/chargement.png");
 
-							SDL_GL_SwapWindow(Window);
+							SDL_GL_SwapWindow(*Window);
 
 							///////////////////////////////////////////////////
 							// DESTRUCTION DES TEXTURES ET DU CONTEXT
 							detruireTexture(scene->mNumMaterials);
 							SDL_GL_DeleteContext(*Context);
+							
+							int x,y;
+							SDL_GetWindowPosition(*Window,&x,&y);
 
 							///////////////////////////////////////////////////
 							// CREATION DU RENDU POUR CHARGEMENT DES TEXTURES
-							SDL_Renderer * pRenderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
+							SDL_Renderer * pRenderer = SDL_CreateRenderer(*Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |SDL_RENDERER_TARGETTEXTURE);
 							if(!pRenderer)
 							{
-								SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal creation render.",SDL_GetError(),Window);
+								SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Erreur Fatal creation render.",SDL_GetError(),*Window);
 								fprintf(EXT_FILE, "room.c : lancerMachine() : Erreur fatal : Impossible de cree un rendu : %s \n",SDL_GetError() );
 								break;
 							}
@@ -2750,7 +2750,11 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							// DESTRUCTION DU RENDU ET CONTEXT POUR RECREATION CONTEXT OPENGL
 							SDL_DestroyRenderer(pRenderer);
 							pRenderer = NULL;
-							*Context = SDL_GL_CreateContext(Window);
+							
+							SDL_DestroyWindow(*Window);
+							*Window = SDL_CreateWindow("Nineteen", x,y, WinWidth, WinHeight, SDL_WINDOW_OPENGL );
+
+							*Context = SDL_GL_CreateContext(*Window);
 							///////////////////////////////////////////////////
 							// AFFICHAGE DE LA SCENE
 							// RECHARGEMENT DES IMAGES
@@ -2764,19 +2768,19 @@ void lancerMachine(const C_STRUCT aiScene *scene,int *Running, struct Camera_s c
 							MessageQuitterRoom(1,adresseFontImg[machine-1]);
 							MessageQuitterRoom(1,"../room/textures/chargement.png");
 
-							SDL_GL_SwapWindow(Window);
+							SDL_GL_SwapWindow(*Window);
 
 							// ATTENTE POUR MAC OS AFIN DE VOIR L'ANIMATION
 							while(SDL_PollEvent(&Event));
-							_malloc((void**)&_textures,sizeof(*_textures),(scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",Window);
+							_malloc((void**)&_textures,sizeof(*_textures),(scene->mNumMaterials),EXT_FILE,SDL_MESSAGEBOX_ERROR,"allocation failed","room.c : room() : GLuint *_textures ",*Window);
 							chargerTexture(DIR_OBJ_LOAD,scene,_textures,&_counts);
 
 							// REMISE A ZERO DE LA SCENE
 							*scene_list = 0;
 							static struct Camera_s camera2;
-							SDL_GL_AppliquerScene(Window, scene,&camera2,scene_list,FPS);
+							SDL_GL_AppliquerScene(*Window, scene,&camera2,scene_list,FPS);
 							// ANIMATION DE RETOUR SUR MACHINE
-							animationLancerMachine(cible[machine-1],camera,*scene_list,Window, _IPS,60.0);
+							animationLancerMachine(cible[machine-1],camera,*scene_list,*Window, _IPS,60.0);
 							// VIDER POLL EVENEMENT
 							while(SDL_PollEvent(&Event));
 
