@@ -17,14 +17,14 @@ FILE *EXT_FILE;
 ///	\brief Regroupe les fonctions de connexion au serveur
 /////////////////////////////////////////////////
 
-#define URL_CONNECT_EMAIL "https://nineteen.recognizer.fr/connect.php"
-#define URL_CONNECT_KEY "https://nineteen.recognizer.fr/connect.php"
-#define URL_UPDATE_SCORE "https://nineteen.recognizer.fr/updateYourScore.php"
-#define URL_PING "https://nineteen.recognizer.fr/ping.php"
-#define URL_TIMESTAMP "https://nineteen.recognizer.fr/include/timestamp.php"
-#define URL_GET_COINS "https://nineteen.recognizer.fr/coins.php"
-#define URL_CHECK_VERSION "https://nineteen.recognizer.fr/checkVersion.php"
-#define URL_LEADERBOARD "https://nineteen.recognizer.fr/leaderboard.php"
+#define URL_CONNECT_EMAIL "https://nineteen.samymahi.eu/connect.php"
+#define URL_CONNECT_KEY "https://nineteen.samymahi.eu/connect.php"
+#define URL_UPDATE_SCORE "https://nineteen.samymahi.eu/updateYourScore.php"
+#define URL_PING "https://nineteen.samymahi.eu/ping.php"
+#define URL_TIMESTAMP "https://nineteen.samymahi.eu/include/timestamp.php"
+#define URL_GET_COINS "https://nineteen.samymahi.eu/coins.php"
+#define URL_CHECK_VERSION "https://nineteen.samymahi.eu/checkVersion.php"
+#define URL_LEADERBOARD "https://nineteen.samymahi.eu/leaderboard.php"
 
 
 
